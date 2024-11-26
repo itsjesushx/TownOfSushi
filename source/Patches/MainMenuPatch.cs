@@ -74,6 +74,7 @@ namespace TownOfSushi.Patches
 ";
                 creditsString += $@"<size=60%> Other Credits & Resources:
 [https://github.com/eDonnes124/Town-Of-Us]TownOfUs-Reactivated[] - Original Codebase
+[https://github.com/SubmergedAmongUs/Lifeboat]Lifeboat[] - UsefulMethods class
 [https://github.com/AlchlcDvl/TownOfUsReworked]TownOfUsReworked[] - Random Spawns option, part of the End Game Summary rework code, the Death Reason code, Some of the Vulture.cs code & more
 [https://github.com/SubmergedAmongUs/Submerged]Alexejhero[] - For the Submerged map.
 [https://github.com/Mr-Fluuff/StellarRolesAU/]StellarRoles[] - Main Menu Patch, End Game Summary code & Custom Message code.
