@@ -1,10 +1,4 @@
-using System;
-using HarmonyLib;
-using TownOfUs.Roles;
-using UnityEngine;
-using Object = UnityEngine.Object;
-
-namespace TownOfUs
+namespace TownOfSushi
 {
     #region OpenDoorConsole
     [HarmonyPatch(typeof(OpenDoorConsole), nameof(OpenDoorConsole.CanUse))]
@@ -17,7 +11,7 @@ namespace TownOfUs
             __state = false;
 
             var playerControl = playerInfo.Object;
-            if (((playerControl.Is(RoleEnum.Phantom) && !Role.GetRole<Phantom>(playerControl).Caught) || (playerControl.Is(RoleEnum.Haunter) && !Role.GetRole<Haunter>(playerControl).Caught)) && playerInfo.IsDead)
+            if ((playerControl.Is(RoleEnum.Phantom) && !GetRole<Phantom>(playerControl).Caught) || (playerControl.Is(RoleEnum.Haunter) && !GetRole<Haunter>(playerControl).Caught) && playerInfo.IsDead)
             {
                 playerInfo.IsDead = false;
                 __state = true;
@@ -55,7 +49,7 @@ namespace TownOfUs
             __state = false;
 
             var playerControl = playerInfo.Object;
-            if (((playerControl.Is(RoleEnum.Phantom) && !Role.GetRole<Phantom>(playerControl).Caught) || (playerControl.Is(RoleEnum.Haunter) && !Role.GetRole<Haunter>(playerControl).Caught)) && playerInfo.IsDead)
+            if ((playerControl.Is(RoleEnum.Phantom) && !GetRole<Phantom>(playerControl).Caught) || (playerControl.Is(RoleEnum.Haunter) && !GetRole<Haunter>(playerControl).Caught) && playerInfo.IsDead)
             {
                 playerInfo.IsDead = false;
                 __state = true;
@@ -75,6 +69,7 @@ namespace TownOfUs
     {
         public static bool Prefix(DoorConsole __instance)
         {
+
             __instance.CanUse(PlayerControl.LocalPlayer.Data, out var canUse, out _);
             if (!canUse) return false;
             PlayerControl.LocalPlayer.NetTransform.Halt();
@@ -97,13 +92,13 @@ namespace TownOfUs
     [HarmonyPatch(typeof(Ladder), nameof(Ladder.CanUse))]
     public class LadderCanUse
     {
-        public static void Prefix(Ladder __instance,
+        public static void Prefix(DoorConsole __instance,
             [HarmonyArgument(0)] NetworkedPlayerInfo playerInfo,
             ref bool __state)
         {
             __state = false;
             var playerControl = playerInfo.Object;
-            if (((playerControl.Is(RoleEnum.Phantom) && !Role.GetRole<Phantom>(playerControl).Caught) || (playerControl.Is(RoleEnum.Haunter) && !Role.GetRole<Haunter>(playerControl).Caught)) && playerInfo.IsDead)
+            if ((playerControl.Is(RoleEnum.Phantom) && !GetRole<Phantom>(playerControl).Caught) || (playerControl.Is(RoleEnum.Haunter) && !GetRole<Haunter>(playerControl).Caught) && playerInfo.IsDead)
             {
                 playerInfo.IsDead = false;
                 __state = true;
@@ -141,7 +136,7 @@ namespace TownOfUs
         {
             __state = false;
             var playerControl = playerInfo.Object;
-            if (((playerControl.Is(RoleEnum.Phantom) && !Role.GetRole<Phantom>(playerControl).Caught) || (playerControl.Is(RoleEnum.Haunter) && !Role.GetRole<Haunter>(playerControl).Caught)) && playerInfo.IsDead)
+            if ((playerControl.Is(RoleEnum.Phantom) && !GetRole<Phantom>(playerControl).Caught) || (playerControl.Is(RoleEnum.Haunter) && !GetRole<Haunter>(playerControl).Caught) && playerInfo.IsDead)
             {
                 playerInfo.IsDead = false;
                 __state = true;
@@ -152,117 +147,6 @@ namespace TownOfUs
         {
             if (__state)
                 playerInfo.IsDead = true;
-        }
-    }
-
-    [HarmonyPatch(typeof(PlatformConsole), nameof(PlatformConsole.Use))]
-    public class PlatformConsoleUse
-    {
-        public static bool Prefix(PlatformConsole __instance)
-        {
-            var data = PlayerControl.LocalPlayer.Data;
-            __instance.CanUse(data, out var flag, out var _);
-            if (flag) __instance.Platform.Use();
-            return false;
-        }
-    }
-
-    [HarmonyPatch(typeof(MovingPlatformBehaviour))]
-    [HarmonyPatch(nameof(MovingPlatformBehaviour.Use), typeof(PlayerControl))]
-    public class MovingPlatformBehaviourUse
-    {
-        public static void Prefix(MovingPlatformBehaviour __instance, PlayerControl player, ref bool __state)
-        {
-            __state = false;
-            if (((player.Is(RoleEnum.Phantom) && !Role.GetRole<Phantom>(player).Caught) || (player.Is(RoleEnum.Haunter) && !Role.GetRole<Haunter>(player).Caught)) && player.Data.IsDead)
-            {
-                player.Data.IsDead = false;
-                __state = true;
-            }
-        }
-        public static void Postfix(PlayerControl player, ref bool __state)
-        {
-            if (__state)
-                player.Data.IsDead = true;
-        }
-    }
-    #endregion
-
-    #region ZiplineConsole
-    [HarmonyPatch(typeof(ZiplineConsole), nameof(ZiplineConsole.CanUse))]
-    public class ZiplineConsoleCanUse
-    {
-        public static void Prefix(
-            ZiplineConsole __instance,
-            [HarmonyArgument(0)] NetworkedPlayerInfo playerInfo,
-            ref bool __state)
-        {
-            __state = false;
-            var playerControl = playerInfo.Object;
-            if (((playerControl.Is(RoleEnum.Phantom) && !Role.GetRole<Phantom>(playerControl).Caught) || (playerControl.Is(RoleEnum.Haunter) && !Role.GetRole<Haunter>(playerControl).Caught)) && playerInfo.IsDead)
-            {
-                playerInfo.IsDead = false;
-                __state = true;
-            }
-        }
-
-        public static void Postfix([HarmonyArgument(0)] NetworkedPlayerInfo playerInfo, ref bool __state)
-        {
-            if (__state)
-                playerInfo.IsDead = true;
-        }
-    }
-
-    [HarmonyPatch(typeof(ZiplineConsole), nameof(ZiplineConsole.Use))]
-    public class ZiplineConsoleUse
-    {
-        public static bool Prefix(ZiplineConsole __instance)
-        {
-            var data = PlayerControl.LocalPlayer.Data;
-            __instance.CanUse(data, out var flag, out var _);
-            if (flag) __instance.zipline.Use(__instance.atTop, __instance);
-            return false;
-        }
-    }
-
-    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckUseZipline))]
-    public class PlayerControlCheckUseZipline
-    {
-        public static void Prefix(PlayerControl target, ref bool __state)
-        {
-            var targetData = target.CachedPlayerData;
-            __state = false;
-            if (((target.Is(RoleEnum.Phantom) && !Role.GetRole<Phantom>(target).Caught) || (target.Is(RoleEnum.Haunter) && !Role.GetRole<Haunter>(target).Caught)) && targetData.IsDead)
-            {
-                targetData.IsDead = false;
-                __state = true;
-            }
-        }
-        public static void Postfix(PlayerControl target, ref bool __state)
-        {
-            var targetData = target.CachedPlayerData;
-            if (__state)
-                targetData.IsDead = true;
-        }
-    }
-
-    [HarmonyPatch(typeof(ZiplineBehaviour))]
-    [HarmonyPatch(nameof(ZiplineBehaviour.Use), typeof(PlayerControl), typeof(bool))]
-    public class ZiplineBehaviourUse
-    {
-        public static void Prefix(ZiplineBehaviour __instance, PlayerControl player, ref bool __state)
-        {
-            __state = false;
-            if (((player.Is(RoleEnum.Phantom) && !Role.GetRole<Phantom>(player).Caught) || (player.Is(RoleEnum.Haunter) && !Role.GetRole<Haunter>(player).Caught)) && player.Data.IsDead)
-            {
-                player.Data.IsDead = false;
-                __state = true;
-            }
-        }
-        public static void Postfix(PlayerControl player, ref bool __state)
-        {
-            if (__state)
-                player.Data.IsDead = true;
         }
     }
     #endregion
@@ -271,14 +155,14 @@ namespace TownOfUs
     [HarmonyPatch(typeof(DeconControl), nameof(DeconControl.CanUse))]
     public class DeconControlUse
     {
-        public static void Prefix(DeconControl __instance,
+        public static void Prefix(DoorConsole __instance,
             [HarmonyArgument(0)] NetworkedPlayerInfo playerInfo,
             ref bool __state)
         {
             __state = false;
 
             var playerControl = playerInfo.Object;
-            if (((playerControl.Is(RoleEnum.Phantom) && !Role.GetRole<Phantom>(playerControl).Caught) || (playerControl.Is(RoleEnum.Haunter) && !Role.GetRole<Haunter>(playerControl).Caught)) && playerInfo.IsDead)
+            if ((playerControl.Is(RoleEnum.Phantom) && !GetRole<Phantom>(playerControl).Caught) || (playerControl.Is(RoleEnum.Haunter) && !GetRole<Haunter>(playerControl).Caught) && playerInfo.IsDead)
             {
                 playerInfo.IsDead = false;
                 __state = true;
@@ -304,7 +188,7 @@ namespace TownOfUs
             __state = false;
 
             var playerControl = playerInfo.Object;
-            if (((playerControl.Is(RoleEnum.Phantom) && !Role.GetRole<Phantom>(playerControl).Caught) || (playerControl.Is(RoleEnum.Haunter) && !Role.GetRole<Haunter>(playerControl).Caught)) && playerInfo.IsDead)
+            if ((playerControl.Is(RoleEnum.Phantom) && !GetRole<Phantom>(playerControl).Caught) || (playerControl.Is(RoleEnum.Haunter) && !GetRole<Haunter>(playerControl).Caught) && playerInfo.IsDead)
             {
                 playerInfo.IsDead = false;
                 __state = true;

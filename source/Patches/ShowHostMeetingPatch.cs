@@ -1,8 +1,6 @@
-﻿using HarmonyLib;
-using TMPro;
-using UnityEngine;
+﻿using TMPro;
 
-namespace TownOfUs.Patches
+namespace TownOfSushi.Patches
 {
     [HarmonyPatch]
     public class ShowHostMeetingPatch

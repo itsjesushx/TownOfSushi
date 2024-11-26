@@ -1,13 +1,6 @@
-using HarmonyLib;
-using TownOfUs.Extensions;
-using AmongUs.GameOptions;
-using TownOfUs.Modifiers.UnderdogMod;
-using TownOfUs.CrewmateRoles.SheriffMod;
-using TownOfUs.Roles;
-using Reactor.Utilities;
-using static TownOfUs.Roles.Glitch;
+using TownOfSushi.Modifiers.UnderdogMod;
 
-namespace TownOfUs
+namespace TownOfSushi
 {
     [HarmonyPatch(typeof(KillButton), nameof(KillButton.DoClick))]
     public class StopImpKill
@@ -22,22 +15,14 @@ namespace TownOfUs
             if (!__instance.isActiveAndEnabled || __instance.isCoolingDown) return true;
             if (GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek)
             {
-                if (!target.inVent) Utils.RpcMurderPlayer(PlayerControl.LocalPlayer, target);
+                if (!target.inVent) RpcMurderPlayer(PlayerControl.LocalPlayer, target);
                 return false;
             }
-            HUDKill.ImpKillTarget(__instance);
-            target = __instance.currentTarget;
-            if (target == null) return false;
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Warlock) && PlayerControl.LocalPlayer.IsHacked())
-            {
-                Coroutines.Start(AbilityCoroutine.Hack(PlayerControl.LocalPlayer));
-                return false;
-            }
-            var interact = Utils.Interact(PlayerControl.LocalPlayer, target, true);
-            if (interact[4] == true) return false;
+            var interact = Interact(PlayerControl.LocalPlayer, target, true);
+            if (interact.AbilityUsed) return false;
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Warlock))
             {
-                var warlock = Role.GetRole<Warlock>(PlayerControl.LocalPlayer);
+                var warlock = GetRole<Warlock>(PlayerControl.LocalPlayer);
                 if (warlock.Charging)
                 {
                     warlock.UsingCharge = true;
@@ -46,7 +31,7 @@ namespace TownOfUs
                 }
                 PlayerControl.LocalPlayer.SetKillTimer(0.01f);
             }
-            else if (interact[0] == true)
+            else if (interact.FullCooldownReset)
             {
                 if (PlayerControl.LocalPlayer.Is(ModifierEnum.Underdog))
                 {
@@ -58,17 +43,12 @@ namespace TownOfUs
                 else PlayerControl.LocalPlayer.SetKillTimer(GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown);
                 return false;
             }
-            else if (interact[1] == true)
+            else if (interact.GaReset)
             {
                 PlayerControl.LocalPlayer.SetKillTimer(CustomGameOptions.ProtectKCReset + 0.01f);
                 return false;
             }
-            else if (interact[2] == true)
-            {
-                PlayerControl.LocalPlayer.SetKillTimer(CustomGameOptions.VestKCReset + 0.01f);
-                return false;
-            }
-            else if (interact[3] == true)
+            else if (interact.ZeroSecReset)
             {
                 PlayerControl.LocalPlayer.SetKillTimer(0.01f);
                 return false;

@@ -1,12 +1,6 @@
-using HarmonyLib;
-using TownOfUs.Extensions;
-using TownOfUs.Roles;
-using UnityEngine;
-using AmongUs.GameOptions;
-using TownOfUs.Patches;
-using System.Linq;
 
-namespace TownOfUs
+
+namespace TownOfSushi.Patches
 {
     [HarmonyPatch(typeof(HudManager))]
     public static class HudManagerVentPatch
@@ -42,28 +36,31 @@ namespace TownOfUs
 
             if (playerInfo.IsDead)
                 return false;
-
+            
             if (PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 2) return false;
 
             if (player.Is(RoleEnum.Morphling) && !CustomGameOptions.MorphlingVent
                 || player.Is(RoleEnum.Swooper) && !CustomGameOptions.SwooperVent
-                || player.Is(RoleEnum.Grenadier) && !CustomGameOptions.GrenadierVent
                 || player.Is(RoleEnum.Undertaker) && !CustomGameOptions.UndertakerVent
+                || player.Is(RoleEnum.Grenadier) && !CustomGameOptions.GrenadierVent
                 || player.Is(RoleEnum.Escapist) && !CustomGameOptions.EscapistVent
                 || player.Is(RoleEnum.Bomber) && !CustomGameOptions.BomberVent
-                || (player.Is(RoleEnum.Undertaker) && Role.GetRole<Undertaker>(player).CurrentlyDragging != null && !CustomGameOptions.UndertakerVentWithBody))
+                || (player.Is(RoleEnum.Undertaker) && GetRole<Undertaker>(player).CurrentlyDragging != null && !CustomGameOptions.UndertakerVentWithBody)
+                || (player.Is(RoleEnum.Hitman) && GetRole<Hitman>(player).CurrentlyDragging != null && !CustomGameOptions.HitmanVentWithBody))
                 return false;
 
+                var playerRole = GetPlayerRole(player);
+
             if (player.Is(RoleEnum.Engineer) ||
-                (player.Is(RoleEnum.Glitch) && CustomGameOptions.GlitchVent) || (player.Is(RoleEnum.Juggernaut) && CustomGameOptions.JuggVent) ||
-                (player.Is(RoleEnum.Pestilence) && CustomGameOptions.PestVent) || (player.Is(RoleEnum.Jester) && CustomGameOptions.JesterVent) ||
+                (player.Is(RoleEnum.Glitch) && CustomGameOptions.GlitchVent) ||(player.Is(RoleEnum.Vulture) && CustomGameOptions.VultureVent) ||  (player.Is(RoleEnum.Hitman) && CustomGameOptions.HitmanVent) ||(player.Is(RoleEnum.Juggernaut) && CustomGameOptions.JuggVent) ||
+                (player.Is(RoleEnum.Pestilence) && CustomGameOptions.PestVent) ||(player.Is(RoleEnum.Werewolf) && CustomGameOptions.WerewolfVent) || (player.Is(RoleEnum.Jester) && CustomGameOptions.JesterVent) ||
                 (player.Is(RoleEnum.Vampire) && CustomGameOptions.VampVent))
                 return true;
 
-            if (player.Is(RoleEnum.Werewolf) && CustomGameOptions.WerewolfVent)
+            if (player.Is(RoleEnum.SerialKiller) && CustomGameOptions.SerialKillerVent)
             {
-                var role = Role.GetRole<Werewolf>(player);
-                if (role.Rampaged) return true;
+                var role = GetRole<SerialKiller>(PlayerControl.LocalPlayer);
+                if (role.Stabbed) return true;
             }
 
             return playerInfo.IsImpostor();
@@ -107,15 +104,17 @@ namespace TownOfUs
             __result = num;
         }
     }
-
     [HarmonyPatch(typeof(Vent), nameof(Vent.SetButtons))]
-    public static class JesterEnterVent
+    public static class EnterVentPatch
     {
         public static bool Prefix(Vent __instance)
         {
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Jester) && CustomGameOptions.JesterVent)
-                return false;
-            return true;
+            var player = PlayerControl.LocalPlayer;
+
+            if (player.Is(RoleEnum.Jester) && CustomGameOptions.JesterVent)
+                return CustomGameOptions.JesterVentSwitch;
+            else
+                return true;
         }
     }
 }

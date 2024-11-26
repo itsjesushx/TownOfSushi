@@ -1,10 +1,6 @@
-using System.Collections.Generic;
-using TownOfUs.Roles;
-using TownOfUs.Roles.Modifiers;
-using UnityEngine;
-using System;
 
-namespace TownOfUs.Extensions
+
+namespace TownOfSushi.Extensions
 {
     public static class AmongUsExtensions
     {
@@ -42,7 +38,7 @@ namespace TownOfUs.Extensions
 
         public static VisualAppearance GetAppearance(this PlayerControl player)
         {
-            if (player.TryGetAppearance(Role.GetRole(player) as IVisualAlteration, out var appearance))
+            if (player.TryGetAppearance(GetPlayerRole(player) as IVisualAlteration, out var appearance))
                 return appearance;
             else if (player.TryGetAppearance(Modifier.GetModifier(player) as IVisualAlteration, out appearance))
                 return appearance;
@@ -80,7 +76,7 @@ namespace TownOfUs.Extensions
             if (!playerControl.Data.IsDead) playerControl.RawSetPet(newOutfit.PetId, newOutfit.ColorId);
             if (!playerControl.Data.IsDead) playerControl.RawSetSkin(newOutfit.SkinId, newOutfit.ColorId);
             playerControl.cosmetics.colorBlindText.color = Color.white;
-            if (PlayerControl.LocalPlayer.Data.IsImpostor() && playerControl.Data.IsImpostor()) playerControl.nameText().color = Patches.Colors.Impostor;
+            if (PlayerControl.LocalPlayer.Data.IsImpostor() && playerControl.Data.IsImpostor()) playerControl.nameText().color = Colors.Impostor;
         }
 
 

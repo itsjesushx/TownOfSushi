@@ -1,6 +1,4 @@
-using HarmonyLib;
-
-namespace TownOfUs.Patches
+namespace TownOfSushi.Patches
 {
     [HarmonyPatch]
     public class MurderPlayer
@@ -10,7 +8,7 @@ namespace TownOfUs.Patches
         {
             public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
             {
-                Utils.MurderPlayer(__instance, target, true);
+                MurderPlayer(__instance, target, true);
                 return false;
             }
         }
@@ -30,7 +28,7 @@ namespace TownOfUs.Patches
                     }
                     else
                     {
-                        Utils.Rpc(CustomRPC.CheckMurder, PlayerControl.LocalPlayer.PlayerId, __instance.currentTarget.PlayerId);
+                        Rpc(CustomRPC.CheckMurder, PlayerControl.LocalPlayer.PlayerId, __instance.currentTarget.PlayerId);
                     }
                     __instance.SetTarget(null);
                 }

@@ -1,13 +1,11 @@
-﻿using HarmonyLib;
-
-namespace TownOfUs.RainbowMod
+﻿namespace TownOfSushi.Patches
 {
     [HarmonyPatch(typeof(AmongUs.Data.Player.PlayerData), nameof(AmongUs.Data.Player.PlayerData.FileName), MethodType.Getter)]
     public class SaveManagerPatch
     {
         public static void Postfix(ref string __result)
         {
-            __result += "_TOU";
+            __result += "_STOU";
         }
     }
     [HarmonyPatch(typeof(AmongUs.Data.Legacy.LegacySaveManager), nameof(AmongUs.Data.Legacy.LegacySaveManager.GetPrefsName))]
@@ -15,7 +13,7 @@ namespace TownOfUs.RainbowMod
     {
         public static void Postfix(ref string __result)
         {
-            __result += "_TOU";
+            __result += "_STOU";
         }
     }
 }
