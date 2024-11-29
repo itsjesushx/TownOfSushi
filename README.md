@@ -9,7 +9,7 @@
 ### ***- This README page is currently under editing, most things here are either missing or subject to change.***
 
 
-### ***- Please join my [discord](https://discord.gg/hxhh2pVXcp) server and message me for any suggestions or problems!
+### ***- Please join my [discord](https://discord.gg/hxhh2pVXcp) server and message me for any suggestions or problems!***
 
 [**Installation**](#installation)
 - [Requirements](#requirements)
