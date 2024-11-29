@@ -465,7 +465,7 @@ Players who have been transported are alerted with a blue flash on their screen.
 -----------------------
 # Neutral Roles
 ## Amnesiac
-### **Team: Neutral (Special)**
+### **Team: Neutral (Benign)**
 The Amnesiac is a Neutral role with no win condition.\
 They have zero tasks and are essentially roleless.\
 However, they can remember a role by finding a dead player.\
@@ -501,7 +501,7 @@ If their target loses, they lose.
 
 -----------------------
 ## Romantic
-### **Team: Neutral (Special)**
+### **Team: Neutral (Benign)**
 The Romantic is a Neutral role which can select a player to be their beloved.\
 The romantic wins with the beloved as long as they win as well.
 
@@ -580,7 +580,7 @@ However, the Jester does not win if the Crewmates, Impostors or another Neutral 
 
 -----------------------
 ## Phantom
-### **Team: Neutral (Special)**
+### **Team: Neutral (Evil)**
 
 The Phantom is a Neutral role with its own win condition.\
 They become half-invisible when they die and has to complete all their tasks without getting caught.
