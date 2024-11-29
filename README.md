@@ -26,18 +26,18 @@
 | [Morphling](#morphling) | [Oracle](#oracle) | [Doomsayer](#doomsayer) |  [Double Shot](#double-shot) |[Spy](#spy) | [Vanilla Hide 'n' Seek](https://www.innersloth.com/new-game-mode-hide-n-seek-is-here-emergency-meeting-35/) |
 | [Venerer](#venerer) | [Investigator](#investigator) | [Vulture](#vulture) | [Frosty](#frosty) | [Drunk](#drunk)||
 | [Miner](#miner) | [Mystic](#mystic) | [Guardian Angel](#guardian-angel) |  [Giant](#giant)|[Flash](#flash) |
-| [Blackmailer](#blackmailer) | [Veteran](#veteran) | [Prosecutor](#prosecutor) |  [Underdog](#underdog) | [Multitasker](#multitasker)|
-| [Warlock](#warlock) | [Medic](#medic) | [Phantom](#phantom) |  [Diseased](#diseased) | [Radar](#radar) |
-|  [Undertaker](#undertaker) | [Imitator](#imitator) | [Executioner](#executioner) |  | [Sleuth](#sleuth) |
-|  [Bomber](#bomber)  | [Seer](#seer) | [Romantic](#romantic) | | [Tiebreaker](#tiebreaker) |
-|  [Witch](#witch)| [Prosecutor](#prosecutor) | [Amnesiac](#amnesiac) | |
-| | [Tracker](#tracker) | [Agent](#agent) |  |
-| | [Snitch](#snitch) | [Hitman](#hitman) |  |
-| |[Transporter](#transporter)  | [Glitch](#glitch) |  |
-| |[Trapper](#trapper) | [Serial Killer](#serial-killer) |  |
-| |[Haunter](#haunter) | [Juggernaut](#juggernaut) |  |
-| | | [Plaguebearer](#plaguebearer) |  |
-| | | [Pestilence](#plaguebearer) |  |
+| [Blackmailer](#blackmailer) | [Veteran](#veteran) | [Phantom](#phantom) |  [Underdog](#underdog) | [Multitasker](#multitasker)|
+| [Warlock](#warlock) | [Medic](#medic) |[Executioner](#executioner) |  [Diseased](#diseased) | [Radar](#radar) |
+|  [Undertaker](#undertaker) | [Imitator](#imitator) | [Romantic](#romantic) |  | [Sleuth](#sleuth) |
+|  [Bomber](#bomber)  | [Seer](#seer) | [Amnesiac](#amnesiac) | | [Tiebreaker](#tiebreaker) |
+|  [Witch](#witch)| [Prosecutor](#prosecutor) |  [Agent](#agent) | |
+| | [Tracker](#tracker) | [Hitman](#hitman) |  |
+| | [Snitch](#snitch) |[Glitch](#glitch)  |  |
+| |[Transporter](#transporter)  | [Serial Killer](#serial-killer) |  |
+| |[Trapper](#trapper) | [Juggernaut](#juggernaut) |  |
+| |[Haunter](#haunter) | [Plaguebearer](#plaguebearer) |  |
+| | [Prosecutor](#prosecutor)  |  [Pestilence](#plaguebearer) |  |
+| | | |  |
 
 -----------------------
 # Releases
