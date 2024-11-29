@@ -4,7 +4,6 @@
 
 ### ***Notes:***
 ### ***- This repo is a fork of [Town of Us Reactivated](https://github.com/eDonnes124/Town-Of-Us-R) and is currently under development.***
-### ***- The Mod's discord is still also under development but when its ready this message will be updated.***
 ### ***- This mod is currently on testing with my group and haven't been finished yet.***
 ### ***- This mod is NOT for mobile and console versions.***
 ### ***- This README page is currently under editing, most things here are either missing or subject to change.***
