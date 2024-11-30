@@ -1,40 +1,42 @@
-## *Note: This repository is an unofficial continuation of Town of Us due to the original repository being discontinued.*
+### An Among Us mod that adds a bunch of roles, modifiers, abilities and game settings.
 
-![LOGO](./Images/TOU-logo.png)
-![Roles](./Images/Roles.png)
+![LOGO](./Images/TownOfSushiBanner.png)
 
-An Among Us mod that adds a bunch of roles, modifiers and game settings
+### ***Notes:***
+### ***- This repo is a fork of [Town of Us Reactivated](https://github.com/eDonnes124/Town-Of-Us-R) and is currently under development.***
+### ***- The Mod's discord is still also under development but when its ready this message will be updated.***
+### ***- This mod is currently on testing with my group and haven't been finished yet.***
+### ***- This mod is NOT for mobile and console versions.***
+### ***- This README page is currently under editing, most things here are either missing or subject to change.***
 
-Join our [Discord](https://discord.gg/ugyc4EVUYZ) if you have any problems or want to find people to play with!
+[**Installation**](#installation)
+- [Requirements](#requirements)
+- [Steam Guide](#steam-guide)
+- [Epic Games Guide](#epic-games-guide)
 
-| **Impostor Roles**           | **Crewmate Roles**                | **Neutral Roles**                | **Modifiers**                |
-|:----------------------------:|:---------------------------------:|:--------------------------------:|:----------------------------:|
-| [Blackmailer](#blackmailer)  | [Altruist](#altruist)             | [Amnesiac](#amnesiac)            | [Aftermath](#aftermath)      |
-| [Bomber](#bomber)            | [Aurial](#aurial)                 | [Arsonist](#arsonist)            | [Bait](#bait)                |
-| [Escapist](#escapist)        | [Detective](#detective)           | [Doomsayer](#doomsayer)          | [Button Barry](#button-barry)|
-| [Grenadier](#grenadier)      | [Engineer](#engineer)             | [Executioner](#executioner)      | [Diseased](#diseased)        |
-| [Hypnotist](#hypnotist)      | [Haunter](#haunter)               | [Guardian Angel](#guardian-angel)| [Disperser](#disperser)      |
-| [Janitor](#janitor)          | [Hunter](#hunter)                 | [Jester](#jester)                | [Double Shot](#double-shot)  |
-| [Miner](#miner)              | [Imitator](#imitator)             | [Juggernaut](#juggernaut)        | [Flash](#flash)              |
-| [Morphling](#morphling)      | [Investigator](#investigator)     | [Phantom](#phantom)              | [Frosty](#frosty)            |
-| [Swooper](#swooper)          | [Jailor](#jailor)                 | [Plaguebearer](#plaguebearer)    | [Giant](#giant)              |
-| [Traitor](#traitor)          | [Medic](#medic)                   | [Soul Collector](#soul-collector)| [Lovers](#lovers)            |
-| [Undertaker](#undertaker)    | [Medium](#medium)                 | [Survivor](#survivor)            | [Multitasker](#multitasker)  |
-| [Venerer](#venerer)          | [Mystic](#mystic)                 | [The Glitch](#the-glitch)        | [Radar](#radar)              |
-| [Warlock](#warlock)          | [Oracle](#oracle)                 | [Vampire](#vampire)              | [Shy](#shy)                  |
-|                              | [Politician](#politician)         | [Werewolf](#werewolf)            | [Sixth Sense](#sixth-sense)  |
-|                              | [Prosecutor](#prosecutor)         |                                  | [Sleuth](#sleuth)            |
-|                              | [Seer](#seer)                     |                                  | [Tiebreaker](#tiebreaker)    |
-|                              | [Sheriff](#sheriff)               |                                  | [Torch](#torch)              |
-|                              | [Snitch](#snitch)                 |                                  | [Underdog](#underdog)        |
-|                              | [Spy](#spy)                       |                                  |                              |
-|                              | [Swapper](#swapper)               |                                  |                              |
-|                              | [Tracker](#tracker)               |                                  |                              |
-|                              | [Trapper](#trapper)               |                                  |                              |
-|                              | [Transporter](#transporter)       |                                  |                              |
-|                              | [Veteran](#veteran)               |                                  |                              |
-|                              | [Vigilante](#vigilante)           |                                  |                              |
-|                              | [Warden](#warden)                 |                                  |                              |
+***★ Mod Features ★***
+
+| Impostors | Crewmates | Neutrals | Modifiers | Abilities | GameModes
+|----------|-------------|-----------------|----------------|----------------|----------------|
+| [Escapist](#escapist) | [Mayor](#mayor) | [Jester](#jester) | [Aftermath](#aftermath) |[Assassin](#assassin-ability) | [Classic](#roles) |
+| [Grenadier](#grenadier) | [Engineer](#engineer) | [Arsonist](#arsonist) | [Disperser](#disperser) | [Button Barry](#button-barry)| [All Any](#all-any-settings) |
+| [Janitor](#janitor) | [Vigilante](#vigilante) | [Vampire](#vampire) | [Bait](#bait) | [Chameleon](#chameleon) | [Killers Only](#killing-only-settings) |
+| [Morphling](#morphling) | [Oracle](#oracle) | [Doomsayer](#doomsayer) |  [Double Shot](#double-shot) |[Spy](#spy) | [Vanilla Hide 'n' Seek](https://www.innersloth.com/new-game-mode-hide-n-seek-is-here-emergency-meeting-35/) |
+| [Venerer](#venerer) | [Investigator](#investigator) | [Vulture](#vulture) | [Frosty](#frosty) | [Drunk](#drunk)||
+| [Miner](#miner) | [Mystic](#mystic) | [Guardian Angel](#guardian-angel) |  [Giant](#giant)|[Flash](#flash) |
+| [Blackmailer](#blackmailer) | [Veteran](#veteran) | [Prosecutor](#prosecutor) | [Ghoul](#ghoul)  | [Multitasker](#multitasker)|
+| [Warlock](#warlock) | [Medic](#medic) | [Phantom](#phantom) |  [Underdog](#underdog) | [Radar](#radar) |
+|  [Undertaker](#undertaker) | [Imitator](#imitator) | [Executioner](#executioner) |  [Diseased](#diseased) | [Sleuth](#sleuth) |
+|  [Bomber](#bomber)  | [Seer](#seer) | [Romantic](#romantic) | | [Tiebreaker](#tiebreaker) |
+|  [Witch](#witch)| [Prosecutor](#prosecutor) | [Amnesiac](#amnesiac) | |
+| | [Tracker](#tracker) | [Agent](#agent) |  |
+| | [Snitch](#snitch) | [Hitman](#hitman) |  |
+| |[Transporter](#transporter)  | [Glitch](#glitch) |  |
+| |[Trapper](#trapper) | [Serial Killer](#serial-killer) |  |
+| |[Haunter](#haunter) | [Juggernaut](#juggernaut) |  |
+| | | [Plaguebearer](#plaguebearer) |  |
+| | | [Pestilence](#plaguebearer) |  |
+
 -----------------------
 # Releases
 | Among Us - Version| Mod Version | Link |
@@ -461,7 +463,7 @@ Players who have been transported are alerted with a blue flash on their screen.
 -----------------------
 # Neutral Roles
 ## Amnesiac
-### **Team: Neutral**
+### **Team: Neutral (Special)**
 The Amnesiac is a Neutral role with no win condition.\
 They have zero tasks and are essentially roleless.\
 However, they can remember a role by finding a dead player.\
@@ -496,10 +498,10 @@ If their target loses, they lose.
 | Odds Of Target Being Evil | The chances of the Guardian Angel's target being evil | Percentage | 20% |
 
 -----------------------
-## Survivor
-### **Team: Neutral**
-The Survivor is a Neutral role which can win by simply surviving.\
-However, if Lovers, or a Neutral Evil role wins the game, the survivor loses.
+## Romantic
+### **Team: Neutral (Special)**
+The Romantic is a Neutral role which can select a player to be their beloved.\
+The romantic wins with the beloved as long as they win as well.
 
 ### Game Options
 | Name | Description | Type | Default |
@@ -576,7 +578,7 @@ However, the Jester does not win if the Crewmates, Impostors or another Neutral 
 
 -----------------------
 ## Phantom
-### **Team: Neutral**
+### **Team: Neutral (Special)**
 
 The Phantom is a Neutral role with its own win condition.\
 They become half-invisible when they die and has to complete all their tasks without getting caught.
@@ -1048,6 +1050,15 @@ Killing the Bait makes the killer auto self-report.
 
 -----------------------
 
+## Ghoul
+### **Applied to: All**
+Killing the Ghoul kills the killer.
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Ghoul | The percentage probability of the Ghoul appearing | Percentage | 0% |
+
+-----------------------
 ## Diseased
 ### **Applied to: All**
 Killing the Diseased increases the killer's kill cooldown.
@@ -1248,7 +1259,7 @@ If you have any bugs or any need to contact me, join the [Discord Server](https:
 [TorchMod](https://github.com/tomozbot/TorchMod) - For the inspiration of the Torch modifier.\
 [XtraCube](https://github.com/XtraCube) - For the RainbowMod.\
 [PhasmoFireGod](https://twitch.tv/PhasmoFireGod) and [Ophidian](https://www.instagram.com/ixean.studio) - Button Art.\
-[TheOtherRoles](https://github.com/Eisbison/TheOtherRoles) - For the inspiration of the Vigilante, Tracker and Spy roles, as well as the Bait modifier.\
+[TheOtherRoles](https://github.com/Eisbison/TheOtherRoles) - For the Credentials Patch Code + inspiration of the Vigilante, Tracker and Spy roles, as well as the Bait modifier. MOTD & Code for the Main menu and ping tracker as well.\
 [5up](https://www.twitch.tv/5uppp) and the Submarine Team - For the inspiration of the Grenadier role.\
 [Guus](https://github.com/OhMyGuus) - For support for the old Among Us versions (v2021.11.9.5 and v2021.12.15).\
 [MyDragonBreath](https://github.com/MyDragonBreath) - For Submerged Compatibility, the Trapper role, the Aftermath modifier and support for the new Among Us versions (v2022.6.21, v2023.6.13 & v2023.7.12).\
