@@ -6,7 +6,6 @@ namespace TownOfSushi.Roles.Neutral.Evil.VultureRole
     public class HudManagerUpdate
     {
         public static Sprite Arrow => TownOfSushi.Arrow;
-
         public static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;

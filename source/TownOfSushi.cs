@@ -20,11 +20,10 @@ namespace TownOfSushi
         public const string VersionString = "1.0.0";
         public const string VersionTag = "<color=#ff33fc></color>";
         public const string VersionTag2 = "";
-        public static Version Version = System.Version.Parse(VersionString);
+        public static Version Version = Version.Parse(VersionString);
         internal static BepInEx.Logging.ManualLogSource Logger;
         public Harmony Harmony { get; } = new Harmony(Id);
         public static TownOfSushi Instance;
-        public static int optionsPage = 1;
 
         public static AssetLoader bundledAssets;
         public static Sprite JanitorClean;
@@ -67,6 +66,7 @@ namespace TownOfSushi
         public static Sprite ZoomMinusActiveButton;
         public static Sprite BlackmailLetterSprite;
         public static Sprite BlackmailOverlaySprite;
+        public static Sprite WitchOverlay;
         public static Sprite LighterSprite;
         public static Sprite DarkerSprite;
         public static Sprite InfectSprite;
@@ -79,7 +79,6 @@ namespace TownOfSushi
         public static Sprite ImitateSelectSprite;
         public static Sprite ImitateDeselectSprite;
         public static Sprite ObserveSprite;
-        public static Sprite EatSprite;
         public static Sprite BiteSprite;
         public static Sprite RevealSprite;
         public static Sprite ConfessSprite;
@@ -91,13 +90,9 @@ namespace TownOfSushi
         public static Sprite MimicSprite;
         public static Sprite LockSprite;
         public static Sprite TargetIcon;
-
-        public static Sprite ToUBanner;
         public static Sprite UpdateSubmergedButton;
         private static DLoadImage _iCallLoadImage;
 
-        public ConfigEntry<string> Ip { get; set; }
-        public ConfigEntry<ushort> Port { get; set; }
         public static ConfigEntry<bool> DeadSeeGhosts { get; set; }
         public static ConfigEntry<bool> DeadSeeRoles { get; set; }
         public static ConfigEntry<bool> DeadSeeTasks { get; set; }
@@ -107,11 +102,9 @@ namespace TownOfSushi
         public override void Load()
         {
             RuntimeLocation = Path.GetDirectoryName(Assembly.GetAssembly(typeof(TownOfSushi)).Location);
-           //ReactorCredits.Register<TownOfSushi>(ReactorCredits.AlwaysShow);
             System.Console.WriteLine("000.000.000.000/000000000000000000");
             Logger = Log;
             Instance = this;
-
             Generate.GenerateAll();
 
             bundledAssets = new();
@@ -152,6 +145,7 @@ namespace TownOfSushi
             BlackmailLetterSprite = CreateSprite("TownOfSushi.Resources.BlackmailLetter.png");
             ExecuteSprite = CreateSprite("TownOfSushi.Resources.Execute.png");
             BlackmailOverlaySprite = CreateSprite("TownOfSushi.Resources.BlackmailOverlay.png");
+            WitchOverlay = CreateSprite("TownOfSushi.Resources.WitchOverlay.png");
             LighterSprite = CreateSprite("TownOfSushi.Resources.Lighter.png");
             DarkerSprite = CreateSprite("TownOfSushi.Resources.Darker.png");
             InfectSprite = CreateSprite("TownOfSushi.Resources.Infect.png");
@@ -166,7 +160,6 @@ namespace TownOfSushi
             ImitateSelectSprite = CreateSprite("TownOfSushi.Resources.ImitateSelect.png");
             ImitateDeselectSprite = CreateSprite("TownOfSushi.Resources.ImitateDeselect.png");
             ObserveSprite = CreateSprite("TownOfSushi.Resources.Observe.png");
-            EatSprite = CreateSprite("TownOfSushi.Resources.Vulture.png");
             BiteSprite = CreateSprite("TownOfSushi.Resources.Bite.png");
             RevealSprite = CreateSprite("TownOfSushi.Resources.Reveal.png");
             ConfessSprite = CreateSprite("TownOfSushi.Resources.Confess.png");
@@ -179,7 +172,6 @@ namespace TownOfSushi
             MimicSprite = CreateSprite("TownOfSushi.Resources.Mimic.png");
             LockSprite = CreateSprite("TownOfSushi.Resources.Lock.png");
             TargetIcon = CreateSprite("TownOfSushi.Resources.TargetIcon.png", 150f);
-            ToUBanner = CreateSprite("TownOfSushi.Resources.TownOfSushiBanner.png");
             UpdateSubmergedButton = CreateSprite("TownOfSushi.Resources.UpdateSubmergedButton.png");
 
             PalettePatch.Load();
@@ -200,7 +192,6 @@ namespace TownOfSushi
         public static Sprite CreateSprite(string name, float pixelsPerUnit = 100f)
         {
             var pivot = new Vector2(0.5f, 0.5f);
-
             var assembly = Assembly.GetExecutingAssembly();
             var tex = AmongUsExtensions.CreateEmptyTexture();
             var imageStream = assembly.GetManifestResourceStream(name);
@@ -218,14 +209,15 @@ namespace TownOfSushi
             var il2CPPArray = (Il2CppStructArray<byte>) data;
             _iCallLoadImage.Invoke(tex.Pointer, il2CPPArray.Pointer, markNonReadable);
         }
+
         [HarmonyPatch(typeof(StatsManager), nameof(StatsManager.AmBanned), MethodType.Getter)]    
-    public class AmBanned    
-    {
-        public static void Postfix(out bool __result)
+        public class AmBanned    
         {
-            __result = false;
+            public static void Postfix(out bool __result)
+            {
+                __result = false;
+            }
         }
-    }
         private delegate bool DLoadImage(IntPtr tex, IntPtr data, bool markNonReadable);
     }
 }

@@ -8,7 +8,6 @@ namespace TownOfSushi.Roles.Impostors.Support.BlackmailerRole
         public static bool shookAlready = false;
         public static Sprite PrevXMark = null;
         public static Sprite PrevOverlay = null;
-
         public const float LetterXOffset = 0.22f;
         public const float LetterYOffset = -0.32f;
 
@@ -16,7 +15,6 @@ namespace TownOfSushi.Roles.Impostors.Support.BlackmailerRole
         public class MeetingHudStart
         {
             public static Sprite Letter => TownOfSushi.BlackmailLetterSprite;
-
             public static void Postfix(MeetingHud __instance)
             {
                 shookAlready = false;
