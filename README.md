@@ -196,12 +196,20 @@ If the killer of the inspected player dies, the following round the examine butt
 ## Mystic
 ### **Team: Crewmates**
 The Mystic is a Crewmate that gets an alert revealing when someone has died.\
-On top of this, the Mystic briefly gets an arrow pointing in the direction of the body.
+On top of this, the Mystic briefly gets an arrow pointing in the direction of the body.\
+The Mystic is a Crewmate that can examine other players for suspicious behaviour.\
+If the player the Mystic examines has killed recently the Mystic will be alerted about it.
 ### Game Options
 | Name | Description | Type | Default |
 |----------|:-------------:|:------:|:------:|
 | Mystic | The percentage probability of the Mystic appearing | Percentage | 0% |
 | Arrow Duration | The duration of the arrows pointing to the bodies | Time | 0.1s |
+| Initial Examine Cooldown | The initial cooldown of the Mystic's Examine button | Time | 25s |
+| Examine Cooldown | The cooldown of the Mystic's Examine button | Time | 10s |
+| Bloody Duration | How long players remain bloody after a kill | Time | 25s |
+| Show Mystic Reports | Whether the Mystic should get information when reporting a body | Toggle | True |
+| Time Where Medic Reports Will Have Role | If a body has been dead for shorter than this amount, the Medic's report will contain the killer's role | Time | 15s |
+| Time Where Medic Reports Will Have Faction | If a body has been dead for shorter than this amount, the Medic's report will contain the killer's faction | Time | 30s |
 
 -----------------------
 ## Oracle
@@ -247,6 +255,7 @@ However, when they only have a single task left, the Impostors get an arrow poin
 |----------|:-------------:|:------:|:------:|
 | Snitch | The percentage probability of the Snitch appearing | Percentage | 0% |
 | Tasks Remaining When Revealed | The number of tasks remaining when the Snitch is revealed to Impostors | Number | 1 |
+| Snitch Can Button After Reveal | Whether the Snitch can Call An Emergency Meeting after finishing tasks | Toggle | false |
 
 -----------------------
 
