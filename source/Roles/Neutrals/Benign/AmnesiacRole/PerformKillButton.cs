@@ -83,7 +83,6 @@ namespace TownOfSushi.Roles.Neutral.Benign.AmnesiacRole
                 case RoleEnum.Mystic:
                 case RoleEnum.Trapper:
                 case RoleEnum.Imitator:
-                case RoleEnum.Prosecutor:
                 case RoleEnum.Oracle:
                 case RoleEnum.Jailor:
 
@@ -222,13 +221,6 @@ namespace TownOfSushi.Roles.Neutral.Benign.AmnesiacRole
             {
                 var mayorRole = GetRole<Mayor>(amnesiac);
                 mayorRole.Revealed = false;
-                DestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(false);
-            }
-
-            else if (role == RoleEnum.Prosecutor)
-            {
-                var prosRole = GetRole<Prosecutor>(amnesiac);
-                prosRole.Prosecuted = false;
                 DestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(false);
             }
 

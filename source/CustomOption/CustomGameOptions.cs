@@ -49,7 +49,6 @@ namespace TownOfSushi.CustomOption
         public static int BomberOn => (int)Generate.BomberOn.Get();
         public static int DoomsayerOn => (int)Generate.DoomsayerOn.Get();
         public static int VampireOn => (int)Generate.VampireOn.Get();
-        public static int ProsecutorOn => (int)Generate.ProsecutorOn.Get();
         public static int WarlockOn => (int)Generate.WarlockOn.Get();
         public static int OracleOn => (int)Generate.OracleOn.Get();
         public static int VenererOn => (int)Generate.VenererOn.Get();

@@ -54,7 +54,7 @@ namespace TownOfSushi.Roles.Crewmates.Investigative.MysticMod
                 || player.Is(RoleEnum.Venerer) || player.Is(RoleEnum.Werewolf) || player.Is(RoleEnum.SerialKiller))
                 return "Your target is well trained in hunting down prey";
             else if (player.Is(RoleEnum.Arsonist) || player.Is(RoleEnum.Miner) || player.Is(RoleEnum.Plaguebearer)
-                  || player.Is(RoleEnum.Prosecutor) || player.Is(RoleEnum.Seer) || player.Is(RoleEnum.Transporter))
+                  ||player.Is(RoleEnum.Seer) || player.Is(RoleEnum.Transporter))
                 return "Your target spreads fear amonst the group";
             else if (player.Is(RoleEnum.Engineer) || player.Is(RoleEnum.Escapist) || player.Is(RoleEnum.Grenadier)
                 || player.Is(RoleEnum.GuardianAngel) || player.Is(RoleEnum.Medic) || player.Is(RoleEnum.Romantic))
@@ -87,8 +87,8 @@ namespace TownOfSushi.Roles.Crewmates.Investigative.MysticMod
                 || player.Is(RoleEnum.Venerer) || player.Is(RoleEnum.Werewolf) || player.Is(RoleEnum.SerialKiller))
                 return "(Investigator, Swooper, Tracker, Vampire Hunter, Venerer, Serial Killer or Werewolf)";
             else if (player.Is(RoleEnum.Arsonist) || player.Is(RoleEnum.Miner) || player.Is(RoleEnum.Plaguebearer)
-                  || player.Is(RoleEnum.Prosecutor) || player.Is(RoleEnum.Seer) || player.Is(RoleEnum.Transporter))
-                return "(Arsonist, Miner, Plaguebearer, Prosecutor, Seer or Transporter)";
+                  ||player.Is(RoleEnum.Seer) || player.Is(RoleEnum.Transporter))
+                return "(Arsonist, Miner, Plaguebearer, Seer or Transporter)";
             else if (player.Is(RoleEnum.Engineer) || player.Is(RoleEnum.Escapist) || player.Is(RoleEnum.Grenadier)
                 || player.Is(RoleEnum.GuardianAngel) || player.Is(RoleEnum.Medic) || player.Is(RoleEnum.Romantic))
                 return "(Engineer, Escapist, Grenadier, Guardian Angel, Medic or Romantic)";

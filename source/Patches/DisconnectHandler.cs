@@ -54,20 +54,6 @@ namespace TownOfSushi.Patches
                     jailor.UsesText.Destroy();
                 }
 
-                foreach (var playerVoteArea in MeetingHud.Instance.playerStates)
-                {
-                    if (playerVoteArea.VotedFor != player.PlayerId) continue;
-                    playerVoteArea.UnsetVote();
-                    var voteAreaPlayer = PlayerById(playerVoteArea.TargetPlayerId);
-                    if (voteAreaPlayer.Is(RoleEnum.Prosecutor))
-                    {
-                        var pros = GetRole<Prosecutor>(voteAreaPlayer);
-                        pros.ProsecuteThisMeeting = false;
-                    }
-                    if (!voteAreaPlayer.AmOwner) continue;
-                    MeetingHud.Instance.ClearVote();
-                }
-
                 if (PlayerControl.LocalPlayer.Is(RoleEnum.Imitator) && !PlayerControl.LocalPlayer.Data.IsDead)
                 {
                     var imitatorRole = GetRole<Imitator>(PlayerControl.LocalPlayer);

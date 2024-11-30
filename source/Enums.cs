@@ -36,9 +36,7 @@ namespace TownOfSushi
         Imitator,
         Doomsayer,
         Vampire,
-        Prosecutor,
         Oracle,
-
         Miner,
         Swooper,
         Morphling,
@@ -161,7 +159,6 @@ namespace TownOfSushi
         StartImitate,
         Bite,
         Reveal,
-        Prosecute,
         Confess,
         Camouflage,
         BypassKill,

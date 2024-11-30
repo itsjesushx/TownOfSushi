@@ -21,7 +21,6 @@
         public readonly static Color Trapper = new Color(0.65f, 0.82f, 0.7f, 1f);
         public readonly static Color CrewSwooper = new Color(0.5f, 0.5f, 0f, 1f);
         public readonly static Color Imitator = new Color(0.7f, 0.85f, 0.3f, 1f);
-        public readonly static Color Prosecutor = new Color(0.7f, 0.5f, 0f, 1f);
         public readonly static Color32 Oracle = new Color32(52, 79, 235, byte.MaxValue);
 
         // Neutral Colors

@@ -178,21 +178,6 @@ namespace TownOfSushi.Roles.Abilities.AbilityMod.AssassinAbility
                 jailor.ExecuteButton.Destroy();
                 jailor.UsesText.Destroy();
             }
-
-            foreach (var playerVoteArea in meetingHud.playerStates)
-            {
-                if (playerVoteArea.VotedFor != player.PlayerId) continue;
-                playerVoteArea.UnsetVote();
-                var voteAreaPlayer = Utils.PlayerById(playerVoteArea.TargetPlayerId);
-                if (voteAreaPlayer.Is(RoleEnum.Prosecutor))
-                {
-                    var pros = GetRole<Prosecutor>(voteAreaPlayer);
-                    pros.ProsecuteThisMeeting = false;
-                }
-                if (!voteAreaPlayer.AmOwner) continue;
-                meetingHud.ClearVote();
-            }
-
             if (AmongUsClient.Instance.AmHost) meetingHud.CheckForEndVoting();
 
             AddHauntPatch.AssassinatedPlayers.Add(player);

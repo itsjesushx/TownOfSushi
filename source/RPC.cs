@@ -423,7 +423,7 @@ namespace TownOfSushi
                 Rpc(CustomRPC.SetPhantom, byte.MaxValue);
             }
 
-            var exeTargets = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(Faction.Crewmates) && !x.Is(RoleEnum.Mayor) && !x.Is(RoleEnum.Prosecutor) && !x.Is(RoleEnum.Vigilante) && !x.Is(RoleEnum.Jailor)).ToList();
+            var exeTargets = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(Faction.Crewmates) && !x.Is(RoleEnum.Mayor) && !x.Is(RoleEnum.Vigilante) && !x.Is(RoleEnum.Jailor)).ToList();
             foreach (var role in GetRoles(RoleEnum.Executioner))
             {
                 var exe = (Executioner)role;
@@ -632,22 +632,6 @@ namespace TownOfSushi
                         var mayorRole = GetRole<Mayor>(mayor);
                         mayorRole.Revealed = true;
                         AddRevealButton.RemoveAssassin(mayorRole);
-                        break;
-
-                    case CustomRPC.Prosecute:
-                        var host = reader.ReadBoolean();
-                        if (host && AmongUsClient.Instance.AmHost)
-                        {
-                            var prosecutor = PlayerById(reader.ReadByte());
-                            var prosRole = GetRole<Prosecutor>(prosecutor);
-                            prosRole.ProsecuteThisMeeting = true;
-                        }
-                        else if (!host && !AmongUsClient.Instance.AmHost)
-                        {
-                            var prosecutor = PlayerById(reader.ReadByte());
-                            var prosRole = GetRole<Prosecutor>(prosecutor);
-                            prosRole.ProsecuteThisMeeting = true;
-                        }
                         break;
                     case CustomRPC.Bite:
                         var newVamp = PlayerById(reader.ReadByte());
@@ -1167,9 +1151,6 @@ namespace TownOfSushi
 
                     if (CustomGameOptions.ImitatorOn > 0)
                         CrewmateRoles.Add((typeof(Imitator), CustomGameOptions.ImitatorOn, true));
-
-                    if (CustomGameOptions.ProsecutorOn > 0)
-                        CrewmateRoles.Add((typeof(Prosecutor), CustomGameOptions.ProsecutorOn, true));
 
                     if (CustomGameOptions.OracleOn > 0)
                         CrewmateRoles.Add((typeof(Oracle), CustomGameOptions.OracleOn, true));

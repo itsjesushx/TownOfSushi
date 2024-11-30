@@ -1579,11 +1579,6 @@ namespace TownOfSushi
                 var jailor = GetRole<Jailor>(player);
                 if (jailor.Executes > 0) return true;
             }
-            else if (player.Is(RoleEnum.Prosecutor))
-            {
-                var pros = GetRole<Prosecutor>(player);
-                if (!pros.HasProsecuted) return true;
-            }
             else if (player.Is(RoleEnum.Veteran))
             {
                 var vet = Role.GetRole<Veteran>(player);

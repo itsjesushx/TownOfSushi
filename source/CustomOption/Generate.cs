@@ -40,7 +40,6 @@ namespace TownOfSushi.CustomOption
         public static CustomNumberOption ImitatorOn;
         public static CustomNumberOption MayorOn;
         public static CustomNumberOption MediumOn;
-        public static CustomNumberOption ProsecutorOn;
         public static CustomNumberOption TransporterOn;
 
         public static CustomHeaderOption NeutralEvilRoles;
@@ -512,8 +511,6 @@ namespace TownOfSushi.CustomOption
 
             CrewPowerRoles = new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#8BFDFDFF>Crew</color> <color=#1D7CF2FF>Power</color> <color=#FFD700FF>Roles</color>");
             MayorOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#704FA8FF>Mayor</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            ProsecutorOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#B38000FF>Prosecutor</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
             
             CrewSpecialRoles = new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#8BFDFDFF>Crew</color> <color=#1D7CF2FF>Special</color> <color=#FFD700FF>Roles</color>");
