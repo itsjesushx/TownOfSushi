@@ -3,7 +3,6 @@ namespace TownOfSushi.Roles.Crewmates
     public class Seer : Role
     {
         public List<byte> Investigated = new List<byte>();
-
         public Seer(PlayerControl player) : base(player)
         {
             Name = "Seer";

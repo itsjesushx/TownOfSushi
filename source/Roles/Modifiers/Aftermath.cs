@@ -1,4 +1,3 @@
-
 using System.Collections;
 using TownOfSushi.Roles.Impostors.Power.BomberRole;
 using TownOfSushi.Modifiers.UnderdogMod;

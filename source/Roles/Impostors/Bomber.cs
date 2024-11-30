@@ -4,7 +4,6 @@ using TownOfSushi.Roles.Crewmates.Support.MedicRole;
 namespace TownOfSushi.Roles
 {
     public class Bomber : Role
-
     {
         public KillButton _plantButton;
         public float TimeRemaining;

@@ -16,7 +16,6 @@
             if (PlayerControl.LocalPlayer.Data == null) return;
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Seer)) return;
             var investigateButton = __instance.KillButton;
-
             var role = GetRole<Seer>(PlayerControl.LocalPlayer);
 
             investigateButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
