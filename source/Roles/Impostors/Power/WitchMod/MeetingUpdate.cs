@@ -20,7 +20,6 @@ namespace TownOfSushi.Roles.Impostors.Power.WitchRole
         [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Update))]
         public class MeetingHud_Update
         {
-            public static Sprite Overlay => TownOfSushi.WitchOverlay;
             public static void Postfix(MeetingHud __instance)
             {
                 var witches = AllRoles.Where(x => x.RoleType == RoleEnum.Witch && x.Player != null).Cast<Witch>();
@@ -30,8 +29,7 @@ namespace TownOfSushi.Roles.Impostors.Power.WitchRole
                     {
                         var playerState = __instance.playerStates.FirstOrDefault(x => x.TargetPlayerId == role.Spelled.PlayerId);
                         playerState.Overlay.gameObject.SetActive(true);
-                        if (PrevOverlay == null) PrevOverlay = playerState.Overlay.sprite;
-                        playerState.Overlay.sprite = Overlay;
+                        //playerState.NameText.text += " <color=#FF0000FF>Cursed</color>";
                         if (__instance.state != MeetingHud.VoteStates.Animating && shookAlready == false)
                         {
                             shookAlready = true;

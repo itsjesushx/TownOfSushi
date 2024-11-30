@@ -163,6 +163,15 @@ namespace TownOfSushi.Roles
                     PlayerName += "<color=#E6FFB3FF> [♨]</color>";
                 }
             }
+            
+            foreach (var role in GetRoles(RoleEnum.Witch))
+            {
+                var witch = (Witch) role;
+                if (witch.Spelled != null && !witch.Spelled.Data.IsDead)
+                {
+                    PlayerName += " <color=#FF0000FF>†</color>";
+                }
+            }
 
            if (Player.HasTasks())
             {
