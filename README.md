@@ -882,6 +882,7 @@ The Witch is an Impostor that can Spell people.\
 During each round, the Witch can go up to someone and Spell them.\
 This makes the Spelled person to die after the meeting ends.\
 The Witch can Spell their partners, so be careful!\
+The Spelled player's name will have a cross (†) during meetings to let everyone know they have been cursed.\
 Note: Only Witch being dead will save the spelled player from being dead after the meeting.
 
 ### Game Options
