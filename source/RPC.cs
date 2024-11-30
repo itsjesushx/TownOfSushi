@@ -1273,9 +1273,6 @@ namespace TownOfSushi
                     if (Check(CustomGameOptions.AftermathOn))
                         Modifiers.Add((typeof(Aftermath), CustomGameOptions.AftermathOn));
 
-                    if (Check(CustomGameOptions.GhoulOn))
-                        Modifiers.Add((typeof(Ghoul), CustomGameOptions.GhoulOn));
-
                     if (Check(CustomGameOptions.MultitaskerOn))
                         NonTaskerAbilities.Add((typeof(Multitasker), CustomGameOptions.MultitaskerOn));
 

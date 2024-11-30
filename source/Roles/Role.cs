@@ -93,45 +93,6 @@ namespace TownOfSushi.Roles
                 CustomGameOptions.ImpostorSeeRoles) return true;
             return false;
         }
-
-       /* public static bool NeutralKillerWin()
-        {
-            return
-            VampireWins ||
-            GetRoles(RoleEnum.Pestilence).Any(x => ((Pestilence)x).PestilenceWins) == true ||
-            GetRoles(RoleEnum.Hitman).Any(x => ((Hitman)x).HitmanWins) == true ||
-            GetRoles(RoleEnum.Agent).Any(x => ((Agent)x).AgentWins) == true ||
-            GetRoles(RoleEnum.Plaguebearer).Any(x => ((Plaguebearer)x).PlaguebearerWins) == true ||
-            GetRoles(RoleEnum.Werewolf).Any(x => ((Werewolf)x).WerewolfWins) == true ||
-            GetRoles(RoleEnum.Glitch).Any(x => ((Glitch)x).GlitchWins) == true ||
-            GetRoles(RoleEnum.Juggernaut).Any(x => ((Juggernaut)x).JuggernautWins) == true ||
-            GetRoles(RoleEnum.Arsonist).Any(x => ((Arsonist)x).ArsonistWins) == true ||
-            GetRoles(RoleEnum.Jester).Any(x => ((Jester)x).VotedOut) == true || 
-            GetRoles(RoleEnum.Executioner).Any(x => ((Executioner)x).TargetVotedOut) == true ||
-            GetRoles(RoleEnum.Doomsayer).Any(x => ((Doomsayer)x).WonByGuessing) == true ||
-            GetRoles(RoleEnum.Phantom).Any(x => ((Phantom)x).CompletedTasks) == true ||
-            GetRoles(RoleEnum.Vulture).Any(x => ((Vulture)x).WonByEating) == true ||
-            GetRoles(RoleEnum.SerialKiller).Any(x => ((SerialKiller)x).SerialKillerWins) == true;
-        }
-
-        public static bool ModifierWin()
-        {
-            return
-            Modifier.GetModifiers(ModifierEnum.Lover).Any(x => ((Lover)x).LoveCoupleWins) == true;
-        }
-        public static bool CrewWin()
-        {
-            return 
-                !VampireWins &&
-                !NeutralWin() && 
-                !ModifierWin() &&
-                EndGameResult.CachedWinners.Count != 0 && !EndGameResult.CachedWinners[0].IsImpostor || OnGameEndPatch.gameOverReason == GameOverReason.HumansByTask || OnGameEndPatch.gameOverReason == GameOverReason.HumansByVote;;
-        }
-        public static bool ImpWin()
-        {
-            return 
-            !NeutralWin() && !ModifierWin() && EndGameResult.CachedWinners[0].IsImpostor || OnGameEndPatch.gameOverReason == GameOverReason.ImpostorBySabotage;
-        }*/
         internal virtual bool VampireCriteria()
         {
             if (RoleType == RoleEnum.Vampire && PlayerControl.LocalPlayer.Is(RoleEnum.Vampire)) return true;
@@ -382,7 +343,7 @@ namespace TownOfSushi.Roles
                     var modTask = new GameObject(modifier.Name + "Task").AddComponent<ImportantTextTask>();
                     modTask.transform.SetParent(player.transform, false);
                     modTask.Text =
-                        $"{modifier.ColorString}Modifier: {modifier.Name}\n{modifier.TaskText()}</color>";
+                        $"{modifier.ColorString}Modifier: {modifier.Name}\n{modifier.TaskText()}{hasFakeTasks}</color>";
                     player.myTasks.Insert(0, modTask);
                 }
                 if (ability != null)

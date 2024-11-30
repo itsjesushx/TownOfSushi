@@ -7,7 +7,6 @@ namespace TownOfSushi.Roles
         public PlayerControl ClosestPlayer;
         public DateTime LastMauled;
         public float TimeRemaining;
-
         public Werewolf(PlayerControl player) : base(player)
         {
             Name = "Werewolf";

@@ -1,5 +1,3 @@
-
-
 namespace TownOfSushi.Patches
 {
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]

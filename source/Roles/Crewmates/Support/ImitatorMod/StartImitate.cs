@@ -57,7 +57,6 @@ namespace TownOfSushi.Roles.Crewmates.Support.ImitatorRole
             if (imitatorRole == RoleEnum.Mystic) new Mystic(ImitatingPlayer);
             if (imitatorRole == RoleEnum.Seer) new Seer(ImitatingPlayer);
             if (imitatorRole == RoleEnum.Tracker) new Tracker(ImitatingPlayer);
-            if (imitatorRole == RoleEnum.Vigilante) new Vigilante(ImitatingPlayer);
             if (imitatorRole == RoleEnum.Veteran) new Veteran(ImitatingPlayer);
             if (imitatorRole == RoleEnum.Engineer) new Engineer(ImitatingPlayer);
             if (imitatorRole == RoleEnum.Medium) new Medium(ImitatingPlayer);

@@ -1,9 +1,5 @@
-﻿
-using InnerNet;
+﻿using InnerNet;
 using System.Collections;
-
-
-
 
 using static TownOfSushi.Patches.DisableAbilities;
 
@@ -34,7 +30,6 @@ namespace TownOfSushi.Roles
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.NeutralKilling;
         }
-
         public PlayerControl ClosestPlayer;
         public PlayerControl Hacked;
         public DateTime LastMimic { get; set; }

@@ -1,5 +1,3 @@
-
-
 namespace TownOfSushi.Roles.Crewmates.Support.EngineerMod
 {
     [HarmonyPatch(typeof(HudManager))]
@@ -13,7 +11,7 @@ namespace TownOfSushi.Roles.Crewmates.Support.EngineerMod
             if (PlayerControl.LocalPlayer.Data == null) return;
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Engineer)) return;
 
-            var role = GetRole<Engineer>(PlayerControl.LocalPlayer);
+            var role = Role.GetRole<Engineer>(PlayerControl.LocalPlayer);
 
             if (role.UsesText == null && role.UsesLeft > 0)
             {
@@ -43,19 +41,21 @@ namespace TownOfSushi.Roles.Crewmates.Support.EngineerMod
             if (!ShipStatus.Instance) return;
             var system = ShipStatus.Instance.Systems[SystemTypes.Sabotage].Cast<SabotageSystemType>();
             if (system == null) return;
-            var specials = system.specials.ToArray();
-            var dummyActive = system.AnyActive;
-            var sabActive = specials.Any(s => s.IsActive);
+            var sabActive = system.AnyActive;
             var renderer = __instance.KillButton.graphic;
-            if (sabActive & !dummyActive & role.ButtonUsable & __instance.KillButton.enabled)
+            if (sabActive & role.ButtonUsable & __instance.KillButton.enabled && PlayerControl.LocalPlayer.moveable)
             {
                 renderer.color = Palette.EnabledColor;
                 renderer.material.SetFloat("_Desat", 0f);
+                role.UsesText.color = Palette.EnabledColor;
+                role.UsesText.material.SetFloat("_Desat", 0f);
                 return;
             }
 
             renderer.color = Palette.DisabledClear;
             renderer.material.SetFloat("_Desat", 1f);
+            role.UsesText.color = Palette.DisabledClear;
+            role.UsesText.material.SetFloat("_Desat", 1f);
         }
     }
 }

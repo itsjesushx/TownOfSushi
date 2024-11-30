@@ -21,7 +21,6 @@ namespace TownOfSushi.Roles
             Color = Colors.Arsonist;
             LastDoused = DateTime.UtcNow;
             RoleType = RoleEnum.Arsonist;
-            
             Faction = Faction.Neutral;
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.NeutralKilling;

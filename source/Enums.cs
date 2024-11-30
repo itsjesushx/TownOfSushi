@@ -61,26 +61,18 @@ namespace TownOfSushi
 
     public enum ModifierEnum
     {
-        None,
         Diseased,
         Giant,
         Aftermath,
         Disperser,
         DoubleShot,
-        Ghoul,
         Bait,
         Underdog,
         Frosty
     }
-    public enum GhoulPunishment
-    {
-        Kill,
-        LoseRole
-    }
 
     public enum AbilityEnum
     {
-        None,
         Assassin,
         Spy,
         Torch,
@@ -97,8 +89,7 @@ namespace TownOfSushi
     {
         Crewmates,
         Impostors,
-        Neutral,
-        Modifier
+        Neutral
     }
     public enum RoleAlignment
     {
@@ -114,8 +105,6 @@ namespace TownOfSushi
         ImpSpecial,
         ImpDeception,
         ImpSupport,
-
-        Other,
         None
     }
     public enum CustomRPC
@@ -178,7 +167,6 @@ namespace TownOfSushi
         Confess,
         Camouflage,
         Spell,
-        Shift,
         BypassKill,
         ResetVaribles,
         BypassMultiKill,
@@ -305,40 +293,6 @@ namespace TownOfSushi
         Everyone = 2,
         Nobody = 3
     }
-    internal enum RPC
-    {
-        PlayAnimation, //0
-        CompleteTask, //1
-        SyncSettings, //2
-        SetRole, //3
-        Exiled, //4
-        CheckName, //5
-        SetName, //6
-        CheckColor, //7
-        SetColor, //8
-        SetHat, //9
-        SetSkin, //10
-        ReportDeadBody, //11
-        MurderPlayer, //12
-        SendChat, //13
-        StartMeeting, //14
-        SetScanner, //15
-        SendChatNote, //16
-        SetPet, //17
-        SetStartCounter, //18
-        EnterVent, //19
-        ExitVent, //20
-        SnapTo, //21
-        Close, //22
-        BBFDNCCEJHI, //23
-        CastVote, //24
-        ClearVote, //25
-        AddVote, //26
-        CloseDoorsOfType, //27
-        RepairSystem, //28
-        SetTasks, //29
-        UpdateGameData //30
-    }
     public enum CustomGameOverReason 
     {
         JesterWin = 11,
@@ -355,11 +309,8 @@ namespace TownOfSushi
         WerewolfWin = 22,
         SerialKillerWin = 23,
         AgentWin = 24,
-        HitmanWin = 25,
-        ImpostorWin = 26,
-        CrewmateWin = 27
+        HitmanWin = 25
     }
-
     public enum WinCondition 
     {
         Default,
@@ -382,5 +333,15 @@ namespace TownOfSushi
         HitmanWin,
         ImpostorWin,
         CrewmateWin
+    }
+    public enum CustomPlayerOutfitType 
+    {
+        Default,
+        Shapeshifted,
+        Morph,
+        Camouflage,
+        Swooper,
+        PlayerNameOnly
+
     }
 }

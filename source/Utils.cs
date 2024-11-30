@@ -4,12 +4,11 @@ using Il2CppInterop.Runtime.InteropTypes;
 using PerformKill = TownOfSushi.Modifiers.UnderdogMod.PerformKill;
 using Reactor.Networking;
 using System.IO;
-using TownOfSushi.Utilities;
 using static TownOfSushi.Roles.Glitch;
 using TownOfSushi.Roles.Crewmates.Investigative.TrapperMod;
 using TownOfSushi.Roles.Crewmates.Support.MedicRole;
 using TownOfSushi.Roles.Impostors.Power.BomberRole;
-using static TownOfSushi.Patches.DisableAbilities;
+using TownOfSushi.Utilities;
 
 namespace TownOfSushi
 {
@@ -178,16 +177,13 @@ namespace TownOfSushi
             if (player == null)
                 return false;
             
-            if (GetPlayerRole(player) == null)
-                return !player.Data.IsImpostor();
-            
-            var taskersFlag = player.Is(Faction.Crewmates) || player.Is(RoleEnum.Agent) || player.Is(RoleEnum.Romantic) || player.Is(RoleEnum.GuardianAngel);
-            var neutralflag = player.Is(Faction.Neutral);
+            var taskersFlag = player.Is(Faction.Crewmates) || player.Is(RoleEnum.Agent) || player.Is(RoleAlignment.NeutralBenign) || player.Is(RoleEnum.GuardianAngel);
+            var neutralflag = player.Is(Faction.Neutral) || player.Is(Faction.Impostors);
             var phantomflag = player.Is(RoleEnum.Phantom);
             var isdead = player.Data.IsDead;
-            var flag1 = (taskersFlag);
-            var flag2 = neutralflag && (phantomflag && isdead);
-            var flag = (flag1 || flag2);
+            var flag1 = taskersFlag;
+            var flag2 = neutralflag && phantomflag && isdead;
+            var flag = flag1 || flag2;
             return flag;
         }
 
@@ -783,17 +779,6 @@ namespace TownOfSushi
                     BaitReport(killer, target);
                 }
 
-                if (target.Is(ModifierEnum.Ghoul))
-                {
-                    if (CustomGameOptions.Punishment == GhoulPunishment.Kill)
-                    {
-                        RpcMurderPlayer(target, killer);
-                        RpcMurderPlayer(killer, target);
-                        Flash(Colors.Impostor, 0.5f);
-                        _ = new CustomMessage($"{killer.name} was Cursed by the Ghoul!", 1.5f, true, Colors.Impostor);
-                    }
-                }
-
                 //UsefulMethods.ShowTextToast("", 5f);
 
                 if (target.Is(ModifierEnum.Aftermath))
@@ -1001,13 +986,6 @@ namespace TownOfSushi
             if (FastDestroyableSingleton<HudManager>.Instance == null || FastDestroyableSingleton<HudManager>.Instance.FullScreen == null) return;
             FastDestroyableSingleton<HudManager>.Instance.FullScreen.gameObject.SetActive(true);
             FastDestroyableSingleton<HudManager>.Instance.FullScreen.enabled = true;
-            // Message Text
-            TMPro.TextMeshPro messageText = GameObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText, FastDestroyableSingleton<HudManager>.Instance.transform);
-            messageText.text = message;
-            messageText.enableWordWrapping = false;
-            messageText.transform.localScale = Vector3.one * 0.5f;
-            messageText.transform.localPosition += new Vector3(0f, 2f, -69f);
-            messageText.gameObject.SetActive(true);
             FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(duration, new Action<float>((p) => {
                 var renderer = FastDestroyableSingleton<HudManager>.Instance.FullScreen;
 
@@ -1019,7 +997,6 @@ namespace TownOfSushi
                         renderer.color = new Color(color.r, color.g, color.b, Mathf.Clamp01((1 - p) * 2 * 0.75f));
                 }
                 if (p == 1f && renderer != null) renderer.enabled = false;
-                if (p == 1f) messageText.gameObject.Destroy();
             })));
         }
 
@@ -1588,6 +1565,37 @@ namespace TownOfSushi
 
             var maxDistance = KillDistance();
             return (GetDistBetweenPlayers(player, target) > maxDistance);
+        }
+
+        public static bool IsCrewKiller(this PlayerControl player)
+        {
+            if (player.Is(RoleEnum.Mayor)||
+                player.Is(RoleEnum.Vigilante)) return true;
+            else if (player.Is(RoleEnum.Imitator))
+            {
+                if (PlayerControl.AllPlayerControls.ToArray().Count(x => x.Data.IsDead && !x.Data.Disconnected &&
+                (x.Is(RoleEnum.Vigilante) || x.Is(RoleEnum.Veteran))) > 0) return true;
+            }
+            else if (player.Is(RoleEnum.Jailor))
+            {
+                var jailor = GetRole<Jailor>(player);
+                if (jailor.Executes > 0) return true;
+            }
+            else if (player.Is(RoleEnum.Prosecutor))
+            {
+                var pros = GetRole<Prosecutor>(player);
+                if (!pros.HasProsecuted) return true;
+            }
+            else if (player.Is(RoleEnum.Veteran))
+            {
+                var vet = Role.GetRole<Veteran>(player);
+                if (vet.UsesLeft > 0 || vet.Enabled) return true;
+            }
+            else if (player.Is(RoleEnum.Vigilante))
+            {
+                return true;
+            }
+            return false;
         }
 
         [HarmonyPatch(typeof(AmongUs.Data.Player.PlayerData), nameof(AmongUs.Data.Player.PlayerData.FileName), MethodType.Getter)]

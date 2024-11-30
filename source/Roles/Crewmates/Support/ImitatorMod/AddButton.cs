@@ -95,7 +95,8 @@ namespace TownOfSushi.Roles.Crewmates.Support.ImitatorRole
                             var haunter = GetRole<Haunter>(player);
                             imitatedRole = haunter.formerRole;
                         }
-                        if (player.Data.IsDead && !player.Data.Disconnected && (imitatedRole == RoleEnum.Investigator || 
+                        if (player.Data.IsDead && !player.Data.Disconnected && (
+                            imitatedRole == RoleEnum.Investigator || 
                             imitatedRole == RoleEnum.Mystic ||
                             imitatedRole == RoleEnum.Seer   || 
                             imitatedRole == RoleEnum.Tracker || 

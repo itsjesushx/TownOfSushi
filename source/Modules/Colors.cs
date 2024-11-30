@@ -61,9 +61,9 @@
 
         //Factions
 
-        public readonly static Color32 Crewmate = Palette.CrewmateBlue;
+        public readonly static Color Crewmate = Palette.CrewmateBlue;
         public readonly static Color32 Neutrals = new Color32(179, 179, 179, 255);
-        public readonly static Color32 Impostor = Palette.ImpostorRed;
+        public readonly static Color Impostor = Palette.ImpostorRed;
         public readonly static Color Chameleon = new Color(1f, 0.7f, 0.8f, 1f);
 
     }

@@ -24,7 +24,6 @@ namespace TownOfSushi.Roles
             RoleAlignment = RoleAlignment.NeutralKilling;
             InfectedPlayers.Add(player.PlayerId);
         }
-
         public float InfectTimer()
         {
             var utcNow = DateTime.UtcNow;

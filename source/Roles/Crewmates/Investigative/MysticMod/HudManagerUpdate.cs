@@ -14,9 +14,7 @@ namespace TownOfSushi.Roles.Crewmates.Investigative.MysticMod
             if (PlayerControl.LocalPlayer == null) return;
             if (PlayerControl.LocalPlayer.Data == null) return;
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Mystic)) return;
-
             var role = GetRole<Mystic>(PlayerControl.LocalPlayer);
-
             var data = PlayerControl.LocalPlayer.Data;
             var isDead = data.IsDead;
             var truePosition = PlayerControl.LocalPlayer.GetTruePosition();

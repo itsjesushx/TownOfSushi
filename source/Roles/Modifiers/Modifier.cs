@@ -1,10 +1,3 @@
-
-
-
-
-using TownOfSushi.Extensions;
-
-
 namespace TownOfSushi.Roles.Modifiers
 {
     public abstract class Modifier

@@ -1,7 +1,7 @@
 namespace TownOfSushi.Roles.Neutral.Benign.RomanticRole
 {
     [HarmonyPatch(typeof(HudManager))]
-    public class HudConfess
+    public class HudPick
     {
         [HarmonyPatch(nameof(HudManager.Update))]
         public static void Postfix(HudManager __instance)
@@ -18,13 +18,9 @@ namespace TownOfSushi.Roles.Neutral.Benign.RomanticRole
                     && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
             pickButton.SetCoolDown(role.PickTimer(), CustomGameOptions.PickStartTimer);
-
             SetTarget(ref role.ClosestPlayer, pickButton, float.NaN);
 
             var renderer = pickButton.graphic;
-
-            
-
             if (role.ClosestPlayer != null)
             {
                 renderer.color = Palette.EnabledColor;

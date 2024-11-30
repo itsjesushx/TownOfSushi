@@ -12,37 +12,16 @@ namespace TownOfSushi.Roles.Neutral.Evil.VultureRole
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
             if (PlayerControl.LocalPlayer == null) return;
             if (PlayerControl.LocalPlayer.Data == null) return;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return;
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Vulture)) return;
-
             var role = GetRole<Vulture>(PlayerControl.LocalPlayer);
-
             var data = PlayerControl.LocalPlayer.Data;
             var isDead = data.IsDead;
             var truePosition = PlayerControl.LocalPlayer.GetTruePosition();
-            var maxDistance = KillDistance();
-            var flag = (GameOptionsManager.Instance.currentNormalGameOptions.GhostsDoTasks || !data.IsDead) &&
-                       (!AmongUsClient.Instance || !AmongUsClient.Instance.IsGameOver) &&
-                       PlayerControl.LocalPlayer.CanMove;
-
-            var killButton = __instance.KillButton;
-            DeadBody closestBody = null;
-            var closestDistance = float.MaxValue;
-            var allBodies = Object.FindObjectsOfType<DeadBody>();
-
-            foreach (var body in allBodies.Where(x => Vector2.Distance(x.TruePosition, truePosition) <= maxDistance))
-            {
-                var distance = Vector2.Distance(truePosition, body.TruePosition);
-                if (!(distance < closestDistance)) continue;
-
-                closestBody = body;
-                closestDistance = distance;
-            }
 
             if (CustomGameOptions.EatArrows && !PlayerControl.LocalPlayer.Data.IsDead)
             {
                 var validBodies = Object.FindObjectsOfType<DeadBody>().Where(x =>
-                    Murder.KilledPlayers.Any(y => y.PlayerId == x.ParentId && y.KillTime.AddSeconds(CustomGameOptions.EatArrowDelay) < System.DateTime.UtcNow));
+                    Murder.KilledPlayers.Any(y => y.PlayerId == x.ParentId && y.KillTime.AddSeconds(CustomGameOptions.EatArrowDelay) < DateTime.UtcNow));
 
                 foreach (var bodyArrow in role.BodyArrows.Keys)
                 {

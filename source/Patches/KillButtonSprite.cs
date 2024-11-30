@@ -17,7 +17,6 @@
         private static Sprite Seer => TownOfSushi.SeerSprite;
         private static Sprite Douse => TownOfSushi.DouseSprite;
         private static Sprite Jail => TownOfSushi.JailSprite;
-        private static Sprite Shift => TownOfSushi.ObserveSprite;
         private static Sprite Alert => TownOfSushi.AlertSprite;
         private static Sprite Remember => TownOfSushi.RememberSprite;
         private static Sprite Track => TownOfSushi.TrackSprite;
@@ -34,8 +33,6 @@
         private static Sprite Bite => TownOfSushi.BiteSprite;
         private static Sprite Confess => TownOfSushi.ConfessSprite;
         private static Sprite Kill;
-
-
         public static void Postfix(HudManager __instance)
         {
             if (__instance.KillButton == null) return;

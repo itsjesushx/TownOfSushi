@@ -16,11 +16,11 @@ namespace TownOfSushi
     [ReactorModFlags(Reactor.Networking.ModFlags.RequireOnAllClients)]
     public class TownOfSushi : BasePlugin
     {
-        public const string Id = "me.jsushi.townofsushi";
+        public const string Id = "me.itsjesushx.townofsushi";
         public const string VersionString = "1.0.0";
-        public const string VersionTag = "<color=#ff33fc> dev 15</color>";
-        public const string VersionTag2 = " dev 15";
-        public static System.Version Version = System.Version.Parse(VersionString);
+        public const string VersionTag = "<color=#ff33fc></color>";
+        public const string VersionTag2 = "";
+        public static Version Version = System.Version.Parse(VersionString);
         internal static BepInEx.Logging.ManualLogSource Logger;
         public Harmony Harmony { get; } = new Harmony(Id);
         public static TownOfSushi Instance;
@@ -59,7 +59,6 @@ namespace TownOfSushi
         public static Sprite MediateSprite;
         public static Sprite ProtectSprite;
         public static Sprite RomanticPick;
-        public static Sprite ShiftKill;
         public static Sprite BlackmailSprite;
         public static Sprite ExecuteSprite;
         public static Sprite ZoomPlusButton;
@@ -78,7 +77,6 @@ namespace TownOfSushi
         public static Sprite EscapeSprite;
         public static Sprite MarkSprite;
         public static Sprite ImitateSelectSprite;
-        public static Sprite GameModeSprite;
         public static Sprite ImitateDeselectSprite;
         public static Sprite ObserveSprite;
         public static Sprite EatSprite;
@@ -86,11 +84,9 @@ namespace TownOfSushi
         public static Sprite RevealSprite;
         public static Sprite ConfessSprite;
         public static Sprite NoAbilitySprite;
-        public static Sprite AbilitySettingsButton;
         public static Sprite CamouflageSprite;
         public static Sprite CamoSprintSprite;
         public static Sprite CamoSprintFreezeSprite;
-        public static Sprite RadiateSprite;
         public static Sprite HackSprite;
         public static Sprite MimicSprite;
         public static Sprite LockSprite;
@@ -129,7 +125,6 @@ namespace TownOfSushi
             Arrow = CreateSprite("TownOfSushi.Resources.Arrow.png");
             MineSprite = CreateSprite("TownOfSushi.Resources.Mine.png");
             SwoopSprite = CreateSprite("TownOfSushi.Resources.Swoop.png");
-            ShiftKill = CreateSprite("TownOfSushi.Resources.ShiftKill.png");
             DouseSprite = CreateSprite("TownOfSushi.Resources.Douse.png");
             IgniteSprite = CreateSprite("TownOfSushi.Resources.Ignite.png");
             ReviveSprite = CreateSprite("TownOfSushi.Resources.Revive.png");
@@ -171,7 +166,7 @@ namespace TownOfSushi
             ImitateSelectSprite = CreateSprite("TownOfSushi.Resources.ImitateSelect.png");
             ImitateDeselectSprite = CreateSprite("TownOfSushi.Resources.ImitateDeselect.png");
             ObserveSprite = CreateSprite("TownOfSushi.Resources.Observe.png");
-            EatSprite = CreateSprite("TownOfSushi.Resources.Janitor.png");
+            EatSprite = CreateSprite("TownOfSushi.Resources.Vulture.png");
             BiteSprite = CreateSprite("TownOfSushi.Resources.Bite.png");
             RevealSprite = CreateSprite("TownOfSushi.Resources.Reveal.png");
             ConfessSprite = CreateSprite("TownOfSushi.Resources.Confess.png");
@@ -180,13 +175,10 @@ namespace TownOfSushi
             CamouflageSprite = CreateSprite("TownOfSushi.Resources.Camouflage.png");
             CamoSprintSprite = CreateSprite("TownOfSushi.Resources.CamoSprint.png");
             CamoSprintFreezeSprite = CreateSprite("TownOfSushi.Resources.CamoSprintFreeze.png");
-            RadiateSprite = CreateSprite("TownOfSushi.Resources.Radiate.png");
             HackSprite = CreateSprite("TownOfSushi.Resources.Hack.png");
             MimicSprite = CreateSprite("TownOfSushi.Resources.Mimic.png");
             LockSprite = CreateSprite("TownOfSushi.Resources.Lock.png");
             TargetIcon = CreateSprite("TownOfSushi.Resources.TargetIcon.png", 150f);
-            AbilitySettingsButton = CreateSprite("TownOfSushi.Resources.Abilities.png");
-            GameModeSprite = CreateSprite("TownOfSushi.Resources.GameMode.png");
             ToUBanner = CreateSprite("TownOfSushi.Resources.TownOfSushiBanner.png");
             UpdateSubmergedButton = CreateSprite("TownOfSushi.Resources.UpdateSubmergedButton.png");
 

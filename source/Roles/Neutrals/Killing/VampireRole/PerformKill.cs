@@ -112,11 +112,6 @@ namespace TownOfSushi.NeutralRoles.VampireRole
                     Footprint.DestroyAll(GetRole<Investigator>(PlayerControl.LocalPlayer));
                     InvestigatorRole.ExamineButton.gameObject.SetActive(false);
                 }
-
-                else if (PlayerControl.LocalPlayer.Is(RoleEnum.Vulture)) 
-                { 
-                    Roles.Neutral.Evil.VultureRole.KillButtonTarget.SetTarget(HudManager.Instance.KillButton, null, GetRole<Vulture>(PlayerControl.LocalPlayer));
-                }
                 else if (PlayerControl.LocalPlayer.Is(RoleEnum.Amnesiac)) 
                 {
                     Roles.Neutral.Benign.AmnesiacRole.KillButtonTarget.SetTarget(HudManager.Instance.KillButton, null, GetRole<Amnesiac>(PlayerControl.LocalPlayer));
@@ -146,6 +141,14 @@ namespace TownOfSushi.NeutralRoles.VampireRole
                     var mysticRole = GetRole<Mystic>(PlayerControl.LocalPlayer);
                     mysticRole.BodyArrows.Values.DestroyAll();
                     mysticRole.BodyArrows.Clear();
+                }
+
+                if (PlayerControl.LocalPlayer.Is(RoleEnum.Vulture))
+                {
+                    var Vulture = GetRole<Vulture>(PlayerControl.LocalPlayer);
+                    Vulture.BodyArrows.Values.DestroyAll();
+                    Vulture.BodyArrows.Clear();
+                    Roles.Neutral.Evil.VultureRole.KillButtonTarget.SetTarget(HudManager.Instance.KillButton, null, GetRole<Vulture>(PlayerControl.LocalPlayer));
                 }
 
                 if (PlayerControl.LocalPlayer.Is(RoleEnum.Transporter))

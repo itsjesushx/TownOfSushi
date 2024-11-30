@@ -84,7 +84,6 @@ namespace TownOfSushi.CustomOption
         public static CustomHeaderOption CrewmateModifiers;
         public static CustomNumberOption AftermathOn;
         public static CustomNumberOption BaitOn;
-        public static CustomNumberOption GhoulOn;
         public static CustomNumberOption DiseasedOn;
         public static CustomNumberOption FrostyOn;
         public static CustomNumberOption MultitaskerOn;
@@ -606,8 +605,6 @@ namespace TownOfSushi.CustomOption
             BaitOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#00B3B3FF>Bait</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
             DiseasedOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#808080FF>Diseased</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            GhoulOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#FF0000FF>Ghoul</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
             FrostyOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#99FFFFFF>Frosty</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
@@ -1192,9 +1189,6 @@ namespace TownOfSushi.CustomOption
             Bait = new CustomHeaderOption(num++, MultiMenu.ModifierAndAbility, "<color=#00B3B3FF>Bait</color>");
             BaitMinDelay = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "Minimum Delay for the Bait Report", 0f, 0f, 15f, 0.5f, CooldownFormat);
             BaitMaxDelay = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "Maximum Delay for the Bait Report", 1f, 0f, 15f, 0.5f, CooldownFormat);
-
-            Bait = new CustomHeaderOption(num++, MultiMenu.ModifierAndAbility, "<color=#FF0000FF>Ghoul</color>");
-            Punishment = new CustomStringOption(num++, MultiMenu.ModifierAndAbility, "Ghoul Punishment", new[] {"Murder Killer When Killed", "Remove Killer's Role On Death"});
 
             Chameleon = new CustomHeaderOption(num++, MultiMenu.ModifierAndAbility, "<color=#FFB3CCFF>Chameleon</color>");
             InvisDelay = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "Transparency Delay", 5f, 1f, 15f, 1f, CooldownFormat);

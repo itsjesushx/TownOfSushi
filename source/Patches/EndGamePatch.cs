@@ -1,4 +1,5 @@
 using System.Text;
+using TMPro;
 using TownOfSushi.Utilities;
 
 namespace TownOfSushi.Patches
@@ -7,11 +8,11 @@ namespace TownOfSushi.Patches
     {
         public static WinCondition winCondition = WinCondition.Default;
         public static List<WinCondition> additionalWinConditions = new List<WinCondition>();
-        public static List<PlayerRoleInfo> playerRoles = new List<PlayerRoleInfo>();
+        public static List<PlayerRoleInfo> PlayerRoles = new List<PlayerRoleInfo>();
 
         public static void clear() 
         {
-            playerRoles.Clear();
+            PlayerRoles.Clear();
             additionalWinConditions.Clear();
             winCondition = WinCondition.Default;
         }
@@ -51,7 +52,7 @@ namespace TownOfSushi.Patches
                 playerRole = "";
 
                 //Extra information
-                bool loved = GetRole<Romantic>(playerControl).Beloved || GetRole<Romantic>(playerControl).Player;
+                bool loved = playerControl.IsBeloved();
                 bool exeTarget = playerControl.IsExeTarget();
                 bool shielded = playerControl.IsShielded();
                 bool gaTarget = playerControl.IsGATarget();
@@ -121,7 +122,6 @@ namespace TownOfSushi.Patches
                 else if (playerControl.Is(ModifierEnum.Bait)) { playerRole += " (<color=#" + Colors.Bait.ToHtmlStringRGBA() + ">Bait</color>)";}
                 else if (playerControl.Is(ModifierEnum.Diseased)) { playerRole += " (<color=#" + Colors.Diseased.ToHtmlStringRGBA() + ">Diseased</color>)";}
                 else if (playerControl.Is(ModifierEnum.Disperser)) { playerRole += " (<color=#" + Colors.Impostor.ToHtmlStringRGBA() + ">Disperser</color>)";}
-                else if (playerControl.Is(ModifierEnum.Ghoul)) { playerRole += " (<color=#" + Colors.Impostor.ToHtmlStringRGBA() + ">Ghoul</color>)";}
                 else if (playerControl.Is(ModifierEnum.DoubleShot)) { playerRole += " (<color=#" + Colors.Impostor.ToHtmlStringRGBA() + ">Double Shot</color>)";}
                 else if (playerControl.Is(ModifierEnum.Underdog)) { playerRole += " (<color=#" + Colors.Impostor.ToHtmlStringRGBA() + ">Underdog</color>)";}
                 else if (playerControl.Is(ModifierEnum.Frosty)) { playerRole += " (<color=#" + Colors.Frosty.ToHtmlStringRGBA() + ">Frosty</color>)";}
@@ -180,7 +180,7 @@ namespace TownOfSushi.Patches
                     playerRole += ColorString(Color.green, $" | Correct Kills: {player.CorrectKills}</color>");
                 }
                 playerRole += " | " + playerControl.DeathReason();
-                AdditionalTempData.playerRoles.Add(new AdditionalTempData.PlayerRoleInfo() { PlayerName = playerControl.Data.PlayerName,
+                AdditionalTempData.PlayerRoles.Add(new AdditionalTempData.PlayerRoleInfo() { PlayerName = playerControl.Data.PlayerName,
                     ExeTarget = exeTarget, Shielded = shielded,
                     GATarget = gaTarget, Loved = loved, Role = playerRole });
             }
@@ -624,7 +624,7 @@ namespace TownOfSushi.Patches
         public static void Postfix(EndGameManager __instance) {
             // Delete and readd PoolablePlayers always showing the name and role of the player
             foreach (PoolablePlayer pb in __instance.transform.GetComponentsInChildren<PoolablePlayer>()) {
-                Object.Destroy(pb.gameObject);
+                UnityEngine.Object.Destroy(pb.gameObject);
             }
 
             int num = Mathf.CeilToInt(7.5f);
@@ -636,7 +636,6 @@ namespace TownOfSushi.Patches
                 }
                 return -1;
             }).ToList<CachedPlayerData>();
-
             for (int i = 0; i < list.Count; i++) {
                 CachedPlayerData CachedPlayerData2 = list[i];
                 int num2 = (i % 2 == 0) ? -1 : 1;
@@ -668,8 +667,8 @@ namespace TownOfSushi.Patches
             bonusText.transform.position = new Vector3(__instance.WinText.transform.position.x, __instance.WinText.transform.position.y - 0.5f, __instance.WinText.transform.position.z);
             bonusText.transform.localScale = new Vector3(0.7f, 0.7f, 1f);
             TMPro.TMP_Text textRenderer = bonusText.GetComponent<TMPro.TMP_Text>();
-
             textRenderer.text = "";
+
             if (AdditionalTempData.winCondition == WinCondition.JesterWin)
             {
                 textRenderer.text = "Jester Wins!";
@@ -773,7 +772,8 @@ namespace TownOfSushi.Patches
                 __instance.BackgroundBar.material.SetColor("_Color", Colors.Werewolf);
             }
 
-            foreach (WinCondition cond in AdditionalTempData.additionalWinConditions) {
+            foreach (WinCondition cond in AdditionalTempData.additionalWinConditions) 
+            {
                 if (cond == WinCondition.AdditionalRomanticWin) {
                     textRenderer.text += $"\n{ColorString(Colors.Romantic, "The Romantic wins with the beloved!")}";
                 } else if (cond == WinCondition.AdditionalGuardianAngelWin) {
@@ -782,70 +782,72 @@ namespace TownOfSushi.Patches
             }
 
             var position = Camera.main.ViewportToWorldPoint(new Vector3(0f, 1f, Camera.main.nearClipPlane));
-            GameObject roleSummary = Object.Instantiate(__instance.WinText.gameObject);
-            roleSummary.transform.position = new Vector3(__instance.Navigation.ExitButton.transform.position.x + 0.1f, position.y - 0.1f, -214f); 
-            roleSummary.transform.localScale = new Vector3(1f, 1f, 1f);
+                GameObject roleSummary = UnityEngine.Object.Instantiate(__instance.WinText.gameObject);
+                roleSummary.transform.position = new Vector3(__instance.Navigation.ExitButton.transform.position.x + 0.1f, position.y - 0.1f, -214f); 
+                roleSummary.transform.localScale = new Vector3(1f, 1f, 1f);
 
             var roleSummaryText = new StringBuilder();
             var winnersText = new StringBuilder();
+            var winnersCache = new StringBuilder();
             var losersText = new StringBuilder();
-            var winners = EndGameResult.CachedWinners;
+
             var winnerCount = 0;
             var loserCount = 0;
 
-            roleSummaryText.AppendLine("<size=80%><u><b>End Game Summary</b></u>: </size>");
-            roleSummaryText.AppendLine(" ");
-            winnersText.AppendLine("<color=#00FF04><size=60%><b>★ Winners ★</b></size> </color>-");
-            losersText.AppendLine("<color=#FF0000><size=60%><b>Losers</b></size> </color>-");
-            
-            foreach(var data in AdditionalTempData.playerRoles) 
-            {
-                var role = string.Join(" ", data.Role);
-                string exeTarget = data.ExeTarget ? ColorString(Colors.Executioner, " [⦿]") : "";
-                string gaTarget = data.GATarget ?  ColorString(Colors.GuardianAngel, " [★]") : "";
-                string beloved = data.Loved ? ColorString(Colors.Romantic, " [♥]") : "";
-                string shielded = data.Shielded ? ColorString(Colors.Medic, " [<b>+</b>]") : "";
+            roleSummaryText.AppendLine("<size=125%><u><b>Game Summary</b></u>:</size>");
+            roleSummaryText.AppendLine();
+            winnersText.AppendLine("<size=105%><color=#00FF00FF><b>◈ - Winners - ◈</b></color></size>");
+            losersText.AppendLine("<size=105%><color=#FF0000FF><b>◆ - Losers - ◆</b></color></size>");
 
-                var roleInfos = $">{data.PlayerName}{exeTarget}{gaTarget}{beloved}{shielded} - {role}";
+            foreach (var data in AdditionalTempData.PlayerRoles)
+            {
+                var dataString = $"<size=70%>{data.PlayerName} - {data.Role}</size>";
+
                 if (data.PlayerName.IsWinner())
                 {
-                    winnersText.AppendLine($"<size=40%>{roleInfos}</size>");
-                    winnerCount += 1;
+                    winnersText.AppendLine(dataString);
+                    winnerCount++;
                 }
                 else
                 {
-                    losersText.AppendLine($"<size=40%>{roleInfos}</size>");
-                    loserCount += 1;
+                    losersText.AppendLine(dataString);
+                    loserCount++;
                 }
             }
 
             if (winnerCount == 0)
-                winnersText.AppendLine("<size=60%>No One Won</size>");
+            {
+                winnersText.AppendLine("<size=95%>No One Won</size>");
+                winnersCache.AppendLine("No One Won");
+            }
 
             if (loserCount == 0)
-                winnersText.AppendLine("<size=60%>No One Lost</size>");
+            {
+                losersText.AppendLine("<size=95%>No One Lost</size>");
+            }
 
-            //I resized it all because it was way too big for the End Game Screen and it felt like it was a lot
+            roleSummaryText.Append(winnersText);
+            roleSummaryText.AppendLine();
+            roleSummaryText.Append(losersText);
 
-            winnersText.AppendLine(" ");   
-
-            TMPro.TMP_Text roleSummaryTextMesh = roleSummary.GetComponent<TMPro.TMP_Text>();
-            roleSummaryTextMesh.alignment = TMPro.TextAlignmentOptions.TopLeft;
+            var roleSummaryTextMesh = roleSummary.GetComponent<TMP_Text>();
+            roleSummaryTextMesh.alignment = TextAlignmentOptions.TopLeft;
             roleSummaryTextMesh.color = Color.white;
-            roleSummaryTextMesh.fontSizeMin = 1.5f;
-            roleSummaryTextMesh.fontSizeMax = 1.5f;
-            roleSummaryTextMesh.fontSize = 1.5f;
-                
-            var roleSummaryTextMeshRectTransform = roleSummaryTextMesh.GetComponent<RectTransform>();
-            roleSummaryTextMeshRectTransform.anchoredPosition = new Vector2(position.x + 3.5f, position.y - 0.1f);
-            roleSummaryTextMesh.text = roleSummaryText.ToString() + winnersText.ToString() + losersText.ToString();
+            roleSummaryTextMesh.fontSizeMin = 1f;
+            roleSummaryTextMesh.fontSizeMax = 1f;
+            roleSummaryTextMesh.fontSize = 1f;
+            roleSummaryTextMesh.text = $"{roleSummaryText}";
+            roleSummaryTextMesh.GetComponent<RectTransform>().anchoredPosition = new(position.x + 3.5f, position.y - 0.1f);
+
             AdditionalTempData.clear();
         }
     }
 
     [HarmonyPatch(typeof(LogicGameFlowNormal), nameof(LogicGameFlowNormal.CheckEndCriteria))] 
-    class CheckEndCriteriaPatch {
-        public static bool Prefix(ShipStatus __instance) {
+    class CheckEndCriteriaPatch 
+    {
+        public static bool Prefix(ShipStatus __instance) 
+        {
             if (!GameData.Instance) return false;
             if (DestroyableSingleton<TutorialManager>.InstanceExists) // InstanceExists | Don't check Custom Criteria when in Tutorial
                 return true;
@@ -934,7 +936,8 @@ namespace TownOfSushi.Patches
             }
             return false;
         }
-        private static bool CheckAndEndGameForSabotageWin(ShipStatus __instance) {
+        private static bool CheckAndEndGameForSabotageWin(ShipStatus __instance) 
+        {
             if (ShipStatus.Instance.Systems == null) return false;
             var systemType = ShipStatus.Instance.Systems.ContainsKey(SystemTypes.LifeSupp) ? ShipStatus.Instance.Systems[SystemTypes.LifeSupp] : null;
             if (systemType != null) {

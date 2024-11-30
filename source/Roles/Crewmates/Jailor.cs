@@ -1,4 +1,3 @@
-
 using TMPro;
 
 namespace TownOfSushi.Roles
@@ -12,7 +11,6 @@ namespace TownOfSushi.Roles
         public GameObject JailCell = new GameObject();
         public TMP_Text UsesText = new TMP_Text();
         public int Executes { get; set; }
-
         public Jailor(PlayerControl player) : base(player)
         {
             Name = "Jailor";

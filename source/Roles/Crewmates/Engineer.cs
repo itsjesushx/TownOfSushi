@@ -1,5 +1,3 @@
-using TMPro;
-
 namespace TownOfSushi.Roles.Crewmates
 {
     public class Engineer : Role
@@ -15,12 +13,11 @@ namespace TownOfSushi.Roles.Crewmates
             Faction = Faction.Crewmates;
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.CrewSupport;
-            
             UsesLeft = CustomGameOptions.MaxFixes;
         }
 
         public int UsesLeft;
-        public TextMeshPro UsesText;
+        public TMPro.TextMeshPro UsesText;
         public bool ButtonUsable => UsesLeft != 0;
     }
 }

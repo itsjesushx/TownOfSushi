@@ -1,6 +1,6 @@
 using TownOfSushi.Roles.Crewmates.Investigative.InvestigatorMod;
 
-namespace TownOfSushi.Roles.Crewmates
+namespace TownOfSushi.Roles
 {
     public class Investigator : Role
     {

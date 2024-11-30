@@ -9,6 +9,9 @@
 ### ***- This mod is NOT for mobile and console versions.***
 ### ***- This README page is currently under editing, most things here are either missing or subject to change.***
 
+
+### ***- Please join my [discord](https://discord.gg/hxhh2pVXcp) server and message me for any suggestions or problems!
+
 [**Installation**](#installation)
 - [Requirements](#requirements)
 - [Steam Guide](#steam-guide)
@@ -24,9 +27,9 @@
 | [Morphling](#morphling) | [Oracle](#oracle) | [Doomsayer](#doomsayer) |  [Double Shot](#double-shot) |[Spy](#spy) | [Vanilla Hide 'n' Seek](https://www.innersloth.com/new-game-mode-hide-n-seek-is-here-emergency-meeting-35/) |
 | [Venerer](#venerer) | [Investigator](#investigator) | [Vulture](#vulture) | [Frosty](#frosty) | [Drunk](#drunk)||
 | [Miner](#miner) | [Mystic](#mystic) | [Guardian Angel](#guardian-angel) |  [Giant](#giant)|[Flash](#flash) |
-| [Blackmailer](#blackmailer) | [Veteran](#veteran) | [Prosecutor](#prosecutor) | [Ghoul](#ghoul)  | [Multitasker](#multitasker)|
-| [Warlock](#warlock) | [Medic](#medic) | [Phantom](#phantom) |  [Underdog](#underdog) | [Radar](#radar) |
-|  [Undertaker](#undertaker) | [Imitator](#imitator) | [Executioner](#executioner) |  [Diseased](#diseased) | [Sleuth](#sleuth) |
+| [Blackmailer](#blackmailer) | [Veteran](#veteran) | [Prosecutor](#prosecutor) |  [Underdog](#underdog) | [Multitasker](#multitasker)|
+| [Warlock](#warlock) | [Medic](#medic) | [Phantom](#phantom) |  [Diseased](#diseased) | [Radar](#radar) |
+|  [Undertaker](#undertaker) | [Imitator](#imitator) | [Executioner](#executioner) |  | [Sleuth](#sleuth) |
 |  [Bomber](#bomber)  | [Seer](#seer) | [Romantic](#romantic) | | [Tiebreaker](#tiebreaker) |
 |  [Witch](#witch)| [Prosecutor](#prosecutor) | [Amnesiac](#amnesiac) | |
 | | [Tracker](#tracker) | [Agent](#agent) |  |
@@ -1050,15 +1053,6 @@ Killing the Bait makes the killer auto self-report.
 
 -----------------------
 
-## Ghoul
-### **Applied to: All**
-Killing the Ghoul kills the killer.
-### Game Options
-| Name | Description | Type | Default |
-|----------|:-------------:|:------:|:------:|
-| Ghoul | The percentage probability of the Ghoul appearing | Percentage | 0% |
-
------------------------
 ## Diseased
 ### **Applied to: All**
 Killing the Diseased increases the killer's kill cooldown.

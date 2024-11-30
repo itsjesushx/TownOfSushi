@@ -1,5 +1,3 @@
-
-
 namespace TownOfSushi.Roles.Crewmates.Support.EngineerMod
 {
     [HarmonyPatch(typeof(KillButton), nameof(KillButton.DoClick))]
@@ -13,14 +11,12 @@ namespace TownOfSushi.Roles.Crewmates.Support.EngineerMod
             if (!PlayerControl.LocalPlayer.CanMove) return false;
             if (PlayerControl.LocalPlayer.Data.IsDead) return false;
             if (!__instance.enabled) return false;
-            var role = GetRole<Engineer>(PlayerControl.LocalPlayer);
+            var role = Role.GetRole<Engineer>(PlayerControl.LocalPlayer);
             if (!role.ButtonUsable) return false;
             var system = ShipStatus.Instance.Systems[SystemTypes.Sabotage].Cast<SabotageSystemType>();
             if (system == null) return false;
-            var specials = system.specials.ToArray();
-            var dummyActive = system.AnyActive;
-            var sabActive = specials.Any(s => s.IsActive);
-            if (!sabActive | dummyActive) return false;
+            var sabActive = system.AnyActive;
+            if (!sabActive) return false;
             var abilityUsed = AbilityUsed(PlayerControl.LocalPlayer);
             if (!abilityUsed) return false;
             role.UsesLeft -= 1;
@@ -67,7 +63,7 @@ namespace TownOfSushi.Roles.Crewmates.Support.EngineerMod
                     if (lights4.IsActive) return FixLights(lights4);
                     break;
                 case 5:
-                var reactor7 = ShipStatus.Instance.Systems[SystemTypes.Reactor].Cast<ReactorSystemType>();
+                    var reactor7 = ShipStatus.Instance.Systems[SystemTypes.Reactor].Cast<ReactorSystemType>();
                     if (reactor7.IsActive) return FixReactor(SystemTypes.Reactor);
                     var comms7 = ShipStatus.Instance.Systems[SystemTypes.Comms].Cast<HqHudSystemType>();
                     if (comms7.IsActive) return FixMiraComms();
@@ -87,7 +83,7 @@ namespace TownOfSushi.Roles.Crewmates.Support.EngineerMod
                     if (comms5.IsActive) return FixComms();
                     foreach (PlayerTask i in PlayerControl.LocalPlayer.myTasks)
                     {
-                        if (i.TaskType == SubmergedCompatibility.RetrieveOxygenMask)
+                        if (i.TaskType == Patches.SubmergedCompatibility.RetrieveOxygenMask)
                         {
                             return FixSubOxygen();
                         }
@@ -104,6 +100,8 @@ namespace TownOfSushi.Roles.Crewmates.Support.EngineerMod
                     if (lights6.IsActive) return FixLights(lights6);
                     break;
             }
+
+            
 
             return false;
         }
@@ -123,8 +121,8 @@ namespace TownOfSushi.Roles.Crewmates.Support.EngineerMod
 
         private static bool FixAirshipReactor()
         {
-            ShipStatus.Instance.RpcUpdateSystem(SystemTypes.Reactor, 16 | 0);
-            ShipStatus.Instance.RpcUpdateSystem(SystemTypes.Reactor, 16 | 1);
+            ShipStatus.Instance.RpcUpdateSystem(SystemTypes.HeliSabotage, 16 | 0);
+            ShipStatus.Instance.RpcUpdateSystem(SystemTypes.HeliSabotage, 16 | 1);
             return false;
         }
 
@@ -142,16 +140,16 @@ namespace TownOfSushi.Roles.Crewmates.Support.EngineerMod
 
         private static bool FixSubOxygen()
         {
-            SubmergedCompatibility.RepairOxygen();
+            Patches.SubmergedCompatibility.RepairOxygen();
 
-            Rpc(CustomRPC.SubmergedFixOxygen, PlayerControl.LocalPlayer.NetId);
+            Utils.Rpc(CustomRPC.SubmergedFixOxygen, PlayerControl.LocalPlayer.NetId);
 
             return false;
         }
 
         private static bool FixLights(SwitchSystem lights)
         {
-            Rpc(CustomRPC.FixLights);
+            Utils.Rpc(CustomRPC.FixLights);
 
             lights.ActualSwitches = lights.ExpectedSwitches;
 

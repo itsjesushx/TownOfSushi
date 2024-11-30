@@ -425,6 +425,8 @@ namespace TownOfSushi.Roles.Neutral.Benign.AmnesiacRole
             else if (role == RoleEnum.Vulture)
             {
                 var vultRole = GetRole<Vulture>(amnesiac);
+                vultRole.BodyArrows.Values.DestroyAll();
+                vultRole.BodyArrows.Clear();
                 vultRole.EatNeed = CustomGameOptions.VultureBodyCount;
                 vultRole.LastEaten = DateTime.UtcNow;
             }

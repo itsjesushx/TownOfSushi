@@ -32,7 +32,7 @@ namespace TownOfSushi.Patches
             TMPro.TMP_Text textDiscord = buttonDiscord.transform.GetComponentInChildren<TMPro.TMP_Text>();
             __instance.StartCoroutine(Effects.Lerp(0.5f, new Action<float>((p) =>
             {
-                textDiscord.SetText(" TOS Discord");
+                textDiscord.SetText("   TOS Discord");
             })));
             PassiveButton passiveButtonDiscord = buttonDiscord.GetComponent<PassiveButton>();
             passiveButtonDiscord.OnClick = new ButtonClickedEvent();
@@ -51,7 +51,7 @@ namespace TownOfSushi.Patches
             TMPro.TMP_Text textCreditsButton = creditsButton.transform.GetComponentInChildren<TMPro.TMP_Text>();
             __instance.StartCoroutine(Effects.Lerp(0.5f, new Action<float>((p) =>
             {
-                textCreditsButton.SetText("TOS Credits");
+                textCreditsButton.SetText("    TOS Credits");
             })));
 
             PassiveButton passiveCreditsButton = creditsButton.GetComponent<PassiveButton>();
@@ -78,7 +78,7 @@ namespace TownOfSushi.Patches
 [https://github.com/AlchlcDvl/TownOfUsReworked]TownOfUsReworked[] - Random Spawns option, part of the End Game Summary rework code, the Death Reason code, Some of the Vulture.cs code & more
 [https://github.com/SubmergedAmongUs/Submerged]Alexejhero[] - For the Submerged map.
 [https://github.com/Mr-Fluuff/StellarRolesAU/]StellarRoles[] - Main Menu Patch, End Game Summary code & Custom Message code.
-[https://github.com/TheOtherRolesAU/TheOtherRoles]TheOtherRoles[] - For the inspiration of the Gambler, Tracker and Spy roles, as well as the Bait modifier. MOTD & Code for the Main menu and ping tracker as well.
+[https://github.com/TheOtherRolesAU/TheOtherRoles]TheOtherRoles[] - For the inspiration of the Gambler, Tracker and Spy roles, as well as the Bait modifier. MOTD code, Flash Util, Code for the Main menu and ping tracker as well.
 [https://github.com/SuperNewRoles/SuperNewRoles]SuperNewRoles[]  - For the Disable Lobby Music option.
 [https://github.com/NuclearPowered/Reactor]Reactor[] - The framework of the mod
 [https://github.com/BepInEx]BepInEx[] - For hooking game functions
@@ -100,7 +100,7 @@ namespace TownOfSushi.Patches
 
                 Announcement creditsAnnouncement = new()
                 {
-                    Id = "StellarCredits",
+                    Id = "TOSCredits",
                     Language = 0,
                     Number = 502,
                     Title = "TownOfSushi Credits & Resources",
