@@ -21,10 +21,6 @@ namespace TownOfSushi.Patches
         {
             public string PlayerName { get; set; }
             public string Role { get; set; }
-            public bool ExeTarget { get; set; }
-            public bool Shielded { get; set;}
-            public bool GATarget { get; set; }
-            public bool Loved { get; set; }
         }
 
         internal class Winners
@@ -52,10 +48,26 @@ namespace TownOfSushi.Patches
                 playerRole = "";
 
                 //Extra information
-                bool loved = playerControl.IsBeloved();
-                bool exeTarget = playerControl.IsExeTarget();
-                bool shielded = playerControl.IsShielded();
-                bool gaTarget = playerControl.IsGATarget();
+                if (playerControl.IsShielded())
+                {
+                    playerRole += ColorString(Colors.Medic, $" [<b>+</b>]");
+                }
+                if (playerControl.IsBeloved())
+                {
+                    playerRole += ColorString(Colors.Romantic, $" [♥]");
+                }
+                if (playerControl.IsGATarget())
+                {
+                    playerRole += ColorString(Colors.GuardianAngel, $" [★]");
+                }
+                if (playerControl.IsExeTarget())
+                {
+                    playerRole += ColorString(Colors.GuardianAngel, $" [⦿]");
+                }
+                if (playerControl.IsCursed())
+                {
+                    playerRole += ColorString(Colors.Impostor, $" [†]");
+                }
 
                 //Roles
                 foreach (var role in RoleHistory.Where(x => x.Key == playerControl.PlayerId))
@@ -173,16 +185,15 @@ namespace TownOfSushi.Patches
                 }
                 if (player.CorrectVigilanteShot > 0)
                 {
-                    playerRole += ColorString(Colors.Vigilante, $" | Correct Shots: {player.CorrectVigilanteShot}</color>");
+                    playerRole += ColorString(Colors.Vigilante, $" | Correct Shots: {player.CorrectVigilanteShot}");
                 }
                 if (player.CorrectKills > 0)
                 {
-                    playerRole += ColorString(Color.green, $" | Correct Kills: {player.CorrectKills}</color>");
+                    playerRole += ColorString(Color.green, $" | Correct Kills: {player.CorrectKills}");
                 }
+
                 playerRole += " | " + playerControl.DeathReason();
-                AdditionalTempData.PlayerRoles.Add(new AdditionalTempData.PlayerRoleInfo() { PlayerName = playerControl.Data.PlayerName,
-                    ExeTarget = exeTarget, Shielded = shielded,
-                    GATarget = gaTarget, Loved = loved, Role = playerRole });
+                AdditionalTempData.PlayerRoles.Add(new AdditionalTempData.PlayerRoleInfo() { PlayerName = playerControl.Data.PlayerName, Role = playerRole });
             }
 
             // Remove Neutrals from winners (if they win, they'll be readded)
@@ -651,7 +662,8 @@ namespace TownOfSushi.Patches
                 if (CachedPlayerData2.IsDead) {
                     poolablePlayer.SetBodyAsGhost();
                     poolablePlayer.SetDeadFlipX(i % 2 == 0);
-                } else {
+                } else 
+                {
                     poolablePlayer.SetFlipX(i % 2 == 0);
                 }
                 poolablePlayer.UpdateFromPlayerOutfit(CachedPlayerData2.Outfit, PlayerMaterial.MaskType.None, CachedPlayerData2.IsDead, true);

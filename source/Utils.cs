@@ -286,6 +286,14 @@ namespace TownOfSushi
                 return shieldedPlayer != null && player.PlayerId == shieldedPlayer.PlayerId;
             });
         }
+        public static bool IsCursed(this PlayerControl player)
+        {
+            return GetRoles(RoleEnum.Witch).Any(role =>
+            {
+                var SpelledPlayer = ((Witch)role).Spelled;
+                return SpelledPlayer != null && player.PlayerId == SpelledPlayer.PlayerId;
+            });
+        }
 
         public static Medic GetMedic(this PlayerControl player)
         {
