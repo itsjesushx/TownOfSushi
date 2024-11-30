@@ -1,6 +1,3 @@
-
-
-
 namespace TownOfSushi.Roles.Crewmates
 {
     public class Mystic : Role
@@ -14,15 +11,12 @@ namespace TownOfSushi.Roles.Crewmates
             Name = "Mystic";
             StartText = () => "Find out about the kills";
             TaskText = () => "Understand Kills & investigate about other players";
-            
             Color = Colors.Mystic;
             RoleType = RoleEnum.Mystic;
             Faction = Faction.Crewmates;
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.CrewInvest;
-            
         }
-
         public void DestroyArrow(byte targetPlayerId)
         {
             var arrow = BodyArrows.FirstOrDefault(x => x.Key == targetPlayerId);

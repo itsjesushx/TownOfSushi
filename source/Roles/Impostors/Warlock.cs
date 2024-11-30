@@ -1,6 +1,3 @@
-using TMPro;
-
-
 namespace TownOfSushi.Roles
 {
     public class Warlock : Role
@@ -10,8 +7,6 @@ namespace TownOfSushi.Roles
             Name = "Warlock";
             StartText = () => "Charge Up Your Kill Button To Multi Kill";
             TaskText = () => "Kill people in small bursts";
-            
-            
             Color = Colors.Impostor;
             RoleType = RoleEnum.Warlock;
             Faction = Faction.Impostors;
@@ -19,15 +14,13 @@ namespace TownOfSushi.Roles
             RoleAlignment = RoleAlignment.ImpPower;
             ChargePercent = 0;
         }
-
-        public TextMeshPro ChargeText;
+        public TMPro.TextMeshPro ChargeText;
         public int ChargePercent;
         public bool Charging;
         public bool UsingCharge;
         public float ChargeUseDuration;
         public DateTime StartChargeTime;
         public DateTime StartUseTime;
-
         public int ChargeUpTimer()
         {
             var utcNow = DateTime.UtcNow;

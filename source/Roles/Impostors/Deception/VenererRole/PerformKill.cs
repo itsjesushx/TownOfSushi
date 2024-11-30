@@ -1,6 +1,3 @@
-
-
-
 namespace TownOfSushi.Roles.Impostors.Deception.VenererRole
 {
     [HarmonyPatch(typeof(KillButton), nameof(KillButton.DoClick))]

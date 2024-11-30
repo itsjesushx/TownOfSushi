@@ -6,7 +6,6 @@ namespace TownOfSushi.Roles
         public PlayerControl ClosestPlayer;
         public PlayerControl Blackmailed;
         public DateTime LastBlackmailed { get; set; }
-
         public Blackmailer(PlayerControl player) : base(player)
         {
             Name = "Blackmailer";

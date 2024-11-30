@@ -3,7 +3,6 @@ namespace TownOfSushi.Roles
     public class Janitor : Role
     {
         public KillButton _cleanButton;
-
         public Janitor(PlayerControl player) : base(player)
         {
             Name = "Janitor";
@@ -15,9 +14,7 @@ namespace TownOfSushi.Roles
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.ImpSupport;
         }
-
         public DeadBody CurrentTarget { get; set; }
-
         public KillButton CleanButton
         {
             get => _cleanButton;

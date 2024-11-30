@@ -1,7 +1,3 @@
-
-
-
-
 namespace TownOfSushi.Roles.Impostors.Support.SwooperRole
 {
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]

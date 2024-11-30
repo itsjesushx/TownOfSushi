@@ -1,5 +1,3 @@
-
-
 using UnityEngine.UI;
 using TownOfSushi.Roles.Crewmates.Support.ImitatorRole;
 using TownOfSushi.Roles.Crewmates.Support.MedicRole;

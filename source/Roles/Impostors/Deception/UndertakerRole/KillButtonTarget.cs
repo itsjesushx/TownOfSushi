@@ -1,7 +1,3 @@
-
-
-
-
 namespace TownOfSushi.Roles.Impostors.Deception.UndertakerRole
 {
     [HarmonyPatch(typeof(KillButton), nameof(KillButton.SetTarget))]

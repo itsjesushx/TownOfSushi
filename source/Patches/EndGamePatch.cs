@@ -6,15 +6,15 @@ namespace TownOfSushi.Patches
 {
     static class AdditionalTempData 
     {
-        public static WinCondition winCondition = WinCondition.Default;
-        public static List<WinCondition> additionalWinConditions = new List<WinCondition>();
+        public static WinCondition WinCondition = WinCondition.Default;
+        public static List<WinCondition> AdditionalWinConditions = new List<WinCondition>();
         public static List<PlayerRoleInfo> PlayerRoles = new List<PlayerRoleInfo>();
 
         public static void clear() 
         {
             PlayerRoles.Clear();
-            additionalWinConditions.Clear();
-            winCondition = WinCondition.Default;
+            AdditionalWinConditions.Clear();
+            WinCondition = WinCondition.Default;
         }
 
         internal class PlayerRoleInfo 
@@ -31,9 +31,11 @@ namespace TownOfSushi.Patches
     }
 
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnGameEnd))]
-    public class OnGameEndPatch {
+    public class OnGameEndPatch 
+    {
         private static GameOverReason gameOverReason;
-        public static void Prefix(AmongUsClient __instance, [HarmonyArgument(0)]ref EndGameResult endGameResult) {
+        public static void Prefix(AmongUsClient __instance, [HarmonyArgument(0)]ref EndGameResult endGameResult) 
+        {
             gameOverReason = endGameResult.GameOverReason;
             if ((int)endGameResult.GameOverReason >= 10) endGameResult.GameOverReason = GameOverReason.ImpostorByKill;
         }
@@ -397,7 +399,7 @@ namespace TownOfSushi.Patches
                     EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
                     CachedPlayerData wpd = new CachedPlayerData(Doomsayer.Player.Data);
                     EndGameResult.CachedWinners.Add(wpd);
-                    AdditionalTempData.winCondition = WinCondition.DoomsayerWin;
+                    AdditionalTempData.WinCondition = WinCondition.DoomsayerWin;
                 }
             }
             // Agent Win
@@ -409,7 +411,7 @@ namespace TownOfSushi.Patches
                     EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
                     CachedPlayerData wpd = new CachedPlayerData(Agent.Player.Data);
                     EndGameResult.CachedWinners.Add(wpd);
-                    AdditionalTempData.winCondition = WinCondition.AgentWin;
+                    AdditionalTempData.WinCondition = WinCondition.AgentWin;
                 }
             }
 
@@ -422,7 +424,7 @@ namespace TownOfSushi.Patches
                     EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
                     CachedPlayerData wpd = new CachedPlayerData(Hitman.Player.Data);
                     EndGameResult.CachedWinners.Add(wpd);
-                    AdditionalTempData.winCondition = WinCondition.HitmanWin;
+                    AdditionalTempData.WinCondition = WinCondition.HitmanWin;
                 }
             }
 
@@ -435,19 +437,19 @@ namespace TownOfSushi.Patches
                     EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
                     CachedPlayerData wpd = new CachedPlayerData(SerialKiller.Player.Data);
                     EndGameResult.CachedWinners.Add(wpd);
-                    AdditionalTempData.winCondition = WinCondition.SerialKillerWin;
+                    AdditionalTempData.WinCondition = WinCondition.SerialKillerWin;
                 }
             }
 
             // Crew/Imp Win
             else if (ImpWin)
             {
-                AdditionalTempData.winCondition = WinCondition.ImpostorWin;  
+                AdditionalTempData.WinCondition = WinCondition.ImpostorWin;  
             }
 
             else if (CrewWin)
             {
-                AdditionalTempData.winCondition = WinCondition.CrewmateWin;  
+                AdditionalTempData.WinCondition = WinCondition.CrewmateWin;  
             }
 
             // Executioner Win
@@ -459,7 +461,7 @@ namespace TownOfSushi.Patches
                     EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
                     CachedPlayerData wpd = new CachedPlayerData(Executioner.Player.Data);
                     EndGameResult.CachedWinners.Add(wpd);
-                    AdditionalTempData.winCondition = WinCondition.ExecutionerWin;
+                    AdditionalTempData.WinCondition = WinCondition.ExecutionerWin;
                 }
             }
             // Jester Win
@@ -471,7 +473,7 @@ namespace TownOfSushi.Patches
                     EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
                     CachedPlayerData wpd = new CachedPlayerData(Jester.Player.Data);
                     EndGameResult.CachedWinners.Add(wpd);
-                    AdditionalTempData.winCondition = WinCondition.JesterWin;
+                    AdditionalTempData.WinCondition = WinCondition.JesterWin;
                 }
             }
             // Vulture Win
@@ -483,7 +485,7 @@ namespace TownOfSushi.Patches
                     EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
                     CachedPlayerData wpd = new CachedPlayerData(Vulture.Player.Data);
                     EndGameResult.CachedWinners.Add(wpd);
-                    AdditionalTempData.winCondition = WinCondition.VultureWin;
+                    AdditionalTempData.WinCondition = WinCondition.VultureWin;
                 }
             }
             // Phantom Win
@@ -495,7 +497,7 @@ namespace TownOfSushi.Patches
                     EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
                     CachedPlayerData wpd = new CachedPlayerData(Phantom.Player.Data);
                     EndGameResult.CachedWinners.Add(wpd);
-                    AdditionalTempData.winCondition = WinCondition.PhantomWin;
+                    AdditionalTempData.WinCondition = WinCondition.PhantomWin;
                 }
             }
             // Arsonist Win
@@ -508,7 +510,7 @@ namespace TownOfSushi.Patches
                     CachedPlayerData wpd = new CachedPlayerData(Arsonist.Player.Data);
                     EndGameResult.CachedWinners.Add(wpd);
                     wpd.IsImpostor = false;
-                    AdditionalTempData.winCondition = WinCondition.ArsonistWin;
+                    AdditionalTempData.WinCondition = WinCondition.ArsonistWin;
                 }
             }
             // Juggernaut Win
@@ -521,7 +523,7 @@ namespace TownOfSushi.Patches
                     CachedPlayerData wpd = new CachedPlayerData(Juggernaut.Player.Data);
                     EndGameResult.CachedWinners.Add(wpd);
                     wpd.IsImpostor = false;
-                    AdditionalTempData.winCondition = WinCondition.JuggernautWin;
+                    AdditionalTempData.WinCondition = WinCondition.JuggernautWin;
                 }
             }
             // Pestilence Win
@@ -534,7 +536,7 @@ namespace TownOfSushi.Patches
                     CachedPlayerData wpd = new CachedPlayerData(Pestilence.Player.Data);
                     EndGameResult.CachedWinners.Add(wpd);
                     wpd.IsImpostor = false;
-                    AdditionalTempData.winCondition = WinCondition.PestilenceWin;
+                    AdditionalTempData.WinCondition = WinCondition.PestilenceWin;
                 }
             }
             // Plaguebearer Win
@@ -547,7 +549,7 @@ namespace TownOfSushi.Patches
                     CachedPlayerData wpd = new CachedPlayerData(Plaguebearer.Player.Data);
                     EndGameResult.CachedWinners.Add(wpd);
                     wpd.IsImpostor = false;
-                    AdditionalTempData.winCondition = WinCondition.PlaguebearerWin;
+                    AdditionalTempData.WinCondition = WinCondition.PlaguebearerWin;
                 }
             }
             // Glitch Win
@@ -560,7 +562,7 @@ namespace TownOfSushi.Patches
                     CachedPlayerData wpd = new CachedPlayerData(Glitch.Player.Data);
                     EndGameResult.CachedWinners.Add(wpd);
                     wpd.IsImpostor = false;
-                    AdditionalTempData.winCondition = WinCondition.GlitchWin;
+                    AdditionalTempData.WinCondition = WinCondition.GlitchWin;
                 }
             }
             // Vampire Win
@@ -573,7 +575,7 @@ namespace TownOfSushi.Patches
                     CachedPlayerData wpd = new CachedPlayerData(Vampire.Player.Data);
                     EndGameResult.CachedWinners.Add(wpd);
                     wpd.IsImpostor = false;
-                    AdditionalTempData.winCondition = WinCondition.TeamVampiresWin;
+                    AdditionalTempData.WinCondition = WinCondition.TeamVampiresWin;
                 }
             }
             // Werewolf Win
@@ -586,7 +588,7 @@ namespace TownOfSushi.Patches
                     CachedPlayerData wpd = new CachedPlayerData(Werewolf.Player.Data);
                     EndGameResult.CachedWinners.Add(wpd);
                     wpd.IsImpostor = false;
-                    AdditionalTempData.winCondition = WinCondition.WerewolfWin;
+                    AdditionalTempData.WinCondition = WinCondition.WerewolfWin;
                 }
             }
 
@@ -597,14 +599,15 @@ namespace TownOfSushi.Patches
                 var ga = (GuardianAngel)role;
                 if (ga.Player != null && !ga.Player.Data.Disconnected && ga.target != null)
                 {
-                    foreach (CachedPlayerData winner in EndGameResult.CachedWinners.GetFastEnumerator()) {
+                    foreach (CachedPlayerData winner in EndGameResult.CachedWinners.GetFastEnumerator()) 
+                    {
                         if (winner.PlayerName == ga.target.Data.PlayerName)
                             winningClient = winner;
                     }
                     if (winningClient != null) { // The GA wins if the client is winning
                         if (!EndGameResult.CachedWinners.ToArray().Any(x => x.PlayerName == ga.Player.Data.PlayerName))
                             EndGameResult.CachedWinners.Add(new CachedPlayerData(ga.Player.Data));
-                        AdditionalTempData.additionalWinConditions.Add(WinCondition.AdditionalGuardianAngelWin); // The GA wins together with the client
+                        AdditionalTempData.AdditionalWinConditions.Add(WinCondition.AdditionalGuardianAngelWin); // The GA wins together with the client
                     }
                 }
             }
@@ -616,14 +619,15 @@ namespace TownOfSushi.Patches
                 var romantic = (Romantic)role;
                 if (romantic.Player != null && !romantic.Player.Data.Disconnected && romantic.Beloved != null)
                 {
-                    foreach (CachedPlayerData winner in EndGameResult.CachedWinners.GetFastEnumerator()) {
+                    foreach (CachedPlayerData winner in EndGameResult.CachedWinners.GetFastEnumerator()) 
+                    {
                         if (winner.PlayerName == romantic.Beloved.Data.PlayerName)
                             winningClient = winner;
                     }
                     if (winningClient != null) { // The Romantic wins if the client is winning
                         if (!EndGameResult.CachedWinners.ToArray().Any(x => x.PlayerName == romantic.Player.Data.PlayerName))
                             EndGameResult.CachedWinners.Add(new CachedPlayerData(romantic.Player.Data));
-                        AdditionalTempData.additionalWinConditions.Add(WinCondition.AdditionalRomanticWin); // The Romantic wins together with the client
+                        AdditionalTempData.AdditionalWinConditions.Add(WinCondition.AdditionalRomanticWin); // The Romantic wins together with the client
                     }
                 }
             }
@@ -631,10 +635,13 @@ namespace TownOfSushi.Patches
     }
 
     [HarmonyPatch(typeof(EndGameManager), nameof(EndGameManager.SetEverythingUp))]
-    public class EndGameManagerSetUpPatch {
-        public static void Postfix(EndGameManager __instance) {
+    public class EndGameManagerSetUpPatch 
+    {
+        public static void Postfix(EndGameManager __instance) 
+        {
             // Delete and readd PoolablePlayers always showing the name and role of the player
-            foreach (PoolablePlayer pb in __instance.transform.GetComponentsInChildren<PoolablePlayer>()) {
+            foreach (PoolablePlayer pb in __instance.transform.GetComponentsInChildren<PoolablePlayer>()) 
+            {
                 UnityEngine.Object.Destroy(pb.gameObject);
             }
 
@@ -647,7 +654,8 @@ namespace TownOfSushi.Patches
                 }
                 return -1;
             }).ToList<CachedPlayerData>();
-            for (int i = 0; i < list.Count; i++) {
+            for (int i = 0; i < list.Count; i++) 
+            {
                 CachedPlayerData CachedPlayerData2 = list[i];
                 int num2 = (i % 2 == 0) ? -1 : 1;
                 int num3 = (i + 1) / 2;
@@ -659,10 +667,12 @@ namespace TownOfSushi.Patches
                 float num7 = Mathf.Lerp(1f, 0.65f, num4) * 0.9f;
                 Vector3 vector = new Vector3(num7, num7, 1f);
                 poolablePlayer.transform.localScale = vector;
-                if (CachedPlayerData2.IsDead) {
+                if (CachedPlayerData2.IsDead) 
+                {
                     poolablePlayer.SetBodyAsGhost();
                     poolablePlayer.SetDeadFlipX(i % 2 == 0);
-                } else 
+                } 
+                else 
                 {
                     poolablePlayer.SetFlipX(i % 2 == 0);
                 }
@@ -681,110 +691,110 @@ namespace TownOfSushi.Patches
             TMPro.TMP_Text textRenderer = bonusText.GetComponent<TMPro.TMP_Text>();
             textRenderer.text = "";
 
-            if (AdditionalTempData.winCondition == WinCondition.JesterWin)
+            if (AdditionalTempData.WinCondition == WinCondition.JesterWin)
             {
                 textRenderer.text = "Jester Wins!";
                 textRenderer.color = Colors.Jester;
                 __instance.BackgroundBar.material.SetColor("_Color", Colors.Jester);
             }
-            if (AdditionalTempData.winCondition == WinCondition.ExecutionerWin)
+            if (AdditionalTempData.WinCondition == WinCondition.ExecutionerWin)
             {
                 textRenderer.text = "Executioner Wins!";
                 textRenderer.color = Colors.Executioner;
                 __instance.BackgroundBar.material.SetColor("_Color", Colors.Executioner);
             }
-            if (AdditionalTempData.winCondition == WinCondition.DoomsayerWin)
+            if (AdditionalTempData.WinCondition == WinCondition.DoomsayerWin)
             {
                 textRenderer.text = "Doomsayer Wins!";
                 textRenderer.color = Colors.Doomsayer;
                 __instance.BackgroundBar.material.SetColor("_Color", Colors.Doomsayer);
             }
-            if (AdditionalTempData.winCondition == WinCondition.VultureWin)
+            if (AdditionalTempData.WinCondition == WinCondition.VultureWin)
             {
                 textRenderer.text = "Vulture Wins!";
                 textRenderer.color = Colors.Vulture;
                 __instance.BackgroundBar.material.SetColor("_Color", Colors.Vulture);
             }
-            if (AdditionalTempData.winCondition == WinCondition.AgentWin)
+            if (AdditionalTempData.WinCondition == WinCondition.AgentWin)
             {
                 textRenderer.text = "Agent Wins!";
                 textRenderer.color = Colors.Agent;
                 __instance.BackgroundBar.material.SetColor("_Color", Colors.Agent);
             }
-            if (AdditionalTempData.winCondition == WinCondition.HitmanWin)
+            if (AdditionalTempData.WinCondition == WinCondition.HitmanWin)
             {
                 textRenderer.text = "Hitman Wins!";
                 textRenderer.color = Colors.Hitman;
                 __instance.BackgroundBar.material.SetColor("_Color", Colors.Hitman);
             }
-            if (AdditionalTempData.winCondition == WinCondition.SerialKillerWin)
+            if (AdditionalTempData.WinCondition == WinCondition.SerialKillerWin)
             {
                 textRenderer.text = "Serial Killer Wins!";
                 textRenderer.color = Colors.SerialKiller;
                 __instance.BackgroundBar.material.SetColor("_Color", Colors.SerialKiller);
             }
-            if (AdditionalTempData.winCondition == WinCondition.PhantomWin)
+            if (AdditionalTempData.WinCondition == WinCondition.PhantomWin)
             {
                 textRenderer.text = "Phantom Wins!";
                 textRenderer.color = Colors.Phantom;
                 __instance.BackgroundBar.material.SetColor("_Color", Colors.Phantom);
             }
-            if (AdditionalTempData.winCondition == WinCondition.CrewmateWin)
+            if (AdditionalTempData.WinCondition == WinCondition.CrewmateWin)
             {
                 textRenderer.text = "Crewmates Win!";
                 textRenderer.color = Colors.Crewmate;
                 __instance.BackgroundBar.material.SetColor("_Color", Colors.Crewmate);
             }
-            if (AdditionalTempData.winCondition == WinCondition.ImpostorWin)
+            if (AdditionalTempData.WinCondition == WinCondition.ImpostorWin)
             {
                 textRenderer.text = "Impostors Win!";
                 textRenderer.color = Colors.Impostor;
                 __instance.BackgroundBar.material.SetColor("_Color", Colors.Impostor);
             }
-            if (AdditionalTempData.winCondition == WinCondition.TeamVampiresWin)
+            if (AdditionalTempData.WinCondition == WinCondition.TeamVampiresWin)
             {
                 textRenderer.text = "Vampires Win!";
                 textRenderer.color = Colors.Vampire;
                 __instance.BackgroundBar.material.SetColor("_Color", Colors.Vampire);
             }
-            if (AdditionalTempData.winCondition == WinCondition.GlitchWin)
+            if (AdditionalTempData.WinCondition == WinCondition.GlitchWin)
             {
                 textRenderer.text = "Glitch Wins!";
                 textRenderer.color = Colors.Glitch;
                 __instance.BackgroundBar.material.SetColor("_Color", Colors.Glitch);
             }
-            if (AdditionalTempData.winCondition == WinCondition.JuggernautWin)
+            if (AdditionalTempData.WinCondition == WinCondition.JuggernautWin)
             {
                 textRenderer.text = "Juggernaut Wins!";
                 textRenderer.color = Colors.Juggernaut;
                 __instance.BackgroundBar.material.SetColor("_Color", Colors.Juggernaut);
             }
-            if (AdditionalTempData.winCondition == WinCondition.ArsonistWin)
+            if (AdditionalTempData.WinCondition == WinCondition.ArsonistWin)
             {
                 textRenderer.text = "Arsonist Wins!";
                 textRenderer.color = Colors.Arsonist;
                 __instance.BackgroundBar.material.SetColor("_Color", Colors.Arsonist);
             }
-            if (AdditionalTempData.winCondition == WinCondition.PlaguebearerWin)
+            if (AdditionalTempData.WinCondition == WinCondition.PlaguebearerWin)
             {
                 textRenderer.text = "Plaguebearer Wins!";
                 textRenderer.color = Colors.Plaguebearer;
                 __instance.BackgroundBar.material.SetColor("_Color", Colors.Plaguebearer);
             }
-            if (AdditionalTempData.winCondition == WinCondition.PestilenceWin)
+            if (AdditionalTempData.WinCondition == WinCondition.PestilenceWin)
             {
                 textRenderer.text = "Pestilence Wins!";
                 textRenderer.color = Colors.Pestilence;
                 __instance.BackgroundBar.material.SetColor("_Color", Colors.Pestilence);
             }
-            if (AdditionalTempData.winCondition == WinCondition.WerewolfWin)
+            if (AdditionalTempData.WinCondition == WinCondition.WerewolfWin)
             {
                 textRenderer.text = "Werewolf Wins!";
                 textRenderer.color = Colors.Werewolf;
                 __instance.BackgroundBar.material.SetColor("_Color", Colors.Werewolf);
             }
 
-            foreach (WinCondition cond in AdditionalTempData.additionalWinConditions) 
+            foreach (WinCondition cond in AdditionalTempData.AdditionalWinConditions) 
             {
                 if (cond == WinCondition.AdditionalRomanticWin) {
                     textRenderer.text += $"\n{ColorString(Colors.Romantic, "The Romantic wins with the beloved!")}";

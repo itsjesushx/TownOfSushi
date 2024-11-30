@@ -1,7 +1,4 @@
-﻿
-
-
-namespace TownOfSushi.Roles.Crewmates.Killing.VigilanteRole
+﻿namespace TownOfSushi.Roles.Crewmates.Killing.VigilanteRole
 {
     [HarmonyPatch]
     public class AddButton

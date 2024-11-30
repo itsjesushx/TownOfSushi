@@ -1,8 +1,5 @@
-
-
 using TownOfSushi.Roles.Impostors.Power.BomberRole;
 using TownOfSushi.Roles.Crewmates.Support.MedicRole;
-
 
 namespace TownOfSushi.Roles
 {
@@ -17,7 +14,6 @@ namespace TownOfSushi.Roles
         public Bomb Bomb = new Bomb();
         public static Material bombMaterial = TownOfSushi.bundledAssets.Get<Material>("bomb");
         public DateTime StartingCooldown { get; set; }
-
         public Bomber(PlayerControl player) : base(player)
         {
             Name = "Bomber";

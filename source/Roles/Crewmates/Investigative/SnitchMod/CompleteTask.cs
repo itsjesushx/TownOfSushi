@@ -1,5 +1,3 @@
-
-
 namespace TownOfSushi.Roles.Crewmates.Investigative.SnitchRole
 {
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CompleteTask))]

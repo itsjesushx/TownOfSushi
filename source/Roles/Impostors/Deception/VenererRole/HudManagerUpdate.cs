@@ -1,7 +1,3 @@
-
-
-
-
 namespace TownOfSushi.Roles.Impostors.Deception.VenererRole
 {
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]

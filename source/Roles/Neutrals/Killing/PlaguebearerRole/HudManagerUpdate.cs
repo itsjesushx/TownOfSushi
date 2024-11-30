@@ -1,9 +1,3 @@
-
-
-
-
-using TownOfSushi.Extensions;
-
 namespace TownOfSushi.Roles.Neutral.Killing.PlaguebearerRole
 {
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]

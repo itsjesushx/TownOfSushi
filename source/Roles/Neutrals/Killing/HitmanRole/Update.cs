@@ -1,4 +1,3 @@
-
 using InnerNet;
 
 namespace TownOfSushi.Roles.Neutral.Killing.HitmanRole

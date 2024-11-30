@@ -1,7 +1,3 @@
-
-
-
-
 namespace TownOfSushi.Roles.Crewmates.Support.TransporterMod
 {
     [HarmonyPatch(typeof(KillButton), nameof(KillButton.DoClick))]

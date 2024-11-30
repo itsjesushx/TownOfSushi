@@ -4,7 +4,6 @@ namespace TownOfSushi.Roles.Crewmates
     {
         public List<ArrowBehaviour> ImpArrows = new List<ArrowBehaviour>();
         public Dictionary<byte, ArrowBehaviour> SnitchArrows = new Dictionary<byte, ArrowBehaviour>();
-
         public Snitch(PlayerControl player) : base(player)
         {
             Name = "Snitch";

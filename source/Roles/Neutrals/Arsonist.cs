@@ -1,6 +1,4 @@
-﻿
-
-using TownOfSushi.Roles.Crewmates.Support.MedicRole;
+﻿using TownOfSushi.Roles.Crewmates.Support.MedicRole;
 
 namespace TownOfSushi.Roles
 {

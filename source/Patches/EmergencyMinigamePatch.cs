@@ -3,33 +3,36 @@ namespace TownOfSushi.Patches
     [HarmonyPatch(typeof(EmergencyMinigame), nameof(EmergencyMinigame.Update))]
     class EmergencyMinigameUpdatePatch 
     {
-        static void Postfix(EmergencyMinigame __instance) {
-            var roleCanCallEmergency = true;
-            var statusText = "";
+        static void Postfix(EmergencyMinigame __instance) 
+        {
+            var CanCallEmergency = true;
+            var StatusText = "";
 
             // Potentially deactivate emergency button for Jester
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Jester) && !CustomGameOptions.JesterButton) {
-                roleCanCallEmergency = false;
-                statusText = "The Jester can't start an emergency meeting";
+            if (PlayerControl.LocalPlayer.Is(RoleEnum.Jester) && !CustomGameOptions.JesterButton) 
+            {
+                CanCallEmergency = false;
+                StatusText = "The Jester can't start an emergency meeting";
             }
 
             // Potentially deactivate emergency button for Executioner
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Executioner) && !CustomGameOptions.ExecutionerButton) {
-                roleCanCallEmergency = false;
-                statusText = "The Executioner can't start an emergency meeting";
+            if (PlayerControl.LocalPlayer.Is(RoleEnum.Executioner) && !CustomGameOptions.ExecutionerButton) 
+            {
+                CanCallEmergency = false;
+                StatusText = "The Executioner can't start an emergency meeting";
             }
 
             // Potentially deactivate emergency button for Snitch
             var snitch = GetRole<Snitch>(PlayerControl.LocalPlayer);
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Snitch) && !CustomGameOptions.SnitchButton && snitch.Revealed) 
             {
-                roleCanCallEmergency = false;
-                statusText = "The Snitch can't start an emergency meeting after being revealed!";
+                CanCallEmergency = false;
+                StatusText = "The Snitch can't start an emergency meeting after being revealed!";
             }
 
-            if (!roleCanCallEmergency) 
+            if (!CanCallEmergency) 
             {
-                __instance.StatusText.text = statusText;
+                __instance.StatusText.text = StatusText;
                 __instance.NumberText.text = string.Empty;
                 __instance.ClosedLid.gameObject.SetActive(true);
                 __instance.OpenLid.gameObject.SetActive(false);
@@ -49,7 +52,6 @@ namespace TownOfSushi.Patches
                 Object.Destroy(__instance.gameObject);
                 return false;
             }
-
             return true;
         }
     }

@@ -1,8 +1,4 @@
-﻿
-
-
-
-namespace TownOfSushi.Roles.Impostors.Deception.EscapistRole
+﻿namespace TownOfSushi.Roles.Impostors.Deception.EscapistRole
 {
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
     public class HudManagerUpdate

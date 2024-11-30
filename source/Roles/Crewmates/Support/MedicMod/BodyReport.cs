@@ -1,5 +1,3 @@
-
-
 namespace TownOfSushi.Roles.Crewmates.Support.MedicRole
 {
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CmdReportDeadBody))]

@@ -1,8 +1,3 @@
-
-
-
-
-
 namespace TownOfSushi.Roles
 {
     public class Escapist : Role
@@ -10,22 +5,17 @@ namespace TownOfSushi.Roles
         public KillButton _escapeButton;
         public DateTime LastEscape;
         public Vector3 EscapePoint = new();
-
         public Escapist(PlayerControl player) : base(player)
         {
             Name = "Escapist";
             StartText = () => "Get Away From Kills With Ease";
             TaskText = () => "Teleport to get away from bodies";
-            
-            
             Color = Colors.Impostor;
             RoleType = RoleEnum.Escapist;
-            
             Faction = Faction.Impostors;
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.ImpDeception;
         }
-
         public KillButton EscapeButton
         {
             get => _escapeButton;
@@ -36,7 +26,6 @@ namespace TownOfSushi.Roles
                 ExtraButtons.Add(value);
             }
         }
-
         public float EscapeTimer()
         {
             var utcNow = DateTime.UtcNow;
@@ -68,7 +57,6 @@ namespace TownOfSushi.Roles
                 Flash(new Color(0.6f, 0.1f, 0.2f, 1f), 2.5f);
                 if (Minigame.Instance) Minigame.Instance.Close();
             }
-
             escapist.moveable = true;
             escapist.Collider.enabled = true;
             escapist.NetTransform.enabled = true;

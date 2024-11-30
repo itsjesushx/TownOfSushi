@@ -1,6 +1,4 @@
-﻿
-
-namespace TownOfSushi.Roles.Crewmates.Investigative.SeerRole
+﻿namespace TownOfSushi.Roles.Crewmates.Investigative.SeerRole
 {
     [HarmonyPatch(typeof(HudManager))]
     public class HudInvestigate

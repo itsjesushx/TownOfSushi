@@ -1,8 +1,3 @@
-
-
-
-
-
 namespace TownOfSushi.Roles.Impostors.Power.WarlockRole
 {
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]

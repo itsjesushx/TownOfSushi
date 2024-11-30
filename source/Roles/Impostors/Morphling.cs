@@ -1,7 +1,6 @@
 namespace TownOfSushi.Roles
 {
     public class Morphling : Role, IVisualAlteration
-
     {
         public KillButton _morphButton;
         public PlayerControl ClosestPlayer;

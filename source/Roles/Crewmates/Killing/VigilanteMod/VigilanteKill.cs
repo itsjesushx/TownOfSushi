@@ -1,5 +1,4 @@
-﻿
-using UnityEngine.UI;
+﻿using UnityEngine.UI;
 using TownOfSushi.Roles.Crewmates.Support.MedicRole;
 using TownOfSushi.Roles.Impostors.Support.BlackmailerRole;
 using TownOfSushi.Roles.Crewmates.Support.ImitatorRole;

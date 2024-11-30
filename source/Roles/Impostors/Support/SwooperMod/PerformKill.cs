@@ -1,6 +1,3 @@
-
-
-
 namespace TownOfSushi.Roles.Impostors.Support.SwooperRole
 {
     [HarmonyPatch(typeof(KillButton), nameof(KillButton.DoClick))]

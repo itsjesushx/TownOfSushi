@@ -1,6 +1,3 @@
-
-
-
 namespace TownOfSushi.Roles
 {
     public class Plaguebearer : Role

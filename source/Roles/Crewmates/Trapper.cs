@@ -1,28 +1,22 @@
-﻿
-using TMPro;
+﻿using TMPro;
 using TownOfSushi.Roles.Crewmates.Investigative.TrapperMod;
-
 
 namespace TownOfSushi.Roles.Crewmates
 {
     public class Trapper : Role
     {
         public static Material trapMaterial = TownOfSushi.bundledAssets.Get<Material>("trap");
-
         public List<Trap> traps = new List<Trap>();
         public DateTime LastTrapped { get; set; }
         public int UsesLeft;
         public TextMeshPro UsesText;
-
         public List<RoleEnum> trappedPlayers;
-
         public bool ButtonUsable => UsesLeft != 0;
         public Trapper(PlayerControl player) : base(player)
         {
             Name = "Trapper";
             StartText = () => "Catch Killers In The Act";
             TaskText = () => "Place traps around the map";
-            
             Color = Colors.Trapper;
             RoleType = RoleEnum.Trapper;
             LastTrapped = DateTime.UtcNow;

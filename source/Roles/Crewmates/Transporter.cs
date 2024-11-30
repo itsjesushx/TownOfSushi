@@ -1,7 +1,4 @@
-
 using TMPro;
-
-
 using System.Collections;
 using TownOfSushi.Roles.Crewmates.Support.MedicRole;
 using TownOfSushi.Roles.Abilities.AbilityMod.ChameleonAbility;
@@ -13,15 +10,11 @@ namespace TownOfSushi.Roles.Crewmates
         public DateTime LastTransported { get; set; }
         public PlayerControl TransportPlayer1 { get; set; }
         public PlayerControl TransportPlayer2 { get; set; }
-
         public int UsesLeft;
         public TextMeshPro UsesText;
-
         public bool ButtonUsable => UsesLeft != 0 && !SwappingMenus;
         public bool SwappingMenus = false;
-
         public Dictionary<byte, DateTime> UntransportablePlayers = new Dictionary<byte, DateTime>();
-
         public Transporter(PlayerControl player) : base(player)
         {
             Name = "Transporter";

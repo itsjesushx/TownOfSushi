@@ -1,8 +1,4 @@
-﻿
-
-
-
-namespace TownOfSushi.Roles.Impostors.Power.BomberRole
+﻿namespace TownOfSushi.Roles.Impostors.Power.BomberRole
 {
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
     public class HudManagerUpdate

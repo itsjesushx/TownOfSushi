@@ -1,5 +1,3 @@
-using TMPro;
-
 namespace TownOfSushi.Roles.Crewmates.Power.ProsecutorRole
 {
     public class AddProsecute
@@ -10,7 +8,7 @@ namespace TownOfSushi.Roles.Crewmates.Power.ProsecutorRole
             role.Prosecute.gameObject.SetActive(skip.gameObject.active && !role.Prosecuted && !role.Player.IsJailed());
             role.Prosecute.voteComplete = skip.voteComplete;
             role.Prosecute.GetComponent<SpriteRenderer>().enabled = skip.GetComponent<SpriteRenderer>().enabled;
-            role.Prosecute.GetComponentsInChildren<TextMeshPro>()[0].text = "Prosecute";
+            role.Prosecute.GetComponentsInChildren<TMPro.TextMeshPro>()[0].text = "Prosecute";
         }
 
 

@@ -1,6 +1,4 @@
-
 using TownOfSushi.Extensions;
-
 
 namespace TownOfSushi.Roles
 {

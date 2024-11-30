@@ -1,9 +1,4 @@
-﻿
-
-
-
-
-namespace TownOfSushi.Roles.Impostors.Deception.EscapistRole
+﻿namespace TownOfSushi.Roles.Impostors.Deception.EscapistRole
 {
     [HarmonyPatch(typeof(KillButton), nameof(KillButton.DoClick))]
     public class PerformKill

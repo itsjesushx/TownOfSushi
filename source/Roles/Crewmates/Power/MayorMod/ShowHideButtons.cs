@@ -1,5 +1,3 @@
-
-
 namespace TownOfSushi.Roles.Crewmates.Power.MayorRole
 {
     public class ShowHideButtonsMayor

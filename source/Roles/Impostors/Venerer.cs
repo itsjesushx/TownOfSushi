@@ -1,7 +1,3 @@
-
-using TownOfSushi.Extensions;
-
-
 namespace TownOfSushi.Roles
 {
     public class Venerer : Role
@@ -26,7 +22,6 @@ namespace TownOfSushi.Roles
         }
 
         public bool IsCamouflaged => TimeRemaining > 0f;
-
         public KillButton AbilityButton
         {
             get => _abilityButton;

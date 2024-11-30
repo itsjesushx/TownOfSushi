@@ -1,6 +1,3 @@
-
-
-
 namespace TownOfSushi.Roles.Crewmates.Power.MayorRole
 {
     [HarmonyPatch(typeof(MeetingHud))]

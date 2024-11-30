@@ -1,5 +1,3 @@
-
-
 using TownOfSushi.Modifiers.UnderdogMod;
 
 namespace TownOfSushi.Roles.Impostors.Power.WarlockRole

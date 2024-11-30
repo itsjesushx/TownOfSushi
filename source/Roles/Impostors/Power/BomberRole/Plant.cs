@@ -1,7 +1,4 @@
-﻿
-
-
-using TownOfSushi.Modifiers.UnderdogMod;
+﻿using TownOfSushi.Modifiers.UnderdogMod;
 
 namespace TownOfSushi.Roles.Impostors.Power.BomberRole
 {

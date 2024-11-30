@@ -1,5 +1,3 @@
-
-
 namespace TownOfSushi.Roles.Crewmates.Support.ImitatorRole
 {
     [HarmonyPatch(typeof(MeetingHud))]

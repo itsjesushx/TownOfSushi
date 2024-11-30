@@ -1,7 +1,3 @@
-
-
-
-
 namespace TownOfSushi.Roles
 {
     public class Miner : Role

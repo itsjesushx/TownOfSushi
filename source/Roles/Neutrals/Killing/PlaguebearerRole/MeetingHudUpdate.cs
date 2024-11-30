@@ -1,7 +1,3 @@
-
-
-
-
 namespace TownOfSushi.Roles.Neutral.Killing.PlaguebearerRole
 {
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Update))]

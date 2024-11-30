@@ -1,6 +1,3 @@
-
-using UnityEngine;
-
 namespace TownOfSushi.Roles.Crewmates.Investigative.InvestigatorMod
 {
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]

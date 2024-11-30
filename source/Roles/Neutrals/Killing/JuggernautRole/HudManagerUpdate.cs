@@ -1,5 +1,3 @@
-
-
 namespace TownOfSushi.Roles.Neutral.Killing.JuggernautRole
 {
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]

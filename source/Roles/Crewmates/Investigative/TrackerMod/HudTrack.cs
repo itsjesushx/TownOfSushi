@@ -1,6 +1,4 @@
-﻿
-
-namespace TownOfSushi.Roles.Crewmates.Investigative.TrackerMod
+﻿namespace TownOfSushi.Roles.Crewmates.Investigative.TrackerMod
 {
     [HarmonyPatch(typeof(HudManager))]
     public class HudTrack

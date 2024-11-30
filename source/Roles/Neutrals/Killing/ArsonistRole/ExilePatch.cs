@@ -1,5 +1,3 @@
-
-
 namespace TownOfSushi.Roles.Neutral.Killing.ArsonistRole
 {
     [HarmonyPatch(typeof(AirshipExileController), nameof(AirshipExileController.WrapUpAndSpawn))]

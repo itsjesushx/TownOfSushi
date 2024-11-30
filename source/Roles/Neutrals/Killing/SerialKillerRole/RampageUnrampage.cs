@@ -1,6 +1,3 @@
-
-
-
 namespace TownOfSushi.Roles.Neutral.Killing.SerialKillerRole
 {
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]

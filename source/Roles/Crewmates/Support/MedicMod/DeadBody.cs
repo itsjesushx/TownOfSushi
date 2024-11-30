@@ -1,6 +1,4 @@
-﻿
-
-namespace TownOfSushi.Roles.Crewmates.Support.MedicRole
+﻿namespace TownOfSushi.Roles.Crewmates.Support.MedicRole
 {
     public class DeadPlayer
     {

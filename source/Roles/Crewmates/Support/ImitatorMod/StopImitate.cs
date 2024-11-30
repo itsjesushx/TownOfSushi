@@ -1,5 +1,4 @@
 using TownOfSushi.Roles.Crewmates.Investigative.TrapperMod;
-
 using TownOfSushi.Roles.Crewmates.Investigative.InvestigatorMod;
 
 namespace TownOfSushi.Roles.Crewmates.Support.ImitatorRole

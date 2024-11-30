@@ -3,13 +3,11 @@ namespace TownOfSushi.Roles
     public class Undertaker : Role
     {
         public KillButton _dragDropButton;
-
         public Undertaker(PlayerControl player) : base(player)
         {
             Name = "Undertaker";
             StartText = () => "Drag Bodies And Hide Them";
             TaskText = () => "Drag bodies around to hide them from being reported";
-            
             Color = Colors.Impostor;
             LastDragged = DateTime.UtcNow;
             RoleType = RoleEnum.Undertaker;
@@ -21,7 +19,6 @@ namespace TownOfSushi.Roles
         public DateTime LastDragged { get; set; }
         public DeadBody CurrentTarget { get; set; }
         public DeadBody CurrentlyDragging { get; set; }
-
         public KillButton DragDropButton
         {
             get => _dragDropButton;
@@ -32,7 +29,6 @@ namespace TownOfSushi.Roles
                 ExtraButtons.Add(value);
             }
         }
-
         public float DragTimer()
         {
             var utcNow = DateTime.UtcNow;

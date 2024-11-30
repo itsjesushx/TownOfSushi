@@ -1,6 +1,4 @@
-﻿
-
-namespace TownOfSushi.Roles.Crewmates.Killing.VigilanteRole
+﻿namespace TownOfSushi.Roles.Crewmates.Killing.VigilanteRole
 {
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
     public class HUDKill

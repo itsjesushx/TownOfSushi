@@ -6,7 +6,6 @@ namespace TownOfSushi.Roles
         public bool Caught;
         public bool CompletedTasks { get; set; } = false;
         public bool Faded;
-
         public Phantom(PlayerControl player) : base(player)
         {
             Name = "Phantom";

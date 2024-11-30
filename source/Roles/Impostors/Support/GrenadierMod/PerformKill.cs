@@ -1,7 +1,3 @@
-
-
-
-
 namespace TownOfSushi.Roles.Impostors.Support.GrenadierRole
 {
     [HarmonyPatch(typeof(KillButton), nameof(KillButton.DoClick))]

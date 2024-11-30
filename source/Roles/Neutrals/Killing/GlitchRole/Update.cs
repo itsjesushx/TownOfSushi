@@ -1,5 +1,4 @@
-﻿
-using InnerNet;
+﻿using InnerNet;
 
 namespace TownOfSushi.Roles.Neutral.Killing.GlitchRole
 {

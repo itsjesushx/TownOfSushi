@@ -1,6 +1,5 @@
 ﻿using InnerNet;
 using System.Collections;
-
 using static TownOfSushi.Patches.DisableAbilities;
 
 namespace TownOfSushi.Roles

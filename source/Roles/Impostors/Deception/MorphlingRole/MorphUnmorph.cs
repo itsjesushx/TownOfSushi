@@ -1,6 +1,3 @@
-
-
-
 namespace TownOfSushi.Roles.Impostors.Deception.MorphlingRole
 {
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]

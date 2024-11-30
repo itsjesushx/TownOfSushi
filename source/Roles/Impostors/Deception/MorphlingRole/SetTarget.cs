@@ -1,7 +1,3 @@
-
-using TownOfSushi.Extensions;
-
-
 namespace TownOfSushi.Roles.Impostors.Deception.MorphlingRole
 {
     [HarmonyPatch(typeof(KillButton), nameof(KillButton.SetTarget))]

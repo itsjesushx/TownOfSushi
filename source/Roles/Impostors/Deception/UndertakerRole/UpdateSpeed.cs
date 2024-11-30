@@ -1,6 +1,3 @@
-
-
-
 namespace TownOfSushi.Roles.Impostors.Deception.UndertakerRole
 {
     [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.FixedUpdate))]

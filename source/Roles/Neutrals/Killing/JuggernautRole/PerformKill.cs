@@ -1,8 +1,3 @@
-
-
-
-using AmongUs.GameOptions;
-
 namespace TownOfSushi.Roles.Neutral.Killing.JuggernautRole
 {
     [HarmonyPatch(typeof(KillButton), nameof(KillButton.DoClick))]

@@ -5,7 +5,6 @@ namespace TownOfSushi.Patches
     {
         public static PoolablePlayer playerPrefab;
         public static Vector3 bottomLeft;
-        
         public static void Prefix(IntroCutscene __instance) 
         {
             // Generate and initialize player icons
