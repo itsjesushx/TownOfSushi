@@ -1,3 +1,5 @@
+
+
 namespace TownOfSushi.Roles.Modifiers
 {
     public class Frosty : Modifier
