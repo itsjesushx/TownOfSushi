@@ -150,7 +150,7 @@ namespace TownOfSushi.Roles
             foreach (var role in GetRoles(RoleEnum.Arsonist))
             {
                 var arsonist = (Arsonist) role;
-                if (arsonist.DousedPlayers.Contains(Player.PlayerId) && !Player.Data.IsDead && PlayerControl.LocalPlayer.Data.IsDead && !arsonist.Player.Data.IsDead)
+                if (arsonist.DousedPlayers.Contains(Player.PlayerId) && PlayerControl.LocalPlayer.Data.IsDead && !arsonist.Player.Data.IsDead || PlayerControl.LocalPlayer == arsonist.Player)
                 {
                     PlayerName += "<color=#FF4D00FF> [♨]</color>";
                 }
@@ -158,18 +158,9 @@ namespace TownOfSushi.Roles
             foreach (var role in GetRoles(RoleEnum.Plaguebearer))
             {
                 var plaguebearer = (Plaguebearer) role;
-                if (plaguebearer.InfectedPlayers.Contains(Player.PlayerId) && Player != plaguebearer.Player && !Player.Data.IsDead && PlayerControl.LocalPlayer.Data.IsDead && !plaguebearer.Player.Data.IsDead)
+                if (plaguebearer.InfectedPlayers.Contains(Player.PlayerId) && PlayerControl.LocalPlayer.Data.IsDead && !plaguebearer.Player.Data.IsDead || PlayerControl.LocalPlayer == plaguebearer.Player)
                 {
                     PlayerName += "<color=#E6FFB3FF> [♨]</color>";
-                }
-            }
-            
-            foreach (var role in GetRoles(RoleEnum.Witch))
-            {
-                var witch = (Witch) role;
-                if (witch.Spelled != null && !witch.Spelled.Data.IsDead)
-                {
-                    PlayerName += " <color=#FF0000FF>†</color>";
                 }
             }
 
