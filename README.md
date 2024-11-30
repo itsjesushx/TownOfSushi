@@ -197,7 +197,7 @@ If the killer of the inspected player dies, the following round the examine butt
 ### **Team: Crewmates**
 The Mystic is a Crewmate that gets an alert revealing when someone has died.\
 On top of this, the Mystic briefly gets an arrow pointing in the direction of the body.\
-The Mystic is a Crewmate that can examine other players for suspicious behaviour.\
+The Mystic can also examine other players for suspicious behaviour.\
 If the player the Mystic examines has killed recently the Mystic will be alerted about it.
 ### Game Options
 | Name | Description | Type | Default |
@@ -208,8 +208,8 @@ If the player the Mystic examines has killed recently the Mystic will be alerted
 | Examine Cooldown | The cooldown of the Mystic's Examine button | Time | 10s |
 | Bloody Duration | How long players remain bloody after a kill | Time | 25s |
 | Show Mystic Reports | Whether the Mystic should get information when reporting a body | Toggle | True |
-| Time Where Medic Reports Will Have Role | If a body has been dead for shorter than this amount, the Medic's report will contain the killer's role | Time | 15s |
-| Time Where Medic Reports Will Have Faction | If a body has been dead for shorter than this amount, the Medic's report will contain the killer's faction | Time | 30s |
+| Time Where Mystic Reports Will Have Role | If a body has been dead for shorter than this amount, the Mystic's report will contain the killer's role | Time | 15s |
+| Time Where Mystic Reports Will Have Faction | If a body has been dead for shorter than this amount, the Mystic's report will contain the killer's faction | Time | 30s |
 
 -----------------------
 ## Oracle
