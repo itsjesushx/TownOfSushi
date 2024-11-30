@@ -24,17 +24,16 @@
 | [Morphling](#morphling) | [Oracle](#oracle) | [Doomsayer](#doomsayer) |  [Double Shot](#double-shot) |[Spy](#spy) | [Vanilla Hide 'n' Seek](https://www.innersloth.com/new-game-mode-hide-n-seek-is-here-emergency-meeting-35/) |
 | [Venerer](#venerer) | [Investigator](#investigator) | [Vulture](#vulture) | [Frosty](#frosty) | [Drunk](#drunk)||
 | [Miner](#miner) | [Mystic](#mystic) | [Guardian Angel](#guardian-angel) |  [Giant](#giant)|[Flash](#flash) |
-| [Blackmailer](#blackmailer) | [Veteran](#veteran) | [Prosecutor](#prosecutor) | [Ghoul](#ghoul)  | [Multitasker](#multitasker)|
-| [Warlock](#warlock) | [Medic](#medic) | [Phantom](#phantom) |  [Underdog](#underdog) | [Radar](#radar) |
-|  [Undertaker](#undertaker) | [Imitator](#imitator) | [Executioner](#executioner) |  [Diseased](#diseased) | [Sleuth](#sleuth) |
-|  [Bomber](#bomber)  | [Seer](#seer) | [Romantic](#romantic) | | [Tiebreaker](#tiebreaker) |
-|  [Witch](#witch)| [Prosecutor](#prosecutor) | [Amnesiac](#amnesiac) | |
-| | [Tracker](#tracker) | [Agent](#agent) |  |
-| | [Snitch](#snitch) | [Hitman](#hitman) |  |
-| |[Transporter](#transporter)  | [Glitch](#glitch) |  |
-| |[Trapper](#trapper) | [Serial Killer](#serial-killer) |  |
-| |[Haunter](#haunter) | [Juggernaut](#juggernaut) |  |
-| | | [Plaguebearer](#plaguebearer) |  |
+| [Blackmailer](#blackmailer) | [Veteran](#veteran) |  [Phantom](#phantom) |[Underdog](#underdog) | [Multitasker](#multitasker)|
+| [Warlock](#warlock) | [Medic](#medic) | [Executioner](#executioner)  |   [Diseased](#diseased) | [Radar](#radar) |
+|  [Undertaker](#undertaker) | [Imitator](#imitator) | [Romantic](#romantic) |  | [Sleuth](#sleuth) |
+|  [Bomber](#bomber)  | [Seer](#seer) | [Amnesiac](#amnesiac)| | [Tiebreaker](#tiebreaker) |
+|  [Witch](#witch)| [Prosecutor](#prosecutor) |  [Agent](#agent) | |
+| | [Tracker](#tracker) | [Hitman](#hitman) |  |
+| | [Snitch](#snitch) |[Glitch](#glitch) |  |
+| |[Transporter](#transporter)  | [Serial Killer](#serial-killer) |  |
+| |[Trapper](#trapper) | [Juggernaut](#juggernaut)  |  |
+| |[Haunter](#haunter) |[Plaguebearer](#plaguebearer) |  |
 | | | [Pestilence](#plaguebearer) |  |
 
 -----------------------
@@ -249,7 +248,7 @@ A player's name will change color depending on faction and role.
 
 The Snitch is a Crewmate that can get arrows pointing towards the Impostors & Neutral Killers, once all their tasks are finished.\
 The names of the Impostors will also show up as red on their screen, While the Neutral Killers' name will be gray.\
-However, when they only have a single task left, the Impostors get an arrow pointing towards the Snitch.
+However, when they only have a single task left, the Impostors & Neutral Killers get an arrow pointing towards the Snitch.
 ### Game Options
 | Name | Description | Type | Default |
 |----------|:-------------:|:------:|:------:|
@@ -1055,16 +1054,6 @@ Killing the Bait makes the killer auto self-report.
 | Bait | The percentage probability of the Bait appearing | Percentage | 0% |
 | Bait Minimum Delay | The minimum time the killer of the Bait reports the body | Time | 0s |
 | Bait Maximum Delay | The maximum time the killer of the Bait reports the body | Time | 1s |
-
------------------------
-
-## Ghoul
-### **Applied to: All**
-Killing the Ghoul kills the killer.
-### Game Options
-| Name | Description | Type | Default |
-|----------|:-------------:|:------:|:------:|
-| Ghoul | The percentage probability of the Ghoul appearing | Percentage | 0% |
 
 -----------------------
 ## Diseased
