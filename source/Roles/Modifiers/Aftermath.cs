@@ -51,20 +51,6 @@ namespace TownOfSushi.Roles.Modifiers
 
                 Rpc(CustomRPC.Blackmail, player.PlayerId, player.PlayerId);
             }
-            else if (role is Witch witch)
-            {
-                witch.Spelled?.myRend().material.SetFloat("_Outline", 0f);
-                if (witch.Spelled != null && witch.Spelled.Data.IsImpostor())
-                {
-                    if (witch.Spelled.GetCustomOutfitType() != CustomPlayerOutfitType.Camouflage &&
-                        witch.Spelled.GetCustomOutfitType() != CustomPlayerOutfitType.Swooper)
-                        witch.Spelled.nameText().color = Colors.Impostor;
-                    else witch.Spelled.nameText().color = Color.clear;
-                }
-                witch.Spelled = player;
-
-                Rpc(CustomRPC.Spell, player.PlayerId, player.PlayerId);
-            }
             else if (role is Glitch glitch)
             {
                 if (glitch.Player.GetCustomOutfitType() != CustomPlayerOutfitType.Morph) glitch.RpcSetMimicked(corpse);

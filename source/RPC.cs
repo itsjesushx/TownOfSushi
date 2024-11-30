@@ -50,7 +50,6 @@ namespace TownOfSushi
             if (min > max) min = max;
             return Random.RandomRangeInt(min, max + 1);
         }
-
         private static void SortRoles(this List<(Type, int, bool)> roles, int max)
         {
             if (max <= 0)
@@ -670,7 +669,8 @@ namespace TownOfSushi
                         readByte2 = reader.ReadByte();
                         var amnesiac = PlayerById(readByte1);
                         var other = PlayerById(readByte2);
-                        switch (reader.ReadByte()) {
+                        switch (reader.ReadByte()) 
+                        {
                             case 0: // start
                                 if (AmongUsClient.Instance.AmHost && amnesiac.Is(RoleEnum.Amnesiac))
                                 {
@@ -701,7 +701,6 @@ namespace TownOfSushi
                     case CustomRPC.BypassKill:
                         var killer = PlayerById(reader.ReadByte());
                         var target = PlayerById(reader.ReadByte());
-
                         MurderPlayer(killer, target, true);
                         break;
                     case CustomRPC.BypassMultiKill:
@@ -716,6 +715,14 @@ namespace TownOfSushi
                         var assassinPlayer = PlayerById(reader.ReadByte());
                         AssassinKill.MurderPlayer(assassin, toDie);
                         AssassinKill.AssassinKillCount(toDie, assassinPlayer);
+                        break;
+                    case CustomRPC.Spell:
+                        var witch = GetRole<Witch>(PlayerById(reader.ReadByte()));
+                        var targetPlayer = PlayerById(reader.ReadByte());
+                        if (witch != null && targetPlayer != null)    
+                        {        
+                            witch.SpelledPlayers.Add(targetPlayer.PlayerId);    
+                        }
                         break;
                     case CustomRPC.VigilanteKill:
                         var toDie2 = PlayerById(reader.ReadByte());
@@ -895,10 +902,6 @@ namespace TownOfSushi
                         player3.Collider.enabled = true;
                         player3.moveable = true;
                         player3.NetTransform.enabled = true;
-                        break;
-                    case CustomRPC.Spell:
-                        var witch = GetRole<Witch>(PlayerById(reader.ReadByte()));
-                        witch.Spelled = PlayerById(reader.ReadByte());
                         break;
                     case CustomRPC.BarryButton:
                         var buttonBarry = PlayerById(reader.ReadByte());

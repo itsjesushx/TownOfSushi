@@ -277,6 +277,14 @@ namespace TownOfSushi
                 return gaTarget != null && player.PlayerId == gaTarget.PlayerId;
             });
         }
+        public static bool IsSpelled(this PlayerControl player)
+        {   
+            return GetRoles(RoleEnum.Witch).Any(role =>    
+            {        
+                var spelledPlayers = ((Witch)role).SpelledPlayers;        
+                return spelledPlayers != null && spelledPlayers.Contains(player.PlayerId) && !role.Player.Data.IsDead;    
+            });
+        }
 
         public static bool IsShielded(this PlayerControl player)
         {
@@ -286,15 +294,6 @@ namespace TownOfSushi
                 return shieldedPlayer != null && player.PlayerId == shieldedPlayer.PlayerId;
             });
         }
-        public static bool IsCursed(this PlayerControl player)
-        {
-            return GetRoles(RoleEnum.Witch).Any(role =>
-            {
-                var SpelledPlayer = ((Witch)role).Spelled;
-                return SpelledPlayer != null && player.PlayerId == SpelledPlayer.PlayerId;
-            });
-        }
-
         public static Medic GetMedic(this PlayerControl player)
         {
             return GetRoles(RoleEnum.Medic).FirstOrDefault(role =>
@@ -1418,20 +1417,6 @@ namespace TownOfSushi
                 var blackmailer = (Blackmailer)role;
                 blackmailer.Blackmailed = null;
             }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Witch))
-            {
-                var witch = GetRole<Witch>(PlayerControl.LocalPlayer);
-                witch.LastSpelled = DateTime.UtcNow;
-                if (witch.Player.PlayerId == PlayerControl.LocalPlayer.PlayerId)
-                {
-                    witch.Spelled?.myRend().material.SetFloat("_Outline", 0f);
-                }
-            }
-            foreach (var role in GetRoles(RoleEnum.Witch))
-            {
-                var witch = (Witch)role;
-                witch.Spelled = null;
-            }
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Bomber))
             {
                 var bomber = GetRole<Bomber>(PlayerControl.LocalPlayer);
@@ -1447,6 +1432,11 @@ namespace TownOfSushi
             {
                 var miner = GetRole<Miner>(PlayerControl.LocalPlayer);
                 miner.LastMined = DateTime.UtcNow;
+            }
+            if (PlayerControl.LocalPlayer.Is(RoleEnum.Witch))
+            {
+                var Witch = GetRole<Witch>(PlayerControl.LocalPlayer);
+                Witch.LastSpelled = DateTime.UtcNow;
             }
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Morphling))
             {

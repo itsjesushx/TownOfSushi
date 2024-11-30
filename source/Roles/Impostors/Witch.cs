@@ -4,7 +4,7 @@ namespace TownOfSushi.Roles
     {
         public KillButton _spellButton;
         public PlayerControl ClosestPlayer;
-        public PlayerControl Spelled;
+        public List<byte> SpelledPlayers = new List<byte>();
         public DateTime LastSpelled{ get; set; }
         public Witch(PlayerControl player) : base(player)
         {
@@ -37,13 +37,6 @@ namespace TownOfSushi.Roles
             var flag2 = num - (float)timeSpan.TotalMilliseconds < 0f;
             if (flag2) return 0;
             return (num - (float)timeSpan.TotalMilliseconds) / 1000f;
-        }
-        private static Sprite spelledOverlaySprite;
-        public static Sprite getSpelledOverlaySprite()
-        {
-            if (spelledOverlaySprite) return spelledOverlaySprite;
-            spelledOverlaySprite = LoadSpriteFromResources("TownOfSushi.Resources.SpellButtonMeeting.png", 115f);
-            return spelledOverlaySprite;
         }
     }
 }

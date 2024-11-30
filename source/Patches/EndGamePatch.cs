@@ -39,7 +39,6 @@ namespace TownOfSushi.Patches
             gameOverReason = endGameResult.GameOverReason;
             if ((int)endGameResult.GameOverReason >= 10) endGameResult.GameOverReason = GameOverReason.ImpostorByKill;
         }
-
         public static void Postfix(AmongUsClient __instance, [HarmonyArgument(0)]ref EndGameResult endGameResult) {
             if (CameraEffect.singleton) CameraEffect.singleton.materials.Clear();
             AdditionalTempData.clear();
@@ -52,23 +51,23 @@ namespace TownOfSushi.Patches
                 //Extra information
                 if (playerControl.IsShielded())
                 {
-                    playerRole += ColorString(Colors.Medic, $" [<b>+</b>]");
+                    playerRole += ColorString(Colors.Medic, $"[<b>+</b>] ");
                 }
                 if (playerControl.IsBeloved())
                 {
-                    playerRole += ColorString(Colors.Romantic, $" [♥]");
+                    playerRole += ColorString(Colors.Romantic, $"[♥] ");
                 }
                 if (playerControl.IsGATarget())
                 {
-                    playerRole += ColorString(Colors.GuardianAngel, $" [★]");
+                    playerRole += ColorString(Colors.GuardianAngel, $"[★] ");
                 }
                 if (playerControl.IsExeTarget())
                 {
-                    playerRole += ColorString(Colors.GuardianAngel, $" [⦿]");
+                    playerRole += ColorString(Colors.GuardianAngel, $"[⦿] ");
                 }
-                if (playerControl.IsCursed())
+                if (playerControl.IsSpelled())
                 {
-                    playerRole += ColorString(Colors.Impostor, $" [†]");
+                    playerRole += ColorString(Colors.Impostor, $"[†] ");
                 }
 
                 //Roles

@@ -32,7 +32,7 @@ namespace TownOfSushi.Patches
             TMPro.TMP_Text textDiscord = buttonDiscord.transform.GetComponentInChildren<TMPro.TMP_Text>();
             __instance.StartCoroutine(Effects.Lerp(0.5f, new Action<float>((p) =>
             {
-                textDiscord.SetText("   TOS Discord");
+                textDiscord.SetText("       TOS Discord");
             })));
             PassiveButton passiveButtonDiscord = buttonDiscord.GetComponent<PassiveButton>();
             passiveButtonDiscord.OnClick = new ButtonClickedEvent();
@@ -51,7 +51,7 @@ namespace TownOfSushi.Patches
             TMPro.TMP_Text textCreditsButton = creditsButton.transform.GetComponentInChildren<TMPro.TMP_Text>();
             __instance.StartCoroutine(Effects.Lerp(0.5f, new Action<float>((p) =>
             {
-                textCreditsButton.SetText("    TOS Credits");
+                textCreditsButton.SetText("       TOS Credits");
             })));
 
             PassiveButton passiveCreditsButton = creditsButton.GetComponent<PassiveButton>();

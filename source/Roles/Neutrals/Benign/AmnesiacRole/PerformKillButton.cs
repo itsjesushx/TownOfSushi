@@ -385,7 +385,7 @@ namespace TownOfSushi.Roles.Neutral.Benign.AmnesiacRole
             {
                 var witchRole = GetRole<Witch>(amnesiac);
                 witchRole.LastSpelled = DateTime.UtcNow;
-                witchRole.Spelled = null;
+                witchRole.SpelledPlayers.RemoveRange(0, witchRole.SpelledPlayers.Count);
             }
 
             else if (role == RoleEnum.Miner)

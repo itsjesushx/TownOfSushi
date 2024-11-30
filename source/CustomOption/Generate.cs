@@ -859,7 +859,7 @@ namespace TownOfSushi.CustomOption
             VigilanteKillsNeutralEvil =
                 new CustomToggleOption(num++, MultiMenu.Crewmate, "Vigilante Kills Neutral Evil", false);
             VigilanteKillsNeutralBenign =
-                new CustomToggleOption(num++, MultiMenu.Crewmate, "Vigilante Kills Neutral Special", false);
+                new CustomToggleOption(num++, MultiMenu.Crewmate, "Vigilante Kills Neutral Benign", false);
             VigilanteKillCd =
                 new CustomNumberOption(num++, MultiMenu.Crewmate, "Vigilante Kill Cooldown", 25f, 10f, 40f, 2.5f, CooldownFormat);
             VigilanteBodyReport = new CustomToggleOption(num++, MultiMenu.Crewmate, "Vigilante Can Report Who They've Killed");
@@ -961,7 +961,7 @@ namespace TownOfSushi.CustomOption
             DoomsayerGuessNeutralBenign = new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#00FF80FF>Doomsayer</color> Can Guess <color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Benign</color> <color=#FFD700FF>Roles</color>", false);
             DoomsayerGuessNeutralEvil = new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#00FF80FF>Doomsayer</color> Can Guess <color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Evil</color> <color=#FFD700FF>Roles</color>", false);
             DoomsayerGuessNeutralKilling = new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#00FF80FF>Doomsayer</color> Can Guess <color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Killing</color> <color=#FFD700FF>Roles</color>", false);
-            DoomsayerGuessNeutralBenign = new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#00FF80FF>Doomsayer</color> Can Guess <color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Special</color> <color=#FFD700FF>Roles</color>", false);
+            DoomsayerGuessNeutralBenign = new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#00FF80FF>Doomsayer</color> Can Guess <color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Benign</color> <color=#FFD700FF>Roles</color>", false);
             DoomsayerGuessImpostors = new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#00FF80FF>Doomsayer</color> Can Guess <color=#FF0000FF>Impostor</color> <color=#FFD700FF>Roles</color>", false);
             DoomsayerAfterVoting = new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#00FF80FF>Doomsayer</color> Can Guess After Voting", false);
             DoomsayerGuessesToWin = new CustomNumberOption(num++, MultiMenu.Neutral, "Number Of <color=#00FF80FF>Doomsayer</color> Kills To Win", 3, 1, 5, 1);
@@ -1081,7 +1081,7 @@ namespace TownOfSushi.CustomOption
             CanBiteNeutralEvil =
                 new CustomToggleOption(num++, MultiMenu.Neutral, "Can Convert <color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Evil</color> <color=#FFD700FF>Roles</color>", false);
             CanBiteNeutralBenign =
-                new CustomToggleOption(num++, MultiMenu.Neutral, "Can Convert <color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Special</color> <color=#FFD700FF>Roles</color>", false);
+                new CustomToggleOption(num++, MultiMenu.Neutral, "Can Convert <color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Benign</color> <color=#FFD700FF>Roles</color>", false);
 
 
             

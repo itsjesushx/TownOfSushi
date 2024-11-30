@@ -150,7 +150,7 @@ namespace TownOfSushi.Roles
             foreach (var role in GetRoles(RoleEnum.Arsonist))
             {
                 var arsonist = (Arsonist) role;
-                if (arsonist.DousedPlayers.Contains(Player.PlayerId) && PlayerControl.LocalPlayer.Data.IsDead && !arsonist.Player.Data.IsDead || PlayerControl.LocalPlayer == arsonist.Player)
+                if (arsonist.DousedPlayers.Contains(Player.PlayerId) && PlayerControl.LocalPlayer.Data.IsDead && !arsonist.Player.Data.IsDead)
                 {
                     PlayerName += "<color=#FF4D00FF> [♨]</color>";
                 }
@@ -158,7 +158,7 @@ namespace TownOfSushi.Roles
             foreach (var role in GetRoles(RoleEnum.Plaguebearer))
             {
                 var plaguebearer = (Plaguebearer) role;
-                if (plaguebearer.InfectedPlayers.Contains(Player.PlayerId) && PlayerControl.LocalPlayer.Data.IsDead && !plaguebearer.Player.Data.IsDead || PlayerControl.LocalPlayer == plaguebearer.Player)
+                if (plaguebearer.InfectedPlayers.Contains(Player.PlayerId) && PlayerControl.LocalPlayer.Data.IsDead && !plaguebearer.Player.Data.IsDead)
                 {
                     PlayerName += "<color=#E6FFB3FF> [♨]</color>";
                 }
@@ -222,13 +222,13 @@ namespace TownOfSushi.Roles
                 var task = new GameObject(Name + "Task").AddComponent<ImportantTextTask>();
                 var ability = Ability.GetAbility(PlayerControl.LocalPlayer);
                 task.transform.SetParent(Player.transform, false);
-                task.Text = $"{ColorString}Role: {Name}\n{TaskText()}\nAlignment: {Player.AlignmentName()}\nAbility: {ability.Name}{hasFakeTasks}</color>";
+                task.Text = $"{ColorString}Role: {Name}\n{TaskText()}\nAlignment: {Player.AlignmentName()}{hasFakeTasks}</color>";
                 Player.myTasks.Insert(0, task);
                 return;
             }
             var ability2 = Ability.GetAbility(PlayerControl.LocalPlayer);
             Player.myTasks.ToArray()[0].Cast<ImportantTextTask>().Text =
-                $"{ColorString}Role: {Name}\n{TaskText()}\nAlignment: {Player.AlignmentName()}\nAbility: {ability2.Name}{hasFakeTasks}</color>";
+                $"{ColorString}Role: {Name}\n{TaskText()}\nAlignment: {Player.AlignmentName()}{hasFakeTasks}</color>";
         }
         public static T Gen<T>(Type type, PlayerControl player, CustomRPC rpc)
         {

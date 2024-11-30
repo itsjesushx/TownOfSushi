@@ -28,12 +28,12 @@
 | [Warlock](#warlock) | [Medic](#medic) | [Executioner](#executioner)  |   [Diseased](#diseased) | [Radar](#radar) |
 |  [Undertaker](#undertaker) | [Imitator](#imitator) | [Romantic](#romantic) |  | [Sleuth](#sleuth) |
 |  [Bomber](#bomber)  | [Seer](#seer) | [Amnesiac](#amnesiac)| | [Tiebreaker](#tiebreaker) |
-|  [Witch](#witch)| [Prosecutor](#prosecutor) |  [Agent](#agent) | |
-| | [Tracker](#tracker) | [Hitman](#hitman) |  |
-| | [Snitch](#snitch) |[Glitch](#glitch) |  |
-| |[Transporter](#transporter)  | [Serial Killer](#serial-killer) |  |
-| |[Trapper](#trapper) | [Juggernaut](#juggernaut)  |  |
-| |[Haunter](#haunter) |[Plaguebearer](#plaguebearer) |  |
+|  [Witch](#witch)| [Tracker](#tracker) |  [Agent](#agent) | |
+| |[Snitch](#snitch) | [Hitman](#hitman) |  |
+| | [Transporter](#transporter)  |[Glitch](#glitch) |  |
+| |[Trapper](#trapper) | [Serial Killer](#serial-killer) |  |
+| |[Haunter](#haunter)  | [Juggernaut](#juggernaut)  |  |
+| ||[Plaguebearer](#plaguebearer) |  |
 | | | [Pestilence](#plaguebearer) |  |
 
 -----------------------
@@ -324,9 +324,8 @@ During meetings, the Vigilante can choose to kill someone by guessing their role
 | Vigilante Guess After Voting  | Whether the Vigilante can Guess after they have voted | Toggle | False |
 | Vigilante | The percentage probability of the Vigilante appearing | Percentage | 0% |
 | Vigilante Miskill Kills Crewmate | Whether the other player is killed if the Vigilante Misfires | Toggle | False |
-| Vigilante Kills Doomsayer | Whether the Vigilante is able to kill the Doomsayer | Toggle | False |
-| Vigilante Kills Executioner | Whether the Vigilante is able to kill the Executioner | Toggle | False |
-| Vigilante Kills Jester | Whether the Vigilante is able to kill the Jester | Toggle | False |
+| Vigilante Kills Neutral Evil Roles | Whether the Vigilante is able to kill the Neutral Evil Roles | Toggle | False |
+| Vigilante Kills Neutral Benign Roles | Whether the Vigilante is able to kill the Neutral Benign Roles | Toggle | False |
 | Vigilante Kill Cooldown | The cooldown on the Vigilante's kill button | Time | 25s |
 | Vigilante can report who they've killed | Whether the Vigilante is able to report their own kills | Toggle | True |
 
@@ -439,18 +438,6 @@ However, if someone is dead, the Medium and the dead player will be able to see 
 | Reveal Appearance of Mediate Target | Whether the Ghosts will show as themselves, or camouflaged | Toggle | True |
 | Reveal the Medium to the Mediate Target | Whether the ghosts can see that the Medium is the Medium | Toggle | True |
 | Who is Revealed | Which players are revealed to the Medium | Oldest Dead / Newest Dead / All Dead | Oldest Dead |
-
------------------------
-## Prosecutor
-### **Team: Crewmates**
-The Prosecutor is a Crewmate that can once per game prosecute a player which results in them being exiled that meeting.\
-The Prosecutor can also see votes non-anonymously.
-
-### Game Options
-| Name | Description | Type | Default |
-|----------|:-------------:|:------:|:------:|
-| Prosecutor | The percentage probability of the Prosecutor appearing | Percentage | 0% |
-| Prosecutor Dies When They Exile A Crewmate | Whether the Prosecutor also gets exiled when they exile a Crewmate | Toggle | False |
 
 -----------------------
 ## Transporter

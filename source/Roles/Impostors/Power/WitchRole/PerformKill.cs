@@ -9,29 +9,28 @@ namespace TownOfSushi.Roles.Impostors.Power.WitchRole
             if (!PlayerControl.LocalPlayer.CanMove) return false;
             if (PlayerControl.LocalPlayer.Data.IsDead) return false;
             var role = GetRole<Witch>(PlayerControl.LocalPlayer);
-            var target = role.ClosestPlayer;
+            if (role.SpellTimer() != 0f) return false;
+            
             if (__instance == role.SpellButton)
             {
-                if (!__instance.isActiveAndEnabled || role.ClosestPlayer == null) return false;
-                if (__instance.isCoolingDown) return false;
-                if (!__instance.isActiveAndEnabled) return false;
-                if (role.SpellTimer() != 0) return false;
-                var interact = Interact(PlayerControl.LocalPlayer, target);
+                var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer);
                 if (interact.AbilityUsed)
                 {
-                    role.Spelled?.myRend().material.SetFloat("_Outline", 0f);
-                    if (role.Spelled != null && role.Spelled.Data.IsImpostor() && CustomGameOptions.SerialKillerVent)
-                    {
-                        if (role.Spelled.GetCustomOutfitType() != CustomPlayerOutfitType.Camouflage &&
-                            role.Spelled.GetCustomOutfitType() != CustomPlayerOutfitType.Swooper)
-                            role.Spelled.nameText().color = Colors.Impostor;
-                        else role.Spelled.nameText().color = Color.clear;
-                    }
-                    role.Spelled = target;
-                    Rpc(CustomRPC.Spell, PlayerControl.LocalPlayer.PlayerId, target.PlayerId);
+                    role.SpelledPlayers.Add(role.ClosestPlayer.PlayerId);
+                    Rpc(CustomRPC.Spell, PlayerControl.LocalPlayer.PlayerId, role.ClosestPlayer.PlayerId);
                 }
-                role.SpellButton.SetCoolDown(role.SpellTimer(), CustomGameOptions.SpellCd);
-                return false;
+                if (interact.FullCooldownReset)
+                {
+                    role.LastSpelled = DateTime.UtcNow;
+                    return false;
+                }
+                else if (interact.GaReset)
+                {
+                    role.LastSpelled = DateTime.UtcNow;
+                    role.LastSpelled = role.LastSpelled.AddSeconds(CustomGameOptions.ProtectKCReset - CustomGameOptions.SpellCd);
+                    return false;
+                }
+                else if (interact.ZeroSecReset) return false;
             }
             return true;
         }
