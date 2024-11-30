@@ -239,16 +239,14 @@ A player's name will change color depending on faction and role.
 ## Snitch
 ### **Team: Crewmates**
 
-The Snitch is a Crewmate that can get arrows pointing towards the Impostors, once all their tasks are finished.\
-The names of the Impostors will also show up as red on their screen.\
+The Snitch is a Crewmate that can get arrows pointing towards the Impostors & Neutral Killers, once all their tasks are finished.\
+The names of the Impostors will also show up as red on their screen, While the Neutral Killers' name will be gray.\
 However, when they only have a single task left, the Impostors get an arrow pointing towards the Snitch.
 ### Game Options
 | Name | Description | Type | Default |
 |----------|:-------------:|:------:|:------:|
 | Snitch | The percentage probability of the Snitch appearing | Percentage | 0% |
-| Snitch Sees Neutral Roles | Whether the Snitch also Reveals Neutral Roles | Toggle | False |
 | Tasks Remaining When Revealed | The number of tasks remaining when the Snitch is revealed to Impostors | Number | 1 |
-| Snitch Sees Impostors in Meetings | Whether the Snitch sees the Impostor's names red in Meetings | Toggle | True |
 
 -----------------------
 
