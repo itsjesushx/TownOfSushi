@@ -10,7 +10,7 @@ namespace TownOfSushi.Roles
         {
             Name = "Witch";
             StartText = () => "Cast a spell upon your foes";
-            TaskText = () => "Cast a spell upon your foes";            
+            TaskText = () => "Cast a spell on players to kill them";            
             Color = Colors.Impostor;
             LastSpelled = DateTime.UtcNow;
             RoleType = RoleEnum.Witch;

@@ -175,7 +175,6 @@ namespace TownOfSushi.Roles
 
             foreach (PlayerControl p in PlayerControl.AllPlayerControls) 
             {
-                //These lines are from TheOtherRoles
                 if (p.cosmetics.colorBlindText != null && p.cosmetics.showColorBlindText && p.cosmetics.colorBlindText.gameObject.active) {
                     p.cosmetics.colorBlindText.transform.localPosition = new Vector3(0, -1f, 0f);
                 }
@@ -185,8 +184,6 @@ namespace TownOfSushi.Roles
             if (player != null && (MeetingHud.Instance.state == MeetingHud.VoteStates.Results)) return PlayerName;
 
             if (!revealRole) return PlayerName;
-
-            //Player.nameText().transform.localPosition = new Vector3(0f, 0.15f, -0.5f);
 
             if (Player.Data.IsDead) return $"{PlayerName}\n<size=70%>{Name} - {Player.DeathReason()}</size>";
             else return $"{PlayerName}\n<size=80%>{Name}</size>";
