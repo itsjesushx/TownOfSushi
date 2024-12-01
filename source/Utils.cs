@@ -1565,32 +1565,6 @@ namespace TownOfSushi
             return (GetDistBetweenPlayers(player, target) > maxDistance);
         }
 
-        public static bool IsCrewKiller(this PlayerControl player)
-        {
-            if (player.Is(RoleEnum.Mayor)||
-                player.Is(RoleEnum.Vigilante)) return true;
-            else if (player.Is(RoleEnum.Imitator))
-            {
-                if (PlayerControl.AllPlayerControls.ToArray().Count(x => x.Data.IsDead && !x.Data.Disconnected &&
-                (x.Is(RoleEnum.Vigilante) || x.Is(RoleEnum.Veteran))) > 0) return true;
-            }
-            else if (player.Is(RoleEnum.Jailor))
-            {
-                var jailor = GetRole<Jailor>(player);
-                if (jailor.Executes > 0) return true;
-            }
-            else if (player.Is(RoleEnum.Veteran))
-            {
-                var vet = Role.GetRole<Veteran>(player);
-                if (vet.UsesLeft > 0 || vet.Enabled) return true;
-            }
-            else if (player.Is(RoleEnum.Vigilante))
-            {
-                return true;
-            }
-            return false;
-        }
-
         [HarmonyPatch(typeof(AmongUs.Data.Player.PlayerData), nameof(AmongUs.Data.Player.PlayerData.FileName), MethodType.Getter)]
         public class SaveManagerPatch
         {
