@@ -36,7 +36,7 @@ namespace TownOfSushi.Patches
             })));
             PassiveButton passiveButtonDiscord = buttonDiscord.GetComponent<PassiveButton>();
             passiveButtonDiscord.OnClick = new ButtonClickedEvent();
-            passiveButtonDiscord.OnClick.AddListener((Action)(() => Application.OpenURL("https://discord.com/invite/GET7TafkcR")));
+            passiveButtonDiscord.OnClick.AddListener((Action)(() => Application.OpenURL("https://discord.gg/hxhh2pVXcp")));
 
             #endregion DiscordButton
 

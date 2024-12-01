@@ -24,7 +24,6 @@ namespace TownOfSushi
         internal static BepInEx.Logging.ManualLogSource Logger;
         public Harmony Harmony { get; } = new Harmony(Id);
         public static TownOfSushi Instance;
-
         public static AssetLoader bundledAssets;
         public static Sprite JanitorClean;
         public static Sprite EngineerFix;
