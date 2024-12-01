@@ -40,7 +40,7 @@
 # Releases
 | Among Us - Version| Mod Version | Link |
 |----------|-------------|-----------------|
-| 2023.11.28s & 2023.11.28e | v5.0.3 | [Download](https://github.com/eDonnes124/Town-Of-Us/releases/download/v5.0.3/ToU.v5.0.3.zip) |
+| 2024.11.29s & 2024.11.29e | v1.0.0 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/v1.0.0/TownOfSushi.v1.0.0.zip) |
 
 -----------------------
 
