@@ -130,6 +130,15 @@ namespace TownOfSushi.Patches
                     Vector2.Scale(vents[0].GetComponent<BoxCollider2D>().size, vents[0].transform.localScale) * 0.75f;
             }
 
+            if (PlayerControl.LocalPlayer.Is(RoleEnum.Hunter))
+            {
+                var hunter = Role.GetRole<Hunter>(PlayerControl.LocalPlayer);
+                hunter.LastStalked = DateTime.UtcNow;
+                hunter.LastStalked = hunter.LastStalked.AddSeconds(CustomGameOptions.InitialCooldowns - CustomGameOptions.HunterStalkCd);
+                hunter.LastKilled = DateTime.UtcNow;
+                hunter.LastKilled = hunter.LastKilled.AddSeconds(CustomGameOptions.InitialCooldowns - CustomGameOptions.HunterKillCd);
+            }
+
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Morphling))
             {
                 var morphling = GetRole<Morphling>(PlayerControl.LocalPlayer);

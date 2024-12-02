@@ -24,19 +24,19 @@
                     if (!role.DousedPlayers.Contains(role.ClosestPlayerIgnite.PlayerId)) return false;
 
                     var interact2 = Interact(PlayerControl.LocalPlayer, role.ClosestPlayerIgnite);
-                    if (interact2.AbilityUsed == true) role.Ignite();
-                    if (interact2.FullCooldownReset == true)
+                    if (interact2.AbilityUsed) role.Ignite();
+                    if (interact2.FullCooldownReset)
                     {
                         role.LastDoused = DateTime.UtcNow;
                         return false;
                     }
-                    else if (interact2.GaReset == true)
+                    else if (interact2.GaReset)
                     {
                         role.LastDoused = DateTime.UtcNow;
                         role.LastDoused.AddSeconds(CustomGameOptions.ProtectKCReset - CustomGameOptions.DouseCd);
                         return false;
                     }
-                    else if (interact2.ZeroSecReset == true) return false;
+                    else if (interact2.ZeroSecReset) return false;
                     return false;
                 }
                 else return false;

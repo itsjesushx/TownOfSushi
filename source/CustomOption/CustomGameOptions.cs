@@ -7,6 +7,7 @@ namespace TownOfSushi.CustomOption
         public static int WerewolfOn => (int)Generate.WerewolfOn.Get();
         public static int JuggernautOn => (int)Generate.JuggernautOn.Get();
         public static int JesterOn => (int)Generate.JesterOn.Get();
+        public static int HunterOn => (int)Generate.HunterOn.Get();
         public static int VigilanteOn => (int)Generate.VigilanteOn.Get();
         public static int VultureOn => (int)Generate.VultureOn.Get();
         public static int SnitchOn => (int)Generate.SnitchOn.Get();
@@ -135,7 +136,13 @@ namespace TownOfSushi.CustomOption
         public static int MaxNeutralEvilRoles => (int)Generate.MaxNeutralEvilRoles.Get();
         public static bool RandomNumberImps => Generate.RandomNumberImps.Get();
         public static int NeutralRoles => (int)Generate.NeutralRoles.Get();
-        public static int VeteranCount => (int)Generate.VeteranCount.Get();        
+        public static int VeteranCount => (int)Generate.VeteranCount.Get();
+        public static float HunterKillCd => Generate.HunterKillCd.Get();
+        public static float HunterStalkCd => Generate.HunterStalkCd.Get();
+        public static float HunterStalkDuration => Generate.HunterStalkDuration.Get();
+        public static int HunterStalkUses => (int)Generate.HunterStalkUses.Get();
+        public static bool RetributionOnVote => Generate.RetributionOnVote.Get();
+        public static bool HunterBodyReport => Generate.HunterBodyReport.Get();
         public static bool AddArsonist => Generate.AddArsonist.Get();
         public static bool AddPlaguebearer => Generate.AddPlaguebearer.Get();
         public static bool ParallelMedScans => Generate.ParallelMedScans.Get();
@@ -157,10 +164,7 @@ namespace TownOfSushi.CustomOption
         public static float VultureCd => Generate.VultureCd.Get();
         public static int VultureBodyCount => (int)Generate.VultureBodyCount.Get();
         public static bool AssassinGuessNeutralBenign => Generate.AssassinGuessNeutralBenign.Get();
-        public static bool AssassinGuessNeutralEvil => Generate.AssassinGuessNeutralEvil.Get();
-        public static bool AssassinGuessNeutralKilling => Generate.AssassinGuessNeutralKilling.Get();
-        public static bool AssassinGuessImpostors => Generate.AssassinGuessImpostors.Get();
-        public static bool AssassinGuessModifiers => Generate.AssassinGuessModifiers.Get();        
+        public static bool AssassinGuessNeutralEvil => Generate.AssassinGuessNeutralEvil.Get();        
         public static bool AssassinCrewmateGuess => Generate.AssassinCrewmateGuess.Get();
         public static int AssassinKills => (int)Generate.AssassinKills.Get();
         public static int NumberOfImpostorAssassins => (int)Generate.NumberOfImpostorAssassins.Get();

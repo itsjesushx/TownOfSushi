@@ -281,9 +281,6 @@ namespace TownOfSushi.CustomOption
         public static CustomToggleOption AssassinCrewmateGuess;
         public static CustomToggleOption AssassinGuessNeutralBenign;
         public static CustomToggleOption AssassinGuessNeutralEvil;
-        public static CustomToggleOption AssassinGuessNeutralKilling;
-        public static CustomToggleOption AssassinGuessImpostors;
-        public static CustomToggleOption AssassinGuessModifiers;
 
         public static CustomNumberOption WerewolfOn;
         public static CustomHeaderOption Werewolf;
@@ -402,6 +399,15 @@ namespace TownOfSushi.CustomOption
         public static CustomNumberOption EscapeCooldown;
         public static CustomToggleOption EscapistVent;
 
+        public static CustomHeaderOption Hunter;
+        public static CustomNumberOption HunterOn;
+        public static CustomNumberOption HunterKillCd;
+        public static CustomNumberOption HunterStalkCd;
+        public static CustomNumberOption HunterStalkDuration;
+        public static CustomNumberOption HunterStalkUses;
+        public static CustomToggleOption RetributionOnVote;
+        public static CustomToggleOption HunterBodyReport;
+
         public static CustomHeaderOption Bomber;
         public static CustomNumberOption MaxKillsInDetonation;
         public static CustomNumberOption DetonateDelay;
@@ -495,6 +501,8 @@ namespace TownOfSushi.CustomOption
                 PercentFormat);
 
             CrewKillingRoles = new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#8BFDFDFF>Crew</color> <color=#1D7CF2FF>Killing</color> <color=#FFD700FF>Roles</color>");
+            HunterOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#29AB87FF>Hunter</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             JailorOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#A6A6A6FF>Jailor</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
             VeteranOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#998040FF>Veteran</color>", 0f, 0f, 100f, 10f,
@@ -677,9 +685,6 @@ namespace TownOfSushi.CustomOption
             AssassinCrewmateGuess = new CustomToggleOption(num++, MultiMenu.General, "Assassin Can Guess \"<color=#8BFDFDFF>Crewmate</color>\"", false);
             AssassinGuessNeutralBenign = new CustomToggleOption(num++, MultiMenu.General, "Assassin Can Guess <color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Benign</color> <color=#FFD700FF>Roles</color>", false);
             AssassinGuessNeutralEvil = new CustomToggleOption(num++, MultiMenu.General, "Assassin Can Guess <color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Evil</color> <color=#FFD700FF>Roles</color>", false);
-            AssassinGuessNeutralKilling = new CustomToggleOption(num++, MultiMenu.General, "Assassin Can Guess <color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Killing</color> <color=#FFD700FF>Roles</color>", false);
-            AssassinGuessImpostors = new CustomToggleOption(num++, MultiMenu.General, "Assassin Can Guess Impostor Roles", false);
-            AssassinGuessModifiers = new CustomToggleOption(num++, MultiMenu.General, "Assassin Can Guess Crewmate modifier", false);
 
             GameModeSettings =
                 new CustomHeaderOption(num++, MultiMenu.General, "Game Mode Settings");
@@ -806,6 +811,21 @@ namespace TownOfSushi.CustomOption
             
             CrewKillingSettings =
                 new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#8BFDFDFF>Crew</color> <color=#1D7CF2FF>Killing</color> <color=#FFD700FF>Roles</color> Settings");
+
+            Hunter =
+               new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#29AB87FF>Hunter</color>");
+            HunterKillCd =
+                new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#29AB87FF>Hunter</color> Kill Cooldown", 25f, 10f, 60f, 2.5f, CooldownFormat);
+            HunterStalkCd =
+                new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#29AB87FF>Hunter</color> Stalk Cooldown", 10f, 1f, 15f, 1f, CooldownFormat);
+            HunterStalkDuration =
+                new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#29AB87FF>Hunter</color> Stalk Duration", 25f, 5f, 60f, 2.5f, CooldownFormat);
+            HunterStalkUses =
+                new CustomNumberOption(num++, MultiMenu.Crewmate, "Maximum Stalk Uses", 5, 1, 15, 1);
+            RetributionOnVote =
+                new CustomToggleOption(num++, MultiMenu.Crewmate, "<color=#29AB87FF>Hunter</color> Kills Last Voter If Voted Out", false);
+            HunterBodyReport =
+                new CustomToggleOption(num++, MultiMenu.Crewmate, "<color=#29AB87FF>Hunter</color> Can Report Who They've Killed");
 
             Jailor =
                new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#A6A6A6FF>Jailor</color>");

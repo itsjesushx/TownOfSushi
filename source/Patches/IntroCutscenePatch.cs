@@ -69,12 +69,14 @@ namespace TownOfSushi.Patches
             }
         }
 
-        public static void AddNeutralIntro(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam) {
+        public static void AddNeutralIntro(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam) 
+        {
             if (PlayerControl.LocalPlayer.Is(Faction.Neutral)) 
             {
                 var neutralColor = new Color32(76, 84, 78, 255);
                 __instance.BackgroundBar.material.color = neutralColor;
                 __instance.TeamTitle.text = "Neutral";
+                PlayerControl.LocalPlayer.Data.Role.IntroSound = GetIntroSound(RoleTypes.Shapeshifter);
                 __instance.TeamTitle.color = neutralColor;
             }
         }
@@ -107,7 +109,8 @@ namespace TownOfSushi.Patches
                 Ability abilityInfo = Ability.GetAbility(PlayerControl.LocalPlayer);
 
                 __instance.RoleBlurbText.text = "";
-                if (roleInfo != null) {
+                if (roleInfo != null) 
+                {
                     __instance.RoleText.text = roleInfo.Name;
                     __instance.RoleText.color = roleInfo.Color;
                     __instance.YouAreText.color = roleInfo.Color;
@@ -151,6 +154,10 @@ namespace TownOfSushi.Patches
             public static void Postfix(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam) {
                 AddNeutralIntro(__instance, ref yourTeam);
             }
+        }
+        public static AudioClip GetIntroSound(RoleTypes roleType)
+        {
+            return RoleManager.Instance.AllRoles.Where((role) => role.Role == roleType).FirstOrDefault().IntroSound;
         }
     }
 }

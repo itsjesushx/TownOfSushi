@@ -63,6 +63,7 @@ namespace TownOfSushi.Roles.Crewmates.Support.ImitatorRole
             if (imitatorRole == RoleEnum.Transporter) new Transporter(ImitatingPlayer);
             if (imitatorRole == RoleEnum.Trapper) new Trapper(ImitatingPlayer);
             if (imitatorRole == RoleEnum.Oracle) new Oracle(ImitatingPlayer);
+            if (imitatorRole == RoleEnum.Hunter) new Hunter(ImitatingPlayer);
             if (imitatorRole == RoleEnum.Medic)
             {
                 var medic = new Medic(ImitatingPlayer);

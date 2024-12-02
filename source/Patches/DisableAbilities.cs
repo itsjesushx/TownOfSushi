@@ -25,8 +25,13 @@ namespace TownOfSushi.Patches
                 {
                     var disableKill = true;
                     var disableExtra = true;
-
-                    if (PlayerControl.LocalPlayer.Is(RoleEnum.Veteran))
+                    
+                    if (PlayerControl.LocalPlayer.Is(RoleEnum.Hunter))
+                    {
+                        var hunter = GetRole<Hunter>(PlayerControl.LocalPlayer);
+                        if (hunter.Stalking) disableExtra = false;
+                    }
+                    else if (PlayerControl.LocalPlayer.Is(RoleEnum.Veteran))
                     {
                         var veteran = GetRole<Veteran>(PlayerControl.LocalPlayer);
                         if (veteran.OnAlert) disableKill = false;
@@ -140,6 +145,13 @@ namespace TownOfSushi.Patches
                     }
 
                     if (PlayerControl.LocalPlayer.Is(RoleEnum.Investigator)) GetRole<Investigator>(PlayerControl.LocalPlayer).ExamineButton.SetTarget(null);
+                    else if (PlayerControl.LocalPlayer.Is(RoleEnum.Hunter) && disableExtra)
+                    {
+                        var hunter = GetRole<Hunter>(PlayerControl.LocalPlayer);
+                        hunter.StalkButton.SetTarget(null);
+                        hunter.UsesText.color = Palette.DisabledClear;
+                        hunter.UsesText.material.SetFloat("_Desat", 1f);
+                    }
                     else if (PlayerControl.LocalPlayer.Is(RoleEnum.Arsonist)) GetRole<Arsonist>(PlayerControl.LocalPlayer).IgniteButton.SetTarget(null);
                     else if (PlayerControl.LocalPlayer.Is(RoleEnum.Blackmailer)) GetRole<Blackmailer>(PlayerControl.LocalPlayer).BlackmailButton.SetTarget(null);
                     else if (PlayerControl.LocalPlayer.Is(RoleEnum.Morphling)) GetRole<Morphling>(PlayerControl.LocalPlayer).MorphButton.SetTarget(null);

@@ -24,18 +24,18 @@
                 role.Jailed = role.ClosestPlayer;
                 Rpc(CustomRPC.Jail, PlayerControl.LocalPlayer.PlayerId, (byte)0, role.Jailed.PlayerId);
             }
-            if (interact.FullCooldownReset == true)
+            if (interact.FullCooldownReset)
             {
                 role.LastJailed = DateTime.UtcNow;
                 return false;
             }
-            else if (interact.GaReset == true)
+            else if (interact.GaReset)
             {
                 role.LastJailed = DateTime.UtcNow;
                 role.LastJailed = role.LastJailed.AddSeconds(CustomGameOptions.ProtectKCReset - CustomGameOptions.JailCd);
                 return false;
             }
-            else if (interact.ZeroSecReset == true) return false;
+            else if (interact.ZeroSecReset) return false;
             return false;
         }
     }

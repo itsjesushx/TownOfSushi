@@ -33,7 +33,7 @@
 | | [Transporter](#transporter)  |[Glitch](#glitch) |  |
 | |[Trapper](#trapper) | [Serial Killer](#serial-killer) |  |
 | |[Haunter](#haunter)  | [Juggernaut](#juggernaut)  |  |
-| ||[Plaguebearer](#plaguebearer) |  |
+| |[Hunter](#hunter)  |[Plaguebearer](#plaguebearer) |  |
 | | | [Pestilence](#plaguebearer) |  |
 
 -----------------------
@@ -328,6 +328,24 @@ During meetings, the Vigilante can choose to kill someone by guessing their role
 | Vigilante Kills Neutral Benign Roles | Whether the Vigilante is able to kill the Neutral Benign Roles | Toggle | False |
 | Vigilante Kill Cooldown | The cooldown on the Vigilante's kill button | Time | 25s |
 | Vigilante can report who they've killed | Whether the Vigilante is able to report their own kills | Toggle | True |
+
+-----------------------
+## Hunter
+### **Team: Crewmates**
+
+The Hunter is a Crewmate Killing role with the ability to track players and execute them if they do anything suspicious.\ 
+Unlike the Sheriff, the Hunter does not die if they kill an innocent player,\
+however the Hunter may only execute players who have given them probable cause.
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Hunter | The percentage probability of the Hunter appearing | Percentage | 0% |
+| Hunter Kill Cooldown | The cooldown of the Hunter's Kill button | Number | 25s |
+| Hunter Stalk Cooldown | The cooldown of the Hunter's Stalk button | Number | 10s |
+| Hunter Stalk Duration | The duration of the Hunter's Stalk | Number | 25s |
+| Maximum Stalk Uses | Maximum number of times a Hunter can Stalk | Number | 5 |
+| Hunter Kills Last Voter If Voted Out |  Whether the Hunter kills the last person that votes them if they are voted out  | Toggle | False |
+| Hunter Can Report Who They've Killed |  Whether the Hunter is able to report their own kills | Toggle | True |
 
 -----------------------
 ## Medic

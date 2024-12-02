@@ -1,5 +1,4 @@
-﻿
-using UnityEngine.UI;
+﻿using UnityEngine.UI;
 using TownOfSushi.Roles.Crewmates.Support.MedicRole;
 using TownOfSushi.Roles.Crewmates.Support.ImitatorRole;
 using TownOfSushi.Roles.Impostors.Support.BlackmailerRole;
@@ -19,7 +18,7 @@ namespace TownOfSushi.Roles.Abilities.AbilityMod.AssassinAbility
         {
             MurderPlayer(assassinP, voteArea, player);
             AssassinKillCount(player, assassin);
-            Utils.Rpc(CustomRPC.AssassinKill, player.PlayerId, assassin.PlayerId);
+            Rpc(CustomRPC.AssassinKill, player.PlayerId, assassin.PlayerId);
         }
 
         public static void MurderPlayer(Assassin assassinP, PlayerControl player)
@@ -103,15 +102,12 @@ namespace TownOfSushi.Roles.Abilities.AbilityMod.AssassinAbility
                         button.GetComponent<PassiveButton>().OnClick = new Button.ButtonClickedEvent();
                     }
                 }
-
-                
             }
             player.Die(DeathReason.Kill, false);
 
             var role2 = GetPlayerRole(player);
             role2.DeathReason = DeathReasonEnum.Guessed;
-            role2.KilledBy = " By " + Utils.ColorString(Colors.Impostor, assassinP.PlayerName);
-
+            role2.KilledBy = " By " + ColorString(Colors.Impostor, assassinP.PlayerName);
 
             var deadPlayer = new DeadPlayer
             {

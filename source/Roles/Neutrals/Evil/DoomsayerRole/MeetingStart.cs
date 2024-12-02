@@ -42,13 +42,13 @@ namespace TownOfSushi.Roles.Neutral.Evil.DoomsayerRole
                 || player.Is(RoleEnum.GuardianAngel) || player.Is(RoleEnum.Medic)|| player.Is(RoleEnum.Romantic))
                 return $"You observe that {player.GetDefaultOutfit().PlayerName} hides to guard themself or others";
             else if (player.Is(RoleEnum.Executioner) || player.Is(RoleEnum.Jester) || player.Is(RoleEnum.Mayor)
-                 ||player.Is(RoleEnum.Veteran))
-                return $"You observe that {player.GetDefaultOutfit().PlayerName} has a trick up their sleeve";
+                 ||player.Is(RoleEnum.Hunter) || player.Is(RoleEnum.Veteran))
+                return $"You observe that {player.GetDefaultOutfit().PlayerName} has a trick up their sleeve!";
             else if (player.Is(RoleEnum.Bomber) || player.Is(RoleEnum.Juggernaut) || player.Is(RoleEnum.Pestilence)
                  || player.Is(RoleEnum.Vigilante) || player.Is(RoleEnum.Vigilante) || player.Is(RoleEnum.Warlock))
-                return $"You observe that {player.GetDefaultOutfit().PlayerName} is capable of performing relentless attacks";
+                return $"You observe that {player.GetDefaultOutfit().PlayerName} is capable of performing relentless attacks!";
             else if (player.Is(RoleEnum.Crewmate) || player.Is(RoleEnum.Impostor))
-                return $"You observe that {player.GetDefaultOutfit().PlayerName} appears to be roleless";
+                return $"You observe that {player.GetDefaultOutfit().PlayerName} appears to be roleless!";
             else
                 return ColorString(Colors.Impostor,"Error");
         }
@@ -81,8 +81,8 @@ namespace TownOfSushi.Roles.Neutral.Evil.DoomsayerRole
                 return "(" + ColorString(Colors.Engineer,"Engineer") + ", " + ColorString(Colors.Impostor,"Escapist") + ", " + ColorString(Colors.Impostor,"Grenadier") +", " + ColorString(Colors.GuardianAngel,"Guardian Angel") + ", "+ ColorString(Colors.Medic,"Medic ") + " or " + ColorString(Colors.Romantic,"Romantic")+ ")";
             
             else if (player.Is(RoleEnum.Executioner) || player.Is(RoleEnum.Jester) || player.Is(RoleEnum.Mayor)
-                 ||player.Is(RoleEnum.Veteran))
-                return "(" + ColorString(Colors.Doomsayer,"Doomsayer") + ", " + ColorString(Colors.Jester,"Jester") + ", " + ColorString(Colors.Mayor,"Mayor") + " or " + ColorString(Colors.Veteran,"Veteran")+ ")";
+                 ||player.Is(RoleEnum.Hunter) || player.Is(RoleEnum.Veteran))
+                return "(" + ColorString(Colors.Doomsayer,"Doomsayer") + ", " + ColorString(Colors.Jester,"Jester") + ", " + ColorString(Colors.Hunter,"Hunter") + ", " + ColorString(Colors.Mayor,"Mayor") + " or " + ColorString(Colors.Veteran,"Veteran")+ ")";
             
             else if (player.Is(RoleEnum.Bomber) || player.Is(RoleEnum.Juggernaut) || player.Is(RoleEnum.Pestilence)
                  || player.Is(RoleEnum.Vigilante) || player.Is(RoleEnum.Vigilante) || player.Is(RoleEnum.Warlock))

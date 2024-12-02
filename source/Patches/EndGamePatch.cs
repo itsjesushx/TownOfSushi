@@ -88,6 +88,7 @@ namespace TownOfSushi.Patches
                     else if (role.Value == RoleEnum.Glitch) { playerRole += "<color=#" + Colors.Glitch.ToHtmlStringRGBA() + ">Glitch</color> > "; }
                     else if (role.Value == RoleEnum.Jester) { playerRole += "<color=#" + Colors.Jester.ToHtmlStringRGBA() + ">Jester</color> > "; }
                     else if (role.Value == RoleEnum.Phantom) { playerRole += "<color=#" + Colors.Phantom.ToHtmlStringRGBA() + ">Phantom</color> > "; }
+                    else if (role.Value == RoleEnum.Hunter) { playerRole += "<color=#" + Colors.Hunter.ToHtmlStringRGBA() + ">Hunter</color> > "; }
                     else if (role.Value == RoleEnum.Grenadier) { playerRole += "<color=#" + Colors.Impostor.ToHtmlStringRGBA() + ">Grenadier</color> > "; }
                     else if (role.Value == RoleEnum.Janitor) { playerRole += "<color=#" + Colors.Impostor.ToHtmlStringRGBA() + ">Janitor</color> > "; }
                     else if (role.Value == RoleEnum.Miner) { playerRole += "<color=#" + Colors.Impostor.ToHtmlStringRGBA() + ">Miner</color> > "; }
@@ -1310,6 +1311,15 @@ namespace TownOfSushi.Patches
                         {
                             var Mayor = (Mayor)role;
                             if (Mayor.Player != null && Mayor.Player.PlayerId == playerInfo.PlayerId) {
+                                CrewKillingAlive++;
+                            }
+                        }
+                        foreach (var role in GetRoles(RoleEnum.Hunter))
+                        {
+                            var Hunter = (Hunter)role;
+                            if (Hunter.Player != null && Hunter.Player.PlayerId == playerInfo.PlayerId && Hunter.UsesLeft > 0 || (Hunter.StalkedPlayer != null && !Hunter.StalkedPlayer.Data.IsDead && !Hunter.StalkedPlayer.Data.Disconnected && Hunter.StalkedPlayer.Is(RoleAlignment.NeutralKilling)) ||
+                                Hunter.CaughtPlayers.Count(player => !player.Data.IsDead && !player.Data.Disconnected && player.Is(RoleAlignment.NeutralKilling)) > 0)
+                            {
                                 CrewKillingAlive++;
                             }
                         }

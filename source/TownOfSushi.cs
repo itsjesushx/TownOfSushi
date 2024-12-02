@@ -36,6 +36,7 @@ namespace TownOfSushi
         public static Sprite Arrow;
         public static Sprite MineSprite;
         public static Sprite SwoopSprite;
+        public static Sprite StalkSprite;
         public static Sprite DouseSprite;
         public static Sprite MaulSprite;
         public static Sprite VultureEat;
@@ -65,7 +66,6 @@ namespace TownOfSushi
         public static Sprite ZoomMinusActiveButton;
         public static Sprite BlackmailLetterSprite;
         public static Sprite BlackmailOverlaySprite;
-        public static Sprite WitchOverlay;
         public static Sprite LighterSprite;
         public static Sprite DarkerSprite;
         public static Sprite InfectSprite;
@@ -132,6 +132,7 @@ namespace TownOfSushi
             MaulSprite = CreateSprite("TownOfSushi.Resources.Maul.png");
             AlertSprite = CreateSprite("TownOfSushi.Resources.Alert.png");
             RememberSprite = CreateSprite("TownOfSushi.Resources.Remember.png");
+            StalkSprite = CreateSprite("TownOfSushi.Resources.Stalk.png");
             TrackSprite = CreateSprite("TownOfSushi.Resources.Track.png");
             PlantSprite = CreateSprite("TownOfSushi.Resources.Plant.png");
             VultureEat = CreateSprite("TownOfSushi.Resources.Vulture.png");
@@ -144,7 +145,6 @@ namespace TownOfSushi
             BlackmailLetterSprite = CreateSprite("TownOfSushi.Resources.BlackmailLetter.png");
             ExecuteSprite = CreateSprite("TownOfSushi.Resources.Execute.png");
             BlackmailOverlaySprite = CreateSprite("TownOfSushi.Resources.BlackmailOverlay.png");
-            WitchOverlay = CreateSprite("TownOfSushi.Resources.WitchOverlay.png");
             LighterSprite = CreateSprite("TownOfSushi.Resources.Lighter.png");
             DarkerSprite = CreateSprite("TownOfSushi.Resources.Darker.png");
             InfectSprite = CreateSprite("TownOfSushi.Resources.Infect.png");

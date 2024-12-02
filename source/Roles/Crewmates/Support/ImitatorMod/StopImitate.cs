@@ -70,6 +70,16 @@ namespace TownOfSushi.Roles.Crewmates.Support.ImitatorRole
                         trappedPlayers = trapperRole.trappedPlayers;
                     }
 
+                    if (PlayerControl.LocalPlayer.Is(RoleEnum.Hunter))
+                    {
+                        var hunterRole = Role.GetRole<Hunter>(PlayerControl.LocalPlayer);
+                        Object.Destroy(hunterRole.UsesText);
+                        hunterRole.ClosestPlayer = null;
+                        hunterRole.ClosestStalkPlayer = null;
+                        hunterRole.StalkButton.SetTarget(null);
+                        hunterRole.StalkButton.gameObject.SetActive(false);
+                    }
+
                     if (PlayerControl.LocalPlayer.Is(RoleEnum.Oracle))
                     {
                         var oracleRole = GetRole<Oracle>(PlayerControl.LocalPlayer);

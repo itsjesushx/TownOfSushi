@@ -943,7 +943,6 @@ namespace TownOfSushi
                         foreach (var body in dienerBodies2)
                             if (body.ParentId == readByte)
                                 dienerRole2.CurrentlyDragging = body;
-
                         break;
                     case CustomRPC.Drop:
                         readByte1 = reader.ReadByte();
@@ -965,9 +964,7 @@ namespace TownOfSushi
                         var dienerRole223 = GetRole<Hitman>(dienerPlayer223);
                         var body22 = dienerRole223.CurrentlyDragging;
                         dienerRole223.CurrentlyDragging = null;
-
                         body22.transform.position = new Vector3(v22.x, v22.y, v2z2);
-
                         break;
                     case CustomRPC.SetAssassin:
                         new Assassin(PlayerById(reader.ReadByte()));
@@ -987,13 +984,28 @@ namespace TownOfSushi
                         SetHaunter.WillBeHaunter = readByte == byte.MaxValue ? null : PlayerById(readByte);
                         break;
                     case CustomRPC.AbilityTrigger:
-                        var abilityUser = PlayerById(reader.ReadByte());
+                        var abilityUser = Utils.PlayerById(reader.ReadByte());
                         var abilitytargetId = reader.ReadByte();
-                        var abilitytarget = abilitytargetId == byte.MaxValue ? null : PlayerById(abilitytargetId);
-                        if (PlayerControl.LocalPlayer.Is(RoleEnum.Mystic) && !PlayerControl.LocalPlayer.Data.IsDead && abilitytarget == PlayerControl.LocalPlayer)
+                        var abilitytarget = abilitytargetId == byte.MaxValue ? null : Utils.PlayerById(abilitytargetId);
+                        foreach (Role hunterRole2 in Role.GetRoles(RoleEnum.Hunter))
                         {
-                            Flash(Colors.Mystic, 1.5f);
+                            Hunter hunter = (Hunter)hunterRole2;
+                            if (hunter.StalkedPlayer == abilityUser) hunter.RpcCatchPlayer(abilityUser);
                         }
+                        break;
+                    case CustomRPC.Retribution:
+                        var hunter2 = GetRole<Hunter>(Utils.PlayerById(reader.ReadByte()));
+                        var hunterLastVoted = PlayerById(reader.ReadByte());
+                        Roles.Crewmates.Killing.HunterRole.Retribution.MurderPlayer(hunter2, hunterLastVoted);
+                        break;
+                    case CustomRPC.HunterStalk:
+                        var stalker = PlayerById(reader.ReadByte());
+                        var stalked = PlayerById(reader.ReadByte());
+                        Hunter hunterRole = GetRole<Hunter>(stalker);
+                        hunterRole.StalkDuration = CustomGameOptions.HunterStalkDuration;
+                        hunterRole.StalkedPlayer = stalked;
+                        hunterRole.UsesLeft -= 1;
+                        hunterRole.Stalk();
                         break;
                     case CustomRPC.CatchHaunter:
                         var haunterPlayer = PlayerById(reader.ReadByte());
@@ -1141,6 +1153,9 @@ namespace TownOfSushi
 
                     if (CustomGameOptions.MediumOn > 0)
                         CrewmateRoles.Add((typeof(Medium), CustomGameOptions.MediumOn, false));
+                    
+                    if (CustomGameOptions.HunterOn > 0)
+                        CrewmateRoles.Add((typeof(Hunter), CustomGameOptions.HunterOn, false));
 
                     if (CustomGameOptions.MysticOn > 0)
                         CrewmateRoles.Add((typeof(Mystic), CustomGameOptions.MysticOn, false));

@@ -9,6 +9,7 @@
         public readonly static Color Investigator = new Color(0f, 0.7f, 0.7f, 1f);
         public readonly static Color Jailor = new Color(0.65f, 0.65f, 0.65f, 1f);
         public readonly static Color32 Medic = new Color32(126, 251, 194, 255);
+        public readonly static Color Hunter = new Color(0.16f, 0.67f, 0.53f, 1f);
         public readonly static Color Seer = new Color(1f, 0.8f, 0.5f, 1f);
         public readonly static Color Spy = new Color(0.8f, 0.64f, 0.8f, 1f);
         public readonly static Color Snitch = new Color(0.7f, 0.3f, 0.6f, 1f);

@@ -55,9 +55,10 @@ namespace TownOfSushi
             var targetId = byte.MaxValue;
             if (target != null) targetId = target.PlayerId;
             Rpc(CustomRPC.AbilityTrigger, player.PlayerId, targetId);
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Mystic) && !PlayerControl.LocalPlayer.Data.IsDead && target == PlayerControl.LocalPlayer)
+            foreach (Role hunterRole in Role.GetRoles(RoleEnum.Hunter))
             {
-                Flash(Colors.Mystic, 1.5F);
+                Hunter hunter = (Hunter)hunterRole;
+                if (hunter.StalkedPlayer == player) hunter.RpcCatchPlayer(player);
             }
             return true;
         }
@@ -959,36 +960,12 @@ namespace TownOfSushi
             return PlayerControl.LocalPlayer.myTasks.ToArray().Any((x) => x.TaskType == TaskTypes.MushroomMixupSabotage);
         }
 
-        public static IEnumerator FlashCoroutine(Color color, float waitfor = 1f, float alpha = 0.3f)
-        {
-            color.a = alpha;
-            if (HudManager.InstanceExists && HudManager.Instance.FullScreen)
-            {
-                var fullscreen = DestroyableSingleton<HudManager>.Instance.FullScreen;
-                fullscreen.enabled = true;
-                fullscreen.gameObject.active = true;
-                fullscreen.color = color;
-            }
-
-            yield return new WaitForSeconds(waitfor);
-
-            if (HudManager.InstanceExists && HudManager.Instance.FullScreen)
-            {
-                var fullscreen = DestroyableSingleton<HudManager>.Instance.FullScreen;
-                if (fullscreen.color.Equals(color))
-                {
-                    fullscreen.color = new Color(1f, 0f, 0f, 0.37254903f);
-                    fullscreen.enabled = false;
-                }
-            }
-        }
-
         public static IEnumerable<(T1, T2)> Zip<T1, T2>(List<T1> first, List<T2> second)
         {
             return first.Zip(second, (x, y) => (x, y));
         }
 
-        public static void Flash(Color color, float duration=1f, string message="") 
+        public static void Flash(Color color, float duration=1f) 
         {
             if (FastDestroyableSingleton<HudManager>.Instance == null || FastDestroyableSingleton<HudManager>.Instance.FullScreen == null) return;
             FastDestroyableSingleton<HudManager>.Instance.FullScreen.gameObject.SetActive(true);
@@ -1251,6 +1228,11 @@ namespace TownOfSushi
             {
                 var oracle = GetRole<Oracle>(PlayerControl.LocalPlayer);
                 oracle.LastConfessed = DateTime.UtcNow;
+            }
+            if (PlayerControl.LocalPlayer.Is(RoleEnum.Hunter))
+            {
+                var hunter = Role.GetRole<Hunter>(PlayerControl.LocalPlayer);
+                hunter.LastKilled = DateTime.UtcNow;
             }
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Vigilante))
             {

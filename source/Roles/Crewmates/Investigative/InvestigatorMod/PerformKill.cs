@@ -29,18 +29,18 @@ namespace TownOfSushi.Roles.Crewmates.Investigative.InvestigatorMod
                     if (role.ClosestPlayer == role.DetectedKiller) Flash(Color.red);
                     else Flash(Color.green);
                 }
-                if (interact.FullCooldownReset == true)
+                if (interact.FullCooldownReset)
                 {
                     role.LastExamined = DateTime.UtcNow;
                     return false;
                 }
-                else if (interact.GaReset == true)
+                else if (interact.GaReset)
                 {
                     role.LastExamined = DateTime.UtcNow;
                     role.LastExamined = role.LastExamined.AddSeconds(CustomGameOptions.ProtectKCReset - CustomGameOptions.ExamineCd);
                     return false;
                 }
-                else if (interact.ZeroSecReset == true) return false;
+                else if (interact.ZeroSecReset) return false;
                 return false;
             }
             else
