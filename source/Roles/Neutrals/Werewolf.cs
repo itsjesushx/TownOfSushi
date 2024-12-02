@@ -45,7 +45,7 @@ namespace TownOfSushi.Roles
 
             foreach (var player in closestPlayers)
             {
-                if (player == Player)
+                if (player == player2)
                    continue;
 
                 if (player.IsProtected())
