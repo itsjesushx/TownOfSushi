@@ -20,7 +20,7 @@ namespace TownOfSushi.Roles.Crewmates
             Name = "Transporter";
             StartText = () => "Choose Two Players To Swap Locations";
             TaskText = () => "Choose two players to swap locations";
-            AlignmentName = "<color=#8BFDFDFF>Crew</color> (<color=#1D7CF2FF>Support</color>)";
+            
             RoleAlignment = RoleAlignment.CrewSupport;
             Color = Colors.Transporter;
             LastTransported = DateTime.UtcNow;

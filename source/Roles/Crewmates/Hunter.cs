@@ -10,6 +10,7 @@ namespace TownOfSushi.Roles
             Color = Colors.Hunter;
             LastStalked = DateTime.UtcNow;
             LastKilled = DateTime.UtcNow;
+            RoleAlignment = RoleAlignment.CrewKilling;
             RoleType = RoleEnum.Hunter;
             AddToRoleHistory(RoleType);
             UsesLeft = CustomGameOptions.HunterStalkUses;

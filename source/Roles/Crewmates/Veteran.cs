@@ -16,7 +16,6 @@ namespace TownOfSushi.Roles.Crewmates
             Name = "Veteran";
             StartText = () => "Alert To Kill Anyone Who Interacts With You";
             TaskText = () => "Alert to kill whoever interacts with you";
-            AlignmentName = "<color=#8BFDFDFF>Crew</color> (<color=#1D7CF2FF>Killing</color>)";
             Color = Colors.Veteran;
             LastAlerted = DateTime.UtcNow;
             Faction = Faction.Crewmates;

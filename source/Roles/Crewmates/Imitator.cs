@@ -18,7 +18,6 @@ namespace TownOfSushi.Roles.Crewmates
             Faction = Faction.Crewmates;
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.CrewSupport;
-            AlignmentName = "<color=#8BFDFDFF>Crew</color> (<color=#1D7CF2FF>Support</color>)";
         }
     }
 }

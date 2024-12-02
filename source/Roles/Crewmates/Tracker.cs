@@ -17,7 +17,6 @@ namespace TownOfSushi.Roles.Crewmates
             Name = "Tracker";
             StartText = () => "Track Everyone's Movement";
             TaskText = () => "Track suspicious players";
-                  
             Color = Colors.Tracker;
             LastTracked = DateTime.UtcNow;
             RoleType = RoleEnum.Tracker;

@@ -7,7 +7,6 @@ namespace TownOfSushi.Roles.Crewmates
             Name = "Mayor";
             StartText = () => "Reveal yourself to save everyone";
             TaskText = () => "Reveal yourself when the time is right";
-            AlignmentName = "<color=#8BFDFDFF>Crew</color> (<color=#1D7CF2FF>Power</color>)";
             Color = Colors.Mayor;
             RoleType = RoleEnum.Mayor;
             Faction = Faction.Crewmates;

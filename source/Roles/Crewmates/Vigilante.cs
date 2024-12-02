@@ -26,7 +26,7 @@ namespace TownOfSushi.Roles.Crewmates
             Name = "Vigilante";
             StartText = () => "Shoot or guess the <color=#FF0000FF>Killers</color>";
             TaskText = () => "Shoot or guess the <color=#FF0000FF>Impostor</color>";
-            AlignmentName = "<color=#8BFDFDFF>Crew</color> (<color=#1D7CF2FF>Killing</color>)";
+            
             
             Color = Colors.Vigilante;
             RoleType = RoleEnum.Vigilante;

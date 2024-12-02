@@ -12,7 +12,6 @@ namespace TownOfSushi.Roles
             Name = "Werewolf";
             StartText = () => "Murder and eliminate everyone";
             TaskText = () => "Kill everyone";
-            
             Color = Colors.Werewolf;
             LastMauled = DateTime.UtcNow;
             RoleType = RoleEnum.Werewolf;
@@ -48,7 +47,7 @@ namespace TownOfSushi.Roles
             {
                 if (player == Player)
                    continue;
-                   
+
                 if (player.IsProtected())
                     continue;
                     

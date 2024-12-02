@@ -16,7 +16,7 @@ namespace TownOfSushi.Roles
             Name = "Jailor";
             StartText = () => "Jail and execute the <color=#FF0000FF>Impostors</color>";
             TaskText = () => "Execute and speak to the <color=#FF0000FF>Killers</color>";
-            AlignmentName = "<color=#8BFDFDFF>Crew</color> (<color=#1D7CF2FF>Killing</color>)";
+            
             Color = Colors.Jailor;
             LastJailed = DateTime.UtcNow;
             RoleAlignment = RoleAlignment.CrewKilling;

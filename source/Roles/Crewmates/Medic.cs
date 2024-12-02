@@ -10,7 +10,7 @@ namespace TownOfSushi.Roles.Crewmates
             Name = "Medic";
             StartText = () => "Create A Shield To Protect A Crewmate";
             TaskText = () => "Protect a crewmate with a shield";
-            AlignmentName = "<color=#8BFDFDFF>Crew</color> (<color=#1D7CF2FF>Support</color>)";
+            
             Color = Colors.Medic;
             StartingCooldown = DateTime.UtcNow;
             RoleType = RoleEnum.Medic;
