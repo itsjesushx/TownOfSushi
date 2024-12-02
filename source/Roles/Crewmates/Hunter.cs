@@ -77,7 +77,7 @@ namespace TownOfSushi.Roles
         {
             if (PlayerControl.LocalPlayer.PlayerId == Player.PlayerId && !PlayerControl.LocalPlayer.Data.IsDead)
             {
-                Flash(Colors.Hunter, 0.8f);
+                Flash(Colors.Hunter, 1f);
             }
             CaughtPlayers.Add(stalked);
             StalkDuration = 0;
