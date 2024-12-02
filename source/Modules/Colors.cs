@@ -21,11 +21,11 @@
         public readonly static Color Trapper = new Color(0.65f, 0.82f, 0.7f, 1f);
         public readonly static Color CrewSwooper = new Color(0.5f, 0.5f, 0f, 1f);
         public readonly static Color Imitator = new Color(0.7f, 0.85f, 0.3f, 1f);
-        public readonly static Color32 Oracle = new Color32(52, 79, 235, byte.MaxValue);
+        public readonly static Color32 Oracle = new Color32(52, 79, 235, 255);
 
         // Neutral Colors
-        public readonly static Color32 Jester = new Color32(255, 117, 239, 255);
-        public static Color Hitman = new Color32(0, 180, 235, byte.MaxValue);
+        public readonly static Color Jester = new Color(1f, 0.75f, 0.8f, 1f);
+        public static Color Hitman = new Color32(0, 180, 235, 255);
         public readonly static Color32 Executioner = new Color32(204, 204, 204, 255);
         public readonly static Color32 Glitch = new Color32(0, 255, 0, 255);
         public readonly static Color32 SerialKiller = new Color32(51, 110, 255, 255);
@@ -38,7 +38,7 @@
         public readonly static Color Plaguebearer = new Color(0.9f, 1f, 0.7f, 1f);
         public readonly static Color Pestilence = new Color(0.3f, 0.3f, 0.3f, 1f);
         public readonly static Color Werewolf = new Color(0.66f, 0.4f, 0.16f, 1f);
-        public static Color32 Vulture => new Color32(140, 64, 5, 255); //#8C4005FF
+        public static Color32 Vulture => new Color32(140, 64, 5, 255);
         public readonly static Color Doomsayer = new Color(0f, 1f, 0.5f, 1f);
         public readonly static Color Vampire = new Color(0.15f, 0.15f, 0.15f, 1f);
 
@@ -59,9 +59,8 @@
         public readonly static Color Frosty = new Color(0.6f, 1f, 1f, 1f);
 
         //Factions
-
         public readonly static Color Crewmate = Palette.CrewmateBlue;
-        public readonly static Color32 Neutrals = new Color32(179, 179, 179, 255);
+        public readonly static Color32 Neutral = new Color32(179, 179, 179, 255);
         public readonly static Color Impostor = Palette.ImpostorRed;
         public readonly static Color Chameleon = new Color(1f, 0.7f, 0.8f, 1f);
 

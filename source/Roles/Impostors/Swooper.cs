@@ -14,19 +14,15 @@ namespace TownOfSushi.Roles
             Name = "Swooper";
             StartText = () => "Turn Invisible Temporarily";
             TaskText = () => "Turn invisible and sneakily kill";
-            
-            
             Color = Colors.Impostor;
             LastSwooped = DateTime.UtcNow;
             RoleType = RoleEnum.Swooper;
-            
             Faction = Faction.Impostors;
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.ImpSupport;
         }
 
         public bool IsSwooped => TimeRemaining > 0f;
-
         public KillButton SwoopButton
         {
             get => _swoopButton;

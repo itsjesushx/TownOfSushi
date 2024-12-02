@@ -45,9 +45,7 @@ namespace TownOfSushi.Roles
         protected internal int CorrectAssassinKills { get; set; } = 0;
         protected internal int IncorrectAssassinKills { get; set; } = 0;
         public bool Local => PlayerControl.LocalPlayer.PlayerId == Player.PlayerId;
-        protected internal bool Hidden { get; set; } = false;
         protected internal Faction Faction { get; set; } = Faction.Crewmates;
-        protected internal RoleAlignment Alignment { get; set; }
         public static uint NetId => PlayerControl.LocalPlayer.NetId;
         public string PlayerName { get; set; }
         public string ColorString => "<color=#" + Color.ToHtmlStringRGBA() + ">";
@@ -171,7 +169,6 @@ namespace TownOfSushi.Roles
                     PlayerName += $" ({TotalTasks - TasksLeft}/{TotalTasks})";
                 }
             }
-
 
             foreach (PlayerControl p in PlayerControl.AllPlayerControls) 
             {
@@ -352,7 +349,7 @@ namespace TownOfSushi.Roles
                     player.myTasks.Insert(0, modTask);
                 }
 
-                if (role == null || role.Hidden) return;
+                if (role == null) return;
                 if (role.RoleType == RoleEnum.Amnesiac && role.Player != PlayerControl.LocalPlayer) return;
                 var task = new GameObject(role.Name + "Task").AddComponent<ImportantTextTask>();
                 task.transform.SetParent(player.transform, false);

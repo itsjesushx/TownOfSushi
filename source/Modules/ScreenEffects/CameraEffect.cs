@@ -1,9 +1,5 @@
 using Il2CppInterop.Runtime.Injection;
 
-
-
-
-
 namespace TownOfSushi.Modules.ScreenEffects
 {
 

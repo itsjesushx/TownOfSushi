@@ -1,4 +1,3 @@
-
 using System.Collections;
 
 namespace TownOfSushi.Modules.ScreenEffects
@@ -10,7 +9,6 @@ namespace TownOfSushi.Modules.ScreenEffects
         {
             Coroutines.Start(runEffect());
         }
-
         public abstract IEnumerator runEffect();
     }
 }

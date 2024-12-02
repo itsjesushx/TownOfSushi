@@ -37,7 +37,7 @@ namespace TownOfSushi.Roles.Crewmates
             {
                 return Revealed || base.RoleCriteria();
             }
-            else if (GetPlayerRole(localPlayer).Alignment == RoleAlignment.NeutralKilling && !Player.Data.IsDead)
+            else if (GetPlayerRole(localPlayer).RoleAlignment == RoleAlignment.NeutralKilling && !Player.Data.IsDead)
             {
                 return Revealed || base.RoleCriteria();
             }

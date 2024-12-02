@@ -29,7 +29,7 @@ namespace TownOfSushi
         private static readonly List<(Type, int)> Modifiers = new();
         private static readonly List<(Type, int)> ImpostorModifiers = new();
         private static readonly List<(Type, int)> ButtonAbilities = new();
-        private static readonly List<(Type, int)> AssassinAbilityifiers = new();
+        private static readonly List<(Type, int)> AssassinAbilityModifiers = new();
         private static readonly List<(Type, int)> Abilities = new();
         private static readonly List<(Type, int)> NonTaskerAbilities = new();
         private static readonly List<(Type, int)> VisionAbilities = new();
@@ -318,10 +318,10 @@ namespace TownOfSushi
             // Hand out assassin modifiers, if enabled, to impostor assassins.
             var canHaveAssassinAbilityifier = PlayerControl.AllPlayerControls.ToArray().Where(player => player.Is(Faction.Impostors) && player.Is(AbilityEnum.Assassin)).ToList();
             canHaveAssassinAbilityifier.Shuffle();
-            AssassinAbilityifiers.SortModifiers(canHaveAssassinAbilityifier.Count);
-            AssassinAbilityifiers.Shuffle();
+            AssassinAbilityModifiers.SortModifiers(canHaveAssassinAbilityifier.Count);
+            AssassinAbilityModifiers.Shuffle();
 
-            foreach (var (type, _) in AssassinAbilityifiers)
+            foreach (var (type, _) in AssassinAbilityModifiers)
             {
                 if (canHaveAssassinAbilityifier.Count == 0) break;
                 GenModifier<Modifier>(type, canHaveAssassinAbilityifier);
@@ -1033,7 +1033,6 @@ namespace TownOfSushi
                         GameOptionsManager.Instance.currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Noisemaker, 0, 0);
                         GameOptionsManager.Instance.currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Shapeshifter, 0, 0);
                         GameOptionsManager.Instance.currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Phantom, 0, 0);
-                        RandomMap.AdjustSettings(readByte);
                         break;
                 }
             }
@@ -1081,7 +1080,7 @@ namespace TownOfSushi
                 VisionAbilities.Clear();
                 NonTaskerAbilities.Clear();
                 Abilities.Clear();
-                AssassinAbilityifiers.Clear();
+                AssassinAbilityModifiers.Clear();
                 AssassinAbility.Clear();
                 Murder.KilledPlayers.Clear();
 
@@ -1299,7 +1298,7 @@ namespace TownOfSushi
                         ImpostorModifiers.Add((typeof(Disperser), CustomGameOptions.DisperserOn));
 
                     if (Check(CustomGameOptions.DoubleShotOn))
-                        AssassinAbilityifiers.Add((typeof(DoubleShot), CustomGameOptions.DoubleShotOn));
+                        AssassinAbilityModifiers.Add((typeof(DoubleShot), CustomGameOptions.DoubleShotOn));
 
                     if (CustomGameOptions.UnderdogOn > 0)
                         ImpostorModifiers.Add((typeof(Underdog), CustomGameOptions.UnderdogOn));

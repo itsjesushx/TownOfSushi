@@ -45,7 +45,7 @@
 -----------------------
 
 # Installation
-## Requirements 
+## Requirements
 - Among Us
 - Steam or Epic Games
 
@@ -485,7 +485,7 @@ If their target loses, they lose.
 | Kill Cooldown Reset on Attack | The attackers kill cooldown after they attacked the protected target | Time | 2.5s |
 | Max Uses | The amount of times the Protect ability can be used | Number | 5 |
 | Show Protected Player | Who should be able to see who is Protected | Self / GA / Self + GA / Everyone | Self |
-| Guardian Angel becomes on Target Dead | Which role the Guardian Angel becomes when their target dies | Crewmate / Amnesiac / Romantic / Jester | Crewmate |
+| Guardian Angel becomes on Target Dead | Which role the Guardian Angel becomes when their target dies | Crewmate / Amnesiac / Jester | Crewmate |
 | Target Knows GA Exists | Whether the GA's Target knows they have a GA | Toggle | False |
 | GA Knows Targets Role | Whether the GA knows their target's role | Toggle | False |
 | Odds Of Target Being Evil | The chances of the Guardian Angel's target being evil | Percentage | 20% |
@@ -532,7 +532,7 @@ If that player gets voted out, they win the game.
 | Name | Description | Type | Default |
 |----------|:-------------:|:------:|:------:|
 | Executioner | The percentage probability of the Executioner appearing | Percentage | 0% |
-| Executioner becomes on Target Dead | Which role the Executioner becomes when their target dies | Crewmate / Amnesiac / Romantic / Jester | Crewmate |
+| Executioner becomes on Target Dead | Which role the Executioner becomes when their target dies | Crewmate / Amnesiac / Jester | Crewmate |
 | Executioner Can Button | Whether the Executioner Can Press the Button | Toggle | True |
 
 -----------------------

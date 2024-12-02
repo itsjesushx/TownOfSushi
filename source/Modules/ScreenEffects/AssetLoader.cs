@@ -1,9 +1,5 @@
 using Il2CppInterop.Runtime;
-
 using System.Collections;
-
-
-
 using UnityObject = UnityEngine.Object;
 
 namespace TownOfSushi.Modules.ScreenEffects

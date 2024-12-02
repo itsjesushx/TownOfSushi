@@ -28,7 +28,6 @@
         private static Sprite Infect => TownOfSushi.InfectSprite;
         private static Sprite Trap => TownOfSushi.TrapSprite;
         private static Sprite Inspect => TownOfSushi.InspectSprite;
-        private static Sprite Swoop => TownOfSushi.SwoopSprite;
         private static Sprite Observe => TownOfSushi.ObserveSprite;
         private static Sprite Bite => TownOfSushi.BiteSprite;
         private static Sprite Confess => TownOfSushi.ConfessSprite;
@@ -113,11 +112,6 @@
             else if (PlayerControl.LocalPlayer.Is(RoleEnum.Investigator) || PlayerControl.LocalPlayer.Is(RoleEnum.Mystic) )
             {
                 __instance.KillButton.graphic.sprite = Inspect;
-                flag = true;
-            }
-            else if (PlayerControl.LocalPlayer.Is(RoleEnum.Chameleon))
-            {
-                __instance.KillButton.graphic.sprite = Swoop;
                 flag = true;
             }
             else if (PlayerControl.LocalPlayer.Is(RoleEnum.Doomsayer))

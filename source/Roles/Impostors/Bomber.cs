@@ -4,7 +4,6 @@ using TownOfSushi.Roles.Crewmates.Support.MedicRole;
 namespace TownOfSushi.Roles
 {
     public class Bomber : Role
-
     {
         public KillButton _plantButton;
         public float TimeRemaining;
@@ -22,7 +21,6 @@ namespace TownOfSushi.Roles
             Color = Palette.ImpostorRed;
             StartingCooldown = DateTime.UtcNow;
             RoleType = RoleEnum.Bomber;
-            
             Faction = Faction.Impostors;
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.ImpPower;

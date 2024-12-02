@@ -19,7 +19,7 @@ namespace TownOfSushi.Roles
             AlignmentName = "<color=#8BFDFDFF>Crew</color> (<color=#1D7CF2FF>Killing</color>)";
             Color = Colors.Jailor;
             LastJailed = DateTime.UtcNow;
-            Alignment = RoleAlignment.CrewKilling;
+            RoleAlignment = RoleAlignment.CrewKilling;
             RoleType = RoleEnum.Jailor;
             AddToRoleHistory(RoleType);
             Executes = CustomGameOptions.MaxExecutes;
