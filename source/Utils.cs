@@ -1173,6 +1173,8 @@ namespace TownOfSushi
                 reason = "Guessed";
             else if (role.DeathReason == DeathReasonEnum.Alive)
                 reason = "Alive";
+            else if (role.DeathReason == DeathReasonEnum.Retribution)
+                reason = "Retribution";
             else if (role.DeathReason == DeathReasonEnum.Executed)
                 reason = "Executed";
             else if (role.DeathReason == DeathReasonEnum.Cursed)

@@ -192,6 +192,7 @@ namespace TownOfSushi
         Killed,
         Executed,
         Cursed,
+        Retribution,
         Suicide
     }
     public enum DisableSkipButtonMeetings

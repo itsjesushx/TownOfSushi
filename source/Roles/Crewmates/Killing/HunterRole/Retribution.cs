@@ -97,6 +97,10 @@ namespace TownOfSushi.Roles.Crewmates.Killing.HunterRole
             }
             player.Die(DeathReason.Kill, false);
 
+            var role2 = GetPlayerRole(player);
+            role2.DeathReason = DeathReasonEnum.Retribution;
+            role2.KilledBy = " By " + ColorString(Colors.Hunter, GetRole<Hunter>(PlayerControl.LocalPlayer).PlayerName);
+
             var deadPlayer = new DeadPlayer
             {
                 PlayerId = player.PlayerId,
