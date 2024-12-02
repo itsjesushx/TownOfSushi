@@ -304,14 +304,7 @@ namespace TownOfSushi.CustomOption
         public static float RandomMapAirship => Generate.RandomMapAirship.Get();
         public static float RandomMapFungle => Generate.RandomMapFungle.Get();
         public static float RandomMapSubmerged => SubmergedCompatibility.Loaded ? Generate.RandomMapSubmerged.Get() : 0f;
-        public static bool AutoAdjustSettings => Generate.AutoAdjustSettings.Get();
-        public static bool SmallMapHalfVision => Generate.SmallMapHalfVision.Get();
-        public static float SmallMapDecreasedCooldown => Generate.SmallMapDecreasedCooldown.Get();
-        public static float LargeMapIncreasedCooldown => Generate.LargeMapIncreasedCooldown.Get();
-        public static int SmallMapIncreasedShortTasks => (int)Generate.SmallMapIncreasedShortTasks.Get();
-        public static int SmallMapIncreasedLongTasks => (int)Generate.SmallMapIncreasedLongTasks.Get();
-        public static int LargeMapDecreasedShortTasks => (int)Generate.LargeMapDecreasedShortTasks.Get();
-        public static int LargeMapDecreasedLongTasks => (int)Generate.LargeMapDecreasedLongTasks.Get();
+        public static float RandomMapLevelImpostor => RandomMap.LevelImpLoaded ? Generate.RandomMapLevelImpostor.Get() : 0f;
         public static DisableSkipButtonMeetings SkipButtonDisable =>
             (DisableSkipButtonMeetings)Generate.SkipButtonDisable.Get();
         public static GameMode GameMode =>

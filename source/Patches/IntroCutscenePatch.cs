@@ -31,7 +31,8 @@ namespace TownOfSushi.Patches
                     player.transform.localScale = Vector3.one * 0.4f;
                     player.gameObject.SetActive(false);
                 }
-                if (GameOptionsManager.Instance.currentNormalGameOptions.MapId == 2 && CustomGameOptions.VentImprovements) {
+                if (GameOptionsManager.Instance.currentNormalGameOptions.MapId == 2 && CustomGameOptions.VentImprovements) 
+                {
                     var list = GameObject.FindObjectsOfType<Vent>().ToList();
                     var adminVent = list.FirstOrDefault(x => x.gameObject.name == "AdminVent");
                     var bathroomVent = list.FirstOrDefault(x => x.gameObject.name == "BathroomVent");
@@ -56,18 +57,21 @@ namespace TownOfSushi.Patches
     }
 
     [HarmonyPatch]
-    class IntroPatch {
-        public static void setupIntroTeamIcons(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam) {
+    class IntroPatch 
+    {
+        public static void AddNeutralIntroIcons(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam) {
             // Intro solo teams
-            if (PlayerControl.LocalPlayer.Is(Faction.Neutral)) {
+            if (PlayerControl.LocalPlayer.Is(Faction.Neutral)) 
+            {
                 var soloTeam = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
                 soloTeam.Add(PlayerControl.LocalPlayer);
                 yourTeam = soloTeam;
             }
         }
 
-        public static void setupIntroTeam(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam) {
-            if (PlayerControl.LocalPlayer.Is(Faction.Neutral)) {
+        public static void AddNeutralIntro(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam) {
+            if (PlayerControl.LocalPlayer.Is(Faction.Neutral)) 
+            {
                 var neutralColor = new Color32(76, 84, 78, 255);
                 __instance.BackgroundBar.material.color = neutralColor;
                 __instance.TeamTitle.text = "Neutral";
@@ -130,22 +134,22 @@ namespace TownOfSushi.Patches
         [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginCrewmate))]
         class BeginCrewmatePatch {
             public static void Prefix(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> teamToDisplay) {
-                setupIntroTeamIcons(__instance, ref teamToDisplay);
+                AddNeutralIntroIcons(__instance, ref teamToDisplay);
             }
 
             public static void Postfix(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> teamToDisplay) {
-                setupIntroTeam(__instance, ref teamToDisplay);
+                AddNeutralIntro(__instance, ref teamToDisplay);
             }
         }
 
         [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginImpostor))]
         class BeginImpostorPatch {
             public static void Prefix(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam) {
-                setupIntroTeamIcons(__instance, ref yourTeam);
+                AddNeutralIntroIcons(__instance, ref yourTeam);
             }
 
             public static void Postfix(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam) {
-                setupIntroTeam(__instance, ref yourTeam);
+                AddNeutralIntro(__instance, ref yourTeam);
             }
         }
     }

@@ -124,14 +124,7 @@ namespace TownOfSushi.CustomOption
         public static CustomNumberOption RandomMapAirship;
         public static CustomNumberOption RandomMapFungle;
         public static CustomNumberOption RandomMapSubmerged;
-        public static CustomToggleOption AutoAdjustSettings;
-        public static CustomToggleOption SmallMapHalfVision;
-        public static CustomNumberOption SmallMapDecreasedCooldown;
-        public static CustomNumberOption LargeMapIncreasedCooldown;
-        public static CustomNumberOption SmallMapIncreasedShortTasks;
-        public static CustomNumberOption SmallMapIncreasedLongTasks;
-        public static CustomNumberOption LargeMapDecreasedShortTasks;
-        public static CustomNumberOption LargeMapDecreasedLongTasks;
+        public static CustomNumberOption RandomMapLevelImpostor;
 
         public static CustomHeaderOption CustomGameSettings;
         public static CustomToggleOption ColourblindComms;
@@ -540,7 +533,7 @@ namespace TownOfSushi.CustomOption
                 PercentFormat);
             ExecutionerOn = new CustomNumberOption(num++, MultiMenu.Neutral, "<color=#CCCCCCFF>Executioner</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
-            JesterOn = new CustomNumberOption(num++, MultiMenu.Neutral, "<color=#ff75ef>Jester</color>", 0f, 0f, 100f, 10f,
+            JesterOn = new CustomNumberOption(num++, MultiMenu.Neutral, "<color=#FFBFCCFF>Jester</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
             PhantomOn = new CustomNumberOption(num++, MultiMenu.Neutral, "<color=#662962FF>Phantom</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
@@ -664,20 +657,7 @@ namespace TownOfSushi.CustomOption
             RandomMapAirship = new CustomNumberOption(num++, MultiMenu.General, "Airship Chance", 0f, 0f, 100f, 10f, PercentFormat);
             RandomMapFungle = new CustomNumberOption(num++, MultiMenu.General, "Fungle Chance", 0f, 0f, 100f, 10f, PercentFormat);
             RandomMapSubmerged = new CustomNumberOption(num++, MultiMenu.General, "Submerged Chance", 0f, 0f, 100f, 10f, PercentFormat);
-            AutoAdjustSettings = new CustomToggleOption(num++, MultiMenu.General, "Auto Adjust Settings", false);
-            SmallMapHalfVision = new CustomToggleOption(num++, MultiMenu.General, "Half Vision On Skeld/Mira HQ", false);
-            SmallMapDecreasedCooldown =
-                new CustomNumberOption(num++, MultiMenu.General, "Mira HQ Decreased Cooldowns", 0f, 0f, 15f, 2.5f, CooldownFormat);
-            LargeMapIncreasedCooldown =
-                new CustomNumberOption(num++, MultiMenu.General, "Airship/Submerged Increased Cooldowns", 0f, 0f, 15f, 2.5f, CooldownFormat);
-            SmallMapIncreasedShortTasks =
-                 new CustomNumberOption(num++, MultiMenu.General, "Skeld/Mira HQ Increased Short Tasks", 0, 0, 5, 1);
-            SmallMapIncreasedLongTasks =
-                 new CustomNumberOption(num++, MultiMenu.General, "Skeld/Mira HQ Increased Long Tasks", 0, 0, 3, 1);
-            LargeMapDecreasedShortTasks =
-                 new CustomNumberOption(num++, MultiMenu.General, "Airship/Submerged Decreased Short Tasks", 0, 0, 5, 1);
-            LargeMapDecreasedLongTasks =
-                 new CustomNumberOption(num++, MultiMenu.General, "Airship/Submerged Decreased Long Tasks", 0, 0, 3, 1);
+            RandomMapLevelImpostor = new CustomNumberOption(num++, MultiMenu.General, "Level Impostor Chance", 0f, 0f, 100f, 10f, PercentFormat);
 
             BetterPolusSettings =
                 new CustomHeaderOption(num++, MultiMenu.General, "Better Polus Settings");
@@ -944,7 +924,7 @@ namespace TownOfSushi.CustomOption
                 new CustomStringOption(num++, MultiMenu.Neutral, "Show Protected Player",
                     new[] { "Self", "Guardian Angel", "Self+GA", "Everyone" });
             GaOnTargetDeath = new CustomStringOption(num++, MultiMenu.Neutral, "GA Becomes On Target Dead",
-                new[] { "<color=#8BFDFDFF>Crew</color>", "<color=#22FFFFFF>Amnesiac</color>", "<color=#ff75ef>Jester</color>" });
+                new[] { "<color=#8BFDFDFF>Crew</color>", "<color=#22FFFFFF>Amnesiac</color>", "<color=#FFBFCCFF>Jester</color>" });
             GATargetKnows =
                 new CustomToggleOption(num++, MultiMenu.Neutral, "Target Knows GA Exists", false);
             GAKnowsTargetRole =
@@ -966,20 +946,20 @@ namespace TownOfSushi.CustomOption
             Executioner =
                 new CustomHeaderOption(num++, MultiMenu.Neutral, "<color=#CCCCCCFF>Executioner</color>");
             OnTargetDead = new CustomStringOption(num++, MultiMenu.Neutral, "<color=#CCCCCCFF>Executioner</color> Becomes On Target Dead",
-                new[] { "<color=#8BFDFDFF>Crew</color>", "<color=#22FFFFFF>Amnesiac</color>", "<color=#ff75ef>Jester</color>" });
+                new[] { "<color=#8BFDFDFF>Crew</color>", "<color=#22FFFFFF>Amnesiac</color>", "<color=#FFBFCCFF>Jester</color>" });
             ExecutionerButton =
                 new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#CCCCCCFF>Executioner</color> Can Button", true);
 
             Jester =
-                new CustomHeaderOption(num++, MultiMenu.Neutral, "<color=#ff75ef>Jester</color>");
+                new CustomHeaderOption(num++, MultiMenu.Neutral, "<color=#FFBFCCFF>Jester</color>");
             JesterButton =
-                new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#ff75ef>Jester</color> Can Button", true);
+                new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#FFBFCCFF>Jester</color> Can Button", true);
             JesterVent =
-                new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#ff75ef>Jester</color> Can Hide In Vents", false);
+                new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#FFBFCCFF>Jester</color> Can Hide In Vents", false);
             JesterVentSwitch =
-                new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#ff75ef>Jester</color> Can Switch Between Vents", false);
+                new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#FFBFCCFF>Jester</color> Can Switch Between Vents", false);
             JesterImpVision =
-                new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#ff75ef>Jester</color> Has Impostor Vision", false);
+                new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#FFBFCCFF>Jester</color> Has Impostor Vision", false);
 
             Vulture = new CustomHeaderOption(num++, MultiMenu.Neutral, "<color=#8C4005FF>Vulture</color>"); 
             VultureCd = new CustomNumberOption(num++, MultiMenu.Neutral, "Eat Cooldown", 10f, 10f, 60f, 2.5f, CooldownFormat);
@@ -1005,7 +985,7 @@ namespace TownOfSushi.CustomOption
             PickStartTimer =
                 new CustomNumberOption(num++, MultiMenu.Neutral, "Start Pick Cooldown", 25f, 10f, 60f, 2.5f, CooldownFormat);
             RomanticOnBelovedDeath = new CustomStringOption(num++, MultiMenu.Neutral, "Romantic Becomes On Beloved Dead",
-                new[] { "<color=#FF66CCFF>Repick Beloved</color>","<color=#8BFDFDFF>Crew</color>", "<color=#22FFFFFF>Amnesiac</color>", "<color=#ff75ef>Jester</color>" });
+                new[] { "<color=#FF66CCFF>Repick Beloved</color>","<color=#8BFDFDFF>Crew</color>", "<color=#22FFFFFF>Amnesiac</color>", "<color=#FFBFCCFF>Jester</color>" });
             RomanticBelovedKnows =
                 new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#FF66CCFF>Beloved</color> Knows The Existence Of <color=#FF66CCFF>Romantic</color>", false);
             RomanticKnowsBelovedRole =
