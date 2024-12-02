@@ -3,10 +3,8 @@ namespace TownOfSushi.Roles
     public class Werewolf : Role
     {
         private KillButton _maulButton;
-        public bool CanMaul;
         public PlayerControl ClosestPlayer;
         public DateTime LastMauled;
-        public float TimeRemaining;
         public Werewolf(PlayerControl player) : base(player)
         {
             Name = "Werewolf";

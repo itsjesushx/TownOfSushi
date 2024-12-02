@@ -209,22 +209,22 @@ namespace TownOfSushi.Roles
                 if (__gInstance.KillTarget != null)
                 {
                     var interact = Interact(__gInstance.Player, __gInstance.KillTarget, true);
-                    if (interact.AbilityUsed)
+                    if (interact[4] == true)
                     {
                         return;
                     }
-                    else if (interact.FullCooldownReset)
+                    else if (interact[0] == true)
                     {
                         __gInstance.LastKill = DateTime.UtcNow;
                         return;
                     }
-                    else if (interact.GaReset)
+                    else if (interact[1] == true)
                     {
                         __gInstance.LastKill = DateTime.UtcNow;
                         __gInstance.LastKill = __gInstance.LastKill.AddSeconds(CustomGameOptions.ProtectKCReset - CustomGameOptions.HitmanKCd);
                         return;
                     }
-                    else if (interact.ZeroSecReset)
+                    else if (interact[3] == true)
                     {
                         return;
                     }

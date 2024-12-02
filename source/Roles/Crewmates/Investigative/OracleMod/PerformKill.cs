@@ -19,7 +19,7 @@
             if (role.ClosestPlayer == null) return false;
 
             var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer);
-            if (interact.AbilityUsed)
+            if (interact[4] == true)
             {
                 role.Confessor = role.ClosestPlayer;
                 bool showsCorrectFaction = true;
@@ -49,18 +49,18 @@
                 Rpc(CustomRPC.Confess, PlayerControl.LocalPlayer.PlayerId, role.Confessor.PlayerId, faction);
                 
             }
-            if (interact.FullCooldownReset)
+            if (interact[0] == true)
             {
                 role.LastConfessed = DateTime.UtcNow;
                 return false;
             }
-            else if (interact.GaReset)
+            else if (interact[1] == true)
             {
                 role.LastConfessed = DateTime.UtcNow;
                 role.LastConfessed = role.LastConfessed.AddSeconds(CustomGameOptions.ProtectKCReset - CustomGameOptions.ConfessCd);
                 return false;
             }
-            else if (interact.ZeroSecReset) return false;
+            else if (interact[3] == true) return false;
             return false;
         }
     }

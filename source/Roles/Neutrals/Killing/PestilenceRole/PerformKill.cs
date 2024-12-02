@@ -19,19 +19,19 @@ namespace TownOfSushi.Roles.Neutral.Killing.PestilenceRole
                         KillDistance();
             if (!flag3) return false;
             var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer, true);
-            if (interact.AbilityUsed) return false;
-            else if (interact.FullCooldownReset)
+            if (interact[4] == true) return false;
+            else if (interact[0] == true)
             {
                 role.LastKill = DateTime.UtcNow;
                 return false;
             }
-            else if (interact.GaReset)
+            else if (interact[1] == true)
             {
                 role.LastKill = DateTime.UtcNow;
                 role.LastKill = role.LastKill.AddSeconds(CustomGameOptions.ProtectKCReset - CustomGameOptions.PestKillCd);
                 return false;
             }
-            else if (interact.ZeroSecReset) return false;
+            else if (interact[3] == true) return false;
             return false;
         }
     }

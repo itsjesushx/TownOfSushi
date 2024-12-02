@@ -19,7 +19,7 @@ namespace TownOfSushi
                 return false;
             }
             var interact = Interact(PlayerControl.LocalPlayer, target, true);
-            if (interact.AbilityUsed) return false;
+            if (interact[4] == true) return false;
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Warlock))
             {
                 var warlock = GetRole<Warlock>(PlayerControl.LocalPlayer);
@@ -31,7 +31,7 @@ namespace TownOfSushi
                 }
                 PlayerControl.LocalPlayer.SetKillTimer(0.01f);
             }
-            else if (interact.FullCooldownReset)
+            else if (interact[0] == true)
             {
                 if (PlayerControl.LocalPlayer.Is(ModifierEnum.Underdog))
                 {
@@ -43,12 +43,12 @@ namespace TownOfSushi
                 else PlayerControl.LocalPlayer.SetKillTimer(GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown);
                 return false;
             }
-            else if (interact.GaReset)
+            else if (interact[1] == true)
             {
                 PlayerControl.LocalPlayer.SetKillTimer(CustomGameOptions.ProtectKCReset + 0.01f);
                 return false;
             }
-            else if (interact.ZeroSecReset)
+            else if (interact[3] == true)
             {
                 PlayerControl.LocalPlayer.SetKillTimer(0.01f);
                 return false;

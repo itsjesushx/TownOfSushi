@@ -19,7 +19,7 @@ namespace TownOfSushi.Roles.Impostors.Support.BlackmailerRole
                 if (role.BlackmailTimer() != 0) return false;
 
                 var interact = Interact(PlayerControl.LocalPlayer, target);
-                if (interact.AbilityUsed)
+                if (interact[4] == true)
                 {
                     role.Blackmailed?.myRend().material.SetFloat("_Outline", 0f);
                     if (role.Blackmailed != null && role.Blackmailed.Data.IsImpostor())

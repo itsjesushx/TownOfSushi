@@ -14,23 +14,23 @@ namespace TownOfSushi.Roles.Impostors.Power.WitchRole
             if (__instance == role.SpellButton)
             {
                 var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer);
-                if (interact.AbilityUsed)
+                if (interact[4] == true)
                 {
                     role.SpelledPlayers.Add(role.ClosestPlayer.PlayerId);
                     Rpc(CustomRPC.Spell, PlayerControl.LocalPlayer.PlayerId, role.ClosestPlayer.PlayerId);
                 }
-                if (interact.FullCooldownReset)
+                if (interact[0] == true)
                 {
                     role.LastSpelled = DateTime.UtcNow;
                     return false;
                 }
-                else if (interact.GaReset)
+                else if (interact[1] == true)
                 {
                     role.LastSpelled = DateTime.UtcNow;
                     role.LastSpelled = role.LastSpelled.AddSeconds(CustomGameOptions.ProtectKCReset - CustomGameOptions.SpellCd);
                     return false;
                 }
-                else if (interact.ZeroSecReset) return false;
+                else if (interact[3] == true) return false;
             }
             return true;
         }

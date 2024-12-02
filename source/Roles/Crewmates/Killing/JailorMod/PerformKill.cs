@@ -19,23 +19,23 @@
             if (role.ClosestPlayer == null) return false;
 
             var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer);
-            if (interact.AbilityUsed)
+            if (interact[4] == true)
             {
                 role.Jailed = role.ClosestPlayer;
                 Rpc(CustomRPC.Jail, PlayerControl.LocalPlayer.PlayerId, (byte)0, role.Jailed.PlayerId);
             }
-            if (interact.FullCooldownReset)
+            if (interact[0] == true)
             {
                 role.LastJailed = DateTime.UtcNow;
                 return false;
             }
-            else if (interact.GaReset)
+            else if (interact[1] == true)
             {
                 role.LastJailed = DateTime.UtcNow;
                 role.LastJailed = role.LastJailed.AddSeconds(CustomGameOptions.ProtectKCReset - CustomGameOptions.JailCd);
                 return false;
             }
-            else if (interact.ZeroSecReset) return false;
+            else if (interact[3] == true) return false;
             return false;
         }
     }

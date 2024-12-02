@@ -9,28 +9,28 @@ namespace TownOfSushi.Roles.Neutral.Killing.PlaguebearerRole
             if (!flag) return true;
             if (PlayerControl.LocalPlayer.Data.IsDead) return false;
             if (!PlayerControl.LocalPlayer.CanMove) return false;
+            if (!__instance.isActiveAndEnabled || __instance.isCoolingDown) return false;
             var role = GetRole<Plaguebearer>(PlayerControl.LocalPlayer);
             if (role.InfectTimer() != 0) return false;
-
             if (role.ClosestPlayer == null) return false;
             if (role.InfectedPlayers.Contains(role.ClosestPlayer.PlayerId)) return false;
-            var distBetweenPlayers = GetDistBetweenPlayers(PlayerControl.LocalPlayer, role.ClosestPlayer);
+            var distBetweenPlayers = Utils.GetDistBetweenPlayers(PlayerControl.LocalPlayer, role.ClosestPlayer);
             var flag3 = distBetweenPlayers <
-                        KillDistance();
+                        GameOptionsData.KillDistances[GameOptionsManager.Instance.currentNormalGameOptions.KillDistance];
             if (!flag3) return false;
             var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer);
-            if (interact.FullCooldownReset)
+            if (interact[0] == true)
             {
                 role.LastInfected = DateTime.UtcNow;
                 return false;
             }
-            else if (interact.GaReset)
+            else if (interact[1] == true)
             {
                 role.LastInfected = DateTime.UtcNow;
                 role.LastInfected.AddSeconds(CustomGameOptions.ProtectKCReset - CustomGameOptions.InfectCd);
                 return false;
             }
-            else if (interact.ZeroSecReset) return false;
+            else if (interact[3] == true) return false;
             return false;
         }
     }

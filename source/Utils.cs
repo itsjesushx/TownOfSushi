@@ -332,16 +332,22 @@ namespace TownOfSushi
             });
         }
 
-        public static InteractionData Interact(PlayerControl player, PlayerControl target, bool toKill = false)
+        public static List<bool> Interact(PlayerControl player, PlayerControl target, bool toKill = false)
         {
-            InteractionData data = new(false, false, false, false);
+            bool fullCooldownReset = false;
+            bool gaReset = false;
+            bool survReset = false;
+            bool zeroSecReset = false;
+            bool abilityUsed = false;
+            var checkHack = AbilityUsed(player, target);
+            if (!checkHack) return new List<bool> { false, false, false, true, false };
             if (target.IsInfected() || player.IsInfected())
             {
-                foreach (var pb in GetRoles(RoleEnum.Plaguebearer)) ((Plaguebearer)pb).RpcSpreadInfection(target, player);
+                foreach (var pb in Role.GetRoles(RoleEnum.Plaguebearer)) ((Plaguebearer)pb).RpcSpreadInfection(target, player);
             }
             if (target == ShowRoundOneShield.FirstRoundShielded && toKill)
             {
-                data.ZeroSecReset = true;
+                zeroSecReset = true;
             }
             
             else if (target.Is(RoleEnum.Pestilence))
@@ -351,13 +357,13 @@ namespace TownOfSushi
                     var medic = player.GetMedic().Player.PlayerId;
                     Rpc(CustomRPC.AttemptSound, medic, player.PlayerId);
 
-                    if (CustomGameOptions.ShieldBreaks) data.FullCooldownReset = true;
-                    else data.ZeroSecReset = true;
+                    if (CustomGameOptions.ShieldBreaks) fullCooldownReset = true;
+                    else zeroSecReset = true;
 
                     StopKill.BreakShield(medic, player.PlayerId, CustomGameOptions.ShieldBreaks);
                 }
-                else if (player.IsProtected()) data.GaReset = true;
-                else if (player == ShowRoundOneShield.FirstRoundShielded) data.ZeroSecReset = true;
+                else if (player.IsProtected()) gaReset = true;
+                else if (player == ShowRoundOneShield.FirstRoundShielded) zeroSecReset = true;
                 else RpcMurderPlayer(target, player);
             }
 
@@ -365,19 +371,19 @@ namespace TownOfSushi
             
             else if (target.IsOnAlert())
             {
-                if (player.Is(RoleEnum.Pestilence)) data.ZeroSecReset = true;
+                if (player.Is(RoleEnum.Pestilence)) zeroSecReset = true;
                 else if (player.IsShielded())
                 {
                     var medic = player.GetMedic().Player.PlayerId;
                     Rpc(CustomRPC.AttemptSound, medic, player.PlayerId);
 
-                    if (CustomGameOptions.ShieldBreaks) data.FullCooldownReset = true;
-                    else data.ZeroSecReset = true;
+                    if (CustomGameOptions.ShieldBreaks) fullCooldownReset = true;
+                    else zeroSecReset = true;
 
                     StopKill.BreakShield(medic, player.PlayerId, CustomGameOptions.ShieldBreaks);
                 }
-                else if (player.IsProtected()) data.GaReset = true;
-                else if (player == ShowRoundOneShield.FirstRoundShielded) data.ZeroSecReset = true;
+                else if (player.IsProtected()) gaReset = true;
+                else if (player == ShowRoundOneShield.FirstRoundShielded) zeroSecReset = true;
                 else RpcMurderPlayer(target, player);
 
                 if (toKill && CustomGameOptions.KilledOnAlert)
@@ -387,13 +393,13 @@ namespace TownOfSushi
                         var medic = target.GetMedic().Player.PlayerId;
                         Rpc(CustomRPC.AttemptSound, medic, target.PlayerId);
 
-                        if (CustomGameOptions.ShieldBreaks) data.FullCooldownReset = true;
-                        else data.ZeroSecReset = true;
+                        if (CustomGameOptions.ShieldBreaks) fullCooldownReset = true;
+                        else zeroSecReset = true;
 
                         StopKill.BreakShield(medic, target.PlayerId, CustomGameOptions.ShieldBreaks);
                     }
-                    else if (target.IsProtected()) data.GaReset = true;
-                    else if (target == ShowRoundOneShield.FirstRoundShielded) data.ZeroSecReset = true;
+                    else if (target.IsProtected()) gaReset = true;
+                    else if (target == ShowRoundOneShield.FirstRoundShielded) zeroSecReset = true;
                     else
                     {
                         if (player.Is(RoleEnum.Glitch))
@@ -433,10 +439,10 @@ namespace TownOfSushi
                             ww.LastMauled = DateTime.UtcNow;
                         }
                         RpcMurderPlayer(player, target);
-                        data.AbilityUsed = true;
-                        data.FullCooldownReset = true;
-                        data.GaReset = false;
-                        data.ZeroSecReset = false;
+                        abilityUsed = true;
+                        fullCooldownReset = true;
+                        gaReset = false;
+                        zeroSecReset = false;
                     }
                 }
             }
@@ -445,13 +451,13 @@ namespace TownOfSushi
                 Rpc(CustomRPC.AttemptSound, target.GetMedic().Player.PlayerId, target.PlayerId);
 
                 System.Console.WriteLine(CustomGameOptions.ShieldBreaks + "- shield break");
-                if (CustomGameOptions.ShieldBreaks) data.FullCooldownReset = true;
-                else data.ZeroSecReset = true;
+                if (CustomGameOptions.ShieldBreaks) fullCooldownReset = true;
+                else zeroSecReset = true;
                 StopKill.BreakShield(target.GetMedic().Player.PlayerId, target.PlayerId, CustomGameOptions.ShieldBreaks);
             }
             else if (target.IsProtected() && toKill)
             {
-                data.GaReset = true;
+                gaReset = true;
             }
             else if (toKill)
             {
@@ -492,15 +498,21 @@ namespace TownOfSushi
                     ww.LastMauled = DateTime.UtcNow;
                 }
                 RpcMurderPlayer(player, target);
-                data.AbilityUsed = true;
-                data.FullCooldownReset = true;
+                abilityUsed = true;
+                fullCooldownReset = true;
             }
             else
             {
-                data.AbilityUsed = true;
-                data.FullCooldownReset = true;
+                abilityUsed = true;
+                fullCooldownReset = true;
             }
-            return data;
+            var reset = new List<bool>();
+            reset.Add(fullCooldownReset);
+            reset.Add(gaReset);
+            reset.Add(survReset);
+            reset.Add(zeroSecReset);
+            reset.Add(abilityUsed);
+            return reset;
         }
 
         public static Il2CppSystem.Collections.Generic.List<PlayerControl> GetClosestPlayers(Vector2 truePosition, float radius, bool includeDead)

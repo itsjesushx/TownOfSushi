@@ -16,7 +16,7 @@
             if (role.StartTimer() > 0) return false;
 
             var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer);
-            if (interact.AbilityUsed)
+            if (interact[4] == true)
             {
                 Rpc(CustomRPC.Protect, PlayerControl.LocalPlayer.PlayerId, role.ClosestPlayer.PlayerId);
 

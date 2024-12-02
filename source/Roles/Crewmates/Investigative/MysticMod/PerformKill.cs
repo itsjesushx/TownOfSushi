@@ -19,8 +19,8 @@ namespace TownOfSushi.Roles.Crewmates.Investigative.MysticMod
                 PlayerControl.LocalPlayer.GetTruePosition()) > maxDistance) return false;
             if (role.ClosestPlayer == null) return false;
 
-            var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer);
-            if (interact.AbilityUsed)
+            var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer, false);
+            if (interact[4] == true)
             {
                 var hasKilled = false;
                 foreach (var player in Murder.KilledPlayers)
@@ -34,18 +34,18 @@ namespace TownOfSushi.Roles.Crewmates.Investigative.MysticMod
                 else Flash(Color.green);
                 role.LastExaminedPlayer = role.ClosestPlayer;
             }
-            if (interact.FullCooldownReset)
+            if (interact[0] == true)
             {
                 role.LastExamined = DateTime.UtcNow;
                 return false;
             }
-            else if (interact.GaReset)
+            else if (interact[1] == true)
             {
                 role.LastExamined = DateTime.UtcNow;
                 role.LastExamined = role.LastExamined.AddSeconds(CustomGameOptions.ProtectKCReset - CustomGameOptions.MysticExamineCd);
                 return false;
             }
-            else if (interact.ZeroSecReset) return false;
+            else if (interact[3] == true) return false;
             return false;
         }
     }

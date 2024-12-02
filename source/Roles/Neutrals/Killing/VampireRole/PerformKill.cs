@@ -35,41 +35,41 @@ namespace TownOfSushi.NeutralRoles.VampireRole
                 aliveVamps.Count == 1 && vamps.Count < CustomGameOptions.MaxVampiresPerGame)
             {
                 var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer);
-                if (interact.AbilityUsed)
+                if (interact[4] == true)
                 {
                     Convert(role.ClosestPlayer);
                     Rpc(CustomRPC.Bite, role.ClosestPlayer.PlayerId);
                 }
-                if (interact.FullCooldownReset)
+                if (interact[0] == true)
                 {
                     role.LastBit = DateTime.UtcNow;
                     return false;
                 }
-                else if (interact.GaReset)
+                else if (interact[1] == true)
                 {
                     role.LastBit = DateTime.UtcNow;
                     role.LastBit = role.LastBit.AddSeconds(CustomGameOptions.ProtectKCReset - CustomGameOptions.BiteCd);
                     return false;
                 }
-                else if (interact.ZeroSecReset) return false;
+                else if (interact[3] == true) return false;
                 return false;
             }
             else
             {
                 var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer, true);
-                if (interact.AbilityUsed) return false;
-                if (interact.FullCooldownReset)
+                if (interact[4] == true) return false;
+                if (interact[0] == true)
                 {
                     role.LastBit = DateTime.UtcNow;
                     return false;
                 }
-                else if (interact.GaReset)
+                else if (interact[1] == true)
                 {
                     role.LastBit = DateTime.UtcNow;
                     role.LastBit = role.LastBit.AddSeconds(CustomGameOptions.ProtectKCReset - CustomGameOptions.BiteCd);
                     return false;
                 }
-                else if (interact.ZeroSecReset) return false;
+                else if (interact[3] == true) return false;
                 return false;
             }
         }

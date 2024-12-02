@@ -35,19 +35,19 @@
             if (!flag3) return false;
 
             var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer, true);
-            if (interact.AbilityUsed) return false;
-            else if (interact.FullCooldownReset)
+            if (interact[4] == true) return false;
+            else if (interact[0] == true)
             {
                 role.LastKilled = DateTime.UtcNow;
                 return false;
             }
-            else if (interact.GaReset)
+            else if (interact[1] == true)
             {
                 role.LastKilled = DateTime.UtcNow;
                 role.LastKilled = role.LastKilled.AddSeconds(CustomGameOptions.ProtectKCReset - CustomGameOptions.StabKillCd);
                 return false;
             }
-            else if (interact.ZeroSecReset) return false;
+            else if (interact[3] == true) return false;
             return false;
         }
     }

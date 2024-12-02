@@ -311,22 +311,22 @@ namespace TownOfSushi.Roles
                 if (__gInstance.KillTarget != null)
                 {
                     var interact = Interact(__gInstance.Player, __gInstance.KillTarget, true);
-                    if (interact.AbilityUsed)
+                    if (interact[4] == true)
                     {
                         return;
                     }
-                    else if (interact.FullCooldownReset)
+                    else if (interact[0] == true)
                     {
                         __gInstance.LastKill = DateTime.UtcNow;
                         return;
                     }
-                    else if (interact.GaReset)
+                    else if (interact[1] == true)
                     {
                         __gInstance.LastKill = DateTime.UtcNow;
                         __gInstance.LastKill = __gInstance.LastKill.AddSeconds(CustomGameOptions.ProtectKCReset - CustomGameOptions.GlitchKillCooldown);
                         return;
                     }
-                    else if (interact.ZeroSecReset)
+                    else if (interact[3] == true)
                     {
                         return;
                     }
@@ -386,22 +386,22 @@ namespace TownOfSushi.Roles
                 {
                     if (__gInstance.Player.inVent) return;
                     var interact = Interact(__gInstance.Player, __gInstance.HackTarget);
-                    if (interact.AbilityUsed)
+                    if (interact[4] == true)
                     {
                         __gInstance.RpcSetHacked(__gInstance.HackTarget);
                     }
-                    if (interact.FullCooldownReset)
+                    if (interact[0] == true)
                     {
                         __gInstance.LastHack = DateTime.UtcNow;
                         return;
                     }
-                    else if (interact.GaReset)
+                    else if (interact[1] == true)
                     {
                         __gInstance.LastHack = DateTime.UtcNow;
                         __gInstance.LastHack.AddSeconds(CustomGameOptions.ProtectKCReset - CustomGameOptions.HackCooldown);
                         return;
                     }
-                    else if (interact.ZeroSecReset)
+                    else if (interact[3] == true)
                     {
                         return;
                     }

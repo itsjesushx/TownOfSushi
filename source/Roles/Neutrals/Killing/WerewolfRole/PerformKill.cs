@@ -24,7 +24,7 @@ namespace TownOfSushi.Roles.Neutral.Killing.WerewolfRole
                 var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer, true);
                 var playerId = role.ClosestPlayer.PlayerId;
 
-                if (interact.AbilityUsed)
+                if (interact[4] == true)
                 {
                     role.Maul(role.Player);
                     var writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId,
@@ -34,9 +34,9 @@ namespace TownOfSushi.Roles.Neutral.Killing.WerewolfRole
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                 }
                 
-                if (interact.FullCooldownReset)
+                if (interact[0] == true)
                     role.LastMauled = DateTime.UtcNow;
-                else if (interact.GaReset)
+                else if (interact[1] == true)
                     role.LastMauled.AddSeconds(CustomGameOptions.ProtectKCReset);
                 return false;
             }

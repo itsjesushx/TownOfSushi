@@ -24,19 +24,19 @@
                     if (!role.DousedPlayers.Contains(role.ClosestPlayerIgnite.PlayerId)) return false;
 
                     var interact2 = Interact(PlayerControl.LocalPlayer, role.ClosestPlayerIgnite);
-                    if (interact2.AbilityUsed) role.Ignite();
-                    if (interact2.FullCooldownReset)
+                    if (interact2[4] == true) role.Ignite();
+                    if (interact2[0] == true)
                     {
                         role.LastDoused = DateTime.UtcNow;
                         return false;
                     }
-                    else if (interact2.GaReset)
+                    else if (interact2[1] == true)
                     {
                         role.LastDoused = DateTime.UtcNow;
                         role.LastDoused.AddSeconds(CustomGameOptions.ProtectKCReset - CustomGameOptions.DouseCd);
                         return false;
                     }
-                    else if (interact2.ZeroSecReset) return false;
+                    else if (interact2[3] == true) return false;
                     return false;
                 }
                 else return false;
@@ -51,22 +51,22 @@
             if (!flag2) return false;
             if (role.DousedPlayers.Contains(role.ClosestPlayerDouse.PlayerId)) return false;
             var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayerDouse);
-            if (interact.AbilityUsed) 
+            if (interact[4] == true) 
             {
                 role.DousedPlayers.Add(role.ClosestPlayerDouse.PlayerId);
             }
-            if (interact.FullCooldownReset)
+            if (interact[0] == true)
             {
                 role.LastDoused = DateTime.UtcNow;
                 return false;
             }
-            else if (interact.GaReset)
+            else if (interact[1] == true)
             {
                 role.LastDoused = DateTime.UtcNow;
                 role.LastDoused.AddSeconds(CustomGameOptions.ProtectKCReset - CustomGameOptions.DouseCd);
                 return false;
             }
-            else if (interact.ZeroSecReset) return false;
+            else if (interact[3] == true) return false;
             return false;
         }
     }
