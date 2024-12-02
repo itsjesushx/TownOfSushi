@@ -1243,7 +1243,7 @@ Custom hats based off anything!
 
 -----------------------
 # Bug / Suggestions
-If you have any bugs or any need to contact me, join the [Discord Server](https://discord.com/GET7TafkcR) or create a ticket on GitHub.
+If you have any bugs or any need to contact me, join the [Discord Server](https://discord.gg/hxhh2pVXcp) or create a ticket on GitHub.
 
 -----------------------
 # Credits & Resources
