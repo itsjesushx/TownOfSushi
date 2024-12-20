@@ -46,17 +46,6 @@ namespace TownOfSushi
 
             if (player._object.Is(AbilityEnum.Torch)) t = 1;
 
-            if (player._object.Is(RoleEnum.Mayor))
-            {
-                var role = GetRole<Mayor>(player._object);
-                if (role.Revealed && CustomGameOptions.MayorVision)
-                {
-                    __result = Mathf.Lerp(__instance.MinLightRadius, __instance.MaxLightRadius/2, t) *
-                       GameOptionsManager.Instance.currentNormalGameOptions.CrewLightMod;
-                    return false;
-                }
-            }
-
             __result = Mathf.Lerp(__instance.MinLightRadius, __instance.MaxLightRadius, t) *
                        GameOptionsManager.Instance.currentNormalGameOptions.CrewLightMod;
             return false;

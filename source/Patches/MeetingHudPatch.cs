@@ -31,8 +31,7 @@ namespace TownOfSushi.Patches
             }
         }
 
-        static void populateButtonsPostfix(MeetingHud __instance) 
-        {
+        static void populateButtonsPostfix(MeetingHud __instance) {
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Vigilante) && !PlayerControl.LocalPlayer.IsJailed() && !PlayerControl.LocalPlayer.Data.IsDead && GetRole<Vigilante>(PlayerControl.LocalPlayer).RemainingKills > 0)
             {
                 for (int i = 0; i < __instance.playerStates.Length; i++)
@@ -49,7 +48,6 @@ namespace TownOfSushi.Patches
                     PassiveButton button = targetBox.GetComponent<PassiveButton>();
                     button.OnClick.RemoveAllListeners();
                     int copiedIndex = i;
-                    if (PlayerById(playerVoteArea.TargetPlayerId).Is(RoleEnum.Mayor) && GetRole<Mayor>(PlayerById(playerVoteArea.TargetPlayerId)).Revealed) button.Destroy();
                     button.OnClick.AddListener((System.Action)(() => Roles.Crewmates.Killing.VigilanteRole.AddButton.vigilanteOnClick(copiedIndex, __instance)));
                 }
             }
@@ -70,7 +68,6 @@ namespace TownOfSushi.Patches
                     PassiveButton button = targetBox.GetComponent<PassiveButton>();
                     button.OnClick.RemoveAllListeners();
                     int copiedIndex = i;
-                    if (PlayerById(playerVoteArea.TargetPlayerId).Is(RoleEnum.Mayor) && GetRole<Mayor>(PlayerById(playerVoteArea.TargetPlayerId)).Revealed) button.Destroy();
                     button.OnClick.AddListener((System.Action)(() => AddButton.doomsayerOnClick(copiedIndex, __instance)));
                 }
             }
@@ -91,7 +88,6 @@ namespace TownOfSushi.Patches
                     PassiveButton button = targetBox.GetComponent<PassiveButton>();
                     button.OnClick.RemoveAllListeners();
                     int copiedIndex = i;
-                    if (PlayerById(playerVoteArea.TargetPlayerId).Is(RoleEnum.Mayor) && GetRole<Mayor>(PlayerById(playerVoteArea.TargetPlayerId)).Revealed) button.Destroy();
                     button.OnClick.AddListener((System.Action)(() => Roles.Abilities.AbilityMod.AssassinAbility.AddButton.assassinOnClick(copiedIndex, __instance)));
                 }
             }

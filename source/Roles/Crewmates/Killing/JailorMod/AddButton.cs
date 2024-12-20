@@ -156,12 +156,6 @@ namespace TownOfSushi.Roles.Crewmates.Killing.JailorMod
                         SetImitate.Imitate = null;
                     }
 
-                    if (player.Is(RoleEnum.Mayor))
-                    {
-                        var mayor = GetRole<Mayor>(PlayerControl.LocalPlayer);
-                        mayor.RevealButton.Destroy();
-                    }
-
                     if (player.Is(RoleEnum.Jailor))
                     {
                         var jailor2 = GetRole<Jailor>(PlayerControl.LocalPlayer);

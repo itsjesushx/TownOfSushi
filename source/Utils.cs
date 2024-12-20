@@ -281,9 +281,9 @@ namespace TownOfSushi
         public static bool IsSpelled(this PlayerControl player)
         {   
             return GetRoles(RoleEnum.Witch).Any(role =>    
-            {        
-                var spelledPlayers = ((Witch)role).SpelledPlayers;        
-                return spelledPlayers != null && spelledPlayers.Contains(player.PlayerId) && !role.Player.Data.IsDead;    
+            {
+                var spelledPlayers = ((Witch)role).SpelledPlayers;
+                return spelledPlayers != null && spelledPlayers.Contains(player.PlayerId)  && !player.Data.IsDead && !role.Player.Data.IsDead;    
             });
         }
 

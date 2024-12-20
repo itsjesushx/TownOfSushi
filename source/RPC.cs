@@ -11,7 +11,6 @@ using TownOfSushi.Roles.Neutral.Evil.PhantomRole;
 using TownOfSushi.Roles.Crewmates.Special.HaunterMod;
 using TownOfSushi.Roles.Crewmates.Support.MedicRole;
 using TownOfSushi.Roles.Crewmates.Support.ImitatorRole;
-using TownOfSushi.Roles.Crewmates.Power.MayorRole;
 using TownOfSushi.Roles.Crewmates.Killing.VigilanteRole;
 using TownOfSushi.Roles.Neutral.Benign.RomanticRole;
 using TownOfSushi.Roles.Crewmates.Killing.JailorMod;
@@ -391,7 +390,7 @@ namespace TownOfSushi
             NonTaskerAbilities.SortAbilities(canHaveAbility3.Count);
 
             // Set the Haunter, if there is one enabled.
-            var toChooseFromCrew = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(Faction.Crewmates) && !x.Is(RoleEnum.Mayor)).ToList();
+            var toChooseFromCrew = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(Faction.Crewmates)).ToList();
 
             // Set the Haunter, if there is one enabled.
             if (HaunterOn && toChooseFromCrew.Count != 0)
@@ -423,7 +422,7 @@ namespace TownOfSushi
                 Rpc(CustomRPC.SetPhantom, byte.MaxValue);
             }
 
-            var exeTargets = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(Faction.Crewmates) && !x.Is(RoleEnum.Mayor) && !x.Is(RoleEnum.Vigilante) && !x.Is(RoleEnum.Jailor)).ToList();
+            var exeTargets = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(Faction.Crewmates) && !x.Is(RoleEnum.Vigilante) && !x.Is(RoleEnum.Jailor)).ToList();
             foreach (var role in GetRoles(RoleEnum.Executioner))
             {
                 var exe = (Executioner)role;
@@ -625,13 +624,6 @@ namespace TownOfSushi
                     case CustomRPC.FixLights:
                         var lights = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
                         lights.ActualSwitches = lights.ExpectedSwitches;
-                        break;
-
-                    case CustomRPC.Reveal:
-                        var mayor = PlayerById(reader.ReadByte());
-                        var mayorRole = GetRole<Mayor>(mayor);
-                        mayorRole.Revealed = true;
-                        AddRevealButton.RemoveAssassin(mayorRole);
                         break;
                     case CustomRPC.Bite:
                         var newVamp = PlayerById(reader.ReadByte());
@@ -1121,9 +1113,6 @@ namespace TownOfSushi
                 if (CustomGameOptions.GameMode == GameMode.Classic || CustomGameOptions.GameMode == GameMode.AllAny)
                 {
                     #region Crewmate Roles
-                    if (CustomGameOptions.MayorOn > 0)
-                        CrewmateRoles.Add((typeof(Mayor), CustomGameOptions.MayorOn, true));
-
                     if (CustomGameOptions.VigilanteOn > 0)
                         CrewmateRoles.Add((typeof(Vigilante), CustomGameOptions.VigilanteOn, false));
                     

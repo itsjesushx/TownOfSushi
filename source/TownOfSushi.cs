@@ -79,7 +79,6 @@ namespace TownOfSushi
         public static Sprite ImitateDeselectSprite;
         public static Sprite ObserveSprite;
         public static Sprite BiteSprite;
-        public static Sprite RevealSprite;
         public static Sprite ConfessSprite;
         public static Sprite NoAbilitySprite;
         public static Sprite CamouflageSprite;
@@ -160,7 +159,6 @@ namespace TownOfSushi
             ImitateDeselectSprite = CreateSprite("TownOfSushi.Resources.ImitateDeselect.png");
             ObserveSprite = CreateSprite("TownOfSushi.Resources.Observe.png");
             BiteSprite = CreateSprite("TownOfSushi.Resources.Bite.png");
-            RevealSprite = CreateSprite("TownOfSushi.Resources.Reveal.png");
             ConfessSprite = CreateSprite("TownOfSushi.Resources.Confess.png");
             EngineerFix = CreateSprite("TownOfSushi.Resources.Engineer.png");
             NoAbilitySprite = CreateSprite("TownOfSushi.Resources.NoAbility.png");

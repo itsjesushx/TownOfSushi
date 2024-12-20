@@ -77,7 +77,6 @@ namespace TownOfSushi.Patches
                     else if (role.Value == RoleEnum.Impostor) { playerRole += "<color=#" + Colors.Impostor.ToHtmlStringRGBA() + ">Impostor</color> > "; }
                     else if (role.Value == RoleEnum.Engineer) { playerRole += "<color=#" + Colors.Engineer.ToHtmlStringRGBA() + ">Engineer</color> > "; }
                     else if (role.Value == RoleEnum.Investigator) { playerRole += "<color=#" + Colors.Investigator.ToHtmlStringRGBA() + ">Investigator</color> > "; }
-                    else if (role.Value == RoleEnum.Mayor) { playerRole += "<color=#" + Colors.Mayor.ToHtmlStringRGBA() + ">Mayor</color> > "; }
                     else if (role.Value == RoleEnum.Medic) { playerRole += "<color=#" + Colors.Medic.ToHtmlStringRGBA() + ">Medic</color> > "; }
                     else if (role.Value == RoleEnum.Vigilante) { playerRole += "<color=#" + Colors.Vigilante.ToHtmlStringRGBA() + ">Vigilante</color> > "; }
                     else if (role.Value == RoleEnum.Seer) { playerRole += "<color=#" + Colors.Seer.ToHtmlStringRGBA() + ">Seer</color> > "; }
@@ -1304,13 +1303,6 @@ namespace TownOfSushi.Patches
                         {
                             var Veteran = (Veteran)role;
                             if (Veteran.Player != null && Veteran.Player.PlayerId == playerInfo.PlayerId && Veteran.UsesLeft > 0) {
-                                CrewKillingAlive++;
-                            }
-                        }
-                        foreach (var role in GetRoles(RoleEnum.Mayor))
-                        {
-                            var Mayor = (Mayor)role;
-                            if (Mayor.Player != null && Mayor.Player.PlayerId == playerInfo.PlayerId) {
                                 CrewKillingAlive++;
                             }
                         }

@@ -59,7 +59,7 @@ namespace TownOfSushi.Roles.Crewmates.Investigative.MysticMod
             else if (player.Is(RoleEnum.Engineer) || player.Is(RoleEnum.Escapist) || player.Is(RoleEnum.Grenadier)
                 || player.Is(RoleEnum.GuardianAngel) || player.Is(RoleEnum.Medic) || player.Is(RoleEnum.Romantic))
                 return "Your target hides to guard themself or others";
-            else if (player.Is(RoleEnum.Executioner) || player.Is(RoleEnum.Jester) || player.Is(RoleEnum.Mayor)
+            else if (player.Is(RoleEnum.Executioner) || player.Is(RoleEnum.Jester)
                  || player.Is(RoleEnum.Hunter) || player.Is(RoleEnum.Veteran))
                 return "Your target has a trick up their sleeve";
             else if (player.Is(RoleEnum.Bomber) || player.Is(RoleEnum.Juggernaut) || player.Is(RoleEnum.Pestilence)
@@ -92,9 +92,9 @@ namespace TownOfSushi.Roles.Crewmates.Investigative.MysticMod
             else if (player.Is(RoleEnum.Engineer) || player.Is(RoleEnum.Escapist) || player.Is(RoleEnum.Grenadier)
                 || player.Is(RoleEnum.GuardianAngel) || player.Is(RoleEnum.Medic) || player.Is(RoleEnum.Romantic))
                 return "(Engineer, Escapist, Grenadier, Guardian Angel, Medic or Romantic)";
-            else if (player.Is(RoleEnum.Executioner) || player.Is(RoleEnum.Jester) || player.Is(RoleEnum.Mayor)
+            else if (player.Is(RoleEnum.Executioner) || player.Is(RoleEnum.Jester)
                  || player.Is(RoleEnum.Hunter) || player.Is(RoleEnum.Veteran))
-                return "(Executioner, Jester, Hunter, Mayor, Traitor or Veteran)";
+                return "(Executioner, Jester, Hunter, Traitor or Veteran)";
             else if (player.Is(RoleEnum.Bomber) || player.Is(RoleEnum.Jailor) || player.Is(RoleEnum.Juggernaut) || player.Is(RoleEnum.Pestilence)
                  || player.Is(RoleEnum.Vigilante) || player.Is(RoleEnum.Warlock))
                 return "(Bomber, Juggernaut, Pestilence, Vigilante, Jailor or Warlock)";

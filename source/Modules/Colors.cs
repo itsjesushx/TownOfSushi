@@ -1,9 +1,9 @@
 ﻿namespace TownOfSushi.Modules
 {
-    class Colors {
+    class Colors 
+    {
 
         // Crew Colors
-        public readonly static Color32 Mayor = new Color32(112, 79, 168, 255);
         public readonly static Color Engineer = new Color(1f, 0.65f, 0.04f, 1f);
         public readonly static Color Tracker = new Color(0.4f, 0.9f, 0.4f, 1f);
         public readonly static Color Investigator = new Color(0f, 0.7f, 0.7f, 1f);

@@ -144,12 +144,6 @@ namespace TownOfSushi.Roles.Crewmates.Killing.VigilanteRole
                     button.GetComponent<PassiveButton>().OnClick = new Button.ButtonClickedEvent();
                 }
             }
-            
-            if (player.Is(RoleEnum.Mayor))
-            {
-                var mayor = GetRole<Mayor>(PlayerControl.LocalPlayer);
-                mayor.RevealButton.Destroy();
-            }
 
             if (player.Is(RoleEnum.Jailor))
             {

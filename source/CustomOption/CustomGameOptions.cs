@@ -2,7 +2,6 @@ namespace TownOfSushi.CustomOption
 {
     public static class CustomGameOptions
     {
-        public static int MayorOn => (int)Generate.MayorOn.Get();
         public static int MaxRoleHistoryListSize = 100;
         public static int WerewolfOn => (int)Generate.WerewolfOn.Get();
         public static int JuggernautOn => (int)Generate.JuggernautOn.Get();
@@ -79,7 +78,6 @@ namespace TownOfSushi.CustomOption
         public static bool AnonymousFootPrint => Generate.AnonymousFootPrint.Get();
         public static bool VentFootprintVisible => Generate.VentFootprintVisible.Get();
         public static bool JesterButton => Generate.JesterButton.Get();
-        public static bool MayorVision => Generate.MayorVision.Get();
         public static bool JesterVent => Generate.JesterVent.Get();
         public static bool JesterVentSwitch => Generate.JesterVentSwitch.Get();
         public static bool JesterImpVision => Generate.JesterImpVision.Get();

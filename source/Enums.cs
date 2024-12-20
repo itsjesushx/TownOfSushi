@@ -5,7 +5,6 @@ namespace TownOfSushi
         Jester,
         Vulture,
         Engineer,
-        Mayor,
         Investigator,
         Medic,
         Seer,

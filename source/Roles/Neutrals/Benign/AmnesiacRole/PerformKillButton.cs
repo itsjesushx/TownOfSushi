@@ -70,7 +70,6 @@ namespace TownOfSushi.Roles.Neutral.Benign.AmnesiacRole
             {
                 case RoleEnum.Vigilante:
                 case RoleEnum.Engineer:
-                case RoleEnum.Mayor:
                 case RoleEnum.Investigator:
                 case RoleEnum.Medic:
                 case RoleEnum.Seer:
@@ -216,13 +215,6 @@ namespace TownOfSushi.Roles.Neutral.Benign.AmnesiacRole
                 var medicRole = GetRole<Medic>(amnesiac);
                 if (amnesiac != StartImitate.ImitatingPlayer) medicRole.UsedAbility = false;
                 else medicRole.UsedAbility = true;
-            }
-
-            else if (role == RoleEnum.Mayor)
-            {
-                var mayorRole = GetRole<Mayor>(amnesiac);
-                mayorRole.Revealed = false;
-                DestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(false);
             }
 
             else if (role == RoleEnum.Jailor)

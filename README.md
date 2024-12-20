@@ -18,7 +18,7 @@
 
 | Impostors | Crewmates | Neutrals | Modifiers | Abilities | GameModes
 |----------|-------------|-----------------|----------------|----------------|----------------|
-| [Escapist](#escapist) | [Mayor](#mayor) | [Jester](#jester) | [Aftermath](#aftermath) |[Assassin](#assassin-ability) | [Classic](#roles) |
+| [Escapist](#escapist) | [Hunter](#hunter) | [Jester](#jester) | [Aftermath](#aftermath) |[Assassin](#assassin-ability) | [Classic](#roles) |
 | [Grenadier](#grenadier) | [Engineer](#engineer) | [Arsonist](#arsonist) | [Disperser](#disperser) | [Button Barry](#button-barry)| [All Any](#all-any-settings) |
 | [Janitor](#janitor) | [Vigilante](#vigilante) | [Vampire](#vampire) | [Bait](#bait) | [Chameleon](#chameleon) | [Killers Only](#killing-only-settings) |
 | [Morphling](#morphling) | [Oracle](#oracle) | [Doomsayer](#doomsayer) |  [Double Shot](#double-shot) |[Spy](#spy) | [Vanilla Hide 'n' Seek](https://www.innersloth.com/new-game-mode-hide-n-seek-is-here-emergency-meeting-35/) |
@@ -33,7 +33,7 @@
 | | [Transporter](#transporter)  |[Glitch](#glitch) |  |
 | |[Trapper](#trapper) | [Serial Killer](#serial-killer) |  |
 | |[Haunter](#haunter)  | [Juggernaut](#juggernaut)  |  |
-| |[Hunter](#hunter)  |[Plaguebearer](#plaguebearer) |  |
+| |  |[Plaguebearer](#plaguebearer) |  |
 | | | [Pestilence](#plaguebearer) |  |
 
 -----------------------
@@ -427,18 +427,6 @@ It should be noted the Imitator can not imitate all crew roles.
 | Name | Description | Type | Default |
 |----------|:-------------:|:------:|:------:|
 | Imitator | The percentage probability of the Imitator appearing | Percentage | 0% |
-
------------------------
-## Mayor
-### **Team: Crewmates**
-The Mayor is a Crewmate that can reveal themself to everyone.\
-Once revealed the Mayor cannot be assassinated, gains an additional 2 votes and everyone can see that they are the Mayor.\
-As a consequence of revealing, they have half vision when lights are on.
-
-### Game Options
-| Name | Description | Type | Default |
-|----------|:-------------:|:------:|:------:|
-| Mayor | The percentage probability of the Mayor appearing | Percentage | 0% |
 
 -----------------------
 ## Medium

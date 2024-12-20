@@ -147,12 +147,6 @@ namespace TownOfSushi.Roles.Abilities.AbilityMod.AssassinAbility
                     }
                 }
             }
-
-            if (player.Is(RoleEnum.Mayor))
-            {
-                var mayor = GetRole<Mayor>(PlayerControl.LocalPlayer);
-                mayor.RevealButton.Destroy();
-            }
             
             if (player.Is(RoleEnum.Imitator))
             {

@@ -27,9 +27,6 @@ namespace TownOfSushi.CustomOption
         public static CustomNumberOption VigilanteOn;
         public static CustomNumberOption JailorOn;
 
-        public static CustomHeaderOption Mayor;
-        public static CustomToggleOption MayorVision;
-
         public static CustomHeaderOption Vigilante;
         public static CustomHeaderOption Jailor;
         public static CustomNumberOption JailCooldown;
@@ -38,7 +35,6 @@ namespace TownOfSushi.CustomOption
         public static CustomHeaderOption CrewSupportRoles;
         public static CustomNumberOption EngineerOn;
         public static CustomNumberOption ImitatorOn;
-        public static CustomNumberOption MayorOn;
         public static CustomNumberOption MediumOn;
         public static CustomNumberOption TransporterOn;
 
@@ -509,10 +505,6 @@ namespace TownOfSushi.CustomOption
                 PercentFormat);
             VigilanteOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#FFFF99FF>Vigilante</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
-
-            CrewPowerRoles = new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#8BFDFDFF>Crew</color> <color=#1D7CF2FF>Power</color> <color=#FFD700FF>Roles</color>");
-            MayorOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#704FA8FF>Mayor</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
             
             CrewSpecialRoles = new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#8BFDFDFF>Crew</color> <color=#1D7CF2FF>Special</color> <color=#FFD700FF>Roles</color>");
             HaunterOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#D3D3D3FF>Haunter</color>", 0f, 0f, 100f, 10f,
@@ -863,10 +855,6 @@ namespace TownOfSushi.CustomOption
 
             CrewSpecialRoles =
                 new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#8BFDFDFF>Crew</color> <color=#1D7CF2FF>Power</color> <color=#FFD700FF>Roles</color> Settings");
-
-            Mayor = new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#704FA8FF>Mayor</color>");
-            MayorVision =
-                new CustomToggleOption(num++, MultiMenu.Crewmate, "Mayor Vision Penalty On Reveal", false);
 
             CrewSpecialRoles =
                 new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#8BFDFDFF>Crew</color> <color=#1D7CF2FF>Special</color> <color=#FFD700FF>Roles</color> Settings");
