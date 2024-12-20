@@ -1,7 +1,4 @@
-using HarmonyLib;
-using UnityEngine;
-
-namespace TownOfUs
+namespace TownOfSushi
 {
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.BloopAVoteIcon))]
     public static class DeadSeeVoteColorsPatch
@@ -11,18 +8,16 @@ namespace TownOfUs
         {
             SpriteRenderer spriteRenderer = Object.Instantiate<SpriteRenderer>(__instance.PlayerVotePrefab);
 
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Prosecutor))
+            if (TownOfSushi.DeadSeeVotes.Value || PlayerControl.LocalPlayer.Data.IsDead)
             {
                 PlayerMaterial.SetColors(voterPlayer.DefaultOutfit.ColorId, spriteRenderer);
             }
-            else if (GameOptionsManager.Instance.currentNormalGameOptions.AnonymousVotes && (!CustomGameOptions.DeadSeeRoles || !PlayerControl.LocalPlayer.Data.IsDead))
+            else if (GameOptionsManager.Instance.currentNormalGameOptions.AnonymousVotes)
             {
-                //PlayerControl.SetPlayerMaterialColors(Palette.DisabledGrey, spriteRenderer);
                 PlayerMaterial.SetColors(Palette.DisabledGrey, spriteRenderer);
             }
             else
             {
-                //PlayerControl.SetPlayerMaterialColors(voterPlayer.DefaultOutfit.ColorId, spriteRenderer);
                 PlayerMaterial.SetColors(voterPlayer.DefaultOutfit.ColorId, spriteRenderer);
             }
             spriteRenderer.transform.SetParent(parent);

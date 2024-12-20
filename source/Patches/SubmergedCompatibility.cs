@@ -1,18 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+﻿using System.Collections;
 using BepInEx;
-using BepInEx.Unity.IL2CPP;
-using HarmonyLib;
 using Il2CppInterop.Runtime;
 using Il2CppInterop.Runtime.Injection;
-using UnityEngine;
-using Reactor.Utilities;
-using TownOfUs.Roles;
 
-namespace TownOfUs.Patches
+namespace TownOfSushi.Patches
 {
     [HarmonyPatch(typeof(IntroCutscene._ShowRole_d__41), nameof(IntroCutscene._ShowRole_d__41.MoveNext))]
     public static class SubmergedStartPatch
@@ -37,12 +28,12 @@ namespace TownOfUs.Patches
             {
                 if (PlayerControl.LocalPlayer.Data.IsDead && PlayerControl.LocalPlayer.Is(RoleEnum.Haunter))
                 {
-                    if (!Role.GetRole<Haunter>(PlayerControl.LocalPlayer).Caught) __instance.MapButton.transform.parent.Find(__instance.MapButton.name + "(Clone)").gameObject?.SetActive(false);
+                    if (!GetRole<Haunter>(PlayerControl.LocalPlayer).Caught) __instance.MapButton.transform.parent.Find(__instance.MapButton.name + "(Clone)").gameObject?.SetActive(false);
                     else __instance.MapButton.transform.parent.Find(__instance.MapButton.name + "(Clone)").gameObject?.SetActive(true);
                 }
                 if (PlayerControl.LocalPlayer.Data.IsDead && PlayerControl.LocalPlayer.Is(RoleEnum.Phantom))
                 {
-                    if (!Role.GetRole<Phantom>(PlayerControl.LocalPlayer).Caught) __instance.MapButton.transform.parent.Find(__instance.MapButton.name + "(Clone)").gameObject?.SetActive(false);
+                    if (!GetRole<Phantom>(PlayerControl.LocalPlayer).Caught) __instance.MapButton.transform.parent.Find(__instance.MapButton.name + "(Clone)").gameObject?.SetActive(false);
                     else __instance.MapButton.transform.parent.Find(__instance.MapButton.name + "(Clone)").gameObject?.SetActive(true);
                 }
             }
