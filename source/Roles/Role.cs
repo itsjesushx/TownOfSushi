@@ -199,7 +199,7 @@ namespace TownOfSushi.Roles
         public void RegenTask()
         {
             bool createTask;
-            var hasFakeTasks = Player.HasTasks() ? "" : "\nFake tasks:";
+            var hasFakeTasks = Player.HasTasks() ? "" : "\nYour tasks are fake!";
 
             try
             {
@@ -330,14 +330,14 @@ namespace TownOfSushi.Roles
                 var role = GetPlayerRole(player);
                 var modifier = Modifier.GetModifier(player);
                 var ability = Ability.GetAbility(player);
-                var hasFakeTasks = player.HasTasks() ? "" : "\nFake tasks:";
+                var hasFakeTasks = player.HasTasks() ? "" : "\nYour tasks are fake!";
 
                 if (modifier != null)
                 {
                     var modTask = new GameObject(modifier.Name + "Task").AddComponent<ImportantTextTask>();
                     modTask.transform.SetParent(player.transform, false);
                     modTask.Text =
-                        $"{modifier.ColorString}Modifier: {modifier.Name}\n{modifier.TaskText()}{hasFakeTasks}</color>";
+                        $"{modifier.ColorString}Modifier: {modifier.Name}\n{modifier.TaskText()}</color>";
                     player.myTasks.Insert(0, modTask);
                 }
                 if (ability != null)
@@ -345,7 +345,7 @@ namespace TownOfSushi.Roles
                     var modTask = new GameObject(ability.Name + "Task").AddComponent<ImportantTextTask>();
                     modTask.transform.SetParent(player.transform, false);
                     modTask.Text =
-                        $"{ability.ColorString}Ability: {ability.Name}\n{ability.TaskText()}{hasFakeTasks}</color>";
+                        $"{ability.ColorString}Ability: {ability.Name}\n{ability.TaskText()}</color>";
                     player.myTasks.Insert(0, modTask);
                 }
 

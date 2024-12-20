@@ -1130,6 +1130,7 @@ namespace TownOfSushi
             if (player.Is(RoleAlignment.CrewInvest)) name = "<color=#8BFDFDFF>Crew</color> (<color=#1D7CF2FF>Investigative</color>)";
             else if (player.Is(RoleAlignment.CrewKilling)) name = "<color=#8BFDFDFF>Crew</color> (<color=#1D7CF2FF>Killing</color>)";
             else if (player.Is(RoleAlignment.CrewPower)) name = "<color=#8BFDFDFF>Crew</color> (<color=#1D7CF2FF>Power</color>)";
+            else if (player.Is(RoleAlignment.CrewSupport)) name = "<color=#8BFDFDFF>Crew</color> (<color=#1D7CF2FF>Support</color>)";
             else if (player.Is(RoleAlignment.CrewSpecial)) name = "<color=#8BFDFDFF>Crew</color> (<color=#1D7CF2FF>Special</color>)";
             else if (player.Is(RoleAlignment.NeutralBenign)) name = "<color=#B3B3B3FF>Neutral</color> (<color=#1D7CF2FF>Benign</color>)";
             else if (player.Is(RoleAlignment.NeutralEvil)) name = "<color=#B3B3B3FF>Neutral</color> (<color=#1D7CF2FF>Evil</color>)";

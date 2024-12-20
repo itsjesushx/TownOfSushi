@@ -71,7 +71,7 @@ namespace TownOfSushi.Roles.Crewmates.Power.MayorMod
             }
         }
 
-         [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.PopulateResults))]
+        [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.PopulateResults))]
         public static class PopulateResults
         {
             public static bool Prefix(MeetingHud __instance,
@@ -81,12 +81,64 @@ namespace TownOfSushi.Roles.Crewmates.Power.MayorMod
 
                 __instance.TitleText.text = Object.FindObjectOfType<TranslationController>()
                     .GetString(StringNames.MeetingVotingResults, Array.Empty<Il2CppSystem.Object>());
+                var amountOfSkippedVoters = 0;
 
                 for (var i = 0; i < __instance.playerStates.Length; i++)
                 {
                     var playerVoteArea = __instance.playerStates[i];
                     playerVoteArea.ClearForResults();
                     allNums.Add(i, 0);
+
+                    for (var stateIdx = 0; stateIdx < states.Length; stateIdx++)
+                    {
+                        var voteState = states[stateIdx];
+                        var playerInfo = GameData.Instance.GetPlayerById(voteState.VoterId);
+
+                        if (playerInfo == null)
+                        {
+                            Debug.LogError(string.Format("Couldn't find player info for voter: {0}",
+                                voteState.VoterId));
+                        }
+                        else if (i == 0 && voteState.SkippedVote)
+                        {
+                            __instance.BloopAVoteIcon(playerInfo, amountOfSkippedVoters, __instance.SkippedVoting.transform);
+                            amountOfSkippedVoters++;
+                        }
+                        else if (voteState.VotedForId == playerVoteArea.TargetPlayerId)
+                        {
+                            __instance.BloopAVoteIcon(playerInfo, allNums[i], playerVoteArea.transform);
+                            allNums[i]++;
+                        }
+                        foreach (var mayor in Role.GetRoles(RoleEnum.Mayor))
+                        {
+                            var mayorRole = (Mayor)mayor;
+                            if (mayorRole.Revealed)
+                            {
+                                if (voteState.VoterId == mayorRole.Player.PlayerId)
+                                {
+                                    if (playerInfo == null)
+                                    {
+                                        Debug.LogError(string.Format("Couldn't find player info for voter: {0}",
+                                            voteState.VoterId));
+                                    }
+                                    else if (i == 0 && voteState.SkippedVote)
+                                    {
+                                        __instance.BloopAVoteIcon(playerInfo, amountOfSkippedVoters, __instance.SkippedVoting.transform);
+                                        __instance.BloopAVoteIcon(playerInfo, amountOfSkippedVoters, __instance.SkippedVoting.transform);
+                                        amountOfSkippedVoters++;
+                                        amountOfSkippedVoters++;
+                                    }
+                                    else if (voteState.VotedForId == playerVoteArea.TargetPlayerId)
+                                    {
+                                        __instance.BloopAVoteIcon(playerInfo, allNums[i], playerVoteArea.transform);
+                                        __instance.BloopAVoteIcon(playerInfo, allNums[i], playerVoteArea.transform);
+                                        allNums[i]++;
+                                        allNums[i]++;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
                 return false;
             }
