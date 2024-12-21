@@ -1304,7 +1304,7 @@ namespace TownOfSushi.Patches
                         foreach (var role in GetRoles(RoleEnum.Veteran))
                         {
                             var Veteran = (Veteran)role;
-                            if (Veteran.Player != null && Veteran.Player.PlayerId == playerInfo.PlayerId && Veteran.MaxUses > 0) {
+                            if (Veteran.Player != null && Veteran.Player.PlayerId == playerInfo.PlayerId && Veteran.UsesLeft > 0) {
                                 CrewKillingAlive++;
                             }
                         }

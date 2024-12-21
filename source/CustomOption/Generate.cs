@@ -314,7 +314,6 @@ namespace TownOfSushi.CustomOption
         public static CustomNumberOption AlertCooldown;
         public static CustomNumberOption AlertDuration;
         public static CustomNumberOption MaxAlerts;
-        public static CustomNumberOption VeteranTaskNeed;
 
         public static CustomHeaderOption Tracker;
         public static CustomNumberOption UpdateInterval;
@@ -848,7 +847,6 @@ namespace TownOfSushi.CustomOption
             AlertDuration =
                 new CustomNumberOption(num++, MultiMenu.Crewmate, "Alert Duration", 10f, 5f, 15f, 1f, CooldownFormat);
             MaxAlerts = new CustomNumberOption(num++, MultiMenu.Crewmate, "Maximum Number Of Alerts", 5, 1, 15, 1);
-            VeteranTaskNeed = new CustomNumberOption(num++, MultiMenu.Crewmate, "Maximum Number Of Tasks Needed To Recharge", 5, 1, 15, 1);
 
             Vigilante = new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#FFFF99FF>Vigilante</color>");
             VigilanteKills = new CustomNumberOption(num++, MultiMenu.Crewmate, "Number Of Vigilante Kills", 1, 1, 15, 1);

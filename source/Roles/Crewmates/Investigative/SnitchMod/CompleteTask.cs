@@ -24,7 +24,7 @@ namespace TownOfSushi.Roles.Crewmates.Investigative.SnitchRole
                         role.RegenTask();
                         if (PlayerControl.LocalPlayer.Is(RoleEnum.Snitch))
                         {
-                            Utils.Flash(role.Color, 1.5f);
+                            Flash(role.Color, 1.5f);
                             _ = new CustomMessage("Killers are aware of your existence!", 5f, true, Colors.Snitch);
                         }
                         else if (PlayerControl.LocalPlayer.Data.IsImpostor()

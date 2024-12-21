@@ -46,7 +46,6 @@ namespace TownOfSushi.Roles
         protected internal int IncorrectAssassinKills { get; set; } = 0;
         public bool Local => PlayerControl.LocalPlayer.PlayerId == Player.PlayerId;
         protected internal Faction Faction { get; set; } = Faction.Crewmates;
-        public static uint NetId => PlayerControl.LocalPlayer.NetId;
         public string PlayerName { get; set; }
         public string ColorString => "<color=#" + Color.ToHtmlStringRGBA() + ">";
         private bool Equals(Role other)
@@ -182,8 +181,7 @@ namespace TownOfSushi.Roles
 
             if (!revealRole) return PlayerName;
 
-            if (Player.Data.IsDead) return $"{PlayerName}\n<size=70%>{Name} - {Player.DeathReason()}</size>";
-            else return $"{PlayerName}\n<size=80%>{Name}</size>";
+            return $"{PlayerName}\n{Name}";
         }
 
         public static bool operator ==(Role a, Role b)

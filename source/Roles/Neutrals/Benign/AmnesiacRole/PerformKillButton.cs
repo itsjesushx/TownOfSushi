@@ -239,7 +239,7 @@ namespace TownOfSushi.Roles.Neutral.Benign.AmnesiacRole
             else if (role == RoleEnum.Veteran)
             {
                 var vetRole = GetRole<Veteran>(amnesiac);
-                vetRole.MaxUses = CustomGameOptions.MaxAlerts;
+                vetRole.UsesLeft = CustomGameOptions.MaxAlerts;
                 vetRole.LastAlerted = DateTime.UtcNow;
             }
             else if (role == RoleEnum.Hunter)
