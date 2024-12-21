@@ -21,7 +21,7 @@
 
             var role = GetRole<Tracker>(PlayerControl.LocalPlayer);
 
-            if (role.UsesText == null && role.UsesLeft > 0)
+            if (role.UsesText == null && role.MaxUses > 0)
             {
                 role.UsesText = Object.Instantiate(trackButton.cooldownTimerText, trackButton.transform);
                 role.UsesText.gameObject.SetActive(false);
@@ -35,7 +35,7 @@
             }
             if (role.UsesText != null)
             {
-                role.UsesText.text = role.UsesLeft + "";
+                role.UsesText.text = role.MaxUses + "";
             }
             trackButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
                     && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
@@ -45,7 +45,7 @@
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
             if (role.ButtonUsable) trackButton.SetCoolDown(role.TrackerTimer(), CustomGameOptions.TrackCd);
             else trackButton.SetCoolDown(0f, CustomGameOptions.TrackCd);
-            if (role.UsesLeft == 0) return;
+            if (role.MaxUses == 0) return;
 
             var notTracked = PlayerControl.AllPlayerControls
                 .ToArray()

@@ -1,7 +1,7 @@
-namespace TownOfSushi.Roles.Crewmates.Support.TransporterMod
+namespace TownOfSushi.Roles.Crewmates.Support.EngineerMod
 {
     [HarmonyPatch(typeof(HudManager))]
-    public class HUDTransport
+    public class KillButtonSprite
     {
         [HarmonyPatch(nameof(HudManager.Update))]
         public static void Postfix(HudManager __instance)
@@ -9,15 +9,13 @@ namespace TownOfSushi.Roles.Crewmates.Support.TransporterMod
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
             if (PlayerControl.LocalPlayer == null) return;
             if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Transporter)) return;
-            var data = PlayerControl.LocalPlayer.Data;
-            var transportButton = __instance.KillButton;
+            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Engineer)) return;
 
-            var role = GetRole<Transporter>(PlayerControl.LocalPlayer);
+            var role = Role.GetRole<Engineer>(PlayerControl.LocalPlayer);
 
-            if (role.UsesText == null && role.UsesLeft > 0)
+            if (role.UsesText == null && role.MaxUses > 0)
             {
-                role.UsesText = Object.Instantiate(transportButton.cooldownTimerText, transportButton.transform);
+                role.UsesText = Object.Instantiate(__instance.KillButton.cooldownTimerText, __instance.KillButton.transform);
                 role.UsesText.gameObject.SetActive(false);
                 role.UsesText.transform.localPosition = new Vector3(
                     role.UsesText.transform.localPosition.x + 0.26f,
@@ -29,22 +27,23 @@ namespace TownOfSushi.Roles.Crewmates.Support.TransporterMod
             }
             if (role.UsesText != null)
             {
-                role.UsesText.text = role.UsesLeft + "";
+                role.UsesText.text = role.MaxUses + "";
             }
 
-            transportButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
+            __instance.KillButton.SetCoolDown(0f, 10f);
+            __instance.KillButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
                     && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
             role.UsesText.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
                     && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
-            if (data.IsDead) return;
-
-            if (role.ButtonUsable) transportButton.SetCoolDown(role.TransportTimer(), CustomGameOptions.TransportCooldown);
-            else transportButton.SetCoolDown(0f, CustomGameOptions.TransportCooldown);
-
-            var renderer = transportButton.graphic;
-            if (!transportButton.isCoolingDown && role.ButtonUsable && PlayerControl.LocalPlayer.moveable)
+            if (PlayerControl.LocalPlayer.Data.IsDead) return;
+            if (!ShipStatus.Instance) return;
+            var system = ShipStatus.Instance.Systems[SystemTypes.Sabotage].Cast<SabotageSystemType>();
+            if (system == null) return;
+            var sabActive = system.AnyActive;
+            var renderer = __instance.KillButton.graphic;
+            if (sabActive & role.ButtonUsable & __instance.KillButton.enabled && PlayerControl.LocalPlayer.moveable)
             {
                 renderer.color = Palette.EnabledColor;
                 renderer.material.SetFloat("_Desat", 0f);

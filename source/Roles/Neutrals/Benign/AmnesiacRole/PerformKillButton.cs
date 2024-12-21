@@ -81,8 +81,10 @@ namespace TownOfSushi.Roles.Neutral.Benign.AmnesiacRole
                 case RoleEnum.Transporter:
                 case RoleEnum.Medium:
                 case RoleEnum.Mystic:
+                case RoleEnum.Swapper:
                 case RoleEnum.Trapper:
                 case RoleEnum.Imitator:
+                case RoleEnum.Guardian:
                 case RoleEnum.Oracle:
                 case RoleEnum.Jailor:
 
@@ -207,7 +209,7 @@ namespace TownOfSushi.Roles.Neutral.Benign.AmnesiacRole
             else if (role == RoleEnum.Engineer)
             {
                 var engiRole = GetRole<Engineer>(amnesiac);
-                engiRole.UsesLeft = CustomGameOptions.MaxFixes;
+                engiRole.MaxUses = CustomGameOptions.MaxFixes;
             }
 
             else if (role == RoleEnum.Medic)
@@ -237,13 +239,13 @@ namespace TownOfSushi.Roles.Neutral.Benign.AmnesiacRole
             else if (role == RoleEnum.Veteran)
             {
                 var vetRole = GetRole<Veteran>(amnesiac);
-                vetRole.UsesLeft = CustomGameOptions.MaxAlerts;
+                vetRole.MaxUses = CustomGameOptions.MaxAlerts;
                 vetRole.LastAlerted = DateTime.UtcNow;
             }
             else if (role == RoleEnum.Hunter)
             {
                 var hunterRole = Role.GetRole<Hunter>(amnesiac);
-                hunterRole.UsesLeft = CustomGameOptions.HunterStalkUses;
+                hunterRole.MaxUses = CustomGameOptions.HunterStalkUses;
                 hunterRole.LastStalked = DateTime.UtcNow;
                 hunterRole.LastKilled = DateTime.UtcNow;
             }
@@ -253,7 +255,7 @@ namespace TownOfSushi.Roles.Neutral.Benign.AmnesiacRole
                 var trackerRole = GetRole<Tracker>(amnesiac);
                 trackerRole.TrackerArrows.Values.DestroyAll();
                 trackerRole.TrackerArrows.Clear();
-                trackerRole.UsesLeft = CustomGameOptions.MaxTracks;
+                trackerRole.MaxUses = CustomGameOptions.MaxTracks;
                 trackerRole.LastTracked = DateTime.UtcNow;
             }
 
@@ -281,7 +283,7 @@ namespace TownOfSushi.Roles.Neutral.Benign.AmnesiacRole
                 tpRole.TransportPlayer1 = null;
                 tpRole.TransportPlayer2 = null;
                 tpRole.LastTransported = DateTime.UtcNow;
-                tpRole.UsesLeft = CustomGameOptions.TransportMaxUses;
+                tpRole.MaxUses = CustomGameOptions.TransportMaxUses;
             }
 
             else if (role == RoleEnum.Medium)
@@ -306,6 +308,13 @@ namespace TownOfSushi.Roles.Neutral.Benign.AmnesiacRole
                 oracleRole.LastConfessed = DateTime.UtcNow;
             }
 
+            else if (role == RoleEnum.Guardian)
+            {
+                var Guardian = GetRole<Guardian>(amnesiac);
+                Guardian.Target = null;
+                Guardian.LastProtect = DateTime.UtcNow;
+            }
+
             else if (role == RoleEnum.Arsonist)
             {
                 var arsoRole = GetRole<Arsonist>(amnesiac);
@@ -317,7 +326,7 @@ namespace TownOfSushi.Roles.Neutral.Benign.AmnesiacRole
             {
                 var gaRole = GetRole<GuardianAngel>(amnesiac);
                 gaRole.LastProtected = DateTime.UtcNow;
-                gaRole.UsesLeft = CustomGameOptions.MaxProtects;
+                gaRole.MaxUses = CustomGameOptions.MaxProtects;
             }
 
             else if (role == RoleEnum.Glitch)
@@ -447,7 +456,7 @@ namespace TownOfSushi.Roles.Neutral.Benign.AmnesiacRole
             {
                 var trapperRole = GetRole<Trapper>(amnesiac);
                 trapperRole.LastTrapped = DateTime.UtcNow;
-                trapperRole.UsesLeft = CustomGameOptions.MaxTraps;
+                trapperRole.MaxUses = CustomGameOptions.MaxTraps;
                 trapperRole.trappedPlayers.Clear();
                 trapperRole.traps.ClearTraps();
             }

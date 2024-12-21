@@ -9,12 +9,9 @@ namespace TownOfSushi.Patches
             for (var i = 0; i < __instance.playerStates.Length; i++)
             {
                 var playerVoteArea = __instance.playerStates[i];
-                if (!playerVoteArea.DidVote
-                    || playerVoteArea.AmDead
-                    || playerVoteArea.VotedFor == PlayerVoteArea.MissedVote
-                    || playerVoteArea.VotedFor == PlayerVoteArea.DeadVote) continue;
-
-                var player = Utils.PlayerById(playerVoteArea.TargetPlayerId);
+                if (!playerVoteArea.DidVote || playerVoteArea.AmDead || playerVoteArea.VotedFor == PlayerVoteArea.MissedVote ||
+                    playerVoteArea.VotedFor == PlayerVoteArea.DeadVote)
+                    continue;
 
                 if (dictionary.TryGetValue(playerVoteArea.VotedFor, out var num))
                     dictionary[playerVoteArea.VotedFor] = num + 1;
@@ -23,25 +20,27 @@ namespace TownOfSushi.Patches
             }
 
             dictionary.MaxPair(out var tie);
-
             if (tie)
-                foreach (var player in __instance.playerStates)
+            {
+                for (var i = 0; i < __instance.playerStates.Length; i++)
                 {
-                    if (!player.DidVote
-                        || player.AmDead
-                        || player.VotedFor == PlayerVoteArea.MissedVote
-                        || player.VotedFor == PlayerVoteArea.DeadVote) continue;
+                    var playerVoteArea = __instance.playerStates[i];
+                    if (!playerVoteArea.DidVote
+                        || playerVoteArea.AmDead
+                        || playerVoteArea.VotedFor == PlayerVoteArea.MissedVote
+                        || playerVoteArea.VotedFor == PlayerVoteArea.DeadVote) continue;
 
-                    var modifier = Ability.GetAbility(player);
-                    if (modifier == null) continue;
-                    if (modifier.AbilityType == AbilityEnum.Tiebreaker)
+                    var player = PlayerById(playerVoteArea.TargetPlayerId);
+                    if (player.Is(AbilityEnum.Tiebreaker))
                     {
-                        if (dictionary.TryGetValue(player.VotedFor, out var num))
-                            dictionary[player.VotedFor] = num + 1;
+                        var TB = Ability.GetAbility<Tiebreaker>(player);
+                        if (dictionary.TryGetValue(playerVoteArea.VotedFor, out var num2))
+                            dictionary[playerVoteArea.VotedFor] = num2 + 1;
                         else
-                            dictionary[player.VotedFor] = 1;
+                            dictionary[playerVoteArea.VotedFor] = 1;
                     }
                 }
+            }
 
             return dictionary;
         }

@@ -63,7 +63,7 @@ namespace TownOfSushi.Patches
                 }
                 if (playerControl.IsExeTarget())
                 {
-                    playerRole += ColorString(Colors.GuardianAngel, $"[⦿] ");
+                    playerRole += ColorString(Colors.Executioner, $"[⦿] ");
                 }
                 if (playerControl.IsSpelled())
                 {
@@ -79,12 +79,14 @@ namespace TownOfSushi.Patches
                     else if (role.Value == RoleEnum.Investigator) { playerRole += "<color=#" + Colors.Investigator.ToHtmlStringRGBA() + ">Investigator</color> > "; }
                     else if (role.Value == RoleEnum.Medic) { playerRole += "<color=#" + Colors.Medic.ToHtmlStringRGBA() + ">Medic</color> > "; }
                     else if (role.Value == RoleEnum.Vigilante) { playerRole += "<color=#" + Colors.Vigilante.ToHtmlStringRGBA() + ">Vigilante</color> > "; }
+                    else if (role.Value == RoleEnum.Guardian) { playerRole += "<color=#" + Colors.Guardian.ToHtmlStringRGBA() + ">Guardian</color> > "; }
                     else if (role.Value == RoleEnum.Seer) { playerRole += "<color=#" + Colors.Seer.ToHtmlStringRGBA() + ">Seer</color> > "; }
                     else if (role.Value == RoleEnum.Snitch) { playerRole += "<color=#" + Colors.Snitch.ToHtmlStringRGBA() + ">Snitch</color> > "; }
                     else if (role.Value == RoleEnum.Vigilante) { playerRole += "<color=#" + Colors.Vigilante.ToHtmlStringRGBA() + ">Vigilante</color> > "; }
                     else if (role.Value == RoleEnum.Arsonist) { playerRole += "<color=#" + Colors.Arsonist.ToHtmlStringRGBA() + ">Arsonist</color> > "; }
                     else if (role.Value == RoleEnum.Executioner) { playerRole += "<color=#" + Colors.Executioner.ToHtmlStringRGBA() + ">Executioner</color> > "; }
                     else if (role.Value == RoleEnum.Glitch) { playerRole += "<color=#" + Colors.Glitch.ToHtmlStringRGBA() + ">Glitch</color> > "; }
+                    else if (role.Value == RoleEnum.Swapper) { playerRole += "<color=#" + Colors.Swapper.ToHtmlStringRGBA() + ">Swapper</color> > "; }
                     else if (role.Value == RoleEnum.Jester) { playerRole += "<color=#" + Colors.Jester.ToHtmlStringRGBA() + ">Jester</color> > "; }
                     else if (role.Value == RoleEnum.Phantom) { playerRole += "<color=#" + Colors.Phantom.ToHtmlStringRGBA() + ">Phantom</color> > "; }
                     else if (role.Value == RoleEnum.Hunter) { playerRole += "<color=#" + Colors.Hunter.ToHtmlStringRGBA() + ">Hunter</color> > "; }
@@ -1302,14 +1304,21 @@ namespace TownOfSushi.Patches
                         foreach (var role in GetRoles(RoleEnum.Veteran))
                         {
                             var Veteran = (Veteran)role;
-                            if (Veteran.Player != null && Veteran.Player.PlayerId == playerInfo.PlayerId && Veteran.UsesLeft > 0) {
+                            if (Veteran.Player != null && Veteran.Player.PlayerId == playerInfo.PlayerId && Veteran.MaxUses > 0) {
+                                CrewKillingAlive++;
+                            }
+                        }
+                        foreach (var role in GetRoles(RoleEnum.Swapper))
+                        {
+                            var Swapper = (Swapper)role;
+                            if (Swapper.Player != null && Swapper.Player.PlayerId == playerInfo.PlayerId) {
                                 CrewKillingAlive++;
                             }
                         }
                         foreach (var role in GetRoles(RoleEnum.Hunter))
                         {
                             var Hunter = (Hunter)role;
-                            if (Hunter.Player != null && Hunter.Player.PlayerId == playerInfo.PlayerId && Hunter.UsesLeft > 0 || (Hunter.StalkedPlayer != null && !Hunter.StalkedPlayer.Data.IsDead && !Hunter.StalkedPlayer.Data.Disconnected && Hunter.StalkedPlayer.Is(RoleAlignment.NeutralKilling)) ||
+                            if (Hunter.Player != null && Hunter.Player.PlayerId == playerInfo.PlayerId && Hunter.MaxUses > 0 || (Hunter.StalkedPlayer != null && !Hunter.StalkedPlayer.Data.IsDead && !Hunter.StalkedPlayer.Data.Disconnected && Hunter.StalkedPlayer.Is(RoleAlignment.NeutralKilling)) ||
                                 Hunter.CaughtPlayers.Count(player => !player.Data.IsDead && !player.Data.Disconnected && player.Is(RoleAlignment.NeutralKilling)) > 0)
                             {
                                 CrewKillingAlive++;

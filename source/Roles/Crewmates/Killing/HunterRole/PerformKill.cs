@@ -21,7 +21,7 @@ namespace TownOfSushi.Roles.Crewmates.Killing.HunterRole
                 {
                     role.StalkDuration = CustomGameOptions.HunterStalkDuration;
                     role.StalkedPlayer = role.ClosestStalkPlayer;
-                    role.UsesLeft--;
+                    role.MaxUses--;
                     role.Stalk();
                     Rpc(CustomRPC.HunterStalk, PlayerControl.LocalPlayer.PlayerId, role.ClosestStalkPlayer.PlayerId);
                 }

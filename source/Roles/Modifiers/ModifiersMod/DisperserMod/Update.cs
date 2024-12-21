@@ -54,7 +54,7 @@ namespace TownOfSushi.Modifiers.DisperserMod
                     position1.z);
             }
 
-            if (role.UsesLeft > 0)
+            if (role.MaxUses > 0)
             {
                 renderer.color = Palette.EnabledColor;
                 renderer.material.SetFloat("_Desat", 0f);

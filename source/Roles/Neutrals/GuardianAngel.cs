@@ -7,9 +7,9 @@ namespace TownOfSushi.Roles
         public bool Enabled;
         public DateTime LastProtected;
         public float TimeRemaining;
-        public int UsesLeft;
+        public int MaxUses;
         public TextMeshPro UsesText;
-        public bool ButtonUsable => UsesLeft != 0;
+        public bool ButtonUsable => MaxUses != 0;
         public PlayerControl target;
         public GuardianAngel(PlayerControl player) : base(player)
         {
@@ -28,7 +28,7 @@ namespace TownOfSushi.Roles
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.NeutralBenign;
             Scale = 1.4f;
-            UsesLeft = CustomGameOptions.MaxProtects;
+            MaxUses = CustomGameOptions.MaxProtects;
         }
         public bool Protecting => TimeRemaining > 0f;
         public float ProtectTimer()

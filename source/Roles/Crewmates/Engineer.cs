@@ -13,11 +13,11 @@ namespace TownOfSushi.Roles.Crewmates
             Faction = Faction.Crewmates;
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.CrewSupport;
-            UsesLeft = CustomGameOptions.MaxFixes;
+            MaxUses = CustomGameOptions.MaxFixes;
         }
 
-        public int UsesLeft;
+        public int MaxUses;
         public TMPro.TextMeshPro UsesText;
-        public bool ButtonUsable => UsesLeft != 0;
+        public bool ButtonUsable => MaxUses != 0;
     }
 }

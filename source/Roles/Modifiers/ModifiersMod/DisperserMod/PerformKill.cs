@@ -11,12 +11,12 @@ namespace TownOfSushi.Modifiers.DisperserMod
             if (__instance != role.DisperseButton) return true;
             if (!PlayerControl.LocalPlayer.CanMove) return false;
             if (PlayerControl.LocalPlayer.Data.IsDead) return false;
-            if (role.UsesLeft <= 0) return false;
+            if (role.MaxUses <= 0) return false;
             //if (role.StartTimer() > 0) return false;
             if (!(role.DisperseTimer() == 0f)) return false;
             if (!__instance.enabled) return false;
             if (!role.ButtonUsable) return false;
-            role.UsesLeft--;
+            role.MaxUses--;
             role.LastDispersed = DateTime.UtcNow;
             role.Disperse();
 

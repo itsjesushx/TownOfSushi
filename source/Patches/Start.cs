@@ -16,6 +16,13 @@ namespace TownOfSushi.Patches
                 detective.LastExamined = detective.LastExamined.AddSeconds(CustomGameOptions.InitialCooldowns - CustomGameOptions.ExamineCd);
             }
 
+            if (PlayerControl.LocalPlayer.Is(RoleEnum.Guardian))
+            {
+                var Guardian = GetRole<Guardian>(PlayerControl.LocalPlayer);
+                Guardian.LastProtect = DateTime.UtcNow;
+                Guardian.LastProtect = Guardian.LastProtect.AddSeconds(CustomGameOptions.InitialCooldowns - CustomGameOptions.VoteProtectCd);
+            }
+
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Mystic))
             {
                 var Mystic = GetRole<Mystic>(PlayerControl.LocalPlayer);

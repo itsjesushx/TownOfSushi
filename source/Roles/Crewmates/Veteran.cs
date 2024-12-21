@@ -5,11 +5,10 @@ namespace TownOfSushi.Roles.Crewmates
         public bool Enabled;
         public DateTime LastAlerted;
         public float TimeRemaining;
-
-        public int UsesLeft;
+        public int MaxUses;
+        public int TasksNeededForRecharge => CustomGameOptions.VeteranTaskNeed;
         public TMPro.TextMeshPro UsesText;
-
-        public bool ButtonUsable => UsesLeft != 0;
+        public bool ButtonUsable => MaxUses != 0;
 
         public Veteran(PlayerControl player) : base(player)
         {
@@ -22,7 +21,7 @@ namespace TownOfSushi.Roles.Crewmates
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.CrewKilling;
             RoleType = RoleEnum.Veteran;
-            UsesLeft = CustomGameOptions.MaxAlerts;
+            MaxUses = CustomGameOptions.MaxAlerts;
         }
         public bool OnAlert => TimeRemaining > 0f;
 

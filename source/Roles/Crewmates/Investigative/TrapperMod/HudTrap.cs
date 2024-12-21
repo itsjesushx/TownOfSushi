@@ -19,7 +19,7 @@
 
             var role = GetRole<Trapper>(PlayerControl.LocalPlayer);
 
-            if (role.UsesText == null && role.UsesLeft > 0)
+            if (role.UsesText == null && role.MaxUses > 0)
             {
                 role.UsesText = Object.Instantiate(trapButton.cooldownTimerText, trapButton.transform);
                 role.UsesText.gameObject.SetActive(false);
@@ -33,7 +33,7 @@
             }
             if (role.UsesText != null)
             {
-                role.UsesText.text = role.UsesLeft + "";
+                role.UsesText.text = role.MaxUses + "";
             }
 
             trapButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)

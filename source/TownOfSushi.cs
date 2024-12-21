@@ -79,6 +79,8 @@ namespace TownOfSushi
         public static Sprite ImitateDeselectSprite;
         public static Sprite ObserveSprite;
         public static Sprite BiteSprite;
+        public static Sprite SwapperSwitch;
+        public static Sprite SwapperSwitchDisabled;
         public static Sprite ConfessSprite;
         public static Sprite NoAbilitySprite;
         public static Sprite CamouflageSprite;
@@ -116,6 +118,8 @@ namespace TownOfSushi
             Arrow = CreateSprite("TownOfSushi.Resources.Arrow.png");
             MineSprite = CreateSprite("TownOfSushi.Resources.Mine.png");
             SwoopSprite = CreateSprite("TownOfSushi.Resources.Swoop.png");
+            SwapperSwitch = CreateSprite("TownOfSushi.Resources.SwapperSwitch.png");
+            SwapperSwitchDisabled = CreateSprite("TownOfSushi.Resources.SwapperSwitchDisabled.png");
             DouseSprite = CreateSprite("TownOfSushi.Resources.Douse.png");
             IgniteSprite = CreateSprite("TownOfSushi.Resources.Ignite.png");
             ReviveSprite = CreateSprite("TownOfSushi.Resources.Revive.png");

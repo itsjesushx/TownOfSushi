@@ -8,10 +8,10 @@ namespace TownOfSushi.Roles.Crewmates
         public static Material trapMaterial = TownOfSushi.bundledAssets.Get<Material>("trap");
         public List<Trap> traps = new List<Trap>();
         public DateTime LastTrapped { get; set; }
-        public int UsesLeft;
+        public int MaxUses;
         public TextMeshPro UsesText;
         public List<RoleEnum> trappedPlayers;
-        public bool ButtonUsable => UsesLeft != 0;
+        public bool ButtonUsable => MaxUses != 0;
         public Trapper(PlayerControl player) : base(player)
         {
             Name = "Trapper";
@@ -24,7 +24,7 @@ namespace TownOfSushi.Roles.Crewmates
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.CrewInvest;
             trappedPlayers = new List<RoleEnum>();
-            UsesLeft = CustomGameOptions.MaxTraps;
+            MaxUses = CustomGameOptions.MaxTraps;
         }
 
         public float TrapTimer()

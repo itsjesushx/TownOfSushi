@@ -19,7 +19,7 @@ namespace TownOfSushi.Roles.Neutral.Benign.GuardianAngelRole
 
             var role = GetRole<GuardianAngel>(PlayerControl.LocalPlayer);
 
-            if (role.UsesText == null && role.UsesLeft > 0)
+            if (role.UsesText == null && role.MaxUses > 0)
             {
                 role.UsesText = Object.Instantiate(protectButton.cooldownTimerText, protectButton.transform);
                 role.UsesText.gameObject.SetActive(false);
@@ -33,7 +33,7 @@ namespace TownOfSushi.Roles.Neutral.Benign.GuardianAngelRole
             }
             if (role.UsesText != null)
             {
-                role.UsesText.text = role.UsesLeft + "";
+                role.UsesText.text = role.MaxUses + "";
             }
 
             protectButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)

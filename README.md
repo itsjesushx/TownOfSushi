@@ -33,7 +33,7 @@
 | | [Transporter](#transporter)  |[Glitch](#glitch) |  |
 | |[Trapper](#trapper) | [Serial Killer](#serial-killer) |  |
 | |[Haunter](#haunter)  | [Juggernaut](#juggernaut)  |  |
-| |  |[Plaguebearer](#plaguebearer) |  |
+| | [Swapper](#swapper)  |[Plaguebearer](#plaguebearer) |  |
 | | | [Pestilence](#plaguebearer) |  |
 
 -----------------------
@@ -444,6 +444,18 @@ However, if someone is dead, the Medium and the dead player will be able to see 
 | Reveal Appearance of Mediate Target | Whether the Ghosts will show as themselves, or camouflaged | Toggle | True |
 | Reveal the Medium to the Mediate Target | Whether the ghosts can see that the Medium is the Medium | Toggle | True |
 | Who is Revealed | Which players are revealed to the Medium | Oldest Dead / Newest Dead / All Dead | Oldest Dead |
+
+-----------------------
+## Swapper
+### **Team: Crewmates**
+The Swapper is a Crewmate that can swap the votes on 2 players during a meeting.\
+All the votes for the first player will instead be counted towards the second player and vice versa.
+
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Swapper | The percentage probability of the Swapper appearing | Percentage | 0% |
+| Swapper Can Button | Whether the Swapper Can Press the Button | Toggle | True |
 
 -----------------------
 ## Transporter

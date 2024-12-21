@@ -36,7 +36,7 @@ namespace TownOfSushi.Roles.Crewmates.Killing.HunterRole
             role.StalkButton.graphic.sprite = StalkSprite;
             role.StalkButton.transform.localPosition = new Vector3(-2f, 0f, 0f);
 
-            if (role.UsesText == null && role.UsesLeft > 0)
+            if (role.UsesText == null && role.MaxUses > 0)
             {
                 role.UsesText = Object.Instantiate(role.StalkButton.cooldownTimerText, role.StalkButton.transform);
                 role.UsesText.gameObject.SetActive(false);
@@ -50,7 +50,7 @@ namespace TownOfSushi.Roles.Crewmates.Killing.HunterRole
             }
             if (role.UsesText != null)
             {
-                role.UsesText.text = role.UsesLeft + "";
+                role.UsesText.text = role.MaxUses + "";
             }
 
             if (PlayerControl.LocalPlayer.Data.IsDead) role.StalkButton.SetTarget(null);
@@ -67,7 +67,7 @@ namespace TownOfSushi.Roles.Crewmates.Killing.HunterRole
             else role.StalkButton.SetCoolDown(0f, CustomGameOptions.HunterStalkCd);
 
             var renderer = role.StalkButton.graphic;
-            if (role.Stalking || role.UsesLeft == 0 || !PlayerControl.LocalPlayer.moveable) role.StalkButton.SetTarget(null);
+            if (role.Stalking || role.MaxUses == 0 || !PlayerControl.LocalPlayer.moveable) role.StalkButton.SetTarget(null);
             else
             {
                 if (CamouflageUnCamouflagePatch.IsCamouflaged && CustomGameOptions.CamoCommsKillAnyone) Utils.SetTarget(ref role.ClosestStalkPlayer, role.StalkButton, float.NaN);

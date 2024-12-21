@@ -20,6 +20,8 @@
         public readonly static Color Medium = new Color(0.65f, 0.5f, 1f, 1f);
         public readonly static Color Mystic = new Color(0.3f, 0.6f, 0.9f, 1f);
         public readonly static Color Trapper = new Color(0.65f, 0.82f, 0.7f, 1f);
+        public readonly static Color Swapper = new Color(0.4f, 0.9f, 0.4f, 1f);
+        public readonly static Color32 Guardian = new Color32(135, 148, 196, byte.MaxValue);
         public readonly static Color CrewSwooper = new Color(0.5f, 0.5f, 0f, 1f);
         public readonly static Color Imitator = new Color(0.7f, 0.85f, 0.3f, 1f);
         public readonly static Color32 Oracle = new Color32(52, 79, 235, 255);
@@ -39,7 +41,7 @@
         public readonly static Color Plaguebearer = new Color(0.9f, 1f, 0.7f, 1f);
         public readonly static Color Pestilence = new Color(0.3f, 0.3f, 0.3f, 1f);
         public readonly static Color Werewolf = new Color(0.66f, 0.4f, 0.16f, 1f);
-        public static Color32 Vulture => new Color32(140, 64, 5, 255);
+        public readonly static Color32 Vulture = new Color32(140, 64, 5, 255);
         public readonly static Color Doomsayer = new Color(0f, 1f, 0.5f, 1f);
         public readonly static Color Vampire = new Color(0.15f, 0.15f, 0.15f, 1f);
 

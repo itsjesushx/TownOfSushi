@@ -19,7 +19,7 @@ namespace TownOfSushi.Roles.Crewmates.Support.EngineerMod
             if (!sabActive) return false;
             var abilityUsed = AbilityUsed(PlayerControl.LocalPlayer);
             if (!abilityUsed) return false;
-            role.UsesLeft -= 1;
+            role.MaxUses -= 1;
             Rpc(CustomRPC.EngineerFix, PlayerControl.LocalPlayer.NetId);
             switch (GameOptionsManager.Instance.currentNormalGameOptions.MapId)
             {

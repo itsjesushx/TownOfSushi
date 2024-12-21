@@ -410,6 +410,19 @@ namespace TownOfSushi.Roles
                 switch (name)
                 {
                     case StringNames.NoExileTie:
+                        if (ExileController.Instance.initData.networkedPlayer == null)
+                        {
+                            foreach (var Guardian in GetRoles(RoleEnum.Guardian))
+                            {
+                                var GuardianRole = (Guardian)Guardian;
+                                if (GuardianRole.ProtectedPlayer)
+                                {
+                                    GuardianRole.ProtectedPlayer = false;
+                                    __result = $"{GuardianRole.Target.GetDefaultOutfit().PlayerName} was Protected by a Guardian!";
+                                }
+                            }
+                        }
+                        return;
                     case StringNames.ExileTextPN:
                     case StringNames.ExileTextSN:
                     case StringNames.ExileTextPP:
@@ -419,7 +432,7 @@ namespace TownOfSushi.Roles
                             var info = ExileController.Instance.initData.networkedPlayer;
                             var role = GetPlayerRole(info.Object);
                             if (role == null) return;
-                            __result = $"{info.PlayerName} was The {role.Name}.";
+                            __result = $"{info.PlayerName} was {role.Name}.";
                             return;
                         }
                 }

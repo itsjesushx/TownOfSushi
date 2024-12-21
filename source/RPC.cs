@@ -422,7 +422,7 @@ namespace TownOfSushi
                 Rpc(CustomRPC.SetPhantom, byte.MaxValue);
             }
 
-            var exeTargets = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(Faction.Crewmates) && !x.Is(RoleEnum.Vigilante) && !x.Is(RoleEnum.Jailor)).ToList();
+            var exeTargets = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(Faction.Crewmates) && !x.Is(RoleEnum.Swapper) && !x.Is(RoleEnum.Vigilante) && !x.Is(RoleEnum.Jailor)).ToList();
             foreach (var role in GetRoles(RoleEnum.Executioner))
             {
                 var exe = (Executioner)role;
@@ -541,6 +541,7 @@ namespace TownOfSushi
                 Assembly asm = typeof(Role).Assembly;
 
                 byte readByte, readByte1, readByte2;
+                sbyte readSByte, readSByte2;
                 switch ((CustomRPC) callId)
                 {
                     case CustomRPC.SetRole:
@@ -617,9 +618,19 @@ namespace TownOfSushi
                                 Coroutines.Start(Coroutine2.EatCoroutine(body2243, vultureR));
 
                         break;
+                    case CustomRPC.SetSwaps:
+                        readSByte = reader.ReadSByte();
+                        SwapVotes.Swap1 =
+                            MeetingHud.Instance.playerStates.FirstOrDefault(x => x.TargetPlayerId == readSByte);
+                        readSByte2 = reader.ReadSByte();
+                        SwapVotes.Swap2 =
+                            MeetingHud.Instance.playerStates.FirstOrDefault(x => x.TargetPlayerId == readSByte2);
+                        PluginSingleton<TownOfSushi>.Instance.Log.LogMessage("Bytes received - " + readSByte + " - " +
+                                                                          readSByte2);
+                        break;
                     case CustomRPC.EngineerFix:
                         var engineer = PlayerById(reader.ReadByte());
-                        GetRole<Engineer>(engineer).UsesLeft -= 1;
+                        GetRole<Engineer>(engineer).MaxUses -= 1;
                         break;
                     case CustomRPC.FixLights:
                         var lights = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
@@ -936,6 +947,10 @@ namespace TownOfSushi
                             if (body.ParentId == readByte)
                                 dienerRole2.CurrentlyDragging = body;
                         break;
+                    case CustomRPC.VoteProtect:
+                        var Guardian = GetRole<Guardian>(Utils.PlayerById(reader.ReadByte()));
+                        Guardian.ProtectedPlayer = true;
+                        break;
                     case CustomRPC.Drop:
                         readByte1 = reader.ReadByte();
                         var v2 = reader.ReadVector2();
@@ -996,7 +1011,7 @@ namespace TownOfSushi
                         Hunter hunterRole = GetRole<Hunter>(stalker);
                         hunterRole.StalkDuration = CustomGameOptions.HunterStalkDuration;
                         hunterRole.StalkedPlayer = stalked;
-                        hunterRole.UsesLeft -= 1;
+                        hunterRole.MaxUses -= 1;
                         hunterRole.Stalk();
                         break;
                     case CustomRPC.CatchHaunter:
@@ -1127,6 +1142,9 @@ namespace TownOfSushi
                     
                     if (CustomGameOptions.JailorOn > 0)
                         CrewmateRoles.Add((typeof(Jailor), CustomGameOptions.JailorOn, true));
+                    
+                    if (CustomGameOptions.SwapperOn > 0)
+                        CrewmateRoles.Add((typeof(Swapper), CustomGameOptions.SwapperOn, true));
 
                     if (CustomGameOptions.SeerOn > 0)
                         CrewmateRoles.Add((typeof(Seer), CustomGameOptions.SeerOn, false));
@@ -1139,6 +1157,9 @@ namespace TownOfSushi
 
                     if (CustomGameOptions.TransporterOn > 0)
                         CrewmateRoles.Add((typeof(Transporter), CustomGameOptions.TransporterOn, false));
+
+                    if (CustomGameOptions.GuardianOn > 0)
+                        CrewmateRoles.Add((typeof(Guardian), CustomGameOptions.GuardianOn, false));
 
                     if (CustomGameOptions.MediumOn > 0)
                         CrewmateRoles.Add((typeof(Medium), CustomGameOptions.MediumOn, false));

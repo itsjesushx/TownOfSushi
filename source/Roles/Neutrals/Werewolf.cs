@@ -43,13 +43,13 @@ namespace TownOfSushi.Roles
 
             foreach (var player in closestPlayers)
             {
-                if (player == player2)
+                if (player == Player)
                    continue;
 
                 if (player.IsProtected())
                     continue;
                     
-                if (player != Player&& !player.IsShielded() && !player.IsProtected() && player != ShowRoundOneShield.FirstRoundShielded)
+                if (player != Player && !player.IsShielded() && !player.IsProtected() && player != ShowRoundOneShield.FirstRoundShielded)
                     RpcMurderPlayer(player2, player);
                 
                 if (player.IsOnAlert() || !player.IsShielded() && !player.IsProtected() && player != ShowRoundOneShield.FirstRoundShielded)

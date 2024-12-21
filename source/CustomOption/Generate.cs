@@ -314,6 +314,7 @@ namespace TownOfSushi.CustomOption
         public static CustomNumberOption AlertCooldown;
         public static CustomNumberOption AlertDuration;
         public static CustomNumberOption MaxAlerts;
+        public static CustomNumberOption VeteranTaskNeed;
 
         public static CustomHeaderOption Tracker;
         public static CustomNumberOption UpdateInterval;
@@ -432,6 +433,10 @@ namespace TownOfSushi.CustomOption
         public static CustomNumberOption ChargeUpDuration;
         public static CustomNumberOption ChargeUseDuration;
 
+        public static CustomHeaderOption Guardian;
+        public static CustomNumberOption GuardianOn;
+        public static CustomNumberOption VoteProtectCd;
+
         public static CustomHeaderOption Oracle;
         public static CustomNumberOption ConfessCooldown;
         public static CustomNumberOption RevealAccuracy;
@@ -469,6 +474,10 @@ namespace TownOfSushi.CustomOption
         public static CustomHeaderOption Frosty;
         public static CustomNumberOption ChillDuration;
         public static CustomNumberOption ChillStartSpeed;
+
+        public static CustomNumberOption SwapperOn;
+        public static CustomHeaderOption Swapper;
+        public static CustomToggleOption SwapperButton;
 
         public static Func<object, string> PercentFormat { get; } = value => $"{value:0}%";
         private static Func<object, string> CooldownFormat { get; } = value => $"{value:0.0#}s";
@@ -517,7 +526,11 @@ namespace TownOfSushi.CustomOption
                 PercentFormat);
             MedicOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#7efbc2>Medic</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
+            SwapperOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#66E666FF>Swapper</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             TransporterOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#00EEFFFF>Transporter</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
+            GuardianOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#8794c4>Guardian</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
 
             
@@ -835,6 +848,7 @@ namespace TownOfSushi.CustomOption
             AlertDuration =
                 new CustomNumberOption(num++, MultiMenu.Crewmate, "Alert Duration", 10f, 5f, 15f, 1f, CooldownFormat);
             MaxAlerts = new CustomNumberOption(num++, MultiMenu.Crewmate, "Maximum Number Of Alerts", 5, 1, 15, 1);
+            VeteranTaskNeed = new CustomNumberOption(num++, MultiMenu.Crewmate, "Maximum Number Of Tasks Needed To Recharge", 5, 1, 15, 1);
 
             Vigilante = new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#FFFF99FF>Vigilante</color>");
             VigilanteKills = new CustomNumberOption(num++, MultiMenu.Crewmate, "Number Of Vigilante Kills", 1, 1, 15, 1);
@@ -852,9 +866,6 @@ namespace TownOfSushi.CustomOption
             VigilanteKillCd =
                 new CustomNumberOption(num++, MultiMenu.Crewmate, "Vigilante Kill Cooldown", 25f, 10f, 40f, 2.5f, CooldownFormat);
             VigilanteBodyReport = new CustomToggleOption(num++, MultiMenu.Crewmate, "Vigilante Can Report Who They've Killed");
-
-            CrewSpecialRoles =
-                new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#8BFDFDFF>Crew</color> <color=#1D7CF2FF>Power</color> <color=#FFD700FF>Roles</color> Settings");
 
             CrewSpecialRoles =
                 new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#8BFDFDFF>Crew</color> <color=#1D7CF2FF>Special</color> <color=#FFD700FF>Roles</color> Settings");
@@ -893,6 +904,11 @@ namespace TownOfSushi.CustomOption
                 new CustomNumberOption(num++, MultiMenu.Crewmate, "Time Where Medic Will Have Color Type", 15f, 0f, 60f, 2.5f,
                     CooldownFormat);
 
+            Swapper =
+                new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#66E666FF>Swapper</color>");
+            SwapperButton =
+                new CustomToggleOption(num++, MultiMenu.Crewmate, "Swapper Can Button", true);
+
             Transporter =
                 new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#00EEFFFF>Transporter</color>");
             TransportCooldown =
@@ -902,7 +918,11 @@ namespace TownOfSushi.CustomOption
             TransporterVitals =
                 new CustomToggleOption(num++, MultiMenu.Crewmate, "Transporter Can Use Vitals", false);
 
-            
+            Guardian =
+                new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#8794c4>Guardian</color>");
+            VoteProtectCd =
+                new CustomNumberOption(num++, MultiMenu.Crewmate, "Guardian Cooldown", 25f, 10f, 60f, 2.5f, CooldownFormat);
+
 
             NeutralKillingRoles = new CustomHeaderOption(num++, MultiMenu.Neutral, "<color=#B3B3B3FF>Neutral</color> <color=#FFD700FF>Roles</color> Settings");
             MinNeutralBenignRoles =

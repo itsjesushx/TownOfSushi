@@ -7,6 +7,12 @@ global using TownOfSushi.Roles.Abilities;
 global using TownOfSushi.CustomOption;
 global using TownOfSushi.Patches;
 global using TownOfSushi.Objects;
+global using TownOfSushi.Modules.ScreenEffects;
+global using TownOfSushi.Roles.Crewmates.Support.SwapperRole;
+
+global using static TownOfSushi.Utils;
+global using static TownOfSushi.Roles.Role;
+
 global using HarmonyLib;
 global using UnityEngine;
 global using System;
@@ -19,9 +25,6 @@ global using Random = UnityEngine.Random;
 global using Object = UnityEngine.Object;
 global using TownOfSushi.Modules;
 global using Il2CppInterop.Runtime.InteropTypes.Arrays;
-global using static TownOfSushi.Utils;
-global using static TownOfSushi.Roles.Role;
 global using Reactor.Utilities;
 global using BepInEx.Unity.IL2CPP;
-global using TownOfSushi.Modules.ScreenEffects;
 global using Reactor.Utilities.Extensions;

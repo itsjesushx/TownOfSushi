@@ -129,7 +129,7 @@
                 __instance.KillButton.graphic.sprite = Jail;
                 flag = true;
             }
-            else if (PlayerControl.LocalPlayer.Is(RoleEnum.Oracle))
+            else if (PlayerControl.LocalPlayer.Is(RoleEnum.Oracle)  ||PlayerControl.LocalPlayer.Is(RoleEnum.Guardian))
             {
                 __instance.KillButton.graphic.sprite = Confess;
                 flag = true;

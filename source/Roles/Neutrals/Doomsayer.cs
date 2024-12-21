@@ -26,9 +26,11 @@
                 if (CustomGameOptions.EngineerOn > 0) ColorMapping.Add("Engineer", Colors.Engineer);
                 if (CustomGameOptions.ImitatorOn > 0) ColorMapping.Add("Imitator", Colors.Imitator);
                 if (CustomGameOptions.InvestigatorOn > 0) ColorMapping.Add("Investigator", Colors.Investigator);
+                if (CustomGameOptions.GuardianOn > 0) ColorMapping.Add("Guardian", Colors.Guardian);
                 if (CustomGameOptions.HunterOn > 0) ColorMapping.Add("Hunter", Colors.Hunter);
                 if (CustomGameOptions.MedicOn > 0) ColorMapping.Add("Medic", Colors.Medic);
                 if (CustomGameOptions.MediumOn > 0) ColorMapping.Add("Medium", Colors.Medium);
+                if (CustomGameOptions.SwapperOn > 0) ColorMapping.Add("Swapper", Colors.Swapper);
                 if (CustomGameOptions.JailorOn > 0) ColorMapping.Add("Jailor", Colors.Jailor);
                 if (CustomGameOptions.MysticOn > 0) ColorMapping.Add("Mystic", Colors.Mystic);
                 if (CustomGameOptions.OracleOn > 0) ColorMapping.Add("Oracle", Colors.Oracle);

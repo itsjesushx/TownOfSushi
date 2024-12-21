@@ -20,7 +20,7 @@ namespace TownOfSushi.Roles.Neutral.Benign.GuardianAngelRole
                 var abilityUsed = AbilityUsed(PlayerControl.LocalPlayer);
                 if (!abilityUsed) return false;
                 role.TimeRemaining = CustomGameOptions.ProtectDuration;
-                role.UsesLeft--;
+                role.MaxUses--;
                 role.Protect();
                 Rpc(CustomRPC.GAProtect, PlayerControl.LocalPlayer.PlayerId);
                 return false;

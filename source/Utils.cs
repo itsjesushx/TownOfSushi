@@ -1242,6 +1242,11 @@ namespace TownOfSushi
                 var oracle = GetRole<Oracle>(PlayerControl.LocalPlayer);
                 oracle.LastConfessed = DateTime.UtcNow;
             }
+            if (PlayerControl.LocalPlayer.Is(RoleEnum.Guardian))
+            {
+                var Guardian = GetRole<Guardian>(PlayerControl.LocalPlayer);
+                Guardian.LastProtect = DateTime.UtcNow;
+            }
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Hunter))
             {
                 var hunter = Role.GetRole<Hunter>(PlayerControl.LocalPlayer);
@@ -1256,7 +1261,7 @@ namespace TownOfSushi
             {
                 var tracker = GetRole<Tracker>(PlayerControl.LocalPlayer);
                 tracker.LastTracked = DateTime.UtcNow;
-                tracker.UsesLeft = CustomGameOptions.MaxTracks;
+                tracker.MaxUses = CustomGameOptions.MaxTracks;
                 if (CustomGameOptions.ResetOnNewRound)
                 {
                     tracker.TrackerArrows.Values.DestroyAll();

@@ -10,9 +10,9 @@ namespace TownOfSushi.Roles.Crewmates
         public DateTime LastTransported { get; set; }
         public PlayerControl TransportPlayer1 { get; set; }
         public PlayerControl TransportPlayer2 { get; set; }
-        public int UsesLeft;
+        public int MaxUses;
         public TextMeshPro UsesText;
-        public bool ButtonUsable => UsesLeft != 0 && !SwappingMenus;
+        public bool ButtonUsable => MaxUses != 0 && !SwappingMenus;
         public bool SwappingMenus = false;
         public Dictionary<byte, DateTime> UntransportablePlayers = new Dictionary<byte, DateTime>();
         public Transporter(PlayerControl player) : base(player)
@@ -29,7 +29,7 @@ namespace TownOfSushi.Roles.Crewmates
             Scale = 1.4f;
             TransportPlayer1 = null;
             TransportPlayer2 = null;
-            UsesLeft = CustomGameOptions.TransportMaxUses;
+            MaxUses = CustomGameOptions.TransportMaxUses;
         }
 
         public float TransportTimer()
@@ -250,7 +250,7 @@ namespace TownOfSushi.Roles.Crewmates
                     return;
                 }
                 LastTransported = DateTime.UtcNow;
-                UsesLeft--;
+                MaxUses--;
 
                 Coroutines.Start(TransportPlayers(TransportPlayer1.PlayerId, TransportPlayer2.PlayerId, false));
 

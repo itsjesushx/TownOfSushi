@@ -9,9 +9,9 @@ namespace TownOfSushi.Roles.Crewmates
         public Dictionary<byte, ArrowBehaviour> TrackerArrows = new Dictionary<byte, ArrowBehaviour>();
         public PlayerControl ClosestPlayer;
         public DateTime LastTracked { get; set; }
-        public int UsesLeft;
+        public int MaxUses;
         public TextMeshPro UsesText;
-        public bool ButtonUsable => UsesLeft != 0;
+        public bool ButtonUsable => MaxUses != 0;
         public Tracker(PlayerControl player) : base(player)
         {
             Name = "Tracker";
@@ -23,7 +23,7 @@ namespace TownOfSushi.Roles.Crewmates
             Faction = Faction.Crewmates;
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.CrewInvest;
-            UsesLeft = CustomGameOptions.MaxTracks;
+            MaxUses = CustomGameOptions.MaxTracks;
         }
 
         public float TrackerTimer()

@@ -4,13 +4,11 @@ namespace TownOfSushi.Roles.Crewmates.Investigative.SnitchRole
     public class CompleteTask
     {
         public static Sprite Sprite => TownOfSushi.Arrow;
-
         public static void Postfix(PlayerControl __instance)
         {
             if (!__instance.Is(RoleEnum.Snitch)) return;
             if (__instance.Data.IsDead) return;
             var taskinfos = __instance.Data.Tasks.ToArray();
-
             var tasksLeft = taskinfos.Count(x => !x.Complete);
             var role = GetRole<Snitch>(__instance);
             var localRole = GetPlayerRole(PlayerControl.LocalPlayer);

@@ -43,6 +43,22 @@ namespace TownOfSushi.Patches
                     }
                 }
 
+                if (PlayerControl.LocalPlayer.Is(RoleEnum.Swapper) && !PlayerControl.LocalPlayer.Data.IsDead)
+                {
+                    var swapper = GetRole<Swapper>(PlayerControl.LocalPlayer);
+                    var button = swapper.Buttons[voteArea.TargetPlayerId];
+                    if (button.GetComponent<SpriteRenderer>().sprite == TownOfSushi.SwapperSwitch)
+                    {
+                        swapper.ListOfActives[voteArea.TargetPlayerId] = false;
+                        if (SwapVotes.Swap1 == voteArea) SwapVotes.Swap1 = null;
+                        if (SwapVotes.Swap2 == voteArea) SwapVotes.Swap2 = null;
+                        Utils.Rpc(CustomRPC.SetSwaps, sbyte.MaxValue, sbyte.MaxValue);
+                    }
+                    button.SetActive(false);
+                    button.GetComponent<PassiveButton>().OnClick = new Button.ButtonClickedEvent();
+                    swapper.Buttons[voteArea.TargetPlayerId] = null;
+                }
+
                 if (Roles.Crewmates.Killing.VigilanteRole.AddButton.vigilanteUI != null) Roles.Crewmates.Killing.VigilanteRole.AddButton.vigilanteUIExitButton.OnClick.Invoke();
                 if (Roles.Abilities.AbilityMod.AssassinAbility.AddButton.assassinUI != null) Roles.Abilities.AbilityMod.AssassinAbility.AddButton.assassinUIExitButton.OnClick.Invoke();
                 if (Roles.Neutral.Evil.DoomsayerRole.AddButton.doomsayerUI != null) Roles.Neutral.Evil.DoomsayerRole.AddButton.doomsayerUIExitButton.OnClick.Invoke();

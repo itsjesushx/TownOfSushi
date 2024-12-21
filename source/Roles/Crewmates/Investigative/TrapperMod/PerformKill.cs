@@ -15,7 +15,7 @@
             if (!role.ButtonUsable) return false;
             var abilityUsed = AbilityUsed(PlayerControl.LocalPlayer);
             if (!abilityUsed) return false;
-            role.UsesLeft--;
+            role.MaxUses--;
             role.LastTrapped = DateTime.UtcNow;
             var pos = PlayerControl.LocalPlayer.transform.position;
             pos.z += 0.001f;

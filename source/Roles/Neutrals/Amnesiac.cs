@@ -10,7 +10,6 @@ namespace TownOfSushi.Roles
             Name = "Amnesiac";
             StartText = () => "Remember A Role Of A Deceased Player";
             TaskText = () => SpawnedAs ? "Find a dead body to remember a role" : "Your target died. Now remember a new role!";
-            
             Color = Colors.Amnesiac;
             RoleType = RoleEnum.Amnesiac;
             Faction = Faction.Neutral;

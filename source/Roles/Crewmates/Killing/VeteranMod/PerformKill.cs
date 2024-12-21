@@ -20,7 +20,7 @@ namespace TownOfSushi.Roles.Crewmates.Killing.VeteranMod
                 var abilityUsed = AbilityUsed(PlayerControl.LocalPlayer);
                 if (!abilityUsed) return false;
                 role.TimeRemaining = CustomGameOptions.AlertDuration;
-                role.UsesLeft--;
+                role.MaxUses--;
                 role.Alert();
                 Rpc(CustomRPC.Alert, PlayerControl.LocalPlayer.PlayerId);
                 return false;

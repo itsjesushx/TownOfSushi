@@ -50,7 +50,7 @@ namespace TownOfSushi.Roles.Crewmates.Investigative.TrackerMod
                 arrow.target = target.transform.position;
 
                 role.TrackerArrows.Add(target.PlayerId, arrow);
-                role.UsesLeft--;
+                role.MaxUses--;
             }
             if (interact[0] == true)
             {

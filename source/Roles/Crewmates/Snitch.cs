@@ -8,21 +8,16 @@ namespace TownOfSushi.Roles.Crewmates
         {
             Name = "Snitch";
             StartText = () => "Complete All Your Tasks To Discover The Impostors";
-            TaskText = () =>
-                TasksDone
-                    ? "Find the arrows pointing to the Impostors!"
-                    : "Complete all your tasks to discover the Impostors!";                    
+            TaskText = () => TasksDone ? "Find the arrows pointing to the Impostors!" : "Complete all your tasks to discover the Impostors!";
             Color = Colors.Snitch;
             RoleType = RoleEnum.Snitch;
             Faction = Faction.Crewmates;
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.CrewInvest;
-            
         }
 
         public bool Revealed => TasksLeft <= CustomGameOptions.SnitchTasksRemaining;
         public bool TasksDone => TasksLeft <= 0;
-
         internal override bool Criteria()
         {
             return Revealed && PlayerControl.LocalPlayer.Data.IsImpostor() && !Player.Data.IsDead 

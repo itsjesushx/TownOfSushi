@@ -13,7 +13,7 @@ namespace TownOfSushi.Roles
             RoleAlignment = RoleAlignment.CrewKilling;
             RoleType = RoleEnum.Hunter;
             AddToRoleHistory(RoleType);
-            UsesLeft = CustomGameOptions.HunterStalkUses;
+            MaxUses = CustomGameOptions.HunterStalkUses;
         }
 
         private KillButton _stalkButton;
@@ -26,7 +26,7 @@ namespace TownOfSushi.Roles
         public DateTime LastStalked { get; set; }
         public float StalkDuration { get; set; }
         public DateTime LastKilled { get; set; }
-        public int UsesLeft { get; set; }
+        public int MaxUses { get; set; }
         public TMPro.TextMeshPro UsesText { get; set; }
         public KillButton StalkButton
         {
@@ -39,7 +39,7 @@ namespace TownOfSushi.Roles
             }
         }
         public bool Stalking => StalkDuration > 0f;
-        public bool StalkUsable => UsesLeft != 0;
+        public bool StalkUsable => MaxUses != 0;
         public float HunterKillTimer()
         {
             var utcNow = DateTime.UtcNow;

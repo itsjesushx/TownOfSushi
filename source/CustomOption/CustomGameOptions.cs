@@ -5,6 +5,7 @@ namespace TownOfSushi.CustomOption
         public static int MaxRoleHistoryListSize = 100;
         public static int WerewolfOn => (int)Generate.WerewolfOn.Get();
         public static int JuggernautOn => (int)Generate.JuggernautOn.Get();
+        public static int GuardianOn => (int)Generate.GuardianOn.Get();
         public static int JesterOn => (int)Generate.JesterOn.Get();
         public static int HunterOn => (int)Generate.HunterOn.Get();
         public static int VigilanteOn => (int)Generate.VigilanteOn.Get();
@@ -28,6 +29,7 @@ namespace TownOfSushi.CustomOption
         public static int JailorOn => (int)Generate.JailorOn.Get();
         public static int UndertakerOn => (int)Generate.UndertakerOn.Get();
         public static int PhantomOn => (int)Generate.PhantomOn.Get();
+        public static int SwapperOn => (int)Generate.SwapperOn.Get();
         public static int HaunterOn => (int)Generate.HaunterOn.Get();
         public static int GrenadierOn => (int)Generate.GrenadierOn.Get();
         public static int VeteranOn => (int)Generate.VeteranOn.Get();
@@ -190,6 +192,7 @@ namespace TownOfSushi.CustomOption
         public static float FlashRadius => Generate.FlashRadius.Get();
         public static bool KilledOnAlert => Generate.KilledOnAlert.Get();
         public static bool SnitchButton => Generate.SnitchButton.Get();
+        public static int VeteranTaskNeed => (int)Generate.VeteranTaskNeed.Get();
         public static float AlertCd => Generate.AlertCooldown.Get();
         public static float AlertDuration => Generate.AlertDuration.Get();
         public static int MaxAlerts => (int)Generate.MaxAlerts.Get();
@@ -206,6 +209,7 @@ namespace TownOfSushi.CustomOption
         public static float JailCd => Generate.JailCooldown.Get();
         public static int MaxExecutes => (int)Generate.MaxExecutes.Get();
         public static bool ShowMediatePlayer => Generate.ShowMediatePlayer.Get();
+        public static bool SwapperButton => Generate.SwapperButton.Get();
         public static bool ShowMediumToDead => Generate.ShowMediumToDead.Get();
         public static DeadRevealed DeadRevealed => (DeadRevealed)Generate.DeadRevealed.Get();
         public static float PickStartTimer => Generate.PickStartTimer.Get();
@@ -284,6 +288,7 @@ namespace TownOfSushi.CustomOption
         public static float ChargeUpDuration => Generate.ChargeUpDuration.Get();
         public static float ChargeUseDuration => Generate.ChargeUseDuration.Get();
         public static float ConfessCd => Generate.ConfessCooldown.Get();
+        public static float VoteProtectCd => Generate.VoteProtectCd.Get();
         public static float RevealAccuracy => Generate.RevealAccuracy.Get();
         public static bool NeutralBenignShowsEvil => Generate.NeutralBenignShowsEvil.Get();
         public static bool NeutralEvilShowsEvil => Generate.NeutralEvilShowsEvil.Get();

@@ -138,7 +138,7 @@ namespace TownOfSushi.Roles.Crewmates.Killing.JailorMod
                 }
 
                 player.myTasks.Insert(0, importantTextTask);
-
+                
                     if (player.Is(RoleEnum.Imitator))
                     {
                         var imitator = GetRole<Imitator>(PlayerControl.LocalPlayer);
@@ -154,6 +154,25 @@ namespace TownOfSushi.Roles.Crewmates.Killing.JailorMod
                         imitator.ListOfActives.Clear();
                         imitator.Buttons.Clear();
                         SetImitate.Imitate = null;
+                    }
+
+                    if (player.Is(RoleEnum.Swapper))
+                    {
+                        var swapper = Role.GetRole<Swapper>(PlayerControl.LocalPlayer);
+                        var buttons = Role.GetRole<Swapper>(player).Buttons;
+                        foreach (var button in buttons)
+                        {
+                            if (button != null)
+                            {
+                                button.SetActive(false);
+                                button.GetComponent<PassiveButton>().OnClick = new Button.ButtonClickedEvent();
+                            }
+                        }
+                        swapper.ListOfActives.Clear();
+                        swapper.Buttons.Clear();
+                        SwapVotes.Swap1 = null;
+                        SwapVotes.Swap2 = null;
+                        Utils.Rpc(CustomRPC.SetSwaps, sbyte.MaxValue, sbyte.MaxValue);
                     }
 
                     if (player.Is(RoleEnum.Jailor))

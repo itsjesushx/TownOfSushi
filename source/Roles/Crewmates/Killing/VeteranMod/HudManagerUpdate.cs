@@ -19,7 +19,7 @@ namespace TownOfSushi.Roles.Crewmates.Killing.VeteranMod
 
             var role = GetRole<Veteran>(PlayerControl.LocalPlayer);
 
-            if (role.UsesText == null && role.UsesLeft > 0)
+            if (role.UsesText == null && role.MaxUses > 0)
             {
                 role.UsesText = Object.Instantiate(alertButton.cooldownTimerText, alertButton.transform);
                 role.UsesText.gameObject.SetActive(false);
@@ -33,7 +33,7 @@ namespace TownOfSushi.Roles.Crewmates.Killing.VeteranMod
             }
             if (role.UsesText != null)
             {
-                role.UsesText.text = role.UsesLeft + "";
+                role.UsesText.text = role.MaxUses + "";
             }
 
             alertButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)

@@ -15,7 +15,6 @@ namespace TownOfSushi.Roles.Crewmates
             Name = "Oracle";
             StartText = () => "Get other payer's to confess their sins";
             TaskText = () => "Get another player to confess on your passing";
-            
             Color = Colors.Oracle;
             LastConfessed = DateTime.UtcNow;
             Accuracy = CustomGameOptions.RevealAccuracy;

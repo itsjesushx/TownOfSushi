@@ -6,15 +6,15 @@ namespace TownOfSushi.Roles.Modifiers
     {
         public KillButton DisperseButton;
         public DateTime LastDispersed { get; set; }
-        public int UsesLeft;
-        public bool ButtonUsable => UsesLeft != 0;
+        public int MaxUses;
+        public bool ButtonUsable => MaxUses != 0;
         public Disperser(PlayerControl player) : base(player)
         {
             Name = "Disperser";
             TaskText = () => "Separate the Crew";
             Color = Colors.Impostor;
             LastDispersed = DateTime.UtcNow;
-            UsesLeft = CustomGameOptions.MaxDisperses;
+            MaxUses = CustomGameOptions.MaxDisperses;
             ModifierType = ModifierEnum.Disperser;
         }
         public float DisperseTimer()
