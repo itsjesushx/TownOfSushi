@@ -481,89 +481,6 @@ namespace TownOfSushi.CustomOption
         public static void GenerateAll()
         {
             var num = 0;
-
-            CrewInvestigativeRoles = new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#8BFDFDFF>Crew</color> <color=#1D7CF2FF>Investigative</color> <color=#FFD700FF>Roles</color>");
-            InvestigatorOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#00B3B3FF>Investigator</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            MediumOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#A680FFFF>Medium</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            MysticOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#4D99E6FF>Mystic</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            OracleOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#344feb>Oracle</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            SeerOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#FFCC80FF>Seer</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            SnitchOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#B34D99FF>Snitch</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            TrackerOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#66E666FF>Tracker</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            TrapperOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#A7D1B3FF>Trapper</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-
-            CrewKillingRoles = new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#8BFDFDFF>Crew</color> <color=#1D7CF2FF>Killing</color> <color=#FFD700FF>Roles</color>");
-            HunterOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#29AB87FF>Hunter</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            JailorOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#A6A6A6FF>Jailor</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            VeteranOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#998040FF>Veteran</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            VigilanteOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#FFFF99FF>Vigilante</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            
-            CrewSpecialRoles = new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#8BFDFDFF>Crew</color> <color=#1D7CF2FF>Special</color> <color=#FFD700FF>Roles</color>");
-            HaunterOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#D3D3D3FF>Haunter</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-
-            CrewSupportRoles = new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#8BFDFDFF>Crew</color> <color=#1D7CF2FF>Support</color> <color=#FFD700FF>Roles</color>");
-            EngineerOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#FFA60AFF>Engineer</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            ImitatorOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#B3D94DFF>Imitator</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            MedicOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#7efbc2>Medic</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            SwapperOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#66E666FF>Swapper</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            TransporterOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#00EEFFFF>Transporter</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-
-            
-            NeutralBenignRoles = new CustomHeaderOption(num++, MultiMenu.Neutral, "<color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Benign</color> <color=#FFD700FF>Roles</color>");
-            AmnesiacOn = new CustomNumberOption(num++, MultiMenu.Neutral, "<color=#22FFFFFF>Amnesiac</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            GuardianAngelOn = new CustomNumberOption(num++, MultiMenu.Neutral, "<color=#FFFFFFFF>Guardian Angel</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            RomanticOn = new CustomNumberOption(num++, MultiMenu.Neutral, "<color=#FF66CCFF>Romantic</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            NeutralEvilRoles = new CustomHeaderOption(num++, MultiMenu.Neutral, "<color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Evil</color> <color=#FFD700FF>Roles</color>");
-            DoomsayerOn = new CustomNumberOption(num++, MultiMenu.Neutral, "<color=#00FF80FF>Doomsayer</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            ExecutionerOn = new CustomNumberOption(num++, MultiMenu.Neutral, "<color=#CCCCCCFF>Executioner</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            JesterOn = new CustomNumberOption(num++, MultiMenu.Neutral, "<color=#FFBFCCFF>Jester</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            PhantomOn = new CustomNumberOption(num++, MultiMenu.Neutral, "<color=#662962FF>Phantom</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            VultureOn = new CustomNumberOption(num++, MultiMenu.Neutral, "<color=#8C4005FF>Vulture</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-
-            NeutralKillingRoles = new CustomHeaderOption(num++, MultiMenu.Neutral, "<color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Killing</color> <color=#FFD700FF>Roles</color>");
-            AgentOn = new CustomNumberOption(num++, MultiMenu.Neutral, "<color=#0000FFFF>Agent</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            ArsonistOn = new CustomNumberOption(num++, MultiMenu.Neutral, "<color=#FF4D00FF>Arsonist</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            JuggernautOn = new CustomNumberOption(num++, MultiMenu.Neutral, "<color=#8C004DFF>Juggernaut</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            GlitchOn = new CustomNumberOption(num++, MultiMenu.Neutral, "<color=#00FF00FF>Glitch</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            PlaguebearerOn = new CustomNumberOption(num++, MultiMenu.Neutral, "<color=#E6FFB3FF>Plaguebearer</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            SerialKillerOn = new CustomNumberOption(num++, MultiMenu.Neutral, "<color=#336EFFFF>Serial Killer</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            VampireOn = new CustomNumberOption(num++, MultiMenu.Neutral, "<color=#262626FF>Vampire</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            WerewolfOn = new CustomNumberOption(num++, MultiMenu.Neutral, "<color=#A86629FF>Werewolf</color>", 0, 0, 100, 10, PercentFormat);
-
-
             ImpostorDeceptionRoles = new CustomHeaderOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Impostor</color> <color=#1D7CF2FF>Deception</color> <color=#FFD700FF>Roles</color>");
             EscapistOn = new CustomNumberOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Escapist</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
@@ -706,6 +623,8 @@ namespace TownOfSushi.CustomOption
 
             Investigator =
                 new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#00B3B3FF>Investigator</color>");
+            InvestigatorOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#00B3B3FF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             FootprintSize = new CustomNumberOption(num++, MultiMenu.Crewmate, "Footprint Size", 4f, 1f, 10f, 1f);
             FootprintInterval =
                 new CustomNumberOption(num++, MultiMenu.Crewmate, "Footprint Interval", 0.1f, 0.05f, 1f, 0.05f, CooldownFormat);
@@ -724,6 +643,8 @@ namespace TownOfSushi.CustomOption
 
             Medium =
                 new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#A680FFFF>Medium</color>");
+            MediumOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#A680FFFF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             MediateCooldown =
                 new CustomNumberOption(num++, MultiMenu.Crewmate, "Mediate Cooldown", 10f, 1f, 15f, 1f, CooldownFormat);
             ShowMediatePlayer =
@@ -735,6 +656,8 @@ namespace TownOfSushi.CustomOption
 
             Mystic =
                 new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#4D99E6FF>Mystic</color>");
+            MysticOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#4D99E6FF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             MysticArrowDuration =
                 new CustomNumberOption(num++, MultiMenu.Crewmate, "Dead Body Arrow Duration", 0.1f, 0f, 1f, 0.05f, CooldownFormat);
             InitialExamineCooldown =
@@ -754,6 +677,8 @@ namespace TownOfSushi.CustomOption
 
             Oracle =
                 new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#344feb>Oracle</color>");
+            OracleOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#344feb>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             ConfessCooldown =
                 new CustomNumberOption(num++, MultiMenu.Crewmate, "Confess Cooldown", 25f, 10f, 60f, 2.5f, CooldownFormat);
             RevealAccuracy = new CustomNumberOption(num++, MultiMenu.Crewmate, "Reveal Accuracy", 80f, 0f, 100f, 10f,
@@ -765,8 +690,11 @@ namespace TownOfSushi.CustomOption
             NeutralKillingShowsEvil =
                 new CustomToggleOption(num++, MultiMenu.Crewmate, "<color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Killing</color> <color=#FFD700FF>Roles</color> Show Evil", true);
 
+
             Seer =
                 new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#FFCC80FF>Seer</color>");
+            SeerOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#FFCC80FF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             SeerCooldown =
                 new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#FFCC80FF>Seer</color> Cooldown", 25f, 10f, 60f, 2.5f, CooldownFormat);
             CrewKillingRed =
@@ -779,12 +707,16 @@ namespace TownOfSushi.CustomOption
                 new CustomToggleOption(num++, MultiMenu.Crewmate, "<color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Killing</color> <color=#FFD700FF>Roles</color> Are Red", true);
 
             Snitch = new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#B34D99FF>Snitch</color>");
+            SnitchOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#B34D99FF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             SnitchTasksRemaining =
                 new CustomNumberOption(num++, MultiMenu.Crewmate, "Tasks Remaining When <color=#B34D99FF>Snitch</color> Is Revealed", 1, 1, 5, 1);
             SnitchButton = new CustomToggleOption(num++, MultiMenu.Crewmate, "<color=#B34D99FF>Snitch</color> Can Call An Emergency Meeting After Reveal", false);
 
             Tracker =
                 new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#66E666FF>Tracker</color>");
+            TrackerOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#66E666FF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             UpdateInterval =
                 new CustomNumberOption(num++, MultiMenu.Crewmate, "Arrow Update Interval", 5f, 0.5f, 15f, 0.5f, CooldownFormat);
             TrackCooldown =
@@ -794,6 +726,8 @@ namespace TownOfSushi.CustomOption
 
             Trapper =
                 new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#A7D1B3FF>Trapper</color>");
+            TrapperOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#A7D1B3FF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             MinAmountOfTimeInTrap =
                 new CustomNumberOption(num++, MultiMenu.Crewmate, "Min Amount Of Time In Trap To Register", 1f, 0f, 15f, 0.5f, CooldownFormat);
             TrapCooldown =
@@ -808,10 +742,13 @@ namespace TownOfSushi.CustomOption
                 new CustomNumberOption(num++, MultiMenu.Crewmate, "Minimum Number Of Roles Required To Trigger Trap", 3, 1, 5, 1);
             
             CrewKillingSettings =
-                new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#8BFDFDFF>Crew</color> <color=#1D7CF2FF>Killing</color> <color=#FFD700FF>Roles</color> Settings");
+                new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#8BFDFDFF>Crew</color> <color=#1D7CF2FF>Killing</color> <color=#FFD700FF>Roles</color> Settings");            
 
+                
             Hunter =
                new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#29AB87FF>Hunter</color>");
+            HunterOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#29AB87FF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             HunterKillCd =
                 new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#29AB87FF>Hunter</color> Kill Cooldown", 25f, 10f, 60f, 2.5f, CooldownFormat);
             HunterStalkCd =
@@ -827,6 +764,8 @@ namespace TownOfSushi.CustomOption
 
             Jailor =
                new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#A6A6A6FF>Jailor</color>");
+            JailorOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#A6A6A6FF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             JailCooldown =
                 new CustomNumberOption(num++, MultiMenu.Crewmate, "Jail Cooldown", 25f, 10f, 60f, 2.5f, CooldownFormat);
             MaxExecutes =
@@ -834,6 +773,8 @@ namespace TownOfSushi.CustomOption
 
             Veteran =
                 new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#998040FF>Veteran</color>");
+            VeteranOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#998040FF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             KilledOnAlert =
                 new CustomToggleOption(num++, MultiMenu.Crewmate, "Can Be Killed On Alert", false);
             AlertCooldown =
@@ -843,6 +784,8 @@ namespace TownOfSushi.CustomOption
             MaxAlerts = new CustomNumberOption(num++, MultiMenu.Crewmate, "Maximum Number Of Alerts", 5, 1, 15, 1);
 
             Vigilante = new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#FFFF99FF>Vigilante</color>");
+            VigilanteOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#FFFF99FF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             VigilanteKills = new CustomNumberOption(num++, MultiMenu.Crewmate, "Number Of Vigilante Kills", 1, 1, 15, 1);
             VigilanteMultiKill = new CustomToggleOption(num++, MultiMenu.Crewmate, "Vigilante Can Kill More Than Once Per Meeting", false);
             VigilanteGuessNeutralBenign = new CustomToggleOption(num++, MultiMenu.Crewmate, "Vigilante Can Guess <color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Benign</color> <color=#FFD700FF>Roles</color>", false);
@@ -861,9 +804,11 @@ namespace TownOfSushi.CustomOption
 
             CrewSpecialRoles =
                 new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#8BFDFDFF>Crew</color> <color=#1D7CF2FF>Special</color> <color=#FFD700FF>Roles</color> Settings");
-            
+
             Haunter =
                 new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#d3d3d3FF>Haunter</color>");
+            HaunterOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#D3D3D3FF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             HaunterTasksRemainingClicked =
                  new CustomNumberOption(num++, MultiMenu.Crewmate, "Tasks Remaining When Haunter Can Be Clicked", 5, 1, 15, 1);
             HaunterTasksRemainingAlert =
@@ -872,15 +817,23 @@ namespace TownOfSushi.CustomOption
             HaunterCanBeClickedBy = new CustomStringOption(num++, MultiMenu.Crewmate, "Who Can Click Haunter", new[] { "All", "Non-Crew", "Imps Only" });
 
             CrewSupportSettings =
-                new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#8BFDFDFF>Crew</color> <color=#1D7CF2FF>Support</color> <color=#FFD700FF>Roles</color> Settings");
+                new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#8BFDFDFF>Crew</color> <color=#1D7CF2FF>Support</color> <color=#FFD700FF>Roles</color> Settings");         
+            
                 
             Engineer =
                 new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#FFA60AFF>Engineer</color>");
+            EngineerOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#FFA60AFF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             MaxFixes =
                 new CustomNumberOption(num++, MultiMenu.Crewmate, "Maximum Number Of Fixes", 5, 1, 15, 1);
             
+            ImitatorOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#B3D94DFF>Imitator</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
+            
             Medic =
                 new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#7efbc2>Medic</color>");
+            MedicOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#7efbc2>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             ShowShielded =
                 new CustomStringOption(num++, MultiMenu.Crewmate, "Show Shielded Player",
                     new[] { "Self", "Medic", "Self+Medic", "Everyone" });
@@ -898,11 +851,15 @@ namespace TownOfSushi.CustomOption
 
             Swapper =
                 new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#66E666FF>Swapper</color>");
+            SwapperOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#66E666FF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             SwapperButton =
                 new CustomToggleOption(num++, MultiMenu.Crewmate, "Swapper Can Button", true);
 
             Transporter =
                 new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#00EEFFFF>Transporter</color>");
+            TransporterOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#00EEFFFF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             TransportCooldown =
                 new CustomNumberOption(num++, MultiMenu.Crewmate, "Transport Cooldown", 25f, 10f, 60f, 2.5f, CooldownFormat);
             TransportMaxUses =
@@ -923,9 +880,74 @@ namespace TownOfSushi.CustomOption
                 new CustomNumberOption(num++, MultiMenu.Neutral, "Min <color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Killing</color> <color=#FFD700FF>Roles</color>", 1, 0, 5, 1);
             MaxNeutralKillingRoles =
                 new CustomNumberOption(num++, MultiMenu.Neutral, "Max <color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Killing</color> <color=#FFD700FF>Roles</color>", 1, 0, 5, 1);
+            
+            NeutralEvilRoles = new CustomHeaderOption(num++, MultiMenu.Neutral, "<color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Evil</color> <color=#FFD700FF>Roles</color> Settings");
 
+            Doomsayer = new CustomHeaderOption(num++, MultiMenu.Neutral, "<color=#00FF80FF>Doomsayer</color>");
+            DoomsayerOn = new CustomNumberOption(num++, MultiMenu.Neutral, "<color=#00FF80FF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
+            ObserveCooldown =
+                new CustomNumberOption(num++, MultiMenu.Neutral, "Observe Cooldown", 25f, 10f, 60f, 2.5f, CooldownFormat);
+            DoomsayerGuessNeutralBenign = new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#00FF80FF>Doomsayer</color> Can Guess <color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Benign</color> <color=#FFD700FF>Roles</color>", false);
+            DoomsayerGuessNeutralEvil = new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#00FF80FF>Doomsayer</color> Can Guess <color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Evil</color> <color=#FFD700FF>Roles</color>", false);
+            DoomsayerGuessNeutralKilling = new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#00FF80FF>Doomsayer</color> Can Guess <color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Killing</color> <color=#FFD700FF>Roles</color>", false);
+            DoomsayerGuessNeutralBenign = new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#00FF80FF>Doomsayer</color> Can Guess <color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Benign</color> <color=#FFD700FF>Roles</color>", false);
+            DoomsayerGuessImpostors = new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#00FF80FF>Doomsayer</color> Can Guess <color=#FF0000FF>Impostor</color> <color=#FFD700FF>Roles</color>", false);
+            DoomsayerAfterVoting = new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#00FF80FF>Doomsayer</color> Can Guess After Voting", false);
+            DoomsayerGuessesToWin = new CustomNumberOption(num++, MultiMenu.Neutral, "Number Of <color=#00FF80FF>Doomsayer</color> Kills To Win", 3, 1, 5, 1);
+            
+            Executioner =
+                new CustomHeaderOption(num++, MultiMenu.Neutral, "<color=#CCCCCCFF>Executioner</color>");
+            ExecutionerOn = new CustomNumberOption(num++, MultiMenu.Neutral, "<color=#CCCCCCFF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
+            OnTargetDead = new CustomStringOption(num++, MultiMenu.Neutral, "<color=#CCCCCCFF>Executioner</color> Becomes On Target Dead",
+                new[] { "<color=#8BFDFDFF>Crew</color>", "<color=#22FFFFFF>Amnesiac</color>", "<color=#FFBFCCFF>Jester</color>" });
+            ExecutionerButton =
+                new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#CCCCCCFF>Executioner</color> Can Button", true);
+
+            Jester =
+                new CustomHeaderOption(num++, MultiMenu.Neutral, "<color=#FFBFCCFF>Jester</color>");
+            JesterOn = new CustomNumberOption(num++, MultiMenu.Neutral, "<color=#FFBFCCFF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
+            JesterButton =
+                new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#FFBFCCFF>Jester</color> Can Button", true);
+            JesterVent =
+                new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#FFBFCCFF>Jester</color> Can Hide In Vents", false);
+            JesterVentSwitch =
+                new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#FFBFCCFF>Jester</color> Can Switch Between Vents", false);
+            JesterImpVision =
+                new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#FFBFCCFF>Jester</color> Has Impostor Vision", false);
+            
+            Phantom =
+                new CustomHeaderOption(num++, MultiMenu.Neutral, "<color=#662962FF>Phantom</color>");
+            PhantomOn = new CustomNumberOption(num++, MultiMenu.Neutral, "<color=#662962FF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
+            PhantomTasksRemaining =
+                new CustomNumberOption(num++, MultiMenu.Neutral, "Tasks Left When Can Be Clicked", 5, 1, 15, 1);
+
+            Vulture = new CustomHeaderOption(num++, MultiMenu.Neutral, "<color=#8C4005FF>Vulture</color>"); 
+            VultureOn = new CustomNumberOption(num++, MultiMenu.Neutral, "<color=#8C4005FF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
+            VultureCd = new CustomNumberOption(num++, MultiMenu.Neutral, "Eat Cooldown", 10f, 10f, 60f, 2.5f, CooldownFormat);
+            VultureBodyCount = new CustomNumberOption(num++, MultiMenu.Neutral, "Number Of Bodies To Eat", 1, 1, 5, 1);
+            VultureVent = new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#8C4005FF>Vulture</color> Can Vent", false);
+            VultureImpVision = new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#8C4005FF>Vulture</color> Has Impostor Vision", false);
+            EatArrows = new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#8C4005FF>Vulture</color> Gets Arrows To Dead Bodies", false);
+            EatArrowDelay = new CustomNumberOption(num++, MultiMenu.Neutral, "Time After Death Arrow Appears", 5f, 0f, 15f, 1f, CooldownFormat);
+
+            NeutralBenignRoles = new CustomHeaderOption(num++, MultiMenu.Neutral, "<color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Benign</color> <color=#FFD700FF>Roles</color>");
+            Amnesiac = new CustomHeaderOption(num++, MultiMenu.Neutral, "<color=#22FFFFFF>Amnesiac</color>");
+            AmnesiacOn = new CustomNumberOption(num++, MultiMenu.Neutral, "<color=#22FFFFFF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
+            RememberArrows =
+                new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#22FFFFFF>Amnesiac</color> Gets Arrows Pointing To Dead Bodies", false);
+            RememberArrowDelay =
+                new CustomNumberOption(num++, MultiMenu.Neutral, "Time After Death Arrow Appears", 5f, 0f, 15f, 1f, CooldownFormat);
+            
             GuardianAngel =
                 new CustomHeaderOption(num++, MultiMenu.Neutral, "<color=#FFFFFFFF>Guardian Angel</color>");
+            GuardianAngelOn = new CustomNumberOption(num++, MultiMenu.Neutral, "<color=#FFFFFFFF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             ProtectCd =
                 new CustomNumberOption(num++, MultiMenu.Neutral, "Protect Cooldown", 25f, 10f, 60f, 2.5f, CooldownFormat);
             ProtectDuration =
@@ -946,56 +968,10 @@ namespace TownOfSushi.CustomOption
             EvilTargetPercent = new CustomNumberOption(num++, MultiMenu.Neutral, "Odds Of Target Being Evil", 20f, 0f, 100f, 10f,
                 PercentFormat);
 
-            Doomsayer = new CustomHeaderOption(num++, MultiMenu.Neutral, "<color=#00FF80FF>Doomsayer</color>");
-            ObserveCooldown =
-                new CustomNumberOption(num++, MultiMenu.Neutral, "Observe Cooldown", 25f, 10f, 60f, 2.5f, CooldownFormat);
-            DoomsayerGuessNeutralBenign = new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#00FF80FF>Doomsayer</color> Can Guess <color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Benign</color> <color=#FFD700FF>Roles</color>", false);
-            DoomsayerGuessNeutralEvil = new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#00FF80FF>Doomsayer</color> Can Guess <color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Evil</color> <color=#FFD700FF>Roles</color>", false);
-            DoomsayerGuessNeutralKilling = new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#00FF80FF>Doomsayer</color> Can Guess <color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Killing</color> <color=#FFD700FF>Roles</color>", false);
-            DoomsayerGuessNeutralBenign = new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#00FF80FF>Doomsayer</color> Can Guess <color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Benign</color> <color=#FFD700FF>Roles</color>", false);
-            DoomsayerGuessImpostors = new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#00FF80FF>Doomsayer</color> Can Guess <color=#FF0000FF>Impostor</color> <color=#FFD700FF>Roles</color>", false);
-            DoomsayerAfterVoting = new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#00FF80FF>Doomsayer</color> Can Guess After Voting", false);
-            DoomsayerGuessesToWin = new CustomNumberOption(num++, MultiMenu.Neutral, "Number Of <color=#00FF80FF>Doomsayer</color> Kills To Win", 3, 1, 5, 1);
-            
-            Executioner =
-                new CustomHeaderOption(num++, MultiMenu.Neutral, "<color=#CCCCCCFF>Executioner</color>");
-            OnTargetDead = new CustomStringOption(num++, MultiMenu.Neutral, "<color=#CCCCCCFF>Executioner</color> Becomes On Target Dead",
-                new[] { "<color=#8BFDFDFF>Crew</color>", "<color=#22FFFFFF>Amnesiac</color>", "<color=#FFBFCCFF>Jester</color>" });
-            ExecutionerButton =
-                new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#CCCCCCFF>Executioner</color> Can Button", true);
-
-            Jester =
-                new CustomHeaderOption(num++, MultiMenu.Neutral, "<color=#FFBFCCFF>Jester</color>");
-            JesterButton =
-                new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#FFBFCCFF>Jester</color> Can Button", true);
-            JesterVent =
-                new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#FFBFCCFF>Jester</color> Can Hide In Vents", false);
-            JesterVentSwitch =
-                new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#FFBFCCFF>Jester</color> Can Switch Between Vents", false);
-            JesterImpVision =
-                new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#FFBFCCFF>Jester</color> Has Impostor Vision", false);
-
-            Vulture = new CustomHeaderOption(num++, MultiMenu.Neutral, "<color=#8C4005FF>Vulture</color>"); 
-            VultureCd = new CustomNumberOption(num++, MultiMenu.Neutral, "Eat Cooldown", 10f, 10f, 60f, 2.5f, CooldownFormat);
-            VultureBodyCount = new CustomNumberOption(num++, MultiMenu.Neutral, "Number Of Bodies To Eat", 1, 1, 5, 1);
-            VultureVent = new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#8C4005FF>Vulture</color> Can Vent", false);
-            VultureImpVision = new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#8C4005FF>Vulture</color> Has Impostor Vision", false);
-            EatArrows = new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#8C4005FF>Vulture</color> Gets Arrows To Dead Bodies", false);
-            EatArrowDelay = new CustomNumberOption(num++, MultiMenu.Neutral, "Time After Death Arrow Appears", 5f, 0f, 15f, 1f, CooldownFormat);
-
-                        Amnesiac = new CustomHeaderOption(num++, MultiMenu.Neutral, "<color=#22FFFFFF>Amnesiac</color>");
-            RememberArrows =
-                new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#22FFFFFF>Amnesiac</color> Gets Arrows Pointing To Dead Bodies", false);
-            RememberArrowDelay =
-                new CustomNumberOption(num++, MultiMenu.Neutral, "Time After Death Arrow Appears", 5f, 0f, 15f, 1f, CooldownFormat);
-            
-            Phantom =
-                new CustomHeaderOption(num++, MultiMenu.Neutral, "<color=#662962FF>Phantom</color>");
-            PhantomTasksRemaining =
-                 new CustomNumberOption(num++, MultiMenu.Neutral, "Tasks Remaining When Phantom Can Be Clicked", 5, 1, 15, 1);
-
             Romantic =
                 new CustomHeaderOption(num++, MultiMenu.Neutral, "<color=#FF66CCFF>Romantic</color>");
+            RomanticOn = new CustomNumberOption(num++, MultiMenu.Neutral, "<color=#FF66CCFF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             PickStartTimer =
                 new CustomNumberOption(num++, MultiMenu.Neutral, "Start Pick Cooldown", 25f, 10f, 60f, 2.5f, CooldownFormat);
             RomanticOnBelovedDeath = new CustomStringOption(num++, MultiMenu.Neutral, "Romantic Becomes On Beloved Dead",
@@ -1005,8 +981,11 @@ namespace TownOfSushi.CustomOption
             RomanticKnowsBelovedRole =
                 new CustomToggleOption(num++, MultiMenu.Neutral, "Romantic Knows Beloved's Role", false);
 
-            
+            NeutralKillingRoles = new CustomHeaderOption(num++, MultiMenu.Neutral, "<color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Killing</color> <color=#FFD700FF>Roles</color> Settings");
+
             Arsonist = new CustomHeaderOption(num++, MultiMenu.Neutral, "<color=#FF4D00FF>Arsonist</color>");
+            ArsonistOn = new CustomNumberOption(num++, MultiMenu.Neutral, "<color=#FF4D00FF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             DouseCooldown =
                 new CustomNumberOption(num++, MultiMenu.Neutral, "Douse Cooldown", 25f, 10f, 60f, 2.5f, CooldownFormat);
             MaxDoused =
@@ -1016,12 +995,16 @@ namespace TownOfSushi.CustomOption
 
             Juggernaut =
                 new CustomHeaderOption(num++, MultiMenu.Neutral, "<color=#8C004DFF>Juggernaut</color>");
+            JuggernautOn = new CustomNumberOption(num++, MultiMenu.Neutral, "<color=#8C004DFF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             JuggKillCooldown = new CustomNumberOption(num++, MultiMenu.Neutral, "<color=#8C004DFF>Juggernaut</color> Initial Kill Cooldown", 25f, 10f, 60f, 2.5f, CooldownFormat);
             ReducedKCdPerKill = new CustomNumberOption(num++, MultiMenu.Neutral, "Reduced Kill Cooldown Per Kill", 5f, 2.5f, 10f, 2.5f, CooldownFormat);
             JuggVent = new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#8C004DFF>Juggernaut</color> Can Vent", false);
 
             TheGlitch =
                 new CustomHeaderOption(num++, MultiMenu.Neutral, "<color=#00FF00FF>Glitch</color>");
+            GlitchOn = new CustomNumberOption(num++, MultiMenu.Neutral, "<color=#00FF00FF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             MimicCooldownOption = new CustomNumberOption(num++, MultiMenu.Neutral, "Mimic Cooldown", 25f, 10f, 60f, 2.5f, CooldownFormat);
             MimicDurationOption = new CustomNumberOption(num++, MultiMenu.Neutral, "Mimic Duration", 10f, 1f, 15f, 1f, CooldownFormat);
             HackCooldownOption = new CustomNumberOption(num++, MultiMenu.Neutral, "Hack Cooldown", 25f, 10f, 60f, 2.5f, CooldownFormat);
@@ -1034,6 +1017,8 @@ namespace TownOfSushi.CustomOption
                 new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#00FF00FF>Glitch</color> Can Vent", false);
 
             Plaguebearer = new CustomHeaderOption(num++, MultiMenu.Neutral, "<color=#E6FFB3FF>Plaguebearer</color>");
+            PlaguebearerOn = new CustomNumberOption(num++, MultiMenu.Neutral, "<color=#E6FFB3FF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             InfectCooldown =
                 new CustomNumberOption(num++, MultiMenu.Neutral, "Infect Cooldown", 25f, 10f, 60f, 2.5f, CooldownFormat);
             PestKillCooldown =
@@ -1043,8 +1028,10 @@ namespace TownOfSushi.CustomOption
 
             Hitman =
                 new CustomHeaderOption(num++, MultiMenu.Neutral, "<color=#00b4eb>Hitman</color>");
+            AgentOn = new CustomNumberOption(num++, MultiMenu.Neutral, "<color=#0000FFFF> Agent Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             SkipAgent =
-                new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#00b4eb>Hitman</color> Spawns Without Agent", false);
+                new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#00b4eb>Hitman</color> Spawns Without Agent \n (Uses Agent's Chance)", false);
             HitmanMorphCooldown = new CustomNumberOption(num++, MultiMenu.Neutral, "Morph Cooldown", 25f, 10f, 60f, 2.5f, CooldownFormat);
             HitmanMorphDuration = new CustomNumberOption(num++, MultiMenu.Neutral, "Morph Duration", 10f, 1f, 15f, 1f, CooldownFormat);
             HitmanKillCooldown =
@@ -1059,6 +1046,8 @@ namespace TownOfSushi.CustomOption
 
 
             Vampire = new CustomHeaderOption(num++, MultiMenu.Neutral, "<color=#262626FF>Vampire</color>");
+            VampireOn = new CustomNumberOption(num++, MultiMenu.Neutral, "<color=#262626FF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             BiteCooldown =
                 new CustomNumberOption(num++, MultiMenu.Neutral, "<color=#262626FF>Vampire</color> Bite Cooldown", 25f, 10f, 60f, 2.5f, CooldownFormat);
             VampVent =
@@ -1074,9 +1063,10 @@ namespace TownOfSushi.CustomOption
             CanBiteNeutralBenign =
                 new CustomToggleOption(num++, MultiMenu.Neutral, "Can Convert <color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Benign</color> <color=#FFD700FF>Roles</color>", false);
 
-
             
             SerialKiller = new CustomHeaderOption(num++, MultiMenu.Neutral, "<color=#336EFFFF>Serial Killer</color>");
+            SerialKillerOn = new CustomNumberOption(num++, MultiMenu.Neutral, "<color=#336EFFFF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             StabCooldown =
                 new CustomNumberOption(num++, MultiMenu.Neutral, "Stab Cooldown", 25f, 10f, 60f, 2.5f, CooldownFormat);
             Stabeduration =
@@ -1087,6 +1077,7 @@ namespace TownOfSushi.CustomOption
                 new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#336EFFFF>Serial Killer</color> Can Vent When Stab Is Active", false);
 
             Werewolf = new CustomHeaderOption(num++, MultiMenu.Neutral, "<color=#A86629FF>Werewolf</color>");
+            WerewolfOn = new CustomNumberOption(num++, MultiMenu.Neutral, "<color=#A86629FF>Spawn Chance</color>", 0, 0, 100, 10, PercentFormat);
             MaulCooldown = new CustomNumberOption(num++, MultiMenu.Neutral, "Maul Cooldown", 30f, 10f, 60f, 2.5f, CooldownFormat);
             MaulRadius = new CustomNumberOption(num++, MultiMenu.Neutral, "Maul Radius", 0.25f, 0.05f, 1f, 0.05f, MultiplierFormat);
             WerewolfVent = new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#A86629FF>Werewolf</color> Can Vent", false);
