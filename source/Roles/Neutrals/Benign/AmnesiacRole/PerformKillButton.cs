@@ -84,7 +84,6 @@ namespace TownOfSushi.Roles.Neutral.Benign.AmnesiacRole
                 case RoleEnum.Swapper:
                 case RoleEnum.Trapper:
                 case RoleEnum.Imitator:
-                case RoleEnum.Guardian:
                 case RoleEnum.Oracle:
                 case RoleEnum.Jailor:
 
@@ -306,13 +305,6 @@ namespace TownOfSushi.Roles.Neutral.Benign.AmnesiacRole
                 var oracleRole = GetRole<Oracle>(amnesiac);
                 oracleRole.Confessor = null;
                 oracleRole.LastConfessed = DateTime.UtcNow;
-            }
-
-            else if (role == RoleEnum.Guardian)
-            {
-                var Guardian = GetRole<Guardian>(amnesiac);
-                Guardian.Target = null;
-                Guardian.LastProtect = DateTime.UtcNow;
             }
 
             else if (role == RoleEnum.Arsonist)

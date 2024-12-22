@@ -947,10 +947,6 @@ namespace TownOfSushi
                             if (body.ParentId == readByte)
                                 dienerRole2.CurrentlyDragging = body;
                         break;
-                    case CustomRPC.VoteProtect:
-                        var Guardian = GetRole<Guardian>(Utils.PlayerById(reader.ReadByte()));
-                        Guardian.ProtectedPlayer = true;
-                        break;
                     case CustomRPC.Drop:
                         readByte1 = reader.ReadByte();
                         var v2 = reader.ReadVector2();
@@ -1157,9 +1153,6 @@ namespace TownOfSushi
 
                     if (CustomGameOptions.TransporterOn > 0)
                         CrewmateRoles.Add((typeof(Transporter), CustomGameOptions.TransporterOn, false));
-
-                    if (CustomGameOptions.GuardianOn > 0)
-                        CrewmateRoles.Add((typeof(Guardian), CustomGameOptions.GuardianOn, false));
 
                     if (CustomGameOptions.MediumOn > 0)
                         CrewmateRoles.Add((typeof(Medium), CustomGameOptions.MediumOn, false));

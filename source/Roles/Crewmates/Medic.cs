@@ -10,7 +10,6 @@ namespace TownOfSushi.Roles.Crewmates
             Name = "Medic";
             StartText = () => "Create A Shield To Protect A Crewmate";
             TaskText = () => "Protect a crewmate with a shield";
-            
             Color = Colors.Medic;
             StartingCooldown = DateTime.UtcNow;
             RoleType = RoleEnum.Medic;
@@ -68,7 +67,6 @@ namespace TownOfSushi.Roles.Crewmates
             if (flag2) return 0;
             return (num - (float)timeSpan.TotalMilliseconds) / 1000f;
         }
-
         public PlayerControl ClosestPlayer;
         public bool UsedAbility { get; set; } = false;
         public PlayerControl ShieldedPlayer { get; set; }

@@ -1,7 +1,4 @@
-﻿
-
-
-namespace TownOfSushi.Roles.Abilities.AbilityMod.AssassinAbility
+﻿namespace TownOfSushi.Roles.Abilities.AbilityMod.AssassinAbility
 {
     [HarmonyPatch]
     public class AddButton
@@ -44,7 +41,7 @@ namespace TownOfSushi.Roles.Abilities.AbilityMod.AssassinAbility
             return role != null && role.Criteria();
         }
 
-        public static void assassinOnClick(int buttonTarget, MeetingHud __instance) {
+        public static void AssassinOnClick(int buttonTarget, MeetingHud __instance) {
             var ability = Ability.GetAbility<Assassin>(PlayerControl.LocalPlayer);
             if (assassinUI != null || !(__instance.state == MeetingHud.VoteStates.Voted || __instance.state == MeetingHud.VoteStates.NotVoted)) return;
             __instance.playerStates.ToList().ForEach(x => x.gameObject.SetActive(false));
@@ -126,7 +123,7 @@ namespace TownOfSushi.Roles.Abilities.AbilityMod.AssassinAbility
                             {
                                 if (!modifier.LifeUsed) {
                                     dyingTarget = null;
-                                    Flash(Colors.Impostor, 2.5f);
+                                    Flash(Colors.Impostor, 1.5f);
                                     modifier.LifeUsed = true;
                                     __instance.playerStates.ToList().ForEach(x => { if (x.TargetPlayerId == focusedTarget.PlayerId && x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
                                 }

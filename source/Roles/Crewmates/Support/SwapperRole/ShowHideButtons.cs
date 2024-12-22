@@ -12,19 +12,6 @@ namespace TownOfSushi.Roles.Crewmates.Support.SwapperRole
 
             var exiled = GameData.Instance.AllPlayers.ToArray().FirstOrDefault(v => !tie && v.PlayerId == maxIdx.Key);
 
-            foreach (var Guardian in Role.GetRoles(RoleEnum.Guardian))
-            {
-                var GuardianRole = (Guardian)Guardian;
-                if (GuardianRole.Player.Data.IsDead || GuardianRole.Player.Data.Disconnected || exiled == null || GuardianRole.Target == null) continue;
-                if (GuardianRole.Target.PlayerId == exiled.PlayerId)
-                {
-                    GuardianRole.ProtectedPlayer = true;
-                    Rpc(CustomRPC.VoteProtect, GuardianRole.Player.PlayerId);
-                    var dictionary = new Dictionary<byte, int>();
-                    return dictionary;
-                }
-            }
-
             return self;
         }
         public static Dictionary<byte, int> CalculateVotesSwap(MeetingHud __instance)

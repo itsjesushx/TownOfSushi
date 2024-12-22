@@ -432,10 +432,6 @@ namespace TownOfSushi.CustomOption
         public static CustomNumberOption ChargeUpDuration;
         public static CustomNumberOption ChargeUseDuration;
 
-        public static CustomHeaderOption Guardian;
-        public static CustomNumberOption GuardianOn;
-        public static CustomNumberOption VoteProtectCd;
-
         public static CustomHeaderOption Oracle;
         public static CustomNumberOption ConfessCooldown;
         public static CustomNumberOption RevealAccuracy;
@@ -528,8 +524,6 @@ namespace TownOfSushi.CustomOption
             SwapperOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#66E666FF>Swapper</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
             TransporterOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#00EEFFFF>Transporter</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            GuardianOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#8794c4>Guardian</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
 
             
@@ -915,12 +909,6 @@ namespace TownOfSushi.CustomOption
                 new CustomNumberOption(num++, MultiMenu.Crewmate, "Maximum Number Of Transports", 5, 1, 15, 1);
             TransporterVitals =
                 new CustomToggleOption(num++, MultiMenu.Crewmate, "Transporter Can Use Vitals", false);
-
-            Guardian =
-                new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#8794c4>Guardian</color>");
-            VoteProtectCd =
-                new CustomNumberOption(num++, MultiMenu.Crewmate, "Guardian Cooldown", 25f, 10f, 60f, 2.5f, CooldownFormat);
-
 
             NeutralKillingRoles = new CustomHeaderOption(num++, MultiMenu.Neutral, "<color=#B3B3B3FF>Neutral</color> <color=#FFD700FF>Roles</color> Settings");
             MinNeutralBenignRoles =

@@ -5,7 +5,6 @@ namespace TownOfSushi.CustomOption
         public static int MaxRoleHistoryListSize = 100;
         public static int WerewolfOn => (int)Generate.WerewolfOn.Get();
         public static int JuggernautOn => (int)Generate.JuggernautOn.Get();
-        public static int GuardianOn => (int)Generate.GuardianOn.Get();
         public static int JesterOn => (int)Generate.JesterOn.Get();
         public static int HunterOn => (int)Generate.HunterOn.Get();
         public static int VigilanteOn => (int)Generate.VigilanteOn.Get();
@@ -192,7 +191,6 @@ namespace TownOfSushi.CustomOption
         public static float FlashRadius => Generate.FlashRadius.Get();
         public static bool KilledOnAlert => Generate.KilledOnAlert.Get();
         public static bool SnitchButton => Generate.SnitchButton.Get();
-        public static int VeteranTaskNeed => (int)Generate.VeteranTaskNeed.Get();
         public static float AlertCd => Generate.AlertCooldown.Get();
         public static float AlertDuration => Generate.AlertDuration.Get();
         public static int MaxAlerts => (int)Generate.MaxAlerts.Get();
@@ -288,7 +286,6 @@ namespace TownOfSushi.CustomOption
         public static float ChargeUpDuration => Generate.ChargeUpDuration.Get();
         public static float ChargeUseDuration => Generate.ChargeUseDuration.Get();
         public static float ConfessCd => Generate.ConfessCooldown.Get();
-        public static float VoteProtectCd => Generate.VoteProtectCd.Get();
         public static float RevealAccuracy => Generate.RevealAccuracy.Get();
         public static bool NeutralBenignShowsEvil => Generate.NeutralBenignShowsEvil.Get();
         public static bool NeutralEvilShowsEvil => Generate.NeutralEvilShowsEvil.Get();

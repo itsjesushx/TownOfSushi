@@ -5,17 +5,14 @@ namespace TownOfSushi.Roles.Crewmates.Support.MedicRole
     {
         private static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] NetworkedPlayerInfo info)
         {
-            //System.Console.WriteLine("Report Body!");
             if (info == null) return;
             var matches = Murder.KilledPlayers.Where(x => x.PlayerId == info.PlayerId).ToArray();
             DeadPlayer killer = null;
 
             if (matches.Length > 0)
-                //System.Console.WriteLine("RBOOF");
                 killer = matches[0];
 
             if (killer == null)
-                //System.Console.WriteLine("RBTWOOF");
                 return;
 
             var isMedicAlive = __instance.Is(RoleEnum.Medic);

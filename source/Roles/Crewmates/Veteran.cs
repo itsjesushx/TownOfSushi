@@ -5,16 +5,13 @@ namespace TownOfSushi.Roles.Crewmates
         public bool Enabled;
         public DateTime LastAlerted;
         public float TimeRemaining;
-
         public int UsesLeft;
         public TMPro.TextMeshPro UsesText;
-
         public bool ButtonUsable => UsesLeft != 0;
-
         public Veteran(PlayerControl player) : base(player)
         {
             Name = "Veteran";
-            StartText = () => "Alert To Kill Anyone Who Interacts With You";
+            StartText = () => "Alert to kill anyone who interacts with you";
             TaskText = () => "Alert to kill whoever interacts with you";
             Color = Colors.Veteran;
             LastAlerted = DateTime.UtcNow;
@@ -25,7 +22,6 @@ namespace TownOfSushi.Roles.Crewmates
             UsesLeft = CustomGameOptions.MaxAlerts;
         }
         public bool OnAlert => TimeRemaining > 0f;
-
         public float AlertTimer()
         {
             var utcNow = DateTime.UtcNow;

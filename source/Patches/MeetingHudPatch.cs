@@ -87,7 +87,7 @@ namespace TownOfSushi.Patches
                     PassiveButton button = targetBox.GetComponent<PassiveButton>();
                     button.OnClick.RemoveAllListeners();
                     int copiedIndex = i;
-                    button.OnClick.AddListener((System.Action)(() => Roles.Abilities.AbilityMod.AssassinAbility.AddButton.assassinOnClick(copiedIndex, __instance)));
+                    button.OnClick.AddListener((System.Action)(() => Roles.Abilities.AbilityMod.AssassinAbility.AddButton.AssassinOnClick(copiedIndex, __instance)));
                 }
             }
         }

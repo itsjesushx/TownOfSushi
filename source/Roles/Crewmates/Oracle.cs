@@ -9,7 +9,6 @@ namespace TownOfSushi.Roles.Crewmates
         public RoleAlignment RevealedAlignment;
         public Faction RevealedFaction;
         public DateTime LastConfessed { get; set; }
-
         public Oracle(PlayerControl player) : base(player)
         {
             Name = "Oracle";

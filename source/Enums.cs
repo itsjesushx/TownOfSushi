@@ -155,7 +155,6 @@ namespace TownOfSushi
         GAProtect,
         Blackmail,
         AbilityTrigger,
-        VoteProtect,
         Infect,
         TurnPestilence,
         Disperse,

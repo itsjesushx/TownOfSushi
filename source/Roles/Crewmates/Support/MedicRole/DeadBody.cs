@@ -6,7 +6,6 @@
         public byte PlayerId { get; set; }
         public DateTime KillTime { get; set; }
     }
-
     //body report class for when medic reports a body
     public class BodyReport
     {

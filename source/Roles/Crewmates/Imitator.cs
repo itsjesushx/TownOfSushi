@@ -11,7 +11,7 @@ namespace TownOfSushi.Roles.Crewmates
         public Imitator(PlayerControl player) : base(player)
         {
             Name = "Imitator";
-            StartText = () => "Use The True-Hearted Dead To Benefit The Crew";
+            StartText = () => "Use the true-hearted dead to benefit the crew";
             TaskText = () => "Use dead roles to benefit the crew";
             Color = Colors.Imitator;
             RoleType = RoleEnum.Imitator;

@@ -12,15 +12,12 @@ namespace TownOfSushi.Roles.Crewmates
             Name = "Medium";
             StartText = () => "Watch The Spooky Ghosts";
             TaskText = () => "Follow ghosts to get clues from them";
-            
-            
             Color = Colors.Medium;
             LastMediated = DateTime.UtcNow;
             RoleType = RoleEnum.Medium;
             Faction = Faction.Crewmates;
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.CrewInvest;
-            
             Scale = 1.4f;
             MediatedPlayers = new Dictionary<byte, ArrowBehaviour>();
         }
@@ -29,7 +26,6 @@ namespace TownOfSushi.Roles.Crewmates
         {
             return (MediatedPlayers.ContainsKey(PlayerControl.LocalPlayer.PlayerId) && CustomGameOptions.ShowMediumToDead) || base.RoleCriteria();
         }
-
         public float MediateTimer()
         {
             var utcNow = DateTime.UtcNow;
@@ -39,7 +35,6 @@ namespace TownOfSushi.Roles.Crewmates
             if (flag2) return 0;
             return (num - (float) timeSpan.TotalMilliseconds) / 1000f;
         }
-
         public void AddMediatePlayer(byte playerId)
         {
             var gameObj = new GameObject();
@@ -51,10 +46,10 @@ namespace TownOfSushi.Roles.Crewmates
                 renderer.sprite = Arrow;
                 arrow.image = renderer;
                 gameObj.layer = 5;
-                arrow.target = Utils.PlayerById(playerId).transform.position;
+                arrow.target = PlayerById(playerId).transform.position;
             }
             MediatedPlayers.Add(playerId, arrow);
-            Utils.Flash(Color, 2.5f);
+            Flash(Color, 2.5f);
         }
     }
 }

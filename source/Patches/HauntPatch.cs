@@ -70,7 +70,6 @@ namespace TownOfSushi.Patches
     class AddHauntPatch
     {
         public static List<PlayerControl> AssassinatedPlayers = new List<PlayerControl>();
-
         public static void ExileControllerPostfix(ExileController __instance)
         {
             foreach (var player in AssassinatedPlayers)

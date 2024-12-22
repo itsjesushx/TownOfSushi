@@ -28,6 +28,7 @@ namespace TownOfSushi.Roles.Crewmates.Support.MedicRole
                 if (player.Data.IsDead || medic.Player.Data.IsDead || medic.Player.Data.Disconnected)
                 {
                     StopKill.BreakShield(medic.Player.PlayerId, player.PlayerId, true);
+                    medic.UsedAbility = false;
                     continue;
                 }
             }

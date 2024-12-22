@@ -14,10 +14,8 @@ namespace TownOfSushi.Roles.Crewmates
             LastInvestigated = DateTime.UtcNow;
             RoleType = RoleEnum.Seer; 
         }
-
         public PlayerControl ClosestPlayer;
         public DateTime LastInvestigated { get; set; }
-
         public float SeerTimer()
         {
             var utcNow = DateTime.UtcNow;

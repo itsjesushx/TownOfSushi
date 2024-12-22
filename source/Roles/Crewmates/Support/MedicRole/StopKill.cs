@@ -7,17 +7,17 @@ namespace TownOfSushi.Roles.Crewmates.Support.MedicRole
         {
             if (PlayerControl.LocalPlayer.PlayerId == playerId && CustomGameOptions.NotificationShield == NotificationOptions.Shielded) 
             {
-                Flash(Color.red, 1.0f);
+                Flash(Color.red, 0.5f);
             }
 
             if (PlayerControl.LocalPlayer.PlayerId == medicId && CustomGameOptions.NotificationShield == NotificationOptions.Medic) 
             {
-                Flash(Color.red, 1.0f);
+                Flash(Color.red, 0.5f);
             }
 
             if (CustomGameOptions.NotificationShield == NotificationOptions.Everyone) 
             {
-                Flash(Color.red, 1.0f);
+                Flash(Color.red, 0.5f);
             }
 
             if (!flag)
