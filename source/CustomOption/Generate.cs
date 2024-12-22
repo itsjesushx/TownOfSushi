@@ -2,7 +2,6 @@ namespace TownOfSushi.CustomOption
 {
     public class Generate
     {
-        public static CustomHeaderOption CrewInvestigativeRoles;
         public static CustomHeaderOption CrewSpecialRoles;
         public static CustomNumberOption HaunterOn;
         public static CustomNumberOption InvestigatorOn;
@@ -14,10 +13,8 @@ namespace TownOfSushi.CustomOption
         public static CustomNumberOption TrackerOn;
         public static CustomNumberOption TrapperOn;
 
-        public static CustomHeaderOption CrewPowerRoles;
         public static CustomNumberOption MedicOn;
 
-        public static CustomHeaderOption CrewKillingRoles;
         public static CustomHeaderOption CrewKillingSettings;
         public static CustomHeaderOption CrewSpecialSettings;
         public static CustomHeaderOption CrewPowerSettings;
@@ -32,51 +29,140 @@ namespace TownOfSushi.CustomOption
         public static CustomNumberOption JailCooldown;
         public static CustomNumberOption MaxExecutes;
 
-        public static CustomHeaderOption CrewSupportRoles;
         public static CustomNumberOption EngineerOn;
         public static CustomNumberOption ImitatorOn;
         public static CustomNumberOption MediumOn;
-        public static CustomNumberOption TransporterOn;
+        public static CustomNumberOption TransporterOn;        
 
-        public static CustomHeaderOption NeutralEvilRoles;
-        public static CustomHeaderOption NeutralBenignRoles;
+        //Neutral Killers
         public static CustomHeaderOption NeutralKillingRoles;
-        public static CustomNumberOption GuardianAngelOn;
-        public static CustomNumberOption RomanticOn;
-        public static CustomNumberOption AmnesiacOn;
-        public static CustomNumberOption PhantomOn;
-        public static CustomNumberOption DoomsayerOn;
-        public static CustomNumberOption ExecutionerOn;
-        public static CustomNumberOption JesterOn;
-
         public static CustomNumberOption AgentOn;
-        public static CustomNumberOption ArsonistOn;
-        public static CustomNumberOption PlaguebearerOn;
-        public static CustomNumberOption JuggernautOn;
-        public static CustomNumberOption GlitchOn;
-        public static CustomNumberOption VampireOn;
-        public static CustomNumberOption SerialKillerOn;
+        public static CustomToggleOption HitmanVent;
+        public static CustomToggleOption SkipAgent;
+        public static CustomToggleOption HitmanVentWithBody;
+        public static CustomHeaderOption Hitman;
+        public static CustomNumberOption HitmanKillCooldown;
+        public static CustomNumberOption HitmanDragCooldown;
+        public static CustomNumberOption HitmanDragSpeed;
+        public static CustomNumberOption HitmanMorphDuration;
+        public static CustomNumberOption HitmanMorphCooldown;
 
+        public static CustomNumberOption ArsonistOn;
+        public static CustomHeaderOption Arsonist;
+        public static CustomNumberOption DouseCooldown;
+        public static CustomNumberOption MaxDoused;
+        public static CustomToggleOption IgniteCdRemoved;
+
+        public static CustomNumberOption PlaguebearerOn;
+        public static CustomHeaderOption Plaguebearer;
+        public static CustomNumberOption InfectCooldown;
+        public static CustomNumberOption PestKillCooldown;
+        public static CustomToggleOption PestVent;
+
+        public static CustomNumberOption JuggernautOn;
+        public static CustomHeaderOption Juggernaut;
+        public static CustomNumberOption JuggKillCooldown;
+        public static CustomNumberOption ReducedKCdPerKill;
+        public static CustomToggleOption JuggVent;
+
+        public static CustomNumberOption GlitchOn;
+        public static CustomHeaderOption TheGlitch;
+        public static CustomNumberOption MimicCooldownOption;
+        public static CustomNumberOption MimicDurationOption;
+        public static CustomNumberOption HackCooldownOption;
+        public static CustomNumberOption HackDurationOption;
+        public static CustomNumberOption GlitchKillCooldownOption;
+        public static CustomStringOption GlitchHackDistanceOption;
+        public static CustomToggleOption GlitchVent;
+
+        public static CustomNumberOption VampireOn;
+        public static CustomHeaderOption Vampire;
+        public static CustomNumberOption BiteCooldown;
+        public static CustomToggleOption VampVent;
+        public static CustomToggleOption NewVampCanAssassin;
+        public static CustomNumberOption MaxVampiresPerGame;
+        public static CustomToggleOption CanBiteNeutralBenign;
+        public static CustomToggleOption CanBiteNeutralEvil;
+
+        public static CustomNumberOption SerialKillerOn;
+        public static CustomHeaderOption SerialKiller;
+        public static CustomNumberOption StabCooldown;
+        public static CustomNumberOption Stabeduration;
+        public static CustomNumberOption StabKillCooldown;
+        public static CustomToggleOption SerialKillerVent;
+
+        //Impostor Roles
         public static CustomHeaderOption ImpostorDeceptionRoles;
-        public static CustomHeaderOption ImpostorSpecialRoles;
         public static CustomNumberOption EscapistOn;
+        public static CustomHeaderOption Escapist;
+        public static CustomNumberOption EscapeCooldown;
+        public static CustomToggleOption EscapistVent;
+
         public static CustomNumberOption MorphlingOn;
+        public static CustomHeaderOption Morphling;
+        public static CustomNumberOption MorphlingCooldown;
+        public static CustomNumberOption MorphlingDuration;
+        public static CustomToggleOption MorphlingVent;
+
         public static CustomNumberOption SwooperOn;
+        public static CustomHeaderOption Swooper;
+        public static CustomNumberOption SwoopCooldown;
+        public static CustomNumberOption SwoopDuration;
+        public static CustomToggleOption SwooperVent;
+
         public static CustomNumberOption GrenadierOn;
-        public static CustomNumberOption WitchOn;
+        public static CustomHeaderOption Grenadier;
+        public static CustomNumberOption GrenadeCooldown;
+        public static CustomNumberOption GrenadeDuration;
+        public static CustomToggleOption GrenadierIndicators;
+        public static CustomToggleOption GrenadierVent;
+        public static CustomNumberOption FlashRadius;
+
         public static CustomNumberOption VenererOn;
+        public static CustomHeaderOption Venerer;
+        public static CustomNumberOption AbilityCooldown;
+        public static CustomNumberOption AbilityDuration;
+        public static CustomNumberOption SprintSpeed;
+        public static CustomNumberOption FreezeSpeed;
 
         public static CustomHeaderOption ImpostorPower;
         public static CustomNumberOption BomberOn;
+        public static CustomHeaderOption Bomber;
+        public static CustomNumberOption MaxKillsInDetonation;
+        public static CustomNumberOption DetonateDelay;
+        public static CustomNumberOption DetonateRadius;
+        public static CustomToggleOption BomberVent;
+
         public static CustomNumberOption WarlockOn;
+        public static CustomHeaderOption Warlock;
+        public static CustomNumberOption ChargeUpDuration;
+        public static CustomNumberOption ChargeUseDuration;
+
+        public static CustomNumberOption WitchOn;
+        public static CustomHeaderOption Witch;
+        public static CustomNumberOption SpellCd;
 
         public static CustomHeaderOption ImpostorSupportRoles;
         public static CustomNumberOption BlackmailerOn;
-        public static CustomNumberOption JanitorOn;
-        public static CustomNumberOption MinerOn;
-        public static CustomNumberOption UndertakerOn;
+        public static CustomHeaderOption Blackmailer;
+        public static CustomNumberOption BlackmailCooldown;
+        public static CustomToggleOption BlackmailInvisible;
 
-        public static CustomHeaderOption CrewmateModifiers;
+        public static CustomNumberOption JanitorOn;
+
+        public static CustomNumberOption MinerOn;
+        public static CustomHeaderOption Miner;
+        public static CustomNumberOption MineCooldown;
+
+        public static CustomNumberOption UndertakerOn;
+        public static CustomHeaderOption Undertaker;
+        public static CustomNumberOption DragCooldown;
+        public static CustomNumberOption UndertakerDragSpeed;
+        public static CustomToggleOption UndertakerVent;
+        public static CustomToggleOption UndertakerVentWithBody;
+
+        //Modifiers
+        public static CustomHeaderOption Modifiers;
         public static CustomNumberOption AftermathOn;
         public static CustomNumberOption BaitOn;
         public static CustomNumberOption DiseasedOn;
@@ -85,30 +171,24 @@ namespace TownOfSushi.CustomOption
         public static CustomNumberOption TorchOn;
         public static CustomNumberOption DrunkOn;
 
-        public static CustomHeaderOption GlobalModifiers;
+        //Abilities
+        public static CustomHeaderOption Abilities;
         public static CustomNumberOption ButtonBarryOn;
         public static CustomNumberOption FlashOn;
         public static CustomNumberOption GiantOn;
         public static CustomNumberOption RadarOn;
         public static CustomNumberOption SleuthOn;
         public static CustomNumberOption TiebreakerOn;
-        public static CustomHeaderOption Vulture;
-        public static CustomNumberOption VultureOn;
-        public static CustomNumberOption VultureCd;
-        public static CustomNumberOption VultureBodyCount;
-        public static CustomToggleOption VultureVent;
-        public static CustomToggleOption VultureImpVision;
-        public static CustomToggleOption EatArrows;
-        public static CustomNumberOption EatArrowDelay;
 
-        public static CustomToggleOption UndertakerVent;
-        public static CustomToggleOption UndertakerVentWithBody;
-        public static CustomToggleOption HitmanVent;
-        public static CustomToggleOption SkipAgent;
-        public static CustomToggleOption HitmanVentWithBody;
 
+        //Imp Modifiers
         public static CustomHeaderOption ImpostorModifiers;
+
         public static CustomNumberOption DisperserOn;
+        public static CustomHeaderOption Disperser;
+        public static CustomNumberOption DisperseCooldown;
+        public static CustomNumberOption MaxDisperses;
+
         public static CustomNumberOption DoubleShotOn;
         public static CustomNumberOption UnderdogOn;
 
@@ -138,8 +218,6 @@ namespace TownOfSushi.CustomOption
 
         public static CustomHeaderOption GameModeSettings;
         public static CustomStringOption GameMode;
-
-        public static CustomStringOption Punishment;
 
         public static CustomNumberOption MinNeutralBenignRoles;
         public static CustomNumberOption MaxNeutralBenignRoles;
@@ -202,70 +280,48 @@ namespace TownOfSushi.CustomOption
         public static CustomNumberOption TransportMaxUses;
         public static CustomToggleOption TransporterVitals;
 
+        //Neutral Evils
+        public static CustomHeaderOption NeutralEvilRoles;
         public static CustomHeaderOption Jester;
+        public static CustomNumberOption JesterOn;
         public static CustomToggleOption JesterButton;
         public static CustomToggleOption JesterVent;
         public static CustomToggleOption JesterVentSwitch;
         public static CustomToggleOption JesterImpVision;
 
-        public static CustomHeaderOption Witch;
-        public static CustomNumberOption SpellCd;
-
-        public static CustomHeaderOption Hitman;
-        public static CustomNumberOption HitmanKillCooldown;
-        public static CustomNumberOption HitmanDragCooldown;
-        public static CustomNumberOption HitmanDragSpeed;
-        public static CustomNumberOption HitmanMorphDuration;
-        public static CustomNumberOption HitmanMorphCooldown;
-        public static CustomToggleOption HitmanCanVent;
-
-        public static CustomHeaderOption TheGlitch;
-        public static CustomNumberOption MimicCooldownOption;
-        public static CustomNumberOption MimicDurationOption;
-        public static CustomNumberOption HackCooldownOption;
-        public static CustomNumberOption HackDurationOption;
-        public static CustomNumberOption GlitchKillCooldownOption;
-        public static CustomStringOption GlitchHackDistanceOption;
-        public static CustomToggleOption GlitchVent;
-
-        public static CustomHeaderOption Juggernaut;
-        public static CustomNumberOption JuggKillCooldown;
-        public static CustomNumberOption ReducedKCdPerKill;
-        public static CustomToggleOption JuggVent;
-
-        public static CustomHeaderOption Morphling;
-        public static CustomNumberOption MorphlingCooldown;
-        public static CustomNumberOption MorphlingDuration;
-        public static CustomToggleOption MorphlingVent;
-
         public static CustomHeaderOption Executioner;
+        public static CustomNumberOption ExecutionerOn;
         public static CustomStringOption OnTargetDead;
         public static CustomToggleOption ExecutionerButton;
 
+        public static CustomHeaderOption Vulture;
+        public static CustomNumberOption VultureOn;
+        public static CustomNumberOption VultureCd;
+        public static CustomNumberOption VultureBodyCount;
+        public static CustomToggleOption VultureVent;
+        public static CustomToggleOption VultureImpVision;
+        public static CustomToggleOption EatArrows;
+        public static CustomNumberOption EatArrowDelay;
+
         public static CustomHeaderOption Phantom;
+        public static CustomNumberOption PhantomOn;
         public static CustomNumberOption PhantomTasksRemaining;
 
+        public static CustomHeaderOption Doomsayer;
+        public static CustomNumberOption DoomsayerOn;
+        public static CustomNumberOption ObserveCooldown;
+        public static CustomToggleOption DoomsayerGuessNeutralBenign;
+        public static CustomToggleOption DoomsayerGuessNeutralEvil;
+        public static CustomToggleOption DoomsayerGuessNeutralKilling;
+        public static CustomToggleOption DoomsayerGuessImpostors;
+        public static CustomToggleOption DoomsayerAfterVoting;
+        public static CustomNumberOption DoomsayerGuessesToWin;
+
+        
 
         public static CustomHeaderOption Snitch;
         public static CustomNumberOption SnitchTasksRemaining;
         public static CustomToggleOption SnitchButton;
-
-        public static CustomHeaderOption Miner;
-        public static CustomNumberOption MineCooldown;
-
-        public static CustomHeaderOption Swooper;
-        public static CustomNumberOption SwoopCooldown;
-        public static CustomNumberOption SwoopDuration;
-        public static CustomToggleOption SwooperVent;
-
-        public static CustomHeaderOption Arsonist;
-        public static CustomNumberOption DouseCooldown;
-        public static CustomNumberOption MaxDoused;
-        public static CustomToggleOption IgniteCdRemoved;
-
-        public static CustomHeaderOption Undertaker;
-        public static CustomNumberOption DragCooldown;
-        public static CustomNumberOption UndertakerDragSpeed;
 
         public static CustomHeaderOption Assassin;
         public static CustomNumberOption NumberOfImpostorAssassins;
@@ -302,12 +358,7 @@ namespace TownOfSushi.CustomOption
         public static CustomToggleOption HaunterRevealsNeutrals;
         public static CustomStringOption HaunterCanBeClickedBy;
 
-        public static CustomHeaderOption Grenadier;
-        public static CustomNumberOption GrenadeCooldown;
-        public static CustomNumberOption GrenadeDuration;
-        public static CustomToggleOption GrenadierIndicators;
-        public static CustomToggleOption GrenadierVent;
-        public static CustomNumberOption FlashRadius;
+        
 
         public static CustomHeaderOption Veteran;
         public static CustomToggleOption KilledOnAlert;
@@ -321,10 +372,6 @@ namespace TownOfSushi.CustomOption
         public static CustomToggleOption ResetOnNewRound;
         public static CustomNumberOption MaxTracks;
 
-        public static CustomHeaderOption Disperser;
-        public static CustomNumberOption DisperseCooldown;
-        public static CustomNumberOption MaxDisperses;
-
         public static CustomHeaderOption Trapper;
         public static CustomNumberOption TrapCooldown;
         public static CustomToggleOption TrapsRemoveOnNewRound;
@@ -333,23 +380,27 @@ namespace TownOfSushi.CustomOption
         public static CustomNumberOption TrapSize;
         public static CustomNumberOption MinAmountOfPlayersInTrap;
 
-        public static CustomHeaderOption Amnesiac;
-        public static CustomToggleOption RememberArrows;
-        public static CustomNumberOption RememberArrowDelay;
-
         public static CustomHeaderOption Medium;
         public static CustomNumberOption MediateCooldown;
         public static CustomToggleOption ShowMediatePlayer;
         public static CustomToggleOption ShowMediumToDead;
         public static CustomStringOption DeadRevealed;
 
+        public static CustomHeaderOption NeutralBenignRoles;
+        public static CustomHeaderOption Amnesiac;
+        public static CustomNumberOption AmnesiacOn;
+        public static CustomToggleOption RememberArrows;
+        public static CustomNumberOption RememberArrowDelay;
+
         public static CustomHeaderOption Romantic;
+        public static CustomNumberOption RomanticOn;
         public static CustomNumberOption PickStartTimer;
         public static CustomStringOption RomanticOnBelovedDeath;
         public static CustomToggleOption RomanticBelovedKnows;
         public static CustomToggleOption RomanticKnowsBelovedRole;
 
         public static CustomHeaderOption GuardianAngel;
+        public static CustomNumberOption GuardianAngelOn;
         public static CustomNumberOption ProtectCd;
         public static CustomNumberOption ProtectDuration;
         public static CustomNumberOption ProtectKCReset;
@@ -368,32 +419,12 @@ namespace TownOfSushi.CustomOption
         public static CustomToggleOption MysticReportOn;
         public static CustomNumberOption MysticRoleDuration;
         public static CustomNumberOption MysticFactionDuration;
-        public static CustomToggleOption MysticExamineReportOn;
-
-        public static CustomHeaderOption Blackmailer;
-        public static CustomNumberOption BlackmailCooldown;
-        public static CustomToggleOption BlackmailInvisible;
-
-        public static CustomHeaderOption Plaguebearer;
-        public static CustomNumberOption InfectCooldown;
-        public static CustomNumberOption PestKillCooldown;
-        public static CustomToggleOption PestVent;
-        
-
-        public static CustomHeaderOption SerialKiller;
-        public static CustomNumberOption StabCooldown;
-        public static CustomNumberOption Stabeduration;
-        public static CustomNumberOption StabKillCooldown;
-        public static CustomToggleOption SerialKillerVent;
+        public static CustomToggleOption MysticExamineReportOn;        
 
         public static CustomNumberOption ExamineCooldown;
         public static CustomToggleOption InvestigatorReportOn;
         public static CustomNumberOption InvestigatorRoleDuration;
         public static CustomNumberOption InvestigatorFactionDuration;
-
-        public static CustomHeaderOption Escapist;
-        public static CustomNumberOption EscapeCooldown;
-        public static CustomToggleOption EscapistVent;
 
         public static CustomHeaderOption Hunter;
         public static CustomNumberOption HunterOn;
@@ -403,34 +434,6 @@ namespace TownOfSushi.CustomOption
         public static CustomNumberOption HunterStalkUses;
         public static CustomToggleOption RetributionOnVote;
         public static CustomToggleOption HunterBodyReport;
-
-        public static CustomHeaderOption Bomber;
-        public static CustomNumberOption MaxKillsInDetonation;
-        public static CustomNumberOption DetonateDelay;
-        public static CustomNumberOption DetonateRadius;
-        public static CustomToggleOption BomberVent;
-
-        public static CustomHeaderOption Doomsayer;
-        public static CustomNumberOption ObserveCooldown;
-        public static CustomToggleOption DoomsayerGuessNeutralBenign;
-        public static CustomToggleOption DoomsayerGuessNeutralEvil;
-        public static CustomToggleOption DoomsayerGuessNeutralKilling;
-        public static CustomToggleOption DoomsayerGuessImpostors;
-        public static CustomToggleOption DoomsayerAfterVoting;
-        public static CustomNumberOption DoomsayerGuessesToWin;
-
-        public static CustomHeaderOption Vampire;
-        public static CustomNumberOption BiteCooldown;
-        public static CustomToggleOption VampVent;
-        public static CustomToggleOption NewVampCanAssassin;
-        public static CustomNumberOption MaxVampiresPerGame;
-        public static CustomToggleOption CanBiteNeutralBenign;
-        public static CustomToggleOption CanBiteNeutralEvil;
-
-
-        public static CustomHeaderOption Warlock;
-        public static CustomNumberOption ChargeUpDuration;
-        public static CustomNumberOption ChargeUseDuration;
 
         public static CustomHeaderOption Oracle;
         public static CustomNumberOption ConfessCooldown;
@@ -445,11 +448,6 @@ namespace TownOfSushi.CustomOption
         public static CustomNumberOption TransformInvisDuration;
         public static CustomNumberOption FinalTransparency;
 
-        public static CustomHeaderOption Venerer;
-        public static CustomNumberOption AbilityCooldown;
-        public static CustomNumberOption AbilityDuration;
-        public static CustomNumberOption SprintSpeed;
-        public static CustomNumberOption FreezeSpeed;
 
         public static CustomHeaderOption Giant;
         public static CustomNumberOption GiantSlow;
@@ -481,83 +479,10 @@ namespace TownOfSushi.CustomOption
         public static void GenerateAll()
         {
             var num = 0;
-            ImpostorDeceptionRoles = new CustomHeaderOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Impostor</color> <color=#1D7CF2FF>Deception</color> <color=#FFD700FF>Roles</color>");
-            EscapistOn = new CustomNumberOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Escapist</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            MorphlingOn = new CustomNumberOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Morphling</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            UndertakerOn = new CustomNumberOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Undertaker</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            VenererOn = new CustomNumberOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Venerer</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-
-            ImpostorPower = new CustomHeaderOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Impostor</color> <color=#1D7CF2FF>Power</color> <color=#FFD700FF>Roles</color>");
-            BomberOn = new CustomNumberOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Bomber</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            WarlockOn = new CustomNumberOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Warlock</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            WitchOn = new CustomNumberOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Witch</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-
-            ImpostorSupportRoles = new CustomHeaderOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Impostor</color> <color=#1D7CF2FF>Support</color> <color=#FFD700FF>Roles</color>");
-            BlackmailerOn = new CustomNumberOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Blackmailer</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            GrenadierOn = new CustomNumberOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Grenadier</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            JanitorOn = new CustomNumberOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Janitor</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            MinerOn = new CustomNumberOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Miner</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            SwooperOn = new CustomNumberOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Swooper</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-                        
-
-            CrewmateModifiers = new CustomHeaderOption(num++, MultiMenu.ModifierAndAbility, "<color=#7F7F7FFF>Modifiers</color>");
-            AftermathOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#A6FFA6FF>Aftermath</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            BaitOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#00B3B3FF>Bait</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            DiseasedOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#808080FF>Diseased</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            FrostyOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#99FFFFFF>Frosty</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            MultitaskerOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#FF804DFF>Multitasker</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            GiantOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#FFB34DFF>Giant</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-
-            GlobalModifiers = new CustomHeaderOption(num++, MultiMenu.ModifierAndAbility, "<color=#7F7FFF>Abilities</color>");
-            ButtonBarryOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#E600FFFF>Button Barry</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            ChameleonOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#FFB3CCFF>Chameleon</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            DrunkOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#758000FF>Drunk</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            FlashOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#FF8080FF>Flash</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            RadarOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#FF0080FF>Radar</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            SleuthOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#803333FF>Sleuth</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            SpyOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#CCA3CCFF>Spy</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            TiebreakerOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#99E699FF>Tiebreaker</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            TorchOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#FFFF99FF>Torch</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-
-            ImpostorModifiers = new CustomHeaderOption(num++, MultiMenu.ModifierAndAbility, "<color=#FF0000FF>Impostor</color> <color=#7F7F7FFF>Modifiers</color>");
-            DisperserOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#FF0000FF>Disperser</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            DoubleShotOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#FF0000FF>Double Shot</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-            UnderdogOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#FF0000FF>Underdog</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
-
+            #region  General Mod Settings
             CustomGameSettings =
                 new CustomHeaderOption(num++, MultiMenu.General, "Custom Game Settings");
             CamoCommsKillAnyone = new CustomToggleOption(num++, MultiMenu.General, "Kill Anyone During Camouflaged Comms", false);
-          //  CrewKillersContinue = new CustomToggleOption(num++, MultiMenu.General, "Crew Killers Continue Game", false);
             ColourblindComms = new CustomToggleOption(num++, MultiMenu.General, "Camouflaged Comms", false);
             ImpostorSeeRoles = new CustomToggleOption(num++, MultiMenu.General, "Impostors Can See The Roles Of Their Team", false);
             InitialCooldowns =
@@ -589,17 +514,6 @@ namespace TownOfSushi.CustomOption
             ColdTempDeathValley = new CustomToggleOption(num++, MultiMenu.General, "Cold Temp Moved To Death Valley", false);
             WifiChartCourseSwap =
                 new CustomToggleOption(num++, MultiMenu.General, "Reboot Wifi And Chart Course Swapped", false);
-            
-            Assassin = new CustomHeaderOption(num++, MultiMenu.General, "<color=#FF0000FF>Assassin Ability</color>");
-            NumberOfImpostorAssassins = new CustomNumberOption(num++, MultiMenu.General, "Number Of <color=#FF0000FF>Impsotor</color> Assassins", 1, 0, 4, 1);
-            NumberOfNeutralAssassins = new CustomNumberOption(num++, MultiMenu.General, "Number Of <color=#B3B3B3FF>Neutral</color> Assassins", 1, 0, 5, 1);
-            AmneTurnImpAssassin = new CustomToggleOption(num++, MultiMenu.General, "<color=#22FFFFFF>Amnesiac</color> Turned Impostor Gets Ability", false);
-            AmneTurnNeutAssassin = new CustomToggleOption(num++, MultiMenu.General, "<color=#22FFFFFF>Amnesiac</color> Turned <color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Killing</color> Gets Ability", false);
-            AssassinKills = new CustomNumberOption(num++, MultiMenu.General, "Number Of Assassin Kills", 1, 1, 15, 1);
-            AssassinMultiKill = new CustomToggleOption(num++, MultiMenu.General, "Assassin Can Kill More Than Once Per Meeting", false);
-            AssassinCrewmateGuess = new CustomToggleOption(num++, MultiMenu.General, "Assassin Can Guess \"<color=#8BFDFDFF>Crewmate</color>\"", false);
-            AssassinGuessNeutralBenign = new CustomToggleOption(num++, MultiMenu.General, "Assassin Can Guess <color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Benign</color> <color=#FFD700FF>Roles</color>", false);
-            AssassinGuessNeutralEvil = new CustomToggleOption(num++, MultiMenu.General, "Assassin Can Guess <color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Evil</color> <color=#FFD700FF>Roles</color>", false);
 
             GameModeSettings =
                 new CustomHeaderOption(num++, MultiMenu.General, "Game Mode Settings");
@@ -617,6 +531,10 @@ namespace TownOfSushi.CustomOption
                 new CustomNumberOption(num++, MultiMenu.General, "Veteran Count", 1, 0, 5, 1);
             AddArsonist = new CustomToggleOption(num++, MultiMenu.General, "Add Arsonist", true);
             AddPlaguebearer = new CustomToggleOption(num++, MultiMenu.General, "Add Plaguebearer", true);
+
+            #endregion
+
+            #region  Crewmate Roles
 
             CrewInvestSettings =
                 new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#8BFDFDFF>Crew</color> <color=#1D7CF2FF>Investigative</color> <color=#FFD700FF>Roles</color> Settings");
@@ -867,6 +785,9 @@ namespace TownOfSushi.CustomOption
             TransporterVitals =
                 new CustomToggleOption(num++, MultiMenu.Crewmate, "Transporter Can Use Vitals", false);
 
+            #endregion
+
+            #region Neutral Roles Settings
             NeutralKillingRoles = new CustomHeaderOption(num++, MultiMenu.Neutral, "<color=#B3B3B3FF>Neutral</color> <color=#FFD700FF>Roles</color> Settings");
             MinNeutralBenignRoles =
                 new CustomNumberOption(num++, MultiMenu.Neutral, "Min <color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Benign</color> <color=#FFD700FF>Roles</color>", 1, 0, 5, 1);
@@ -880,7 +801,9 @@ namespace TownOfSushi.CustomOption
                 new CustomNumberOption(num++, MultiMenu.Neutral, "Min <color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Killing</color> <color=#FFD700FF>Roles</color>", 1, 0, 5, 1);
             MaxNeutralKillingRoles =
                 new CustomNumberOption(num++, MultiMenu.Neutral, "Max <color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Killing</color> <color=#FFD700FF>Roles</color>", 1, 0, 5, 1);
-            
+            #endregion
+
+            #region Neutral Evil Roles
             NeutralEvilRoles = new CustomHeaderOption(num++, MultiMenu.Neutral, "<color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Evil</color> <color=#FFD700FF>Roles</color> Settings");
 
             Doomsayer = new CustomHeaderOption(num++, MultiMenu.Neutral, "<color=#00FF80FF>Doomsayer</color>");
@@ -935,6 +858,9 @@ namespace TownOfSushi.CustomOption
             EatArrows = new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#8C4005FF>Vulture</color> Gets Arrows To Dead Bodies", false);
             EatArrowDelay = new CustomNumberOption(num++, MultiMenu.Neutral, "Time After Death Arrow Appears", 5f, 0f, 15f, 1f, CooldownFormat);
 
+            #endregion
+
+            #region Neutral Benign Roles
             NeutralBenignRoles = new CustomHeaderOption(num++, MultiMenu.Neutral, "<color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Benign</color> <color=#FFD700FF>Roles</color>");
             Amnesiac = new CustomHeaderOption(num++, MultiMenu.Neutral, "<color=#22FFFFFF>Amnesiac</color>");
             AmnesiacOn = new CustomNumberOption(num++, MultiMenu.Neutral, "<color=#22FFFFFF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
@@ -980,7 +906,10 @@ namespace TownOfSushi.CustomOption
                 new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#FF66CCFF>Beloved</color> Knows The Existence Of <color=#FF66CCFF>Romantic</color>", false);
             RomanticKnowsBelovedRole =
                 new CustomToggleOption(num++, MultiMenu.Neutral, "Romantic Knows Beloved's Role", false);
+            
+            #endregion
 
+            #region Neutral Killing Roles
             NeutralKillingRoles = new CustomHeaderOption(num++, MultiMenu.Neutral, "<color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Killing</color> <color=#FFD700FF>Roles</color> Settings");
 
             Arsonist = new CustomHeaderOption(num++, MultiMenu.Neutral, "<color=#FF4D00FF>Arsonist</color>");
@@ -1082,16 +1011,24 @@ namespace TownOfSushi.CustomOption
             MaulRadius = new CustomNumberOption(num++, MultiMenu.Neutral, "Maul Radius", 0.25f, 0.05f, 1f, 0.05f, MultiplierFormat);
             WerewolfVent = new CustomToggleOption(num++, MultiMenu.Neutral, "<color=#A86629FF>Werewolf</color> Can Vent", false);
 
+            #endregion
+
+            #region Impostor Roles
+            ImpostorDeceptionRoles = new CustomHeaderOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Impostor</color> <color=#1D7CF2FF>Deception</color> <color=#FFD700FF>Roles</color>");
 
             Escapist =
                 new CustomHeaderOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Escapist</color>");
+            EscapistOn = new CustomNumberOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             EscapeCooldown =
                 new CustomNumberOption(num++, MultiMenu.Impostor, "Recall Cooldown", 25f, 10f, 60f, 2.5f, CooldownFormat);
             EscapistVent =
-                new CustomToggleOption(num++, MultiMenu.Impostor, "Escapist Can Vent", false);
+                new CustomToggleOption(num++, MultiMenu.Impostor, "Escapist Can Vent", false);            
 
             Grenadier =
                 new CustomHeaderOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Grenadier</color>");
+            GrenadierOn = new CustomNumberOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             GrenadeCooldown =
                 new CustomNumberOption(num++, MultiMenu.Impostor, "Flash Grenade Cooldown", 25f, 10f, 60f, 2.5f, CooldownFormat);
             GrenadeDuration =
@@ -1105,6 +1042,8 @@ namespace TownOfSushi.CustomOption
 
             Morphling =
                 new CustomHeaderOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Morphling</color>");
+            MorphlingOn = new CustomNumberOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             MorphlingCooldown =
                 new CustomNumberOption(num++, MultiMenu.Impostor, "Morphling Cooldown", 25f, 10f, 60f, 2.5f, CooldownFormat);
             MorphlingDuration =
@@ -1113,6 +1052,8 @@ namespace TownOfSushi.CustomOption
                 new CustomToggleOption(num++, MultiMenu.Impostor, "Morphling Can Vent", false);
 
             Swooper = new CustomHeaderOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Swooper</color>");
+            SwooperOn = new CustomNumberOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             SwoopCooldown =
                 new CustomNumberOption(num++, MultiMenu.Impostor, "Swoop Cooldown", 25f, 10f, 60f, 2.5f, CooldownFormat);
             SwoopDuration =
@@ -1121,6 +1062,8 @@ namespace TownOfSushi.CustomOption
                 new CustomToggleOption(num++, MultiMenu.Impostor, "Swooper Can Vent", false);
 
             Venerer = new CustomHeaderOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Venerer</color>");
+            VenererOn = new CustomNumberOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             AbilityCooldown =
                 new CustomNumberOption(num++, MultiMenu.Impostor, "Ability Cooldown", 25f, 10f, 60f, 2.5f, CooldownFormat);
             AbilityDuration =
@@ -1128,8 +1071,12 @@ namespace TownOfSushi.CustomOption
             SprintSpeed = new CustomNumberOption(num++, MultiMenu.Impostor, "Sprint Speed", 1.25f, 1.05f, 2.5f, 0.05f, MultiplierFormat);
             FreezeSpeed = new CustomNumberOption(num++, MultiMenu.Impostor, "Freeze Speed", 0.75f, 0.25f, 1f, 0.05f, MultiplierFormat);
 
+            ImpostorPower = new CustomHeaderOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Impostor</color> <color=#1D7CF2FF>Power</color> <color=#FFD700FF>Roles</color>");
+
             Bomber =
                 new CustomHeaderOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Bomber</color>");
+            BomberOn = new CustomNumberOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             DetonateDelay =
                 new CustomNumberOption(num++, MultiMenu.Impostor, "Detonate Delay", 5f, 1f, 15f, 1f, CooldownFormat);
             MaxKillsInDetonation =
@@ -1140,26 +1087,41 @@ namespace TownOfSushi.CustomOption
                 new CustomToggleOption(num++, MultiMenu.Impostor, "Bomber Can Vent", false);
 
             Warlock = new CustomHeaderOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Warlock</color>");
+            WarlockOn = new CustomNumberOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             ChargeUpDuration =
                 new CustomNumberOption(num++, MultiMenu.Impostor, "Time It Takes To Fully Charge", 25f, 10f, 60f, 2.5f, CooldownFormat);
             ChargeUseDuration =
                 new CustomNumberOption(num++, MultiMenu.Impostor, "Time It Takes To Use Full Charge", 1f, 0.05f, 5f, 0.05f, CooldownFormat);
 
             Witch = new CustomHeaderOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Witch</color>");
+            WitchOn = new CustomNumberOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             SpellCd =
                 new CustomNumberOption(num++, MultiMenu.Impostor, "Spell Cooldown", 25f, 10f, 60f, 2.5f, CooldownFormat);
+            
+            ImpostorSupportRoles = new CustomHeaderOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Impostor</color> <color=#1D7CF2FF>Support</color> <color=#FFD700FF>Roles</color>");    
 
             Blackmailer = new CustomHeaderOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Blackmailer</color>");
+            BlackmailerOn = new CustomNumberOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             BlackmailCooldown =
                 new CustomNumberOption(num++, MultiMenu.Impostor, "Initial Blackmail Cooldown", 10f, 1f, 15f, 1f, CooldownFormat);
             BlackmailInvisible =
                 new CustomToggleOption(num++, MultiMenu.Impostor, "Only Target Sees Blackmail", true);
 
+            JanitorOn = new CustomNumberOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Janitor</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
+
             Miner = new CustomHeaderOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Miner</color>");
+            MinerOn = new CustomNumberOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             MineCooldown =
                 new CustomNumberOption(num++, MultiMenu.Impostor, "Mine Cooldown", 25f, 10f, 60f, 2.5f, CooldownFormat);
 
             Undertaker = new CustomHeaderOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Undertaker</color>");
+            UndertakerOn = new CustomNumberOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             DragCooldown = new CustomNumberOption(num++, MultiMenu.Impostor, "Drag Cooldown", 25f, 10f, 60f, 2.5f, CooldownFormat);
             UndertakerDragSpeed =
                 new CustomNumberOption(num++, MultiMenu.Impostor, "Undertaker Drag Speed", 0.75f, 0.25f, 1f, 0.05f, MultiplierFormat);
@@ -1167,45 +1129,116 @@ namespace TownOfSushi.CustomOption
                 new CustomToggleOption(num++, MultiMenu.Impostor, "Undertaker Can Vent", false);
             UndertakerVentWithBody =
                 new CustomToggleOption(num++, MultiMenu.Impostor, "Undertaker Can Vent While Dragging", false);
+            
+            #endregion
+
+            #region Modifiers
+            Modifiers = new CustomHeaderOption(num++, MultiMenu.ModifierAndAbility, "<color=#7F7F7FFF>Modifiers</color>");
+            AftermathOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#A6FFA6FF>Aftermath</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
 
             Bait = new CustomHeaderOption(num++, MultiMenu.ModifierAndAbility, "<color=#00B3B3FF>Bait</color>");
+            BaitOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#00B3B3FF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             BaitMinDelay = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "Minimum Delay for the Bait Report", 0f, 0f, 15f, 0.5f, CooldownFormat);
             BaitMaxDelay = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "Maximum Delay for the Bait Report", 1f, 0f, 15f, 0.5f, CooldownFormat);
 
+            Diseased = new CustomHeaderOption(num++, MultiMenu.ModifierAndAbility, "<color=#808080FF>Diseased</color>");
+            DiseasedOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#808080FF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
+            DiseasedKillMultiplier = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "Diseased Kill Multiplier", 3f, 1.5f, 5f, 0.5f, MultiplierFormat);
+
+            Frosty = new CustomHeaderOption(num++, MultiMenu.ModifierAndAbility, "<color=#99FFFFFF>Frosty</color>");
+            FrostyOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#99FFFFFF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
+            ChillDuration = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "Chill Duration", 10f, 1f, 15f, 1f, CooldownFormat);
+            ChillStartSpeed = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "Chill Start Speed", 0.75f, 0.25f, 0.95f, 0.05f, MultiplierFormat);
+            
+            MultitaskerOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#FF804DFF>Multitasker</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
+
+            #endregion
+
+
+            #region Abilities
+
+            Abilities = new CustomHeaderOption(num++, MultiMenu.ModifierAndAbility, "<color=#7F7FFF>Abilities</color>");
+            Assassin = new CustomHeaderOption(num++, MultiMenu.ModifierAndAbility, "<color=#FF0000FF>Assassin Ability</color>");
+            NumberOfImpostorAssassins = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "Number Of <color=#FF0000FF>Impsotor</color> Assassins", 1, 0, 4, 1);
+            NumberOfNeutralAssassins = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "Number Of <color=#B3B3B3FF>Neutral</color> Assassins", 1, 0, 5, 1);
+            AmneTurnImpAssassin = new CustomToggleOption(num++, MultiMenu.ModifierAndAbility, "<color=#22FFFFFF>Amnesiac</color> Turned Impostor Gets Ability", false);
+            AmneTurnNeutAssassin = new CustomToggleOption(num++, MultiMenu.ModifierAndAbility, "<color=#22FFFFFF>Amnesiac</color> Turned <color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Killing</color> Gets Ability", false);
+            AssassinKills = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "Number Of Assassin Kills", 1, 1, 15, 1);
+            AssassinMultiKill = new CustomToggleOption(num++, MultiMenu.ModifierAndAbility, "Assassin Can Kill More Than Once Per Meeting", false);
+            AssassinCrewmateGuess = new CustomToggleOption(num++, MultiMenu.ModifierAndAbility, "Assassin Can Guess \"<color=#8BFDFDFF>Crewmate</color>\"", false);
+            AssassinGuessNeutralBenign = new CustomToggleOption(num++, MultiMenu.ModifierAndAbility, "Assassin Can Guess <color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Benign</color> <color=#FFD700FF>Roles</color>", false);
+            AssassinGuessNeutralEvil = new CustomToggleOption(num++, MultiMenu.ModifierAndAbility, "Assassin Can Guess <color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Evil</color> <color=#FFD700FF>Roles</color>", false);
+
+            ButtonBarryOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#E600FFFF>Button Barry</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
+
             Chameleon = new CustomHeaderOption(num++, MultiMenu.ModifierAndAbility, "<color=#FFB3CCFF>Chameleon</color>");
+            ChameleonOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#FFB3CCFF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             InvisDelay = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "Transparency Delay", 5f, 1f, 15f, 1f, CooldownFormat);
             TransformInvisDuration = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "Turn Transparent Duration", 5f, 1f, 15f, 1f, CooldownFormat);
             FinalTransparency = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "Final Opacity", 20f, 0f, 80f, 10f, PercentFormat);
+            
+            DrunkOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#758000FF>Drunk</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
+            
+            Flash = new CustomHeaderOption(num++, MultiMenu.ModifierAndAbility, "<color=#FF8080FF>Flash</color>");
+            FlashOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#FF8080FF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
+            FlashSpeed = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#FF8080FF>Flash</color> Speed", 1.25f, 1.05f, 2.5f, 0.05f, MultiplierFormat);
 
-            Diseased = new CustomHeaderOption(num++, MultiMenu.ModifierAndAbility, "<color=#808080FF>Diseased</color>");
-            DiseasedKillMultiplier = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "Diseased Kill Multiplier", 3f, 1.5f, 5f, 0.5f, MultiplierFormat);
+            Giant = new CustomHeaderOption(num++, MultiMenu.ModifierAndAbility, "<color=#FFB34DFF>Giant</color>");
+            GiantOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#FFB34DFF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
+            GiantSlow = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#FFB34DFF>Giant</color> Speed", 0.75f, 0.25f, 1f, 0.05f, MultiplierFormat);
 
+            RadarOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#FF0080FF>Radar</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
+            
+            SleuthOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#803333FF>Sleuth</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
+            
+            Spy =
+                new CustomHeaderOption(num++, MultiMenu.ModifierAndAbility, "<color=#CCA3CCFF>Spy</color>");
+            SpyOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#CCA3CCFF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
+            WhoSeesDead = new CustomStringOption(num++, MultiMenu.ModifierAndAbility, "Who Sees Dead Bodies On Admin",
+                new[] { "Nobody", "<color=#CCA3CCFF>Spy</color>", "Everyone But <color=#CCA3CCFF>Spy</color>", "Everyone" });
+            
+            TiebreakerOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#99E699FF>Tiebreaker</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
+            
+            TorchOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#FFFF99FF>Torch</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
+            
+            #endregion
+
+            #region Impostor Modifiers
+
+            ImpostorModifiers = new CustomHeaderOption(num++, MultiMenu.ModifierAndAbility, "<color=#FF0000FF>Impostor</color> <color=#7F7F7FFF>Modifiers</color>");
             Disperser =
                 new CustomHeaderOption(num++, MultiMenu.ModifierAndAbility, "<color=#FF0000FF>Disperser</color>");
+            DisperserOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#FF0000FF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             DisperseCooldown =
                 new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "Disperse Cooldown", 25f, 10f, 40f, 2.5f, CooldownFormat);
             MaxDisperses =
                 new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "Maximum Number Of Disperses Per Game", 5, 1, 15, 1);
-
-            Frosty = new CustomHeaderOption(num++, MultiMenu.ModifierAndAbility, "<color=#99FFFFFF>Frosty</color>");
-            ChillDuration = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "Chill Duration", 10f, 1f, 15f, 1f, CooldownFormat);
-            ChillStartSpeed = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "Chill Start Speed", 0.75f, 0.25f, 0.95f, 0.05f, MultiplierFormat);
-
-            Flash = new CustomHeaderOption(num++, MultiMenu.ModifierAndAbility, "<color=#FF8080FF>Flash</color>");
-            FlashSpeed = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#FF8080FF>Flash</color> Speed", 1.25f, 1.05f, 2.5f, 0.05f, MultiplierFormat);
-
-            Giant = new CustomHeaderOption(num++, MultiMenu.ModifierAndAbility, "<color=#FFB34DFF>Giant</color>");
-            GiantSlow = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#FFB34DFF>Giant</color> Speed", 0.75f, 0.25f, 1f, 0.05f, MultiplierFormat);
-
+           
+            DoubleShotOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#FF0000FF>Double Shot</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             
-            Spy =
-                new CustomHeaderOption(num++, MultiMenu.ModifierAndAbility, "<color=#CCA3CCFF>Spy</color>");
-            WhoSeesDead = new CustomStringOption(num++, MultiMenu.ModifierAndAbility, "Who Sees Dead Bodies On Admin",
-                new[] { "Nobody", "<color=#CCA3CCFF>Spy</color>", "Everyone But <color=#CCA3CCFF>Spy</color>", "Everyone" });
-
             Underdog = new CustomHeaderOption(num++, MultiMenu.ModifierAndAbility, "<color=#FF0000FF>Underdog</color>");
+            UnderdogOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#FF0000FF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
             UnderdogKillBonus = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "Kill Cooldown Bonus", 5f, 2.5f, 10f, 2.5f, CooldownFormat);
             UnderdogIncreasedKC = new CustomToggleOption(num++, MultiMenu.ModifierAndAbility, "Increased Kill Cooldown When 2+ Imps", true);
+            #endregion
         }
     }
 }
