@@ -2,24 +2,106 @@ namespace TownOfSushi.CustomOption
 {
     public class Generate
     {
+        #region Header Options
         public static CustomHeaderOption CrewSpecialRoles;
-        public static CustomNumberOption HaunterOn;
-        public static CustomNumberOption InvestigatorOn;
-        public static CustomNumberOption MysticOn;
-        public static CustomNumberOption OracleOn;
-        public static CustomNumberOption SeerOn;
-        public static CustomNumberOption SnitchOn;
-        public static CustomNumberOption SpyOn;
-        public static CustomNumberOption TrackerOn;
-        public static CustomNumberOption TrapperOn;
-
-        public static CustomNumberOption MedicOn;
-
         public static CustomHeaderOption CrewKillingSettings;
-        public static CustomHeaderOption CrewSpecialSettings;
-        public static CustomHeaderOption CrewPowerSettings;
         public static CustomHeaderOption CrewSupportSettings;
         public static CustomHeaderOption CrewInvestSettings;
+        public static CustomHeaderOption NeutralKillingRoles;
+        public static CustomHeaderOption NeutralBenignRoles;
+        public static CustomHeaderOption NeutralEvilRoles;
+        public static CustomHeaderOption ImpostorDeceptionRoles;
+        public static CustomHeaderOption ImpostorSupportRoles;
+
+        #endregion
+
+        #region Crewmate Roles
+
+        public static CustomNumberOption HaunterOn;
+        public static CustomHeaderOption Haunter;
+        public static CustomNumberOption HaunterTasksRemainingClicked;
+        public static CustomNumberOption HaunterTasksRemainingAlert;
+        public static CustomToggleOption HaunterRevealsNeutrals;
+        public static CustomStringOption HaunterCanBeClickedBy;
+
+        public static CustomNumberOption VigilanteKills;
+        public static CustomToggleOption VigilanteMultiKill;
+        public static CustomToggleOption VigilanteGuessNeutralBenign;
+        public static CustomToggleOption VigilanteGuessNeutralEvil;
+        public static CustomToggleOption VigilanteGuessNeutralKilling;
+        public static CustomToggleOption VigilanteAfterVoting;      
+
+        public static CustomNumberOption MysticOn;
+        public static CustomHeaderOption Mystic;
+        public static CustomNumberOption MysticArrowDuration;
+        public static CustomNumberOption InitialExamineCooldown;
+        public static CustomNumberOption MysticExamineCooldown;
+        public static CustomNumberOption RecentKill;
+        public static CustomToggleOption MysticReportOn;
+        public static CustomNumberOption MysticRoleDuration;
+        public static CustomNumberOption MysticFactionDuration;
+        public static CustomToggleOption MysticExamineReportOn;
+
+        public static CustomNumberOption OracleOn;
+        public static CustomHeaderOption Oracle;
+        public static CustomNumberOption ConfessCooldown;
+        public static CustomNumberOption RevealAccuracy;
+        public static CustomToggleOption NeutralBenignShowsEvil;
+        public static CustomToggleOption NeutralEvilShowsEvil;
+        public static CustomToggleOption NeutralKillingShowsEvil;
+
+        public static CustomNumberOption SeerOn;
+        public static CustomHeaderOption Seer;
+        public static CustomNumberOption SeerCooldown;
+        public static CustomToggleOption CrewKillingRed;
+        public static CustomToggleOption NeutBenignRed;
+        public static CustomToggleOption NeutEvilRed;
+        public static CustomToggleOption NeutKillingRed;
+
+        public static CustomHeaderOption Hunter;
+        public static CustomNumberOption HunterOn;
+        public static CustomNumberOption HunterKillCd;
+        public static CustomNumberOption HunterStalkCd;
+        public static CustomNumberOption HunterStalkDuration;
+        public static CustomNumberOption HunterStalkUses;
+        public static CustomToggleOption RetributionOnVote;
+        public static CustomToggleOption HunterBodyReport;
+
+        public static CustomNumberOption SnitchOn;
+        public static CustomHeaderOption Snitch;
+        public static CustomNumberOption SnitchTasksRemaining;
+        public static CustomToggleOption SnitchButton;
+
+        
+        public static CustomNumberOption TrackerOn;
+        public static CustomHeaderOption Tracker;
+        public static CustomNumberOption UpdateInterval;
+        public static CustomNumberOption TrackCooldown;
+        public static CustomToggleOption ResetOnNewRound;
+        public static CustomNumberOption MaxTracks;
+
+        public static CustomNumberOption TrapperOn;
+        public static CustomHeaderOption Trapper;
+        public static CustomNumberOption TrapCooldown;
+        public static CustomToggleOption TrapsRemoveOnNewRound;
+        public static CustomNumberOption MaxTraps;
+        public static CustomNumberOption MinAmountOfTimeInTrap;
+        public static CustomNumberOption TrapSize;
+        public static CustomNumberOption MinAmountOfPlayersInTrap;
+
+        public static CustomNumberOption MedicOn;
+        public static CustomHeaderOption Medic;
+        public static CustomStringOption ShowShielded;
+        public static CustomStringOption WhoGetsNotification;
+        public static CustomToggleOption ShieldBreaks;
+        public static CustomToggleOption MedicReportSwitch;
+        public static CustomNumberOption MedicReportNameDuration;
+        public static CustomNumberOption MedicReportColorDuration;
+
+        public static CustomNumberOption SwapperOn;
+        public static CustomHeaderOption Swapper;
+        public static CustomToggleOption SwapperButton;
+
         public static CustomNumberOption VeteranOn;
         public static CustomNumberOption VigilanteOn;
         public static CustomNumberOption JailorOn;
@@ -29,13 +111,36 @@ namespace TownOfSushi.CustomOption
         public static CustomNumberOption JailCooldown;
         public static CustomNumberOption MaxExecutes;
 
-        public static CustomNumberOption EngineerOn;
         public static CustomNumberOption ImitatorOn;
-        public static CustomNumberOption MediumOn;
-        public static CustomNumberOption TransporterOn;        
 
-        //Neutral Killers
-        public static CustomHeaderOption NeutralKillingRoles;
+        public static CustomNumberOption MediumOn;
+        public static CustomNumberOption TransporterOn;
+
+        public static CustomToggleOption VigilanteKillOther;
+        public static CustomToggleOption VigilanteKillsNeutralEvil;
+        public static CustomToggleOption VigilanteKillsNeutralBenign;
+        public static CustomNumberOption VigilanteKillCd;
+        public static CustomToggleOption VigilanteBodyReport;
+
+        public static CustomHeaderOption Engineer;
+        public static CustomNumberOption EngineerOn;
+        public static CustomNumberOption MaxFixes;
+
+        public static CustomHeaderOption Investigator;
+        public static CustomNumberOption InvestigatorOn;
+        public static CustomNumberOption ExamineCooldown;
+        public static CustomToggleOption InvestigatorReportOn;
+        public static CustomNumberOption InvestigatorRoleDuration;
+        public static CustomNumberOption InvestigatorFactionDuration;
+        public static CustomNumberOption FootprintSize;
+        public static CustomNumberOption FootprintInterval;
+        public static CustomNumberOption FootprintDuration;
+        public static CustomToggleOption AnonymousFootPrint;
+        public static CustomToggleOption VentFootprintVisible;
+
+        #endregion    
+
+        #region Neutral Killing Roles
         public static CustomNumberOption AgentOn;
         public static CustomToggleOption HitmanVent;
         public static CustomToggleOption SkipAgent;
@@ -91,8 +196,9 @@ namespace TownOfSushi.CustomOption
         public static CustomNumberOption StabKillCooldown;
         public static CustomToggleOption SerialKillerVent;
 
-        //Impostor Roles
-        public static CustomHeaderOption ImpostorDeceptionRoles;
+        #endregion
+
+        #region Impostor Roles
         public static CustomNumberOption EscapistOn;
         public static CustomHeaderOption Escapist;
         public static CustomNumberOption EscapeCooldown;
@@ -142,7 +248,6 @@ namespace TownOfSushi.CustomOption
         public static CustomHeaderOption Witch;
         public static CustomNumberOption SpellCd;
 
-        public static CustomHeaderOption ImpostorSupportRoles;
         public static CustomNumberOption BlackmailerOn;
         public static CustomHeaderOption Blackmailer;
         public static CustomNumberOption BlackmailCooldown;
@@ -161,127 +266,97 @@ namespace TownOfSushi.CustomOption
         public static CustomToggleOption UndertakerVent;
         public static CustomToggleOption UndertakerVentWithBody;
 
-        //Modifiers
+        #endregion
+
+        #region Modifiers
         public static CustomHeaderOption Modifiers;
+
         public static CustomNumberOption AftermathOn;
+
         public static CustomNumberOption BaitOn;
+        public static CustomHeaderOption Bait;
+        public static CustomNumberOption BaitMinDelay;
+        public static CustomNumberOption BaitMaxDelay;
+
         public static CustomNumberOption DiseasedOn;
+        public static CustomHeaderOption Diseased;
+        public static CustomNumberOption DiseasedKillMultiplier;
+
         public static CustomNumberOption FrostyOn;
+        public static CustomHeaderOption Frosty;
+        public static CustomNumberOption ChillDuration;
+        public static CustomNumberOption ChillStartSpeed;
         public static CustomNumberOption MultitaskerOn;
+
+        #endregion
+
+        #region Abilities
+        public static CustomHeaderOption Abilities;
+
+        public static CustomHeaderOption Assassin;
+        public static CustomNumberOption NumberOfImpostorAssassins;
+        public static CustomNumberOption NumberOfNeutralAssassins;
+        public static CustomToggleOption AmneTurnImpAssassin;
+        public static CustomToggleOption AmneTurnNeutAssassin;
+        public static CustomNumberOption AssassinKills;
+        public static CustomToggleOption AssassinMultiKill;
+        public static CustomToggleOption AssassinCrewmateGuess;
+        public static CustomToggleOption AssassinGuessNeutralBenign;
+        public static CustomToggleOption AssassinGuessNeutralEvil;
+
+        public static CustomNumberOption ButtonBarryOn;
+
+        public static CustomNumberOption ChameleonOn;
+        public static CustomHeaderOption Chameleon;
+        public static CustomNumberOption InvisDelay;
+        public static CustomNumberOption TransformInvisDuration;
+        public static CustomNumberOption FinalTransparency;
+
+        public static CustomNumberOption FlashOn;
+        public static CustomHeaderOption Flash;
+        public static CustomNumberOption FlashSpeed;
+
+        public static CustomNumberOption GiantOn;
+        public static CustomHeaderOption Giant;
+        public static CustomNumberOption GiantSlow;
+
+        public static CustomNumberOption RadarOn;
+
+        public static CustomNumberOption SleuthOn;
+
         public static CustomNumberOption TorchOn;
+
         public static CustomNumberOption DrunkOn;
 
-        //Abilities
-        public static CustomHeaderOption Abilities;
-        public static CustomNumberOption ButtonBarryOn;
-        public static CustomNumberOption FlashOn;
-        public static CustomNumberOption GiantOn;
-        public static CustomNumberOption RadarOn;
-        public static CustomNumberOption SleuthOn;
         public static CustomNumberOption TiebreakerOn;
 
+        #endregion
 
-        //Imp Modifiers
+        #region Impostor Modifiers
         public static CustomHeaderOption ImpostorModifiers;
-
         public static CustomNumberOption DisperserOn;
         public static CustomHeaderOption Disperser;
         public static CustomNumberOption DisperseCooldown;
         public static CustomNumberOption MaxDisperses;
 
-        public static CustomNumberOption DoubleShotOn;
-        public static CustomNumberOption UnderdogOn;
-
-        public static CustomHeaderOption MapSettings;
-        public static CustomToggleOption RandomMapEnabled;
-        public static CustomNumberOption RandomMapSkeld;
-        public static CustomNumberOption RandomMapMira;
-        public static CustomNumberOption RandomMapPolus;
-        public static CustomNumberOption RandomMapAirship;
-        public static CustomNumberOption RandomMapFungle;
-        public static CustomNumberOption RandomMapSubmerged;
-        public static CustomNumberOption RandomMapLevelImpostor;
-
-        public static CustomHeaderOption CustomGameSettings;
-        public static CustomToggleOption ColourblindComms;
-        public static CustomToggleOption ImpostorSeeRoles;
-        public static CustomNumberOption InitialCooldowns;
-        public static CustomToggleOption ParallelMedScans;
-        public static CustomStringOption SkipButtonDisable;
-        public static CustomToggleOption FirstDeathShield;
-
-        public static CustomHeaderOption BetterPolusSettings;
-        public static CustomToggleOption VentImprovements;
-        public static CustomToggleOption VitalsLab;
-        public static CustomToggleOption ColdTempDeathValley;
-        public static CustomToggleOption WifiChartCourseSwap;
-
-        public static CustomHeaderOption GameModeSettings;
-        public static CustomStringOption GameMode;
-
-        public static CustomNumberOption MinNeutralBenignRoles;
-        public static CustomNumberOption MaxNeutralBenignRoles;
-        public static CustomNumberOption MinNeutralEvilRoles;
-        public static CustomNumberOption MaxNeutralEvilRoles;
-        public static CustomNumberOption MinNeutralKillingRoles;
-        public static CustomNumberOption MaxNeutralKillingRoles;
-
-        public static CustomHeaderOption AllAnySettings;
-        public static CustomToggleOption RandomNumberImps;
-
-        public static CustomHeaderOption KillersOnlySettings;
-        public static CustomNumberOption NeutralRoles;
-        public static CustomNumberOption VeteranCount;
-        public static CustomToggleOption AddArsonist;
-        public static CustomToggleOption AddPlaguebearer;
-
-
-        public static CustomHeaderOption TaskTrackingSettings;
-        public static CustomToggleOption SeeTasksDuringRound;
-        public static CustomToggleOption SeeTasksDuringMeeting;
-        public static CustomToggleOption SeeTasksWhenDead;
-
-        public static CustomToggleOption VigilanteKillOther;
-        public static CustomToggleOption VigilanteKillsNeutralEvil;
-        public static CustomToggleOption VigilanteKillsNeutralBenign;
-        public static CustomNumberOption VigilanteKillCd;
-        public static CustomToggleOption VigilanteBodyReport;
-
-        public static CustomHeaderOption Engineer;
-        public static CustomNumberOption MaxFixes;
-
-        public static CustomHeaderOption Investigator;
-        public static CustomNumberOption FootprintSize;
-        public static CustomNumberOption FootprintInterval;
-        public static CustomNumberOption FootprintDuration;
-        public static CustomToggleOption AnonymousFootPrint;
-        public static CustomToggleOption VentFootprintVisible;
-
-        public static CustomHeaderOption Medic;
-        public static CustomStringOption ShowShielded;
-        public static CustomStringOption WhoGetsNotification;
-        public static CustomToggleOption ShieldBreaks;
-        public static CustomToggleOption MedicReportSwitch;
-        public static CustomNumberOption MedicReportNameDuration;
-        public static CustomNumberOption MedicReportColorDuration;
-
-        public static CustomHeaderOption Seer;
-        public static CustomNumberOption SeerCooldown;
-        public static CustomToggleOption CrewKillingRed;
-        public static CustomToggleOption NeutBenignRed;
-        public static CustomToggleOption NeutEvilRed;
-        public static CustomToggleOption NeutKillingRed;
-
+        public static CustomNumberOption SpyOn;
         public static CustomHeaderOption Spy;
         public static CustomStringOption WhoSeesDead;
 
+        public static CustomNumberOption DoubleShotOn;
+
+        public static CustomNumberOption UnderdogOn;
+        public static CustomHeaderOption Underdog;
+        public static CustomNumberOption UnderdogKillBonus;
+        public static CustomToggleOption UnderdogIncreasedKC;
+
+        #endregion
         public static CustomHeaderOption Transporter;
         public static CustomNumberOption TransportCooldown;
         public static CustomNumberOption TransportMaxUses;
         public static CustomToggleOption TransporterVitals;
 
-        //Neutral Evils
-        public static CustomHeaderOption NeutralEvilRoles;
+        #region Neutral Evil Roles
         public static CustomHeaderOption Jester;
         public static CustomNumberOption JesterOn;
         public static CustomToggleOption JesterButton;
@@ -316,23 +391,8 @@ namespace TownOfSushi.CustomOption
         public static CustomToggleOption DoomsayerGuessImpostors;
         public static CustomToggleOption DoomsayerAfterVoting;
         public static CustomNumberOption DoomsayerGuessesToWin;
-
         
-
-        public static CustomHeaderOption Snitch;
-        public static CustomNumberOption SnitchTasksRemaining;
-        public static CustomToggleOption SnitchButton;
-
-        public static CustomHeaderOption Assassin;
-        public static CustomNumberOption NumberOfImpostorAssassins;
-        public static CustomNumberOption NumberOfNeutralAssassins;
-        public static CustomToggleOption AmneTurnImpAssassin;
-        public static CustomToggleOption AmneTurnNeutAssassin;
-        public static CustomNumberOption AssassinKills;
-        public static CustomToggleOption AssassinMultiKill;
-        public static CustomToggleOption AssassinCrewmateGuess;
-        public static CustomToggleOption AssassinGuessNeutralBenign;
-        public static CustomToggleOption AssassinGuessNeutralEvil;
+        #endregion
 
         public static CustomNumberOption WerewolfOn;
         public static CustomHeaderOption Werewolf;
@@ -340,45 +400,15 @@ namespace TownOfSushi.CustomOption
         public static CustomNumberOption MaulRadius;
         public static CustomToggleOption WerewolfVent;
 
-        public static CustomHeaderOption Underdog;
-        public static CustomNumberOption UnderdogKillBonus;
-        public static CustomToggleOption UnderdogIncreasedKC;
-
-        
-        public static CustomNumberOption VigilanteKills;
-        public static CustomToggleOption VigilanteMultiKill;
-        public static CustomToggleOption VigilanteGuessNeutralBenign;
-        public static CustomToggleOption VigilanteGuessNeutralEvil;
-        public static CustomToggleOption VigilanteGuessNeutralKilling;
-        public static CustomToggleOption VigilanteAfterVoting;
-
-        public static CustomHeaderOption Haunter;
-        public static CustomNumberOption HaunterTasksRemainingClicked;
-        public static CustomNumberOption HaunterTasksRemainingAlert;
-        public static CustomToggleOption HaunterRevealsNeutrals;
-        public static CustomStringOption HaunterCanBeClickedBy;
-
-        
-
         public static CustomHeaderOption Veteran;
         public static CustomToggleOption KilledOnAlert;
         public static CustomNumberOption AlertCooldown;
         public static CustomNumberOption AlertDuration;
         public static CustomNumberOption MaxAlerts;
 
-        public static CustomHeaderOption Tracker;
-        public static CustomNumberOption UpdateInterval;
-        public static CustomNumberOption TrackCooldown;
-        public static CustomToggleOption ResetOnNewRound;
-        public static CustomNumberOption MaxTracks;
+        
 
-        public static CustomHeaderOption Trapper;
-        public static CustomNumberOption TrapCooldown;
-        public static CustomToggleOption TrapsRemoveOnNewRound;
-        public static CustomNumberOption MaxTraps;
-        public static CustomNumberOption MinAmountOfTimeInTrap;
-        public static CustomNumberOption TrapSize;
-        public static CustomNumberOption MinAmountOfPlayersInTrap;
+        
 
         public static CustomHeaderOption Medium;
         public static CustomNumberOption MediateCooldown;
@@ -386,7 +416,7 @@ namespace TownOfSushi.CustomOption
         public static CustomToggleOption ShowMediumToDead;
         public static CustomStringOption DeadRevealed;
 
-        public static CustomHeaderOption NeutralBenignRoles;
+        #region Neutral Benign Roles
         public static CustomHeaderOption Amnesiac;
         public static CustomNumberOption AmnesiacOn;
         public static CustomToggleOption RememberArrows;
@@ -411,66 +441,59 @@ namespace TownOfSushi.CustomOption
         public static CustomToggleOption GAKnowsTargetRole;
         public static CustomNumberOption EvilTargetPercent;
 
-        public static CustomHeaderOption Mystic;
-        public static CustomNumberOption MysticArrowDuration;
-        public static CustomNumberOption InitialExamineCooldown;
-        public static CustomNumberOption MysticExamineCooldown;
-        public static CustomNumberOption RecentKill;
-        public static CustomToggleOption MysticReportOn;
-        public static CustomNumberOption MysticRoleDuration;
-        public static CustomNumberOption MysticFactionDuration;
-        public static CustomToggleOption MysticExamineReportOn;        
+        #endregion
 
-        public static CustomNumberOption ExamineCooldown;
-        public static CustomToggleOption InvestigatorReportOn;
-        public static CustomNumberOption InvestigatorRoleDuration;
-        public static CustomNumberOption InvestigatorFactionDuration;
+        #region General Mod Settings
+        public static CustomHeaderOption MapSettings;
+        public static CustomToggleOption RandomMapEnabled;
+        public static CustomNumberOption RandomMapSkeld;
+        public static CustomNumberOption RandomMapMira;
+        public static CustomNumberOption RandomMapPolus;
+        public static CustomNumberOption RandomMapAirship;
+        public static CustomNumberOption RandomMapFungle;
+        public static CustomNumberOption RandomMapSubmerged;
+        public static CustomNumberOption RandomMapLevelImpostor;
 
-        public static CustomHeaderOption Hunter;
-        public static CustomNumberOption HunterOn;
-        public static CustomNumberOption HunterKillCd;
-        public static CustomNumberOption HunterStalkCd;
-        public static CustomNumberOption HunterStalkDuration;
-        public static CustomNumberOption HunterStalkUses;
-        public static CustomToggleOption RetributionOnVote;
-        public static CustomToggleOption HunterBodyReport;
-
-        public static CustomHeaderOption Oracle;
-        public static CustomNumberOption ConfessCooldown;
-        public static CustomNumberOption RevealAccuracy;
-        public static CustomToggleOption NeutralBenignShowsEvil;
-        public static CustomToggleOption NeutralEvilShowsEvil;
-        public static CustomToggleOption NeutralKillingShowsEvil;
-
-        public static CustomNumberOption ChameleonOn;
-        public static CustomHeaderOption Chameleon;
-        public static CustomNumberOption InvisDelay;
-        public static CustomNumberOption TransformInvisDuration;
-        public static CustomNumberOption FinalTransparency;
-
-
-        public static CustomHeaderOption Giant;
-        public static CustomNumberOption GiantSlow;
-
+        public static CustomHeaderOption CustomGameSettings;
+        public static CustomToggleOption ColourblindComms;
+        public static CustomToggleOption ImpostorSeeRoles;
         public static CustomToggleOption CamoCommsKillAnyone;
+        public static CustomNumberOption InitialCooldowns;
+        public static CustomToggleOption ParallelMedScans;
+        public static CustomStringOption SkipButtonDisable;
+        public static CustomToggleOption FirstDeathShield;
 
-        public static CustomHeaderOption Flash;
-        public static CustomNumberOption FlashSpeed;
+        public static CustomHeaderOption BetterPolusSettings;
+        public static CustomToggleOption VentImprovements;
+        public static CustomToggleOption VitalsLab;
+        public static CustomToggleOption ColdTempDeathValley;
+        public static CustomToggleOption WifiChartCourseSwap;
 
-        public static CustomHeaderOption Diseased;
-        public static CustomNumberOption DiseasedKillMultiplier;
+        public static CustomHeaderOption GameModeSettings;
+        public static CustomStringOption GameMode;
 
-        public static CustomHeaderOption Bait;
-        public static CustomNumberOption BaitMinDelay;
-        public static CustomNumberOption BaitMaxDelay;
+        public static CustomNumberOption MinNeutralBenignRoles;
+        public static CustomNumberOption MaxNeutralBenignRoles;
+        public static CustomNumberOption MinNeutralEvilRoles;
+        public static CustomNumberOption MaxNeutralEvilRoles;
+        public static CustomNumberOption MinNeutralKillingRoles;
+        public static CustomNumberOption MaxNeutralKillingRoles;
 
-        public static CustomHeaderOption Frosty;
-        public static CustomNumberOption ChillDuration;
-        public static CustomNumberOption ChillStartSpeed;
+        public static CustomHeaderOption AllAnySettings;
+        public static CustomToggleOption RandomNumberImps;
 
-        public static CustomNumberOption SwapperOn;
-        public static CustomHeaderOption Swapper;
-        public static CustomToggleOption SwapperButton;
+        public static CustomHeaderOption KillersOnlySettings;
+        public static CustomNumberOption NeutralRoles;
+        public static CustomNumberOption VeteranCount;
+        public static CustomToggleOption AddArsonist;
+        public static CustomToggleOption AddPlaguebearer;
+
+        public static CustomHeaderOption TaskTrackingSettings;
+        public static CustomToggleOption SeeTasksDuringRound;
+        public static CustomToggleOption SeeTasksDuringMeeting;
+        public static CustomToggleOption SeeTasksWhenDead;
+
+        #endregion
 
         public static Func<object, string> PercentFormat { get; } = value => $"{value:0}%";
         private static Func<object, string> CooldownFormat { get; } = value => $"{value:0.0#}s";
@@ -801,6 +824,7 @@ namespace TownOfSushi.CustomOption
                 new CustomNumberOption(num++, MultiMenu.Neutral, "Min <color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Killing</color> <color=#FFD700FF>Roles</color>", 1, 0, 5, 1);
             MaxNeutralKillingRoles =
                 new CustomNumberOption(num++, MultiMenu.Neutral, "Max <color=#B3B3B3FF>Neutral</color> <color=#1D7CF2FF>Killing</color> <color=#FFD700FF>Roles</color>", 1, 0, 5, 1);
+            
             #endregion
 
             #region Neutral Evil Roles
@@ -1238,6 +1262,7 @@ namespace TownOfSushi.CustomOption
                 PercentFormat);
             UnderdogKillBonus = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "Kill Cooldown Bonus", 5f, 2.5f, 10f, 2.5f, CooldownFormat);
             UnderdogIncreasedKC = new CustomToggleOption(num++, MultiMenu.ModifierAndAbility, "Increased Kill Cooldown When 2+ Imps", true);
+            
             #endregion
         }
     }
