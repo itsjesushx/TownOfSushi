@@ -112,6 +112,7 @@ namespace TownOfSushi.CustomOption
         public static CustomNumberOption MaxExecutes;
 
         public static CustomNumberOption ImitatorOn;
+        public static CustomHeaderOption Imitator;
 
         public static CustomNumberOption MediumOn;
         public static CustomNumberOption TransporterOn;
@@ -254,6 +255,7 @@ namespace TownOfSushi.CustomOption
         public static CustomToggleOption BlackmailInvisible;
 
         public static CustomNumberOption JanitorOn;
+         public static CustomHeaderOption Janitor;
 
         public static CustomNumberOption MinerOn;
         public static CustomHeaderOption Miner;
@@ -272,6 +274,7 @@ namespace TownOfSushi.CustomOption
         public static CustomHeaderOption Modifiers;
 
         public static CustomNumberOption AftermathOn;
+        public static CustomHeaderOption Aftermath;
 
         public static CustomNumberOption BaitOn;
         public static CustomHeaderOption Bait;
@@ -286,7 +289,9 @@ namespace TownOfSushi.CustomOption
         public static CustomHeaderOption Frosty;
         public static CustomNumberOption ChillDuration;
         public static CustomNumberOption ChillStartSpeed;
+
         public static CustomNumberOption MultitaskerOn;
+        public static CustomHeaderOption Multitasker;
 
         #endregion
 
@@ -305,6 +310,7 @@ namespace TownOfSushi.CustomOption
         public static CustomToggleOption AssassinGuessNeutralEvil;
 
         public static CustomNumberOption ButtonBarryOn;
+        public static CustomHeaderOption ButtonBarry;
 
         public static CustomNumberOption ChameleonOn;
         public static CustomHeaderOption Chameleon;
@@ -321,14 +327,19 @@ namespace TownOfSushi.CustomOption
         public static CustomNumberOption GiantSlow;
 
         public static CustomNumberOption RadarOn;
+        public static CustomHeaderOption Radar;
 
         public static CustomNumberOption SleuthOn;
+        public static CustomHeaderOption Sleuth;
 
         public static CustomNumberOption TorchOn;
+        public static CustomHeaderOption Torch;
 
         public static CustomNumberOption DrunkOn;
+        public static CustomHeaderOption Drunk;
 
         public static CustomNumberOption TiebreakerOn;
+        public static CustomHeaderOption Tiebreaker;
 
         #endregion
 
@@ -344,6 +355,7 @@ namespace TownOfSushi.CustomOption
         public static CustomStringOption WhoSeesDead;
 
         public static CustomNumberOption DoubleShotOn;
+        public static CustomHeaderOption DoubleShot;
 
         public static CustomNumberOption UnderdogOn;
         public static CustomHeaderOption Underdog;
@@ -768,7 +780,9 @@ namespace TownOfSushi.CustomOption
             MaxFixes =
                 new CustomNumberOption(num++, MultiMenu.Crewmate, "Maximum Number Of Fixes", 5, 1, 15, 1);
             
-            ImitatorOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#B3D94DFF>Imitator</color>", 0f, 0f, 100f, 10f,
+            Imitator =
+                new CustomHeaderOption(num++, MultiMenu.Crewmate, "<color=#B3D94DFF>Imitator</color>");
+            ImitatorOn = new CustomNumberOption(num++, MultiMenu.Crewmate, "<color=#B3D94DFF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
             
             Medic =
@@ -1136,6 +1150,7 @@ namespace TownOfSushi.CustomOption
 
             JanitorOn = new CustomNumberOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Janitor</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
+            Janitor = new CustomHeaderOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Spawn Chance</color>");
 
             Miner = new CustomHeaderOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Miner</color>");
             MinerOn = new CustomNumberOption(num++, MultiMenu.Impostor, "<color=#FF0000FF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
@@ -1160,6 +1175,7 @@ namespace TownOfSushi.CustomOption
             Modifiers = new CustomHeaderOption(num++, MultiMenu.ModifierAndAbility, "<color=#7F7F7FFF>Modifiers</color>");
             AftermathOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#A6FFA6FF>Aftermath</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
+            Aftermath = new CustomHeaderOption(num++, MultiMenu.ModifierAndAbility, "<color=#A6FFA6FF>Spawn Chance</color>");
 
             Bait = new CustomHeaderOption(num++, MultiMenu.ModifierAndAbility, "<color=#00B3B3FF>Bait</color>");
             BaitOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#00B3B3FF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
@@ -1180,6 +1196,7 @@ namespace TownOfSushi.CustomOption
             
             MultitaskerOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#FF804DFF>Multitasker</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
+            Multitasker = new CustomHeaderOption(num++, MultiMenu.ModifierAndAbility, "<color=#FF804DFF>Spawn Chance</color>");
 
             #endregion
 
@@ -1200,6 +1217,7 @@ namespace TownOfSushi.CustomOption
 
             ButtonBarryOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#E600FFFF>Button Barry</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
+            ButtonBarry = new CustomHeaderOption(num++, MultiMenu.ModifierAndAbility, "<color=#E600FFFF>Spawn Chance</color>");
 
             Chameleon = new CustomHeaderOption(num++, MultiMenu.ModifierAndAbility, "<color=#FFB3CCFF>Chameleon</color>");
             ChameleonOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#FFB3CCFF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
@@ -1210,6 +1228,7 @@ namespace TownOfSushi.CustomOption
             
             DrunkOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#758000FF>Drunk</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
+            Drunk = new CustomHeaderOption(num++, MultiMenu.ModifierAndAbility, "<color=#758000FF>Spawn Chance</color>");
             
             Flash = new CustomHeaderOption(num++, MultiMenu.ModifierAndAbility, "<color=#FF8080FF>Flash</color>");
             FlashOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#FF8080FF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
@@ -1223,9 +1242,11 @@ namespace TownOfSushi.CustomOption
 
             RadarOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#FF0080FF>Radar</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
+            Radar = new CustomHeaderOption(num++, MultiMenu.ModifierAndAbility, "<color=#FF0080FF>Spawn Chance</color>");
             
             SleuthOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#803333FF>Sleuth</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
+            Sleuth = new CustomHeaderOption(num++, MultiMenu.ModifierAndAbility, "<color=#803333FF>Spawn Chance</color>");
             
             Spy =
                 new CustomHeaderOption(num++, MultiMenu.ModifierAndAbility, "<color=#CCA3CCFF>Spy</color>");
@@ -1234,10 +1255,12 @@ namespace TownOfSushi.CustomOption
             WhoSeesDead = new CustomStringOption(num++, MultiMenu.ModifierAndAbility, "Who Sees Dead Bodies On Admin",
                 new[] { "Nobody", "<color=#CCA3CCFF>Spy</color>", "Everyone But <color=#CCA3CCFF>Spy</color>", "Everyone" });
             
-            TiebreakerOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#99E699FF>Tiebreaker</color>", 0f, 0f, 100f, 10f,
+            Tiebreaker = new CustomHeaderOption(num++, MultiMenu.ModifierAndAbility, "<color=#99E699FF>Tiebreaker</color>");
+            TiebreakerOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#99E699FF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
             
-            TorchOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#FFFF99FF>Torch</color>", 0f, 0f, 100f, 10f,
+            Torch = new CustomHeaderOption(num++, MultiMenu.ModifierAndAbility, "<color=#FFFF99FF>Torch</color>");
+            TorchOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#FFFF99FF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
             
             #endregion
@@ -1256,6 +1279,7 @@ namespace TownOfSushi.CustomOption
            
             DoubleShotOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#FF0000FF>Double Shot</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
+            DoubleShot = new CustomHeaderOption(num++, MultiMenu.ModifierAndAbility, "<color=#FF0000FF>Spawn Chance</color>");
             
             Underdog = new CustomHeaderOption(num++, MultiMenu.ModifierAndAbility, "<color=#FF0000FF>Underdog</color>");
             UnderdogOn = new CustomNumberOption(num++, MultiMenu.ModifierAndAbility, "<color=#FF0000FF>Spawn Chance</color>", 0f, 0f, 100f, 10f,
