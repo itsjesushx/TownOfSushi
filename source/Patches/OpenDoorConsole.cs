@@ -4,8 +4,7 @@ namespace TownOfSushi
     [HarmonyPatch(typeof(OpenDoorConsole), nameof(OpenDoorConsole.CanUse))]
     public class OpenDoorConsoleCanUse
     {
-        public static void Prefix(OpenDoorConsole __instance,
-            [HarmonyArgument(0)] NetworkedPlayerInfo playerInfo,
+        public static void Prefix(OpenDoorConsole __instance, [HarmonyArgument(0)] NetworkedPlayerInfo playerInfo,
             ref bool __state)
         {
             __state = false;
