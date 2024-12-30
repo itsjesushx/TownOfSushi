@@ -18,7 +18,6 @@ namespace TownOfSushi.Patches
                     }
                     yield break;
                 }
-
                 tickDictionary.Add(PlayerControl.LocalPlayer.PlayerId, DateTime.UtcNow);
 
                 while (true)
