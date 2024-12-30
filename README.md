@@ -3,7 +3,7 @@
 ![LOGO](./Images/TownOfSushiBanner.png)
 
 ### ***Notes:***
-### ***- This repo is a fork of [Town of Us Reactivated](https://github.com/eDonnes124/Town-Of-Us-R) and is currently under development.***
+### ***- This repo is using [Town of Us Reactivated](https://github.com/eDonnes124/Town-Of-Us-R) as Codebase and is currently under development.***
 ### ***- This mod is currently on testing with my group and haven't been finished yet so releases might have bugs still.***
 ### ***- This mod is NOT for mobile and console versions.***
 ### ***- This README page is currently under editing, most things here are either missing or subject to change.***
