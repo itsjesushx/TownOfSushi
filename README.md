@@ -3,6 +3,7 @@
 ![LOGO](./Images/TownOfSushiBanner.png)
 
 ### ***Notes:***
+### ***- This repo is just for me to practice coding in c# and just a hobby for me.
 ### ***- This repo is using [Town of Us Reactivated](https://github.com/eDonnes124/Town-Of-Us-R) as Codebase and is currently under development.***
 ### ***- This mod is currently on testing with my group and haven't been finished yet so releases might have bugs still.***
 ### ***- This mod is NOT for mobile and console versions.***
