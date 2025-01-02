@@ -459,18 +459,17 @@ Players who have been transported are alerted with a blue flash on their screen.
 -----------------------
 # Neutral Roles
 ## Amnesiac
-### **Team: Neutral (Special)**
+### **Team: Neutral (Benign)**
 The Amnesiac is a Neutral role with no win condition.\
 They have zero tasks and are essentially roleless.\
-However, they can remember a role by finding a dead player.\
+During meetings, the Amnesiac can choose a player to remember who they were (the button is the same as the imitator button but obviously different functionality),\
+After they select a player, the Amnesiac will become that persons role making the chosen player become Amnesiac (or Vampire if the role chosen player role is Vampire).\
 Once they remember their role, they go on to try win with their new win condition.
 
 ### Game Options
 | Name | Description | Type | Default |
 |----------|:-------------:|:------:|:------:|
 | Amnesiac | The percentage probability of the Amnesiac appearing | Percentage | 0% |
-| Amnesiac Gets Arrows | Whether the Amnesiac has arrows pointing to dead bodies | Toggle | False |
-| Arrow Appear Delay | The delay of the arrows appearing after the person died | Time | 5s |
 
 -----------------------
 ## Guardian Angel
