@@ -462,7 +462,7 @@ Players who have been transported are alerted with a blue flash on their screen.
 ### **Team: Neutral (Benign)**
 The Amnesiac is a Neutral role with no win condition.\
 They have zero tasks and are essentially roleless.\
-During meetings, the Amnesiac can choose a player to remember who they were (the button is the same as the imitator button but obviously different functionality),\
+During meetings, the Amnesiac can choose a player to remember who they were (the button is the same as the imitator button but obviously different functionality).\
 After they select a player, the Amnesiac will become that persons role making the chosen player become Amnesiac (or Vampire if the role chosen player role is Vampire).\
 Once they remember their role, they go on to try win with their new win condition.
 
