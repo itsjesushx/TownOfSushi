@@ -11,7 +11,7 @@ namespace TownOfSushi.Patches
         private static AnnouncementPopUp popUp;
         private static void Prefix(MainMenuManager __instance)
         {
-            #region DiscordButton
+            #region GithubButton
             GameObject template = GameObject.Find("ExitGameButton");
             GameObject template2 = GameObject.Find("CreditsButton");
             if (template == null || template2 == null) return;
@@ -25,20 +25,20 @@ namespace TownOfSushi.Patches
             template2.transform.FindChild("FontPlacer").transform.localScale = new Vector3(1.8f, 0.9f, 0.9f);
             template2.transform.FindChild("FontPlacer").transform.localPosition = new Vector3(-1.1f, 0f, 0f);
 
-            GameObject buttonDiscord = Object.Instantiate(template, template.transform.parent);
-            buttonDiscord.transform.localScale = new Vector3(0.42f, 0.84f, 0.84f);
-            buttonDiscord.GetComponent<AspectPosition>().anchorPoint = new Vector2(0.543f, 0.5f);
+            GameObject buttonGithub = Object.Instantiate(template, template.transform.parent);
+            buttonGithub.transform.localScale = new Vector3(0.42f, 0.84f, 0.84f);
+            buttonGithub.GetComponent<AspectPosition>().anchorPoint = new Vector2(0.543f, 0.5f);
 
-            TMPro.TMP_Text textDiscord = buttonDiscord.transform.GetComponentInChildren<TMPro.TMP_Text>();
+            TMPro.TMP_Text textGithub = buttonGithub.transform.GetComponentInChildren<TMPro.TMP_Text>();
             __instance.StartCoroutine(Effects.Lerp(0.5f, new Action<float>((p) =>
             {
-                textDiscord.SetText("            TOS Discord");
+                textGithub.SetText("            TOS Github");
             })));
-            PassiveButton passiveButtonDiscord = buttonDiscord.GetComponent<PassiveButton>();
-            passiveButtonDiscord.OnClick = new ButtonClickedEvent();
-            passiveButtonDiscord.OnClick.AddListener((Action)(() => Application.OpenURL("https://discord.gg/hMfFbU9mgk")));
+            PassiveButton passiveButtonGithub = buttonGithub.GetComponent<PassiveButton>();
+            passiveButtonGithub.OnClick = new ButtonClickedEvent();
+            passiveButtonGithub.OnClick.AddListener((Action)(() => Application.OpenURL("https://github.com/itsjesushx/TownOfSushi")));
 
-            #endregion DiscordButton
+            #endregion GithubButton
 
             #region TOS Credits
             // TOR credits button

@@ -17,7 +17,7 @@ namespace TownOfSushi
     public class TownOfSushi : BasePlugin
     {
         public const string Id = "me.itsjesushx.townofsushi";
-        public const string VersionString = "1.0.0";
+        public const string VersionString = "1.2.0";
         public const string VersionTag = "<color=#ff33fc></color>";
         public const string VersionTag2 = "";
         public static Version Version = Version.Parse(VersionString);
