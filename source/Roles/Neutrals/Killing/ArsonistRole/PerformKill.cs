@@ -51,7 +51,7 @@
             if (!flag2) return false;
             if (role.DousedPlayers.Contains(role.ClosestPlayerDouse.PlayerId)) return false;
             var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayerDouse);
-            if (interact[4] == true) 
+            if (interact[3] == true) 
             {
                 role.DousedPlayers.Add(role.ClosestPlayerDouse.PlayerId);
             }
@@ -66,7 +66,7 @@
                 role.LastDoused.AddSeconds(CustomGameOptions.ProtectKCReset - CustomGameOptions.DouseCd);
                 return false;
             }
-            else if (interact[3] == true) return false;
+            else if (interact[2] == true) return false;
             return false;
         }
     }

@@ -22,8 +22,8 @@ namespace TownOfSushi.Roles.Crewmates.Investigative.TrackerMod
             var target = role.ClosestPlayer;
             if (!role.ButtonUsable) return false;
 
-            var interact = Utils.Interact(PlayerControl.LocalPlayer, role.ClosestPlayer);
-            if (interact[4] == true)
+            var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer);
+            if (interact[3] == true)
             {
                 var gameObj = new GameObject();
                 var arrow = gameObj.AddComponent<ArrowBehaviour>();
@@ -63,7 +63,7 @@ namespace TownOfSushi.Roles.Crewmates.Investigative.TrackerMod
                 role.LastTracked = role.LastTracked.AddSeconds(CustomGameOptions.ProtectKCReset - CustomGameOptions.TrackCd);
                 return false;
             }
-            else if (interact[3] == true) return false;
+            else if (interact[2] == true) return false;
             return false;
         }
     }

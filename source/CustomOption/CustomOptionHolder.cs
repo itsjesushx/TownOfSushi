@@ -756,7 +756,7 @@ namespace TownOfSushi.CustomOption
             BaitMinDelay = CustomOption.Create(269, Types.ModifierAbility, "Minimum Delay for the Bait Report", 0f, 0f, 15f, 0.5f, BaitOn, format: "s");
             BaitMaxDelay = CustomOption.Create(270, Types.ModifierAbility, "Maximum Delay for the Bait Report", 1f, 0f, 15f, 0.5f, BaitOn, format: "s");
 
-            DiseasedOn = CustomOption.Create(270, Types.ModifierAbility, ColorString(Colors.Diseased, "Diseased"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            DiseasedOn = CustomOption.Create(2701, Types.ModifierAbility, ColorString(Colors.Diseased, "Diseased"), 0f, 0f, 100f, 10f, null, true, format: "%");
             DiseasedKillMultiplier = CustomOption.Create(271, Types.ModifierAbility, "Kill Multiplier", 3f, 1.5f, 5f, 0.5f, DiseasedOn, format: "x");
 
             FrostyOn = CustomOption.Create(272, Types.ModifierAbility, ColorString(Colors.Frosty, "Frosty"), 0f, 0f, 100f, 10f, null, true, format: "%");

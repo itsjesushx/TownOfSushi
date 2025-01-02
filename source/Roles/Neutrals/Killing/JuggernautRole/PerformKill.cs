@@ -19,7 +19,7 @@ namespace TownOfSushi.Roles.Neutral.Killing.JuggernautRole
                         KillDistance();
             if (!flag3) return false;
             var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer, true);
-            if (interact[4] == true) return false;
+            if (interact[3] == true) return false;
             else if (interact[0] == true)
             {
                 role.LastKill = DateTime.UtcNow;
@@ -31,7 +31,7 @@ namespace TownOfSushi.Roles.Neutral.Killing.JuggernautRole
                 role.LastKill = role.LastKill.AddSeconds(-(CustomGameOptions.JuggKCd - CustomGameOptions.ReducedKCdPerKill * role.JuggKills) + CustomGameOptions.ProtectKCReset);
                 return false;
             }
-            else if (interact[3] == true) return false;
+            else if (interact[2] == true) return false;
             return false;
         }
     }

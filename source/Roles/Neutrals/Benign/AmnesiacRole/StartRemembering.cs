@@ -88,9 +88,13 @@ namespace TownOfSushi.Roles.Neutral.Benign.AmnesiacRole
 
             var vowel = "aeiou".Contains(newRole.Name.ToLower()[0]);
             var article = vowel ? "an" : "a";
-            UsefulMethods.ShowTextToast($"You remembered you were {article} {newRole.Name}!", 3.5f);
-            SoundManager.Instance.PlaySound(ShipStatus.Instance.SabotageSound, false, 1f, null);
-            Flash(newRole.Color);
+            
+            if (PlayerControl.LocalPlayer == amnesiac)
+            {
+                UsefulMethods.ShowTextToast($"You remembered you were {article} {newRole.Name}!", 3.5f);            
+                SoundManager.Instance.PlaySound(ShipStatus.Instance.SabotageSound, false, 1f, null);            
+                Flash(newRole.Color);
+            }
 
             if (other == StartImitate.ImitatingPlayer)
             {

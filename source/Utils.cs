@@ -339,7 +339,6 @@ namespace TownOfSushi
         {
             bool fullCooldownReset = false;
             bool gaReset = false;
-            bool survReset = false;
             bool zeroSecReset = false;
             bool abilityUsed = false;
             var checkHack = AbilityUsed(player, target);
@@ -512,7 +511,6 @@ namespace TownOfSushi
             var reset = new List<bool>();
             reset.Add(fullCooldownReset);
             reset.Add(gaReset);
-            reset.Add(survReset);
             reset.Add(zeroSecReset);
             reset.Add(abilityUsed);
             return reset;

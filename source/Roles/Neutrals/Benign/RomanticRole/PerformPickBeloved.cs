@@ -20,7 +20,7 @@ namespace TownOfSushi.Roles.Neutral.Benign.RomanticRole
             if (role.AlreadyPicked) return false;
 
             var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer);
-            if (interact[4] == true)
+            if (interact[3] == true)
             {
                 role.Beloved = role.ClosestPlayer;
                 role.AlreadyPicked = true;
@@ -37,7 +37,7 @@ namespace TownOfSushi.Roles.Neutral.Benign.RomanticRole
                 role.LastPick = role.LastPick.AddSeconds(CustomGameOptions.ProtectKCReset - CustomGameOptions.PickStartTimer);
                 return false;
             }
-            else if (interact[3] == true) return false;
+            else if (interact[2] == true) return false;
             return false;
         }
     }

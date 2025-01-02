@@ -19,7 +19,7 @@ namespace TownOfSushi
                 return false;
             }
             var interact = Interact(PlayerControl.LocalPlayer, target, true);
-            if (interact[4] == true) return false;
+            if (interact[3] == true) return false;
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Warlock))
             {
                 var warlock = GetRole<Warlock>(PlayerControl.LocalPlayer);
@@ -48,7 +48,7 @@ namespace TownOfSushi
                 PlayerControl.LocalPlayer.SetKillTimer(CustomGameOptions.ProtectKCReset + 0.01f);
                 return false;
             }
-            else if (interact[3] == true)
+            else if (interact[2] == true)
             {
                 PlayerControl.LocalPlayer.SetKillTimer(0.01f);
                 return false;

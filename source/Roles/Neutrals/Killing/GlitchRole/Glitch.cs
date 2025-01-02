@@ -310,7 +310,7 @@ namespace TownOfSushi.Roles
                 if (__gInstance.KillTarget != null)
                 {
                     var interact = Interact(__gInstance.Player, __gInstance.KillTarget, true);
-                    if (interact[4] == true)
+                    if (interact[3] == true)
                     {
                         return;
                     }
@@ -325,7 +325,7 @@ namespace TownOfSushi.Roles
                         __gInstance.LastKill = __gInstance.LastKill.AddSeconds(CustomGameOptions.ProtectKCReset - CustomGameOptions.GlitchKillCooldown);
                         return;
                     }
-                    else if (interact[3] == true)
+                    else if (interact[2] == true)
                     {
                         return;
                     }
@@ -385,7 +385,7 @@ namespace TownOfSushi.Roles
                 {
                     if (__gInstance.Player.inVent) return;
                     var interact = Interact(__gInstance.Player, __gInstance.HackTarget);
-                    if (interact[4] == true)
+                    if (interact[3] == true)
                     {
                         __gInstance.RpcSetHacked(__gInstance.HackTarget);
                     }
@@ -400,7 +400,7 @@ namespace TownOfSushi.Roles
                         __gInstance.LastHack.AddSeconds(CustomGameOptions.ProtectKCReset - CustomGameOptions.HackCooldown);
                         return;
                     }
-                    else if (interact[3] == true)
+                    else if (interact[2] == true)
                     {
                         return;
                     }

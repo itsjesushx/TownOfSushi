@@ -30,7 +30,7 @@ namespace TownOfSushi.NeutralRoles.VampireRole
                 aliveVamps.Count == 1 && vamps.Count < CustomGameOptions.MaxVampiresPerGame)
             {
                 var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer);
-                if (interact[4] == true)
+                if (interact[3] == true)
                 {
                     Convert(role.ClosestPlayer);
                     Rpc(CustomRPC.Bite, role.ClosestPlayer.PlayerId);
@@ -46,13 +46,13 @@ namespace TownOfSushi.NeutralRoles.VampireRole
                     role.LastBit = role.LastBit.AddSeconds(CustomGameOptions.ProtectKCReset - CustomGameOptions.BiteCd);
                     return false;
                 }
-                else if (interact[3] == true) return false;
+                else if (interact[2] == true) return false;
                 return false;
             }
             else
             {
                 var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer, true);
-                if (interact[4] == true) return false;
+                if (interact[3] == true) return false;
                 if (interact[0] == true)
                 {
                     role.LastBit = DateTime.UtcNow;
@@ -64,7 +64,7 @@ namespace TownOfSushi.NeutralRoles.VampireRole
                     role.LastBit = role.LastBit.AddSeconds(CustomGameOptions.ProtectKCReset - CustomGameOptions.BiteCd);
                     return false;
                 }
-                else if (interact[3] == true) return false;
+                else if (interact[2] == true) return false;
                 return false;
             }
         }

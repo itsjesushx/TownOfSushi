@@ -55,7 +55,7 @@ namespace TownOfSushi.Roles.Neutral.Killing.HitmanRole
 
                     position.y -= 0.3636f;
 
-                    Utils.Rpc(CustomRPC.HitmanDrop, PlayerControl.LocalPlayer.PlayerId, position, position.z);
+                    Rpc(CustomRPC.HitmanDrop, PlayerControl.LocalPlayer.PlayerId, position, position.z);
 
                     var body = role.CurrentlyDragging;
                     foreach (var body2 in role.CurrentlyDragging.bodyRenderers) body2.material.SetFloat("_Outline", 0f);

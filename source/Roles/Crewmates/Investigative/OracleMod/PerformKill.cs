@@ -19,7 +19,7 @@
             if (role.ClosestPlayer == null) return false;
 
             var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer);
-            if (interact[4] == true)
+            if (interact[3] == true)
             {
                 role.Confessor = role.ClosestPlayer;
                 bool showsCorrectFaction = true;
@@ -60,7 +60,7 @@
                 role.LastConfessed = role.LastConfessed.AddSeconds(CustomGameOptions.ProtectKCReset - CustomGameOptions.ConfessCd);
                 return false;
             }
-            else if (interact[3] == true) return false;
+            else if (interact[2] == true) return false;
             return false;
         }
     }

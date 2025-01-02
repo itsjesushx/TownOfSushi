@@ -24,7 +24,7 @@ namespace TownOfSushi.Roles.Crewmates.Investigative.InvestigatorMod
                     PlayerControl.LocalPlayer.GetTruePosition()) > maxDistance) return false;
                 if (role.ClosestPlayer == null) return false;
                 var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer);
-                if (interact[4] == true)
+                if (interact[3] == true)
                 {
                     if (role.ClosestPlayer == role.DetectedKiller) Flash(Color.red);
                     else Flash(Color.green);
@@ -40,7 +40,7 @@ namespace TownOfSushi.Roles.Crewmates.Investigative.InvestigatorMod
                     role.LastExamined = role.LastExamined.AddSeconds(CustomGameOptions.ProtectKCReset - CustomGameOptions.ExamineCd);
                     return false;
                 }
-                else if (interact[3] == true) return false;
+                else if (interact[2] == true) return false;
                 return false;
             }
             else

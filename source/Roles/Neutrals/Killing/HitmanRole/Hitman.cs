@@ -195,7 +195,7 @@ namespace TownOfSushi.Roles
 
                 if (__instance.KillButton.isActiveAndEnabled && __gInstance.Player.moveable)
                 {
-                    if ((CamouflageUnCamouflagePatch.IsCamouflaged && CustomGameOptions.CamoCommsKillAnyone)) SetTarget(ref __gInstance.ClosestPlayer, __instance.KillButton);
+                    if (CamouflageUnCamouflagePatch.IsCamouflaged && CustomGameOptions.CamoCommsKillAnyone) SetTarget(ref __gInstance.ClosestPlayer, __instance.KillButton);
                     else SetTarget(ref __gInstance.ClosestPlayer, __instance.KillButton);
                     __gInstance.KillTarget = __gInstance.ClosestPlayer;
                 }
@@ -208,7 +208,7 @@ namespace TownOfSushi.Roles
                 if (__gInstance.KillTarget != null)
                 {
                     var interact = Interact(__gInstance.Player, __gInstance.KillTarget, true);
-                    if (interact[4] == true)
+                    if (interact[3] == true)
                     {
                         return;
                     }
@@ -223,7 +223,7 @@ namespace TownOfSushi.Roles
                         __gInstance.LastKill = __gInstance.LastKill.AddSeconds(CustomGameOptions.ProtectKCReset - CustomGameOptions.HitmanKCd);
                         return;
                     }
-                    else if (interact[3] == true)
+                    else if (interact[2] == true)
                     {
                         return;
                     }

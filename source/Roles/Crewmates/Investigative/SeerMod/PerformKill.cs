@@ -19,7 +19,7 @@
             if (role.ClosestPlayer == null) return false;
 
             var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer, false);
-            if (interact[4] == true)
+            if (interact[3] == true)
             {
                 role.Investigated.Add(role.ClosestPlayer.PlayerId);
                 
@@ -35,7 +35,7 @@
                 role.LastInvestigated = role.LastInvestigated.AddSeconds(CustomGameOptions.ProtectKCReset - CustomGameOptions.SeerCd);
                 return false;
             }
-            else if (interact[3] == true) return false;
+            else if (interact[2] == true) return false;
             return false;
         }
     }

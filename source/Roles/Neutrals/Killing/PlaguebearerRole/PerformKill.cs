@@ -30,7 +30,7 @@ namespace TownOfSushi.Roles.Neutral.Killing.PlaguebearerRole
                 role.LastInfected.AddSeconds(CustomGameOptions.ProtectKCReset - CustomGameOptions.InfectCd);
                 return false;
             }
-            else if (interact[3] == true) return false;
+            else if (interact[2] == true) return false;
             return false;
         }
     }

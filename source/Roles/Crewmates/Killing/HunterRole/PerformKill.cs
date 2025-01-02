@@ -17,7 +17,7 @@ namespace TownOfSushi.Roles.Crewmates.Killing.HunterRole
                 if (!role.StalkUsable) return false;
                 if (role.StalkTimer() != 0) return false;
                 var stalkInteract = Interact(PlayerControl.LocalPlayer, role.ClosestStalkPlayer, false);
-                if (stalkInteract[4] == true)
+                if (stalkInteract[3] == true)
                 {
                     role.StalkDuration = CustomGameOptions.HunterStalkDuration;
                     role.StalkedPlayer = role.ClosestStalkPlayer;

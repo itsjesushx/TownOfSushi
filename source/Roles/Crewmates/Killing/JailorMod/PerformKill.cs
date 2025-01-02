@@ -19,7 +19,7 @@
             if (role.ClosestPlayer == null) return false;
 
             var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer);
-            if (interact[4] == true)
+            if (interact[3] == true)
             {
                 role.Jailed = role.ClosestPlayer;
                 Rpc(CustomRPC.Jail, PlayerControl.LocalPlayer.PlayerId, (byte)0, role.Jailed.PlayerId);
@@ -35,7 +35,7 @@
                 role.LastJailed = role.LastJailed.AddSeconds(CustomGameOptions.ProtectKCReset - CustomGameOptions.JailCd);
                 return false;
             }
-            else if (interact[3] == true) return false;
+            else if (interact[2] == true) return false;
             return false;
         }
     }

@@ -14,7 +14,7 @@ namespace TownOfSushi.Roles.Impostors.Power.WitchRole
             if (__instance == role.SpellButton)
             {
                 var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer);
-                if (interact[4] == true)
+                if (interact[3] == true)
                 {
                     role.SpelledPlayers.Add(role.ClosestPlayer.PlayerId);
                     Rpc(CustomRPC.Spell, PlayerControl.LocalPlayer.PlayerId, role.ClosestPlayer.PlayerId);
@@ -30,7 +30,7 @@ namespace TownOfSushi.Roles.Impostors.Power.WitchRole
                     role.LastSpelled = role.LastSpelled.AddSeconds(CustomGameOptions.ProtectKCReset - CustomGameOptions.SpellCd);
                     return false;
                 }
-                else if (interact[3] == true) return false;
+                else if (interact[2] == true) return false;
             }
             return true;
         }

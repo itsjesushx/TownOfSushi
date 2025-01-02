@@ -35,7 +35,7 @@
             if (!flag3) return false;
 
             var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer, true);
-            if (interact[4] == true) return false;
+            if (interact[3] == true) return false;
             else if (interact[0] == true)
             {
                 role.LastKilled = DateTime.UtcNow;
@@ -47,7 +47,7 @@
                 role.LastKilled = role.LastKilled.AddSeconds(CustomGameOptions.ProtectKCReset - CustomGameOptions.StabKillCd);
                 return false;
             }
-            else if (interact[3] == true) return false;
+            else if (interact[2] == true) return false;
             return false;
         }
     }
