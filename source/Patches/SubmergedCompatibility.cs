@@ -17,49 +17,6 @@ namespace TownOfSushi.Patches
         }
     }
 
-
-    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
-    public static class SubmergedHudPatch
-    {
-        public static void Postfix(HudManager __instance)
-        {
-            if (PlayerControl.LocalPlayer == null || PlayerControl.LocalPlayer.Data == null) return;
-            if (SubmergedCompatibility.isSubmerged())
-            {
-                if (PlayerControl.LocalPlayer.Data.IsDead && PlayerControl.LocalPlayer.Is(RoleEnum.Haunter))
-                {
-                    if (!GetRole<Haunter>(PlayerControl.LocalPlayer).Caught) __instance.MapButton.transform.parent.Find(__instance.MapButton.name + "(Clone)").gameObject?.SetActive(false);
-                    else __instance.MapButton.transform.parent.Find(__instance.MapButton.name + "(Clone)").gameObject?.SetActive(true);
-                }
-                if (PlayerControl.LocalPlayer.Data.IsDead && PlayerControl.LocalPlayer.Is(RoleEnum.Phantom))
-                {
-                    if (!GetRole<Phantom>(PlayerControl.LocalPlayer).Caught) __instance.MapButton.transform.parent.Find(__instance.MapButton.name + "(Clone)").gameObject?.SetActive(false);
-                    else __instance.MapButton.transform.parent.Find(__instance.MapButton.name + "(Clone)").gameObject?.SetActive(true);
-                }
-            }
-        }
-    }
-
-    [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.HandleAnimation))]
-    [HarmonyPriority(Priority.Low)] //make sure it occurs after other patches
-    public static class SubmergedPhysicsPatch
-    {
-        public static void Postfix(PlayerPhysics __instance)
-        {
-            SubmergedCompatibility.Ghostrolefix(__instance);
-        }
-    }
-    [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.LateUpdate))]
-    [HarmonyPriority(Priority.Low)] //make sure it occurs after other patches
-    public static class SubmergedLateUpdatePhysicsPatch
-    {
-        public static void Postfix(PlayerPhysics __instance)
-        {
-            SubmergedCompatibility.Ghostrolefix(__instance);
-        }
-    }
-
-
     public static class SubmergedCompatibility
     {
         public static class Classes
@@ -194,9 +151,6 @@ namespace TownOfSushi.Patches
             Harmony _harmony = new Harmony("tou.submerged.patch");
             var exilerolechangePostfix = SymbolExtensions.GetMethodInfo(() => ExileRoleChangePostfix());
             _harmony.Patch(SubmergedExileWrapUpMethod, null, new HarmonyMethod(exilerolechangePostfix));
-            var canusePrefix = SymbolExtensions.GetMethodInfo(() => CanUsePrefix());
-            var canusePostfix = SymbolExtensions.GetMethodInfo(() => CanUsePostfix());
-            _harmony.Patch(CanUse, new HarmonyMethod(canusePrefix), new HarmonyMethod(canusePostfix));
         }
 
         public static void CheckOutOfBoundsElevator(PlayerControl player)
@@ -250,24 +204,6 @@ namespace TownOfSushi.Patches
         public static void ExileRoleChangePostfix()
         {
             Coroutines.Start(waitMeeting(resetTimers));
-            Coroutines.Start(waitMeeting(GhostRoleBegin));
-        }
-
-        public static void CanUsePrefix()
-        {
-            var player = PlayerControl.LocalPlayer;
-            var targetData = player.CachedPlayerData;
-            if (((player.Is(RoleEnum.Phantom) && !Role.GetRole<Phantom>(player).Caught) || (player.Is(RoleEnum.Haunter) && !Role.GetRole<Haunter>(player).Caught)) && targetData.IsDead)
-            {
-                targetData.IsDead = false;
-            }
-        }
-
-        public static void CanUsePostfix()
-        {
-            var player = PlayerControl.LocalPlayer;
-            var targetData = player.CachedPlayerData;
-            if ((player.Is(RoleEnum.Phantom) || player.Is(RoleEnum.Haunter)) && !targetData.IsDead) targetData.IsDead = true;
         }
 
         public static IEnumerator waitMeeting(Action next)
@@ -286,91 +222,9 @@ namespace TownOfSushi.Patches
 
         public static void resetTimers()
         {
-            Utils.ResetCustomTimers();
+            ResetCustomTimers();
         }
 
-
-        public static void GhostRoleBegin()
-        {
-            if (!PlayerControl.LocalPlayer.Data.IsDead) return;
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Haunter))
-            {
-                if (!Role.GetRole<Haunter>(PlayerControl.LocalPlayer).Caught)
-                {
-                    var startingVent =
-                        ShipStatus.Instance.AllVents[UnityEngine.Random.RandomRangeInt(0, ShipStatus.Instance.AllVents.Count)];
-                    while (startingVent == ShipStatus.Instance.AllVents[0] || startingVent == ShipStatus.Instance.AllVents[14])
-                    {
-                        startingVent =
-                            ShipStatus.Instance.AllVents[UnityEngine.Random.RandomRangeInt(0, ShipStatus.Instance.AllVents.Count)];
-                    }
-                    ChangeFloor(startingVent.transform.position.y > -7f);
-
-                    Utils.Rpc(CustomRPC.SetPos, PlayerControl.LocalPlayer.PlayerId, startingVent.transform.position.x, startingVent.transform.position.y + 0.3636f);
-
-                    PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(new Vector2(startingVent.transform.position.x, startingVent.transform.position.y + 0.3636f));
-                    PlayerControl.LocalPlayer.MyPhysics.RpcEnterVent(startingVent.Id);
-                }
-            }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Phantom))
-            {
-                if (!Role.GetRole<Phantom>(PlayerControl.LocalPlayer).Caught)
-                {
-                    var startingVent =
-                        ShipStatus.Instance.AllVents[UnityEngine.Random.RandomRangeInt(0, ShipStatus.Instance.AllVents.Count)];
-                    while (startingVent == ShipStatus.Instance.AllVents[0] || startingVent == ShipStatus.Instance.AllVents[14])
-                    {
-                        startingVent =
-                            ShipStatus.Instance.AllVents[UnityEngine.Random.RandomRangeInt(0, ShipStatus.Instance.AllVents.Count)];
-                    }
-                    ChangeFloor(startingVent.transform.position.y > -7f);
-
-                    Utils.Rpc(CustomRPC.SetPos, PlayerControl.LocalPlayer.PlayerId, startingVent.transform.position.x, startingVent.transform.position.y + 0.3636f);
-
-                    PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(new Vector2(startingVent.transform.position.x, startingVent.transform.position.y + 0.3636f));
-                    PlayerControl.LocalPlayer.MyPhysics.RpcEnterVent(startingVent.Id);
-                }
-            }
-        }
-
-        public static void Ghostrolefix(PlayerPhysics __instance)
-        {
-            if (Loaded && __instance.myPlayer.Data != null && __instance.myPlayer.Data.IsDead)
-            {
-                PlayerControl player = __instance.myPlayer;
-                if (player.Is(RoleEnum.Phantom))
-                {
-
-                    if (!Role.GetRole<Phantom>(player).Caught)
-                    {
-
-                        if (player.AmOwner) MoveDeadPlayerElevator(player);
-                        else player.Collider.enabled = false;
-                        Transform transform = __instance.transform;
-                        Vector3 position = transform.position;
-                        position.z = position.y/1000;
-
-                        transform.position = position;
-                        __instance.myPlayer.gameObject.layer = 8;
-                    }
-                }
-                if (player.Is(RoleEnum.Haunter))
-                {
-                    if (!Role.GetRole<Haunter>(player).Caught)
-                    {
-
-                        if (player.AmOwner) MoveDeadPlayerElevator(player);
-                        else player.Collider.enabled = false;
-                        Transform transform = __instance.transform;
-                        Vector3 position = transform.position;
-                        position.z = position.y / 1000;
-
-                        transform.position = position;
-                        __instance.myPlayer.gameObject.layer = 8;
-                    }
-                }
-            }
-        }
         public static MonoBehaviour AddSubmergedComponent(this GameObject obj, string typeName)
         {
             if (!Loaded) return obj.AddComponent<MissingSubmergedBehaviour>();

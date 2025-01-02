@@ -329,11 +329,6 @@ namespace TownOfSushi.Roles
                     ((Tracker)role).TrackerArrows.Values.DestroyAll();
                     ((Tracker)role).TrackerArrows.Clear();
                 }
-                foreach (var role in AllRoles.Where(x => x.RoleType == RoleEnum.Amnesiac))
-                {
-                    ((Amnesiac)role).BodyArrows.Values.DestroyAll();
-                    ((Amnesiac)role).BodyArrows.Clear();
-                }
                 foreach (var role in AllRoles.Where(x => x.RoleType == RoleEnum.Vulture))
                 {
                     ((Vulture)role).BodyArrows.Values.DestroyAll();

@@ -167,17 +167,14 @@ namespace TownOfSushi.Roles.Abilities.AbilityMod.AssassinAbility
                 }
             }
             
-            if (player.Is(RoleEnum.Imitator))
+            if (player.Is(RoleEnum.Imitator) && !player.Data.IsDead)
             {
-                var imitator = GetRole<Imitator>(PlayerControl.LocalPlayer);
-                imitator.ListOfActives.Clear();
-                imitator.Buttons.Clear();
-                SetImitate.Imitate = null;
-                var buttons = GetRole<Imitator>(player).Buttons;
-                foreach (var button in buttons)
+                var imitatorRole = GetRole<Imitator>(PlayerControl.LocalPlayer);
+                if (!meetingHud.playerStates[player.PlayerId].DidVote)
                 {
-                    button.SetActive(false);
-                    button.GetComponent<PassiveButton>().OnClick = new Button.ButtonClickedEvent();
+                    RoleEnum imitatedRole = GetPlayerRole(player).RoleType;
+                    var imitatable = imitatorRole.ImitatableRoles.Contains(imitatedRole);
+                    AddButtonImitator.GenButton(imitatorRole, player.PlayerId, imitatable, true);
                 }
             }
 

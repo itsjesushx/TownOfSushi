@@ -24,7 +24,7 @@
 | [Morphling](#morphling) | [Oracle](#oracle) | [Doomsayer](#doomsayer) |  [Double Shot](#double-shot) |[Spy](#spy) | [Vanilla Hide 'n' Seek](https://www.innersloth.com/new-game-mode-hide-n-seek-is-here-emergency-meeting-35/) |
 | [Venerer](#venerer) | [Investigator](#investigator) | [Vulture](#vulture) | [Frosty](#frosty) | [Drunk](#drunk)||
 | [Miner](#miner) | [Mystic](#mystic) | [Guardian Angel](#guardian-angel) |  [Giant](#giant)|[Flash](#flash) |
-| [Blackmailer](#blackmailer) | [Veteran](#veteran) |  [Phantom](#phantom) |[Underdog](#underdog) | [Multitasker](#multitasker)|
+| [Blackmailer](#blackmailer) | [Veteran](#veteran) |  [Pestilence](#plaguebearer) |[Underdog](#underdog) | [Multitasker](#multitasker)|
 | [Warlock](#warlock) | [Medic](#medic) | [Executioner](#executioner)  |   [Diseased](#diseased) | [Radar](#radar) |
 |  [Undertaker](#undertaker) | [Imitator](#imitator) | [Romantic](#romantic) |  | [Sleuth](#sleuth) |
 |  [Bomber](#bomber)  | [Seer](#seer) | [Amnesiac](#amnesiac)| | [Tiebreaker](#tiebreaker) |
@@ -32,9 +32,9 @@
 | |[Snitch](#snitch) | [Hitman](#hitman) |  |
 | | [Transporter](#transporter)  |[Glitch](#glitch) |  |
 | |[Trapper](#trapper) | [Serial Killer](#serial-killer) |  |
-| |[Haunter](#haunter)  | [Juggernaut](#juggernaut)  |  |
-| | [Swapper](#swapper)  |[Plaguebearer](#plaguebearer) |  |
-| | | [Pestilence](#plaguebearer) |  |
+| | [Swapper](#swapper)  | [Juggernaut](#juggernaut)  |  |
+| | |[Plaguebearer](#plaguebearer) |  |
+| | | |  |
 
 -----------------------
 # Releases
@@ -151,21 +151,6 @@ Delete these files and you're good to go!
 -----------------------
 # Roles
 # Crewmate Roles
-## Haunter
-### **Team: Crewmates**
-The Haunter is a dead Crewmate that can reveal Impostors if they finish all their tasks.\
-Upon finishing all of their tasks, Impostors are revealed to alive crewmates after a meeting is called.\
-However, if the Haunter is clicked they lose their ability to reveal Impostors and are once again a normal ghost.
-### Game Options
-| Name | Description | Type | Default |
-|----------|:-------------:|:------:|:------:|
-| Haunter | The percentage probability of the Haunter appearing | Percentage | 0% |
-| When Haunter Can Be Clicked | The amount of tasks remaining when the Haunter Can Be Clicked | Number | 5 |
-| Haunter Alert | The amount of tasks remaining when the Impostors are alreted that the Haunter is nearly finished | Number | 1 |
-| Haunter Reveals Neutral Roles | Whether the Haunter also Reveals Neutral Roles | Toggle | False |
-| Who can Click Haunter | Whether even other Crewmates can click the Haunter | All / Non-Crew / Imps Only | All |
-
------------------------
 ## Investigator
 ### **Team: Crewmates**
 The Investigator is a Crewmate that can see the footprints of players.\
@@ -586,18 +571,6 @@ However, the Jester does not win if the Crewmates, Impostors or another Neutral 
 | Jester Can Button | Whether the Jester Can Press the Button | Toggle | True |
 | Jester Can Vent | Whether the Jester Can Vent | Toggle | False |
 | Jester Has Impostor Vision | Whether the Jester Has Impostor Vision | Toggle | False |
-
------------------------
-## Phantom
-### **Team: Neutral (Special)**
-
-The Phantom is a Neutral role with its own win condition.\
-They become half-invisible when they die and has to complete all their tasks without getting caught.
-### Game Options
-| Name | Description | Type | Default |
-|----------|:-------------:|:------:|:------:|
-| Phantom | The percentage probability of the Phantom appearing | Percentage | 0% |
-| When Phantom Can Be Clicked | The amount of tasks remaining when the Phantom Can Be Clicked | Number | 5 |
 
 -----------------------
 ## Arsonist

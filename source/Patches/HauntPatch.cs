@@ -1,6 +1,3 @@
-using TownOfSushi.Roles.Neutral.Evil.PhantomRole;
-using TownOfSushi.Roles.Crewmates.Special.HaunterMod;
-
 namespace TownOfSushi.Patches 
 {
     [HarmonyPatch]
@@ -76,8 +73,7 @@ namespace TownOfSushi.Patches
             {
                 try
                 {
-                    if (SetPhantom.WillBePhantom != player && SetHaunter.WillBeHaunter != player
-                        && !player.Data.Disconnected) player.Exiled();
+                    if (!player.Data.Disconnected) player.Exiled();
                 }
                 catch { }
             }

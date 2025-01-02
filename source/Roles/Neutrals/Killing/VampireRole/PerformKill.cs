@@ -23,11 +23,6 @@ namespace TownOfSushi.NeutralRoles.VampireRole
             if (role.ClosestPlayer == null) return false;
 
             var vamps = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(RoleEnum.Vampire)).ToList();
-            foreach (var phantom in GetRoles(RoleEnum.Phantom))
-            {
-                var phantomRole = (Phantom)phantom;
-                if (phantomRole.formerRole == RoleEnum.Vampire) vamps.Add(phantomRole.Player);
-            }
             var aliveVamps = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(RoleEnum.Vampire) && !x.Data.IsDead && !x.Data.Disconnected).ToList();
             if ((role.ClosestPlayer.Is(Faction.Crewmates) || (role.ClosestPlayer.Is(RoleAlignment.NeutralBenign)
                 && CustomGameOptions.CanBiteNeutralBenign) || !ShowRoundOneShield.FirstRoundShielded || (role.ClosestPlayer.Is(RoleAlignment.NeutralEvil)
@@ -111,10 +106,6 @@ namespace TownOfSushi.NeutralRoles.VampireRole
                     GetRole<Investigator>(PlayerControl.LocalPlayer).ExamineButton.SetTarget(null); 
                     Footprint.DestroyAll(GetRole<Investigator>(PlayerControl.LocalPlayer));
                     InvestigatorRole.ExamineButton.gameObject.SetActive(false);
-                }
-                else if (PlayerControl.LocalPlayer.Is(RoleEnum.Amnesiac)) 
-                {
-                    Roles.Neutral.Benign.AmnesiacRole.KillButtonTarget.SetTarget(HudManager.Instance.KillButton, null, GetRole<Amnesiac>(PlayerControl.LocalPlayer));
                 }
 
                 if (PlayerControl.LocalPlayer.Is(RoleEnum.Vigilante)) 

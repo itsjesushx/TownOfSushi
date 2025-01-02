@@ -1,53 +1,16 @@
+using TownOfSushi.Roles.Crewmates.Investigative.InvestigatorMod;
 using TownOfSushi.Roles.Crewmates.Investigative.SnitchRole;
 using TownOfSushi.Roles.Crewmates.Investigative.TrapperMod;
 using TownOfSushi.Roles.Crewmates.Support.ImitatorRole;
 using TownOfSushi.Roles.Impostors.Power.BomberRole;
-
-using TownOfSushi.Roles.Crewmates.Investigative.InvestigatorMod;
+using TownOfSushi.Utilities;
+using static TownOfSushi.Roles.Neutral.Benign.AmnesiacRole.RememberRole;
 
 namespace TownOfSushi.Roles.Neutral.Benign.AmnesiacRole
 {
-    [HarmonyPatch(typeof(KillButton), nameof(KillButton.DoClick))]
-    public class PerformKillButton
+    public static class RememberRole
     {
         public static Sprite Sprite => TownOfSushi.Arrow;
-        public static bool Prefix(KillButton __instance)
-        {
-            if (__instance != DestroyableSingleton<HudManager>.Instance.KillButton) return true;
-            var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Amnesiac);
-            if (!flag) return true;
-            if (!PlayerControl.LocalPlayer.CanMove) return false;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return false;
-            var role = GetRole<Amnesiac>(PlayerControl.LocalPlayer);
-
-            var flag2 = __instance.isCoolingDown;
-            if (flag2) return false;
-            if (!__instance.enabled) return false;
-            var maxDistance = KillDistance();
-            if (role == null)
-                return false;
-            if (role.CurrentTarget == null)
-                return false;
-            if (Vector2.Distance(role.CurrentTarget.TruePosition,
-                PlayerControl.LocalPlayer.GetTruePosition()) > maxDistance) return false;
-            var playerId = role.CurrentTarget.ParentId;
-            var player = PlayerById(playerId);
-            var abilityUsed = AbilityUsed(PlayerControl.LocalPlayer);
-            if (!abilityUsed) return false;
-            if ((player.IsInfected() || role.Player.IsInfected()) && !player.Is(RoleEnum.Plaguebearer))
-            {
-                foreach (var pb in GetRoles(RoleEnum.Plaguebearer)) ((Plaguebearer)pb).RpcSpreadInfection(player, role.Player);
-            }
-
-            if (AmongUsClient.Instance.AmHost)
-            {
-                Rpc(CustomRPC.Remember, PlayerControl.LocalPlayer.PlayerId, playerId, (byte)1);
-                Remember(role, player);
-            }
-            else Rpc(CustomRPC.Remember, PlayerControl.LocalPlayer.PlayerId, playerId, (byte)0);
-            return false;
-        }
-
         public static void Remember(Amnesiac amneRole, PlayerControl other)
         {
             var role = GetRole(other);
@@ -57,15 +20,6 @@ namespace TownOfSushi.Roles.Neutral.Benign.AmnesiacRole
             var rememberNeut = true;
 
             Role newRole;
-
-            if (PlayerControl.LocalPlayer == amnesiac)
-            {
-                var amnesiacRole = GetRole<Amnesiac>(amnesiac);
-                amnesiacRole.BodyArrows.Values.DestroyAll();
-                amnesiacRole.BodyArrows.Clear();
-                foreach (var body in amnesiacRole.CurrentTarget.bodyRenderers) body.material.SetFloat("_Outline", 0f);
-            }
-
             switch (role)
             {
                 case RoleEnum.Vigilante:
@@ -505,6 +459,429 @@ namespace TownOfSushi.Roles.Neutral.Benign.AmnesiacRole
                     }
                 }
             }
+        }
+        /*public static void Remember(Amnesiac amneRole, PlayerControl other)
+        {
+            var amnesiac = amneRole.Player;
+            if (amneRole.Remembered) return;
+            Role newRole;
+            var role = GetRole(other);
+
+            RoleDictionary.Remove(amnesiac.PlayerId);
+            newRole = GetPlayerRole(other);
+            newRole.Player = amnesiac;
+            if (role == RoleEnum.Snitch) CompleteTask.Postfix(amnesiac);
+            RoleDictionary.Remove(amnesiac.PlayerId);
+            RoleDictionary.Remove(other.PlayerId);
+            RoleDictionary.Add(amnesiac.PlayerId, newRole);
+            newRole.RegenTask();
+
+            if (other == StartImitate.ImitatingPlayer)
+            {
+                StartImitate.ImitatingPlayer = amneRole.Player;
+                newRole.AddToRoleHistory(RoleEnum.Imitator);
+            }
+            else newRole.AddToRoleHistory(newRole.RoleType);
+
+            switch (role)
+            {
+                case RoleEnum.Snitch:
+                newRole = new Snitch(amnesiac);
+                new Amnesiac (other);
+                break;
+
+                case RoleEnum.Romantic:
+                newRole = new Romantic(amnesiac);
+                new Amnesiac (other);
+                break;
+
+                case RoleEnum.Werewolf:
+                newRole = new Werewolf(amnesiac);
+                new Amnesiac (other);
+                if (CustomGameOptions.AmneTurnNeutAssassin) new Assassin(amnesiac);
+                if (other.Is(AbilityEnum.Assassin)) AbilityDictionary.Remove(other.PlayerId);
+                break;
+
+                case RoleEnum.Engineer:
+                newRole = new Engineer(amnesiac);
+                new Amnesiac (other);
+                break;
+
+                case RoleEnum.Medic:
+                newRole = new Medic(amnesiac);
+                new Amnesiac (other);
+                break;
+
+                case RoleEnum.Jailor:
+                newRole = new Jailor(amnesiac);
+                new Amnesiac (other);
+                break;
+
+                case RoleEnum.Vigilante:
+                newRole = new Vigilante(amnesiac);
+                new Amnesiac (other);
+                break;
+
+                case RoleEnum.Veteran:
+                newRole = new Vigilante(amnesiac);
+                new Amnesiac (other);
+                break;
+
+                case RoleEnum.Hunter:
+                newRole = new Hunter(amnesiac);
+                new Amnesiac (other);
+                break;
+
+                case RoleEnum.Tracker:
+                newRole = new Tracker(amnesiac);
+                new Amnesiac (other);
+                break;
+
+                case RoleEnum.Investigator:
+                newRole = new Investigator(amnesiac);
+                new Amnesiac (other);
+                break;
+
+                case RoleEnum.Mystic:
+                newRole = new Mystic(amnesiac);
+                new Amnesiac (other);
+                break;
+
+                case RoleEnum.Transporter:
+                newRole = new Transporter(amnesiac);
+                new Amnesiac (other);
+                break;
+
+                case RoleEnum.Medium:
+                newRole = new Medium(amnesiac);
+                new Amnesiac (other);
+                break;
+
+                case RoleEnum.Seer:
+                newRole = new Seer(amnesiac);
+                new Amnesiac (other);
+                break;
+
+                case RoleEnum.Oracle:
+                newRole = new Seer(amnesiac);
+                new Amnesiac (other);
+                break;
+
+                case RoleEnum.Arsonist:
+                newRole = new Arsonist(amnesiac);
+                new Amnesiac (other);
+                if (CustomGameOptions.AmneTurnNeutAssassin) new Assassin(amnesiac);
+                if (other.Is(AbilityEnum.Assassin)) AbilityDictionary.Remove(other.PlayerId);
+                break;
+
+                case RoleEnum.GuardianAngel:
+                newRole = new GuardianAngel(amnesiac);
+                new Amnesiac (other);
+                break;
+
+                case RoleEnum.Glitch:
+                newRole = new Glitch(amnesiac);
+                new Amnesiac (other);
+                if (CustomGameOptions.AmneTurnNeutAssassin) new Assassin(amnesiac);
+                if (other.Is(AbilityEnum.Assassin)) AbilityDictionary.Remove(other.PlayerId);
+                break;
+
+                case RoleEnum.Juggernaut:
+                newRole = new Juggernaut(amnesiac);
+                new Amnesiac (other);
+                if (CustomGameOptions.AmneTurnNeutAssassin) new Assassin(amnesiac);
+                if (other.Is(AbilityEnum.Assassin)) AbilityDictionary.Remove(other.PlayerId);
+                break;
+
+                case RoleEnum.Grenadier:
+                newRole = new Grenadier(amnesiac);
+                amnesiac.TurnImp();
+                new Impostor (other);
+                if (CustomGameOptions.AmneTurnImpAssassin) new Assassin(amnesiac);
+                if (other.Is(AbilityEnum.Assassin)) AbilityDictionary.Remove(other.PlayerId);
+                break;
+
+                case RoleEnum.Morphling:
+                newRole = new Morphling(amnesiac);
+                amnesiac.TurnImp();
+                new Impostor (other);
+                if (CustomGameOptions.AmneTurnImpAssassin) new Assassin(amnesiac);
+                if (other.Is(AbilityEnum.Assassin)) AbilityDictionary.Remove(other.PlayerId);
+                break;
+
+                case RoleEnum.Escapist:
+                newRole = new Escapist(amnesiac);
+                amnesiac.TurnImp();
+                new Impostor (other);
+                if (CustomGameOptions.AmneTurnImpAssassin) new Assassin(amnesiac);
+                if (other.Is(AbilityEnum.Assassin)) AbilityDictionary.Remove(other.PlayerId);
+                break;
+
+                case RoleEnum.Swooper:
+                newRole = new Swooper(amnesiac);
+                amnesiac.TurnImp();
+                new Impostor (other);
+                if (CustomGameOptions.AmneTurnImpAssassin) new Assassin(amnesiac);
+                if (other.Is(AbilityEnum.Assassin)) AbilityDictionary.Remove(other.PlayerId);
+                break;
+
+                case RoleEnum.Venerer:
+                newRole = new Venerer(amnesiac);
+                amnesiac.TurnImp();
+                new Impostor (other);
+                if (CustomGameOptions.AmneTurnImpAssassin) new Assassin(amnesiac);
+                if (other.Is(AbilityEnum.Assassin)) AbilityDictionary.Remove(other.PlayerId);
+                break;
+
+                case RoleEnum.Blackmailer:
+                newRole = new Blackmailer(amnesiac);
+                amnesiac.TurnImp();
+                new Impostor (other);
+                if (CustomGameOptions.AmneTurnImpAssassin) new Assassin(amnesiac);
+                if (other.Is(AbilityEnum.Assassin)) AbilityDictionary.Remove(other.PlayerId);
+                break;
+
+                case RoleEnum.Witch:
+                newRole = new Witch(amnesiac);
+                amnesiac.TurnImp();
+                new Impostor (other);
+                if (CustomGameOptions.AmneTurnImpAssassin) new Assassin(amnesiac);
+                if (other.Is(AbilityEnum.Assassin)) AbilityDictionary.Remove(other.PlayerId);
+                break;
+
+                case RoleEnum.Miner:
+                newRole = new Miner(amnesiac);
+                amnesiac.TurnImp();
+                new Impostor (other);
+                if (CustomGameOptions.AmneTurnImpAssassin) new Assassin(amnesiac);
+                if (other.Is(AbilityEnum.Assassin)) AbilityDictionary.Remove(other.PlayerId);
+                break;
+
+                case RoleEnum.Undertaker:
+                newRole = new Undertaker(amnesiac);
+                amnesiac.TurnImp();
+                new Impostor (other);
+                if (CustomGameOptions.AmneTurnImpAssassin) new Assassin(amnesiac);
+                if (other.Is(AbilityEnum.Assassin)) AbilityDictionary.Remove(other.PlayerId);
+                break;
+
+                case RoleEnum.Bomber:
+                newRole = new Bomber(amnesiac);
+                amnesiac.TurnImp();
+                new Impostor (other);
+                if (CustomGameOptions.AmneTurnImpAssassin) new Assassin(amnesiac);
+                if (other.Is(AbilityEnum.Assassin)) AbilityDictionary.Remove(other.PlayerId);
+                break;
+
+                case RoleEnum.Janitor:
+                newRole = new Janitor(amnesiac);
+                amnesiac.TurnImp();
+                new Impostor (other);
+                if (CustomGameOptions.AmneTurnImpAssassin) new Assassin(amnesiac);
+                if (other.Is(AbilityEnum.Assassin)) AbilityDictionary.Remove(other.PlayerId);
+                break;
+
+                case RoleEnum.Warlock:
+                newRole = new Warlock(amnesiac);
+                amnesiac.TurnImp();
+                new Impostor (other);
+                if (CustomGameOptions.AmneTurnImpAssassin) new Assassin(amnesiac);
+                if (other.Is(AbilityEnum.Assassin)) AbilityDictionary.Remove(other.PlayerId);
+                break;
+
+                case RoleEnum.Vampire:
+                newRole = new Vampire(amnesiac);
+                new Vampire (other);
+                var vampire = new Vampire(other);
+                vampire.RegenTask();
+                if (CustomGameOptions.AmneTurnNeutAssassin) new Assassin(amnesiac);
+                if (other.Is(AbilityEnum.Assassin)) AbilityDictionary.Remove(other.PlayerId);
+                break;
+
+                case RoleEnum.Agent:
+                newRole = new Agent(amnesiac);
+                new Amnesiac (other);
+                if (CustomGameOptions.AmneTurnNeutAssassin) new Assassin(amnesiac);
+                if (other.Is(AbilityEnum.Assassin)) AbilityDictionary.Remove(other.PlayerId);
+                break;
+
+                case RoleEnum.Hitman:
+                newRole = new Hitman(amnesiac);
+                new Amnesiac (other);
+                if (CustomGameOptions.AmneTurnNeutAssassin) new Assassin(amnesiac);
+                if (other.Is(AbilityEnum.Assassin)) AbilityDictionary.Remove(other.PlayerId);
+                break;
+
+                case RoleEnum.SerialKiller:
+                newRole = new SerialKiller(amnesiac);
+                new Amnesiac (other);
+                if (CustomGameOptions.AmneTurnNeutAssassin) new Assassin(amnesiac);
+                if (other.Is(AbilityEnum.Assassin)) AbilityDictionary.Remove(other.PlayerId);
+                break;
+
+                case RoleEnum.Doomsayer:
+                newRole = new Doomsayer(amnesiac);
+                new Amnesiac (other);
+                break;
+
+                case RoleEnum.Executioner:
+                newRole = new Executioner(amnesiac);
+                new Amnesiac (other);
+                break;
+
+                case RoleEnum.Jester:
+                newRole = new Jester(amnesiac);
+                new Amnesiac (other);
+                break;
+
+                case RoleEnum.Imitator:
+                newRole = new Imitator(amnesiac);
+                new Amnesiac (other);
+                break;
+
+                case RoleEnum.Swapper:
+                newRole = new Swapper(amnesiac);
+                new Amnesiac (other);
+                break;
+
+                case RoleEnum.Vulture:
+                newRole = new Vulture(amnesiac);
+                new Amnesiac (other);
+                break;
+
+                case RoleEnum.Plaguebearer:
+                newRole = new Plaguebearer(amnesiac);
+                new Amnesiac (other);
+                if (CustomGameOptions.AmneTurnNeutAssassin) new Assassin(amnesiac);
+                if (other.Is(AbilityEnum.Assassin)) AbilityDictionary.Remove(other.PlayerId);
+                break;
+
+                case RoleEnum.Pestilence:
+                newRole = new Pestilence(amnesiac);
+                new Amnesiac (other);
+                if (CustomGameOptions.AmneTurnNeutAssassin) new Assassin(amnesiac);
+                if (other.Is(AbilityEnum.Assassin)) AbilityDictionary.Remove(other.PlayerId);
+                break;
+
+                case RoleEnum.Trapper:
+                newRole = new Trapper(amnesiac);
+                new Amnesiac (other);
+                break;
+            }
+
+            if (!(amnesiac.Is(RoleEnum.Amnesiac) || amnesiac.Is(Faction.Impostors)))
+            {
+                DestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(false);
+            }
+
+            var killsList = (newRole.Kills, newRole.CorrectKills, newRole.CorrectAssassinKills, newRole.IncorrectAssassinKills);
+            var otherRole = GetPlayerRole(other);
+            newRole.Kills = otherRole.Kills;
+            newRole.CorrectKills = otherRole.CorrectKills;
+            newRole.CorrectAssassinKills = otherRole.CorrectAssassinKills;
+            newRole.IncorrectAssassinKills = otherRole.IncorrectAssassinKills;
+            otherRole.Kills = killsList.Kills;
+            otherRole.CorrectKills = killsList.CorrectKills;
+            otherRole.CorrectAssassinKills = killsList.CorrectAssassinKills;
+            otherRole.IncorrectAssassinKills = killsList.IncorrectAssassinKills;
+
+            if (amnesiac.Is(Faction.Impostors))
+            {
+                foreach (var snitch in GetRoles(RoleEnum.Snitch))
+                {
+                    var snitchRole = (Snitch)snitch;
+                    if (snitchRole.TasksDone && PlayerControl.LocalPlayer.Is(RoleEnum.Snitch))
+                    {
+                        var gameObj = new GameObject();
+                        var arrow = gameObj.AddComponent<ArrowBehaviour>();
+                        gameObj.transform.parent = PlayerControl.LocalPlayer.gameObject.transform;
+                        var renderer = gameObj.AddComponent<SpriteRenderer>();
+                        renderer.sprite = Sprite;
+                        arrow.image = renderer;
+                        gameObj.layer = 5;
+                        snitchRole.SnitchArrows.Add(amnesiac.PlayerId, arrow);
+                    }
+                    else if (snitchRole.Revealed && PlayerControl.LocalPlayer == amnesiac)
+                    {
+                        var gameObj = new GameObject();
+                        var arrow = gameObj.AddComponent<ArrowBehaviour>();
+                        gameObj.transform.parent = PlayerControl.LocalPlayer.gameObject.transform;
+                        var renderer = gameObj.AddComponent<SpriteRenderer>();
+                        renderer.sprite = Sprite;
+                        arrow.image = renderer;
+                        gameObj.layer = 5;
+                        snitchRole.ImpArrows.Add(arrow);
+                    }
+                }
+            }
+
+            var newRole2 = GetPlayerRole(amnesiac);
+            var vowel = "aeiou".Contains(newRole2.Name.ToLower()[0]);
+            var article = vowel ? "an" : "a";
+            UsefulMethods.ShowTextToast($"You remembered you were {article} {newRole2.Name}!", 3.5f);
+            SoundManager.Instance.PlaySound(ShipStatus.Instance.SabotageSound, false, 1f, null);
+            Flash(newRole2.Color);
+        }*/
+    }
+
+    [HarmonyPatch(typeof(AirshipExileController), nameof(AirshipExileController.WrapUpAndSpawn))]
+    public static class AirshipExileController_WrapUpAndSpawn
+    {
+        public static void Postfix(AirshipExileController __instance) => StartRemember.ExileControllerPostfix(__instance);
+    }
+    
+    [HarmonyPatch(typeof(ExileController), nameof(ExileController.WrapUp))]
+    public static class StartRemember
+    {
+        public static PlayerControl RememberingPlayer;
+        public static void ExileControllerPostfix(ExileController __instance)
+        {
+            var exiled = __instance.initData.networkedPlayer?.Object;
+            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Amnesiac)) return;
+            if (PlayerControl.LocalPlayer.Data.IsDead || PlayerControl.LocalPlayer.Data.Disconnected) return;
+            if (exiled == PlayerControl.LocalPlayer) return;
+            var amnesiac = GetRole<Amnesiac>(PlayerControl.LocalPlayer);
+
+            var playerId = amnesiac.ToRemember.PlayerId;
+            var player = PlayerById(playerId);
+            if (amnesiac.ToRemember == null) return;
+
+            //Remember(amnesiac, player);
+            Rpc(CustomRPC.StartRemember, PlayerControl.LocalPlayer.PlayerId, playerId);
+            Remember(amnesiac, player);
+            amnesiac.Remembered = true;
+        }
+
+        public static void TurnImp(this PlayerControl player)
+        {
+            player.Data.Role.TeamType = RoleTeamTypes.Impostor;
+            RoleManager.Instance.SetRole(player, RoleTypes.Impostor);
+            player.SetKillTimer(GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown);
+
+            System.Console.WriteLine("PROOF I AM IMP VANILLA ROLE: " + player.Data.Role.IsImpostor);
+
+            foreach (var player2 in PlayerControl.AllPlayerControls)
+            {
+                if (player2.Data.IsImpostor() && PlayerControl.LocalPlayer.Data.IsImpostor())
+                {
+                    player2.nameText().color = Colors.Impostor;
+                }
+            }
+
+            if (PlayerControl.LocalPlayer.PlayerId == player.PlayerId)
+            {
+                DestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(true);
+                Flash(Colors.Impostor);
+            }
+        }
+
+        public static void Postfix(ExileController __instance) => ExileControllerPostfix(__instance);
+
+        [HarmonyPatch(typeof(Object), nameof(Object.Destroy), new Type[] { typeof(GameObject) })]
+        public static void Prefix(GameObject obj)
+        {
+            if (!SubmergedCompatibility.Loaded || GameOptionsManager.Instance?.currentNormalGameOptions?.MapId != 6) return;
+            if (obj.name?.Contains("ExileCutscene") == true) ExileControllerPostfix(ExileControllerPatch.lastExiled);
         }
     }
 }

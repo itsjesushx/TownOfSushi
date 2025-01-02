@@ -16,11 +16,9 @@ namespace TownOfSushi
         Jailor,
         Hunter,
         Swapper,
-        Phantom,
         Vigilante,
         Guardian,
         Werewolf,
-        Haunter,
         Veteran,
         Amnesiac,
         Juggernaut,
@@ -117,11 +115,7 @@ namespace TownOfSushi
         SetTarget,
         SetGATarget,        
         SetRomanticTarget,
-        SetPhantom,
-        CatchPhantom,
         Spell,
-        SetHaunter,
-        CatchHaunter,
         Maul,
         JanitorClean,
         FixLights,
@@ -149,6 +143,7 @@ namespace TownOfSushi
         Retribution,
         Alert,
         Remember,
+        StartRemember,
         BaitReport,
         Transport,
         SetUntransportable,
@@ -202,12 +197,6 @@ namespace TownOfSushi
         No,
         Emergency,
         Always
-    }
-    public enum HaunterCanBeClickedBy
-    {
-        All,
-        NonCrew,
-        ImpsOnly
     }
     public enum BecomeOptions
     {
@@ -281,7 +270,6 @@ namespace TownOfSushi
         ExecutionerWin = 12,
         DoomsayerWin = 13,
         VultureWin = 14,
-        PhantomWin = 15,
         TeamVampiresWin = 16,
         GlitchWin = 17,
         JuggernautWin = 18,
@@ -300,7 +288,6 @@ namespace TownOfSushi
         ExecutionerWin,
         DoomsayerWin,
         VultureWin,
-        PhantomWin,
         TeamVampiresWin,
         GlitchWin,
         JuggernautWin,

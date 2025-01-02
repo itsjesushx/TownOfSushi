@@ -170,6 +170,17 @@ namespace TownOfSushi.Roles.Crewmates.Killing.VigilanteRole
                 jailor.UsesText.Destroy();
             }
 
+            if (player.Is(RoleEnum.Imitator) && !player.Data.IsDead)
+            {
+                var imitatorRole = GetRole<Imitator>(PlayerControl.LocalPlayer);
+                if (!meetingHud.playerStates[PlayerControl.LocalPlayer.PlayerId].DidVote)
+                {
+                    RoleEnum imitatedRole = GetPlayerRole(player).RoleType;
+                    var imitatable = imitatorRole.ImitatableRoles.Contains(imitatedRole);
+                    AddButtonImitator.GenButton(imitatorRole, player.PlayerId, imitatable, true);
+                }
+            }
+
             if (AmongUsClient.Instance.AmHost) meetingHud.CheckForEndVoting();
 
             AddHauntPatch.AssassinatedPlayers.Add(player);

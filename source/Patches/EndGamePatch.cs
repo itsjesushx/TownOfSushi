@@ -64,7 +64,6 @@ namespace TownOfSushi.Patches
                     else if (role.Value == RoleEnum.Transporter) { GameSummaryText += "<color=#" + Colors.Transporter.ToHtmlStringRGBA() + ">Transporter</color> > "; }
                     else if (role.Value == RoleEnum.Medium) { GameSummaryText += "<color=#" + Colors.Medium.ToHtmlStringRGBA() + ">Medium</color> > "; }
                     else if (role.Value == RoleEnum.Trapper) { GameSummaryText += "<color=#" + Colors.Trapper.ToHtmlStringRGBA() + ">Trapper</color> > "; }
-                    else if (role.Value == RoleEnum.Haunter) { GameSummaryText += "<color=#" + Colors.Haunter.ToHtmlStringRGBA() + ">Haunter</color> > "; }
                     else if (role.Value == RoleEnum.Veteran) { GameSummaryText += "<color=#" + Colors.Veteran.ToHtmlStringRGBA() + ">Veteran</color> > "; }
                     else if (role.Value == RoleEnum.Hunter) { GameSummaryText += "<color=#" + Colors.Hunter.ToHtmlStringRGBA() + ">Hunter</color> > "; }
 
@@ -102,7 +101,6 @@ namespace TownOfSushi.Patches
                     else if (role.Value == RoleEnum.Doomsayer) { GameSummaryText += "<color=#" + Colors.Doomsayer.ToHtmlStringRGBA() + ">Doomsayer</color> > "; }
                     else if (role.Value == RoleEnum.Jester) { GameSummaryText += "<color=#" + Colors.Jester.ToHtmlStringRGBA() + ">Jester</color> > "; }
                     else if (role.Value == RoleEnum.Executioner) { GameSummaryText += "<color=#" + Colors.Executioner.ToHtmlStringRGBA() + ">Executioner</color> > "; }
-                    else if (role.Value == RoleEnum.Phantom) { GameSummaryText += "<color=#" + Colors.Phantom.ToHtmlStringRGBA() + ">Phantom</color> > "; }                    
 
                     #endregion
 
@@ -259,11 +257,6 @@ namespace TownOfSushi.Patches
                 var vult = (Vulture)role;
                 notWinners.Add(vult.Player);
             }
-            foreach (var role in GetRoles(RoleEnum.Phantom))
-            {
-                var phan = (Phantom)role;
-                notWinners.Add(phan.Player);
-            }
             foreach (var role in GetRoles(RoleEnum.Arsonist))
             {
                 var arso = (Arsonist)role;
@@ -365,12 +358,6 @@ namespace TownOfSushi.Patches
             {
                 var Vulture = (Vulture)role;
                 VultureWin = Vulture.Player != null && gameOverReason == (GameOverReason)CustomGameOverReason.VultureWin;
-            }
-            bool PhantomWin = false;
-            foreach (var role in GetRoles(RoleEnum.Phantom))
-            {
-                var Phantom = (Phantom)role;
-                PhantomWin = Phantom.Player != null && gameOverReason == (GameOverReason)CustomGameOverReason.PhantomWin;
             }
             bool ArsonistWin = false;
             foreach (var role in GetRoles(RoleEnum.Arsonist))
@@ -510,18 +497,6 @@ namespace TownOfSushi.Patches
                     CachedPlayerData wpd = new CachedPlayerData(Vulture.Player.Data);
                     EndGameResult.CachedWinners.Add(wpd);
                     AdditionalTempData.WinCondition = WinCondition.VultureWin;
-                }
-            }
-            // Phantom Win
-            else if (PhantomWin)
-            {
-                foreach (var role in GetRoles(RoleEnum.Phantom))
-                {
-                    var Phantom = (Phantom)role;
-                    EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
-                    CachedPlayerData wpd = new CachedPlayerData(Phantom.Player.Data);
-                    EndGameResult.CachedWinners.Add(wpd);
-                    AdditionalTempData.WinCondition = WinCondition.PhantomWin;
                 }
             }
             // Arsonist Win
@@ -757,12 +732,6 @@ namespace TownOfSushi.Patches
                 textRenderer.color = Colors.SerialKiller;
                 __instance.BackgroundBar.material.SetColor("_Color", Colors.SerialKiller);
             }
-            if (AdditionalTempData.WinCondition == WinCondition.PhantomWin)
-            {
-                textRenderer.text = "Phantom Wins!";
-                textRenderer.color = Colors.Phantom;
-                __instance.BackgroundBar.material.SetColor("_Color", Colors.Phantom);
-            }
             if (AdditionalTempData.WinCondition == WinCondition.CrewmateWin)
             {
                 textRenderer.text = "Crewmates Win!";
@@ -900,7 +869,6 @@ namespace TownOfSushi.Patches
             if (CheckAndEndGameForExecutionerWin(__instance)) return false;
             if (CheckAndEndGameForDoomsayerWin(__instance)) return false;
             if (CheckAndEndGameForVultureWin(__instance)) return false;
-            if (CheckAndEndGameForPhantomWin(__instance)) return false;
             if (CheckAndEndGameForSabotageWin(__instance)) return false;
             if (CheckAndEndGameForSabotageWin(__instance)) return false;
             if (CheckAndEndGameForTaskWin(__instance)) return false;
@@ -963,18 +931,6 @@ namespace TownOfSushi.Patches
                 if (vulture.WonByEating)
                 {
                     GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.VultureWin, false);
-                    return true;
-                }
-            }
-            return false;
-        }
-        private static bool CheckAndEndGameForPhantomWin(ShipStatus __instance) {
-            foreach (var role in GetRoles(RoleEnum.Phantom))
-            {
-                var phantom = (Phantom)role;
-                if (phantom.CompletedTasks && !phantom.Caught)
-                {
-                    GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.PhantomWin, false);
                     return true;
                 }
             }
