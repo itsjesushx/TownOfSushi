@@ -494,7 +494,7 @@ If their target loses, they lose.
 
 -----------------------
 ## Romantic
-### **Team: Neutral (Special)**
+### **Team: Neutral (Benign)**
 The Romantic is a Neutral role which can select a player to be their beloved.\
 The romantic wins with the beloved as long as they win as well.
 
