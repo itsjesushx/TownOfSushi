@@ -180,18 +180,7 @@
                     HudManager.Instance.AbilityButton.gameObject.SetActive(!PlayerControl.LocalPlayer.Data.IsImpostor());
                     return;
                 }
-                var ghostRole = false;
-                if (PlayerControl.LocalPlayer.Is(RoleEnum.Haunter))
-                {
-                    var haunter = GetRole<Haunter>(PlayerControl.LocalPlayer);
-                    if (!haunter.Caught) ghostRole = true;
-                }
-                else if (PlayerControl.LocalPlayer.Is(RoleEnum.Phantom))
-                {
-                    var phantom = GetRole<Phantom>(PlayerControl.LocalPlayer);
-                    if (!phantom.Caught) ghostRole = true;
-                }
-                HudManager.Instance.AbilityButton.gameObject.SetActive(!ghostRole /*&& ShowDeadBodies*/ && !MeetingHud.Instance);
+                HudManager.Instance.AbilityButton.gameObject.SetActive(!MeetingHud.Instance);
             }
         }
     }

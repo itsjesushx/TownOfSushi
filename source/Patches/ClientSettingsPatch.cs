@@ -17,8 +17,6 @@ namespace TownOfSushi.Patches
             {
                 if (player == PlayerControl.LocalPlayer) continue;
                 if (!player.Data.IsDead) continue;
-                if (player.Is(RoleEnum.Haunter) && !GetRole<Haunter>(player).Caught) continue;
-                if (player.Is(RoleEnum.Phantom) && !GetRole<Phantom>(player).Caught) continue;
 
                 bool show = TownOfSushi.DeadSeeGhosts.Value;
                 var bodyforms = player.gameObject.transform.GetChild(1).gameObject;

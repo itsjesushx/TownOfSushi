@@ -101,20 +101,6 @@ namespace TownOfSushi.Patches
             __instance.HideForOnline = new Il2CppReferenceArray<Transform>(0);
         }
     }
-
-    [HarmonyPatch(typeof(CrewmateGhostRole), nameof(CrewmateGhostRole.CanUse))]
-    public class CanUseCrew
-    {
-        public static bool Prefix(CrewmateGhostRole __instance, IUsable console, ref bool __result)
-        {
-            if ((__instance.Player.Is(RoleEnum.Phantom) && !GetRole<Phantom>(__instance.Player).Caught) || (__instance.Player.Is(RoleEnum.Haunter) && !GetRole<Haunter>(__instance.Player).Caught))
-            {
-                __result = true;
-                return false;
-            }
-            return true;
-        }
-    }
     [HarmonyPatch(typeof(ExileController), nameof(ExileController.BeginForGameplay))]
     [HarmonyPriority(Priority.First)]
     class ExileControllerPatch

@@ -24,7 +24,7 @@ namespace TownOfSushi.Patches
 
             if (player.inVent)
             {
-                if (PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 2 && !player.Is(RoleEnum.Haunter) && !player.Is(RoleEnum.Phantom))
+                if (PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 2)
                 {
                     player.MyPhysics.RpcExitVent(Vent.currentVent.Id);
                     player.MyPhysics.ExitAllVents();

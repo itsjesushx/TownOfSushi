@@ -15,7 +15,6 @@
         public readonly static Color32  Snitch = new Color32(179, 77, 154, byte.MaxValue);
         public readonly static Color32  Vigilante = new Color32(255, 255, 153, byte.MaxValue);
         public readonly static Color32  Veteran = new Color32(153, 128, 64, byte.MaxValue);
-        public readonly static Color32  Haunter = new Color32(211, 211, 211, byte.MaxValue);
         public readonly static Color32  Transporter = new Color32(0, 238, 255, byte.MaxValue);
         public readonly static Color32  Medium = new Color32(166, 128, 255, byte.MaxValue);
         public readonly static Color32  Mystic = new Color32(77, 154, 230, byte.MaxValue);
@@ -37,7 +36,6 @@
         public readonly static Color32  SerialKiller = new Color32(51, 110, 255, byte.MaxValue);
         public readonly static Color32  Arsonist = new Color32(255, 77, 0, byte.MaxValue);
         public readonly static Color32  Agent = new Color32(0, 0, 255, byte.MaxValue);
-        public readonly static Color32  Phantom = new Color32(102, 41, 98, byte.MaxValue);
         public readonly static Color32  Amnesiac = new Color32(34, 255, 255, byte.MaxValue); 
         public readonly static Color32  Juggernaut = new Color32(140, 0, 77, byte.MaxValue);
         public readonly static Color32  GuardianAngel = new Color32(255, 255, 255, byte.MaxValue);

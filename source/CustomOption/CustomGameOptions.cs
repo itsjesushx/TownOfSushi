@@ -27,9 +27,7 @@ namespace TownOfSushi.CustomOption
         public static int ArsonistOn => Mathf.RoundToInt(CustomOptionHolder.ArsonistOn.GetFloat());
         public static int JailorOn => Mathf.RoundToInt(CustomOptionHolder.JailorOn.GetFloat());
         public static int UndertakerOn => Mathf.RoundToInt(CustomOptionHolder.UndertakerOn.GetFloat());
-        public static int PhantomOn => Mathf.RoundToInt(CustomOptionHolder.PhantomOn.GetFloat());
         public static int SwapperOn => Mathf.RoundToInt(CustomOptionHolder.SwapperOn.GetFloat());
-        public static int HaunterOn => Mathf.RoundToInt(CustomOptionHolder.HaunterOn.GetFloat());
         public static int GrenadierOn => Mathf.RoundToInt(CustomOptionHolder.GrenadierOn.GetFloat());
         public static int VeteranOn => Mathf.RoundToInt(CustomOptionHolder.VeteranOn.GetFloat());
         public static int TrackerOn => Mathf.RoundToInt(CustomOptionHolder.TrackerOn.GetFloat());
@@ -167,17 +165,12 @@ namespace TownOfSushi.CustomOption
         public static bool AssassinMultiKill => CustomOptionHolder.AssassinMultiKill.GetBool();
         public static float UnderdogKillBonus => CustomOptionHolder.UnderdogKillBonus.GetFloat();
         public static bool UnderdogIncreasedKC => CustomOptionHolder.UnderdogIncreasedKC.GetBool();
-        public static int PhantomTasksRemaining => Mathf.RoundToInt(CustomOptionHolder.PhantomTasksRemaining.GetFloat());
         public static bool VigilanteGuessNeutralBenign => CustomOptionHolder.VigilanteGuessNeutralBenign.GetBool();
         public static bool VigilanteGuessNeutralEvil => CustomOptionHolder.VigilanteGuessNeutralEvil.GetBool();
         public static bool VigilanteGuessNeutralKilling => CustomOptionHolder.VigilanteGuessNeutralKilling.GetBool();
         public static int VigilanteKills => Mathf.RoundToInt(CustomOptionHolder.VigilanteKills.GetFloat());
         public static bool VigilanteMultiKill => CustomOptionHolder.VigilanteMultiKill.GetBool();
         public static bool VigilanteAfterVoting => CustomOptionHolder.VigilanteAfterVoting.GetBool();
-        public static int HaunterTasksRemainingClicked => Mathf.RoundToInt(CustomOptionHolder.HaunterTasksRemainingClicked.GetFloat());
-        public static int HaunterTasksRemainingAlert => Mathf.RoundToInt(CustomOptionHolder.HaunterTasksRemainingAlert.GetFloat());
-        public static bool HaunterRevealsNeutrals => CustomOptionHolder.HaunterRevealsNeutrals.GetBool();
-        public static HaunterCanBeClickedBy HaunterCanBeClickedBy => (HaunterCanBeClickedBy)CustomOptionHolder.HaunterCanBeClickedBy.GetSelection();
         public static float GrenadeCd => CustomOptionHolder.GrenadeCooldown.GetFloat();
         public static float GrenadeDuration => CustomOptionHolder.GrenadeDuration.GetFloat();
         public static bool GrenadierIndicators => CustomOptionHolder.GrenadierIndicators.GetBool();

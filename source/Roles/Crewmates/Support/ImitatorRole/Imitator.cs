@@ -8,6 +8,12 @@ namespace TownOfSushi.Roles.Crewmates
         public PlayerControl LastExaminedPlayer = null;
         public List<RoleEnum> trappedPlayers = null;
         public PlayerControl confessingPlayer = null;
+        public List<RoleEnum> ImitatableRoles = new List<RoleEnum>
+        {
+            RoleEnum.Investigator, RoleEnum.Mystic, RoleEnum.Seer, RoleEnum.Tracker, RoleEnum.Vigilante, 
+            RoleEnum.Veteran, RoleEnum.Engineer, RoleEnum.Medium, RoleEnum.Transporter, RoleEnum.Trapper, 
+            RoleEnum.Medic, RoleEnum.Oracle, RoleEnum.Hunter
+        };
         public Imitator(PlayerControl player) : base(player)
         {
             Name = "Imitator";

@@ -6,7 +6,7 @@ namespace TownOfSushi.Roles.Impostors.Power.WitchRole
         private static void Postfix(MeetingHud __instance)
         {
             var role = GetRole<Witch>(PlayerControl.LocalPlayer);
-            if (role.SpelledPlayers != null && !role.Player.Data.IsDead)
+            if (role.SpelledPlayers != null && !role.Player.Data.IsDead && role.Player != null)
             {
                 foreach (var spelledId in role.SpelledPlayers)
                 {

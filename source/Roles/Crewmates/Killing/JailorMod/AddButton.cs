@@ -141,8 +141,8 @@ namespace TownOfSushi.Roles.Crewmates.Killing.JailorMod
                 
                     if (player.Is(RoleEnum.Imitator))
                     {
-                        var imitator = GetRole<Imitator>(PlayerControl.LocalPlayer);
-                        var buttons = GetRole<Imitator>(player).Buttons;
+                        var imitator = Role.GetRole<Imitator>(PlayerControl.LocalPlayer);
+                        var buttons = Role.GetRole<Imitator>(player).Buttons;
                         foreach (var button in buttons)
                         {
                             if (button != null)
@@ -228,17 +228,14 @@ namespace TownOfSushi.Roles.Crewmates.Killing.JailorMod
                 }
             }
 
-            if (player.Is(RoleEnum.Imitator))
+            if (PlayerControl.LocalPlayer.Is(RoleEnum.Imitator) && !PlayerControl.LocalPlayer.Data.IsDead)
             {
-                var imitator = GetRole<Imitator>(PlayerControl.LocalPlayer);
-                imitator.ListOfActives.Clear();
-                imitator.Buttons.Clear();
-                SetImitate.Imitate = null;
-                var buttons = GetRole<Imitator>(player).Buttons;
-                foreach (var button in buttons)
+                var imitatorRole = GetRole<Imitator>(PlayerControl.LocalPlayer);
+                if (!meetingHud.playerStates[PlayerControl.LocalPlayer.PlayerId].DidVote)
                 {
-                    button.SetActive(false);
-                    button.GetComponent<PassiveButton>().OnClick = new Button.ButtonClickedEvent();
+                    RoleEnum imitatedRole = GetPlayerRole(player).RoleType;
+                    var imitatable = imitatorRole.ImitatableRoles.Contains(imitatedRole);
+                    AddButtonImitator.GenButton(imitatorRole, player.PlayerId, imitatable, true);
                 }
             }
 

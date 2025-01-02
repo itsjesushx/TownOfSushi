@@ -15,7 +15,7 @@ namespace TownOfSushi.Patches
                     if (!playerInfo.Disconnected && playerInfo.Tasks != null && playerInfo.Object &&
                         (GameOptionsManager.Instance.currentNormalGameOptions.GhostsDoTasks || !playerInfo.IsDead) && !playerInfo.IsImpostor() &&
                         !(
-                            playerInfo._object.Is(Faction.Neutral)|| playerInfo._object.Is(RoleEnum.Haunter)
+                            playerInfo._object.Is(Faction.Neutral)
                         ))
                         for (var j = 0; j < playerInfo.Tasks.Count; j++)
                         {
@@ -39,7 +39,6 @@ namespace TownOfSushi.Patches
                 playerControl.Is(Faction.Neutral)
                 && !playerControl.Is(RoleEnum.Amnesiac)
                 && !playerControl.Is(RoleEnum.GuardianAngel)
-                && !playerControl.Is(RoleEnum.Phantom)
                 && !playerControl.Is(RoleEnum.Agent);
 
                 if (flag && !__instance.AllowImpostor)
