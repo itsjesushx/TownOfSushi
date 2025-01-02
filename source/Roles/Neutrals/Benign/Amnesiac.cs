@@ -299,16 +299,23 @@ namespace TownOfSushi.Roles
             RoleDictionary.Remove(other.PlayerId);
             RoleDictionary.Add(amnesiac.PlayerId, newRole);
 
-            if (!(amnesiac.Is(RoleEnum.Crewmate) || amnesiac.Is(RoleEnum.Impostor))) newRole.RegenTask();
+            newRole.RegenTask();
 
             var vowel = "aeiou".Contains(newRole.Name.ToLower()[0]);
             var article = vowel ? "an" : "a";
             
-            if (PlayerControl.LocalPlayer == amnesiac)
+            if (PlayerControl.LocalPlayer == amnesiac && newRole.RoleType != RoleEnum.Amnesiac)
             {
                 Utilities.UsefulMethods.ShowTextToast($"You remembered you were {article} {newRole.Name}!", 3.5f);            
                 SoundManager.Instance.PlaySound(ShipStatus.Instance.SabotageSound, false, 1f, null);            
                 Flash(newRole.Color);
+            }
+
+            if (PlayerControl.LocalPlayer == amnesiac && newRole.RoleType == RoleEnum.Amnesiac)
+            {
+                Utilities.UsefulMethods.ShowTextToast("You still don't remember who you are!", 3.5f);
+                SoundManager.Instance.PlaySound(ShipStatus.Instance.SabotageSound, false, 1f, null);
+                Flash(Colors.Impostor);
             }
 
             if (other == StartImitate.ImitatingPlayer)

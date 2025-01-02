@@ -562,7 +562,7 @@ namespace TownOfSushi.CustomOption
 
 
             TransporterOn = CustomOption.Create(128, Types.Crewmate,  ColorString(Colors.Transporter, "Transporter"), 0f, 0f, 100f, 10f, null, true, format: "%");
-            TransportCooldown = CustomOption.Create(129, Types.Crewmate, "Transport Cooldown", 25f, 10f, 60f, 2.5f, TransporterOn);
+            TransportCooldown = CustomOption.Create(129, Types.Crewmate, "Transport Cooldown", 25f, 10f, 60f, 2.5f, TransporterOn, format: "s");
             TransportMaxUses = CustomOption.Create(130, Types.Crewmate, "Maximum Number Of Transports", 5, 1, 15, 1, TransporterOn);
             TransporterVitals = CustomOption.Create(131, Types.Crewmate, "Transporter Can Use Vitals", false, TransporterOn);
 

@@ -180,7 +180,7 @@ namespace TownOfSushi.Patches
                 }
                 if (playerControl.Is(RoleEnum.Vulture))
                 {
-                    GameSummaryText += ColorString(Colors.Vulture, $" ({GetRole<Vulture>(playerControl).BodiesRemainingToWin()} left)");
+                    GameSummaryText += ColorString(Colors.Vulture, $" ({GetRole<Vulture>(playerControl).BodiesRemainingToWin()} bodies to eat left)");
                 }
                 if (player.Kills > 0 && !playerControl.Is(Faction.Crewmates))
                 {
