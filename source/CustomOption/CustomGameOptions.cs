@@ -187,8 +187,6 @@ namespace TownOfSushi.CustomOption
         public static float TransportCooldown => CustomOptionHolder.TransportCooldown.GetFloat();
         public static int TransportMaxUses => Mathf.RoundToInt(CustomOptionHolder.TransportMaxUses.GetFloat());
         public static bool TransporterVitals => CustomOptionHolder.TransporterVitals.GetBool();
-        public static bool RememberArrows => CustomOptionHolder.RememberArrows.GetBool();
-        public static float RememberArrowDelay => CustomOptionHolder.RememberArrowDelay.GetFloat();
         public static float MediateCooldown => CustomOptionHolder.MediateCooldown.GetFloat();
         public static float JailCd => CustomOptionHolder.JailCooldown.GetFloat();
         public static int MaxExecutes => Mathf.RoundToInt(CustomOptionHolder.MaxExecutes.GetFloat());

@@ -345,8 +345,6 @@ namespace TownOfSushi.CustomOption
 
         #region Neutral Benign Roles
         public static CustomOption AmnesiacOn;
-        public static CustomOption RememberArrows;
-        public static CustomOption RememberArrowDelay;
 
         public static CustomOption RomanticOn;
         public static CustomOption PickStartTimer;
@@ -577,6 +575,28 @@ namespace TownOfSushi.CustomOption
             MaxNeutralEvilRoles = CustomOption.Create(136, Types.Neutral, "Max Neutral Evil Roles", 1, 0, 5, 1);            
             #endregion
 
+            #region Neutral Benign Roles
+            AmnesiacOn = CustomOption.Create(165, Types.Neutral, ColorString(Colors.Amnesiac, "Amnesiac"), 0f, 0f, 100f, 10f, null, true, format: "%");
+
+            GuardianAngelOn = CustomOption.Create(168, Types.Neutral, ColorString(Colors.GuardianAngel, "Guardian Angel"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            ProtectCd = CustomOption.Create(169, Types.Neutral, "Protect Cooldown", 25f, 10f, 60f, 2.5f, GuardianAngelOn, format: "s");
+            ProtectDuration = CustomOption.Create(170, Types.Neutral, "Protect Duration", 10f, 5f, 15f, 1f, GuardianAngelOn, format: "s");
+            ProtectKCReset = CustomOption.Create(171, Types.Neutral, "Kill Cooldown Reset When Protected", 2.5f, 0f, 15f, 0.5f, GuardianAngelOn, format: "s");
+            MaxProtects = CustomOption.Create(172, Types.Neutral, "Maximum Number Of Protects", 5, 1, 15, 1, GuardianAngelOn);
+            ShowProtect = CustomOption.Create(173, Types.Neutral, "Show Protected Player", new[] { "Self", "Guardian Angel", "Self+GA", "Everyone" }, GuardianAngelOn);
+            GaOnTargetDeath = CustomOption.Create(174, Types.Neutral, "GA Becomes On Target Dead", new[] { "Crew", "Amnesiac", "Jester" }, GuardianAngelOn);
+            GATargetKnows = CustomOption.Create(175, Types.Neutral, "Target Knows GA Exists", false, GuardianAngelOn);
+            GAKnowsTargetRole = CustomOption.Create(176, Types.Neutral, "GA Knows Targets Role", false, GuardianAngelOn);
+            EvilTargetPercent = CustomOption.Create(177, Types.Neutral, "Evil Target Chance", 0f, 0f, 100f, 10f, GuardianAngelOn, format: "%");
+
+            RomanticOn = CustomOption.Create(178, Types.Neutral, ColorString(Colors.Romantic, "Romantic"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            PickStartTimer = CustomOption.Create(179, Types.Neutral, "Start Pick Cooldown", 25f, 10f, 60f, 2.5f, RomanticOn, format: "s");
+            RomanticOnBelovedDeath = CustomOption.Create(180, Types.Neutral, "Romantic Becomes On Beloved Dead", new[] { "Repick Lover","Crew", "Amnesiac", "Jester" }, RomanticOn);
+            RomanticBelovedKnows = CustomOption.Create(181, Types.Neutral, "Beloved Knows The Existence Of Romantic", false, RomanticOn);
+            RomanticKnowsBelovedRole = CustomOption.Create(182, Types.Neutral, "Romantic Knows Beloved's Role", false, RomanticOn);
+            
+            #endregion
+
             #region Neutral Evil Roles
 
             DoomsayerOn = CustomOption.Create(139, Types.Neutral, ColorString(Colors.Doomsayer, "Doomsayer"), 0f, 0f, 100f, 10f, null, true, format: "%");
@@ -608,30 +628,6 @@ namespace TownOfSushi.CustomOption
             EatArrows = CustomOption.Create(163, Types.Neutral, "Vulture Gets Arrows To Dead Bodies", false, VultureOn);
             EatArrowDelay = CustomOption.Create(164, Types.Neutral, "Time After Death Arrow Appears", 5f, 0f, 15f, 1f, EatArrows, format: "s");
 
-            #endregion
-
-            #region Neutral Benign Roles
-            AmnesiacOn = CustomOption.Create(165, Types.Neutral, ColorString(Colors.Amnesiac, "Amnesiac"), 0f, 0f, 100f, 10f, null, true, format: "%");
-            RememberArrows = CustomOption.Create(166, Types.Neutral, "Amnesiac Gets Arrows Pointing To Dead Bodies", false, AmnesiacOn);
-            RememberArrowDelay = CustomOption.Create(167, Types.Neutral, "Time After Death Arrow Appears", 5f, 0f, 15f, 1f,AmnesiacOn, format: "s");
-            
-            GuardianAngelOn = CustomOption.Create(168, Types.Neutral, ColorString(Colors.GuardianAngel, "Guardian Angel"), 0f, 0f, 100f, 10f, null, true, format: "%");
-            ProtectCd = CustomOption.Create(169, Types.Neutral, "Protect Cooldown", 25f, 10f, 60f, 2.5f, GuardianAngelOn, format: "s");
-            ProtectDuration = CustomOption.Create(170, Types.Neutral, "Protect Duration", 10f, 5f, 15f, 1f, GuardianAngelOn, format: "s");
-            ProtectKCReset = CustomOption.Create(171, Types.Neutral, "Kill Cooldown Reset When Protected", 2.5f, 0f, 15f, 0.5f, GuardianAngelOn, format: "s");
-            MaxProtects = CustomOption.Create(172, Types.Neutral, "Maximum Number Of Protects", 5, 1, 15, 1, GuardianAngelOn);
-            ShowProtect = CustomOption.Create(173, Types.Neutral, "Show Protected Player", new[] { "Self", "Guardian Angel", "Self+GA", "Everyone" }, GuardianAngelOn);
-            GaOnTargetDeath = CustomOption.Create(174, Types.Neutral, "GA Becomes On Target Dead", new[] { "Crew", "Amnesiac", "Jester" }, GuardianAngelOn);
-            GATargetKnows = CustomOption.Create(175, Types.Neutral, "Target Knows GA Exists", false, GuardianAngelOn);
-            GAKnowsTargetRole = CustomOption.Create(176, Types.Neutral, "GA Knows Targets Role", false, GuardianAngelOn);
-            EvilTargetPercent = CustomOption.Create(177, Types.Neutral, "Evil Target Chance", 0f, 0f, 100f, 10f, GuardianAngelOn, format: "%");
-
-            RomanticOn = CustomOption.Create(178, Types.Neutral, ColorString(Colors.Romantic, "Romantic"), 0f, 0f, 100f, 10f, null, true, format: "%");
-            PickStartTimer = CustomOption.Create(179, Types.Neutral, "Start Pick Cooldown", 25f, 10f, 60f, 2.5f, RomanticOn, format: "s");
-            RomanticOnBelovedDeath = CustomOption.Create(180, Types.Neutral, "Romantic Becomes On Beloved Dead", new[] { "Repick Lover","Crew", "Amnesiac", "Jester" }, RomanticOn);
-            RomanticBelovedKnows = CustomOption.Create(181, Types.Neutral, "Beloved Knows The Existence Of Romantic", false, RomanticOn);
-            RomanticKnowsBelovedRole = CustomOption.Create(182, Types.Neutral, "Romantic Knows Beloved's Role", false, RomanticOn);
-            
             #endregion
 
             #region Neutral Killimng Roles Settings
