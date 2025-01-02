@@ -172,7 +172,7 @@ namespace TownOfSushi
         RpcResetAnim2,
         SetHacked,
         ExecutionerToJester,
-        GAToSurv,
+        GuardianAngelChangeRole,
         RomanticChangeRole,
         Start,
         FixAnimation,

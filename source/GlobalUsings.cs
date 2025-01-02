@@ -1,14 +1,12 @@
 global using TownOfSushi.Extensions;
 global using AmongUs.GameOptions;
 global using TownOfSushi.Roles;
-global using TownOfSushi.Roles.Crewmates;
 global using TownOfSushi.Roles.Modifiers;
 global using TownOfSushi.Roles.Abilities;
 global using TownOfSushi.CustomOption;
 global using TownOfSushi.Patches;
 global using TownOfSushi.Objects;
 global using TownOfSushi.Modules.ScreenEffects;
-global using TownOfSushi.Roles.Crewmates.Support.SwapperRole;
 
 global using static TownOfSushi.Utils;
 global using static TownOfSushi.Roles.Role;

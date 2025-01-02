@@ -24,9 +24,9 @@ namespace TownOfSushi.Patches
         {
             static bool Prefix(MeetingHud __instance) 
             {
-                return !(PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.Is(RoleEnum.Vigilante) && Roles.Crewmates.Killing.VigilanteRole.AddButton.vigilanteUI != null) ||
-                     !(PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.Is(RoleEnum.Doomsayer) && Roles.Neutral.Evil.DoomsayerRole.AddButton.doomsayerUI != null) ||
-                     !(PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.Is(AbilityEnum.Assassin) && Roles.Abilities.AbilityMod.AssassinAbility.AddButton.assassinUI != null);
+                return !(PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.Is(RoleEnum.Vigilante) && AddButtonVigilante.vigilanteUI != null) ||
+                     !(PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.Is(RoleEnum.Doomsayer) && AddButtonDoomsayer.doomsayerUI != null) ||
+                     !(PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.Is(AbilityEnum.Assassin) && AssassinAddButton.assassinUI != null);
             }
         }
 
@@ -36,7 +36,7 @@ namespace TownOfSushi.Patches
                 for (int i = 0; i < __instance.playerStates.Length; i++)
                 {
                     PlayerVoteArea playerVoteArea = __instance.playerStates[i];
-                    if (Roles.Crewmates.Killing.VigilanteRole.AddButton.IsExempt(playerVoteArea)) continue;
+                    if (AddButtonVigilante.IsExempt(playerVoteArea)) continue;
 
                     GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
                     GameObject targetBox = UnityEngine.Object.Instantiate(template, playerVoteArea.transform);
@@ -47,7 +47,7 @@ namespace TownOfSushi.Patches
                     PassiveButton button = targetBox.GetComponent<PassiveButton>();
                     button.OnClick.RemoveAllListeners();
                     int copiedIndex = i;
-                    button.OnClick.AddListener((System.Action)(() => Roles.Crewmates.Killing.VigilanteRole.AddButton.vigilanteOnClick(copiedIndex, __instance)));
+                    button.OnClick.AddListener((System.Action)(() =>AddButtonVigilante.vigilanteOnClick(copiedIndex, __instance)));
                 }
             }
 
@@ -56,7 +56,7 @@ namespace TownOfSushi.Patches
                 for (int i = 0; i < __instance.playerStates.Length; i++)
                 {
                     PlayerVoteArea playerVoteArea = __instance.playerStates[i];
-                    if (Roles.Neutral.Evil.DoomsayerRole.AddButton.IsExempt(playerVoteArea)) continue;
+                    if (AddButtonDoomsayer.IsExempt(playerVoteArea)) continue;
 
                     GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
                     GameObject targetBox = UnityEngine.Object.Instantiate(template, playerVoteArea.transform);
@@ -67,7 +67,7 @@ namespace TownOfSushi.Patches
                     PassiveButton button = targetBox.GetComponent<PassiveButton>();
                     button.OnClick.RemoveAllListeners();
                     int copiedIndex = i;
-                    button.OnClick.AddListener((System.Action)(() => Roles.Neutral.Evil.DoomsayerRole.AddButton.doomsayerOnClick(copiedIndex, __instance)));
+                    button.OnClick.AddListener((System.Action)(() => AddButtonDoomsayer.doomsayerOnClick(copiedIndex, __instance)));
                 }
             }
 
@@ -76,7 +76,7 @@ namespace TownOfSushi.Patches
                 for (int i = 0; i < __instance.playerStates.Length; i++)
                 {
                     PlayerVoteArea playerVoteArea = __instance.playerStates[i];
-                    if (Roles.Abilities.AbilityMod.AssassinAbility.AddButton.IsExempt(playerVoteArea)) continue;
+                    if (AssassinAddButton.IsExempt(playerVoteArea)) continue;
 
                     GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
                     GameObject targetBox = UnityEngine.Object.Instantiate(template, playerVoteArea.transform);
@@ -87,7 +87,7 @@ namespace TownOfSushi.Patches
                     PassiveButton button = targetBox.GetComponent<PassiveButton>();
                     button.OnClick.RemoveAllListeners();
                     int copiedIndex = i;
-                    button.OnClick.AddListener((System.Action)(() => Roles.Abilities.AbilityMod.AssassinAbility.AddButton.AssassinOnClick(copiedIndex, __instance)));
+                    button.OnClick.AddListener((System.Action)(() => AssassinAddButton.AssassinOnClick(copiedIndex, __instance)));
                 }
             }
         }

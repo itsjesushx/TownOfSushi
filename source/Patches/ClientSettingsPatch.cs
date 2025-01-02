@@ -11,13 +11,11 @@ namespace TownOfSushi.Patches
             if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
             if (!PlayerControl.LocalPlayer.Data.IsDead) return;
             if (MeetingHud.Instance) return;
-            //if (!ShowDeadBodies) return;
 
             foreach (var player in PlayerControl.AllPlayerControls)
             {
                 if (player == PlayerControl.LocalPlayer) continue;
                 if (!player.Data.IsDead) continue;
-
                 bool show = TownOfSushi.DeadSeeGhosts.Value;
                 var bodyforms = player.gameObject.transform.GetChild(1).gameObject;
 
@@ -42,8 +40,8 @@ namespace TownOfSushi.Patches
             [HarmonyPatch(nameof(LobbyBehaviour.Update)), HarmonyPostfix]    
             public static void Update_Postfix(LobbyBehaviour __instance)    
             {
-                    Func<ISoundPlayer, bool> uglyMusic = x => x.Name.Equals("MapTheme");
-                    ISoundPlayer LobbyUglyMusic = SoundManager.Instance.soundPlayers.Find(uglyMusic);
+                Func<ISoundPlayer, bool> uglyMusic = x => x.Name.Equals("MapTheme");
+                ISoundPlayer LobbyUglyMusic = SoundManager.Instance.soundPlayers.Find(uglyMusic);
                 if (TownOfSushi.DisableLobbyMusic.Value)
                 {
                     if (LobbyUglyMusic == null) return;

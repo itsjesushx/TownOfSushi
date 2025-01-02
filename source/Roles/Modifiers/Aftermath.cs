@@ -1,7 +1,5 @@
 
 using System.Collections;
-using TownOfSushi.Roles.Impostors.Power.BomberRole;
-using TownOfSushi.Modifiers.UnderdogMod;
 
 namespace TownOfSushi.Roles.Modifiers
 {
@@ -78,14 +76,14 @@ namespace TownOfSushi.Roles.Modifiers
             {
                 Rpc(CustomRPC.JanitorClean, PlayerControl.LocalPlayer.PlayerId, db.ParentId);
 
-                Coroutines.Start(Impostors.Support.JanitorRole.Coroutine.CleanCoroutine(db, janitor));
+                Coroutines.Start(JanitorCoroutine.CleanCoroutine(db, janitor));
             }
             else if (role is Miner miner)
             {
                 var position = PlayerControl.LocalPlayer.transform.position;
-                var id = Impostors.Support.MinerRole.PlaceVent.GetAvailableId();
+                var id = PlaceVent.GetAvailableId();
                 Rpc(CustomRPC.Mine, id, PlayerControl.LocalPlayer.PlayerId, position, position.z + 0.001f);
-                Impostors.Support.MinerRole.PlaceVent.SpawnVent(id, miner, position, position.z + 0.001f);
+                PlaceVent.SpawnVent(id, miner, position, position.z + 0.001f);
                 miner.LastMined = DateTime.UtcNow;
             }
             else if (role is Morphling morphling)
@@ -138,7 +136,7 @@ namespace TownOfSushi.Roles.Modifiers
 
                 Rpc(CustomRPC.Drag, PlayerControl.LocalPlayer.PlayerId, db.ParentId);
                 undertaker.CurrentlyDragging = db;
-                Impostors.Deception.UndertakerRole.KillButtonTarget.SetTarget(undertaker._dragDropButton, null, undertaker);
+                UndertakerKillButtonTarget.SetTarget(undertaker._dragDropButton, null, undertaker);
                 undertaker._dragDropButton.graphic.sprite = TownOfSushi.DropSprite;
 
             }
@@ -171,7 +169,7 @@ namespace TownOfSushi.Roles.Modifiers
 
                 Rpc(CustomRPC.HitmanDrag, PlayerControl.LocalPlayer.PlayerId, db.ParentId);
                 hitman.CurrentlyDragging = db;
-                Neutral.Killing.HitmanRole.KillButtonTarget.SetTarget(hitman._dragDropButtonHitman, null, hitman);
+                HitmanKillButtonTarget.SetTarget(hitman._dragDropButtonHitman, null, hitman);
                 hitman._dragDropButtonHitman.graphic.sprite = TownOfSushi.DropSprite;
 
                 if (hitman.Player.GetCustomOutfitType() != CustomPlayerOutfitType.Morph) hitman.RpcSetMorphed(corpse);
@@ -201,7 +199,7 @@ namespace TownOfSushi.Roles.Modifiers
                     var lowerKC = GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown - CustomGameOptions.UnderdogKillBonus + CustomGameOptions.DetonateDelay;
                     var normalKC = GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown + CustomGameOptions.DetonateDelay;
                     var upperKC = GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown + CustomGameOptions.UnderdogKillBonus + CustomGameOptions.DetonateDelay;
-                    PlayerControl.LocalPlayer.SetKillTimer(PerformKill.LastImp() ? lowerKC : (PerformKill.IncreasedKC() ? normalKC : upperKC));
+                    PlayerControl.LocalPlayer.SetKillTimer(UnderdogPerformKill.LastImp() ? lowerKC : (UnderdogPerformKill.IncreasedKC() ? normalKC : upperKC));
                 }
                 else PlayerControl.LocalPlayer.SetKillTimer(GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown + CustomGameOptions.DetonateDelay);
                 DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(null);

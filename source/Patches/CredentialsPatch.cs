@@ -11,6 +11,7 @@ namespace TownOfSushi.Patches
     public static string MainScreenText =
 $@"Remodded by <color=#FF0000FF>Jesushi</color>
 Emotionally Helped by <color=#FF0000FF>döll</color>
+Code & testing helped by <color=#FF0000FF>Cake</color> & <color=#FF0000FF>50IQ</color>
 Originally Coded by <color=#FF0000FF>Donners</color> & <color=#FF0000FF>MyDragonBreath</color>";
     public static string CreditsText =
 $@"<size=60%> <color=#FF0000FF>Formerly: Slushiegoose & Polus.gg</color></size>";
@@ -18,11 +19,13 @@ $@"<size=60%> <color=#FF0000FF>Formerly: Slushiegoose & Polus.gg</color></size>"
 public static string PingTrackerText =
 @"<size=70%>ReModded by <color=#FF0000FF>Jesushi</color>
 Emotionally Helped by <color=#FF0000FF>döll</color>
+Code & testing helped by <color=#FF0000FF>Cake</color> & <color=#FF0000FF>50IQ</color>
 Originally Coded by <color=#FF0000FF>Donners & MyDragonBreath</color>
 Formerly: <color=#FF0000FF>Polus.gg & Slushiegoose</color><size=70%>";
 public static string PingTrackerText2 =
 @"<size=70%>ReModded by <color=#FF0000FF>Jesushi</color>
-Emotionally Helped by <color=#FF0000FF>döll</color><size=70%>";
+Emotionally Helped by <color=#FF0000FF>döll</color>
+Code & testing helped by <color=#FF0000FF>Cake</color> & <color=#FF0000FF>50IQ</color><size=70%>";
 
        [HarmonyPatch(typeof(PingTracker), nameof(PingTracker.Update))]
         internal static class PingTrackerPatch

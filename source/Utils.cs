@@ -1,13 +1,9 @@
 ﻿using System.Collections;
 using Discord;
 using Il2CppInterop.Runtime.InteropTypes;
-using PerformKill = TownOfSushi.Modifiers.UnderdogMod.PerformKill;
 using Reactor.Networking;
 using System.IO;
 using static TownOfSushi.Roles.Glitch;
-using TownOfSushi.Roles.Crewmates.Investigative.TrapperMod;
-using TownOfSushi.Roles.Crewmates.Support.MedicRole;
-using TownOfSushi.Roles.Impostors.Power.BomberRole;
 using TownOfSushi.Utilities;
 
 namespace TownOfSushi
@@ -15,7 +11,6 @@ namespace TownOfSushi
     [HarmonyPatch]
     public static class Utils
     {
-        /*internal static bool ShowDeadBodies = false;*/
         private static NetworkedPlayerInfo voteTarget = null;
         public static Dictionary<byte, PoolablePlayer> playerIcons = new Dictionary<byte, PoolablePlayer>();
         public static void Morph(PlayerControl player, PlayerControl MorphedPlayer, bool resetAnim = false)
@@ -360,7 +355,7 @@ namespace TownOfSushi
                     if (CustomGameOptions.ShieldBreaks) fullCooldownReset = true;
                     else zeroSecReset = true;
 
-                    StopKill.BreakShield(medic, player.PlayerId, CustomGameOptions.ShieldBreaks);
+                    MedicStopKill.BreakShield(medic, player.PlayerId, CustomGameOptions.ShieldBreaks);
                 }
                 else if (player.IsProtected()) gaReset = true;
                 else if (player == ShowRoundOneShield.FirstRoundShielded) zeroSecReset = true;
@@ -380,7 +375,7 @@ namespace TownOfSushi
                     if (CustomGameOptions.ShieldBreaks) fullCooldownReset = true;
                     else zeroSecReset = true;
 
-                    StopKill.BreakShield(medic, player.PlayerId, CustomGameOptions.ShieldBreaks);
+                    MedicStopKill.BreakShield(medic, player.PlayerId, CustomGameOptions.ShieldBreaks);
                 }
                 else if (player.IsProtected()) gaReset = true;
                 else if (player == ShowRoundOneShield.FirstRoundShielded) zeroSecReset = true;
@@ -396,7 +391,7 @@ namespace TownOfSushi
                         if (CustomGameOptions.ShieldBreaks) fullCooldownReset = true;
                         else zeroSecReset = true;
 
-                        StopKill.BreakShield(medic, target.PlayerId, CustomGameOptions.ShieldBreaks);
+                        MedicStopKill.BreakShield(medic, target.PlayerId, CustomGameOptions.ShieldBreaks);
                     }
                     else if (target.IsProtected()) gaReset = true;
                     else if (target == ShowRoundOneShield.FirstRoundShielded) zeroSecReset = true;
@@ -453,7 +448,7 @@ namespace TownOfSushi
                 System.Console.WriteLine(CustomGameOptions.ShieldBreaks + "- shield break");
                 if (CustomGameOptions.ShieldBreaks) fullCooldownReset = true;
                 else zeroSecReset = true;
-                StopKill.BreakShield(target.GetMedic().Player.PlayerId, target.PlayerId, CustomGameOptions.ShieldBreaks);
+                MedicStopKill.BreakShield(target.GetMedic().Player.PlayerId, target.PlayerId, CustomGameOptions.ShieldBreaks);
             }
             else if (target.IsProtected() && IsBeingKilled)
             {
@@ -712,7 +707,7 @@ namespace TownOfSushi
                 {
                     var shy = GetAbility<Chameleon>(killer);
                     shy.Opacity = 1f;
-                    Roles.Abilities.AbilityMod.ChameleonAbility.HudManagerUpdate.SetVisiblity(killer, shy.Opacity);
+                    ChameleonUpdate.SetVisiblity(killer, shy.Opacity);
                     shy.Moving = true;
                 }
 
@@ -936,7 +931,7 @@ namespace TownOfSushi
                     var lowerKC = (GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown - CustomGameOptions.UnderdogKillBonus) * CustomGameOptions.DiseasedMultiplier;
                     var normalKC = GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown * CustomGameOptions.DiseasedMultiplier;
                     var upperKC = (GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown + CustomGameOptions.UnderdogKillBonus) * CustomGameOptions.DiseasedMultiplier;
-                    killer.SetKillTimer(PerformKill.LastImp() ? lowerKC : (PerformKill.IncreasedKC() ? normalKC : upperKC));
+                    killer.SetKillTimer(UnderdogPerformKill.LastImp() ? lowerKC : (UnderdogPerformKill.IncreasedKC() ? normalKC : upperKC));
                     return;
                 }
 
@@ -951,7 +946,7 @@ namespace TownOfSushi
                     var lowerKC = GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown - CustomGameOptions.UnderdogKillBonus;
                     var normalKC = GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown;
                     var upperKC = GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown + CustomGameOptions.UnderdogKillBonus;
-                    killer.SetKillTimer(PerformKill.LastImp() ? lowerKC : (PerformKill.IncreasedKC() ? normalKC : upperKC));
+                    killer.SetKillTimer(UnderdogPerformKill.LastImp() ? lowerKC : (UnderdogPerformKill.IncreasedKC() ? normalKC : upperKC));
                     return;
                 }
 
@@ -1614,23 +1609,6 @@ namespace TownOfSushi
 
             var maxDistance = KillDistance();
             return (GetDistBetweenPlayers(player, target) > maxDistance);
-        }
-
-        [HarmonyPatch(typeof(AmongUs.Data.Player.PlayerData), nameof(AmongUs.Data.Player.PlayerData.FileName), MethodType.Getter)]
-        public class SaveManagerPatch
-        {
-            public static void Postfix(ref string __result)
-            {
-               __result += "_TOS";
-            }
-        }
-        [HarmonyPatch(typeof(AmongUs.Data.Legacy.LegacySaveManager), nameof(AmongUs.Data.Legacy.LegacySaveManager.GetPrefsName))]
-        public class LegacySaveManagerPatch    
-        {
-            public static void Postfix(ref string __result)        
-            {            
-                __result += "_TOS";
-            }    
         }
     }
 }

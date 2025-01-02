@@ -1,18 +1,4 @@
-using TownOfSushi.Roles.Neutral.Evil.DoomsayerRole;
-using TownOfSushi.Roles.Neutral.Evil.ExecutionerRole;
-using TownOfSushi.Roles.Neutral.Benign.GuardianAngelRole;
-using TownOfSushi.Roles.Impostors.Support.MinerRole;
-using Coroutine = TownOfSushi.Roles.Impostors.Support.JanitorRole.Coroutine;
-using Coroutine2 = TownOfSushi.Roles.Neutral.Evil.VultureRole.Coroutine;
-using TownOfSushi.NeutralRoles.VampireRole;
-using static TownOfSushi.Roles.Impostors.Power.BomberRole.BombExtentions;
-using TownOfSushi.Roles.Crewmates.Support.MedicRole;
-using TownOfSushi.Roles.Crewmates.Support.ImitatorRole;
-using TownOfSushi.Roles.Crewmates.Killing.VigilanteRole;
-using TownOfSushi.Roles.Neutral.Benign.RomanticRole;
-using TownOfSushi.Roles.Crewmates.Killing.JailorMod;
-using TownOfSushi.Roles.Abilities.AbilityMod.AssassinAbility;
-using TownOfSushi.Roles.Neutral.Benign.AmnesiacRole;
+using static TownOfSushi.Objects.BombExtentions;
 
 namespace TownOfSushi
 {
@@ -566,7 +552,7 @@ namespace TownOfSushi
                         var deadBodies = Object.FindObjectsOfType<DeadBody>();
                         foreach (var body in deadBodies)
                             if (body.ParentId == readByte)
-                                Coroutines.Start(Coroutine.CleanCoroutine(body, janitorRole));
+                                Coroutines.Start(JanitorCoroutine.CleanCoroutine(body, janitorRole));
 
                         break;
                     case CustomRPC.VultureEat:
@@ -577,7 +563,7 @@ namespace TownOfSushi
                         var deadbodies2 = Object.FindObjectsOfType<DeadBody>();
                         foreach (var body2243 in deadbodies2)
                             if (body2243.ParentId == readByte)
-                                Coroutines.Start(Coroutine2.EatCoroutine(body2243, vultureR));
+                                Coroutines.Start(VultureCoroutine.EatCoroutine(body2243, vultureR));
 
                         break;
                     case CustomRPC.SetSwaps:
@@ -627,26 +613,6 @@ namespace TownOfSushi
                         var amnesiacTarget = PlayerById(reader.ReadByte());
                         amnesiacRole.ToRemember = amnesiacTarget;
                         break;
-                    /*case CustomRPC.Remember:
-                        readByte1 = reader.ReadByte();
-                        readByte2 = reader.ReadByte();
-                        var amnesiac = PlayerById(readByte1);
-                        var other = PlayerById(readByte2);
-                        switch (reader.ReadByte()) 
-                        {
-                            case 0: // start
-                                if (AmongUsClient.Instance.AmHost && amnesiac.Is(RoleEnum.Amnesiac))
-                                {
-                                    Rpc(CustomRPC.Remember, amnesiac.PlayerId, other.PlayerId, (byte)1);
-                                    PerformKillButtonAmne.Remember(GetRole<Amnesiac>(amnesiac), other);
-                                }
-                                break;
-                            case 1: // end
-                            default:
-                                PerformKillButtonAmne.Remember(GetRole<Amnesiac>(amnesiac), other);
-                                break;
-                        }
-                        break;*/
                     case CustomRPC.Protect:
                         readByte1 = reader.ReadByte();
                         readByte2 = reader.ReadByte();
@@ -659,7 +625,7 @@ namespace TownOfSushi
                     case CustomRPC.AttemptSound:
                         var medicId = reader.ReadByte();
                         readByte = reader.ReadByte();
-                        StopKill.BreakShield(medicId, readByte, CustomGameOptions.ShieldBreaks);
+                        MedicStopKill.BreakShield(medicId, readByte, CustomGameOptions.ShieldBreaks);
                         break;
                     case CustomRPC.BypassKill:
                         var killer = PlayerById(reader.ReadByte());
@@ -787,10 +753,10 @@ namespace TownOfSushi
                         else oracle.RevealedFaction = Faction.Impostors;
                         break;
                     case CustomRPC.ExecutionerToJester:
-                        TargetColor.ExeToJes(PlayerById(reader.ReadByte()));
+                        ExeTargetColor.ExecutionerChangeRole(PlayerById(reader.ReadByte()));
                         break;
-                    case CustomRPC.GAToSurv:
-                        GATargetColor.GAToSurv(PlayerById(reader.ReadByte()));
+                    case CustomRPC.GuardianAngelChangeRole:
+                        GATargetColor.GuardianAngelChangeRole(PlayerById(reader.ReadByte()));
                         break;
                     case CustomRPC.RomanticChangeRole:
                         RomanticChangeRolePatch.RomanticChangeRole(PlayerById(reader.ReadByte()));
@@ -966,7 +932,7 @@ namespace TownOfSushi
                     case CustomRPC.Retribution:
                         var hunter2 = GetRole<Hunter>(Utils.PlayerById(reader.ReadByte()));
                         var hunterLastVoted = PlayerById(reader.ReadByte());
-                        Roles.Crewmates.Killing.HunterRole.Retribution.MurderPlayer(hunter2, hunterLastVoted);
+                        Retribution.MurderPlayer(hunter2, hunterLastVoted);
                         break;
                     case CustomRPC.HunterStalk:
                         var stalker = PlayerById(reader.ReadByte());

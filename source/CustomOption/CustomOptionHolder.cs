@@ -659,7 +659,7 @@ namespace TownOfSushi.CustomOption
             PlaguebearerOn = CustomOption.Create(199, Types.NK, ColorString(Colors.Plaguebearer, "Plaguebearer"), 0f, 0f, 100f, 10f, null, true, format: "%");
             InfectCooldown = CustomOption.Create(200, Types.NK, "Infect Cooldown", 25f, 10f, 60f, 2.5f, PlaguebearerOn, format: "s");
             PestKillCooldown = CustomOption.Create(183, Types.NK, "Pestilence Kill Cooldown", 25f, 10f, 60f, 2.5f, PlaguebearerOn, format: "s");
-            PestVent = CustomOption.Create(202, Types.NK, "Can Vent", false, PlaguebearerOn);
+            PestVent = CustomOption.Create(202, Types.NK, "Pestilence Can Vent", false, PlaguebearerOn);
 
             AgentOn = CustomOption.Create(203, Types.NK, ColorString(Colors.Agent, "Agent"), 0f, 0f, 100f, 10f, null, true, format: "%");
             SkipAgent = CustomOption.Create(204, Types.NK, ColorString(Colors.Hitman, "Hitman") + " Spawns Without Agent", false, AgentOn);
