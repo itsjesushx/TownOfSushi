@@ -10,7 +10,6 @@ namespace TownOfSushi.Roles.Crewmates.Investigative.SnitchRole
                 foreach (var state in __instance.playerStates)
                 {
                     if (player.PlayerId != state.TargetPlayerId) continue;
-                    var role = GetPlayerRole(player);
                     if (player.Is(Faction.Impostors))
                         state.NameText.color = Palette.ImpostorRed;
                     if (player.Is(RoleAlignment.NeutralKilling))

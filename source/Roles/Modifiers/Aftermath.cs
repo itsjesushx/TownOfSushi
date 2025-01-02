@@ -171,7 +171,7 @@ namespace TownOfSushi.Roles.Modifiers
 
                 Rpc(CustomRPC.HitmanDrag, PlayerControl.LocalPlayer.PlayerId, db.ParentId);
                 hitman.CurrentlyDragging = db;
-                Neutral.Killing.HitmanRole.KillButtonTarget2.SetTarget(hitman._dragDropButtonHitman, null, hitman);
+                Neutral.Killing.HitmanRole.KillButtonTarget.SetTarget(hitman._dragDropButtonHitman, null, hitman);
                 hitman._dragDropButtonHitman.graphic.sprite = TownOfSushi.DropSprite;
 
                 if (hitman.Player.GetCustomOutfitType() != CustomPlayerOutfitType.Morph) hitman.RpcSetMorphed(corpse);

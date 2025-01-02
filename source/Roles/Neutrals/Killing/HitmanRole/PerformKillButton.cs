@@ -21,24 +21,27 @@ namespace TownOfSushi.Roles.Neutral.Killing.HitmanRole
                     if (Vector2.Distance(role.CurrentTarget.TruePosition,
                         PlayerControl.LocalPlayer.GetTruePosition()) > maxDistance) return false;
                     var playerId = role.CurrentTarget.ParentId;
-                    var player = Utils.PlayerById(playerId);
-
+                    var player = PlayerById(playerId);
+                    var abilityUsed = AbilityUsed(PlayerControl.LocalPlayer);
+                    if (!abilityUsed) return false;
                     if ((player.IsInfected() || role.Player.IsInfected()) && !player.Is(RoleEnum.Plaguebearer))
                     {
                         foreach (var pb in GetRoles(RoleEnum.Plaguebearer)) ((Plaguebearer)pb).RpcSpreadInfection(player, role.Player);
                     }
 
-                    Utils.Rpc(CustomRPC.HitmanDrag, PlayerControl.LocalPlayer.PlayerId, playerId);
+                    Rpc(CustomRPC.HitmanDrag, PlayerControl.LocalPlayer.PlayerId, playerId);
 
                     role.CurrentlyDragging = role.CurrentTarget;
 
-                    KillButtonTarget2.SetTarget(__instance, null, role);
+                    KillButtonTarget.SetTarget(__instance, null, role);
                     __instance.graphic.sprite = TownOfSushi.DropSprite;
                     return false;
                 }
                 else
                 {
                     if (!__instance.enabled) return false;
+                    var abilityUsed = Utils.AbilityUsed(PlayerControl.LocalPlayer);
+                    if (!abilityUsed) return false;
                     Vector3 position = PlayerControl.LocalPlayer.transform.position;
 
                     if (SubmergedCompatibility.isSubmerged())

@@ -1,7 +1,7 @@
 namespace TownOfSushi.Roles.Neutral.Killing.HitmanRole
 {
     [HarmonyPatch(typeof(KillButton), nameof(KillButton.SetTarget))]
-    public class KillButtonTarget2
+    public class KillButtonTarget
     {
         public static bool Prefix(KillButton __instance)
         {

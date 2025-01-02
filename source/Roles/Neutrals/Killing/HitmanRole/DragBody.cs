@@ -19,8 +19,6 @@
             var velocity = __instance.gameObject.GetComponent<Rigidbody2D>().velocity.normalized;
             Vector3 newPos = ((Vector2)__instance.transform.position) - (velocity / 3) + body.myCollider.offset;
             newPos.z = currentPosition.z;
-
-            //WHY ARE THERE DIFFERENT LOCAL Z INDEXS FOR DIFFERENT DECALS ON DIFFERENT LEVELS?!?!?!
             if (SubmergedCompatibility.isSubmerged())
             {
                 if (newPos.y > -7f)

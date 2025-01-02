@@ -70,7 +70,7 @@ namespace TownOfSushi.Patches
                         var morph = GetRole<Hitman>(PlayerControl.LocalPlayer);
                         if (morph.IsUsingMorph) disableExtra = false;
                         if (!morph.CurrentlyDragging)
-                            Roles.Neutral.Killing.HitmanRole.KillButtonTarget2.SetTarget(HudManager.Instance.KillButton, null, morph);
+                            Roles.Neutral.Killing.HitmanRole.KillButtonTarget.SetTarget(HudManager.Instance.KillButton, null, morph);
                     }
                     else if (PlayerControl.LocalPlayer.Is(RoleEnum.Glitch))
                     {
@@ -177,6 +177,8 @@ namespace TownOfSushi.Patches
                             Hitman.MorphButton.enabled = false;
                             Hitman.MorphButton.graphic.color = Palette.DisabledClear;
                             Hitman.MorphButton.graphic.material.SetFloat("_Desat", 1f);
+                            Hitman.DragDropButtonHitman.graphic.color = Palette.DisabledClear;
+                            Hitman.DragDropButtonHitman.graphic.material.SetFloat("_Desat", 1f);
                         }
                     }
 

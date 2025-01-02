@@ -22,6 +22,7 @@ namespace TownOfSushi.Roles
             var role = new Hitman(Player);
             role.CorrectAssassinKills = killsList.CorrectAssassinKills;
             role.IncorrectAssassinKills = killsList.IncorrectAssassinKills;
+            role.LastMorph = DateTime.UtcNow;
             if (Player == PlayerControl.LocalPlayer)
             {
                 Flash(Colors.Hitman);

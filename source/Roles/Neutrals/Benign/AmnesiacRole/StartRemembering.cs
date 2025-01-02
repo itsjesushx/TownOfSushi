@@ -72,7 +72,8 @@ namespace TownOfSushi.Roles.Neutral.Benign.AmnesiacRole
             newRole = GetPlayerRole(other);
             newRole.Player = amnesiac;
 
-            if ((role == RoleEnum.Glitch || role == RoleEnum.Juggernaut || role == RoleEnum.Pestilence ||
+            if ((role == RoleEnum.Glitch || role == RoleEnum.Juggernaut || role == RoleEnum.Hitman 
+            || role == RoleEnum.Pestilence || role == RoleEnum.Agent || role == RoleEnum.Werewolf ||
                 role == RoleEnum.SerialKiller) && PlayerControl.LocalPlayer == other)
             {
                 HudManager.Instance.KillButton.buttonLabelText.gameObject.SetActive(false);
@@ -166,7 +167,6 @@ namespace TownOfSushi.Roles.Neutral.Benign.AmnesiacRole
                 var snitchRole = GetRole<Romantic>(amnesiac);
                 snitchRole.LastPick = DateTime.UtcNow;
             }
-
 
             else if (role == RoleEnum.Werewolf)
             {

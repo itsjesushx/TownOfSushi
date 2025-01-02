@@ -776,7 +776,7 @@ namespace TownOfSushi.CustomOption
 
             #region Abilities
 
-            NumberOfImpostorAssassins = CustomOption.Create(276, Types.ModifierAbility, "Number Of Impostor Assassins", 1, 0, 5, 1, heading: ColorString(Colors.Impostor, "Assassin"));
+            NumberOfImpostorAssassins = CustomOption.Create(276, Types.ModifierAbility, "Number Of Impostor Assassins", 1, 0, 5, 1, null, true, heading: ColorString(Colors.Impostor, "Assassin"));
             NumberOfNeutralAssassins = CustomOption.Create(277, Types.ModifierAbility, "Number Of Neutral Killer Assassins", 1, 0, 5, 1);
             AmneTurnImpAssassin = CustomOption.Create(278, Types.ModifierAbility, "Amnesiac Turned Impostor Gets Ability", false);
             AmneTurnNeutAssassin = CustomOption.Create(279, Types.ModifierAbility, "Amnesiac Turned Neutral Killer Gets Ability", false);

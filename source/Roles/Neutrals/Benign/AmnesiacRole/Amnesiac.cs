@@ -11,7 +11,7 @@ namespace TownOfSushi.Roles
         {
             RoleEnum.Investigator, RoleEnum.Mystic, RoleEnum.Seer, RoleEnum.Tracker, RoleEnum.Vigilante, RoleEnum.Veteran,
             RoleEnum.Engineer, RoleEnum.Medium, RoleEnum.Transporter, RoleEnum.Trapper, RoleEnum.Medic, RoleEnum.Vulture, RoleEnum.Oracle,
-            RoleEnum.Hunter, RoleEnum.Jester, RoleEnum.Executioner, RoleEnum.Witch, RoleEnum.Warlock,
+            RoleEnum.Hunter, RoleEnum.Jester, RoleEnum.Executioner, RoleEnum.Witch, RoleEnum.Warlock, RoleEnum.Jailor,
             RoleEnum.Agent, RoleEnum.Hitman, RoleEnum.Miner, RoleEnum.Morphling, RoleEnum.Glitch, RoleEnum.Blackmailer, RoleEnum.Juggernaut,
             RoleEnum.Swapper, RoleEnum.Amnesiac, RoleEnum.GuardianAngel, RoleEnum.Werewolf, RoleEnum.SerialKiller, RoleEnum.Arsonist,
             RoleEnum.Grenadier, RoleEnum.Crewmate, RoleEnum.Impostor, RoleEnum.Vampire, RoleEnum.Bomber, RoleEnum.Plaguebearer, RoleEnum.Pestilence, RoleEnum.Romantic, RoleEnum.Swooper,

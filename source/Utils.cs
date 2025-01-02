@@ -179,11 +179,10 @@ namespace TownOfSushi
                 return false;
             
             var taskersFlag = player.Is(Faction.Crewmates) || player.Is(RoleEnum.Agent) || player.Is(RoleAlignment.NeutralBenign);
-            var neutralflag = player.Is(Faction.Neutral) || player.Is(Faction.Impostors);
-            var isdead = player.Data.IsDead;
+            var noTaskers = player.Is(Faction.Neutral) || player.Is(Faction.Impostors);
             var flag1 = taskersFlag;
-            var flag2 = neutralflag && isdead;
-            var flag = flag1 || flag2;
+            var flag2 = noTaskers;
+            var flag = flag1 || !flag2;
             return flag;
         }
 
@@ -219,8 +218,7 @@ namespace TownOfSushi
             ).ToList();
         }
 
-        public static List<PlayerControl> GetImpostors(
-            List<NetworkedPlayerInfo> infected)
+        public static List<PlayerControl> GetImpostors(List<NetworkedPlayerInfo> infected)
         {
             var impostors = new List<PlayerControl>();
             foreach (var impData in infected)
@@ -335,7 +333,7 @@ namespace TownOfSushi
             });
         }
 
-        public static List<bool> Interact(PlayerControl player, PlayerControl target, bool toKill = false)
+        public static List<bool> Interact(PlayerControl player, PlayerControl target, bool IsBeingKilled = false)
         {
             bool fullCooldownReset = false;
             bool gaReset = false;
@@ -345,9 +343,9 @@ namespace TownOfSushi
             if (!checkHack) return new List<bool> { false, false, false, true, false };
             if (target.IsInfected() || player.IsInfected())
             {
-                foreach (var pb in Role.GetRoles(RoleEnum.Plaguebearer)) ((Plaguebearer)pb).RpcSpreadInfection(target, player);
+                foreach (var pb in GetRoles(RoleEnum.Plaguebearer)) ((Plaguebearer)pb).RpcSpreadInfection(target, player);
             }
-            if (target == ShowRoundOneShield.FirstRoundShielded && toKill)
+            if (target == ShowRoundOneShield.FirstRoundShielded && IsBeingKilled)
             {
                 zeroSecReset = true;
             }
@@ -388,7 +386,7 @@ namespace TownOfSushi
                 else if (player == ShowRoundOneShield.FirstRoundShielded) zeroSecReset = true;
                 else RpcMurderPlayer(target, player);
 
-                if (toKill && CustomGameOptions.KilledOnAlert)
+                if (IsBeingKilled && CustomGameOptions.KilledOnAlert)
                 {
                     if (target.IsShielded())
                     {
@@ -448,7 +446,7 @@ namespace TownOfSushi
                     }
                 }
             }
-            else if (target.IsShielded() && toKill)
+            else if (target.IsShielded() && IsBeingKilled)
             {
                 Rpc(CustomRPC.AttemptSound, target.GetMedic().Player.PlayerId, target.PlayerId);
 
@@ -457,11 +455,11 @@ namespace TownOfSushi
                 else zeroSecReset = true;
                 StopKill.BreakShield(target.GetMedic().Player.PlayerId, target.PlayerId, CustomGameOptions.ShieldBreaks);
             }
-            else if (target.IsProtected() && toKill)
+            else if (target.IsProtected() && IsBeingKilled)
             {
                 gaReset = true;
             }
-            else if (toKill)
+            else if (IsBeingKilled)
             {
                 if (player.Is(RoleEnum.Glitch))
                 {

@@ -470,7 +470,7 @@ namespace TownOfSushi.CustomOption
                             { CustomOptionType.Neutral, "Neutral Roles" }, 
                             { CustomOptionType.NK, "Neutral Killing Roles" }, 
                             { CustomOptionType.Impostor, "Impostor Roles" }, 
-                            { CustomOptionType.ModifierAbility, "Modifiers" }}[curType];
+                            { CustomOptionType.ModifierAbility, "Modifiers & Abilities" }}[curType];
                     categoryHeaderMasked.Title.outlineColor = Color.white;
                     categoryHeaderMasked.Title.outlineWidth = 0.2f;
                     categoryHeaderMasked.transform.SetParent(__instance.settingsContainer);
@@ -533,7 +533,7 @@ namespace TownOfSushi.CustomOption
             // IMp
             CreateCustomButton(__instance, next++, "ImpostorSettings", "Impostor Roles", CustomOptionType.Impostor);
             // Modifier
-            CreateCustomButton(__instance, next++, "ModifierSettings", "Modifiers", CustomOptionType.ModifierAbility);
+            CreateCustomButton(__instance, next++, "ModifierSettings", "Modifiers/Abilities", CustomOptionType.ModifierAbility);
         }
     }
 
@@ -763,7 +763,7 @@ namespace TownOfSushi.CustomOption
             CreateCustomButton(__instance, next++, "ImpostorSettings", "Impostor Roles");
             CreateGameOptionsMenu(__instance, CustomOptionType.Impostor, "ImpostorSettings");
             // Modifier
-            CreateCustomButton(__instance, next++, "ModifierSettings", "Modifiers");
+            CreateCustomButton(__instance, next++, "ModifierSettings", "Modifiers & Abilities");
             CreateGameOptionsMenu(__instance, CustomOptionType.ModifierAbility, "ModifierSettings");
         }
     }
@@ -1206,7 +1206,7 @@ namespace TownOfSushi.CustomOption
                 toggleZoomButton.OnClick.AddListener((Action)(() => ToggleZoom()));
             }
 
-        bool zoomButtonActive = !(PlayerControl.LocalPlayer == null || !PlayerControl.LocalPlayer.Data.IsDead || PlayerControl.LocalPlayer.Data.Role.IsImpostor);
+        bool zoomButtonActive = !(PlayerControl.LocalPlayer == null || !PlayerControl.LocalPlayer.Data.IsDead);
         toggleZoomButtonObject.SetActive(zoomButtonActive);
         var posOffset = zoomOutStatus ? new Vector3(-1.27f, -7.92f, -52f) : new Vector3(0, -1.6f, -52f);
         toggleZoomButtonObject.transform.localPosition = HudManager.Instance.MapButton.transform.localPosition + posOffset;

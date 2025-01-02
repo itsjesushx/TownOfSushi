@@ -11,7 +11,7 @@ namespace TownOfSushi.Roles.Crewmates.Investigative.SeerRole
                 foreach (var state in __instance.playerStates)
                 {
                     if (player.PlayerId != state.TargetPlayerId) continue;
-                    var roleType = GetPlayerRole(player);
+                    var roleType = GetRole(player);
                     switch (roleType)
                     {
                         default:

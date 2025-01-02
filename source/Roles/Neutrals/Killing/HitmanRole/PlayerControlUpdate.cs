@@ -31,6 +31,7 @@ namespace TownOfSushi.Roles.Neutral.Killing.HitmanRole
             
             role.DragDropButtonHitman.transform.localPosition = new Vector3(-1f, 1f, 0f);
 
+
             if (role.DragDropButtonHitman.graphic.sprite == TownOfSushi.DragSprite)
             {
                 var data = PlayerControl.LocalPlayer.Data;
@@ -60,12 +61,12 @@ namespace TownOfSushi.Roles.Neutral.Killing.HitmanRole
                 }
 
 
-                KillButtonTarget2.SetTarget(killButton, closestBody, role);
+                KillButtonTarget.SetTarget(killButton, closestBody, role);
             }
 
             if (role.DragDropButtonHitman.graphic.sprite == TownOfSushi.DragSprite)
             {
-                role.DragDropButtonHitman.SetCoolDown(role.DragTimer(), CustomGameOptions.HitmanDragCd);
+                role.DragDropButtonHitman.SetCoolDown(role.DragTimer(), CustomGameOptions.DragCd);
             }
             else
             {
