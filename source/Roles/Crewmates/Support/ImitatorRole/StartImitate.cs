@@ -39,11 +39,6 @@ namespace TownOfSushi.Roles.Crewmates.Support.ImitatorRole
             if (imitator.ImitatePlayer == null) return;
             ImitatingPlayer = imitator.Player;
             var imitatorRole = GetPlayerRole(imitator.ImitatePlayer).RoleType;
-            if (imitatorRole == RoleEnum.Haunter)
-            {
-                var haunter = GetRole<Haunter>(imitator.ImitatePlayer);
-                imitatorRole = haunter.formerRole;
-            }
             if (imitatorRole == RoleEnum.Mystic)
             {
                 var Mystic = new Mystic(ImitatingPlayer);

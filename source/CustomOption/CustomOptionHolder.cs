@@ -17,12 +17,6 @@ namespace TownOfSushi.CustomOption
         public static CustomOption PresetSelection;
 
         #region Crewmate Roles
-
-        public static CustomOption HaunterOn;
-        public static CustomOption HaunterTasksRemainingClicked;
-        public static CustomOption HaunterTasksRemainingAlert;
-        public static CustomOption HaunterRevealsNeutrals;
-        public static CustomOption HaunterCanBeClickedBy;
         public static CustomOption TransporterOn;
         public static CustomOption TransportCooldown;
         public static CustomOption TransportMaxUses;
@@ -333,9 +327,6 @@ namespace TownOfSushi.CustomOption
         public static CustomOption EatArrows;
         public static CustomOption EatArrowDelay;
 
-        public static CustomOption PhantomOn;
-        public static CustomOption PhantomTasksRemaining;
-
         public static CustomOption DoomsayerOn;
         public static CustomOption ObserveCooldown;
         public static CustomOption DoomsayerGuessNeutralBenign;
@@ -554,14 +545,6 @@ namespace TownOfSushi.CustomOption
             VigilanteKillCd = CustomOption.Create(109, Types.Crewmate, "Vigilante Kill Cooldown", 25f, 10f, 40f, 2.5f, VigilanteOn, format: "s");
             VigilanteBodyReport = CustomOption.Create(110, Types.Crewmate, "Vigilante Can Report Who They've Killed", false, VigilanteOn);
 
-
-            HaunterOn = CustomOption.Create(111, Types.Crewmate, ColorString(Colors.Haunter, "Haunter"), 0f, 0f, 100f, 10f, null, true, format: "%");
-            HaunterTasksRemainingClicked = CustomOption.Create(112, Types.Crewmate, "Tasks Remaining When Haunter Can Be Clicked", 5, 1, 15, 1, HaunterOn);
-            HaunterTasksRemainingAlert = CustomOption.Create(113, Types.Crewmate, "Tasks Remaining When Alert Is Sent", 1, 1, 5, 1, HaunterOn);
-            HaunterRevealsNeutrals = CustomOption.Create(114, Types.Crewmate, "Haunter Reveals Neutral Roles", false, HaunterOn);
-            HaunterCanBeClickedBy = CustomOption.Create(115, Types.Crewmate, "Who Can Click Haunter", new[] { "All", "Non-Crew", "Imps Only" }, HaunterOn);
-
-
             EngineerOn = CustomOption.Create(116, Types.Crewmate, ColorString(Colors.Engineer, "Engineer"), 0f, 0f, 100f, 10f, null, true, format: "%");
             MaxFixes = CustomOption.Create(117, Types.Crewmate, "Maximum Number Of Fixes", 5, 1, 15, 1, EngineerOn);
 
@@ -616,11 +599,6 @@ namespace TownOfSushi.CustomOption
             JesterVent = CustomOption.Create(153, Types.Neutral, "Jester Can Hide In Vents", false, JesterOn);
             JesterVentSwitch = CustomOption.Create(154, Types.Neutral, "Jester Can Switch Between Vents", false, JesterVent);
             JesterImpVision = CustomOption.Create(155, Types.Neutral, "Jester Has Impostor Vision", false, JesterOn);
-            
-
-            PhantomOn = CustomOption.Create(156, Types.Neutral, ColorString(Colors.Phantom, "Phantom"), 0f, 0f, 100f, 10f, null, true, format: "%");
-            PhantomTasksRemaining = CustomOption.Create(157, Types.Neutral, "Tasks Left When Can Be Clicked", 5, 1, 15, 1, PhantomOn);
-
 
             VultureOn = CustomOption.Create(158, Types.Neutral, ColorString(Colors.Vulture, "Vulture"), 0f, 0f, 100f, 10f, null, true, format: "%");
             VultureCd = CustomOption.Create(159, Types.Neutral, "Eat Cooldown", 10f, 10f, 60f, 2.5f, VultureOn, format: "s");
@@ -776,77 +754,77 @@ namespace TownOfSushi.CustomOption
             #endregion
 
             #region Modifiers
-            AftermathOn = CustomOption.Create(267, Types.Modifier, ColorString(Colors.Aftermath, "Aftermath"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            AftermathOn = CustomOption.Create(267, Types.ModifierAbility, ColorString(Colors.Aftermath, "Aftermath"), 0f, 0f, 100f, 10f, null, true, format: "%");
 
-            BaitOn = CustomOption.Create(268, Types.Modifier, ColorString(Colors.Bait, "Bait"), 0f, 0f, 100f, 10f, null, true, format: "%");
-            BaitMinDelay = CustomOption.Create(269, Types.Modifier, "Minimum Delay for the Bait Report", 0f, 0f, 15f, 0.5f, BaitOn, format: "s");
-            BaitMaxDelay = CustomOption.Create(270, Types.Modifier, "Maximum Delay for the Bait Report", 1f, 0f, 15f, 0.5f, BaitOn, format: "s");
+            BaitOn = CustomOption.Create(268, Types.ModifierAbility, ColorString(Colors.Bait, "Bait"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            BaitMinDelay = CustomOption.Create(269, Types.ModifierAbility, "Minimum Delay for the Bait Report", 0f, 0f, 15f, 0.5f, BaitOn, format: "s");
+            BaitMaxDelay = CustomOption.Create(270, Types.ModifierAbility, "Maximum Delay for the Bait Report", 1f, 0f, 15f, 0.5f, BaitOn, format: "s");
 
-            DiseasedOn = CustomOption.Create(270, Types.Modifier, ColorString(Colors.Diseased, "Diseased"), 0f, 0f, 100f, 10f, null, true, format: "%");
-            DiseasedKillMultiplier = CustomOption.Create(271, Types.Modifier, "Kill Multiplier", 3f, 1.5f, 5f, 0.5f, DiseasedOn, format: "x");
+            DiseasedOn = CustomOption.Create(270, Types.ModifierAbility, ColorString(Colors.Diseased, "Diseased"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            DiseasedKillMultiplier = CustomOption.Create(271, Types.ModifierAbility, "Kill Multiplier", 3f, 1.5f, 5f, 0.5f, DiseasedOn, format: "x");
 
-            FrostyOn = CustomOption.Create(272, Types.Modifier, ColorString(Colors.Frosty, "Frosty"), 0f, 0f, 100f, 10f, null, true, format: "%");
-            ChillDuration = CustomOption.Create(273, Types.Modifier, "Chill Duration", 10f, 1f, 15f, 1f, FrostyOn, format: "s");
-            ChillStartSpeed = CustomOption.Create(274, Types.Modifier, "Chill Start Speed", 0.75f, 0.25f, 0.95f, 0.05f, FrostyOn, format: "x");
+            FrostyOn = CustomOption.Create(272, Types.ModifierAbility, ColorString(Colors.Frosty, "Frosty"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            ChillDuration = CustomOption.Create(273, Types.ModifierAbility, "Chill Duration", 10f, 1f, 15f, 1f, FrostyOn, format: "s");
+            ChillStartSpeed = CustomOption.Create(274, Types.ModifierAbility, "Chill Start Speed", 0.75f, 0.25f, 0.95f, 0.05f, FrostyOn, format: "x");
             #endregion
 
             #region Impostor Modifiers
 
-            DoubleShotOn = CustomOption.Create(305, Types.Modifier, ColorString(Colors.Impostor, "Double Shot"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            DoubleShotOn = CustomOption.Create(305, Types.ModifierAbility, ColorString(Colors.Impostor, "Double Shot"), 0f, 0f, 100f, 10f, null, true, format: "%");
             
-            UnderdogOn = CustomOption.Create(306, Types.Modifier, ColorString(Colors.Impostor, "Underdog"), 0f, 0f, 100f, 10f, null, true, format: "%");
-            UnderdogKillBonus = CustomOption.Create(307, Types.Modifier, "Kill Cooldown Bonus", 5f, 2.5f, 10f, 2.5f, UnderdogOn, format: "s");
-            UnderdogIncreasedKC = CustomOption.Create(308, Types.Modifier, "Increased Kill Cooldown When 2+ Imps", true, UnderdogOn);
+            UnderdogOn = CustomOption.Create(306, Types.ModifierAbility, ColorString(Colors.Impostor, "Underdog"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            UnderdogKillBonus = CustomOption.Create(307, Types.ModifierAbility, "Kill Cooldown Bonus", 5f, 2.5f, 10f, 2.5f, UnderdogOn, format: "s");
+            UnderdogIncreasedKC = CustomOption.Create(308, Types.ModifierAbility, "Increased Kill Cooldown When 2+ Imps", true, UnderdogOn);
 
             #endregion     
 
             #region Abilities
 
-            NumberOfImpostorAssassins = CustomOption.Create(276, Types.Impostor, "Number Of Impostor Assassins", 1, 0, 5, 1, heading: ColorString(Colors.Impostor, "Assassin"));
-            NumberOfNeutralAssassins = CustomOption.Create(277, Types.Ability, "Number Of Neutral Killer Assassins", 1, 0, 5, 1);
-            AmneTurnImpAssassin = CustomOption.Create(278, Types.Ability, "Amnesiac Turned Impostor Gets Ability", false);
-            AmneTurnNeutAssassin = CustomOption.Create(279, Types.Ability, "Amnesiac Turned Neutral Killer Gets Ability", false);
-            AssassinKills = CustomOption.Create(280, Types.Ability, "Number Of Kills", 1, 1, 15, 1);
-            AssassinMultiKill = CustomOption.Create(281, Types.Ability, "Can Kill More Than Once Per Meeting", false);
-            AssassinCrewmateGuess = CustomOption.Create(282, Types.Ability, "Can Guess \"Crewmate\"", false);
-            AssassinGuessNeutralBenign = CustomOption.Create(283, Types.Ability, "Can Guess Neutral Benign Roles", false);
-            AssassinGuessNeutralEvil = CustomOption.Create(284, Types.Ability, "Can Guess Neutral Evil Roles", false);
+            NumberOfImpostorAssassins = CustomOption.Create(276, Types.ModifierAbility, "Number Of Impostor Assassins", 1, 0, 5, 1, heading: ColorString(Colors.Impostor, "Assassin"));
+            NumberOfNeutralAssassins = CustomOption.Create(277, Types.ModifierAbility, "Number Of Neutral Killer Assassins", 1, 0, 5, 1);
+            AmneTurnImpAssassin = CustomOption.Create(278, Types.ModifierAbility, "Amnesiac Turned Impostor Gets Ability", false);
+            AmneTurnNeutAssassin = CustomOption.Create(279, Types.ModifierAbility, "Amnesiac Turned Neutral Killer Gets Ability", false);
+            AssassinKills = CustomOption.Create(280, Types.ModifierAbility, "Number Of Kills", 1, 1, 15, 1);
+            AssassinMultiKill = CustomOption.Create(281, Types.ModifierAbility, "Can Kill More Than Once Per Meeting", false);
+            AssassinCrewmateGuess = CustomOption.Create(282, Types.ModifierAbility, "Can Guess \"Crewmate\"", false);
+            AssassinGuessNeutralBenign = CustomOption.Create(283, Types.ModifierAbility, "Can Guess Neutral Benign Roles", false);
+            AssassinGuessNeutralEvil = CustomOption.Create(284, Types.ModifierAbility, "Can Guess Neutral Evil Roles", false);
 
-            ButtonBarryOn = CustomOption.Create(285, Types.Ability, ColorString(Colors.ButtonBarry, "Button Barry"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            ButtonBarryOn = CustomOption.Create(285, Types.ModifierAbility, ColorString(Colors.ButtonBarry, "Button Barry"), 0f, 0f, 100f, 10f, null, true, format: "%");
 
-            ChameleonOn = CustomOption.Create(286, Types.Ability, ColorString(Colors.Chameleon, "Chameleon"), 0f, 0f, 100f, 10f, null, true, format: "%");
-            InvisDelay = CustomOption.Create(287, Types.Ability, "Transparency Delay", 5f, 1f, 15f, 1f, ChameleonOn, format: "s");
-            TransformInvisDuration = CustomOption.Create(288, Types.Ability, "Turn Transparent Duration", 5f, 1f, 15f, 1f, ChameleonOn, format: "s");
-            FinalTransparency = CustomOption.Create(289, Types.Ability, "Final Opacity", 20f, 0f, 80f, 10f, ChameleonOn, format: "%");
+            ChameleonOn = CustomOption.Create(286, Types.ModifierAbility, ColorString(Colors.Chameleon, "Chameleon"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            InvisDelay = CustomOption.Create(287, Types.ModifierAbility, "Transparency Delay", 5f, 1f, 15f, 1f, ChameleonOn, format: "s");
+            TransformInvisDuration = CustomOption.Create(288, Types.ModifierAbility, "Turn Transparent Duration", 5f, 1f, 15f, 1f, ChameleonOn, format: "s");
+            FinalTransparency = CustomOption.Create(289, Types.ModifierAbility, "Final Opacity", 20f, 0f, 80f, 10f, ChameleonOn, format: "%");
 
-            DrunkOn = CustomOption.Create(290, Types.Ability, ColorString(Colors.Drunk, "Drunk"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            DrunkOn = CustomOption.Create(290, Types.ModifierAbility, ColorString(Colors.Drunk, "Drunk"), 0f, 0f, 100f, 10f, null, true, format: "%");
             
-            FlashOn = CustomOption.Create(291, Types.Ability, ColorString(Colors.Flash, "Flash"), 0f, 0f, 100f, 10f, null, true, format: "%");
-            FlashSpeed = CustomOption.Create(292, Types.Ability, "Speed Multiplier", 1.25f, 1.05f, 2.5f, 0.05f, FlashOn, format: "x");
+            FlashOn = CustomOption.Create(291, Types.ModifierAbility, ColorString(Colors.Flash, "Flash"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            FlashSpeed = CustomOption.Create(292, Types.ModifierAbility, "Speed Multiplier", 1.25f, 1.05f, 2.5f, 0.05f, FlashOn, format: "x");
 
-            GiantOn = CustomOption.Create(293, Types.Ability, ColorString(Colors.Giant, "Giant"), 0f, 0f, 100f, 10f, null, true, format: "%");
-            GiantSlow = CustomOption.Create(294, Types.Ability, "Speed Multiplier", 0.75f, 0.25f, 1f, 0.05f, GiantOn, format: "x");
+            GiantOn = CustomOption.Create(293, Types.ModifierAbility, ColorString(Colors.Giant, "Giant"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            GiantSlow = CustomOption.Create(294, Types.ModifierAbility, "Speed Multiplier", 0.75f, 0.25f, 1f, 0.05f, GiantOn, format: "x");
 
-            MultitaskerOn = CustomOption.Create(295, Types.Ability, ColorString(Colors.Multitasker, "Multitasker"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            MultitaskerOn = CustomOption.Create(295, Types.ModifierAbility, ColorString(Colors.Multitasker, "Multitasker"), 0f, 0f, 100f, 10f, null, true, format: "%");
 
-            RadarOn = CustomOption.Create(296, Types.Ability, ColorString(Colors.Radar, "Radar"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            RadarOn = CustomOption.Create(296, Types.ModifierAbility, ColorString(Colors.Radar, "Radar"), 0f, 0f, 100f, 10f, null, true, format: "%");
             
-            SleuthOn = CustomOption.Create(297, Types.Ability, ColorString(Colors.Sleuth, "Sleuth"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            SleuthOn = CustomOption.Create(297, Types.ModifierAbility, ColorString(Colors.Sleuth, "Sleuth"), 0f, 0f, 100f, 10f, null, true, format: "%");
             
-            SpyOn = CustomOption.Create(298, Types.Ability, ColorString(Colors.Spy, "Spy"), 0f, 0f, 100f, 10f, null, true, format: "%");
-            WhoSeesDead = CustomOption.Create(299, Types.Ability, "Who Sees Dead Bodies On Admin", new[] { "Nobody", "Spy", "Everyone But Spy", "Everyone" }, SpyOn);
+            SpyOn = CustomOption.Create(298, Types.ModifierAbility, ColorString(Colors.Spy, "Spy"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            WhoSeesDead = CustomOption.Create(299, Types.ModifierAbility, "Who Sees Dead Bodies On Admin", new[] { "Nobody", "Spy", "Everyone But Spy", "Everyone" }, SpyOn);
             
-            TiebreakerOn = CustomOption.Create(300, Types.Ability, ColorString(Colors.Tiebreaker, "Tie breaker"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            TiebreakerOn = CustomOption.Create(300, Types.ModifierAbility, ColorString(Colors.Tiebreaker, "Tie breaker"), 0f, 0f, 100f, 10f, null, true, format: "%");
             
-            TorchOn = CustomOption.Create(301, Types.Ability, ColorString(Colors.Torch, "Torch"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            TorchOn = CustomOption.Create(301, Types.ModifierAbility, ColorString(Colors.Torch, "Torch"), 0f, 0f, 100f, 10f, null, true, format: "%");
             
             #endregion
 
             #region Impostor Abilities
 
-            DisperserOn = CustomOption.Create(302, Types.Ability, ColorString(Colors.Impostor, "Disperser"), 0f, 0f, 100f, 10f, null, true, format: "%");
-            DisperseCooldown = CustomOption.Create(303, Types.Ability, "Disperse Cooldown", 25f, 10f, 40f, 2.5f, DisperserOn, format: "s");
-            MaxDisperses = CustomOption.Create(304, Types.Ability, "Maximum Number Of Disperses Per Game", 5, 1, 15, 1, DisperserOn);
+            DisperserOn = CustomOption.Create(302, Types.ModifierAbility, ColorString(Colors.Impostor, "Disperser"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            DisperseCooldown = CustomOption.Create(303, Types.ModifierAbility, "Disperse Cooldown", 25f, 10f, 40f, 2.5f, DisperserOn, format: "s");
+            MaxDisperses = CustomOption.Create(304, Types.ModifierAbility, "Maximum Number Of Disperses Per Game", 5, 1, 15, 1, DisperserOn);
             
             #endregion
         }

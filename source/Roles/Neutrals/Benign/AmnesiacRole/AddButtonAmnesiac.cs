@@ -1,18 +1,18 @@
 using UnityEngine.UI;
 
-namespace TownOfSushi.Roles.Crewmates.Support.ImitatorRole
+namespace TownOfSushi.Roles.Neutral.Benign.AmnesiacRole
 {
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
-    public class AddButtonImitator
+    public class AddButtonAmnesiac
     {
         private static int _mostRecentId;
         private static Sprite ActiveSprite => TownOfSushi.ImitateSelectSprite;
         public static Sprite DisabledSprite => TownOfSushi.ImitateDeselectSprite;
-
-
-        public static void GenButton(Imitator role, int index, bool isUseable, bool replace = false)
+        private static List<GameObject> buttonPool = new List<GameObject>();
+        public static void GenButton(Amnesiac role, int index, bool isDead)
         {
-            if (!isUseable)
+            if (role.Remembered) return;
+            if (!isDead)
             {
                 role.Buttons.Add(null);
                 role.ListOfActives.Add(false);
@@ -21,7 +21,18 @@ namespace TownOfSushi.Roles.Crewmates.Support.ImitatorRole
 
             var confirmButton = MeetingHud.Instance.playerStates[index].Buttons.transform.GetChild(0).gameObject;
 
-            var newButton = Object.Instantiate(confirmButton, MeetingHud.Instance.playerStates[index].transform);
+            GameObject newButton;
+            if (buttonPool.Count > 0)
+            {
+                newButton = buttonPool[0];
+                buttonPool.RemoveAt(0);
+                newButton.SetActive(true);
+            }
+            else
+            {
+                newButton = Object.Instantiate(confirmButton, MeetingHud.Instance.playerStates[index].transform);
+            }
+
             var renderer = newButton.GetComponent<SpriteRenderer>();
             var passive = newButton.GetComponent<PassiveButton>();
 
@@ -30,19 +41,19 @@ namespace TownOfSushi.Roles.Crewmates.Support.ImitatorRole
             newButton.transform.localScale *= 0.8f;
             newButton.layer = 5;
             newButton.transform.parent = confirmButton.transform.parent.parent;
-
             passive.OnClick = new Button.ButtonClickedEvent();
             passive.OnClick.AddListener(SetActive(role, index));
-            if (replace) role.Buttons[index] = newButton;
-            else
-            {
-                role.Buttons.Add(newButton);
-                role.ListOfActives.Add(false);
-            }
+            role.Buttons.Add(newButton);
+            role.ListOfActives.Add(false);
         }
 
+        public static void ReturnButtonToPool(GameObject button)
+        {
+            button.SetActive(false);
+            buttonPool.Add(button);
+        }
 
-        private static Action SetActive(Imitator role, int index)
+        private static Action SetActive(Amnesiac role, int index)
         {
             void Listener()
             {
@@ -65,11 +76,11 @@ namespace TownOfSushi.Roles.Crewmates.Support.ImitatorRole
 
                 _mostRecentId = index;
 
-                SetImitate.Imitate = null;
+                SetRemember.Remember = null;
                 for (var i = 0; i < role.ListOfActives.Count; i++)
                 {
                     if (!role.ListOfActives[i]) continue;
-                    SetImitate.Imitate = MeetingHud.Instance.playerStates[i];
+                    SetRemember.Remember = MeetingHud.Instance.playerStates[i];
                 }
             }
 
@@ -78,27 +89,27 @@ namespace TownOfSushi.Roles.Crewmates.Support.ImitatorRole
 
         public static void Postfix(MeetingHud __instance)
         {
-            foreach (var role in Role.GetRoles(RoleEnum.Imitator))
+            foreach (var role in GetRoles(RoleEnum.Amnesiac))
             {
-                var imitator = (Imitator)role;
-                imitator.ListOfActives.Clear();
-                imitator.Buttons.Clear();
+                var Amnesiac = (Amnesiac)role;
+                Amnesiac.ListOfActives.Clear();
+                Amnesiac.Buttons.Clear();
             }
 
             if (PlayerControl.LocalPlayer.Data.IsDead) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Imitator)) return;
+            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Amnesiac)) return;
             if (PlayerControl.LocalPlayer.IsJailed()) return;
-            var imitatorRole = Role.GetRole<Imitator>(PlayerControl.LocalPlayer);
+            var AmnesiacRole = GetRole<Amnesiac>(PlayerControl.LocalPlayer);
             for (var i = 0; i < __instance.playerStates.Length; i++)
             {
                 foreach (var player in PlayerControl.AllPlayerControls)
                 {
                     if (player.PlayerId == __instance.playerStates[i].TargetPlayerId)
                     {
-                        var imitatable = false;
-                        var imitatedRole = GetPlayerRole(player).RoleType;
-                        if (player.Data.IsDead && !player.Data.Disconnected && imitatorRole.ImitatableRoles.Contains(imitatedRole)) imitatable = true;
-                        GenButton(imitatorRole, i, imitatable);
+                        var stealable = false;
+                        var StolenRole = GetPlayerRole(player).RoleType;
+                        if (player.Data.IsDead && !player.Data.Disconnected && AmnesiacRole.RolesToRemember.Contains(StolenRole)) stealable = true;
+                        GenButton(AmnesiacRole, i, stealable);
                     }
                 }
             }

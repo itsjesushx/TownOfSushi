@@ -89,8 +89,7 @@ namespace TownOfSushi.Patches
                         HudManager.Instance.KillButton.graphic.color = Palette.DisabledClear;
                         HudManager.Instance.KillButton.graphic.material.SetFloat("_Desat", 1f);
                     }
-                    if (PlayerControl.LocalPlayer.Is(RoleEnum.Amnesiac)) Roles.Neutral.Benign.AmnesiacRole.KillButtonTarget.SetTarget(HudManager.Instance.KillButton, null, GetRole<Amnesiac>(PlayerControl.LocalPlayer));
-                    else if (PlayerControl.LocalPlayer.Is(RoleEnum.Janitor)) Roles.Impostors.Support.JanitorRole.KillButtonTarget.SetTarget(HudManager.Instance.KillButton, null, GetRole<Janitor>(PlayerControl.LocalPlayer));
+                    if (PlayerControl.LocalPlayer.Is(RoleEnum.Janitor)) Roles.Impostors.Support.JanitorRole.KillButtonTarget.SetTarget(HudManager.Instance.KillButton, null, GetRole<Janitor>(PlayerControl.LocalPlayer));
                     else if (PlayerControl.LocalPlayer.Is(RoleEnum.Vulture)) Roles.Neutral.Evil.VultureRole.KillButtonTarget.SetTarget(HudManager.Instance.KillButton, null, GetRole<Vulture>(PlayerControl.LocalPlayer));
                     else if (PlayerControl.LocalPlayer.Is(RoleEnum.Undertaker))
                     {

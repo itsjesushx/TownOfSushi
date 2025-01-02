@@ -180,10 +180,9 @@ namespace TownOfSushi
             
             var taskersFlag = player.Is(Faction.Crewmates) || player.Is(RoleEnum.Agent) || player.Is(RoleAlignment.NeutralBenign) || player.Is(RoleEnum.GuardianAngel);
             var neutralflag = player.Is(Faction.Neutral) || player.Is(Faction.Impostors);
-            var phantomflag = player.Is(RoleEnum.Phantom);
             var isdead = player.Data.IsDead;
             var flag1 = taskersFlag;
-            var flag2 = neutralflag && phantomflag && isdead;
+            var flag2 = neutralflag && isdead;
             var flag = flag1 || flag2;
             return flag;
         }

@@ -2,19 +2,17 @@ using TownOfSushi.Roles.Neutral.Evil.DoomsayerRole;
 using TownOfSushi.Roles.Neutral.Evil.ExecutionerRole;
 using TownOfSushi.Roles.Neutral.Benign.GuardianAngelRole;
 using TownOfSushi.Roles.Impostors.Support.MinerRole;
-using PerformKillButtonAmne = TownOfSushi.Roles.Neutral.Benign.AmnesiacRole.PerformKillButton;
 using Coroutine = TownOfSushi.Roles.Impostors.Support.JanitorRole.Coroutine;
 using Coroutine2 = TownOfSushi.Roles.Neutral.Evil.VultureRole.Coroutine;
 using TownOfSushi.NeutralRoles.VampireRole;
 using static TownOfSushi.Roles.Impostors.Power.BomberRole.BombExtentions;
-using TownOfSushi.Roles.Neutral.Evil.PhantomRole;
-using TownOfSushi.Roles.Crewmates.Special.HaunterMod;
 using TownOfSushi.Roles.Crewmates.Support.MedicRole;
 using TownOfSushi.Roles.Crewmates.Support.ImitatorRole;
 using TownOfSushi.Roles.Crewmates.Killing.VigilanteRole;
 using TownOfSushi.Roles.Neutral.Benign.RomanticRole;
 using TownOfSushi.Roles.Crewmates.Killing.JailorMod;
 using TownOfSushi.Roles.Abilities.AbilityMod.AssassinAbility;
+using TownOfSushi.Roles.Neutral.Benign.AmnesiacRole;
 
 namespace TownOfSushi
 {
@@ -33,8 +31,6 @@ namespace TownOfSushi
         private static readonly List<(Type, int)> NonTaskerAbilities = new();
         private static readonly List<(Type, int)> VisionAbilities = new();
         private static readonly List<(Type, CustomRPC, int)> AssassinAbility = new();
-        private static bool PhantomOn;
-        private static bool HaunterOn;
 
         internal static bool Check(int probability)
         {
@@ -389,39 +385,6 @@ namespace TownOfSushi
             canHaveAbility3.RemoveAll(player => !player.HasTasks());
             NonTaskerAbilities.SortAbilities(canHaveAbility3.Count);
 
-            // Set the Haunter, if there is one enabled.
-            var toChooseFromCrew = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(Faction.Crewmates)).ToList();
-
-            // Set the Haunter, if there is one enabled.
-            if (HaunterOn && toChooseFromCrew.Count != 0)
-            {
-                var rand = Random.RandomRangeInt(0, toChooseFromCrew.Count);
-                var pc = toChooseFromCrew[rand];
-
-                SetHaunter.WillBeHaunter = pc;
-
-                Rpc(CustomRPC.SetHaunter, pc.PlayerId);
-            }
-            else
-            {
-                Rpc(CustomRPC.SetHaunter, byte.MaxValue);
-            }
-
-            var toChooseFromNeut = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(Faction.Neutral)).ToList();
-            if (PhantomOn && toChooseFromNeut.Count != 0)
-            {
-                var rand = Random.RandomRangeInt(0, toChooseFromNeut.Count);
-                var pc = toChooseFromNeut[rand];
-
-                SetPhantom.WillBePhantom = pc;
-
-                Rpc(CustomRPC.SetPhantom, pc.PlayerId);
-            }
-            else
-            {
-                Rpc(CustomRPC.SetPhantom, byte.MaxValue);
-            }
-
             var exeTargets = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(Faction.Crewmates) && !x.Is(RoleEnum.Swapper) && !x.Is(RoleEnum.Vigilante) && !x.Is(RoleEnum.Jailor)).ToList();
             foreach (var role in GetRoles(RoleEnum.Executioner))
             {
@@ -650,7 +613,21 @@ namespace TownOfSushi
                         var imitatorRole2 = GetRole<Imitator>(imitator2);
                         StartImitate.Imitate(imitatorRole2);
                         break;
+                    case CustomRPC.StartRemember:
+                        var amnesiac2 = PlayerById(reader.ReadByte());
+                        var amnesiacRole2 = GetRole<Amnesiac>(amnesiac2);
+                        var amnesiacTarget2 = PlayerById(reader.ReadByte());
+                        amnesiacRole2.ToRemember = amnesiacTarget2;
+                        RememberRole.Remember(amnesiacRole2, amnesiacTarget2);
+                        RememberRole.Remember(GetRole<Amnesiac>(amnesiac2), amnesiacTarget2);
+                        break;
                     case CustomRPC.Remember:
+                        var amnesiac = PlayerById(reader.ReadByte());
+                        var amnesiacRole = GetRole<Amnesiac>(amnesiac);
+                        var amnesiacTarget = PlayerById(reader.ReadByte());
+                        amnesiacRole.ToRemember = amnesiacTarget;
+                        break;
+                    /*case CustomRPC.Remember:
                         readByte1 = reader.ReadByte();
                         readByte2 = reader.ReadByte();
                         var amnesiac = PlayerById(readByte1);
@@ -669,7 +646,7 @@ namespace TownOfSushi
                                 PerformKillButtonAmne.Remember(GetRole<Amnesiac>(amnesiac), other);
                                 break;
                         }
-                        break;
+                        break;*/
                     case CustomRPC.Protect:
                         readByte1 = reader.ReadByte();
                         readByte2 = reader.ReadByte();
@@ -976,20 +953,6 @@ namespace TownOfSushi
                     case CustomRPC.SetAssassin:
                         new Assassin(PlayerById(reader.ReadByte()));
                         break;
-                    case CustomRPC.SetPhantom:
-                        readByte = reader.ReadByte();
-                        SetPhantom.WillBePhantom = readByte == byte.MaxValue ? null : PlayerById(readByte);
-                        break;
-                    case CustomRPC.CatchPhantom:
-                        var phantomPlayer = PlayerById(reader.ReadByte());
-                        GetRole<Phantom>(phantomPlayer).Caught = true;
-                        if (PlayerControl.LocalPlayer == phantomPlayer) HudManager.Instance.AbilityButton.gameObject.SetActive(true);
-                        phantomPlayer.Exiled();
-                        break;
-                    case CustomRPC.SetHaunter:
-                        readByte = reader.ReadByte();
-                        SetHaunter.WillBeHaunter = readByte == byte.MaxValue ? null : PlayerById(readByte);
-                        break;
                     case CustomRPC.AbilityTrigger:
                         var abilityUser = Utils.PlayerById(reader.ReadByte());
                         var abilitytargetId = reader.ReadByte();
@@ -1013,12 +976,6 @@ namespace TownOfSushi
                         hunterRole.StalkedPlayer = stalked;
                         hunterRole.MaxUses -= 1;
                         hunterRole.Stalk();
-                        break;
-                    case CustomRPC.CatchHaunter:
-                        var haunterPlayer = PlayerById(reader.ReadByte());
-                        GetRole<Haunter>(haunterPlayer).Caught = true;
-                        if (PlayerControl.LocalPlayer == haunterPlayer) HudManager.Instance.AbilityButton.gameObject.SetActive(true);
-                        haunterPlayer.Exiled();
                         break;
                     case CustomRPC.Escape:
                         var escapist = PlayerById(reader.ReadByte());
@@ -1112,17 +1069,6 @@ namespace TownOfSushi
                 }
 
                 if (GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek) return;
-
-                if (CustomGameOptions.GameMode == GameMode.Classic || CustomGameOptions.GameMode == GameMode.AllAny)
-                {
-                    PhantomOn = Check(CustomGameOptions.PhantomOn);
-                    HaunterOn = Check(CustomGameOptions.HaunterOn);
-                }
-                else
-                {
-                    PhantomOn = false;
-                    HaunterOn = false;
-                }
 
                 if (CustomGameOptions.GameMode == GameMode.Classic || CustomGameOptions.GameMode == GameMode.AllAny)
                 {

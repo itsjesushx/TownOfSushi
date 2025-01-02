@@ -1,53 +1,16 @@
+using TownOfSushi.Roles.Crewmates.Investigative.InvestigatorMod;
 using TownOfSushi.Roles.Crewmates.Investigative.SnitchRole;
 using TownOfSushi.Roles.Crewmates.Investigative.TrapperMod;
 using TownOfSushi.Roles.Crewmates.Support.ImitatorRole;
 using TownOfSushi.Roles.Impostors.Power.BomberRole;
-
-using TownOfSushi.Roles.Crewmates.Investigative.InvestigatorMod;
+using TownOfSushi.Utilities;
+using static TownOfSushi.Roles.Neutral.Benign.AmnesiacRole.RememberRole;
 
 namespace TownOfSushi.Roles.Neutral.Benign.AmnesiacRole
 {
-    [HarmonyPatch(typeof(KillButton), nameof(KillButton.DoClick))]
-    public class PerformKillButton
+    public static class RememberRole
     {
         public static Sprite Sprite => TownOfSushi.Arrow;
-        public static bool Prefix(KillButton __instance)
-        {
-            if (__instance != DestroyableSingleton<HudManager>.Instance.KillButton) return true;
-            var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Amnesiac);
-            if (!flag) return true;
-            if (!PlayerControl.LocalPlayer.CanMove) return false;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return false;
-            var role = GetRole<Amnesiac>(PlayerControl.LocalPlayer);
-
-            var flag2 = __instance.isCoolingDown;
-            if (flag2) return false;
-            if (!__instance.enabled) return false;
-            var maxDistance = KillDistance();
-            if (role == null)
-                return false;
-            if (role.CurrentTarget == null)
-                return false;
-            if (Vector2.Distance(role.CurrentTarget.TruePosition,
-                PlayerControl.LocalPlayer.GetTruePosition()) > maxDistance) return false;
-            var playerId = role.CurrentTarget.ParentId;
-            var player = PlayerById(playerId);
-            var abilityUsed = AbilityUsed(PlayerControl.LocalPlayer);
-            if (!abilityUsed) return false;
-            if ((player.IsInfected() || role.Player.IsInfected()) && !player.Is(RoleEnum.Plaguebearer))
-            {
-                foreach (var pb in GetRoles(RoleEnum.Plaguebearer)) ((Plaguebearer)pb).RpcSpreadInfection(player, role.Player);
-            }
-
-            if (AmongUsClient.Instance.AmHost)
-            {
-                Rpc(CustomRPC.Remember, PlayerControl.LocalPlayer.PlayerId, playerId, (byte)1);
-                Remember(role, player);
-            }
-            else Rpc(CustomRPC.Remember, PlayerControl.LocalPlayer.PlayerId, playerId, (byte)0);
-            return false;
-        }
-
         public static void Remember(Amnesiac amneRole, PlayerControl other)
         {
             var role = GetRole(other);
@@ -57,15 +20,6 @@ namespace TownOfSushi.Roles.Neutral.Benign.AmnesiacRole
             var rememberNeut = true;
 
             Role newRole;
-
-            if (PlayerControl.LocalPlayer == amnesiac)
-            {
-                var amnesiacRole = GetRole<Amnesiac>(amnesiac);
-                amnesiacRole.BodyArrows.Values.DestroyAll();
-                amnesiacRole.BodyArrows.Clear();
-                foreach (var body in amnesiacRole.CurrentTarget.bodyRenderers) body.material.SetFloat("_Outline", 0f);
-            }
-
             switch (role)
             {
                 case RoleEnum.Vigilante:
@@ -132,6 +86,12 @@ namespace TownOfSushi.Roles.Neutral.Benign.AmnesiacRole
 
             if (!(amnesiac.Is(RoleEnum.Crewmate) || amnesiac.Is(RoleEnum.Impostor))) newRole.RegenTask();
 
+            var vowel = "aeiou".Contains(newRole.Name.ToLower()[0]);
+            var article = vowel ? "an" : "a";
+            UsefulMethods.ShowTextToast($"You remembered you were {article} {newRole.Name}!", 3.5f);
+            SoundManager.Instance.PlaySound(ShipStatus.Instance.SabotageSound, false, 1f, null);
+            Flash(newRole.Color);
+
             if (other == StartImitate.ImitatingPlayer)
             {
                 StartImitate.ImitatingPlayer = amneRole.Player;
@@ -147,17 +107,21 @@ namespace TownOfSushi.Roles.Neutral.Benign.AmnesiacRole
                 }
                 else
                 {
-                    if (role != RoleEnum.Vampire) {
+                    if (role != RoleEnum.Vampire) 
+                    {
                         var romantic = new Amnesiac(other);
                         romantic.RegenTask();
                     }
-                    if (role == RoleEnum.Vampire) {
+                    if (role == RoleEnum.Vampire) 
+                    {
                         var vampire = new Vampire(other);
                         vampire.RegenTask();
                     }
-                    if (role == RoleEnum.Arsonist || role == RoleEnum.Glitch || role == RoleEnum.Plaguebearer ||
-                            role == RoleEnum.Pestilence || role == RoleEnum.SerialKiller || role == RoleEnum.Juggernaut
-                             || role == RoleEnum.Vampire)
+                    if (role == RoleEnum.Plaguebearer ||
+                        role == RoleEnum.Arsonist || role == RoleEnum.Glitch
+                       || role == RoleEnum.Pestilence || role == RoleEnum.Hitman
+                       || role == RoleEnum.Agent || role == RoleEnum.SerialKiller
+                       || role == RoleEnum.Juggernaut || role == RoleEnum.Vampire)
                     {
                         if (CustomGameOptions.AmneTurnNeutAssassin) new Assassin(amnesiac);
                         if (other.Is(AbilityEnum.Assassin)) AbilityDictionary.Remove(other.PlayerId);
@@ -505,6 +469,67 @@ namespace TownOfSushi.Roles.Neutral.Benign.AmnesiacRole
                     }
                 }
             }
+        }
+    }
+
+    [HarmonyPatch(typeof(AirshipExileController), nameof(AirshipExileController.WrapUpAndSpawn))]
+    public static class AirshipExileController_WrapUpAndSpawn
+    {
+        public static void Postfix(AirshipExileController __instance) => StartRemember.ExileControllerPostfix(__instance);
+    }
+    
+    [HarmonyPatch(typeof(ExileController), nameof(ExileController.WrapUp))]
+    public static class StartRemember
+    {
+        public static PlayerControl RememberingPlayer;
+        public static void ExileControllerPostfix(ExileController __instance)
+        {
+            var exiled = __instance.initData.networkedPlayer?.Object;
+            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Amnesiac)) return;
+            if (PlayerControl.LocalPlayer.Data.IsDead || PlayerControl.LocalPlayer.Data.Disconnected) return;
+            if (exiled == PlayerControl.LocalPlayer) return;
+            var amnesiac = GetRole<Amnesiac>(PlayerControl.LocalPlayer);
+
+            var playerId = amnesiac.ToRemember.PlayerId;
+            var player = PlayerById(playerId);
+            if (amnesiac.ToRemember == null) return;
+
+            //Remember(amnesiac, player);
+            Rpc(CustomRPC.StartRemember, PlayerControl.LocalPlayer.PlayerId, playerId);
+            Remember(amnesiac, player);
+            amnesiac.Remembered = true;
+        }
+
+        public static void TurnImp(this PlayerControl player)
+        {
+            player.Data.Role.TeamType = RoleTeamTypes.Impostor;
+            RoleManager.Instance.SetRole(player, RoleTypes.Impostor);
+            player.SetKillTimer(GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown);
+
+            System.Console.WriteLine("PROOF I AM IMP VANILLA ROLE: " + player.Data.Role.IsImpostor);
+
+            foreach (var player2 in PlayerControl.AllPlayerControls)
+            {
+                if (player2.Data.IsImpostor() && PlayerControl.LocalPlayer.Data.IsImpostor())
+                {
+                    player2.nameText().color = Colors.Impostor;
+                }
+            }
+
+            if (PlayerControl.LocalPlayer.PlayerId == player.PlayerId)
+            {
+                DestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(true);
+                Flash(Colors.Impostor);
+            }
+        }
+
+        public static void Postfix(ExileController __instance) => ExileControllerPostfix(__instance);
+
+        [HarmonyPatch(typeof(Object), nameof(Object.Destroy), new Type[] { typeof(GameObject) })]
+        public static void Prefix(GameObject obj)
+        {
+            if (!SubmergedCompatibility.Loaded || GameOptionsManager.Instance?.currentNormalGameOptions?.MapId != 6) return;
+            if (obj.name?.Contains("ExileCutscene") == true) ExileControllerPostfix(ExileControllerPatch.lastExiled);
         }
     }
 }
