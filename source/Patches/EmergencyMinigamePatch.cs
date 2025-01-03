@@ -29,14 +29,6 @@ namespace TownOfSushi.Patches
                 StatusText = "The Swapper can't start an emergency meeting";
             }
 
-            // Potentially deactivate emergency button for Snitch
-            var snitch = GetRole<Snitch>(PlayerControl.LocalPlayer);
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Snitch) && !CustomGameOptions.SnitchButton && snitch.Revealed) 
-            {
-                CanCallEmergency = false;
-                StatusText = "The Snitch can't start an emergency meeting after being revealed!";
-            }
-
             if (!CanCallEmergency) 
             {
                 __instance.StatusText.text = StatusText;

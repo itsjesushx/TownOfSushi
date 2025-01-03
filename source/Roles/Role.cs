@@ -318,12 +318,6 @@ namespace TownOfSushi.Roles
         {
             private static void Postfix(LobbyBehaviour __instance)
             {
-                foreach (var role in AllRoles.Where(x => x.RoleType == RoleEnum.Snitch))
-                {
-                    ((Snitch)role).ImpArrows.DestroyAll();
-                    ((Snitch)role).SnitchArrows.Values.DestroyAll();
-                    ((Snitch)role).SnitchArrows.Clear();
-                }
                 foreach (var role in AllRoles.Where(x => x.RoleType == RoleEnum.Tracker))
                 {
                     ((Tracker)role).TrackerArrows.Values.DestroyAll();

@@ -98,15 +98,6 @@ namespace TownOfSushi.Roles
             var oldRole = GetPlayerRole(newVamp);
             var killsList = (oldRole.CorrectKills, oldRole.IncorrectShots, oldRole.CorrectAssassinKills, oldRole.IncorrectAssassinKills);
 
-            if (newVamp.Is(RoleEnum.Snitch))
-            {
-                var snitch = GetRole<Snitch>(newVamp);
-                snitch.SnitchArrows.Values.DestroyAll();
-                snitch.SnitchArrows.Clear();
-                snitch.ImpArrows.DestroyAll();
-                snitch.ImpArrows.Clear();
-            }
-
             if (newVamp == StartImitate.ImitatingPlayer) StartImitate.ImitatingPlayer = null;
 
             if (newVamp.Is(RoleEnum.GuardianAngel))

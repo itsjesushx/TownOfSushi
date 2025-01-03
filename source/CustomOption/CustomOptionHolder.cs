@@ -60,11 +60,6 @@ namespace TownOfSushi.CustomOption
         public static CustomOption HunterStalkUses;
         public static CustomOption RetributionOnVote;
         public static CustomOption HunterBodyReport;
-
-        public static CustomOption SnitchOn;
-        public static CustomOption SnitchTasksRemaining;
-        public static CustomOption SnitchButton;
-
         
         public static CustomOption TrackerOn;
         public static CustomOption UpdateInterval;
@@ -491,10 +486,6 @@ namespace TownOfSushi.CustomOption
             NeutEvilRed = CustomOption.Create(65, Types.Crewmate, "Neutral Evil Roles Are Red", false, SeerOn);
             NeutKillingRed = CustomOption.Create(66, Types.Crewmate, "Neutral Killing Roles Are Red", true, SeerOn);
 
-
-            SnitchOn = CustomOption.Create(68, Types.Crewmate, ColorString(Colors.Snitch, "Snitch"), 0f, 0f, 100f, 10f, null, true, format: "%");
-            SnitchTasksRemaining = CustomOption.Create(69, Types.Crewmate, "Tasks Remaining When Snitch Is Revealed", 1, 1, 5, 1, SnitchOn);
-            SnitchButton = CustomOption.Create(70, Types.Crewmate, "Can Button After Reveal", false, SnitchOn);
 
             TrackerOn =
                 CustomOption.Create(71, Types.Crewmate, ColorString(Colors.Tracker, "Tracker"), 0f, 0f, 100f, 10f, null, true, format: "%");

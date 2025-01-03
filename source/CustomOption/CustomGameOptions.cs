@@ -9,7 +9,6 @@ namespace TownOfSushi.CustomOption
         public static int HunterOn => Mathf.RoundToInt(CustomOptionHolder.HunterOn.GetFloat());
         public static int VigilanteOn => Mathf.RoundToInt(CustomOptionHolder.VigilanteOn.GetFloat());
         public static int VultureOn => Mathf.RoundToInt(CustomOptionHolder.VultureOn.GetFloat());
-        public static int SnitchOn => Mathf.RoundToInt(CustomOptionHolder.SnitchOn.GetFloat());
         public static int JanitorOn => Mathf.RoundToInt(CustomOptionHolder.JanitorOn.GetFloat());
         public static int EngineerOn => Mathf.RoundToInt(CustomOptionHolder.EngineerOn.GetFloat());
         public static int AmnesiacOn => Mathf.RoundToInt(CustomOptionHolder.AmnesiacOn.GetFloat());
@@ -118,7 +117,6 @@ namespace TownOfSushi.CustomOption
         public static bool FirstDeathShield => CustomOptionHolder.FirstDeathShield.GetBool();
         public static float DouseCd => CustomOptionHolder.DouseCooldown.GetFloat();
         public static int MaxDoused => Mathf.RoundToInt(CustomOptionHolder.MaxDoused.GetFloat());
-        public static int SnitchTasksRemaining => Mathf.RoundToInt(CustomOptionHolder.SnitchTasksRemaining.GetFloat());
         public static bool IgniteCdRemoved => CustomOptionHolder.IgniteCdRemoved.GetBool();
         public static int MinNeutralKillingRoles => Mathf.RoundToInt(CustomOptionHolder.MinNeutralKillingRoles.GetFloat());
         public static int MaxNeutralKillingRoles => Mathf.RoundToInt(CustomOptionHolder.MaxNeutralKillingRoles.GetFloat());
@@ -176,7 +174,6 @@ namespace TownOfSushi.CustomOption
         public static bool GrenadierIndicators => CustomOptionHolder.GrenadierIndicators.GetBool();
         public static float FlashRadius => CustomOptionHolder.FlashRadius.GetFloat();
         public static bool KilledOnAlert => CustomOptionHolder.KilledOnAlert.GetBool();
-        public static bool SnitchButton => CustomOptionHolder.SnitchButton.GetBool();
         public static float AlertCd => CustomOptionHolder.AlertCooldown.GetFloat();
         public static float AlertDuration => CustomOptionHolder.AlertDuration.GetFloat();
         public static int MaxAlerts => Mathf.RoundToInt(CustomOptionHolder.MaxAlerts.GetFloat());

@@ -11,7 +11,6 @@ namespace TownOfSushi
         Witch,
         Executioner,
         Glitch,
-        Snitch,
         Arsonist,
         Jailor,
         Hunter,

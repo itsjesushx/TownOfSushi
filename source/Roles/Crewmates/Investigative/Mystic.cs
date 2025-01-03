@@ -242,7 +242,7 @@ namespace TownOfSushi.Roles
                 || player.Is(RoleEnum.Glitch))
                 return "Your target has an altered perception of reality";
             else if (player.Is(RoleEnum.Blackmailer) || player.Is(RoleEnum.Witch) || player.Is(RoleEnum.Mystic) || player.Is(RoleEnum.Doomsayer)
-                 || player.Is(RoleEnum.Oracle) || player.Is(RoleEnum.Agent) || player.Is(RoleEnum.Snitch) || player.Is(RoleEnum.Trapper))
+                 || player.Is(RoleEnum.Oracle) || player.Is(RoleEnum.Agent) || player.Is(RoleEnum.Trapper))
                 return "Your target has an insight for private information";
             else if (player.Is(RoleEnum.Amnesiac) || player.Is(RoleEnum.Janitor) || player.Is(RoleEnum.Vulture)
                  || player.Is(RoleEnum.Medium) ||  player.Is(RoleEnum.Hitman) || player.Is(RoleEnum.Undertaker) || player.Is(RoleEnum.Vampire))
@@ -275,8 +275,8 @@ namespace TownOfSushi.Roles
                 || player.Is(RoleEnum.Glitch))
                 return "(Imitator, Morphling, Mystic or The Glitch)";
             else if (player.Is(RoleEnum.Blackmailer) || player.Is(RoleEnum.Witch) || player.Is(RoleEnum.Mystic) || player.Is(RoleEnum.Doomsayer)
-                 || player.Is(RoleEnum.Oracle) || player.Is(RoleEnum.Agent) || player.Is(RoleEnum.Snitch) || player.Is(RoleEnum.Trapper))
-                return "(Blackmailer, Mystic, Witch, Doomsayer, Agent, Oracle, Snitch or Trapper)";
+                 || player.Is(RoleEnum.Oracle) || player.Is(RoleEnum.Agent) || player.Is(RoleEnum.Trapper))
+                return "(Blackmailer, Mystic, Witch, Doomsayer, Agent, Oracle or Trapper)";
             else if (player.Is(RoleEnum.Amnesiac) || player.Is(RoleEnum.Janitor) || player.Is(RoleEnum.Vulture)
                  || player.Is(RoleEnum.Medium) || player.Is(RoleEnum.Undertaker) || player.Is(RoleEnum.Hitman) || player.Is(RoleEnum.Vampire))
                 return "(Amnesiac, Janitor, Medium, Hitman Undertaker, Vulture or Vampire)";

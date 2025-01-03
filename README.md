@@ -29,10 +29,10 @@
 |  [Undertaker](#undertaker) | [Imitator](#imitator) | [Romantic](#romantic) |  | [Sleuth](#sleuth) |
 |  [Bomber](#bomber)  | [Seer](#seer) | [Amnesiac](#amnesiac)| | [Tiebreaker](#tiebreaker) |
 |  [Witch](#witch)| [Tracker](#tracker) |  [Agent](#agent) | |
-| |[Snitch](#snitch) | [Hitman](#hitman) |  |
+| | [Swapper](#swapper)  | [Hitman](#hitman) |  |
 | | [Transporter](#transporter)  |[Glitch](#glitch) |  |
 | |[Trapper](#trapper) | [Serial Killer](#serial-killer) |  |
-| | [Swapper](#swapper)  | [Juggernaut](#juggernaut)  |  |
+| |  | [Juggernaut](#juggernaut)  |  |
 | | |[Plaguebearer](#plaguebearer) |  |
 | | | |  |
 
@@ -226,20 +226,6 @@ A player's name will change color depending on faction and role.
 | Neutral Benign Roles Are Red | Neutral Benign roles show up as Red | Toggle | False |
 | Neutral Evil Roles Are Red | Neutral Evil roles show up as Red | Toggle | False |
 | Neutral Killing Roles Are Red | Neutral Killing roles show up as Red | Toggle | True |
-
------------------------
-## Snitch
-### **Team: Crewmates**
-
-The Snitch is a Crewmate that can get arrows pointing towards the Impostors & Neutral Killers, once all their tasks are finished.\
-The names of the Impostors will also show up as red on their screen, While the Neutral Killers' name will be gray.\
-However, when they only have a single task left, the Impostors & Neutral Killers get an arrow pointing towards the Snitch.
-### Game Options
-| Name | Description | Type | Default |
-|----------|:-------------:|:------:|:------:|
-| Snitch | The percentage probability of the Snitch appearing | Percentage | 0% |
-| Tasks Remaining When Revealed | The number of tasks remaining when the Snitch is revealed to Impostors | Number | 1 |
-| Snitch Can Button After Reveal | Whether the Snitch can Call An Emergency Meeting after finishing tasks | Toggle | false |
 
 -----------------------
 

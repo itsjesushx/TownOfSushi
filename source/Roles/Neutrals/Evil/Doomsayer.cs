@@ -36,7 +36,6 @@ namespace TownOfSushi.Roles
                 if (CustomGameOptions.MysticOn > 0) ColorMapping.Add("Mystic", Colors.Mystic);
                 if (CustomGameOptions.OracleOn > 0) ColorMapping.Add("Oracle", Colors.Oracle);
                 if (CustomGameOptions.SeerOn > 0) ColorMapping.Add("Seer", Colors.Seer);
-                if (CustomGameOptions.SnitchOn > 0) ColorMapping.Add("Snitch", Colors.Snitch);
                 if (CustomGameOptions.TrackerOn > 0) ColorMapping.Add("Tracker", Colors.Tracker);
                 if (CustomGameOptions.TransporterOn > 0) ColorMapping.Add("Transporter", Colors.Transporter);
                 if (CustomGameOptions.TrapperOn > 0) ColorMapping.Add("Trapper", Colors.Trapper);
@@ -457,7 +456,7 @@ namespace TownOfSushi.Roles
                   || player.Is(RoleEnum.Glitch))
                 return $"You observe that {player.GetDefaultOutfit().PlayerName} has an altered perception of reality";
             else if (player.Is(RoleEnum.Blackmailer) ||player.Is(RoleEnum.Witch)|| player.Is(RoleEnum.Doomsayer)
-                 || player.Is(RoleEnum.Oracle) || player.Is(RoleEnum.Snitch) || player.Is(RoleEnum.Trapper) || player.Is(RoleEnum.Agent))
+                 || player.Is(RoleEnum.Oracle) || player.Is(RoleEnum.Trapper) || player.Is(RoleEnum.Agent))
                 return $"You observe that {player.GetDefaultOutfit().PlayerName} has an insight for private information";
             else if (player.Is(RoleEnum.Amnesiac) || player.Is(RoleEnum.Janitor)
                  || player.Is(RoleEnum.Medium) || player.Is(RoleEnum.Undertaker) ||player.Is(RoleEnum.Hitman) || player.Is(RoleEnum.Vulture) || player.Is(RoleEnum.Vampire))
@@ -491,8 +490,8 @@ namespace TownOfSushi.Roles
                 return "(" + ColorString(Colors.Imitator,"Imitator") + ", " + ColorString(Colors.Impostor,"Morphling") +", "+ ColorString(Colors.Mystic,"Mystic") + " or " + ColorString(Colors.Glitch,"Glitch") + ")";
             
             else if (player.Is(RoleEnum.Blackmailer)|| player.Is(RoleEnum.Doomsayer)
-                 || player.Is(RoleEnum.Oracle) || player.Is(RoleEnum.Snitch) ||player.Is(RoleEnum.Witch)|| player.Is(RoleEnum.Trapper) || player.Is(RoleEnum.Agent))
-                return "(" + ColorString(Colors.Impostor,"Blackmailer") + ", " + ColorString(Colors.Agent,"Agent") + ", " + ColorString(Colors.Doomsayer,"Doomsayer") +", "+ ColorString(Colors.Oracle,"Oracle") + ", "+ ColorString(Colors.Impostor,"Witch ") + ", " + ColorString(Colors.Snitch,"Snitch") + " or " + ColorString(Colors.Trapper, "Trapper") + ")";
+                 || player.Is(RoleEnum.Oracle) || player.Is(RoleEnum.Witch)|| player.Is(RoleEnum.Trapper) || player.Is(RoleEnum.Agent))
+                return "(" + ColorString(Colors.Impostor,"Blackmailer") + ", " + ColorString(Colors.Agent,"Agent") + ", " + ColorString(Colors.Doomsayer,"Doomsayer") +", "+ ColorString(Colors.Oracle,"Oracle") + ", "+ ColorString(Colors.Impostor,"Witch ") + " or " + ColorString(Colors.Trapper, "Trapper") + ")";
             
             else if (player.Is(RoleEnum.Amnesiac) || player.Is(RoleEnum.Janitor)
                  || player.Is(RoleEnum.Medium) || player.Is(RoleEnum.Undertaker) || player.Is(RoleEnum.Hitman) ||player.Is(RoleEnum.Vampire)|| player.Is(RoleEnum.Vulture) )

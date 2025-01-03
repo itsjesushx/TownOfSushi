@@ -242,7 +242,6 @@ namespace TownOfSushi.Roles
                 case RoleEnum.Medic:
                 case RoleEnum.Seer:
                 case RoleEnum.Hunter:
-                case RoleEnum.Snitch:
                 case RoleEnum.Veteran:
                 case RoleEnum.Crewmate:
                 case RoleEnum.Tracker:
@@ -293,8 +292,6 @@ namespace TownOfSushi.Roles
                 HudManager.Instance.KillButton.buttonLabelText.gameObject.SetActive(false);
             }
 
-            if (role == RoleEnum.Snitch) SnitchCompleteTask.Postfix(amnesiac);
-
             RoleDictionary.Remove(amnesiac.PlayerId);
             RoleDictionary.Remove(other.PlayerId);
             RoleDictionary.Add(amnesiac.PlayerId, newRole);
@@ -313,7 +310,7 @@ namespace TownOfSushi.Roles
 
             if (PlayerControl.LocalPlayer == amnesiac && newRole.RoleType == RoleEnum.Amnesiac)
             {
-                Utilities.UsefulMethods.ShowTextToast("You still don't remember who you are!", 3.5f);
+                Utilities.UsefulMethods.ShowTextToast("You still don't remember who you were!", 3.5f);
                 SoundManager.Instance.PlaySound(ShipStatus.Instance.SabotageSound, false, 1f, null);
                 Flash(Colors.Impostor);
             }
@@ -370,23 +367,10 @@ namespace TownOfSushi.Roles
                 if (CustomGameOptions.AmneTurnImpAssassin) new Assassin(amnesiac);
             }
 
-            if (role == RoleEnum.Snitch)
-            {
-                var snitchRole = GetRole<Snitch>(amnesiac);
-                snitchRole.ImpArrows.DestroyAll();
-                snitchRole.SnitchArrows.Values.DestroyAll();
-                snitchRole.SnitchArrows.Clear();
-                SnitchCompleteTask.Postfix(amnesiac);
-                if (other.AmOwner)
-                    foreach (var player in PlayerControl.AllPlayerControls)
-                        player.nameText().color = Color.white;
-                DestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(false);
-            }
-
             if (role == RoleEnum.Romantic)
             {
-                var snitchRole = GetRole<Romantic>(amnesiac);
-                snitchRole.LastPick = DateTime.UtcNow;
+                var romantic = GetRole<Romantic>(amnesiac);
+                romantic.LastPick = DateTime.UtcNow;
             }
 
             else if (role == RoleEnum.Werewolf)
@@ -664,36 +648,6 @@ namespace TownOfSushi.Roles
             otherRole.CorrectKills = killsList.CorrectKills;
             otherRole.CorrectAssassinKills = killsList.CorrectAssassinKills;
             otherRole.IncorrectAssassinKills = killsList.IncorrectAssassinKills;
-
-            if (amnesiac.Is(Faction.Impostors))
-            {
-                foreach (var snitch in GetRoles(RoleEnum.Snitch))
-                {
-                    var snitchRole = (Snitch)snitch;
-                    if (snitchRole.TasksDone && PlayerControl.LocalPlayer.Is(RoleEnum.Snitch))
-                    {
-                        var gameObj = new GameObject();
-                        var arrow = gameObj.AddComponent<ArrowBehaviour>();
-                        gameObj.transform.parent = PlayerControl.LocalPlayer.gameObject.transform;
-                        var renderer = gameObj.AddComponent<SpriteRenderer>();
-                        renderer.sprite = Sprite;
-                        arrow.image = renderer;
-                        gameObj.layer = 5;
-                        snitchRole.SnitchArrows.Add(amnesiac.PlayerId, arrow);
-                    }
-                    else if (snitchRole.Revealed && PlayerControl.LocalPlayer == amnesiac)
-                    {
-                        var gameObj = new GameObject();
-                        var arrow = gameObj.AddComponent<ArrowBehaviour>();
-                        gameObj.transform.parent = PlayerControl.LocalPlayer.gameObject.transform;
-                        var renderer = gameObj.AddComponent<SpriteRenderer>();
-                        renderer.sprite = Sprite;
-                        arrow.image = renderer;
-                        gameObj.layer = 5;
-                        snitchRole.ImpArrows.Add(arrow);
-                    }
-                }
-            }
         }
     }
 

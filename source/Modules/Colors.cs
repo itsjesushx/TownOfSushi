@@ -12,7 +12,6 @@
         public readonly static Color32  Medic = new Color32(126, 251, 194, byte.MaxValue);
         public readonly static Color32  Hunter = new Color32(41, 171, 134, byte.MaxValue);
         public readonly static Color32  Seer = new Color32(255, 204, 128, byte.MaxValue);
-        public readonly static Color32  Snitch = new Color32(179, 77, 154, byte.MaxValue);
         public readonly static Color32  Vigilante = new Color32(255, 255, 153, byte.MaxValue);
         public readonly static Color32  Veteran = new Color32(153, 128, 64, byte.MaxValue);
         public readonly static Color32  Transporter = new Color32(0, 238, 255, byte.MaxValue);
