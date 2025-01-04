@@ -306,11 +306,16 @@ namespace TownOfSushi.Roles
                     player.myTasks.Insert(0, modTask);
                 }
 
+                var infoTask = new GameObject("InfosTask").AddComponent<ImportantTextTask>();
+                infoTask.transform.SetParent(player.transform, false);
+                infoTask.Text = "<size=60%> - Press F3 to see your role's description</size> \n<size=60%> - Press F4 to see your role's lore</size>";
+                player.myTasks.Insert(0, infoTask);
+
                 if (role == null) return;
                 if (role.RoleType == RoleEnum.Amnesiac && role.Player != PlayerControl.LocalPlayer) return;
                 var task = new GameObject(role.Name + "Task").AddComponent<ImportantTextTask>();
                 task.transform.SetParent(player.transform, false);
-                task.Text = $"{role.ColorString}Role: {role.Name}\n{role.TaskText()}\nAlignment: {player.AlignmentText()}{hasFakeTasks}</color> \n<size=40%> - Press F3 to see your role's description</size> \n<size=40%> - Press F4 to see your role's lore</size>";
+                task.Text = $"{role.ColorString}Role: {role.Name}\n{role.TaskText()}\nAlignment: {player.AlignmentText()}{hasFakeTasks}</color>";
                 player.myTasks.Insert(0, task);
             }
         }

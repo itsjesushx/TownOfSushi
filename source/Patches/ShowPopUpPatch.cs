@@ -21,8 +21,8 @@ namespace TownOfSushi.Patches
                     {
                         // Roles Description
                         var stringb = new StringBuilder();
-                        stringb.Append(ColorString(role.Color, $"<size=60%>{role.Name} Description:</size> \n"));
-                        stringb.Append(ColorString(role.Color, $"<size=60%>{role.RoleInfo}</size>"));
+                        stringb.Append(ColorString(role.Color, $"{role.Name} Description: \n"));
+                        stringb.Append(ColorString(role.Color, $"{role.RoleInfo}"));
                         HudManager.Instance.ShowPopUp(stringb.ToString());
                     }
                     catch (Exception exs)
@@ -38,8 +38,8 @@ namespace TownOfSushi.Patches
                     {
                         // Roles lore
                         var stringb = new StringBuilder();
-                        stringb.Append(ColorString(role.Color, $"<size=60%>{role.Name} lore:</size> \n"));
-                        stringb.Append(ColorString(role.Color, $"<size=60%>{role.LoreText}</size>"));
+                        stringb.Append(ColorString(role.Color, $"{role.Name} lore: \n"));
+                        stringb.Append(ColorString(role.Color, $"{role.LoreText}"));
                         HudManager.Instance.ShowPopUp(stringb.ToString());
                     }
                     catch (Exception exs)
