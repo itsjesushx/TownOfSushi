@@ -6,9 +6,14 @@ namespace TownOfSushi.Roles
 
         public Seer(PlayerControl player) : base(player)
         {
+            var RedOrGreen = CustomGameOptions.NeutEvilRed ? "red" : "green";
+            var RedOrGreen2 = CustomGameOptions.NeutBenignRed ? "red" : "green";
+            var RedOrGreen3 = CustomGameOptions.NeutKillingRed ? "red" : "green";
             Name = "Seer";
             StartText = () => "Reveal The Alliance Of Other Players";
             TaskText = () => "Reveal alliances of other players to find the Impostors";
+            RoleInfo = $"The Seer is able to investigate the alignment of other players. If the player is a Crewmate, their name will be green, if they are an Impostor, their name will be red. If the player is a Neutral Evil role, their name will be {RedOrGreen}, and {RedOrGreen2} if they are a Neutral Benign Role. Neutral Killing Roles Will appear {RedOrGreen3} The Seer can only investigate one player every {CustomGameOptions.SeerCd} seconds.";
+            LoreText = "Endowed with the power of insight, you possess the ability to unveil the true alliances of those around you. As the Seer, your gift allows you to discern the loyalties of your crewmates, shining a light on potential Impostors. Use your abilities wisely to protect the crew and expose deception.";
             RoleAlignment = RoleAlignment.CrewInvest;
             Color = Colors.Seer;
             LastInvestigated = DateTime.UtcNow;

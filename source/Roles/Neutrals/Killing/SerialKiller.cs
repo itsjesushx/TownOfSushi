@@ -13,6 +13,8 @@
             Name = "Serial Killer";
             StartText = () => "Stab to kill everyone";
             TaskText = () => "Stab to kill everyone";
+            RoleInfo = "The Serial Killer is a Neutral role with its own win condition. Although the Serial Killer has a kill button, they can't use it unless they are stabbing. Once the Serial Killer rampages they gain Impostor vision and the ability to kill. However, unlike most killers their kill cooldown is really short. The Serial Killer needs to be the last killer alive to win the game.";
+            LoreText = "You are the Serial Killer, a cold-blooded predator with a single goal—eliminate everyone in your path. Armed with your trusty knife, you move through the shadows, striking at your victims without hesitation. Your mind is focused, your mission clear: kill them all. As the last remaining survivor, you'll be free from the chaos that surrounds you. Trust no one, for every crewmate is a potential target, and every moment could be your next deadly strike.";
             Color = Colors.SerialKiller;
             LastStabbed = DateTime.UtcNow;
             LastKilled = DateTime.UtcNow;

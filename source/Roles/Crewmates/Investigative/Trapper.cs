@@ -13,9 +13,12 @@ namespace TownOfSushi.Roles
         public bool ButtonUsable => MaxUses != 0;
         public Trapper(PlayerControl player) : base(player)
         {
+            var playerOrPlayers = CustomGameOptions.MinAmountOfPlayersInTrap == 1 ? "player" : "players";
             Name = "Trapper";
             StartText = () => "Catch Killers In The Act";
             TaskText = () => "Place traps around the map";
+            RoleInfo = $"The Trapper is able to place traps around the map, when a player walks over the trap  for {CustomGameOptions.MinAmountOfTimeInTrap} seconds they will be caught in it. The Trapper can then see what roles were caught in their trap during the meeting if the players that walked over the trap were min {CustomGameOptions.MinAmountOfPlayersInTrap} {playerOrPlayers}.";
+            LoreText = "A stealthy and strategic expert, you specialize in setting traps to catch the killers in the act. As the Trapper, you can place traps around the map to catch unsuspecting players. Your keen sense of timing and knowledge of the environment make you a crucial asset in hunting down the Impostors hiding among the crew.";
             Color = Colors.Trapper;
             RoleType = RoleEnum.Trapper;
             LastTrapped = DateTime.UtcNow;

@@ -9,9 +9,12 @@ namespace TownOfSushi.Roles
         public readonly List<bool> ListOfActives = new List<bool>();
         public Swapper(PlayerControl player) : base(player)
         {
+            var CanButton = CustomGameOptions.SwapperButton ? "can call an emergency meeting." : "can't call an emergency meeting.";
             Name = "Swapper";
             StartText = () => "Swap the votes of two people";
             TaskText = () => "Swap two people's votes to save the Crew!";
+            RoleInfo = $"You can swap the votes of two players, turning the tide of a vote to save the Crew lives or expose the killers. Your influence in the voting process is invaluable to the crew’s survival, but it requires careful strategy and timing. The Swapper {CanButton}";
+            LoreText = "A master of subtle manipulation, you have the power to change the course of votes and sway the outcome of critical decisions. As the Swapper, you can swap the votes of two players, turning the tide of a vote to save innocent lives or expose the killers. Your influence in the voting process is invaluable to the crew’s survival, but it requires careful strategy and timing.";
             Color = Colors.Swapper;
             RoleType = RoleEnum.Swapper;
             RoleAlignment = RoleAlignment.CrewSupport;

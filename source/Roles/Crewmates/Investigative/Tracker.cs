@@ -13,9 +13,13 @@ namespace TownOfSushi.Roles
         public bool ButtonUsable => MaxUses != 0;
         public Tracker(PlayerControl player) : base(player)
         {
+            var ResetOnNewRound = CustomGameOptions.ResetOnNewRound ? "reset" : "not reset";
+            var playerOrPlayers = CustomGameOptions.MaxTracks == 1 ? "player" : "players";
             Name = "Tracker";
             StartText = () => "Track Everyone's Movement";
             TaskText = () => "Track suspicious players";
+            RoleInfo = $"The Tracker is able to track the movements of other players. The Arrow's color will be the tracked players color. The arrow will update the position of the player every {CustomGameOptions.UpdateInterval} seconds. The Tracker can track {CustomGameOptions.MaxTracks} {playerOrPlayers} every {CustomGameOptions.TrackCd} seconds. The Arrows will {ResetOnNewRound} after each meeting.";
+            LoreText = "A master observer, you specialize in monitoring the movements of your crewmates. As the Tracker, you can follow suspicious players, uncovering patterns and identifying potential threats. Your vigilance and attention to detail are vital to exposing the Impostors lurking in the shadows.";
             Color = Colors.Tracker;
             LastTracked = DateTime.UtcNow;
             RoleType = RoleEnum.Tracker;

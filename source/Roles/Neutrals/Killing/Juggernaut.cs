@@ -10,6 +10,8 @@
             RoleType = RoleEnum.Juggernaut;
             StartText = () => "Your Power Grows With Every Kill";
             TaskText = () => "With each kill your kill cooldown decreases";
+            RoleInfo = "The Juggernaut is a Neutral role with its own win condition. The Juggernaut's special ability is that their kill cooldown reduces with each kill. This means in theory the Juggernaut can have a 0 second kill cooldown!. The Juggernaut needs to be the last killer alive to win the game.";
+            LoreText = "A relentless force of nature, you become stronger with each life you take. As the Juggernaut, every kill fuels your power, reducing your cooldown and making you an unstoppable force. The more enemies you eliminate, the faster you can strike again, making you more dangerous with every passing moment. The crew may try to stop you, but as your strength grows, so does your ability to crush them all. Fear the Juggernaut, for once you start your rampage, there’s no stopping you.";
             Faction = Faction.Neutral;
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.NeutralKilling;

@@ -24,6 +24,8 @@ namespace TownOfSushi.Roles
             Name = "Amnesiac";
             StartText = () => "Remember a role of a deceased player";
             TaskText = () => SpawnedAs ? "Wait for a meeting to remember a role" : "Your target died. Now remember a new role";
+            RoleInfo = "The Amnesiac is a Neutral role that can remember the role of a deceased player. During meetings, the Amnesiac will have a list of players who have died and can remember the role of one of them. The Amnesiac can remember any role. If the Amnesiac remembers a role, they will become that role and will have the same abilities as that role. The Amnesiac can only remember one role. If the Amnesiac remembers a role, they will no longer be able to remember a role. If the Amnesiac does not remember a role, they will still be able to remember a role in the next meeting.";
+            LoreText = "A lost soul, you are haunted by the roles of those who have passed. As the Amnesiac, you have the unique ability to remember the role of a deceased player, adopting their powers and abilities. With each life lost, you gain the chance to assume a new identity, allowing you to shift allegiances and goals in a bid to survive and thrive in the chaos.";
             Color = Colors.Amnesiac;
             RoleType = RoleEnum.Amnesiac;
             Faction = Faction.Neutral;
@@ -389,7 +391,7 @@ namespace TownOfSushi.Roles
             {
                 var medicRole = GetRole<Medic>(amnesiac);
                 if (amnesiac != StartImitate.ImitatingPlayer) medicRole.UsedAbility = false;
-                else medicRole.UsedAbility = true;
+                else medicRole.UsedAbility = false;
             }
 
             else if (role == RoleEnum.Jailor)

@@ -13,6 +13,8 @@ namespace TownOfSushi.Roles
             Name = "Veteran";
             StartText = () => "Alert to kill anyone who interacts with you";
             TaskText = () => "Alert to kill whoever interacts with you";
+            RoleInfo = "The Veteran is able to alert, Alerting makes the Veteran Unkillable and will kill anyone who interacts with them except for the Pestilence. The Veteran dies if a Pestilence attempts to murder them even if they are on alert. The Veteran can alert a maximum of " + CustomGameOptions.MaxAlerts + " times.";
+            LoreText = "A seasoned and battle-hardened defender, you are always on high alert. As the Veteran, you can trigger an alert to eliminate anyone who dares to interact with you. Your instincts are sharp, and your experience makes you a dangerous force—keeping the killers at bay with deadly precision.";
             Color = Colors.Veteran;
             LastAlerted = DateTime.UtcNow;
             Faction = Faction.Crewmates;

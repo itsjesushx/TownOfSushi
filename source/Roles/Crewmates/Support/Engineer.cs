@@ -7,7 +7,8 @@ namespace TownOfSushi.Roles
             Name = "Engineer";
             StartText = () => "Fix sabotages and vent around the map";
             TaskText = () => "Vent around and fix sabotages";
-            
+            RoleInfo = "The Engineer is able to vent around the map and fix sabotages. The Engineer can fix a maximum of " + CustomGameOptions.MaxFixes + " sabotages.";
+            LoreText = "A brilliant technician, you specialize in repairing sabotaged systems and navigating the map's vents. As the Engineer, you have the unique ability to vent around the map, bypassing obstacles and gaining quick access to critical areas. Your technical expertise is invaluable in keeping the crew safe and maintaining the map integrity, all while staying one step ahead of the Impostors.";
             Color = Colors.Engineer;
             RoleType = RoleEnum.Engineer;
             Faction = Faction.Crewmates;

@@ -14,6 +14,8 @@ namespace TownOfSushi.Roles
             Name = "Investigator";
             StartText = () => "Find all Impostors by examining footprints";
             TaskText = () => "Watch steps and examine players";
+            RoleInfo = "As the Investigator, you are able to examine dead bodies to find information about the killer. You can also see footprints of other players. After examinating a body, you may examine an alive player in order to see if they have killed or not, if they did, you will get a red flash, otherwise will give you a green flash.";
+            LoreText = "An experienced detective aboard the ship, you have honed your skills in tracking and deduction. By examining footprints, you piece together the movements of your crewmates, uncovering lies and identifying those who threaten the crew’s safety. It’s your mission to bring the truth to light and expose the Impostors hiding among you.";
             LastExamined = DateTime.UtcNow;
             Color = Colors.Investigator;
             RoleType = RoleEnum.Investigator;

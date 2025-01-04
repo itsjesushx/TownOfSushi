@@ -10,6 +10,8 @@ namespace TownOfSushi.Roles
             Name = "Medium";
             StartText = () => "Watch The Spooky Ghosts";
             TaskText = () => "Follow ghosts to get clues from them";
+            RoleInfo = "The Medium is able to see ghosts during rounds, and can follow them to get clues from them. Every ghost will be revealed to you once you hit Mediate and if the ghosts were already dead when you hit your button. Ghosts dissapear after the next meeting.";
+            LoreText = "A spiritual guide aboard the ship, you possess the rare ability to sense and interact with the spectral presences of fallen crewmates. By following these lingering spirits, you can uncover hidden truths and gather vital clues to expose the Impostors. Trust in the voices of the beyond to aid your mission.";
             Color = Colors.Medium;
             LastMediated = DateTime.UtcNow;
             RoleType = RoleEnum.Medium;

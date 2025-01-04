@@ -9,7 +9,9 @@ namespace TownOfSushi.Roles
         {
             Name = "Janitor";
             StartText = () => "Clean Up Bodies";
-            TaskText = () => "Clean bodies to prevent Crewmates from discovering them";            
+            TaskText = () => "Clean bodies to prevent Crewmates from discovering them";
+            RoleInfo = "The Janitor is an Impostor that can clean up bodies. Both their Kill and Clean ability have a shared cooldown, meaning they have to choose which one they want to use.";
+            LoreText = "A stealthy cleaner, you specialize in erasing the signs of death. As the Janitor, you can clean up bodies, preventing Crewmates from discovering the remains and uncovering the truth. Your ability to hide the evidence of your kills allows you to maintain secrecy and further sow confusion, making it harder for the crew to piece together the mystery of who’s behind the attacks.";
             Color = Colors.Impostor;
             RoleType = RoleEnum.Janitor;
             Faction = Faction.Impostors;

@@ -20,7 +20,8 @@ namespace TownOfSushi.Roles
                 target == null
                     ? "You don't have a target for some reason"
                     : $"Protect {target.name}!";
-            
+            RoleInfo = $"The Guardian Angel can protect a player from death. They have a limited number of uses. Protecting a player makes them be unable to die for a {CustomGameOptions.ProtectDuration} seconds. If the target gets a murder attempt, the killer will have a {CustomGameOptions.ProtectKCReset} seconds cooldown reset.";
+            LoreText = "A celestial protector, you watch over the alive with unwavering devotion. As the Guardian Angel, you are tasked with protecting a specific player, shielding them from harm. Your divine abilities allow you to intervene in their time of need, using your powers to prevent death and ensure their survival. but your protection is limited, and once it is used up and the game ends, your mission ends.";
             Color = Colors.GuardianAngel;
             LastProtected = DateTime.UtcNow;
             RoleType = RoleEnum.GuardianAngel;

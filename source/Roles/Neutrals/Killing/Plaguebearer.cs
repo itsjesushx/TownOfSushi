@@ -13,6 +13,8 @@ namespace TownOfSushi.Roles
             Name = "Plaguebearer";
             StartText = () => "Infect Everyone To Become Pestilence";
             TaskText = () => "Infect everyone to become Pestilence";
+            RoleInfo = "The Plaguebearer is a Neutral role with its own win condition, as well as an ability to transform into another role. The Plaguebearer has one ability, which allows them to infect other players. Once infected, the infected player can go and infect other players via interacting with them. Once all players are infected, the Plaguebearer becomes Pestilence.";
+            LoreText ="You are the Plaguebearer, the origin of all sickness and decay. Your task is to infect the crew with your deadly plague, spreading misery wherever you go. Each infected person brings you closer to becoming Pestilence itself, unlocking the full power of your devastating abilities. Be strategic, for every player you infect moves you one step closer to your ultimate transformation. Your mission is to make the crew fall, one by one, until you are the last one standing as the unstoppable force of death.";
             Color = Colors.Plaguebearer;
             RoleType = RoleEnum.Plaguebearer;
             Faction = Faction.Neutral;

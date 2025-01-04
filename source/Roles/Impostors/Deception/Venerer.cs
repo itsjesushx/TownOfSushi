@@ -13,6 +13,8 @@ namespace TownOfSushi.Roles
             Name = "Venerer";
             StartText = () => "With Each Kill Your Ability Becomes Stronger";
             TaskText = () => "Kill players to unlock ability perks";
+            RoleInfo = $"The Venerer has multiple abilities during the game, once they reach their first kill, they can camouflage everyone for {CustomGameOptions.AbilityDuration} seconds. After their second kill, they can sprint while camouflaged. After their third kill, they can freeze players in place while sprinting.";
+            LoreText = "A relentless force, you grow stronger with every life you take. As the Venerer, each kill you make unlocks new, powerful abilities that enhance your deception and manipulation. The more you strike, the more dangerous you become, allowing you to further deceive, confuse, and overpower the crew. Your power only grows, making you an increasingly deadly threat as time goes on.";
             Color = Colors.Impostor;
             LastCamouflaged = DateTime.UtcNow;
             RoleType = RoleEnum.Venerer;

@@ -14,6 +14,8 @@
             Name = "Arsonist";
             StartText = () => "Douse players and ignite the light";
             TaskText = () => "Douse players and ignite to kill all douses";
+            RoleInfo = "The Arsonist is a Neutral role with its own win condition. They have two abilities, one is to douse other players with gasoline. The other is to ignite all doused players. The Arsonist needs to be the last killer alive to win the game.";
+            LoreText = "A pyromaniac at heart, you play with fire in the dead of night. As the Arsonist, your mission is to douse players with your deadly fuel and wait for the perfect moment to strike. Once enough victims are soaked in your fire, you ignite the flames, causing an inferno that wipes out all those who are marked. But beware—if you ignite too early, you risk exposing yourself before you’re ready. Patience and precision are your greatest tools.";
             Color = Colors.Arsonist;
             LastDoused = DateTime.UtcNow;
             RoleType = RoleEnum.Arsonist;

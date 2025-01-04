@@ -14,6 +14,8 @@ namespace TownOfSushi.Roles
             Name = "Morphling";
             StartText = () => "Transform Into Crewmates";
             TaskText = () => "Morph into crewmates to be disguised";
+            RoleInfo = $"The Morphling can morph into the form of their fellow Crewmates, morphing changes the Morphling's look to make them not look sus. The morphling can only morph into a crewmate once every {CustomGameOptions.MorphlingCd} seconds and lasts for {CustomGameOptions.MorphlingDuration} seconds.";
+            LoreText = "A master of disguise, you possess the ability to transform into any Crewmate. As the Morphling, you can morph into the form of your fellow Crewmates, blending in with the innocent and deceiving your enemies. Your power of transformation allows you to infiltrate and manipulate, making you an elusive and dangerous Impostor who can strike without warning.";
             Color = Colors.Impostor;
             LastMorphed = DateTime.UtcNow;
             RoleType = RoleEnum.Morphling;

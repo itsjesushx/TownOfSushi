@@ -10,6 +10,8 @@ namespace TownOfSushi.Roles
             Name = "Werewolf";
             StartText = () => "Murder and eliminate everyone";
             TaskText = () => "Kill everyone";
+            RoleInfo = "The Werewolf can kill all players within a certain radius.";
+            LoreText = "As a Werewolf, you are cursed with a savage hunger that can only be sated through bloodshed. Under the full moon, your instincts take over, and you become a fearsome predator, stalking and murdering those who stand in your way. No one is safe from your ferocity. As you hunt and kill, your power only grows stronger, until nothing but the remnants of your victims remain. Your goal is simple: eliminate everyone, and let the world fear your name.";
             Color = Colors.Werewolf;
             LastMauled = DateTime.UtcNow;
             RoleType = RoleEnum.Werewolf;

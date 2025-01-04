@@ -7,6 +7,7 @@ namespace TownOfSushi.Roles
             Name = "Warlock";
             StartText = () => "Charge Up Your Kill Button To Multi Kill";
             TaskText = () => "Kill people in small bursts";
+            LoreText = "A dark sorcerer, you harness the power of dark magic to strike fear into the hearts of the crew. As the Warlock, you can charge up your kill ability, allowing you to unleash a devastating multi-kill in short bursts. The more you charge, the deadlier your strikes become, giving you the power to eliminate multiple targets at once and wreak havoc on the crew.";
             Color = Colors.Impostor;
             RoleType = RoleEnum.Warlock;
             Faction = Faction.Impostors;

@@ -7,9 +7,12 @@ namespace TownOfSushi.Roles
         public DateTime StartingCooldown { get; set; }
         public Medic(PlayerControl player) : base(player)
         {
+            var CanBreak = CustomGameOptions.ShieldBreaks ? "breaks if the shielded player gets a murder attempt" : "cannot break";
             Name = "Medic";
             StartText = () => "Create A Shield To Protect A Crewmate";
             TaskText = () => "Protect a crewmate with a shield";
+            RoleInfo = $"As the Medic, you can protect a crewmate with a shield to prevent them from being killed by the impostor. The shield lasts for the whole game. The shield {CanBreak}. When the player has a kill attempt, the Medic gets a flash indicating it. \n - Note: Having a shield does not mean the player is good";
+            LoreText = "A skilled protector, you specialize in keeping your fellow Crewmates safe. As the Medic, you can create shields to protect others from harm, ensuring that the most vulnerable stay safe from the deadly hands of the Impostors. Your quick thinking and ability to safeguard others make you a vital part of the crew's survival.";
             Color = Colors.Medic;
             StartingCooldown = DateTime.UtcNow;
             RoleType = RoleEnum.Medic;

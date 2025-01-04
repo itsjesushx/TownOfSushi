@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine.UI;
 
@@ -17,7 +18,8 @@ namespace TownOfSushi.Roles
             Name = "Jailor";
             StartText = () => "Jail and execute the <color=#FF0000FF>Impostors</color>";
             TaskText = () => "Execute and speak to the <color=#FF0000FF>Killers</color>";
-            
+            RoleInfo = "The Jailor is able to jail a player during meetings, jailing a player automatically makes them unable to chat with anyone but the Jailor in meetings. The jailor can talk to their jailee by typing /jail in the chat. The Jailor may execute their jailee if they believe they are an Impostor. If the Jailor executes an innocent player, they lose the ability to jail and execute for the rest of the game.";
+            LoreText = "A stern enforcer of justice, you specialize in imprisoning and executing the Impostors that threaten the crew. As the Jailor, you have the power to confine suspected killers and interrogate them before making the final, irreversible decision. Your sense of duty and unwavering resolve make you a vital figure in maintaining order and eliminating the threat of the Impostors.";            
             Color = Colors.Jailor;
             LastJailed = DateTime.UtcNow;
             RoleAlignment = RoleAlignment.CrewKilling;
@@ -98,8 +100,6 @@ namespace TownOfSushi.Roles
                 role.UsesText.Destroy();
                 role.JailCell.Destroy();
                 role.Executes -= 1;
-               /* if (!role.Jailed.Is(RoleEnum.Pestilence))
-                {*/
                     if (role.Jailed.Is(Faction.Crewmates))
                     {
                         role.IncorrectShots += 1;
@@ -115,7 +115,6 @@ namespace TownOfSushi.Roles
                     ExecuteKill(role, role.Jailed);
                     Rpc(CustomRPC.Jail, role.Player.PlayerId, (byte)1);
                     role.Jailed = null;
-                //}
             }
 
             return Listener;
@@ -191,8 +190,8 @@ namespace TownOfSushi.Roles
 
                     if (player.Is(RoleEnum.Swapper))
                     {
-                        var swapper = Role.GetRole<Swapper>(PlayerControl.LocalPlayer);
-                        var buttons = Role.GetRole<Swapper>(player).Buttons;
+                        var swapper = GetRole<Swapper>(PlayerControl.LocalPlayer);
+                        var buttons = GetRole<Swapper>(player).Buttons;
                         foreach (var button in buttons)
                         {
                             if (button != null)
@@ -205,7 +204,7 @@ namespace TownOfSushi.Roles
                         swapper.Buttons.Clear();
                         SwapVotes.Swap1 = null;
                         SwapVotes.Swap2 = null;
-                        Utils.Rpc(CustomRPC.SetSwaps, sbyte.MaxValue, sbyte.MaxValue);
+                        Rpc(CustomRPC.SetSwaps, sbyte.MaxValue, sbyte.MaxValue);
                     }
 
                     if (player.Is(RoleEnum.Jailor))
@@ -300,10 +299,10 @@ namespace TownOfSushi.Roles
             var jailorRole = GetRole<Jailor>(PlayerControl.LocalPlayer);
             if (jailorRole.Executes <= 0 || jailorRole.Jailed.Data.IsDead || jailorRole.Jailed.Data.Disconnected) return;
             for (var i = 0; i < __instance.playerStates.Length; i++)
-                if (jailorRole.Jailed.PlayerId == __instance.playerStates[i].TargetPlayerId)
-                {
-                   /* if (!(jailorRole.Jailed.IsLover() && PlayerControl.LocalPlayer.IsLover()))*/GenButton(jailorRole, i);
-                }
+            if (jailorRole.Jailed.PlayerId == __instance.playerStates[i].TargetPlayerId)
+            {
+                GenButton(jailorRole, i);
+            }
         }
     }
 

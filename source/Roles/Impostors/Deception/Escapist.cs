@@ -10,6 +10,8 @@ namespace TownOfSushi.Roles
             Name = "Escapist";
             StartText = () => "Get Away From Kills With Ease";
             TaskText = () => "Teleport to get away from bodies";
+            RoleInfo = "The Transporter can mark a location for them to teleport back to, and can teleport back to that location at any time. They can only teleport back to that location once. After that they must mark a new location.";
+            LoreText = "A master of escape, you can slip away from danger in the blink of an eye. As the Escapist, you harness the power of teleportation to evade death and slip past the eyes of those who might catch you in the act. Your ability to vanish at will makes you a dangerous foe, capable of leaving behind confusion and chaos as you retreat to safety.";
             Color = Colors.Impostor;
             RoleType = RoleEnum.Escapist;
             Faction = Faction.Impostors;

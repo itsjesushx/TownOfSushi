@@ -92,7 +92,6 @@ namespace TownOfSushi
     {
         CrewKilling,
         CrewSupport,
-        CrewPower,
         CrewSpecial,
         CrewInvest,
         NeutralBenign,

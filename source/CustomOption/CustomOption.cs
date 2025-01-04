@@ -1014,8 +1014,6 @@ namespace TownOfSushi.CustomOption
         }
     }
 
-    
-    //This class is taken and adapted from Town of Us Reactivated, https://github.com/eDonnes124/Town-Of-Us-R/blob/master/source/Patches/CustomOption/Patches.cs, Licensed under GPLv3
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
     public class HudManagerUpdate 
     {
@@ -1106,9 +1104,12 @@ namespace TownOfSushi.CustomOption
             int j = 0;
             for (int i = 0; i < blocks.Length; i++) {
                 curBlock = blocks[i];
-                if (LineCount(curBlock) + LineCount(curString) < 43) {
+                if (LineCount(curBlock) + LineCount(curString) < 43) 
+                {
                     curString += curBlock + "\n\n";
-                } else {
+                } 
+                else 
+                {
                     settingsTMPs[j].text = curString;
                     j++;
 

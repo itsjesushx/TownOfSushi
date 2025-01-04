@@ -7,7 +7,8 @@ namespace TownOfSushi.Roles
             Name = "Vampire";
             StartText = () => "Convert Crewmates and kill the rest";
             TaskText = () => "Conver players and kill everyone to win";
-            
+            RoleInfo = "The Vampire is a Neutral role with its own win condition. The Vampire can convert or kill other players by biting them. If the bitten player was a Crewmate they will turn into a Vampire (unless there are 2 Vampires alive). Else they will kill the bitten player.";
+            LoreText = "As a Vampire, you walk the fine line between life and death. With your hypnotic charm, you can turn crewmates into your devoted followers, turning the tide of the game in your favor. Yet, your thirst for blood is unquenchable, and those who refuse to join you must be eliminated. Your power grows with every converted soul, and soon, you will be the one pulling the strings. Only those who embrace your dark gift will survive—everyone else must perish in the night.";
             Color = Colors.Vampire;
             LastBit = DateTime.UtcNow;
             RoleType = RoleEnum.Vampire;

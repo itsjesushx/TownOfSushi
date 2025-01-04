@@ -18,7 +18,8 @@ namespace TownOfSushi.Roles
             Name = "Transporter";
             StartText = () => "Choose Two Players To Swap Locations";
             TaskText = () => "Choose two players to swap locations";
-            
+            RoleInfo = $"The Transporter can choose between two players to swap their locations. The Transporter can only swap locations {CustomGameOptions.TransportMaxUses} time(s). If the player that the Transporter wants to transport is on a ladder or zipline, the Transporter will have to wait until the player is off a ladder or zipline to transport them.";
+            LoreText = "A wielder of mysterious forces, you possess the ability to manipulate space itself. As the Transporter, you can use your magical powers to swap the locations of two players, bending reality and creating confusion. Your skill in altering the positions of others can disrupt the plans of the Impostors, providing a strategic advantage to the crew in moments of peril.";
             RoleAlignment = RoleAlignment.CrewSupport;
             Color = Colors.Transporter;
             LastTransported = DateTime.UtcNow;

@@ -10,7 +10,8 @@ namespace TownOfSushi.Roles
         {
             Name = "Witch";
             StartText = () => "Cast a spell upon your foes";
-            TaskText = () => "Cast a spell on players to kill them";            
+            TaskText = () => "Cast a spell on players to kill them";
+            LoreText = "A master of the arcane, you wield dark magic to curse your foes. As the Witch, you can cast a spell on players that ensures their demise after the meeting ends. Your powerful enchantments allow you to strike from afar, waiting for the perfect moment to unleash your lethal magic and eliminate your targets with a deadly curse.";
             Color = Colors.Impostor;
             LastSpelled = DateTime.UtcNow;
             RoleType = RoleEnum.Witch;

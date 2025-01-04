@@ -533,7 +533,6 @@ namespace TownOfSushi
                         break;
                     case CustomRPC.Start:
                         readByte = reader.ReadByte();
-                        //ShowDeadBodies = false;
                         ShowRoundOneShield.FirstRoundShielded = readByte == byte.MaxValue ? null : PlayerById(readByte);
                         ShowRoundOneShield.DiedFirst = "";
                         Murder.KilledPlayers.Clear();
@@ -553,7 +552,6 @@ namespace TownOfSushi
                         foreach (var body in deadBodies)
                             if (body.ParentId == readByte)
                                 Coroutines.Start(JanitorCoroutine.CleanCoroutine(body, janitorRole));
-
                         break;
                     case CustomRPC.VultureEat:
                         readByte1 = reader.ReadByte();
@@ -564,17 +562,13 @@ namespace TownOfSushi
                         foreach (var body2243 in deadbodies2)
                             if (body2243.ParentId == readByte)
                                 Coroutines.Start(VultureCoroutine.EatCoroutine(body2243, vultureR));
-
                         break;
                     case CustomRPC.SetSwaps:
                         readSByte = reader.ReadSByte();
-                        SwapVotes.Swap1 =
-                            MeetingHud.Instance.playerStates.FirstOrDefault(x => x.TargetPlayerId == readSByte);
+                        SwapVotes.Swap1 = MeetingHud.Instance.playerStates.FirstOrDefault(x => x.TargetPlayerId == readSByte);
                         readSByte2 = reader.ReadSByte();
-                        SwapVotes.Swap2 =
-                            MeetingHud.Instance.playerStates.FirstOrDefault(x => x.TargetPlayerId == readSByte2);
-                        PluginSingleton<TownOfSushi>.Instance.Log.LogMessage("Bytes received - " + readSByte + " - " +
-                                                                          readSByte2);
+                        SwapVotes.Swap2 = MeetingHud.Instance.playerStates.FirstOrDefault(x => x.TargetPlayerId == readSByte2);
+                        PluginSingleton<TownOfSushi>.Instance.Log.LogMessage("Bytes received - " + readSByte + " - " + readSByte2);
                         break;
                     case CustomRPC.EngineerFix:
                         var engineer = PlayerById(reader.ReadByte());
@@ -987,8 +981,6 @@ namespace TownOfSushi
             {
                 PluginSingleton<TownOfSushi>.Instance.Log.LogMessage("Rpc Set Roles");
                 var infected = GameData.Instance.AllPlayers.ToArray().Where(o => o.IsImpostor());
-
-                //ShowDeadBodies = false;
                 if (ShowRoundOneShield.DiedFirst != null && CustomGameOptions.FirstDeathShield)
                 {
                     var shielded = false;

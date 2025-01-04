@@ -15,6 +15,7 @@ namespace TownOfSushi.Roles
             Name = "Bomber";
             StartText = () => "Plant Bombs To Kill Multiple Crewmates At Once";
             TaskText = () => "Plant bombs to kill crewmates";
+            LoreText = "A master of destruction, you specialize in planting bombs to eliminate multiple Crewmates in one devastating strike. As the Bomber, you have the power to set traps that can cause chaos and panic, taking down several targets at once. Your explosive abilities make you a formidable force, capable of turning the tide of the game with a single well-timed detonation.";
             Color = Palette.ImpostorRed;
             StartingCooldown = DateTime.UtcNow;
             RoleType = RoleEnum.Bomber;

@@ -296,7 +296,6 @@ namespace TownOfSushi.Roles.Modifiers
             var amOwner = player.AmOwner;
             if (amOwner)
             {
-                //ShowDeadBodies = true;
                 hudManager.ShadowQuad.gameObject.SetActive(false);
                 player.nameText().GetComponent<MeshRenderer>().material.SetInt("_Mask", 0);
                 player.RpcSetScanner(false);

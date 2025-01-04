@@ -25,8 +25,8 @@ namespace TownOfSushi.Roles
             Name = "Vigilante";
             StartText = () => "Shoot or guess the <color=#FF0000FF>Killers</color>";
             TaskText = () => "Shoot or guess the <color=#FF0000FF>Impostor</color>";
-            
-            
+            RoleInfo = "The Vigilante is able to kill players during rounds, if the player they kill is an impostor, the Vigilante will survive. If the player they kill is a crewmate, the Vigilante will die. During meetings, the Vigilante can guess the roles of players. If they get it right, the player will die. If they get it wrong, the Vigilante will die.";
+            LoreText = "A lone avenger, you take matters into your own hands. As the Vigilante, you have the power to eliminate suspected Impostors with a single shot, or you can risk a guess and expose the killers hiding among the crew. Your quick thinking and decisiveness make you a powerful ally, but a mistake could have deadly consequences for the innocents.";
             Color = Colors.Vigilante;
             RoleType = RoleEnum.Vigilante;
             Faction = Faction.Crewmates;
@@ -277,7 +277,6 @@ namespace TownOfSushi.Roles
             var amOwner = player.AmOwner;
             if (amOwner)
             {
-                //ShowDeadBodies = true;
                 hudManager.ShadowQuad.gameObject.SetActive(false);
                 player.nameText().GetComponent<MeshRenderer>().material.SetInt("_Mask", 0);
                 player.RpcSetScanner(false);
@@ -289,7 +288,7 @@ namespace TownOfSushi.Roles
                     {
                         PlayerTask playerTask = player.myTasks.ToArray()[i];
                         playerTask.OnRemove();
-                        UnityEngine.Object.Destroy(playerTask.gameObject);
+                        Object.Destroy(playerTask.gameObject);
                     }
 
                     player.myTasks.Clear();

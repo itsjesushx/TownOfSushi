@@ -4,9 +4,12 @@ namespace TownOfSushi.Roles
     {
         public Hunter(PlayerControl player) : base(player)
         {
+            var CanRetribute = CustomGameOptions.RetributionOnVote ? " If the Hunter is voted out, the last player that voted the hunter will die." : "";
             Name = "Hunter";
             StartText = () => "Stalk The <color=#FF0000FF>Impostor</color>";
             TaskText = () => "Stalk and kill impostors, but not crewmates";
+            RoleInfo = $"As the Hunter, you can stalk players during rounds every {CustomGameOptions.HunterStalkCd} seconds. You can stalk a player for {CustomGameOptions.HunterStalkDuration} When the stalked players does something suspecious, you will get a flash indicating they did, after that you can aim to kill them, but careful, you can also murder innocent players.{CanRetribute}";
+            LoreText = "A relentless predator, you specialize in tracking and eliminating the Impostors hiding among the crew. As the Hunter, your keen instincts guide you as you stalk your prey, ensuring no traitor escapes your sight. Your objective is clear: hunt down and eliminate the Impostors, but you can also harm the Crewmates.";
             Color = Colors.Hunter;
             LastStalked = DateTime.UtcNow;
             LastKilled = DateTime.UtcNow;
@@ -149,7 +152,7 @@ namespace TownOfSushi.Roles
             if (role.ClosestPlayer == null) return false;
             if (!role.CaughtPlayers.Contains(role.ClosestPlayer)) return false;
             if (role.HunterKillTimer() != 0) return false;
-            var distBetweenPlayers = Utils.GetDistBetweenPlayers(PlayerControl.LocalPlayer, role.ClosestPlayer);
+            var distBetweenPlayers = GetDistBetweenPlayers(PlayerControl.LocalPlayer, role.ClosestPlayer);
             var flag3 = distBetweenPlayers <
                         GameOptionsData.KillDistances[GameOptionsManager.Instance.currentNormalGameOptions.KillDistance];
             if (!flag3) return false;

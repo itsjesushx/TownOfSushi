@@ -19,6 +19,8 @@ namespace TownOfSushi.Roles
             Name = "Imitator";
             StartText = () => "Use the true-hearted dead to benefit the crew";
             TaskText = () => "Use dead roles to benefit the crew";
+            RoleInfo = "The Imitator is able to copy the abilities of dead crewmates to help the crew. The Imitator can not Imitate roles that work during meetings. This is the list of the roles that the imitator can Copy: Investigator, Mystic, Seer, Tracker, Vigilante, Veteran, Engineer, Medium, Transporter, Trapper, Medic, Oracle, Hunter.";
+            LoreText = "A master of adaptation, you possess the rare ability to channel the powers of the fallen. As the Imitator, you can use the abilities of the dead to aid the living, turning their sacrifices into a boon for the crew. Your unique talent allows you to adapt to any situation, bringing the strength of the departed back to the crew's side in the fight against the Impostors.";
             Color = Colors.Imitator;
             RoleType = RoleEnum.Imitator;
             Faction = Faction.Crewmates;

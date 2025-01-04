@@ -12,8 +12,8 @@ namespace TownOfSushi.Roles
                 target == null
                     ? "You don't have a target for some reason... weird..."
                     : $"Vote {target.name} out!";
-            
-            
+            RoleInfo = "The Executioner is a Neutral role with its own win condition. Their goal is to vote out a player, specified in the beginning of a game. If that player gets voted out, they win the game.";
+            LoreText = "A relentless pursuer of chaos, you are tasked with ensuring that a specific player is voted out, no matter the cost. As the Executioner, you must manipulate the votes of others, turning the tide in your favor to eliminate your target. However, your victory is tied to the downfall of your chosen victim, and if they survive, your mission fails. Use your influence wisely, for the fate of your target—and your own—depends on the vote.";            
             Color = Colors.Executioner;
             RoleType = RoleEnum.Executioner;
             

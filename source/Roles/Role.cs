@@ -8,17 +8,18 @@ namespace TownOfSushi.Roles
         protected internal RoleAlignment RoleAlignment { get; set; } = RoleAlignment.None;
         public Func<string> StartText;
         public Func<string> TaskText;
+        protected internal string LoreText { get; set; }
+        protected internal string RoleInfo { get; set; }
+        public static IEnumerable<Role> AllRoles => RoleDictionary.Values.ToList();
+        protected internal string Name { get; set; }
+        protected internal string KilledBy { get; set; } = "";
+        protected internal string AlignmentText { get; set; } = "";
+        private PlayerControl _player { get; set; }
         protected Role(PlayerControl player)
         {
             Player = player;
             RoleDictionary.Add(player.PlayerId, this);
         }
-
-        public static IEnumerable<Role> AllRoles => RoleDictionary.Values.ToList();
-        protected internal string Name { get; set; }
-        protected internal string KilledBy { get; set; } = "";
-        protected internal string AlignmentName { get; set; } = "";
-        private PlayerControl _player { get; set; }
         public PlayerControl Player
         {
             get => _player;
@@ -212,13 +213,13 @@ namespace TownOfSushi.Roles
                 var task = new GameObject(Name + "Task").AddComponent<ImportantTextTask>();
                 var ability = GetAbility(PlayerControl.LocalPlayer);
                 task.transform.SetParent(Player.transform, false);
-                task.Text = $"{ColorString}Role: {Name}\n{TaskText()}\nAlignment: {Player.AlignmentName()}{hasFakeTasks}</color>";
+                task.Text = $"{ColorString}Role: {Name}\n{TaskText()}\nAlignment: {Player.AlignmentText()}{hasFakeTasks}</color>";
                 Player.myTasks.Insert(0, task);
                 return;
             }
             var ability2 = GetAbility(PlayerControl.LocalPlayer);
             Player.myTasks.ToArray()[0].Cast<ImportantTextTask>().Text =
-                $"{ColorString}Role: {Name}\n{TaskText()}\nAlignment: {Player.AlignmentName()}{hasFakeTasks}</color>";
+                $"{ColorString}Role: {Name}\n{TaskText()}\nAlignment: {Player.AlignmentText()}{hasFakeTasks}</color>";
         }
         public static T Gen<T>(Type type, PlayerControl player, CustomRPC rpc)
         {
@@ -309,7 +310,7 @@ namespace TownOfSushi.Roles
                 if (role.RoleType == RoleEnum.Amnesiac && role.Player != PlayerControl.LocalPlayer) return;
                 var task = new GameObject(role.Name + "Task").AddComponent<ImportantTextTask>();
                 task.transform.SetParent(player.transform, false);
-                task.Text = $"{role.ColorString}Role: {role.Name}\n{role.TaskText()}\nAlignment: {player.AlignmentName()}{hasFakeTasks}</color>";
+                task.Text = $"{role.ColorString}Role: {role.Name}\n{role.TaskText()}\nAlignment: {player.AlignmentText()}{hasFakeTasks}</color>";
                 player.myTasks.Insert(0, task);
             }
         }
