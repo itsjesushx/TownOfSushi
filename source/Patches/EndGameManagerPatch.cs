@@ -211,7 +211,7 @@ namespace TownOfSushi.Patches
                 {
                     CrewmatesWin = true;
                     Rpc(CustomRPC.CrewmateWin);
-                    EndGame();
+                    EndGameCrew();
                     yield break;
                 }
 

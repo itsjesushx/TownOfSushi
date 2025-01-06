@@ -13,7 +13,6 @@ namespace TownOfSushi.Roles
             LoreText = "A trickster at heart, your mission is to deceive the crew into voting you out. As the Jester, you must play the fool, sowing confusion and suspicion to ensure that the crew believes you are an Impostor. The more they doubt you, the closer you get to your victory. But beware: if you fail to be voted out, you risk becoming a liability for the crew, and your deceit will be their undoing.";
             Color = Colors.Jester;
             RoleType = RoleEnum.Jester;
-
             Faction = Faction.Neutral;
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.NeutralEvil;
