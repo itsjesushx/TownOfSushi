@@ -18,7 +18,6 @@
             Color = Colors.SerialKiller;
             LastStabbed = DateTime.UtcNow;
             LastKilled = DateTime.UtcNow;
-
             RoleType = RoleEnum.SerialKiller;
             Faction = Faction.Neutral;
             AddToRoleHistory(RoleType);

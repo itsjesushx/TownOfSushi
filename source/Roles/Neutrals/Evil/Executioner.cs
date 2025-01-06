@@ -36,6 +36,8 @@ namespace TownOfSushi.Roles
                 if (player.PlayerId == ((Executioner)role).target.PlayerId)
                 {
                     ExecutionerWin = true;
+                    Rpc(CustomRPC.ExecutionerWin);                
+                    EndGame();
                     role.PauseEndCrit = true;
                 }
                     

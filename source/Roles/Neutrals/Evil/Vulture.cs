@@ -247,6 +247,8 @@ namespace TownOfSushi.Roles
             if (role.EatenBodies == CustomGameOptions.VultureBodyCount)
             {
                 VultureWin = true;
+                Rpc(CustomRPC.VultureWin);
+                EndGame();
             }
         }
     }

@@ -18,7 +18,6 @@ namespace TownOfSushi.Roles
             Color = Colors.Plaguebearer;
             RoleType = RoleEnum.Plaguebearer;
             Faction = Faction.Neutral;
-
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.NeutralKilling;
             InfectedPlayers.Add(player.PlayerId);

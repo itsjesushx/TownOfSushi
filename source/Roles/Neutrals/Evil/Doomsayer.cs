@@ -250,6 +250,8 @@ namespace TownOfSushi.Roles
             if (doom.GuessedCorrectly == CustomGameOptions.DoomsayerGuessesToWin)
             {
                 DoomsayerWin = true;
+                Rpc(CustomRPC.DoomsayerWin);
+                EndGame();
             }
         }
         public static void MurderPlayer(

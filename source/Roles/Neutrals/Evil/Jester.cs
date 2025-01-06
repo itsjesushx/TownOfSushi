@@ -34,6 +34,8 @@ namespace TownOfSushi.Roles
             if (role.RoleType == RoleEnum.Jester)
             {
                 JesterWin = true;
+                Rpc(CustomRPC.JesterWin);
+                EndGame();
                 role.PauseEndCrit = true;
             }
         }
