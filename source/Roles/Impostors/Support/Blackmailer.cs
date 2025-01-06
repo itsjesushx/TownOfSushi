@@ -20,6 +20,7 @@ namespace TownOfSushi.Roles
             LastBlackmailed = DateTime.UtcNow;
             RoleType = RoleEnum.Blackmailer;
             Faction = Faction.Impostors;
+
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.ImpSupport;
         }

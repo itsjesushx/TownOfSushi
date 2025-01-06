@@ -28,6 +28,7 @@ namespace TownOfSushi.Roles
             LoreText = "A lost soul, you are haunted by the roles of those who have passed. As the Amnesiac, you have the unique ability to remember the role of a deceased player, adopting their powers and abilities. With each life lost, you gain the chance to assume a new identity, allowing you to shift allegiances and goals in a bid to survive and thrive in the chaos.";
             Color = Colors.Amnesiac;
             RoleType = RoleEnum.Amnesiac;
+
             Faction = Faction.Neutral;
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.NeutralBenign;
@@ -678,29 +679,6 @@ namespace TownOfSushi.Roles
             Rpc(CustomRPC.StartRemember, PlayerControl.LocalPlayer.PlayerId, playerId);
             RememberRole.Remember(amnesiac, player);
             amnesiac.Remembered = true;
-        }
-
-        public static void TurnImp(this PlayerControl player)
-        {
-            player.Data.Role.TeamType = RoleTeamTypes.Impostor;
-            RoleManager.Instance.SetRole(player, RoleTypes.Impostor);
-            player.SetKillTimer(GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown);
-
-            System.Console.WriteLine("PROOF I AM IMP VANILLA ROLE: " + player.Data.Role.IsImpostor);
-
-            foreach (var player2 in PlayerControl.AllPlayerControls)
-            {
-                if (player2.Data.IsImpostor() && PlayerControl.LocalPlayer.Data.IsImpostor())
-                {
-                    player2.nameText().color = Colors.Impostor;
-                }
-            }
-
-            if (PlayerControl.LocalPlayer.PlayerId == player.PlayerId)
-            {
-                DestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(true);
-                Flash(Colors.Impostor);
-            }
         }
 
         public static void Postfix(ExileController __instance) => ExileControllerPostfix(__instance);

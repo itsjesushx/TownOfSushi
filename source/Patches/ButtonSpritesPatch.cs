@@ -12,25 +12,6 @@
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
     public class ButtonSpritesPatch
     {
-        private static Sprite Fix =>  TownOfSushi.EngineerFix;
-        private static Sprite Medic => TownOfSushi.MedicSprite;
-        private static Sprite Seer => TownOfSushi.SeerSprite;
-        private static Sprite Douse => TownOfSushi.DouseSprite;
-        private static Sprite Jail => TownOfSushi.JailSprite;
-        private static Sprite Alert => TownOfSushi.AlertSprite;
-        private static Sprite Remember => TownOfSushi.RememberSprite;
-        private static Sprite Track => TownOfSushi.TrackSprite;
-        private static Sprite Transport => TownOfSushi.TransportSprite;
-        private static Sprite Mediate => TownOfSushi.MediateSprite;
-        private static Sprite Protect => TownOfSushi.ProtectSprite;
-        private static Sprite RomanticPick => TownOfSushi.RomanticPick;
-        private static Sprite Eat => TownOfSushi.VultureEat;
-        private static Sprite Infect => TownOfSushi.InfectSprite;
-        private static Sprite Trap => TownOfSushi.TrapSprite;
-        private static Sprite Inspect => TownOfSushi.InspectSprite;
-        private static Sprite Observe => TownOfSushi.ObserveSprite;
-        private static Sprite Bite => TownOfSushi.BiteSprite;
-        private static Sprite Confess => TownOfSushi.ConfessSprite;
         private static Sprite Kill;
         public static void Postfix(HudManager __instance)
         {
@@ -41,98 +22,99 @@
             var flag = false;
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Seer))
             {
-                __instance.KillButton.graphic.sprite = Seer;
+                __instance.KillButton.graphic.sprite = TownOfSushi.SeerSprite;
                 flag = true;
             }
             else if (PlayerControl.LocalPlayer.Is(RoleEnum.Medic))
             {
-                __instance.KillButton.graphic.sprite = Medic;
+                __instance.KillButton.graphic.sprite = TownOfSushi.MedicSprite;
                 flag = true;
             }
             else if (PlayerControl.LocalPlayer.Is(RoleEnum.Arsonist))
             {
-                __instance.KillButton.graphic.sprite = Douse;
+                __instance.KillButton.graphic.sprite = TownOfSushi.DouseSprite;
                 flag = true;
             }
             else if (PlayerControl.LocalPlayer.Is(RoleEnum.Veteran))
             {
-                __instance.KillButton.graphic.sprite = Alert;
-                flag = true;
-            }
-            else if (PlayerControl.LocalPlayer.Is(RoleEnum.Amnesiac))
-            {
-                __instance.KillButton.graphic.sprite = Remember;
+                __instance.KillButton.graphic.sprite = TownOfSushi.AlertSprite;
                 flag = true;
             }
             else if (PlayerControl.LocalPlayer.Is(RoleEnum.Tracker))
             {
-                __instance.KillButton.graphic.sprite = Track;
+                __instance.KillButton.graphic.sprite = TownOfSushi.TrackSprite;
                 flag = true;
             }
             else if (PlayerControl.LocalPlayer.Is(RoleEnum.Transporter))
             {
-                __instance.KillButton.graphic.sprite = Transport;
+                __instance.KillButton.graphic.sprite = TownOfSushi.TransportSprite;
                 flag = true;
             }
             else if (PlayerControl.LocalPlayer.Is(RoleEnum.Medium))
             {
-                __instance.KillButton.graphic.sprite = Mediate;
+                __instance.KillButton.graphic.sprite = TownOfSushi.MediateSprite;
                 flag = true;
             }
             else if (PlayerControl.LocalPlayer.Is(RoleEnum.Vulture))
             {
-                __instance.KillButton.graphic.sprite = Eat;
+                __instance.KillButton.graphic.sprite = TownOfSushi.VultureEat;
                 flag = true;
             }
             else if (PlayerControl.LocalPlayer.Is(RoleEnum.Romantic))
             {
-                __instance.KillButton.graphic.sprite = RomanticPick;
-                __instance.KillButton.buttonLabelText.text = "Pick Partner";
+                __instance.KillButton.graphic.sprite = TownOfSushi.ProtectSprite;
+                __instance.KillButton.buttonLabelText.gameObject.SetActive(true);
+                __instance.KillButton.buttonLabelText.text = "PICK LOVER";
                 flag = true;
             }
             else if (PlayerControl.LocalPlayer.Is(RoleEnum.GuardianAngel))
             {
-                __instance.KillButton.graphic.sprite = Protect;
+                __instance.KillButton.graphic.sprite = TownOfSushi.ProtectSprite;
                 flag = true;
             }
             else if (PlayerControl.LocalPlayer.Is(RoleEnum.Plaguebearer))
             {
-                __instance.KillButton.graphic.sprite = Infect;
+                __instance.KillButton.graphic.sprite = TownOfSushi.InfectSprite;
                 flag = true;
             }
             else if (PlayerControl.LocalPlayer.Is(RoleEnum.Engineer))
             {
-                __instance.KillButton.graphic.sprite = Fix;
+                __instance.KillButton.graphic.sprite = TownOfSushi.EngineerFix;
                 flag = true;
             }
             else if (PlayerControl.LocalPlayer.Is(RoleEnum.Trapper))
             {
-                __instance.KillButton.graphic.sprite = Trap;
+                __instance.KillButton.graphic.sprite = TownOfSushi.TrapSprite;
                 flag = true;
             }
-            else if (PlayerControl.LocalPlayer.Is(RoleEnum.Investigator) || PlayerControl.LocalPlayer.Is(RoleEnum.Mystic) )
+            else if (PlayerControl.LocalPlayer.Is(RoleEnum.Mystic))
             {
-                __instance.KillButton.graphic.sprite = Inspect;
+                __instance.KillButton.graphic.sprite = TownOfSushi.ExamineSprite;
+                flag = true;
+            }
+            else if (PlayerControl.LocalPlayer.Is(RoleEnum.Investigator))
+            {
+                __instance.KillButton.graphic.sprite = TownOfSushi.InspectSprite;
                 flag = true;
             }
             else if (PlayerControl.LocalPlayer.Is(RoleEnum.Doomsayer))
             {
-                __instance.KillButton.graphic.sprite = Observe;
-                flag = true;
-            }
-            else if (PlayerControl.LocalPlayer.Is(RoleEnum.Vampire))
-            {
-                __instance.KillButton.graphic.sprite = Bite;
+                __instance.KillButton.graphic.sprite = TownOfSushi.ObserveSprite;
                 flag = true;
             }
             else if (PlayerControl.LocalPlayer.Is(RoleEnum.Jailor))
             {
-                __instance.KillButton.graphic.sprite = Jail;
+                __instance.KillButton.graphic.sprite = TownOfSushi.JailSprite;
+                flag = true;
+            }
+            else if (PlayerControl.LocalPlayer.Is(RoleEnum.Vampire))
+            {
+                __instance.KillButton.graphic.sprite = TownOfSushi.BiteSprite;
                 flag = true;
             }
             else if (PlayerControl.LocalPlayer.Is(RoleEnum.Oracle))
             {
-                __instance.KillButton.graphic.sprite = Confess;
+                __instance.KillButton.graphic.sprite = TownOfSushi.ConfessSprite;
                 flag = true;
             }
             else

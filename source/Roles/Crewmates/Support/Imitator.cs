@@ -24,6 +24,7 @@ namespace TownOfSushi.Roles
             Color = Colors.Imitator;
             RoleType = RoleEnum.Imitator;
             Faction = Faction.Crewmates;
+
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.CrewSupport;
         }

@@ -6,7 +6,6 @@ namespace TownOfSushi.Objects
     {
         public Dictionary<byte, float> players = new Dictionary<byte, float>();
         public Transform transform;
-
         public IEnumerator FrameTimer()
         {
             while (transform != null)
@@ -21,7 +20,6 @@ namespace TownOfSushi.Objects
             foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
                 if (player.Data.IsDead) continue;
-                //PluginSingleton<TownOfSushi>.Instance.Log.LogMessage($"player with byte {player.PlayerId} is {Vector2.Distance(transform.position, player.GetTruePosition())} away");
                 if (Vector2.Distance(transform.position, player.GetTruePosition()) < (CustomGameOptions.TrapSize + 0.01f) * ShipStatus.Instance.MaxLightRadius)
                 {
                     if (!players.ContainsKey(player.PlayerId)) players.Add(player.PlayerId, 0f);

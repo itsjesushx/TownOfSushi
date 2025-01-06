@@ -15,6 +15,7 @@ namespace TownOfSushi.Roles
             Color = Colors.Impostor;
             RoleType = RoleEnum.Janitor;
             Faction = Faction.Impostors;
+
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.ImpSupport;
         }

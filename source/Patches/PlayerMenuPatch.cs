@@ -8,20 +8,19 @@ namespace TownOfSushi.Patches
         public Select Click;
         public Include Inclusion;
         public List<PlayerControl> Targets;
-        public static PlayerMenu singleton;
+        public static PlayerMenu Singleton;
         public delegate void Select(PlayerControl player);
         public delegate bool Include(PlayerControl player);
-
         public PlayerMenu(Select click, Include inclusion)
         {
             Click = click;
             Inclusion = inclusion;
-            if (singleton != null)
+            if (Singleton != null)
             {
-                singleton.Menu.DestroyImmediate();
-                singleton = null;
+                Singleton.Menu.DestroyImmediate();
+                Singleton = null;
             }
-            singleton = this;
+            Singleton = this;
         }
 
         public IEnumerator Open(float delay, bool includeDead = false)
@@ -60,7 +59,7 @@ namespace TownOfSushi.Patches
         {
             public static bool Prefix(ShapeshifterMinigame __instance)
             {
-                var menu = PlayerMenu.singleton;
+                var menu = Singleton;
 
                 if (menu == null)
                     return true;
@@ -95,7 +94,7 @@ namespace TownOfSushi.Patches
                 if (__instance == null) return;
                 try
                 {
-                    PlayerMenu.singleton.Menu.Close();
+                    PlayerMenu.Singleton.Menu.Close();
                 }
                 catch { }
             }

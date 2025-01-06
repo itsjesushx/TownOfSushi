@@ -16,6 +16,7 @@ namespace TownOfSushi.Roles
             LastSpelled = DateTime.UtcNow;
             RoleType = RoleEnum.Witch;
             Faction = Faction.Impostors;
+
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.ImpPower;
         }
@@ -46,18 +47,18 @@ namespace TownOfSushi.Roles
     {
         private static void Postfix(MeetingHud __instance)
         {
-            var role = GetRole<Witch>(PlayerControl.LocalPlayer);
-            if (role.SpelledPlayers != null && role.SpelledPlayers.Count > 0 && !role.Player.Data.IsDead && role.Player != null)
+            var witches = AllRoles.Where(x => x.RoleType == RoleEnum.Witch && x.Player != null).Cast<Witch>();
+            foreach (var role in witches)
             {
                 foreach (var spelledId in role.SpelledPlayers)
                 {
                     var spelledPlayer = PlayerById(spelledId);
                     var deadRole = GetPlayerRole(spelledPlayer);
-                    if (spelledPlayer != null)
+                    if (spelledPlayer != null && !spelledPlayer.Data.IsDead)
                     {
                         RpcMurderPlayer(spelledPlayer, spelledPlayer);
                         deadRole.DeathReason = DeathReasonEnum.Cursed;
-                        role.Kills ++;
+                        role.Kills++;
                     }
                     Rpc(CustomRPC.RemoveAllBodies);
                     var buggedBodies = Object.FindObjectsOfType<DeadBody>();
@@ -161,6 +162,24 @@ namespace TownOfSushi.Roles
                         }
                     }
                 }
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(ExileController), nameof(ExileController.BeginForGameplay))]
+    internal class WitchMeetingExiledEnd
+    {
+        private static void Postfix(ExileController __instance)
+        {
+            var exiled = __instance.initData.networkedPlayer;
+            if (exiled == null) return;
+            var player = exiled.Object;
+
+            var role = GetPlayerRole(player);
+            if (role == null) return;
+            if (role.RoleType == RoleEnum.Witch && CustomGameOptions.VotingWitchSavesTarget)
+            {
+                ((Witch)role).SpelledPlayers.RemoveRange(0, ((Witch)role).SpelledPlayers.Count);
             }
         }
     }

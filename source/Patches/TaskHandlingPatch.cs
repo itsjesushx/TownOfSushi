@@ -15,7 +15,7 @@ namespace TownOfSushi.Patches
                     if (!playerInfo.Disconnected && playerInfo.Tasks != null && playerInfo.Object &&
                         (GameOptionsManager.Instance.currentNormalGameOptions.GhostsDoTasks || !playerInfo.IsDead) && !playerInfo.IsImpostor() &&
                         !(
-                            playerInfo._object.Is(Faction.Neutral)
+                            playerInfo._object.Is(Faction.Neutral) 
                         ))
                         for (var j = 0; j < playerInfo.Tasks.Count; j++)
                         {

@@ -108,12 +108,31 @@ namespace TownOfSushi
         SetRole = 100,
         SetModifier,
         SetAbility,
-        SetCouple,
         SetAssassin,
         SetTarget,
         SetGATarget,        
         SetRomanticTarget,
         Spell,
+
+        TeamVampiresWin,
+        GlitchWin,
+        JuggernautWin,
+        ArsonistWin,
+        PlaguebearerWin,
+        PestilenceWin,
+        WerewolfWin,
+        SerialKillerWin,
+        AgentWin,
+        HitmanWin,
+        ImpostorWin,
+        CrewmateWin,
+        JesterWin,
+        VultureWin,
+        ExecutionerWin,
+        DoomsayerWin,
+        NobodyWins,
+
+
         Maul,
         JanitorClean,
         FixLights,
@@ -261,45 +280,6 @@ namespace TownOfSushi
         Shielded = 1,
         Everyone = 2,
         Nobody = 3
-    }
-    public enum CustomGameOverReason 
-    {
-        JesterWin = 11,
-        ExecutionerWin = 12,
-        DoomsayerWin = 13,
-        VultureWin = 14,
-        TeamVampiresWin = 16,
-        GlitchWin = 17,
-        JuggernautWin = 18,
-        ArsonistWin = 19,
-        PlaguebearerWin = 20,
-        PestilenceWin = 21,
-        WerewolfWin = 22,
-        SerialKillerWin = 23,
-        AgentWin = 24,
-        HitmanWin = 25
-    }
-    public enum WinCondition 
-    {
-        Default,
-        JesterWin,
-        ExecutionerWin,
-        DoomsayerWin,
-        VultureWin,
-        TeamVampiresWin,
-        GlitchWin,
-        JuggernautWin,
-        ArsonistWin,
-        PlaguebearerWin,
-        PestilenceWin,
-        WerewolfWin,
-        AdditionalGuardianAngelWin,
-        AdditionalRomanticWin,
-        SerialKillerWin,
-        AgentWin,
-        HitmanWin,
-        ImpostorWin,
-        CrewmateWin
     }
     public enum CustomPlayerOutfitType 
     {

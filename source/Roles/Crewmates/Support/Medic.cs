@@ -17,6 +17,7 @@ namespace TownOfSushi.Roles
             StartingCooldown = DateTime.UtcNow;
             RoleType = RoleEnum.Medic;
             Faction = Faction.Crewmates;
+
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.CrewSupport;
             ShieldedPlayer = null;

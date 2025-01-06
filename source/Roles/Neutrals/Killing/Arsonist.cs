@@ -18,6 +18,7 @@
             LoreText = "A pyromaniac at heart, you play with fire in the dead of night. As the Arsonist, your mission is to douse players with your deadly fuel and wait for the perfect moment to strike. Once enough victims are soaked in your fire, you ignite the flames, causing an inferno that wipes out all those who are marked. But beware—if you ignite too early, you risk exposing yourself before you’re ready. Patience and precision are your greatest tools.";
             Color = Colors.Arsonist;
             LastDoused = DateTime.UtcNow;
+
             RoleType = RoleEnum.Arsonist;
             Faction = Faction.Neutral;
             AddToRoleHistory(RoleType);

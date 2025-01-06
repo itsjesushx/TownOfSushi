@@ -3,12 +3,15 @@ namespace TownOfSushi.Patches
     [HarmonyPatch]
     class GetStringPatch 
     {
-        [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.GetString), new[] {
+        [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.GetString), new[] 
+        {
                 typeof(StringNames),
                 typeof(Il2CppReferenceArray<Il2CppSystem.Object>)
             })]
-        public static bool Prefix(TranslationController __instance, StringNames id, ref string __result) {
-            if ((int)id < 6000) {
+        public static bool Prefix(TranslationController __instance, StringNames id, ref string __result) 
+        {
+            if ((int)id < 6000) 
+            {
                 return true;
             }
             string ourString = "";

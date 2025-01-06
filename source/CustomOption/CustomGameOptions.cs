@@ -43,6 +43,7 @@ namespace TownOfSushi.CustomOption
         public static int SerialKillerOn => Mathf.RoundToInt(CustomOptionHolder.SerialKillerOn.GetFloat());
         public static int EscapistOn => Mathf.RoundToInt(CustomOptionHolder.EscapistOn.GetFloat());
         public static float SpellCd => CustomOptionHolder.SpellCd.GetFloat();
+        public static bool VotingWitchSavesTarget => CustomOptionHolder.VotingWitchSavesTarget.GetBool();
         public static int ImitatorOn => Mathf.RoundToInt(CustomOptionHolder.ImitatorOn.GetFloat());
         public static int BomberOn => Mathf.RoundToInt(CustomOptionHolder.BomberOn.GetFloat());
         public static int DoomsayerOn => Mathf.RoundToInt(CustomOptionHolder.DoomsayerOn.GetFloat());
@@ -139,6 +140,7 @@ namespace TownOfSushi.CustomOption
         public static bool CamoCommsKillAnyone => CustomOptionHolder.CamoCommsKillAnyone.GetBool();
         public static int MaxFixes => Mathf.RoundToInt(CustomOptionHolder.MaxFixes.GetFloat());
         public static bool VigilanteBodyReport => CustomOptionHolder.VigilanteBodyReport.GetBool();
+        public static bool VeteranBodyReport => CustomOptionHolder.VeteranBodyReport.GetBool();
         public static float DragCd => CustomOptionHolder.DragCooldown.GetFloat();
         public static float UndertakerDragSpeed => CustomOptionHolder.UndertakerDragSpeed.GetFloat();
         public static float HitmanDragCd => CustomOptionHolder.HitmanDragCooldown.GetFloat();
@@ -224,7 +226,6 @@ namespace TownOfSushi.CustomOption
         public static bool SerialKillerVent => CustomOptionHolder.SerialKillerVent.GetBool();
         public static float TrapCooldown => CustomOptionHolder.TrapCooldown.GetFloat();
         public static bool TrapsRemoveOnNewRound => CustomOptionHolder.TrapsRemoveOnNewRound.GetBool();
-        //public static bool ShowTeam => CustomOptionHolder.ShowTeam.Get();
         public static int MaxTraps => Mathf.RoundToInt(CustomOptionHolder.MaxTraps.GetFloat());
         public static float DisperseCooldown => CustomOptionHolder.DisperseCooldown.GetFloat();
         public static int MaxDisperses => Mathf.RoundToInt(CustomOptionHolder.MaxDisperses.GetFloat());

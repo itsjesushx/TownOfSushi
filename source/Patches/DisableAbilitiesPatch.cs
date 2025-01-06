@@ -80,7 +80,7 @@ namespace TownOfSushi.Patches
                     else if (PlayerControl.LocalPlayer.Is(RoleEnum.SerialKiller))
                     {
                         var ww = GetRole<SerialKiller>(PlayerControl.LocalPlayer);
-                        if (ww.Stabbed) disableExtra = false;
+                        if (ww.Stabbing) disableExtra = false;
                     }
 
                     if (HudManager.Instance.KillButton != null && disableKill)

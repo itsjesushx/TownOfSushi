@@ -16,6 +16,7 @@ namespace TownOfSushi.Roles
             LastMediated = DateTime.UtcNow;
             RoleType = RoleEnum.Medium;
             Faction = Faction.Crewmates;
+
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.CrewInvest;
             MediatedPlayers = new Dictionary<byte, ArrowBehaviour>();

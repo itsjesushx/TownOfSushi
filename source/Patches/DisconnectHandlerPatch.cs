@@ -50,7 +50,7 @@ namespace TownOfSushi.Patches
                         swapper.ListOfActives[voteArea.TargetPlayerId] = false;
                         if (SwapVotes.Swap1 == voteArea) SwapVotes.Swap1 = null;
                         if (SwapVotes.Swap2 == voteArea) SwapVotes.Swap2 = null;
-                        Utils.Rpc(CustomRPC.SetSwaps, sbyte.MaxValue, sbyte.MaxValue);
+                        Rpc(CustomRPC.SetSwaps, sbyte.MaxValue, sbyte.MaxValue);
                     }
                     button.SetActive(false);
                     button.GetComponent<PassiveButton>().OnClick = new Button.ButtonClickedEvent();

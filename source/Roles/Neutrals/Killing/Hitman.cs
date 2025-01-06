@@ -14,6 +14,7 @@ namespace TownOfSushi.Roles
             RoleInfo = "The Hitman is a Neutral role that depending on settings, may spawn naturally or is the become option for the Agent. The Hitman can Morph into players to disguise itself from others. They can additionally drag bodies like the Undertaker. This role cannot spawn on Fungle.";
             LoreText = "A cold-blooded professional, you live for the thrill of the kill. As the Hitman, you are not only a deadly assassin but also a master of deception. You can eliminate targets with ruthless precision, drag their bodies away to hide the evidence, and even morph into other players to evade suspicion. Your objective is simple: eliminate everyone, and use your abilities to stay one step ahead of the crew. Every move you make is calculated, and your reign of terror will continue until you’ve achieved total victory.";
             RoleType = RoleEnum.Hitman;
+
             Color = Colors.Hitman;
             LastDrag = DateTime.UtcNow;
             KillTarget = null;

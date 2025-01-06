@@ -20,6 +20,7 @@ namespace TownOfSushi.Roles
             LastSwooped = DateTime.UtcNow;
             RoleType = RoleEnum.Swooper;
             Faction = Faction.Impostors;
+
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.ImpSupport;
         }

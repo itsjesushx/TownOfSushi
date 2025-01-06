@@ -128,13 +128,14 @@ namespace TownOfSushi.Roles.Modifiers
             return role != null && role.Criteria();
         }
 
-        public static void AssassinOnClick(int buttonTarget, MeetingHud __instance) {
+        public static void AssassinOnClick(int buttonTarget, MeetingHud __instance) 
+        {
             var ability = GetAbility<Assassin>(PlayerControl.LocalPlayer);
             if (assassinUI != null || !(__instance.state == MeetingHud.VoteStates.Voted || __instance.state == MeetingHud.VoteStates.NotVoted)) return;
             __instance.playerStates.ToList().ForEach(x => x.gameObject.SetActive(false));
 
-            Transform PhoneUI = UnityEngine.Object.FindObjectsOfType<Transform>().FirstOrDefault(x => x.name == "PhoneUI");
-            Transform container = UnityEngine.Object.Instantiate(PhoneUI, __instance.transform);
+            Transform PhoneUI = Object.FindObjectsOfType<Transform>().FirstOrDefault(x => x.name == "PhoneUI");
+            Transform container = Object.Instantiate(PhoneUI, __instance.transform);
             container.transform.localPosition = new Vector3(0, 0, -5f);
             assassinUI = container.gameObject;
 

@@ -19,6 +19,7 @@ namespace TownOfSushi.Roles
             LastMined = DateTime.UtcNow;
             RoleType = RoleEnum.Miner;  
             Faction = Faction.Impostors;
+
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.ImpSupport;
         }

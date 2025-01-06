@@ -8,7 +8,8 @@ namespace TownOfSushi.Patches
         public static void Prefix(IntroCutscene __instance) 
         {
             // Generate and initialize player icons
-            if (PlayerControl.LocalPlayer != null && DestroyableSingleton<HudManager>.Instance != null) {
+            if (PlayerControl.LocalPlayer != null && DestroyableSingleton<HudManager>.Instance != null) 
+            {
                 float aspect = Camera.main.aspect;
                 float safeOrthographicSize = CameraSafeArea.GetSafeOrthographicSize(Camera.main);
                 float xpos = 1.75f - safeOrthographicSize * aspect * 1.70f;
@@ -117,10 +118,12 @@ namespace TownOfSushi.Patches
                     __instance.RoleBlurbText.text = roleInfo.StartText();
                     __instance.RoleBlurbText.color = roleInfo.Color;
                 }
-                if (modifierInfo != null) {
+                if (modifierInfo != null) 
+                {
                     __instance.RoleBlurbText.text += ColorString(modifierInfo.Color, $"\n{modifierInfo.TaskText()}");
                 }
-                if (abilityInfo != null) {
+                if (abilityInfo != null) 
+                {
                     __instance.RoleBlurbText.text += ColorString(abilityInfo.Color, $"\n{abilityInfo.TaskText()}");
                 }
             }
@@ -135,12 +138,15 @@ namespace TownOfSushi.Patches
         }
 
         [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginCrewmate))]
-        class BeginCrewmatePatch {
-            public static void Prefix(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> teamToDisplay) {
+        class BeginCrewmatePatch 
+        {
+            public static void Prefix(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> teamToDisplay) 
+            {
                 AddNeutralIntroIcons(__instance, ref teamToDisplay);
             }
 
-            public static void Postfix(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> teamToDisplay) {
+            public static void Postfix(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> teamToDisplay) 
+            {
                 AddNeutralIntro(__instance, ref teamToDisplay);
             }
         }

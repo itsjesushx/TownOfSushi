@@ -57,7 +57,7 @@ namespace TownOfSushi.Roles
                 var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer);
                 if (interact[3] == true)
                 {
-                    Convert(role.ClosestPlayer);
+                    VampirePerformConvert.Convert(role.ClosestPlayer);
                     Rpc(CustomRPC.Bite, role.ClosestPlayer.PlayerId);
                 }
                 if (interact[0] == true)
@@ -93,39 +93,49 @@ namespace TownOfSushi.Roles
                 return false;
             }
         }
-
-        public static void Convert(PlayerControl newVamp)
+    }
+    
+    public class VampirePerformConvert
+    {
+        public static void Convert(PlayerControl target)
         {
-            var oldRole = GetPlayerRole(newVamp);
+            var oldRole = GetPlayerRole(target);
             var killsList = (oldRole.CorrectKills, oldRole.IncorrectShots, oldRole.CorrectAssassinKills, oldRole.IncorrectAssassinKills);
 
-            if (newVamp == StartImitate.ImitatingPlayer) StartImitate.ImitatingPlayer = null;
+            if (target == StartImitate.ImitatingPlayer) StartImitate.ImitatingPlayer = null;
 
-            if (newVamp.Is(RoleEnum.GuardianAngel))
+            if (target.Is(RoleEnum.GuardianAngel))
             {
-                var ga = GetRole<GuardianAngel>(newVamp);
+                var ga = GetRole<GuardianAngel>(target);
                 ga.UnProtect();
             }
 
-            if (newVamp.Is(RoleEnum.Medium))
+            if (target.Is(RoleEnum.Medium))
             {
-                var medRole = GetRole<Medium>(newVamp);
+                var medRole = GetRole<Medium>(target);
                 medRole.MediatedPlayers.Values.DestroyAll();
                 medRole.MediatedPlayers.Clear();
             }
 
-            if (PlayerControl.LocalPlayer == newVamp)
+            if (PlayerControl.LocalPlayer == target)
             {
-                if (PlayerControl.LocalPlayer.Is(RoleEnum.Investigator))
-                {
-                    var InvestigatorRole = GetRole<Investigator>(PlayerControl.LocalPlayer);
-                    GetRole<Investigator>(PlayerControl.LocalPlayer).ExamineButton.SetTarget(null); 
-                    Footprint.DestroyAll(GetRole<Investigator>(PlayerControl.LocalPlayer));
-                    InvestigatorRole.ExamineButton.gameObject.SetActive(false);
-                }
+                if (PlayerControl.LocalPlayer.Is(RoleEnum.Investigator)) GetRole<Investigator>(PlayerControl.LocalPlayer).ExamineButton.SetTarget(null);
+                else if (PlayerControl.LocalPlayer.Is(RoleEnum.Hunter)) GetRole<Hunter>(PlayerControl.LocalPlayer).StalkButton.SetTarget(null);
+                else if (PlayerControl.LocalPlayer.Is(RoleEnum.Vulture)) VultureKillButtonTarget.SetTarget(HudManager.Instance.KillButton, null, GetRole<Vulture>(PlayerControl.LocalPlayer));
+
+                if (PlayerControl.LocalPlayer.Is(RoleEnum.Investigator)) Footprint.DestroyAll(GetRole<Investigator>(PlayerControl.LocalPlayer));
 
                 if (PlayerControl.LocalPlayer.Is(RoleEnum.Vigilante)) 
                 {
+                    HudManager.Instance.KillButton.buttonLabelText.gameObject.SetActive(false);
+                }
+
+                if (PlayerControl.LocalPlayer.Is(RoleEnum.Hunter))
+                {
+                    var hunterRole = GetRole<Hunter>(PlayerControl.LocalPlayer);
+                    Object.Destroy(hunterRole.UsesText);
+                    hunterRole.StalkButton.SetTarget(null);
+                    hunterRole.StalkButton.gameObject.SetActive(false);
                     HudManager.Instance.KillButton.buttonLabelText.gameObject.SetActive(false);
                 }
 
@@ -150,21 +160,13 @@ namespace TownOfSushi.Roles
                     mysticRole.BodyArrows.Clear();
                 }
 
-                if (PlayerControl.LocalPlayer.Is(RoleEnum.Vulture))
-                {
-                    var Vulture = GetRole<Vulture>(PlayerControl.LocalPlayer);
-                    Vulture.BodyArrows.Values.DestroyAll();
-                    Vulture.BodyArrows.Clear();
-                    VultureKillButtonTarget.SetTarget(HudManager.Instance.KillButton, null, GetRole<Vulture>(PlayerControl.LocalPlayer));
-                }
-
                 if (PlayerControl.LocalPlayer.Is(RoleEnum.Transporter))
                 {
                     var transporterRole = GetRole<Transporter>(PlayerControl.LocalPlayer);
                     Object.Destroy(transporterRole.UsesText);
                     try
                     {
-                        PlayerMenu.singleton.Menu.Close();
+                        PlayerMenu.Singleton.Menu.Close();
                     }
                     catch { }
                 }
@@ -182,6 +184,12 @@ namespace TownOfSushi.Roles
                     trapperRole.traps.ClearTraps();
                 }
 
+                if (PlayerControl.LocalPlayer.Is(RoleEnum.Investigator))
+                {
+                    var InvestigatorRole = GetRole<Investigator>(PlayerControl.LocalPlayer);
+                    InvestigatorRole.ExamineButton.gameObject.SetActive(false);
+                }
+
                 if (PlayerControl.LocalPlayer.Is(RoleEnum.GuardianAngel))
                 {
                     var gaRole = GetRole<GuardianAngel>(PlayerControl.LocalPlayer);
@@ -189,9 +197,8 @@ namespace TownOfSushi.Roles
                 }
             }
 
-            RoleDictionary.Remove(newVamp.PlayerId);
-
-            if (PlayerControl.LocalPlayer == newVamp)
+            RoleDictionary.Remove(target.PlayerId);
+            if (PlayerControl.LocalPlayer == target)
             {
                 var role = new Vampire(PlayerControl.LocalPlayer);
                 role.CorrectKills = killsList.CorrectKills;
@@ -199,20 +206,28 @@ namespace TownOfSushi.Roles
                 role.CorrectAssassinKills = killsList.CorrectAssassinKills;
                 role.IncorrectAssassinKills = killsList.IncorrectAssassinKills;
                 role.RegenTask();
+                Utilities.UsefulMethods.ShowTextToast("You are now a Vampire!", 3.5f);
+                SoundManager.Instance.PlaySound(ShipStatus.Instance.SabotageSound, false, 1f, null);
+                Flash(Colors.Vampire);
             }
             else
             {
-                var role = new Vampire(newVamp);
+                var role = new Vampire(target);
                 role.CorrectKills = killsList.CorrectKills;
                 role.IncorrectShots = killsList.IncorrectShots;
                 role.CorrectAssassinKills = killsList.CorrectAssassinKills;
                 role.IncorrectAssassinKills = killsList.IncorrectAssassinKills;
             }
 
-            if (CustomGameOptions.NewVampCanAssassin) new Assassin(newVamp);
+            if (CustomGameOptions.NewVampCanAssassin) 
+            {
+                AbilityDictionary.Remove(target.PlayerId);
+                new Assassin(target);
+                var role = GetRole<Vampire>(target);
+                role.RegenTask();
+            }
         }
     }
-    
     [HarmonyPatch(typeof(HudManager))]
     public class HudBite
     {

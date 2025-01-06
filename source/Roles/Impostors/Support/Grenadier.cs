@@ -24,6 +24,7 @@ namespace TownOfSushi.Roles
             LastFlashed = DateTime.UtcNow;
             RoleType = RoleEnum.Grenadier;
             Faction = Faction.Impostors;
+
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.ImpSupport;
         }
@@ -222,7 +223,8 @@ namespace TownOfSushi.Roles
                 role.FlashButton.gameObject.SetActive(false);
             }
 
-            if (CustomGameOptions.GrenadierIndicators) {
+            if (CustomGameOptions.GrenadierIndicators) 
+            {
                 foreach (var player in PlayerControl.AllPlayerControls)
                 {
                     if (player != PlayerControl.LocalPlayer && !player.Data.IsImpostor()) {

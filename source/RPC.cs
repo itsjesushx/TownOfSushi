@@ -538,6 +538,7 @@ namespace TownOfSushi
                         Murder.KilledPlayers.Clear();
                         ToggleZoom(reset : true);
                         JailChat.JailorMessage = false;
+                        ResetWins();
                         ExileControllerPatch.lastExiled = null;
                         PatchKillTimer.GameStarted = false;
                         StartImitate.ImitatingPlayer = null;
@@ -580,7 +581,7 @@ namespace TownOfSushi
                         break;
                     case CustomRPC.Bite:
                         var newVamp = PlayerById(reader.ReadByte());
-                        Bite.Convert(newVamp);
+                        VampirePerformConvert.Convert(newVamp);
                         break;
                     case CustomRPC.Imitate:
                         var imitator = PlayerById(reader.ReadByte());
@@ -769,6 +770,51 @@ namespace TownOfSushi
                         swooperRole.TimeRemaining = CustomGameOptions.SwoopDuration;
                         swooperRole.Swoop();
                         break;
+                    case CustomRPC.GlitchWin:
+                        GlitchWin = true;
+                        break;
+                    case CustomRPC.JuggernautWin:
+                        JuggernautWin = true;
+                        break;
+                    case CustomRPC.PestilenceWin:
+                        PestilenceWin = true;
+                        break;
+                    case CustomRPC.ArsonistWin:
+                        ArsonistWin = true;
+                        break;
+                    case CustomRPC.WerewolfWin:
+                        WerewolfWin = true;
+                        break;
+                    case CustomRPC.PlaguebearerWin:
+                        PlaguebearerWin = true;
+                        break;
+                    case CustomRPC.HitmanWin:
+                        HitmanWin = true;
+                        break;
+                    case CustomRPC.AgentWin:
+                        AgentWin = true;
+                        break;
+                    case CustomRPC.TeamVampiresWin:
+                        VampireWins = true;
+                        break;
+                    case CustomRPC.ImpostorWin:
+                        ImpostorsWin = true;
+                        break;
+                    case CustomRPC.CrewmateWin:
+                        CrewmatesWin = true;
+                        break;
+                    case CustomRPC.DoomsayerWin:
+                        DoomsayerWin = true;
+                        break;
+                    case CustomRPC.JesterWin:
+                        JesterWin = true;
+                        break; 
+                    case CustomRPC.VultureWin:
+                        VultureWin = true;
+                        break; 
+                    case CustomRPC.ExecutionerWin:
+                        ExecutionerWin = true;
+                        break; 
                     case CustomRPC.Camouflage:
                         var venerer = PlayerById(reader.ReadByte());
                         var venererRole = GetRole<Venerer>(venerer);
@@ -998,6 +1044,7 @@ namespace TownOfSushi
                 ShowRoundOneShield.DiedFirst = "";
                 ExileControllerPatch.lastExiled = null;
                 PatchKillTimer.GameStarted = false;
+                ResetWins();
                 JailChat.JailorMessage = false;
                 ToggleZoom(reset : true);
                 StartImitate.ImitatingPlayer = null;

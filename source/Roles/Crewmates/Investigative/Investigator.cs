@@ -20,6 +20,7 @@ namespace TownOfSushi.Roles
             Color = Colors.Investigator;
             RoleType = RoleEnum.Investigator;
             Faction = Faction.Crewmates;
+
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.CrewInvest;
         }

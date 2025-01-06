@@ -16,6 +16,7 @@ namespace TownOfSushi.Roles
             Color = Colors.Mystic;
             RoleType = RoleEnum.Mystic;
             Faction = Faction.Crewmates;
+
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.CrewInvest;
         }

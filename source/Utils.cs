@@ -50,7 +50,7 @@ namespace TownOfSushi
             var targetId = byte.MaxValue;
             if (target != null) targetId = target.PlayerId;
             Rpc(CustomRPC.AbilityTrigger, player.PlayerId, targetId);
-            foreach (Role hunterRole in Role.GetRoles(RoleEnum.Hunter))
+            foreach (Role hunterRole in GetRoles(RoleEnum.Hunter))
             {
                 Hunter hunter = (Hunter)hunterRole;
                 if (hunter.StalkedPlayer == player) hunter.RpcCatchPlayer(player);
@@ -479,8 +479,8 @@ namespace TownOfSushi
                 }
                 else if (player.Is(RoleEnum.Vampire))
                 {
-                    var vamp = GetRole<Vampire>(player);
-                    vamp.LastBit = DateTime.UtcNow;
+                    var Vampire = GetRole<Vampire>(player);
+                    Vampire.LastBit = DateTime.UtcNow;
                 }
                 else if (player.Is(RoleEnum.SerialKiller))
                 {
@@ -721,7 +721,7 @@ namespace TownOfSushi
                 {
                     try
                     {
-                        PlayerMenu.singleton.Menu.Close();
+                        PlayerMenu.Singleton.Menu.Close();
                     }
                     catch { }
 
@@ -1023,6 +1023,31 @@ namespace TownOfSushi
             return PlayerControl.LocalPlayer.myTasks.ToArray().Any((x) => x.TaskType == TaskTypes.MushroomMixupSabotage);
         }
 
+        public static void ResetWins()
+        {
+            VampireWins = false;
+            CrewmatesWin = false;
+            ImpostorsWin = false;
+            NobodyWins = false;
+            NobodyWins = false;        
+            VampireWins = false;        
+            CrewmatesWin = false;        
+            ImpostorsWin = false;        
+            HitmanWin = false;        
+            GlitchWin = false;        
+            JuggernautWin = false;        
+            AgentWin = false;       
+            WerewolfWin = false;        
+            PestilenceWin = false;        
+            PlaguebearerWin = false;        
+            ArsonistWin = false;        
+            SerialKillerWin = false;        
+            JesterWin = false;        
+            ExecutionerWin = false;        
+            DoomsayerWin = false;        
+            VultureWin = false;
+        }
+
         public static IEnumerable<(T1, T2)> Zip<T1, T2>(List<T1> first, List<T2> second)
         {
             return first.Zip(second, (x, y) => (x, y));
@@ -1239,6 +1264,64 @@ namespace TownOfSushi
             return result;
         }
 
+        public static void AddToRoleOutro(EndGameManager instance, RoleEnum roleType, string winText, Func<Role, bool> winCondition)
+        {
+            var role = AllRoles.FirstOrDefault(x => x.RoleType == roleType && winCondition(x));
+            if (role == null) return;
+
+            PoolablePlayer[] array = Object.FindObjectsOfType<PoolablePlayer>();
+            foreach (var player in array)
+            {
+                player.NameText().text = role.ColorString + player.NameText().text + "</color>";
+            }
+            instance.BackgroundBar.material.color = role.Color;
+            var text = Object.Instantiate(instance.WinText);
+            text.text = winText;
+            text.color = role.Color;
+            var pos = instance.WinText.transform.localPosition;
+            pos.y = 1.5f;
+            text.transform.position = pos;
+            text.text = $"<size=4>{text.text}</size>";
+        }
+
+        public static void EndGame(GameOverReason reason = GameOverReason.ImpostorByVote, bool showAds = false)
+        {
+            GameManager.Instance.RpcEndGame(reason, showAds);
+        }
+
+        public static bool IsKillingRole(this PlayerControl player)
+        {
+            if ( player.Is(Faction.Impostors) || player.Is(RoleAlignment.NeutralKilling)) return true;
+            return false;
+        }
+
+        public static bool IsCrewKiller(this PlayerControl player)
+        {
+            if ( player.Is(RoleEnum.Swapper) || player.Is(RoleEnum.Vigilante)) return true;
+            else if (player.Is(RoleEnum.Hunter))
+            {
+                var hunter = GetRole<Hunter>(player);
+                if (hunter.MaxUses > 0 || (hunter.StalkedPlayer != null && !hunter.StalkedPlayer.Data.IsDead && !hunter.StalkedPlayer.Data.Disconnected && hunter.StalkedPlayer.Is(RoleAlignment.NeutralKilling)) ||
+                hunter.CaughtPlayers.Count(player => !player.Data.IsDead && !player.Data.Disconnected && player.Is(RoleAlignment.NeutralKilling)) > 0) return true;
+            }
+            else if (player.Is(RoleEnum.Imitator))
+            {
+                if (PlayerControl.AllPlayerControls.ToArray().Count(x => x.Data.IsDead && !x.Data.Disconnected &&
+                (x.Is(RoleEnum.Hunter) || x.Is(RoleEnum.Vigilante) || x.Is(RoleEnum.Veteran))) > 0) return true;
+            }
+            else if (player.Is(RoleEnum.Jailor))
+            {
+                var jailor = GetRole<Jailor>(player);
+                if (jailor.Executes > 0) return true;
+            }
+            else if (player.Is(RoleEnum.Veteran))
+            {
+                var vet = GetRole<Veteran>(player);
+                if (vet.UsesLeft > 0 || vet.Enabled) return true;
+            }
+            return false;
+        }
+
         public static bool IsWinner(this string playerName)
         {
             var flag = false;
@@ -1370,11 +1453,6 @@ namespace TownOfSushi
             {
                 var surv = GetRole<Romantic>(PlayerControl.LocalPlayer);
                 surv.LastPick = DateTime.UtcNow;
-            }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Vampire))
-            {
-                var vamp = GetRole<Vampire>(PlayerControl.LocalPlayer);
-                vamp.LastBit = DateTime.UtcNow;
             }
             if (PlayerControl.LocalPlayer.Is(RoleEnum.GuardianAngel))
             {
@@ -1539,7 +1617,7 @@ namespace TownOfSushi
             return null;
         }
         
-        //thanks TOH-Enhanced
+        //Code from TOH-Enhanced
         public static string GetRegionName(IRegionInfo region = null)
         {
             region ??= ServerManager.Instance.CurrentRegion;
@@ -1571,7 +1649,8 @@ namespace TownOfSushi
             return name;
         }
 
-        public static unsafe Texture2D LoadTextureFromResources(string path) {
+        public static unsafe Texture2D LoadTextureFromResources(string path) 
+        {
             try {
                 Texture2D texture = new Texture2D(2, 2, TextureFormat.ARGB32, true);
                 Assembly assembly = Assembly.GetExecutingAssembly();

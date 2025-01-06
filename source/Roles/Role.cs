@@ -72,12 +72,34 @@ namespace TownOfSushi.Roles
         }
         internal virtual bool Criteria()
         {
-            return DeadCriteria() || ImpostorCriteria() || VampireCriteria() || SelfCriteria() || RoleCriteria() || RomanticCriteria() || GuardianAngelCriteria() || Local;
+            return DeadCriteria() || ImpostorCriteria() || SelfCriteria() || VampireCriteria() || RoleCriteria() || RomanticCriteria() || GuardianAngelCriteria() || Local;
         }
         internal virtual bool ColorCriteria()
         {
             return SelfCriteria() || DeadCriteria() || ImpostorCriteria() || VampireCriteria() || RoleCriteria() || RomanticCriteria() || GuardianAngelCriteria();
         }
+
+        public static bool NeutralEvilWin()
+        {
+            foreach (var role in AllRoles)
+            {
+                return
+                !role.PauseEndCrit &&
+                GetRoles(RoleEnum.Jester).Any(x => JesterWin) ||
+                GetRoles(RoleEnum.Executioner).Any(x => ExecutionerWin) ||
+                GetRoles(RoleEnum.Vulture).Any(x => VultureWin) ||
+                GetRoles(RoleEnum.Doomsayer).Any(x => DoomsayerWin);
+            }
+            return false;
+        }
+
+        internal bool PauseEndCrit = false;
+        internal virtual bool VampireCriteria()
+        {
+            if (RoleType == RoleEnum.Vampire && PlayerControl.LocalPlayer.Is(RoleEnum.Vampire)) return true;
+            return false;
+        }
+
         internal virtual bool DeadCriteria()
         {
             if (PlayerControl.LocalPlayer.Data.IsDead && TownOfSushi.DeadSeeRoles.Value) return true;
@@ -87,11 +109,6 @@ namespace TownOfSushi.Roles
         {
             if (Faction == Faction.Impostors && PlayerControl.LocalPlayer.Data.IsImpostor() &&
                 CustomGameOptions.ImpostorSeeRoles) return true;
-            return false;
-        }
-        internal virtual bool VampireCriteria()
-        {
-            if (RoleType == RoleEnum.Vampire && PlayerControl.LocalPlayer.Is(RoleEnum.Vampire)) return true;
             return false;
         }
         public List<KillButton> ExtraButtons = new List<KillButton>();
@@ -211,13 +228,12 @@ namespace TownOfSushi.Roles
             if (createTask)
             {
                 var task = new GameObject(Name + "Task").AddComponent<ImportantTextTask>();
-                var ability = GetAbility(PlayerControl.LocalPlayer);
                 task.transform.SetParent(Player.transform, false);
-                task.Text = $"{ColorString}Role: {Name}\n{TaskText()}\nAlignment: {Player.AlignmentText()}{hasFakeTasks}</color> ";
+                task.Text = $"{ColorString}Role: {Name}\n{TaskText()}\nAlignment: {Player.AlignmentText()}{hasFakeTasks}</color>";
                 Player.myTasks.Insert(0, task);
+
                 return;
             }
-            var ability2 = GetAbility(PlayerControl.LocalPlayer);
             Player.myTasks.ToArray()[0].Cast<ImportantTextTask>().Text =
                 $"{ColorString}Role: {Name}\n{TaskText()}\nAlignment: {Player.AlignmentText()}{hasFakeTasks}</color>";
         }
@@ -251,6 +267,10 @@ namespace TownOfSushi.Roles
                 return role;
 
             return null;
+        }
+        public static IEnumerable<Role> GetFactions(Faction faction)
+        {
+            return AllRoles.Where(x => x.Faction == faction);
         }
         public static T GetRole<T>(PlayerControl player) where T : Role
         {
@@ -306,11 +326,6 @@ namespace TownOfSushi.Roles
                     player.myTasks.Insert(0, modTask);
                 }
 
-                var infoTask = new GameObject("InfosTask").AddComponent<ImportantTextTask>();
-                infoTask.transform.SetParent(player.transform, false);
-                infoTask.Text = "<size=60%> - Press F3 to see your role's description</size> \n<size=60%> - Press F4 to see your role's lore</size>";
-                player.myTasks.Insert(0, infoTask);
-
                 if (role == null) return;
                 if (role.RoleType == RoleEnum.Amnesiac && role.Player != PlayerControl.LocalPlayer) return;
                 var task = new GameObject(role.Name + "Task").AddComponent<ImportantTextTask>();
@@ -319,6 +334,7 @@ namespace TownOfSushi.Roles
                 player.myTasks.Insert(0, task);
             }
         }
+        
         [HarmonyPatch(typeof(LobbyBehaviour), nameof(LobbyBehaviour.Start))]
         public static class LobbyBehaviour_Start
         {
@@ -377,6 +393,122 @@ namespace TownOfSushi.Roles
             }
         }
 
+        public static bool NobodyWins;
+        public static bool VampireWins;
+        public static bool CrewmatesWin;
+        public static bool ImpostorsWin;
+        public static bool HitmanWin;
+        public static bool GlitchWin;
+        public static bool JuggernautWin;
+        public static bool AgentWin;
+        public static bool WerewolfWin;
+        public static bool PestilenceWin;
+        public static bool PlaguebearerWin;
+        public static bool ArsonistWin;
+        public static bool SerialKillerWin;
+        public static bool JesterWin;
+        public static bool ExecutionerWin;
+        public static bool DoomsayerWin;
+        public static bool VultureWin;
+
+        internal static bool NobodyEndCriteria(LogicGameFlowNormal __instance)
+        {
+            bool CheckNoImpsNoCrews()
+            {
+                var alives = PlayerControl.AllPlayerControls.ToArray()
+                    .Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList();
+                if (alives.Count == 0) return false;
+                var flag = alives.All(x =>
+                {
+                    var role = GetPlayerRole(x);
+                    if (role == null) return false;
+                    var flag2 = role.Faction == Faction.Neutral  && role.RoleAlignment != RoleAlignment.NeutralKilling;
+
+                    return flag2;
+                });
+
+                return flag;
+            }
+
+            if (CheckNoImpsNoCrews())
+            {                    
+                Rpc(CustomRPC.NobodyWins);
+                NobodyWins = true;
+                EndGame();
+                return false;
+            }
+            return true;
+        }
+
+        [HarmonyPatch]
+        public static class ShipStatus_KMPKPPGPNIH
+        {
+            [HarmonyPatch(typeof(LogicGameFlowNormal), nameof(LogicGameFlowNormal.CheckEndCriteria))]
+            public static bool Prefix(LogicGameFlowNormal __instance)
+            {
+                if (GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek) return true;
+                if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return false;
+                if (!AmongUsClient.Instance.AmHost) return false;
+                if (ShipStatus.Instance.Systems != null)
+                {
+                    if (ShipStatus.Instance.Systems.ContainsKey(SystemTypes.LifeSupp))
+                    {
+                        var lifeSuppSystemType = ShipStatus.Instance.Systems[SystemTypes.LifeSupp].Cast<LifeSuppSystemType>();
+                        if (lifeSuppSystemType.Countdown < 0f)
+                        {
+                            if (PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 2) return false;
+                            ImpostorsWin = true;
+                            Rpc(CustomRPC.ImpostorWin);
+                            EndGame(GameOverReason.ImpostorByVote);
+                            return false;
+                        }
+                    }
+
+                    if (ShipStatus.Instance.Systems.ContainsKey(SystemTypes.Laboratory))
+                    {
+                        if (PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 2) return false;
+                        var reactorSystemType = ShipStatus.Instance.Systems[SystemTypes.Laboratory].Cast<ReactorSystemType>();
+                        if (reactorSystemType.Countdown < 0f)
+                        {
+                            ImpostorsWin = true;
+                            Rpc(CustomRPC.ImpostorWin);
+                            EndGame(GameOverReason.ImpostorByVote);
+                            return false;
+                        }
+                    }
+
+                    if (ShipStatus.Instance.Systems.ContainsKey(SystemTypes.Reactor))
+                    {
+                        if (PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 2) return false;
+                        var reactorSystemType = ShipStatus.Instance.Systems[SystemTypes.Reactor].Cast<ICriticalSabotage>();
+                        if (reactorSystemType.Countdown < 0f)
+                        {
+                            ImpostorsWin = true;
+                            Rpc(CustomRPC.ImpostorWin);
+                            Utils.EndGame(GameOverReason.ImpostorByVote);
+                            return false;
+                        }
+                    }
+                }
+
+                if (GameData.Instance.TotalTasks <= GameData.Instance.CompletedTasks)
+                {
+                    var crews = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(Faction.Crewmates) && !x.Data.Disconnected).ToList();
+                    if (crews.Count != 0)
+                    {
+                        CrewmatesWin = true;
+                        Rpc(CustomRPC.CrewmateWin);
+                        EndGame(GameOverReason.HumansByVote);
+                        return false;
+                    }
+                }
+
+                if (!NobodyEndCriteria(__instance)) return false;
+
+                return false;
+            }
+        }
+
         [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
         public static class HudManager_Update
         {
@@ -400,7 +532,7 @@ namespace TownOfSushi.Roles
                         bool romanticFlag = role.RomanticCriteria();
                         player.NameText.text = role.NameText(
                             selfFlag || deadFlag || role.Local,
-                            selfFlag || deadFlag || impostorFlag || romanticFlag || vampireFlag || roleFlag || gaFlag,
+                            selfFlag || deadFlag || impostorFlag  || vampireFlag || romanticFlag || roleFlag || gaFlag,
                             selfFlag || deadFlag,
                             player
                         );
@@ -445,13 +577,13 @@ namespace TownOfSushi.Roles
                             bool selfFlag = role.SelfCriteria();
                             bool deadFlag = role.DeadCriteria();
                             bool impostorFlag = role.ImpostorCriteria();
-                            bool vampireFlag = role.VampireCriteria();
                             bool roleFlag = role.RoleCriteria();
+                            bool vampireFlag = role.VampireCriteria();
                             bool gaFlag = role.GuardianAngelCriteria();
                             bool romanticFlag = role.RomanticCriteria();
                             player.nameText().text = role.NameText(
                                 selfFlag || deadFlag || role.Local,
-                                selfFlag || deadFlag || impostorFlag || romanticFlag|| vampireFlag || roleFlag || gaFlag,
+                                selfFlag || deadFlag || impostorFlag || vampireFlag || romanticFlag || roleFlag || gaFlag,
                                 selfFlag || deadFlag
                              );
 

@@ -19,6 +19,7 @@ namespace TownOfSushi.Roles
             LastCamouflaged = DateTime.UtcNow;
             RoleType = RoleEnum.Venerer;
             Faction = Faction.Impostors;
+
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.ImpDeception;
         }

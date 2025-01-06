@@ -10,10 +10,11 @@ namespace TownOfSushi.Roles
             RoleType = RoleEnum.Pestilence;
             StartText = () => "";
             TaskText = () => "Kill everyone with your unstoppable abilities!";
-            RoleInfo = "The Pestilence is a unkillable force which can only be killed by being voted out, even their lover dying won't kill them. The Pestilence needs to be the last killer alive to win the game.";
+            RoleInfo = "The Pestilence is a unkillable force which can only be killed by being voted out or them guessing wrong.The Pestilence needs to be the last killer alive to win the game.";
             LoreText = "A harbinger of decay, you are the Pestilence that spreads across the map, bringing death with every step. As Pestilence, your powers allow you to infect and destroy players that are close to you, turning everyone into your target. With your unstoppable abilities, you slowly wear down the crew, leaving destruction in your wake. No one is safe from your grasp, and the longer you survive, the more your influence grows. Your mission is clear—eradicate all life and leave only ruin in your wake.";
             Faction = Faction.Neutral;
             AddToRoleHistory(RoleType);
+
             RoleAlignment = RoleAlignment.NeutralKilling;
         }
         public PlayerControl ClosestPlayer;

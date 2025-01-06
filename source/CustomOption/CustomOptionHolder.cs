@@ -88,6 +88,7 @@ namespace TownOfSushi.CustomOption
 
         public static CustomOption VeteranOn;
         public static CustomOption KilledOnAlert;
+        public static CustomOption VeteranBodyReport;
         public static CustomOption AlertCooldown;
         public static CustomOption AlertDuration;
         public static CustomOption MaxAlerts;
@@ -171,6 +172,7 @@ namespace TownOfSushi.CustomOption
         public static CustomOption CanBiteNeutralBenign;
         public static CustomOption CanBiteNeutralEvil;
 
+
         public static CustomOption SerialKillerOn;
         public static CustomOption StabCooldown;
         public static CustomOption Stabeduration;
@@ -214,6 +216,7 @@ namespace TownOfSushi.CustomOption
         public static CustomOption ChargeUseDuration;
 
         public static CustomOption WitchOn;
+        public static CustomOption VotingWitchSavesTarget;
         public static CustomOption SpellCd;
 
         public static CustomOption BlackmailerOn;
@@ -517,9 +520,10 @@ namespace TownOfSushi.CustomOption
 
             VeteranOn = CustomOption.Create(94, Types.Crewmate, ColorString(Colors.Veteran, "Veteran"), 0f, 0f, 100f, 10f, null, true, format: "%");
             KilledOnAlert = CustomOption.Create(95, Types.Crewmate, "Can Be Killed On Alert", false, VeteranOn);
+            VeteranBodyReport = CustomOption.Create(9511, Types.Crewmate, "Can Report Who They've Killed", false, VeteranOn);
             AlertCooldown = CustomOption.Create(96, Types.Crewmate, "Alert Cooldown", 25f, 10f, 60f, 2.5f, VeteranOn, format: "s");
             AlertDuration = CustomOption.Create(97, Types.Crewmate, "Alert Duration", 10f, 5f, 15f, 1f, VeteranOn, format: "s");
-            MaxAlerts = CustomOption.Create(98, Types.Crewmate, "Maximum Number Of Alerts", 5, 1, 15, 1, VeteranOn);
+            MaxAlerts = CustomOption.Create(98, Types.Crewmate, "Number Of Alerts", 5, 1, 15, 1, VeteranOn);
 
             VigilanteOn = CustomOption.Create(99, Types.Crewmate, ColorString(Colors.Vigilante, "Vigilante"), 0f, 0f, 100f, 10f, null, true, format: "%");
             VigilanteKills = CustomOption.Create(100, Types.Crewmate, "Number Of Vigilante Kills", 1, 1, 15, 1, VigilanteOn);
@@ -532,7 +536,7 @@ namespace TownOfSushi.CustomOption
             VigilanteKillsNeutralEvil = CustomOption.Create(107, Types.Crewmate, "Vigilante Kills Neutral Evil", false, VigilanteOn);
             VigilanteKillsNeutralBenign = CustomOption.Create(108, Types.Crewmate, "Vigilante Kills Neutral Benign", false, VigilanteOn);
             VigilanteKillCd = CustomOption.Create(109, Types.Crewmate, "Vigilante Kill Cooldown", 25f, 10f, 40f, 2.5f, VigilanteOn, format: "s");
-            VigilanteBodyReport = CustomOption.Create(110, Types.Crewmate, "Vigilante Can Report Who They've Killed", false, VigilanteOn);
+            VigilanteBodyReport = CustomOption.Create(110, Types.Crewmate, "Can Report Who They've Killed", false, VigilanteOn);
 
             EngineerOn = CustomOption.Create(116, Types.Crewmate, ColorString(Colors.Engineer, "Engineer"), 0f, 0f, 100f, 10f, null, true, format: "%");
             MaxFixes = CustomOption.Create(117, Types.Crewmate, "Maximum Number Of Fixes", 5, 1, 15, 1, EngineerOn);
@@ -549,13 +553,13 @@ namespace TownOfSushi.CustomOption
             MedicReportColorDuration = CustomOption.Create(125, Types.Crewmate, "Time Where Medic Will Have Color Type", 15f, 0f, 60f, 2.5f, MedicOn, format: "s");
 
             SwapperOn = CustomOption.Create(126, Types.Crewmate, ColorString(Colors.Swapper, "Swapper"), 0f, 0f, 100f, 10f, null, true, format: "%");
-            SwapperButton = CustomOption.Create(127, Types.Crewmate, "Swapper Can Button", true, SwapperOn);
+            SwapperButton = CustomOption.Create(127, Types.Crewmate, "Can Button", true, SwapperOn);
 
 
             TransporterOn = CustomOption.Create(128, Types.Crewmate,  ColorString(Colors.Transporter, "Transporter"), 0f, 0f, 100f, 10f, null, true, format: "%");
             TransportCooldown = CustomOption.Create(129, Types.Crewmate, "Transport Cooldown", 25f, 10f, 60f, 2.5f, TransporterOn, format: "s");
             TransportMaxUses = CustomOption.Create(130, Types.Crewmate, "Maximum Number Of Transports", 5, 1, 15, 1, TransporterOn);
-            TransporterVitals = CustomOption.Create(131, Types.Crewmate, "Transporter Can Use Vitals", false, TransporterOn);
+            TransporterVitals = CustomOption.Create(131, Types.Crewmate, "Can Use Vitals", false, TransporterOn);
 
             #endregion
 
@@ -606,18 +610,18 @@ namespace TownOfSushi.CustomOption
             ExecutionerButton = CustomOption.Create(150, Types.Neutral, "Executioner Can Button", true, ExecutionerOn);
 
             JesterOn = CustomOption.Create(151, Types.Neutral, ColorString(Colors.Jester, "Jester"), 0f, 0f, 100f, 10f, null, true, format: "%");
-            JesterButton = CustomOption.Create(152, Types.Neutral, "Jester Can Button", true, JesterOn);
-            JesterVent = CustomOption.Create(153, Types.Neutral, "Jester Can Hide In Vents", false, JesterOn);
-            JesterVentSwitch = CustomOption.Create(154, Types.Neutral, "Jester Can Switch Between Vents", false, JesterVent);
-            JesterImpVision = CustomOption.Create(155, Types.Neutral, "Jester Has Impostor Vision", false, JesterOn);
+            JesterButton = CustomOption.Create(152, Types.Neutral, "Can Button", true, JesterOn);
+            JesterVent = CustomOption.Create(153, Types.Neutral, "Can Hide In Vents", false, JesterOn);
+            JesterVentSwitch = CustomOption.Create(154, Types.Neutral, "Can Switch Between Vents", false, JesterVent);
+            JesterImpVision = CustomOption.Create(155, Types.Neutral, "Has Impostor Vision", false, JesterOn);
 
             VultureOn = CustomOption.Create(158, Types.Neutral, ColorString(Colors.Vulture, "Vulture"), 0f, 0f, 100f, 10f, null, true, format: "%");
             VultureCd = CustomOption.Create(159, Types.Neutral, "Eat Cooldown", 10f, 10f, 60f, 2.5f, VultureOn, format: "s");
             VultureBodyCount = CustomOption.Create(160, Types.Neutral, "Number Of Bodies To Eat", 1, 1, 5, 1, VultureOn);
-            VultureVent = CustomOption.Create(161, Types.Neutral, "Vulture Can Vent", false, VultureOn);
-            VultureImpVision = CustomOption.Create(162, Types.Neutral, "Vulture Has Impostor Vision", false, VultureOn);
-            EatArrows = CustomOption.Create(163, Types.Neutral, "Vulture Gets Arrows To Dead Bodies", false, VultureOn);
-            EatArrowDelay = CustomOption.Create(164, Types.Neutral, "Time After Death Arrow Appears", 5f, 0f, 15f, 1f, EatArrows, format: "s");
+            VultureVent = CustomOption.Create(161, Types.Neutral, "Can Vent", false, VultureOn);
+            VultureImpVision = CustomOption.Create(162, Types.Neutral, "Has Impostor Vision", false, VultureOn);
+            EatArrows = CustomOption.Create(163, Types.Neutral, "Gets Arrows To Dead Bodies", false, VultureOn);
+            EatArrowDelay = CustomOption.Create(164, Types.Neutral, "Time After Death Arrows Appear", 5f, 0f, 15f, 1f, EatArrows, format: "s");
 
             #endregion
 
@@ -637,7 +641,6 @@ namespace TownOfSushi.CustomOption
             ReducedKCdPerKill = CustomOption.Create(189, Types.NK, "Reduced Kill Cooldown Per Kill", 5f, 2.5f, 10f, 2.5f, JuggernautOn, format: "s");
             JuggVent = CustomOption.Create(190, Types.NK, "Can Vent", false, JuggernautOn);
 
-
             GlitchOn = CustomOption.Create(191, Types.NK, ColorString(Colors.Glitch, "Glitch"), 0f, 0f, 100f, 10f, null, true, format: "%");
             MimicCooldownOption = CustomOption.Create(192, Types.NK, "Mimic Cooldown", 25f, 10f, 60f, 2.5f, GlitchOn, format: "s");
             MimicDurationOption = CustomOption.Create(193, Types.NK, "Mimic Duration", 10f, 1f, 15f, 1f, GlitchOn, format: "s");
@@ -649,7 +652,7 @@ namespace TownOfSushi.CustomOption
 
             PlaguebearerOn = CustomOption.Create(199, Types.NK, ColorString(Colors.Plaguebearer, "Plaguebearer"), 0f, 0f, 100f, 10f, null, true, format: "%");
             InfectCooldown = CustomOption.Create(200, Types.NK, "Infect Cooldown", 25f, 10f, 60f, 2.5f, PlaguebearerOn, format: "s");
-            PestKillCooldown = CustomOption.Create(183, Types.NK, "Pestilence Kill Cooldown", 25f, 10f, 60f, 2.5f, PlaguebearerOn, format: "s");
+            PestKillCooldown = CustomOption.Create(1833, Types.NK, "Pestilence Kill Cooldown", 25f, 10f, 60f, 2.5f, PlaguebearerOn, format: "s");
             PestVent = CustomOption.Create(202, Types.NK, "Pestilence Can Vent", false, PlaguebearerOn);
 
             AgentOn = CustomOption.Create(203, Types.NK, ColorString(Colors.Agent, "Agent"), 0f, 0f, 100f, 10f, null, true, format: "%");
@@ -662,7 +665,6 @@ namespace TownOfSushi.CustomOption
             HitmanVent = CustomOption.Create(210, Types.NK, "Can Vent", false, AgentOn);
             HitmanVentWithBody = CustomOption.Create(211, Types.NK, "Can Vent While Dragging", false, AgentOn);
 
-
             VampireOn = CustomOption.Create(212, Types.NK, ColorString(Colors.Vampire, "Vampire"), 0f, 0f, 100f, 10f, null, true, format: "%");
             BiteCooldown = CustomOption.Create(213, Types.NK, "Bite Cooldown", 25f, 10f, 60f, 2.5f, VampireOn, format: "s");
             VampVent = CustomOption.Create(214, Types.NK, "Can Vent", false, VampireOn);
@@ -671,7 +673,6 @@ namespace TownOfSushi.CustomOption
             CanBiteNeutralBenign = CustomOption.Create(217, Types.NK, "Can Convert Neutral Benign Roles", false, VampireOn);
             CanBiteNeutralEvil = CustomOption.Create(218, Types.NK, "Can Convert Neutral Evil Roles", false, VampireOn);
             CanBiteNeutralBenign = CustomOption.Create(219, Types.NK, "Can Convert Neutral Benign Roles", false, VampireOn);
-
             
             SerialKillerOn = CustomOption.Create(220, Types.NK, ColorString(Colors.SerialKiller, "Serial Killer"), 0f, 0f, 100f, 10f, null, true, format: "%");
             StabCooldown = CustomOption.Create(221, Types.NK, "Stab Cooldown", 25f, 10f, 60f, 2.5f, SerialKillerOn, format: "s");
@@ -722,6 +723,7 @@ namespace TownOfSushi.CustomOption
             ChargeUseDuration = CustomOption.Create(255, Types.Impostor, "Time It Takes To Use Full Charge", 1f, 0.05f, 5f, 0.05f, WarlockOn, format: "s");
 
             WitchOn = CustomOption.Create(256, Types.Impostor, ColorString(Colors.Impostor, "Witch"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            VotingWitchSavesTarget = CustomOption.Create(2561, Types.Impostor, "Voting The Witch Removes Spells", false, WitchOn);
             SpellCd = CustomOption.Create(257, Types.Impostor, "Spell Cooldown", 25f, 10f, 60f, 2.5f, WitchOn, format: "s");
             
             BlackmailerOn = CustomOption.Create(258, Types.Impostor, ColorString(Colors.Impostor, "Blackmailer"), 0f, 0f, 100f, 10f, null, true, format: "%");

@@ -22,6 +22,7 @@ namespace TownOfSushi.Roles
             StartText = () => "Find the Impostors";
             TaskText = () => "Find the Impostors";
             Faction = Faction.Crewmates;
+
             RoleAlignment = RoleAlignment.CrewSpecial;
             RoleType = RoleEnum.Crewmate;
             AddToRoleHistory(RoleType);

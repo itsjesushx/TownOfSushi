@@ -4,7 +4,7 @@ using System.Text;
 namespace TownOfSushi.Patches
 {
     [HarmonyPatch(typeof(ControllerManager), nameof(ControllerManager.Update))]
-    public static class ShowLore
+    public static class ShowPopUpPatch
     {
         public static void Postfix()
         {

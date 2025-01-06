@@ -16,17 +16,10 @@ namespace TownOfSushi.Roles
             LoreText = "A relentless pursuer of chaos, you are tasked with ensuring that a specific player is voted out, no matter the cost. As the Executioner, you must manipulate the votes of others, turning the tide in your favor to eliminate your target. However, your victory is tied to the downfall of your chosen victim, and if they survive, your mission fails. Use your influence wisely, for the fate of your target—and your own—depends on the vote.";            
             Color = Colors.Executioner;
             RoleType = RoleEnum.Executioner;
-            
+
             Faction = Faction.Neutral;
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.NeutralEvil;
-        }
-        public bool TargetVotedOut;
-
-        public void Wins()
-        {
-            if (Player.Data.IsDead || Player.Data.Disconnected) return;
-            TargetVotedOut = true;
         }
     }
 
@@ -42,7 +35,8 @@ namespace TownOfSushi.Roles
             foreach (var role in GetRoles(RoleEnum.Executioner))
                 if (player.PlayerId == ((Executioner)role).target.PlayerId)
                 {
-                    ((Executioner)role).Wins();
+                    ExecutionerWin = true;
+                    role.PauseEndCrit = true;
                 }
                     
         }
@@ -73,7 +67,7 @@ namespace TownOfSushi.Roles
             if (role.target && role.target.nameText() && !CamouflageUnCamouflagePatch.IsCamouflaged) role.target.nameText().text += "<color=#CCCCCCFF> [⦿]</color>";
 
             if (!role.target.Data.IsDead && !role.target.Data.Disconnected && !role.target.Is(RoleEnum.Vampire)) return;
-            if (role.TargetVotedOut) return;
+            if (ExecutionerWin) return;
 
             Rpc(CustomRPC.ExecutionerToJester, PlayerControl.LocalPlayer.PlayerId);
 

@@ -57,7 +57,7 @@ namespace TownOfSushi.Patches
             if (player.Is(RoleEnum.SerialKiller) && CustomGameOptions.SerialKillerVent)
             {
                 var role = GetRole<SerialKiller>(PlayerControl.LocalPlayer);
-                if (role.Stabbed) return true;
+                if (role.Stabbing) return true;
             }
 
             return playerInfo.IsImpostor();

@@ -15,6 +15,7 @@ namespace TownOfSushi.Roles
             LastDragged = DateTime.UtcNow;
             RoleType = RoleEnum.Undertaker;
             Faction = Faction.Impostors;
+
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.ImpDeception;
         }

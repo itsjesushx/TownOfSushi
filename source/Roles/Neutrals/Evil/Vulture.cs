@@ -41,7 +41,6 @@ namespace TownOfSushi.Roles
             return (num - (float) timeSpan.TotalMilliseconds) / 1000f;
         }
         public int EatNeed;
-        public bool WonByEating { get; set; } = false;
         public DeadBody CurrentTarget;
         public void DestroyArrow(byte targetPlayerId)
         {
@@ -247,7 +246,7 @@ namespace TownOfSushi.Roles
             role.EatenBodies++;
             if (role.EatenBodies == CustomGameOptions.VultureBodyCount)
             {
-                role.WonByEating = true;
+                VultureWin = true;
             }
         }
     }

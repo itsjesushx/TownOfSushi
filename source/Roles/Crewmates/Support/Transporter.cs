@@ -264,7 +264,7 @@ namespace TownOfSushi.Roles
         {
             try
             {
-                PlayerMenu.singleton.Menu.ForceClose();
+                PlayerMenu.Singleton.Menu.ForceClose();
             }
             catch
             {
@@ -452,7 +452,7 @@ namespace TownOfSushi.Roles
             {
                 try
                 {
-                    PlayerMenu.singleton.Menu.ForceClose();
+                    PlayerMenu.Singleton.Menu.ForceClose();
                 }
                 catch {
                     role.TransportPlayer1 = null;

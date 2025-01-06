@@ -18,6 +18,7 @@ namespace TownOfSushi.Roles
             LoreText =$"A heart bound by love, you are driven by a deep connection to your chosen beloved. As the Romantic, you must pick a Crewmate to ally with, working together to ensure both of your survival. Your loyalty gives you strength, and you’ll do whatever it takes to protect and support your beloved. If they fall, you will {ChooseOrNew}.";
             Color = Colors.Romantic;
             RoleType = RoleEnum.Romantic;
+
             Faction = Faction.Neutral;
             LastPick = DateTime.UtcNow;
             AddToRoleHistory(RoleType);
@@ -124,7 +125,7 @@ namespace TownOfSushi.Roles
             }
         }
         [HarmonyPatch(typeof(ChatController), nameof(ChatController.AddChat))]
-        public static class LoversAddChat
+        public static class AddChat
         {
             public static bool Prefix(ChatController __instance, [HarmonyArgument(0)] PlayerControl sourcePlayer)
             {
@@ -142,7 +143,7 @@ namespace TownOfSushi.Roles
         }
 
         [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
-        public static class LoversEnableChat
+        public static class EnableChat
         {
             public static void Postfix(HudManager __instance)
             {

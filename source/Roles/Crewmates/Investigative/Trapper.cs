@@ -23,6 +23,7 @@ namespace TownOfSushi.Roles
             RoleType = RoleEnum.Trapper;
             LastTrapped = DateTime.UtcNow;
             Faction = Faction.Crewmates;
+
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.CrewInvest;
             trappedPlayers = new List<RoleEnum>();

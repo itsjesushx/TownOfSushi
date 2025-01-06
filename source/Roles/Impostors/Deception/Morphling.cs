@@ -20,6 +20,7 @@ namespace TownOfSushi.Roles
             LastMorphed = DateTime.UtcNow;
             RoleType = RoleEnum.Morphling;
             Faction = Faction.Impostors;
+
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.ImpDeception;
         }
