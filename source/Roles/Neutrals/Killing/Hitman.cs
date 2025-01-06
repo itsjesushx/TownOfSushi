@@ -385,11 +385,11 @@ namespace TownOfSushi.Roles
     {
         public static bool Prefix(KillButton __instance)
         {
+            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Hitman)) return false;
             if (__instance == GetRole<Hitman>(PlayerControl.LocalPlayer).DragDropButtonHitman) return false;
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Hitman) && __instance.isActiveAndEnabled &&
                 !__instance.isCoolingDown && PlayerControl.LocalPlayer.CanMove && !PlayerControl.LocalPlayer.inVent)
                 return GetRole<Hitman>(PlayerControl.LocalPlayer).UseAbility(__instance);
-
             return true;
         }
     }

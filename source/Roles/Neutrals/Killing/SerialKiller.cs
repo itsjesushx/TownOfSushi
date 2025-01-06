@@ -2,7 +2,7 @@
 {
     public class SerialKiller : Role
     {
-        private KillButton _rampageButton;
+        private KillButton _stabButton;
         public bool Enabled;
         public PlayerControl ClosestPlayer;
         public DateTime LastStabbed;
@@ -12,7 +12,7 @@
         {
             Name = "Serial Killer";
             StartText = () => "Stab to kill everyone";
-            TaskText = () => "Stab to kill everyone";
+            TaskText = () => "Kill everyone in stabbing mode";
             RoleInfo = "The Serial Killer is a Neutral role with its own win condition. Although the Serial Killer has a kill button, they can't use it unless they are stabbing. Once the Serial Killer rampages they gain Impostor vision and the ability to kill. However, unlike most killers their kill cooldown is really short. The Serial Killer needs to be the last killer alive to win the game.";
             LoreText = "You are the Serial Killer, a cold-blooded predator with a single goal—eliminate everyone in your path. Armed with your trusty knife, you move through the shadows, striking at your victims without hesitation. Your mind is focused, your mission clear: kill them all. As the last remaining survivor, you'll be free from the chaos that surrounds you. Trust no one, for every crewmate is a potential target, and every moment could be your next deadly strike.";
             Color = Colors.SerialKiller;
@@ -25,16 +25,16 @@
         }
         public KillButton StabButton
         {
-            get => _rampageButton;
+            get => _stabButton;
             set
             {
-                _rampageButton = value;
+                _stabButton = value;
                 ExtraButtons.Clear();
                 ExtraButtons.Add(value);
             }
         }
         
-        public bool Stabbed => TimeRemaining > 0f;
+        public bool Stabbing => TimeRemaining > 0f;
         public float StabTimer()
         {
             var utcNow = DateTime.UtcNow;
@@ -55,7 +55,7 @@
             }
         }
 
-        public void Unrampage()
+        public void UnStab()
         {
             Enabled = false;
             LastStabbed = DateTime.UtcNow;
@@ -74,17 +74,17 @@
 
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
     [HarmonyPriority(Priority.Last)]
-    public class StabUnrampage
+    public class StabUnStab
     {
         [HarmonyPriority(Priority.Last)]
         public static void Postfix(HudManager __instance)
         {
             foreach (var role in GetRoles(RoleEnum.SerialKiller))
             {
-                var werewolf = (SerialKiller) role;
-                if (werewolf.Stabbed)
-                    werewolf.Stab();
-                else if (werewolf.Enabled) werewolf.Unrampage();
+                var sk = (SerialKiller) role;
+                if (sk.Stabbing)
+                    sk.Stab();
+                else if (sk.Enabled) sk.UnStab();
             }
         }
     }
@@ -114,7 +114,7 @@
             }
 
             if (role.KillTimer() != 0) return false;
-            if (!role.Stabbed) return false;
+            if (!role.Stabbing) return false;
             if (__instance != DestroyableSingleton<HudManager>.Instance.KillButton) return true;
             if (!__instance.isActiveAndEnabled || __instance.isCoolingDown) return false;
             if (role.ClosestPlayer == null) return false;
@@ -145,7 +145,6 @@
     public static class HudStab
     {
         public static Sprite StabSprite => TownOfSushi.StabSprite;
-        
         public static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
@@ -168,18 +167,20 @@
 
             role.StabButton.graphic.sprite = StabSprite;
             role.StabButton.transform.localPosition = new Vector3(-2f, 0f, 0f);
+            role.StabButton.buttonLabelText.gameObject.SetActive(true);
+             role.StabButton.buttonLabelText.text = "STAB";
 
             role.StabButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
                     && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
 
-            if (role.Stabbed)
+            if (role.Stabbing)
             {
                 role.StabButton.SetCoolDown(role.TimeRemaining, CustomGameOptions.Stabeduration);
                 role.StabButton.graphic.color = Palette.EnabledColor;
                 role.StabButton.graphic.material.SetFloat("_Desat", 0f);
-                if (CamouflageUnCamouflagePatch.IsCamouflaged && CustomGameOptions.CamoCommsKillAnyone) Utils.SetTarget(ref role.ClosestPlayer, __instance.KillButton);
-                else Utils.SetTarget(ref role.ClosestPlayer, __instance.KillButton);
+                if (CamouflageUnCamouflagePatch.IsCamouflaged && CustomGameOptions.CamoCommsKillAnyone) SetTarget(ref role.ClosestPlayer, __instance.KillButton);
+                else SetTarget(ref role.ClosestPlayer, __instance.KillButton);
 
                 return;
             }
@@ -187,8 +188,16 @@
             {
                 role.StabButton.SetCoolDown(role.StabTimer(), CustomGameOptions.StabCd);
 
-                role.StabButton.graphic.color = Palette.EnabledColor;
-                role.StabButton.graphic.material.SetFloat("_Desat", 0f);
+                if (role.StabTimer() > 0f || !PlayerControl.LocalPlayer.moveable)
+                {
+                    role.StabButton.graphic.color = Palette.DisabledClear;
+                    role.StabButton.graphic.material.SetFloat("_Desat", 1f);
+                }
+                else
+                {
+                    role.StabButton.graphic.color = Palette.EnabledColor;
+                    role.StabButton.graphic.material.SetFloat("_Desat", 0f);
+                }
 
                 return;
             }

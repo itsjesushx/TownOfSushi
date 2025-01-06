@@ -218,7 +218,7 @@
                     if (!role.DousedPlayers.Contains(role.ClosestPlayerIgnite.PlayerId)) return false;
 
                     var interact2 = Interact(PlayerControl.LocalPlayer, role.ClosestPlayerIgnite);
-                    if (interact2[4] == true) role.Ignite();
+                    if (interact2[3] == true) role.Ignite();
                     if (interact2[0] == true)
                     {
                         role.LastDoused = DateTime.UtcNow;
@@ -230,7 +230,7 @@
                         role.LastDoused.AddSeconds(CustomGameOptions.ProtectKCReset - CustomGameOptions.DouseCd);
                         return false;
                     }
-                    else if (interact2[3] == true) return false;
+                    else if (interact2[2] == true) return false;
                     return false;
                 }
                 else return false;
