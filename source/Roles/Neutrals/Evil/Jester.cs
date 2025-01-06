@@ -36,7 +36,6 @@ namespace TownOfSushi.Roles
                 JesterWin = true;
                 Rpc(CustomRPC.JesterWin);
                 EndGame();
-                role.PauseEndCrit = true;
             }
         }
     }

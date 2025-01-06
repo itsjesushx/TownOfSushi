@@ -84,7 +84,6 @@ namespace TownOfSushi.Roles
             foreach (var role in AllRoles)
             {
                 return
-                !role.PauseEndCrit &&
                 GetRoles(RoleEnum.Jester).Any(x => JesterWin) ||
                 GetRoles(RoleEnum.Executioner).Any(x => ExecutionerWin) ||
                 GetRoles(RoleEnum.Vulture).Any(x => VultureWin) ||
@@ -92,8 +91,6 @@ namespace TownOfSushi.Roles
             }
             return false;
         }
-
-        internal bool PauseEndCrit = false;
         internal virtual bool VampireCriteria()
         {
             if (RoleType == RoleEnum.Vampire && PlayerControl.LocalPlayer.Is(RoleEnum.Vampire)) return true;

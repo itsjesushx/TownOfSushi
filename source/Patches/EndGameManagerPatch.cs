@@ -68,7 +68,7 @@ namespace TownOfSushi.Patches
 
             foreach (var role in AllRoles)
             {
-                if (role.PauseEndCrit || NeutralEvilWin())
+                if (NeutralEvilWin())
                 {
                     yield break;
                 }
@@ -208,7 +208,7 @@ namespace TownOfSushi.Patches
                 }
 
                 else if (AliveKillers.Count <= 0)
-                {                
+                {
                     CrewmatesWin = true;
                     Rpc(CustomRPC.CrewmateWin);
                     EndGame();
@@ -220,39 +220,6 @@ namespace TownOfSushi.Patches
                     CheckVampireWin();
                 }
             }
-        }
-
-        private static List<PlayerControl> GetActivePlayers(Faction faction)
-        {
-            return PlayerControl.AllPlayerControls
-                .ToArray().Where(player => player.Is(faction) && IsPlayerActive(player))
-                .ToList();
-        }
-
-        private static List<PlayerControl> GetActivePlayers2(RoleAlignment alignment)
-        {
-            return PlayerControl.AllPlayerControls
-                .ToArray().Where(player => player.Is(alignment) && IsPlayerActive(player))
-                .ToList();
-        }
-
-        private static List<PlayerControl> GetPassivePlayers()
-        {
-            return PlayerControl.AllPlayerControls
-                .ToArray().Where(player => !player.Is(Faction.Impostors) && !player.Is(RoleAlignment.NeutralKilling) && IsPlayerActive(player))
-                .ToList();
-        }
-
-        private static List<PlayerControl> GetActiveCrewKillers()
-        {
-            return PlayerControl.AllPlayerControls
-                .ToArray().Where(player => player.Is(Faction.Crewmates) && player.IsCrewKiller() && IsPlayerActive(player))
-                .ToList();
-        }
-
-        private static bool IsPlayerActive(PlayerControl player)
-        {
-            return !player.Data.IsDead && !player.Data.Disconnected && !AddHauntPatch.AssassinatedPlayers.Contains(player);
         }
     }
 }

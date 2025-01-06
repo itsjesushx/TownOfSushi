@@ -33,14 +33,12 @@ namespace TownOfSushi.Roles
             var player = exiled.Object;
 
             foreach (var role in GetRoles(RoleEnum.Executioner))
-                if (player.PlayerId == ((Executioner)role).target.PlayerId)
-                {
-                    ExecutionerWin = true;
-                    Rpc(CustomRPC.ExecutionerWin);                
-                    EndGame();
-                    role.PauseEndCrit = true;
-                }
-                    
+            if (player.PlayerId == ((Executioner)role).target.PlayerId)
+            {
+                ExecutionerWin = true;
+                Rpc(CustomRPC.ExecutionerWin);                
+                EndGame();
+            }        
         }
     }
 
@@ -78,10 +76,8 @@ namespace TownOfSushi.Roles
 
         public static void ExecutionerChangeRole(PlayerControl player)
         {
-            var exe = GetRole<Executioner>(player);
             player.myTasks.RemoveAt(0);
             RoleDictionary.Remove(player.PlayerId);
-
 
             if (CustomGameOptions.OnTargetDead == OnTargetDead.Jester)
             {
