@@ -173,18 +173,6 @@ namespace TownOfSushi.Patches
 
                 else if (NeutralKillerAlive.Count <= 1 && PassiveAlive.Count <= NeutralKillerAlive.Count && ImpostorsAlive.Count <= 0 && CrewKillerAlive.Count <= 0)
                 {
-                    var roleAlive = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(RoleEnum.Plaguebearer) && !x.Data.IsDead && !x.Data.Disconnected && !AddHauntPatch.AssassinatedPlayers.Contains(x)).ToList();
-                    if (PassiveAlive.Count <= roleAlive.Count && roleAlive.Count > 0)
-                    {
-                        PlaguebearerWin = true;
-                        Rpc(CustomRPC.PlaguebearerWin);
-                        EndGame();
-                        yield break;
-                    }
-                }
-
-                else if (NeutralKillerAlive.Count <= 1 && PassiveAlive.Count <= NeutralKillerAlive.Count && ImpostorsAlive.Count <= 0 && CrewKillerAlive.Count <= 0)
-                {
                     var roleAlive = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(RoleEnum.SerialKiller) && !x.Data.IsDead && !x.Data.Disconnected && !AddHauntPatch.AssassinatedPlayers.Contains(x)).ToList();
                     if (PassiveAlive.Count <= roleAlive.Count && roleAlive.Count > 0)
                     {
@@ -215,7 +203,7 @@ namespace TownOfSushi.Patches
                     yield break;
                 }
 
-                else 
+                else
                 {
                     CheckVampireWin();
                 }
