@@ -48,7 +48,6 @@ namespace TownOfSushi.Roles
             if (tasksLeft == 0 )
             {
                 role.ChangeRole();
-                PlayerControl.LocalPlayer.RemoveTasks();
             }
         }
     }

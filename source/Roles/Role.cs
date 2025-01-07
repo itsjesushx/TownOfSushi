@@ -425,10 +425,10 @@ namespace TownOfSushi.Roles
             }
 
             if (CheckNoImpsNoCrews())
-            {                    
+            {
                 Rpc(CustomRPC.NobodyWins);
                 NobodyWins = true;
-                EndGameNoWinners();
+                EndGame(GameOverReason.ImpostorDisconnect);
                 return false;
             }
             return true;
@@ -479,7 +479,7 @@ namespace TownOfSushi.Roles
                         {
                             ImpostorsWin = true;
                             Rpc(CustomRPC.ImpostorWin);
-                            Utils.EndGame();
+                            EndGame();
                             return false;
                         }
                     }
@@ -492,7 +492,7 @@ namespace TownOfSushi.Roles
                     {
                         CrewmatesWin = true;
                         Rpc(CustomRPC.CrewmateWin);
-                        EndGameCrew();
+                        EndGame(GameOverReason.HumansByVote);
                         return false;
                     }
                 }

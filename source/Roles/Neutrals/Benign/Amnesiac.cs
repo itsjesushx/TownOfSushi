@@ -473,7 +473,7 @@ namespace TownOfSushi.Roles
             else if (role == RoleEnum.Seer)
             {
                 var seerRole = GetRole<Seer>(amnesiac);
-                //seerRole.Investigated.RemoveRange(0, seerRole.Investigated.Count);
+                seerRole.Investigated.RemoveRange(0, seerRole.Investigated.Count);
                 seerRole.LastInvestigated = DateTime.UtcNow;
             }
 
@@ -487,7 +487,7 @@ namespace TownOfSushi.Roles
             else if (role == RoleEnum.Arsonist)
             {
                 var arsoRole = GetRole<Arsonist>(amnesiac);
-                //arsoRole.DousedPlayers.RemoveRange(0, arsoRole.DousedPlayers.Count);
+                arsoRole.DousedPlayers.RemoveRange(0, arsoRole.DousedPlayers.Count);
                 arsoRole.LastDoused = DateTime.UtcNow;
             }
 

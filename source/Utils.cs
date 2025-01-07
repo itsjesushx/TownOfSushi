@@ -1290,16 +1290,6 @@ namespace TownOfSushi
             GameManager.Instance.RpcEndGame(reason, showAds);
         }
 
-        public static void EndGameNoWinners(GameOverReason reason = GameOverReason.ImpostorDisconnect, bool showAds = false)
-        {
-            GameManager.Instance.RpcEndGame(reason, showAds);
-        }
-
-        public static void EndGameCrew(GameOverReason reason = GameOverReason.HumansByTask, bool showAds = false)
-        {
-            GameManager.Instance.RpcEndGame(reason, showAds);
-        }
-
         public static bool IsKillingRole(this PlayerControl player)
         {
             if ( player.Is(Faction.Impostors) || player.Is(RoleAlignment.NeutralKilling)) return true;
