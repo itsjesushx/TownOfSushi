@@ -196,19 +196,19 @@ namespace TownOfSushi.Roles
             {
                 var jester = new Jester(player);
                 jester.SpawnedAs = false;
-                jester.RegenTask();
+                jester.ReDoTaskText();
             }
             else if (CustomGameOptions.RomanticOnBelovedDeath == RomanticBecomeOptions.Amnesiac)
             {
                 var amnesiac = new Amnesiac(player);
                 amnesiac.SpawnedAs = false;
-                amnesiac.RegenTask();
+                amnesiac.ReDoTaskText();
             }
             else if (CustomGameOptions.RomanticOnBelovedDeath == RomanticBecomeOptions.Repick)
             {
                 var amnesiac = new Romantic(player);
                 amnesiac.SpawnedAs = false;
-                amnesiac.RegenTask();
+                amnesiac.ReDoTaskText();
             }
             else
             {

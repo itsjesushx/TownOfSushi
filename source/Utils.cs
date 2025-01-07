@@ -144,7 +144,7 @@ namespace TownOfSushi
         [HarmonyPrefix]
         public static void Prefix([HarmonyArgument(0)] Activity activity)
         {
-            activity.Details += $" TownOfSushi v" + TownOfSushi.VersionString + TownOfSushi.VersionTag2;
+            activity.Details += $" TownOfSushi v" + TownOfSushi.VersionString;
         }
 
         public static bool RomanticCoupleChat(this PlayerControl player, PlayerControl source)
@@ -1030,21 +1030,21 @@ namespace TownOfSushi
             ImpostorsWin = false;
             NobodyWins = false;
             NobodyWins = false;        
-            VampireWins = false;        
-            CrewmatesWin = false;        
-            ImpostorsWin = false;        
-            HitmanWin = false;        
-            GlitchWin = false;        
-            JuggernautWin = false;        
-            AgentWin = false;       
-            WerewolfWin = false;        
-            PestilenceWin = false;        
-            PlaguebearerWin = false;        
-            ArsonistWin = false;        
-            SerialKillerWin = false;        
-            JesterWin = false;        
-            ExecutionerWin = false;        
-            DoomsayerWin = false;        
+            VampireWins = false;
+            CrewmatesWin = false;
+            ImpostorsWin = false;
+            HitmanWin = false;
+            GlitchWin = false;
+            JuggernautWin = false;
+            AgentWin = false;
+            WerewolfWin = false;
+            PestilenceWin = false;
+            PlaguebearerWin = false;
+            ArsonistWin = false;
+            SerialKillerWin = false;
+            JesterWin = false;
+            ExecutionerWin = false;
+            DoomsayerWin = false;
             VultureWin = false;
         }
 
@@ -1061,7 +1061,8 @@ namespace TownOfSushi
             FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(duration, new Action<float>((p) => {
                 var renderer = FastDestroyableSingleton<HudManager>.Instance.FullScreen;
 
-                if (p < 0.5) {
+                if (p < 0.5) 
+                {
                     if (renderer != null)
                         renderer.color = new Color(color.r, color.g, color.b, Mathf.Clamp01(p * 2 * 0.75f));
                 } else {
@@ -1072,7 +1073,7 @@ namespace TownOfSushi
             })));
         }
 
-        public static void RemoveTasks(PlayerControl player)
+        public static void RemoveTasks(this PlayerControl player)
         {
             var totalTasks = GameOptionsManager.Instance.currentNormalGameOptions.NumCommonTasks + GameOptionsManager.Instance.currentNormalGameOptions.NumLongTasks +
                              GameOptionsManager.Instance.currentNormalGameOptions.NumShortTasks;
@@ -1289,6 +1290,11 @@ namespace TownOfSushi
             GameManager.Instance.RpcEndGame(reason, showAds);
         }
 
+        public static void EndGameNoWinners(GameOverReason reason = GameOverReason.ImpostorDisconnect, bool showAds = false)
+        {
+            GameManager.Instance.RpcEndGame(reason, showAds);
+        }
+
         public static void EndGameCrew(GameOverReason reason = GameOverReason.HumansByTask, bool showAds = false)
         {
             GameManager.Instance.RpcEndGame(reason, showAds);
@@ -1496,6 +1502,11 @@ namespace TownOfSushi
             {
                 var werewolf = GetRole<Werewolf>(PlayerControl.LocalPlayer);
                 werewolf.LastMauled = DateTime.UtcNow;
+            }
+            if (PlayerControl.LocalPlayer.Is(RoleEnum.Vampire))
+            {
+                var Vampire = GetRole<Vampire>(PlayerControl.LocalPlayer);
+                Vampire.LastBit = DateTime.UtcNow;
             }
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Hitman))
             {

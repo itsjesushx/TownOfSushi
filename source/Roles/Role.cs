@@ -76,20 +76,12 @@ namespace TownOfSushi.Roles
         }
         internal virtual bool ColorCriteria()
         {
-            return SelfCriteria() || DeadCriteria() || ImpostorCriteria() || VampireCriteria() || RoleCriteria() || RomanticCriteria() || GuardianAngelCriteria();
+            return SelfCriteria() || DeadCriteria() || ColourImpostorCriteria() || VampireCriteria() || RoleCriteria() || RomanticCriteria() || GuardianAngelCriteria();
         }
 
         public static bool NeutralEvilWin()
         {
-            foreach (var role in AllRoles)
-            {
-                return
-                GetRoles(RoleEnum.Jester).Any(x => JesterWin) ||
-                GetRoles(RoleEnum.Executioner).Any(x => ExecutionerWin) ||
-                GetRoles(RoleEnum.Vulture).Any(x => VultureWin) ||
-                GetRoles(RoleEnum.Doomsayer).Any(x => DoomsayerWin);
-            }
-            return false;
+            return JesterWin || ExecutionerWin || VultureWin || DoomsayerWin;
         }
         internal virtual bool VampireCriteria()
         {
@@ -102,6 +94,12 @@ namespace TownOfSushi.Roles
             if (PlayerControl.LocalPlayer.Data.IsDead && TownOfSushi.DeadSeeRoles.Value) return true;
             return false;
         }
+        internal virtual bool ColourImpostorCriteria()
+        {
+            if (Faction == Faction.Impostors && PlayerControl.LocalPlayer.Data.IsImpostor()) return true;
+            return false;
+        }
+
         internal virtual bool ImpostorCriteria()
         {
             if (Faction == Faction.Impostors && PlayerControl.LocalPlayer.Data.IsImpostor() &&
@@ -207,11 +205,10 @@ namespace TownOfSushi.Roles
         {
             return !(a == b);
         }
-        public void RegenTask()
+        public void ReDoTaskText()
         {
             bool createTask;
             var hasFakeTasks = Player.HasTasks() ? "" : "\nYour tasks are fake!";
-
             try
             {
                 var firstText = Player.myTasks.ToArray()[0].Cast<ImportantTextTask>();
@@ -431,7 +428,7 @@ namespace TownOfSushi.Roles
             {                    
                 Rpc(CustomRPC.NobodyWins);
                 NobodyWins = true;
-                EndGame();
+                EndGameNoWinners();
                 return false;
             }
             return true;
@@ -456,7 +453,7 @@ namespace TownOfSushi.Roles
                             if (PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 2) return false;
                             ImpostorsWin = true;
                             Rpc(CustomRPC.ImpostorWin);
-                            EndGame(GameOverReason.ImpostorByVote);
+                            EndGame();
                             return false;
                         }
                     }
@@ -469,7 +466,7 @@ namespace TownOfSushi.Roles
                         {
                             ImpostorsWin = true;
                             Rpc(CustomRPC.ImpostorWin);
-                            EndGame(GameOverReason.ImpostorByVote);
+                            EndGame();
                             return false;
                         }
                     }
@@ -482,7 +479,7 @@ namespace TownOfSushi.Roles
                         {
                             ImpostorsWin = true;
                             Rpc(CustomRPC.ImpostorWin);
-                            Utils.EndGame(GameOverReason.ImpostorByVote);
+                            Utils.EndGame();
                             return false;
                         }
                     }
@@ -495,7 +492,7 @@ namespace TownOfSushi.Roles
                     {
                         CrewmatesWin = true;
                         Rpc(CustomRPC.CrewmateWin);
-                        EndGame(GameOverReason.HumansByVote);
+                        EndGameCrew();
                         return false;
                     }
                 }
@@ -509,8 +506,6 @@ namespace TownOfSushi.Roles
         [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
         public static class HudManager_Update
         {
-            private static Vector3 oldScale = Vector3.zero;
-            private static Vector3 oldPosition = Vector3.zero;
             private static void UpdateMeeting(MeetingHud __instance)
             {
                 foreach (var player in __instance.playerStates)
@@ -518,7 +513,7 @@ namespace TownOfSushi.Roles
                     player.ColorBlindName.transform.localPosition = new Vector3(-0.93f, -0.2f, -0.1f);
 
                     var role = GetRole(player);
-                    if (role != null && role.Criteria())
+                    if (role != null)
                     {
                         bool selfFlag = role.SelfCriteria();
                         bool deadFlag = role.DeadCriteria();
@@ -588,8 +583,6 @@ namespace TownOfSushi.Roles
                                 player.nameText().color = role.Color;
                         }
                     }
-
-                    if (player.Data != null && PlayerControl.LocalPlayer.Data.IsImpostor() && player.Data.IsImpostor()) continue;
                 }
             }
         }

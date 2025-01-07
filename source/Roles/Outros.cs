@@ -1,7 +1,7 @@
 namespace TownOfSushi.Roles
 {
     [HarmonyPatch(typeof(EndGameManager), nameof(EndGameManager.Start))]
-    public static class OutrosPatch
+    public static class NeutralKillerOutro
     {
         public static void Postfix(EndGameManager __instance)
         {
@@ -33,7 +33,7 @@ namespace TownOfSushi.Roles
     }
 
     [HarmonyPatch(typeof(EndGameManager), nameof(EndGameManager.Start))]
-    public static class NeutralEvilOutrosPatch
+    public static class NeutralEvilOutros
     {
         public static void Postfix(EndGameManager __instance)
         {

@@ -18,8 +18,6 @@ namespace TownOfSushi
     {
         public const string Id = "me.itsjesushx.townofsushi";
         public const string VersionString = "1.2.0";
-        public const string VersionTag = "<color=#ff33fc></color>";
-        public const string VersionTag2 = "";
         public static Version Version = Version.Parse(VersionString);
         internal static BepInEx.Logging.ManualLogSource Logger;
         public Harmony Harmony { get; } = new Harmony(Id);
@@ -104,6 +102,7 @@ namespace TownOfSushi
         public override void Load()
         {
             RuntimeLocation = Path.GetDirectoryName(Assembly.GetAssembly(typeof(TownOfSushi)).Location);
+            ReactorCredits.Register<TownOfSushi>(ReactorCredits.AlwaysShow);
             System.Console.WriteLine("000.000.000.000/000000000000000000");
             Logger = Log;
             Instance = this;

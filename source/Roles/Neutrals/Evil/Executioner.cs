@@ -1,3 +1,5 @@
+using System.Collections;
+
 namespace TownOfSushi.Roles
 {
     public class Executioner : Role
@@ -26,11 +28,18 @@ namespace TownOfSushi.Roles
     [HarmonyPatch(typeof(ExileController), nameof(ExileController.BeginForGameplay))]
     internal class ExecutionerMeetingExiledEnd
     {
-        private static void Postfix(ExileController __instance)
+        public static void Postfix()
         {
+            if (!AmongUsClient.Instance.AmHost || GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek || AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
+            Coroutines.Start(CheckExecutionerWin(ExileController.Instance));
+        }
+        private static IEnumerator CheckExecutionerWin(ExileController __instance)
+        {
+            yield return new WaitForSeconds(7f);
+
             var exiled = __instance.initData.networkedPlayer;
-            if (exiled == null) return;
             var player = exiled.Object;
+            if (exiled == null) yield break;
 
             foreach (var role in GetRoles(RoleEnum.Executioner))
             if (player.PlayerId == ((Executioner)role).target.PlayerId)
@@ -83,13 +92,13 @@ namespace TownOfSushi.Roles
             {
                 var jester = new Jester(player);
                 jester.SpawnedAs = false;
-                jester.RegenTask();
+                jester.ReDoTaskText();
             }
             else if (CustomGameOptions.OnTargetDead == OnTargetDead.Amnesiac)
             {
                 var amnesiac = new Amnesiac(player);
                 amnesiac.SpawnedAs = false;
-                amnesiac.RegenTask();
+                amnesiac.ReDoTaskText();
             }
             else
             {

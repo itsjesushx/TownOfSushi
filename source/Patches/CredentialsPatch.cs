@@ -16,39 +16,6 @@ Originally Coded by <color=#FF0000FF>Donners</color> & <color=#FF0000FF>MyDragon
     public static string CreditsText =
 $@"<size=60%> <color=#FF0000FF>Formerly: Slushiegoose & Polus.gg</color></size>";
 
-public static string PingTrackerText =
-@"<size=60%>ReModded by <color=#FF0000FF>Jesushi</color>
-Emotionally Helped by <color=#FF0000FF>döll</color>
-Helped by <color=#FF0000FF>Cake</color>, <color=#FF0000FF>AlchlcDvl</color> & <color=#FF0000FF>50IQ</color>
-Originally Coded by <color=#FF0000FF>Donners & MyDragonBreath</color>
-Formerly: <color=#FF0000FF>Polus.gg & Slushiegoose</color></size>";
-public static string PingTrackerText2 =
-@"<size=70%>ReModded by <color=#FF0000FF>Jesushi</color>
-Emotionally Helped by <color=#FF0000FF>döll</color>
-Helped by <color=#FF0000FF>Cake</color>, <color=#FF0000FF>AlchlcDvl</color> & <color=#FF0000FF>50IQ</color><size=70%>";
-
-       [HarmonyPatch(typeof(PingTracker), nameof(PingTracker.Update))]
-        internal static class PingTrackerPatch
-        {
-            static void Postfix(PingTracker __instance)
-            {
-                __instance.text.alignment = TextAlignmentOptions.Top;
-                var position = __instance.GetComponent<AspectPosition>();
-                position.Alignment = AspectPosition.EdgeAlignments.Top;
-                if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started) 
-                {
-                    __instance.text.text = $"<size=130%><color=#FF0000FF>TownOfSushi</color></size> <size=70%>v{TownOfSushi.Version.ToString()}" + TownOfSushi.VersionTag + $"\n{PingTrackerText2}\n Server: {GetRegionName()}\n Ping: {AmongUsClient.Instance.Ping}ms</size>";
-                    position.DistanceFromEdge = new Vector3( 1.6f, 0.1f, 0);
-                }
-                else
-                {
-                    __instance.text.text = $"<size=130%><color=#FF0000FF>TownOfSushi</color></size> v" + TownOfSushi.Version.ToString() + TownOfSushi.VersionTag + $"\n{PingTrackerText}\nServer: {GetRegionName()}\n Ping: {AmongUsClient.Instance.Ping}ms</size>";
-                    position.DistanceFromEdge = new Vector3( 0f, 0.1f, 0);
-                }
-                position.AdjustPosition();
-            }
-        }
-
         [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start))]
         public static class LogoPatch
         {

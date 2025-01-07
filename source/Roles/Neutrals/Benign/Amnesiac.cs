@@ -299,7 +299,7 @@ namespace TownOfSushi.Roles
             RoleDictionary.Remove(other.PlayerId);
             RoleDictionary.Add(amnesiac.PlayerId, newRole);
 
-            newRole.RegenTask();
+            newRole.ReDoTaskText();
 
             var vowel = "aeiou".Contains(newRole.Name.ToLower()[0]);
             var article = vowel ? "an" : "a";
@@ -336,12 +336,12 @@ namespace TownOfSushi.Roles
                     if (role != RoleEnum.Vampire) 
                     {
                         var romantic = new Amnesiac(other);
-                        romantic.RegenTask();
+                        romantic.ReDoTaskText();
                     }
                     if (role == RoleEnum.Vampire) 
                     {
                         var vampire = new Vampire(other);
-                        vampire.RegenTask();
+                        vampire.ReDoTaskText();
                     }
                     if (role == RoleEnum.Plaguebearer ||
                         role == RoleEnum.Arsonist || role == RoleEnum.Glitch

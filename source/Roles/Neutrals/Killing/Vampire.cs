@@ -50,9 +50,9 @@ namespace TownOfSushi.Roles
             var vamps = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(RoleEnum.Vampire)).ToList();
             var aliveVamps = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(RoleEnum.Vampire) && !x.Data.IsDead && !x.Data.Disconnected).ToList();
             if ((role.ClosestPlayer.Is(Faction.Crewmates) || (role.ClosestPlayer.Is(RoleAlignment.NeutralBenign)
-                && CustomGameOptions.CanBiteNeutralBenign) || !ShowRoundOneShield.FirstRoundShielded || (role.ClosestPlayer.Is(RoleAlignment.NeutralEvil)
+                && CustomGameOptions.CanBiteNeutralBenign) || (role.ClosestPlayer.Is(RoleAlignment.NeutralEvil)
                 && CustomGameOptions.CanBiteNeutralEvil)) &&
-                aliveVamps.Count == 1 && vamps.Count < CustomGameOptions.MaxVampiresPerGame)
+                aliveVamps.Count == 1 && vamps.Count < CustomGameOptions.MaxVampiresPerGame && !ShowRoundOneShield.FirstRoundShielded)
             {
                 var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer);
                 if (interact[3] == true)
@@ -205,7 +205,7 @@ namespace TownOfSushi.Roles
                 role.IncorrectShots = killsList.IncorrectShots;
                 role.CorrectAssassinKills = killsList.CorrectAssassinKills;
                 role.IncorrectAssassinKills = killsList.IncorrectAssassinKills;
-                role.RegenTask();
+                role.ReDoTaskText();
                 Utilities.UsefulMethods.ShowTextToast("You are now a Vampire!", 3.5f);
                 SoundManager.Instance.PlaySound(ShipStatus.Instance.SabotageSound, false, 1f, null);
                 Flash(Colors.Vampire);
@@ -224,7 +224,7 @@ namespace TownOfSushi.Roles
                 AbilityDictionary.Remove(target.PlayerId);
                 new Assassin(target);
                 var role = GetRole<Vampire>(target);
-                role.RegenTask();
+                role.ReDoTaskText();
             }
         }
     }

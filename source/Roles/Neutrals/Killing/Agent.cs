@@ -30,7 +30,7 @@ namespace TownOfSushi.Roles
             {
                 Flash(Colors.Hitman);
                 SoundManager.Instance.PlaySound(ShipStatus.Instance.SabotageSound, false, 1f, null);
-                role.RegenTask();
+                role.ReDoTaskText();
             }
         }
     }
@@ -48,6 +48,7 @@ namespace TownOfSushi.Roles
             if (tasksLeft == 0 )
             {
                 role.ChangeRole();
+                PlayerControl.LocalPlayer.RemoveTasks();
             }
         }
     }

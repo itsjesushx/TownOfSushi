@@ -56,7 +56,7 @@ namespace TownOfSushi.Roles
             {
                 Flash(Colors.Pestilence, 2.5f);
                 SoundManager.Instance.PlaySound(ShipStatus.Instance.SabotageSound, false, 1f, null);
-                role.RegenTask();
+                role.ReDoTaskText();
             }
         }
     }

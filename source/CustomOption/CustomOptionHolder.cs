@@ -216,7 +216,6 @@ namespace TownOfSushi.CustomOption
         public static CustomOption ChargeUseDuration;
 
         public static CustomOption WitchOn;
-        public static CustomOption VotingWitchSavesTarget;
         public static CustomOption SpellCd;
 
         public static CustomOption BlackmailerOn;
@@ -723,7 +722,6 @@ namespace TownOfSushi.CustomOption
             ChargeUseDuration = CustomOption.Create(255, Types.Impostor, "Time It Takes To Use Full Charge", 1f, 0.05f, 5f, 0.05f, WarlockOn, format: "s");
 
             WitchOn = CustomOption.Create(256, Types.Impostor, ColorString(Colors.Impostor, "Witch"), 0f, 0f, 100f, 10f, null, true, format: "%");
-            VotingWitchSavesTarget = CustomOption.Create(2561, Types.Impostor, "Voting The Witch Removes Spells", false, WitchOn);
             SpellCd = CustomOption.Create(257, Types.Impostor, "Spell Cooldown", 25f, 10f, 60f, 2.5f, WitchOn, format: "s");
             
             BlackmailerOn = CustomOption.Create(258, Types.Impostor, ColorString(Colors.Impostor, "Blackmailer"), 0f, 0f, 100f, 10f, null, true, format: "%");

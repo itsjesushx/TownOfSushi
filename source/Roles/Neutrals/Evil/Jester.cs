@@ -1,3 +1,5 @@
+using System.Collections;
+
 namespace TownOfSushi.Roles
 {
     public class Jester : Role
@@ -22,14 +24,22 @@ namespace TownOfSushi.Roles
     [HarmonyPatch(typeof(ExileController), nameof(ExileController.BeginForGameplay))]
     internal class JesterMeetingExiledEnd
     {
-        private static void Postfix(ExileController __instance)
+        public static void Postfix()
         {
-            var exiled = __instance.initData.networkedPlayer;
-            if (exiled == null) return;
-            var player = exiled.Object;
+            if (!AmongUsClient.Instance.AmHost || GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek || AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
+            Coroutines.Start(CheckJesterWin(ExileController.Instance));
+        }
+        public static IEnumerator CheckJesterWin(ExileController __instance)
+        {
+            yield return new WaitForSeconds(7f);
 
+            var exiled = __instance.initData.networkedPlayer;
+            var player = exiled.Object;
             var role = GetPlayerRole(player);
-            if (role == null) return;
+
+            if (exiled == null) yield break;            
+            if (role == null) yield break;
+
             if (role.RoleType == RoleEnum.Jester)
             {
                 JesterWin = true;

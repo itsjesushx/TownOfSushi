@@ -35,6 +35,12 @@
                         else frosty.IsChilled = false;
                     }
                 }
+
+                /*foreach (var ability in GetAbilities(AbilityEnum.Flash))
+                {
+                    var flash = (Flash)ability;  
+                    if (flash.Player == PlayerControl.LocalPlayer) __instance.body.velocity *= CustomGameOptions.FlashSpeed;
+                }*/
             }
         }
 

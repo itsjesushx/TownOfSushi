@@ -43,7 +43,6 @@ namespace TownOfSushi.CustomOption
         public static int SerialKillerOn => Mathf.RoundToInt(CustomOptionHolder.SerialKillerOn.GetFloat());
         public static int EscapistOn => Mathf.RoundToInt(CustomOptionHolder.EscapistOn.GetFloat());
         public static float SpellCd => CustomOptionHolder.SpellCd.GetFloat();
-        public static bool VotingWitchSavesTarget => CustomOptionHolder.VotingWitchSavesTarget.GetBool();
         public static int ImitatorOn => Mathf.RoundToInt(CustomOptionHolder.ImitatorOn.GetFloat());
         public static int BomberOn => Mathf.RoundToInt(CustomOptionHolder.BomberOn.GetFloat());
         public static int DoomsayerOn => Mathf.RoundToInt(CustomOptionHolder.DoomsayerOn.GetFloat());

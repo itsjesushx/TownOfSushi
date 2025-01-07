@@ -165,22 +165,4 @@ namespace TownOfSushi.Roles
             }
         }
     }
-
-    [HarmonyPatch(typeof(ExileController), nameof(ExileController.BeginForGameplay))]
-    internal class WitchMeetingExiledEnd
-    {
-        private static void Postfix(ExileController __instance)
-        {
-            var exiled = __instance.initData.networkedPlayer;
-            if (exiled == null) return;
-            var player = exiled.Object;
-
-            var role = GetPlayerRole(player);
-            if (role == null) return;
-            if (role.RoleType == RoleEnum.Witch && CustomGameOptions.VotingWitchSavesTarget)
-            {
-                ((Witch)role).SpelledPlayers.RemoveRange(0, ((Witch)role).SpelledPlayers.Count);
-            }
-        }
-    }
 }
