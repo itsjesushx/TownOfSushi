@@ -55,6 +55,7 @@ namespace TownOfSushi.CustomOption
         public static int FlashOn => Mathf.RoundToInt(CustomOptionHolder.FlashOn.GetFloat());
         public static int TiebreakerOn => Mathf.RoundToInt(CustomOptionHolder.TiebreakerOn.GetFloat());
         public static int GiantOn => Mathf.RoundToInt(CustomOptionHolder.GiantOn.GetFloat());
+        public static int MiniOn => Mathf.RoundToInt(CustomOptionHolder.MiniOn.GetFloat());
         public static int ButtonBarryOn => Mathf.RoundToInt(CustomOptionHolder.ButtonBarryOn.GetFloat());
         public static int BaitOn => Mathf.RoundToInt(CustomOptionHolder.BaitOn.GetFloat());
         public static int SleuthOn => Mathf.RoundToInt(CustomOptionHolder.SleuthOn.GetFloat());
@@ -212,6 +213,7 @@ namespace TownOfSushi.CustomOption
         public static float BlackmailCd => CustomOptionHolder.BlackmailCooldown.GetFloat();
         public static bool BlackmailInvisible => CustomOptionHolder.BlackmailInvisible.GetBool();
         public static float GiantSlow => CustomOptionHolder.GiantSlow.GetFloat();
+        public static float MiniSpeed => CustomOptionHolder.MiniSpeed.GetFloat();
         public static float FlashSpeed => CustomOptionHolder.FlashSpeed.GetFloat();
         public static float DiseasedMultiplier => CustomOptionHolder.DiseasedKillMultiplier.GetFloat();
         public static float BaitMinDelay => CustomOptionHolder.BaitMinDelay.GetFloat();

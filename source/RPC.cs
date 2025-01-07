@@ -1218,6 +1218,9 @@ namespace TownOfSushi
                     
                     if (Check(CustomGameOptions.GiantOn))
                         Modifiers.Add((typeof(Giant), CustomGameOptions.GiantOn));
+                    
+                    if (Check(CustomGameOptions.MiniOn))
+                        Modifiers.Add((typeof(Mini), CustomGameOptions.MiniOn));
 
                     if (Check(CustomGameOptions.BaitOn))
                         Modifiers.Add((typeof(Bait), CustomGameOptions.BaitOn));
@@ -1237,31 +1240,31 @@ namespace TownOfSushi
                     #endregion
 
                     #region Abilities
-                    if (CustomGameOptions.TiebreakerOn > 0)
+                    if (Check(CustomGameOptions.TiebreakerOn))
                         Abilities.Add((typeof(Tiebreaker), CustomGameOptions.TiebreakerOn));
 
-                    if (CustomGameOptions.FlashOn > 0)
+                    if (Check(CustomGameOptions.FlashOn))
                         Abilities.Add((typeof(Flash), CustomGameOptions.FlashOn));
                     
-                    if (CustomGameOptions.TorchOn > 0 && !FungleMap())
+                    if (Check(CustomGameOptions.TorchOn) && !FungleMap())
                         VisionAbilities.Add((typeof(Torch), CustomGameOptions.TorchOn));
 
-                    if (CustomGameOptions.ButtonBarryOn > 0)
+                    if (Check(CustomGameOptions.ButtonBarryOn))
                         ButtonAbilities.Add((typeof(ButtonBarry), CustomGameOptions.ButtonBarryOn));
                     
-                    if (CustomGameOptions.DrunkOn > 0)
+                    if (Check(CustomGameOptions.DrunkOn))
                         Abilities.Add((typeof(Drunk), CustomGameOptions.DrunkOn));
                     
-                    if (CustomGameOptions.SpyOn > 0)
+                    if (Check(CustomGameOptions.SpyOn))
                         Abilities.Add((typeof(Spy), CustomGameOptions.SpyOn));
 
-                    if (CustomGameOptions.SleuthOn > 0)
+                    if (Check(CustomGameOptions.SleuthOn))
                         Abilities.Add((typeof(Sleuth), CustomGameOptions.SleuthOn));
 
-                    if (CustomGameOptions.RadarOn > 0)
+                    if (Check(CustomGameOptions.RadarOn))
                         Abilities.Add((typeof(Radar), CustomGameOptions.RadarOn));
                     
-                    if (CustomGameOptions.ChameleonOn > 0)
+                    if (Check(CustomGameOptions.ChameleonOn))
                         Abilities.Add((typeof(Chameleon), CustomGameOptions.ChameleonOn));
 
                     #endregion

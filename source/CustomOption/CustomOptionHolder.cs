@@ -276,6 +276,9 @@ namespace TownOfSushi.CustomOption
         public static CustomOption GiantOn;
         public static CustomOption GiantSlow;
 
+        public static CustomOption MiniOn;
+        public static CustomOption MiniSpeed;
+
         public static CustomOption RadarOn;
 
         public static CustomOption SleuthOn;
@@ -791,6 +794,9 @@ namespace TownOfSushi.CustomOption
 
             GiantOn = CustomOption.Create(293, Types.ModifierAbility, ColorString(Colors.Giant, "Giant"), 0f, 0f, 100f, 10f, null, true, format: "%");
             GiantSlow = CustomOption.Create(294, Types.ModifierAbility, "Speed Multiplier", 0.75f, 0.25f, 1f, 0.05f, GiantOn, format: "x");
+
+            MiniOn = CustomOption.Create(2933, Types.ModifierAbility, ColorString(Colors.Mini, "Mini"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            MiniSpeed = CustomOption.Create(2944, Types.ModifierAbility, "Speed Multiplier", 1.25f, 1.05f, 2.5f, 0.05f, MiniOn, format: "x");
 
             MultitaskerOn = CustomOption.Create(295, Types.ModifierAbility, ColorString(Colors.Multitasker, "Multitasker"), 0f, 0f, 100f, 10f, null, true, format: "%");
 

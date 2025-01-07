@@ -64,6 +64,7 @@
         public readonly static Color32  Torch = new Color32(255, 255, 153, byte.MaxValue);
         public readonly static Color32  Drunk = new Color32(117, 128, 0, byte.MaxValue);
         public readonly static Color32  ButtonBarry = new Color32(230, 0, 255, byte.MaxValue);
+        public readonly static Color32 Mini = new Color32(176, 161, 255, byte.MaxValue);
         public readonly static Color32  Flash = new Color32(255, 128, 128, byte.MaxValue);
         public readonly static Color32  Sleuth = new Color32(128, 51, 51, byte.MaxValue);
         public readonly static Color32  Tiebreaker = new Color32(153, 230, 153, byte.MaxValue);

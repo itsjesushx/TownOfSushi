@@ -62,6 +62,7 @@ namespace TownOfSushi
         Giant,
         Aftermath,
         Disperser,
+        Mini,
         DoubleShot,
         Bait,
         Underdog,

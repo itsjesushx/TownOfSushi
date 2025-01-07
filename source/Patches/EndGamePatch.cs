@@ -4,7 +4,8 @@ using TMPro;
 namespace TownOfSushi.Patches 
 {
 
-    static class AdditionalTempData {
+    static class AdditionalTempData 
+    {
         public static List<PlayerRoleInfo> GameSummaryText = new List<PlayerRoleInfo>();
 
         public static void Clear() 
@@ -129,6 +130,7 @@ namespace TownOfSushi.Patches
                 #region Modifiers
                 if (playerControl.Is(ModifierEnum.Giant)) { GameSummaryText += " (<color=#" + Colors.Giant.ToHtmlStringRGBA() + ">Giant</color>)"; }
                 else if (playerControl.Is(ModifierEnum.Aftermath)) { GameSummaryText += " (<color=#" + Colors.Aftermath.ToHtmlStringRGBA() + ">Aftermath</color>)"; }
+                else if (playerControl.Is(ModifierEnum.Mini)) { GameSummaryText += " (<color=#" + Colors.Mini.ToHtmlStringRGBA() + ">Mini</color>)"; }
                 else if (playerControl.Is(ModifierEnum.Bait)) { GameSummaryText += " (<color=#" + Colors.Bait.ToHtmlStringRGBA() + ">Bait</color>)";}
                 else if (playerControl.Is(ModifierEnum.Diseased)) { GameSummaryText += " (<color=#" + Colors.Diseased.ToHtmlStringRGBA() + ">Diseased</color>)";}
                 else if (playerControl.Is(ModifierEnum.Disperser)) { GameSummaryText += " (<color=#" + Colors.Impostor.ToHtmlStringRGBA() + ">Disperser</color>)";}
@@ -157,54 +159,54 @@ namespace TownOfSushi.Patches
 
                 var player = GetPlayerRole(playerControl);
                 //Stats
-                if (playerControl.HasTasks())
-                {
-                    if ((player.TotalTasks - player.TasksLeft)/player.TotalTasks == 1) GameSummaryText += $" | Tasks: " + ColorString(Color.green, $"{player.TotalTasks - player.TasksLeft}/{player.TotalTasks}");
-                    else GameSummaryText += $" | Tasks: {player.TotalTasks - player.TasksLeft}/{player.TotalTasks}";
-                }
                 if (playerControl.IsShielded())
                 {
-                    GameSummaryText += ColorString(Colors.Medic, $"| [<b>+</b>] ");
+                    GameSummaryText += ColorString(Colors.Medic, $" | [<b>+</b>] ");
                 }
                 if (playerControl.IsBeloved() || playerControl.IsRomantic())
                 {
-                    GameSummaryText += ColorString(Colors.Romantic, $"| [♥] ");
+                    GameSummaryText += ColorString(Colors.Romantic, $" | [♥] ");
                 }
                 if (playerControl.IsGATarget())
                 {
-                    GameSummaryText += ColorString(Colors.GuardianAngel, $"| [★] ");
+                    GameSummaryText += ColorString(Colors.GuardianAngel, $" | [★] ");
                 }
                 if (playerControl.IsExeTarget())
                 {
-                    GameSummaryText += ColorString(Colors.Executioner, $"| [⦿] ");
+                    GameSummaryText += ColorString(Colors.Executioner, $" | [⦿] ");
                 }
                 if (playerControl.IsSpelled())
                 {
-                    GameSummaryText += ColorString(Colors.Impostor, $"| [†] ");
+                    GameSummaryText += ColorString(Colors.Impostor, $" | [†] ");
                 }
                 if (playerControl.Is(RoleEnum.Vulture))
                 {
                     GameSummaryText += ColorString(Colors.Vulture, $" | ({GetRole<Vulture>(playerControl).BodiesRemainingToWin()} bodies to eat left)");
                 }
+                if (playerControl.HasTasks())
+                {
+                    if ((player.TotalTasks - player.TasksLeft)/player.TotalTasks == 1) GameSummaryText += $" | Tasks: " + ColorString(Color.green, $"{player.TotalTasks - player.TasksLeft}/{player.TotalTasks}");
+                    else GameSummaryText += $" | Tasks: {player.TotalTasks - player.TasksLeft}/{player.TotalTasks}";
+                }
                 if (player.Kills > 0 && !playerControl.Is(Faction.Crewmates))
                 {
-                    GameSummaryText += ColorString(Colors.Impostor, $"| Kills: {player.Kills}");
+                    GameSummaryText += ColorString(Colors.Impostor, $" | Kills: {player.Kills}");
                 }
                 if (player.CorrectShot > 0)
                 {
-                    GameSummaryText += ColorString(Color.green, $"| Correct Shots: {player.CorrectShot}");
+                    GameSummaryText += ColorString(Color.green, $" | Correct Shots: {player.CorrectShot}");
                 }
                 if (player.IncorrectShots > 0)
                 {
-                    GameSummaryText += ColorString(Colors.Impostor, $"| Incorrect Shots: {player.IncorrectShots}");
+                    GameSummaryText += ColorString(Colors.Impostor, $" | Incorrect Shots: {player.IncorrectShots}");
                 }
                 if (player.CorrectAssassinKills > 0)
                 {
-                    GameSummaryText += ColorString(Color.green, $"| Guesses: {player.CorrectAssassinKills}");
+                    GameSummaryText += ColorString(Color.green, $" | Guesses: {player.CorrectAssassinKills}");
                 }
                 if (player.IncorrectAssassinKills > 0)
                 {
-                    GameSummaryText += ColorString(Colors.Impostor, "| Misguessed");
+                    GameSummaryText += ColorString(Colors.Impostor, " | Misguessed");
                 }
                 if (player.CorrectVigilanteShot > 0)
                 {
