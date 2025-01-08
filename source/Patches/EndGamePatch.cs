@@ -175,6 +175,10 @@ namespace TownOfSushi.Patches
                 {
                     GameSummaryText += ColorString(Colors.Executioner, $" | [⦿] ");
                 }
+                if (playerControl.IsFramerTarget())
+                {
+                    GameSummaryText += ColorString(Colors.Framer, $" | [F] ");
+                }
                 if (playerControl.IsSpelled())
                 {
                     GameSummaryText += ColorString(Colors.Impostor, $" | [†] ");

@@ -250,6 +250,14 @@ namespace TownOfSushi
                 return exeTarget != null && player.PlayerId == exeTarget.PlayerId;
             });
         }
+        public static bool IsFramerTarget(this PlayerControl player)
+        {
+            return GetRoles(RoleEnum.Framer).Any(role =>
+            {
+                var exeTarget = ((Framer)role).Target;
+                return exeTarget != null && player.PlayerId == exeTarget.PlayerId;
+            });
+        }
         public static bool IsBeloved(this PlayerControl player)
         {
             return GetRoles(RoleEnum.Romantic).Any(role =>
