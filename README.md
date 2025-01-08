@@ -3,18 +3,18 @@
 ![LOGO](./Images/TownOfSushiBanner.png)
 
 ### ***Notes:***
-### ***- This repo is using [Town of Us Reactivated](https://github.com/eDonnes124/Town-Of-Us-R) as Codebase and is currently under development.***
+### ***- This repo uses [Town of Us Reactivated](https://github.com/eDonnes124/Town-Of-Us-R) as Codebase and is currently under development.***
 ### ***- This mod is just a hobby so updates may not be so fast.***
 ### ***- This mod is NOT for mobile and console versions.***
 ### ***- This README page is currently under editing, most things here are either missing or subject to change.***
-### ***- DM me on discord for suggestions or any problems! (@itsjesushx)***
+### ***- Join the [Discord Server](https://discord.gg/CBhjFw6Wqb) for suggestions or any problems!***
 
 [**Installation**](#installation)
 - [Requirements](#requirements)
 - [Steam Guide](#steam-guide)
 - [Epic Games Guide](#epic-games-guide)
 
-***★ Mod Features ★***
+***★ Roles / Modifiers / Abilities / Gamemodes ★***
 
 | Impostors | Crewmates | Neutrals | Modifiers | Abilities | GameModes
 |----------|-------------|-----------------|----------------|----------------|----------------|
@@ -1203,7 +1203,7 @@ Custom hats based off anything!
 
 -----------------------
 # Bug / Suggestions
-If you have any bugs or any need to contact me, join the [Discord Server](https://discord.com/GET7TafkcR) or create a ticket on GitHub.
+If you have any bugs or any need to contact me, join the [Discord Server](https://discord.gg/CBhjFw6Wqb) or create a ticket on GitHub.
 
 -----------------------
 # Credits & Resources
