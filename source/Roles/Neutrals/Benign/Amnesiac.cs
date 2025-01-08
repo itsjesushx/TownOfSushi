@@ -17,7 +17,7 @@ namespace TownOfSushi.Roles
             RoleEnum.Agent, RoleEnum.Hitman, RoleEnum.Miner, RoleEnum.Morphling, RoleEnum.Glitch, RoleEnum.Blackmailer, RoleEnum.Juggernaut,
             RoleEnum.Swapper, RoleEnum.Amnesiac, RoleEnum.GuardianAngel, RoleEnum.Werewolf, RoleEnum.SerialKiller, RoleEnum.Arsonist,
             RoleEnum.Grenadier, RoleEnum.Crewmate, RoleEnum.Impostor, RoleEnum.Vampire, RoleEnum.Bomber, RoleEnum.Plaguebearer, RoleEnum.Pestilence, RoleEnum.Romantic, RoleEnum.Swooper,
-            RoleEnum.Venerer, RoleEnum.Janitor, RoleEnum.Escapist, RoleEnum.Doomsayer
+            RoleEnum.Venerer, RoleEnum.Janitor, RoleEnum.Escapist, RoleEnum.Doomsayer, RoleEnum.Framer
         };
         public Amnesiac(PlayerControl player) : base(player)
         {
@@ -267,6 +267,7 @@ namespace TownOfSushi.Roles
                 case RoleEnum.Arsonist:
                 case RoleEnum.Amnesiac:
                 case RoleEnum.Glitch:
+                case RoleEnum.Framer:
                 case RoleEnum.Juggernaut:
                 case RoleEnum.Romantic:
                 case RoleEnum.GuardianAngel:
@@ -381,6 +382,12 @@ namespace TownOfSushi.Roles
             {
                 var vigilanteRole = GetRole<Werewolf>(amnesiac);
                 vigilanteRole.LastMauled = DateTime.UtcNow;
+            }
+
+            else if (role == RoleEnum.Framer)
+            {
+                var FramerRole = GetRole<Framer>(amnesiac);
+                FramerRole.LastFramed = DateTime.UtcNow;
             }
 
             else if (role == RoleEnum.Engineer)

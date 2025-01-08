@@ -112,8 +112,11 @@ namespace TownOfSushi.Roles
             {
                 appearance = MimicTarget.GetDefaultAppearance();
                 var modifier = GetModifier(MimicTarget);
+                var ability = GetAbility(MimicTarget);
                 if (modifier is IVisualAlteration alteration)
                     alteration.TryGetModifiedAppearance(out appearance);
+                else if (ability is IVisualAlteration alteration2)
+                    alteration2.TryGetModifiedAppearance(out appearance);
                 return true;
             }
 

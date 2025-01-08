@@ -71,8 +71,11 @@ namespace TownOfSushi.Roles
             {
                 appearance = MorphedPlayer.GetDefaultAppearance();
                 var modifier = GetModifier(MorphedPlayer);
+                var ability = GetAbility(MorphedPlayer);
                 if (modifier is IVisualAlteration alteration)
                     alteration.TryGetModifiedAppearance(out appearance);
+                else if (ability is IVisualAlteration alteration2)
+                    alteration2.TryGetModifiedAppearance(out appearance);
                 return true;
             }
 

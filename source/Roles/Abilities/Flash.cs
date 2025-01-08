@@ -2,7 +2,6 @@ namespace TownOfSushi.Roles.Abilities
 {
     public class Flash : Ability, IVisualAlteration
     {
-
         public Flash(PlayerControl player) : base(player)
         {
             Name = "Flash";
@@ -10,7 +9,6 @@ namespace TownOfSushi.Roles.Abilities
             Color = Colors.Flash;
             AbilityType = AbilityEnum.Flash;
         }
-
         public bool TryGetModifiedAppearance(out VisualAppearance appearance)
         {
             appearance = Player.GetDefaultAppearance();
