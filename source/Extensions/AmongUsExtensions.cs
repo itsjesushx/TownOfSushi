@@ -1,5 +1,3 @@
-
-
 namespace TownOfSushi.Extensions
 {
     public static class AmongUsExtensions
@@ -80,19 +78,16 @@ namespace TownOfSushi.Extensions
             playerControl.cosmetics.colorBlindText.color = Color.white;
             if (PlayerControl.LocalPlayer.Data.IsImpostor() && playerControl.Data.IsImpostor()) playerControl.nameText().color = Colors.Impostor;
         }
-
-
         public static CustomPlayerOutfitType GetCustomOutfitType(this PlayerControl playerControl)
         {
             return (CustomPlayerOutfitType)playerControl.CurrentOutfitType;
         }
-
         public static bool IsNullOrDestroyed(this System.Object obj)
         {
 
             if (object.ReferenceEquals(obj, null)) return true;
 
-            if (obj is UnityEngine.Object) return (obj as UnityEngine.Object) == null;
+            if (obj is Object) return (obj as Object) == null;
 
             return false;
         }
@@ -100,11 +95,8 @@ namespace TownOfSushi.Extensions
         {
             return new Texture2D(width, height, TextureFormat.RGBA32, Texture.GenerateAllMips, false, IntPtr.Zero);
         }
-
         public static TMPro.TextMeshPro nameText(this PlayerControl p) => p?.cosmetics?.nameText;
-
         public static TMPro.TextMeshPro NameText(this PoolablePlayer p) => p.cosmetics.nameText;
-
         public static UnityEngine.SpriteRenderer myRend(this PlayerControl p) => p.cosmetics.currentBodySprite.BodySprite;
     }
 }

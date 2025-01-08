@@ -15,6 +15,10 @@ namespace TownOfSushi
 				{
 					__instance.completeString = __instance.completeString.Replace("3' 6\"", "5' 3\"").Replace("92lb", "184lb");
 				}
+				if (PlayerControl.LocalPlayer.Is(ModifierEnum.Mini))
+				{
+					__instance.completeString = __instance.completeString.Replace("3' 6\"", "2' 4\"").Replace("92lb", "45lb");
+				}
 			}
 		}
 	}
