@@ -141,6 +141,7 @@ namespace TownOfSushi.CustomOption
         public static CustomOption HitmanMorphCooldown;
 
         public static CustomOption ArsonistOn;
+        public static CustomOption ArsoVent;
         public static CustomOption DouseCooldown;
         public static CustomOption MaxDoused;
         public static CustomOption IgniteCdRemoved;
@@ -645,6 +646,7 @@ namespace TownOfSushi.CustomOption
             DouseCooldown = CustomOption.Create(184, Types.NK, "Douse Cooldown", 25f, 10f, 60f, 2.5f, ArsonistOn, format: "s");
             MaxDoused = CustomOption.Create(185, Types.NK, "Maximum Alive Players Doused", 5, 1, 15, 1, ArsonistOn);
             IgniteCdRemoved = CustomOption.Create(186, Types.NK, "Remove Ignite Cooldown If Last Killer", false, ArsonistOn);
+            ArsoVent = CustomOption.Create(18612, Types.NK, "Can Vent", false, ArsonistOn);
 
             JuggernautOn = CustomOption.Create(187, Types.NK, ColorString(Colors.Juggernaut, "Juggernaut"), 0f, 0f, 100f, 10f, null, true, format: "%");
             JuggKillCooldown = CustomOption.Create(188, Types.NK, "Initial Kill Cooldown", 25f, 10f, 60f, 2.5f, JuggernautOn, format: "s");

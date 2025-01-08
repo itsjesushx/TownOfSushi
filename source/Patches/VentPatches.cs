@@ -49,6 +49,7 @@ namespace TownOfSushi.Patches
                 || (player.Is(RoleEnum.Hitman) && CustomGameOptions.HitmanVent)
                 || (player.Is(RoleEnum.Juggernaut) && CustomGameOptions.JuggVent)
                 || (player.Is(RoleEnum.Pestilence) && CustomGameOptions.PestVent)
+                || (player.Is(RoleEnum.Arsonist) && CustomGameOptions.ArsoVent)
                 || (player.Is(RoleEnum.Werewolf) && CustomGameOptions.WerewolfVent)
                 || (player.Is(RoleEnum.Jester) && CustomGameOptions.JesterVent)
                 || (player.Is(RoleEnum.Vampire) && CustomGameOptions.VampVent))

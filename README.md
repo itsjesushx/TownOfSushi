@@ -572,6 +572,7 @@ The Arsonist needs to be the last killer alive to win the game.
 | Douse Cooldown | The cooldown of the Arsonist's Douse button | Time | 25s |
 | Maximum Alive Players Doused | The maximum amount of players that the Arsonist can have doused | Number | 5 |
 | Arsonist Has Impostor Vision | Whether the Arsonist Has Impostor Vision | Toggle | False |
+| Arsonist Can Vent | Whether the Arsonist Can vent | Toggle | False |
 | Ignite Cooldown Removed When Arso Is Last Killer | Whether the Arsonist's Ignite Cooldown is removed when they're the final killer | Toggle | False |
 
 -----------------------

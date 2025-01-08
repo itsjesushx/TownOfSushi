@@ -120,6 +120,7 @@ namespace TownOfSushi.CustomOption
         public static float DouseCd => CustomOptionHolder.DouseCooldown.GetFloat();
         public static int MaxDoused => Mathf.RoundToInt(CustomOptionHolder.MaxDoused.GetFloat());
         public static bool IgniteCdRemoved => CustomOptionHolder.IgniteCdRemoved.GetBool();
+        public static bool ArsoVent => CustomOptionHolder.ArsoVent.GetBool();
         public static int MinNeutralKillingRoles => Mathf.RoundToInt(CustomOptionHolder.MinNeutralKillingRoles.GetFloat());
         public static int MaxNeutralKillingRoles => Mathf.RoundToInt(CustomOptionHolder.MaxNeutralKillingRoles.GetFloat());
         public static int MinNeutralBenignRoles => Mathf.RoundToInt(CustomOptionHolder.MinNeutralBenignRoles.GetFloat());
