@@ -38,8 +38,8 @@ namespace TownOfSushi.Patches
                 var VampiresAlive = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(RoleEnum.Vampire) && !x.Data.IsDead && !x.Data.Disconnected && !AddHauntPatch.AssassinatedPlayers.Contains(x)).ToList();
                 var AliveSerialKiller = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(RoleEnum.SerialKiller) && !x.Data.IsDead && !x.Data.Disconnected && !AddHauntPatch.AssassinatedPlayers.Contains(x)).ToList();
 
-                if (ImpostorsAlive.Count  >= PassiveAlive.Count && 
-                    NeutralKillerAlive.Count == 0 && 
+                if (ImpostorsAlive.Count  >= PassiveAlive.Count &&
+                    NeutralKillerAlive.Count == 0 &&
                     CrewKillerAlive.Count == 0)
                     {
                         ImpostorsWin = true;

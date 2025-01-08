@@ -104,36 +104,36 @@ namespace TownOfSushi.Patches
             if (JesterWin)
             {
                 EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
-                foreach (var role in GetRoles(RoleEnum.Jester))
+                foreach (var RoleGetter in GetRoles(RoleEnum.Jester))
                 {
-                    var vamp = (Jester)role;
-                    var vampData = new CachedPlayerData(vamp.Player.Data);
-                    if (PlayerControl.LocalPlayer != vamp.Player) vampData.IsYou = false;
-                    EndGameResult.CachedWinners.Add(vampData);
+                    var role = (Jester)RoleGetter;
+                    var roleData = new CachedPlayerData(role.Player.Data);
+                    if (PlayerControl.LocalPlayer != role.Player) roleData.IsYou = false;
+                    EndGameResult.CachedWinners.Add(roleData);
                 }
             }
 
             if (WerewolfWin)
             {
                 EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
-                foreach (var role in GetRoles(RoleEnum.Werewolf))
+                foreach (var RoleGetter in GetRoles(RoleEnum.Werewolf))
                 {
-                    var vamp = (Werewolf)role;
-                    var vampData = new CachedPlayerData(vamp.Player.Data);
-                    if (PlayerControl.LocalPlayer != vamp.Player) vampData.IsYou = false;
-                    EndGameResult.CachedWinners.Add(vampData);
+                    var role = (Werewolf)RoleGetter;
+                    var roleData = new CachedPlayerData(role.Player.Data);
+                    if (PlayerControl.LocalPlayer != role.Player) roleData.IsYou = false;
+                    EndGameResult.CachedWinners.Add(roleData);
                 }
             }
 
             if (VultureWin)
             {
                 EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
-                foreach (var role in GetRoles(RoleEnum.Vulture))
+                foreach (var RoleGetter in GetRoles(RoleEnum.Vulture))
                 {
-                    var vamp = (Vulture)role;
-                    var vampData = new CachedPlayerData(vamp.Player.Data);
-                    if (PlayerControl.LocalPlayer != vamp.Player) vampData.IsYou = false;
-                    EndGameResult.CachedWinners.Add(vampData);
+                    var role = (Vulture)RoleGetter;
+                    var roleData = new CachedPlayerData(role.Player.Data);
+                    if (PlayerControl.LocalPlayer != role.Player) roleData.IsYou = false;
+                    EndGameResult.CachedWinners.Add(roleData);
                 }
             }
 
@@ -161,7 +161,7 @@ namespace TownOfSushi.Patches
                 }
             }
 
-            if (PestilenceWin)
+            if (VampireWins)
             {
                 EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
                 foreach (var RoleGetter in GetRoles(RoleEnum.Vampire))
