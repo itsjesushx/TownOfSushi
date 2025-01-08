@@ -374,6 +374,7 @@ namespace TownOfSushi.Roles
             {
                 var romantic = GetRole<Romantic>(amnesiac);
                 romantic.LastPick = DateTime.UtcNow;
+                romantic.AlreadyPicked = false;
             }
 
             else if (role == RoleEnum.Werewolf)
@@ -496,6 +497,13 @@ namespace TownOfSushi.Roles
                 var gaRole = GetRole<GuardianAngel>(amnesiac);
                 gaRole.LastProtected = DateTime.UtcNow;
                 gaRole.MaxUses = CustomGameOptions.MaxProtects;
+            }
+
+            else if (role == RoleEnum.Framer)
+            {
+                var FramerRole = GetRole<Framer>(amnesiac);
+                FramerRole.LastFramed = DateTime.UtcNow;
+                FramerRole.HasFrameTarget = false;
             }
 
             else if (role == RoleEnum.Glitch)

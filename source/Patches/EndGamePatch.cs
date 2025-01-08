@@ -3,7 +3,6 @@ using TMPro;
 
 namespace TownOfSushi.Patches 
 {
-
     static class AdditionalTempData 
     {
         public static List<PlayerRoleInfo> GameSummaryText = new List<PlayerRoleInfo>();
@@ -104,6 +103,7 @@ namespace TownOfSushi.Patches
 
                     else if (role.Value == RoleEnum.Vulture) { GameSummaryText += "<color=#" + Colors.Vulture.ToHtmlStringRGBA() + ">Vulture</color> > "; }
                     else if (role.Value == RoleEnum.Doomsayer) { GameSummaryText += "<color=#" + Colors.Doomsayer.ToHtmlStringRGBA() + ">Doomsayer</color> > "; }
+                    else if (role.Value == RoleEnum.Framer) { GameSummaryText += "<color=#" + Colors.Framer.ToHtmlStringRGBA() + ">Framer</color> > "; }
                     else if (role.Value == RoleEnum.Jester) { GameSummaryText += "<color=#" + Colors.Jester.ToHtmlStringRGBA() + ">Jester</color> > "; }
                     else if (role.Value == RoleEnum.Executioner) { GameSummaryText += "<color=#" + Colors.Executioner.ToHtmlStringRGBA() + ">Executioner</color> > "; }
 

@@ -344,7 +344,6 @@ namespace TownOfSushi
             {
                 zeroSecReset = true;
             }
-            
             else if (target.Is(RoleEnum.Pestilence))
             {
                 if (player.IsShielded())
@@ -1029,10 +1028,6 @@ namespace TownOfSushi
             CrewmatesWin = false;
             ImpostorsWin = false;
             NobodyWins = false;
-            NobodyWins = false;        
-            VampireWins = false;
-            CrewmatesWin = false;
-            ImpostorsWin = false;
             HitmanWin = false;
             GlitchWin = false;
             JuggernautWin = false;
@@ -1044,6 +1039,7 @@ namespace TownOfSushi
             SerialKillerWin = false;
             JesterWin = false;
             ExecutionerWin = false;
+            FramerWin = false;
             DoomsayerWin = false;
             VultureWin = false;
         }
@@ -1464,6 +1460,11 @@ namespace TownOfSushi
             {
                 var arsonist = GetRole<Arsonist>(PlayerControl.LocalPlayer);
                 arsonist.LastDoused = DateTime.UtcNow;
+            }
+            if (PlayerControl.LocalPlayer.Is(RoleEnum.Framer))
+            {
+                var arsonist = GetRole<Framer>(PlayerControl.LocalPlayer);
+                arsonist.LastFramed = DateTime.UtcNow;
             }
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Vulture))
             {

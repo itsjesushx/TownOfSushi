@@ -41,6 +41,7 @@ namespace TownOfSushi.Roles
             AddToRoleOutro(__instance, RoleEnum.Executioner, "Executioner Wins!", role => ExecutionerWin);
             AddToRoleOutro(__instance, RoleEnum.Vulture, "Vulture Wins!", role => VultureWin);
             AddToRoleOutro(__instance, RoleEnum.Doomsayer, "Doomsayer Wins!", role => DoomsayerWin);
+            AddToRoleOutro(__instance, RoleEnum.Framer, "Framer Wins!", role => FramerWin);
         }
     }
 

@@ -23,6 +23,7 @@ namespace TownOfSushi
         Juggernaut,
         Tracker,
         Transporter,
+        Framer,
         Medium,
         Trapper,
         Romantic,
@@ -113,6 +114,7 @@ namespace TownOfSushi
         SetTarget,
         SetGATarget,        
         SetRomanticTarget,
+        SetFramerTarget,
         Spell,
 
         TeamVampiresWin,
@@ -132,6 +134,7 @@ namespace TownOfSushi
         ExecutionerWin,
         DoomsayerWin,
         NobodyWins,
+        FramerWin,
 
 
         Maul,
@@ -220,7 +223,8 @@ namespace TownOfSushi
     {
         Crew,
         Amnesiac,
-        Jester
+        Jester,
+        Framer,
     }
     public enum RomanticBecomeOptions
     {
@@ -246,13 +250,8 @@ namespace TownOfSushi
     {
         Crew,
         Amnesiac,
-        Jester
-    }
-    public enum BecomeEnum
-    {
-        Crewmate = 0,
-        Veteran,
-        Vigilante
+        Jester,
+        Framer
     }
     public enum GameMode
     {

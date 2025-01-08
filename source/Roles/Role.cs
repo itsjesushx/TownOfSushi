@@ -81,7 +81,7 @@ namespace TownOfSushi.Roles
 
         public static bool NeutralEvilWin()
         {
-            return JesterWin || ExecutionerWin || VultureWin || DoomsayerWin;
+            return JesterWin || ExecutionerWin || VultureWin || DoomsayerWin  || FramerWin;
         }
         internal virtual bool VampireCriteria()
         {
@@ -404,6 +404,7 @@ namespace TownOfSushi.Roles
         public static bool ExecutionerWin;
         public static bool DoomsayerWin;
         public static bool VultureWin;
+        public static bool FramerWin;
 
         internal static bool NobodyEndCriteria(LogicGameFlowNormal __instance)
         {

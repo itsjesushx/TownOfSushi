@@ -25,6 +25,13 @@
                 __instance.KillButton.graphic.sprite = TownOfSushi.SeerSprite;
                 flag = true;
             }
+            else if (PlayerControl.LocalPlayer.Is(RoleEnum.Framer))
+            {
+                __instance.KillButton.graphic.sprite = __instance.KillButton.graphic.sprite;
+                __instance.KillButton.buttonLabelText.gameObject.SetActive(true);
+                __instance.KillButton.buttonLabelText.text = "FRAME";
+                flag = true;
+            }
             else if (PlayerControl.LocalPlayer.Is(RoleEnum.Medic))
             {
                 __instance.KillButton.graphic.sprite = TownOfSushi.MedicSprite;
@@ -121,7 +128,7 @@
             {
                 __instance.KillButton.graphic.sprite = Kill;
                 __instance.KillButton.buttonLabelText.gameObject.SetActive(true);
-                __instance.KillButton.buttonLabelText.text = "Kill";
+                __instance.KillButton.buttonLabelText.text = "KILL";
                 flag = PlayerControl.LocalPlayer.Is(RoleEnum.Pestilence) || PlayerControl.LocalPlayer.Is(RoleEnum.Vigilante) ||
                     PlayerControl.LocalPlayer.Is(RoleEnum.SerialKiller) || PlayerControl.LocalPlayer.Is(RoleEnum.Juggernaut);
             }

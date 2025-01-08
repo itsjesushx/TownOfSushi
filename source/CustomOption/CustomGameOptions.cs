@@ -6,6 +6,7 @@ namespace TownOfSushi.CustomOption
         public static int WerewolfOn => Mathf.RoundToInt(CustomOptionHolder.WerewolfOn.GetFloat());
         public static int JuggernautOn => Mathf.RoundToInt(CustomOptionHolder.JuggernautOn.GetFloat());
         public static int JesterOn => Mathf.RoundToInt(CustomOptionHolder.JesterOn.GetFloat());
+        public static int FramerOn => Mathf.RoundToInt(CustomOptionHolder.FramerOn.GetFloat());
         public static int HunterOn => Mathf.RoundToInt(CustomOptionHolder.HunterOn.GetFloat());
         public static int VigilanteOn => Mathf.RoundToInt(CustomOptionHolder.VigilanteOn.GetFloat());
         public static int VultureOn => Mathf.RoundToInt(CustomOptionHolder.VultureOn.GetFloat());
@@ -199,6 +200,8 @@ namespace TownOfSushi.CustomOption
         public static float MaulRadius => CustomOptionHolder.MaulRadius.GetFloat();
         public static float MaulCooldown => CustomOptionHolder.MaulCooldown.GetFloat();
         public static float ProtectCd => CustomOptionHolder.ProtectCd.GetFloat();
+        public static float FramerCd => CustomOptionHolder.FramerCd.GetFloat();
+        public static bool FramerImpVision => CustomOptionHolder.FramerImpVision.GetBool();
         public static float ProtectDuration => CustomOptionHolder.ProtectDuration.GetFloat();
         public static int MaxProtects => Mathf.RoundToInt(CustomOptionHolder.MaxProtects.GetFloat());
         public static ProtectOptions ShowProtect => (ProtectOptions)CustomOptionHolder.ShowProtect.GetSelection();

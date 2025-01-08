@@ -7,7 +7,6 @@ namespace TownOfSushi.Roles
         public DateTime LastPick;
         public bool SpawnedAs = true;
         public bool AlreadyPicked = false;
-        public Dictionary<byte, ArrowBehaviour> RomanticArrows = new Dictionary<byte, ArrowBehaviour>();
         public Romantic(PlayerControl player) : base(player)
         {
             var ChooseOrNew = CustomGameOptions.RomanticOnBelovedDeath == RomanticBecomeOptions.Repick ? "have to choose a new partner" : $"become {CustomGameOptions.RomanticOnBelovedDeath.ToString()} on your partner's death";
@@ -18,7 +17,6 @@ namespace TownOfSushi.Roles
             LoreText =$"A heart bound by love, you are driven by a deep connection to your chosen beloved. As the Romantic, you must pick a Crewmate to ally with, working together to ensure both of your survival. Your loyalty gives you strength, and you’ll do whatever it takes to protect and support your beloved. If they fall, you will {ChooseOrNew}.";
             Color = Colors.Romantic;
             RoleType = RoleEnum.Romantic;
-
             Faction = Faction.Neutral;
             LastPick = DateTime.UtcNow;
             AddToRoleHistory(RoleType);

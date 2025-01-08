@@ -18,7 +18,6 @@ namespace TownOfSushi.Roles
             LoreText = "A relentless pursuer of chaos, you are tasked with ensuring that a specific player is voted out, no matter the cost. As the Executioner, you must manipulate the votes of others, turning the tide in your favor to eliminate your target. However, your victory is tied to the downfall of your chosen victim, and if they survive, your mission fails. Use your influence wisely, for the fate of your target—and your own—depends on the vote.";            
             Color = Colors.Executioner;
             RoleType = RoleEnum.Executioner;
-
             Faction = Faction.Neutral;
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.NeutralEvil;
@@ -97,6 +96,12 @@ namespace TownOfSushi.Roles
             else if (CustomGameOptions.OnTargetDead == OnTargetDead.Amnesiac)
             {
                 var amnesiac = new Amnesiac(player);
+                amnesiac.SpawnedAs = false;
+                amnesiac.ReDoTaskText();
+            }
+            else if (CustomGameOptions.OnTargetDead == OnTargetDead.Framer)
+            {
+                var amnesiac = new Framer(player);
                 amnesiac.SpawnedAs = false;
                 amnesiac.ReDoTaskText();
             }

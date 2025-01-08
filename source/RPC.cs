@@ -735,6 +735,12 @@ namespace TownOfSushi
                         var romanticRole = GetRole<Romantic>(surv);
                         romanticRole.Beloved = romanticTarget;
                         break;
+                    case CustomRPC.SetFramerTarget:
+                        var fram = PlayerById(reader.ReadByte());
+                        var framerTarget = PlayerById(reader.ReadByte());
+                        var framerRole = GetRole<Framer>(fram);
+                        framerRole.Target = framerTarget;
+                        break;
                     case CustomRPC.Blackmail:
                         var blackmailer = GetRole<Blackmailer>(PlayerById(reader.ReadByte()));
                         blackmailer.Blackmailed = PlayerById(reader.ReadByte());
@@ -814,6 +820,9 @@ namespace TownOfSushi
                         break; 
                     case CustomRPC.ExecutionerWin:
                         ExecutionerWin = true;
+                        break;
+                    case CustomRPC.FramerWin:
+                        FramerWin = true;
                         break; 
                     case CustomRPC.Camouflage:
                         var venerer = PlayerById(reader.ReadByte());
@@ -1133,6 +1142,9 @@ namespace TownOfSushi
                     
                     if (CustomGameOptions.ExecutionerOn > 0)
                         NeutralEvilRoles.Add((typeof(Executioner), CustomGameOptions.ExecutionerOn, false));
+
+                    if (CustomGameOptions.FramerOn > 0)
+                        NeutralEvilRoles.Add((typeof(Framer), CustomGameOptions.FramerOn, false));
 
                     if (CustomGameOptions.DoomsayerOn > 0)
                         NeutralEvilRoles.Add((typeof(Doomsayer), CustomGameOptions.DoomsayerOn, false));

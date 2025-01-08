@@ -5,7 +5,6 @@ namespace TownOfSushi.Roles
     public class Jester : Role
     {
         public bool SpawnedAs = true;
-        public bool VotedOut;
         public Jester(PlayerControl player) : base(player)
         {
             Name = "Jester";

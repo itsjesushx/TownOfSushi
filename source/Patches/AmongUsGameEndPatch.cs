@@ -71,6 +71,11 @@ namespace TownOfSushi.Patches
                 var pb = (Plaguebearer)role;
                 losers.Add(pb.Player.GetDefaultOutfit().ColorId);
             }
+            foreach (var role in GetRoles(RoleEnum.Framer))
+            {
+                var pb = (Framer)role;
+                losers.Add(pb.Player.GetDefaultOutfit().ColorId);
+            }
             foreach (var role in GetRoles(RoleEnum.Glitch))
             {
                 var glitch = (Glitch)role;
@@ -94,18 +99,6 @@ namespace TownOfSushi.Patches
             {
                 EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
                 return;
-            }
-
-            if (VampireWins)
-            {
-                EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
-                foreach (var role in GetRoles(RoleEnum.Vampire))
-                {
-                    var vamp = (Vampire)role;
-                    var vampData = new CachedPlayerData(vamp.Player.Data);
-                    if (PlayerControl.LocalPlayer != vamp.Player) vampData.IsYou = false;
-                    EndGameResult.CachedWinners.Add(vampData);
-                }
             }
 
             if (JesterWin)
@@ -162,6 +155,18 @@ namespace TownOfSushi.Patches
                 foreach (var RoleGetter in GetRoles(RoleEnum.Pestilence))
                 {
                     var role = (Pestilence)RoleGetter;
+                    var roleData = new CachedPlayerData(role.Player.Data);
+                    if (PlayerControl.LocalPlayer != role.Player) roleData.IsYou = false;
+                    EndGameResult.CachedWinners.Add(roleData);
+                }
+            }
+
+            if (PestilenceWin)
+            {
+                EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
+                foreach (var RoleGetter in GetRoles(RoleEnum.Vampire))
+                {
+                    var role = (Vampire)RoleGetter;
                     var roleData = new CachedPlayerData(role.Player.Data);
                     if (PlayerControl.LocalPlayer != role.Player) roleData.IsYou = false;
                     EndGameResult.CachedWinners.Add(roleData);
@@ -247,6 +252,18 @@ namespace TownOfSushi.Patches
                 foreach (var RoleGetter in GetRoles(RoleEnum.Doomsayer))
                 {
                     var role = (Doomsayer)RoleGetter;
+                    var roleData = new CachedPlayerData(role.Player.Data);
+                    if (PlayerControl.LocalPlayer != role.Player) roleData.IsYou = false;
+                    EndGameResult.CachedWinners.Add(roleData);
+                }
+            }
+
+            if (FramerWin)
+            {
+                EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
+                foreach (var RoleGetter in GetRoles(RoleEnum.Framer))
+                {
+                    var role = (Framer)RoleGetter;
                     var roleData = new CachedPlayerData(role.Player.Data);
                     if (PlayerControl.LocalPlayer != role.Player) roleData.IsYou = false;
                     EndGameResult.CachedWinners.Add(roleData);

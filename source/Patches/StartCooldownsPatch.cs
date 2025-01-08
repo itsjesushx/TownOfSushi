@@ -13,6 +13,13 @@ namespace TownOfSushi.Patches
                 detective.LastExamined = detective.LastExamined.AddSeconds(CustomGameOptions.InitialCooldowns - CustomGameOptions.ExamineCd);
             }
 
+            if (PlayerControl.LocalPlayer.Is(RoleEnum.Framer))
+            {
+                var Framer = GetRole<Framer>(PlayerControl.LocalPlayer);
+                Framer.LastFramed = DateTime.UtcNow;
+                Framer.LastFramed = Framer.LastFramed.AddSeconds(CustomGameOptions.InitialCooldowns - CustomGameOptions.FramerCd);
+            }
+
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Mystic))
             {
                 var mystic = GetRole<Mystic>(PlayerControl.LocalPlayer);
