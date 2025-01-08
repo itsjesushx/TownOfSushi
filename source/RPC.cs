@@ -185,13 +185,6 @@ namespace TownOfSushi
                 NeutralBenignRoles.SortRoles(benign);
                 NeutralEvilRoles.SortRoles(evil);
                 NeutralKillingRoles.SortRoles(killing);
-                
-                /*if (!NeutralKillingRoles.Contains((typeof(Arsonist), CustomGameOptions.ArsonistOn, true)))
-                    NeutralKillingRoles.Add((typeof(Plaguebearer), CustomGameOptions.PlaguebearerOn, false));
-
-                if (!NeutralKillingRoles.Contains((typeof(Plaguebearer), CustomGameOptions.PlaguebearerOn, true)))
-                    NeutralKillingRoles.Add((typeof(Arsonist), CustomGameOptions.ArsonistOn, false));*/
-
                 CrewmateRoles.SortRoles(crewmates.Count - NeutralBenignRoles.Count - NeutralEvilRoles.Count - NeutralKillingRoles.Count);
                 ImpostorRoles.SortRoles(impostors.Count);
 
@@ -201,7 +194,7 @@ namespace TownOfSushi
             neutRoles.AddRange(NeutralBenignRoles);
             neutRoles.AddRange(NeutralEvilRoles);
             neutRoles.AddRange(NeutralKillingRoles);
-            // Roles are not, at this point, shuffled yet.
+            // Roles are not at this point, shuffled yet.
             // In All/Any mode, there is at least one neutral and one crewmate, but duplicates are allowed and probability is ignored.
             if (CustomGameOptions.GameMode == GameMode.AllAny)
             {
@@ -468,7 +461,6 @@ namespace TownOfSushi
 
             var crewAndNeutralRoles = new List<(Type, int, bool)>();
             crewAndNeutralRoles.AddRange(CrewmateRoles);
-            crewAndNeutralRoles.AddRange(NeutralKillingRoles);
             crewAndNeutralRoles.Shuffle();
             ImpostorRoles.Shuffle();
 
@@ -509,13 +501,13 @@ namespace TownOfSushi
                         Activator.CreateInstance(asm.GetType(mstring2), new object[] { player22 });
                         break;
                     case CustomRPC.Jail:
-                        var jailor = Utils.PlayerById(reader.ReadByte());
+                        var jailor = PlayerById(reader.ReadByte());
                         var jailorRole = GetRole<Jailor>(jailor);
                         switch (reader.ReadByte())
                         {
                             default:
                             case 0: //jail
-                                var jailed = Utils.PlayerById(reader.ReadByte());
+                                var jailed = PlayerById(reader.ReadByte());
                                 jailorRole.Jailed = jailed;
                                 break;
                             case 1: //execute
