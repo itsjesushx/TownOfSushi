@@ -10,7 +10,6 @@ namespace TownOfSushi.Patches
         {
             var role = GetPlayerRole(PlayerControl.LocalPlayer);
             if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
-            if (CustomGameOptions.GameMode == GameMode.KillersOnly) return;
             if (role == null) return;
 
             try

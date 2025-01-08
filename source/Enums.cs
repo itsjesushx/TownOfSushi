@@ -256,8 +256,7 @@ namespace TownOfSushi
     public enum GameMode
     {
         Classic,
-        AllAny,
-        KillersOnly
+        AllAny
     }
     public enum AdminDeadPlayers
     {

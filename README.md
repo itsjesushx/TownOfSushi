@@ -20,7 +20,7 @@
 |----------|-------------|-----------------|----------------|----------------|----------------|
 | [Escapist](#escapist) | [Hunter](#hunter) | [Jester](#jester) | [Aftermath](#aftermath) |[Assassin](#assassin-ability) | [Classic](#roles) |
 | [Grenadier](#grenadier) | [Engineer](#engineer) | [Arsonist](#arsonist) | [Disperser](#disperser) | [Button Barry](#button-barry)| [All Any](#all-any-settings) |
-| [Janitor](#janitor) | [Vigilante](#vigilante) | [Vampire](#vampire) | [Bait](#bait) | [Chameleon](#chameleon) | [Killers Only](#killing-only-settings) |
+| [Janitor](#janitor) | [Vigilante](#vigilante) | [Vampire](#vampire) | [Bait](#bait) | [Chameleon](#chameleon) | |
 | [Morphling](#morphling) | [Oracle](#oracle) | [Doomsayer](#doomsayer) |  [Double Shot](#double-shot) |[Spy](#spy) | [Vanilla Hide 'n' Seek](https://www.innersloth.com/new-game-mode-hide-n-seek-is-here-emergency-meeting-35/) |
 | [Venerer](#venerer) | [Investigator](#investigator) | [Vulture](#vulture) | [Frosty](#frosty) | [Drunk](#drunk)||
 | [Miner](#miner) | [Mystic](#mystic) | [Guardian Angel](#guardian-angel) |  [Giant](#giant)|[Flash](#flash) |
@@ -581,6 +581,7 @@ The Arsonist needs to be the last killer alive to win the game.
 The Juggernaut is a Neutral role with its own win condition.\
 The Juggernaut's special ability is that their kill cooldown reduces with each kill.\
 This means in theory the Juggernaut can have a 0 second kill cooldown!\
+The Juggernaut starts with no impostor vision, and no vent button, but after some kills, they gain both of these features.\
 The Juggernaut needs to be the last killer alive to win the game.
 ### Game Options
 | Name | Description | Type | Default |

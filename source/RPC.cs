@@ -406,73 +406,6 @@ namespace TownOfSushi
                 }
             }
         }
-        private static void GenEachRoleKilling(List<NetworkedPlayerInfo> infected)
-        {
-            var impostors = GetImpostors(infected);
-            var crewmates = GetCrewmates(impostors);
-            crewmates.Shuffle();
-            impostors.Shuffle();
-
-            ImpostorRoles.Add((typeof(Undertaker), 10, true));
-            ImpostorRoles.Add((typeof(Morphling), 10, false));
-            ImpostorRoles.Add((typeof(Escapist), 10, false));
-            ImpostorRoles.Add((typeof(Miner), 10, true));
-            ImpostorRoles.Add((typeof(Swooper), 10, false));
-            ImpostorRoles.Add((typeof(Grenadier), 10, true));
-
-            ImpostorRoles.SortRoles(impostors.Count);
-
-            NeutralKillingRoles.Add((typeof(Glitch), 10, true));
-            NeutralKillingRoles.Add((typeof(SerialKiller), 10, true));
-            NeutralKillingRoles.Add((typeof(Hitman), 10, true));
-            NeutralKillingRoles.Add((typeof(Werewolf), 10, true));
-            NeutralKillingRoles.Add((typeof(Juggernaut), 10, true));
-            if (CustomGameOptions.AddArsonist)
-                NeutralKillingRoles.Add((typeof(Arsonist), 10, true));
-            if (CustomGameOptions.AddPlaguebearer)
-                NeutralKillingRoles.Add((typeof(Plaguebearer), 10, true));
-
-            var neutrals = 0;
-            if (NeutralKillingRoles.Count < CustomGameOptions.NeutralRoles) neutrals = NeutralKillingRoles.Count;
-            else neutrals = CustomGameOptions.NeutralRoles;
-            var spareCrew = crewmates.Count - neutrals;
-            if (spareCrew > 2) NeutralKillingRoles.SortRoles(neutrals);
-            else NeutralKillingRoles.SortRoles(crewmates.Count - 3);
-
-            var veterans = CustomGameOptions.VeteranCount;
-            while (veterans > 0)
-            {
-                CrewmateRoles.Add((typeof(Veteran), 10, false));
-                veterans -= 1;
-            }
-            if (CrewmateRoles.Count + NeutralKillingRoles.Count > crewmates.Count)
-            {
-                CrewmateRoles.SortRoles(crewmates.Count - NeutralKillingRoles.Count);
-            }
-            else if (CrewmateRoles.Count + NeutralKillingRoles.Count < crewmates.Count)
-            {
-                var vigilantes = crewmates.Count - NeutralKillingRoles.Count - CrewmateRoles.Count;
-                while (vigilantes > 0)
-                {
-                    CrewmateRoles.Add((typeof(Vigilante), 10, false));
-                    vigilantes -= 1;
-                }
-            }
-
-            var crewAndNeutralRoles = new List<(Type, int, bool)>();
-            crewAndNeutralRoles.AddRange(CrewmateRoles);
-            crewAndNeutralRoles.Shuffle();
-            ImpostorRoles.Shuffle();
-
-            foreach (var (type, _, _) in crewAndNeutralRoles)
-            {
-                GenRole<Role>(type, crewmates);
-            }
-            foreach (var (type, _, _) in ImpostorRoles)
-            {
-                GenRole<Role>(type, impostors);
-            }
-        }
 
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.HandleRpc))]
         public static class HandleRpc
@@ -1286,9 +1219,7 @@ namespace TownOfSushi
                     AssassinAbility.Add((typeof(Assassin), CustomRPC.SetAssassin, 100));
                     #endregion
                 }
-
-                if (CustomGameOptions.GameMode == GameMode.KillersOnly) GenEachRoleKilling(infected.ToList());
-                else GenEachRole(infected.ToList());
+                GenEachRole(infected.ToList());
             }
         }
     }

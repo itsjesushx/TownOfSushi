@@ -437,7 +437,7 @@ namespace TownOfSushi.CustomOption
             ColdTempDeathValley = CustomOption.Create(21, Types.General, "Cold Temp Moved To Death Valley", false);
             WifiChartCourseSwap = CustomOption.Create(22, Types.General, "Reboot Wifi And Chart Course Swapped", false);
 
-            GameMode = CustomOption.Create(23, Types.General, "Game Mode", new string[] { "Classic", "All Any", "Killers Only"}, null, true, heading: "Game Mode Settings");
+            GameMode = CustomOption.Create(23, Types.General, "Game Mode", new string[] { "Classic", "All Any"}, null, true, heading: "Game Mode Settings");
 
             RandomNumberImps = CustomOption.Create(24, Types.General, "Random Number Of Impostors", true, null, true, heading: "All Any Settings");
 
