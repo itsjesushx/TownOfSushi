@@ -124,6 +124,25 @@ namespace TownOfSushi.Patches
                         yield break;
                     }
 
+                if (VampiresAlive.Count >= PassiveAlive.Count - VampiresAlive.Count && 
+                    PlaguebearerAlive.Count == 0 &&
+                    HitmanAlive.Count == 0 &&
+                    AgentAlive.Count == 0 &&
+                    PestilenceAlive.Count == 0 &&
+                    ArsoAlive.Count == 0 &&
+                    GlitchAlive.Count == 0 &&
+                    JuggernautAlive.Count == 0 &&
+                    ImpostorsAlive.Count == 0 &&
+                    AliveSerialKiller.Count == 0 &&
+                    WerewolfAlive.Count == 0 &&
+                    CrewKillerAlive.Count == 0)
+                    {
+                        VampireWins = true;
+                        Rpc(CustomRPC.TeamVampiresWin);
+                        EndGame();
+                        yield break;
+                    }
+
                 
                 if (PlaguebearerAlive.Count >= PassiveAlive.Count - PlaguebearerAlive.Count && 
                     GlitchAlive.Count == 0 &&
