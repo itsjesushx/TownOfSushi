@@ -42,6 +42,8 @@ namespace TownOfSushi.Extensions
                 return appearance;
             else if (player.TryGetAppearance(GetModifier(player) as IVisualAlteration, out appearance))
                 return appearance;
+            else if (player.TryGetAppearance(GetAbility(player) as IVisualAlteration, out appearance))
+                return appearance;
             else
                 return player.GetDefaultAppearance();
         }
