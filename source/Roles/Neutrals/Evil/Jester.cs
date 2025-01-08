@@ -33,10 +33,12 @@ namespace TownOfSushi.Roles
             yield return new WaitForSeconds(7f);
 
             var exiled = __instance.initData.networkedPlayer;
+            
+            if (exiled == null) yield break;
+
             var player = exiled.Object;
             var role = GetPlayerRole(player);
 
-            if (exiled == null) yield break;            
             if (role == null) yield break;
 
             if (role.RoleType == RoleEnum.Jester)

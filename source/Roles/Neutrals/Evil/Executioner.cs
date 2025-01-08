@@ -37,16 +37,18 @@ namespace TownOfSushi.Roles
             yield return new WaitForSeconds(7f);
 
             var exiled = __instance.initData.networkedPlayer;
-            var player = exiled.Object;
+
             if (exiled == null) yield break;
+
+            var player = exiled.Object;
 
             foreach (var role in GetRoles(RoleEnum.Executioner))
             if (player.PlayerId == ((Executioner)role).target.PlayerId)
             {
                 ExecutionerWin = true;
-                Rpc(CustomRPC.ExecutionerWin);                
+                Rpc(CustomRPC.ExecutionerWin);
                 EndGame();
-            }        
+            }
         }
     }
 

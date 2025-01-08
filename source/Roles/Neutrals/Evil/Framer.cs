@@ -135,14 +135,16 @@ namespace TownOfSushi.Roles
             yield return new WaitForSeconds(7f);
 
             var exiled = __instance.initData.networkedPlayer;
-            var player = exiled.Object;
+            
             if (exiled == null) yield break;
 
+            var player = exiled.Object;
+
             foreach (var role in GetRoles(RoleEnum.Framer))
-            if (player.PlayerId == ((Framer)role).Target.PlayerId)
+            if (((Framer)role).Target != null && player.PlayerId == ((Framer)role).Target.PlayerId)
             {
                 FramerWin = true;
-                Rpc(CustomRPC.FramerWin);                
+                Rpc(CustomRPC.FramerWin);
                 EndGame();
             }
         }

@@ -155,6 +155,14 @@ namespace TownOfSushi.Roles
                     PlayerName += "<color=#CCCCCCFF> [⦿]</color>";
                 }
             }
+            foreach (var role in GetRoles(RoleEnum.Framer))
+            {
+                var framer = (Framer) role;
+                if (Player == framer.Target && PlayerControl.LocalPlayer.Data.IsDead && !framer.Player.Data.IsDead)
+                {
+                    PlayerName += "<color=#EDE461> [F]</color>";
+                }
+            }
             foreach (var role in GetRoles(RoleEnum.Arsonist))
             {
                 var arsonist = (Arsonist) role;
@@ -448,6 +456,7 @@ namespace TownOfSushi.Roles
                 {
                     if (ShipStatus.Instance.Systems.ContainsKey(SystemTypes.LifeSupp))
                     {
+                        if (PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 2) return false;
                         var lifeSuppSystemType = ShipStatus.Instance.Systems[SystemTypes.LifeSupp].Cast<LifeSuppSystemType>();
                         if (lifeSuppSystemType.Countdown < 0f)
                         {

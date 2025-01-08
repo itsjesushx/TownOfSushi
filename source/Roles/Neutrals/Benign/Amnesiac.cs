@@ -334,7 +334,7 @@ namespace TownOfSushi.Roles
                 }
                 else
                 {
-                    if (role != RoleEnum.Vampire) 
+                    if (role != RoleEnum.Vampire  || role != RoleEnum.Framer) 
                     {
                         var romantic = new Amnesiac(other);
                         romantic.ReDoTaskText();
@@ -344,12 +344,18 @@ namespace TownOfSushi.Roles
                         var vampire = new Vampire(other);
                         vampire.ReDoTaskText();
                     }
+                    if (role == RoleEnum.Framer) 
+                    {
+                        var Framer = new Framer(other);
+                        Framer.ReDoTaskText();
+                    }
                     if (role == RoleEnum.Plaguebearer ||
                         role == RoleEnum.Arsonist || role == RoleEnum.Glitch
                        || role == RoleEnum.Pestilence || role == RoleEnum.Hitman
                        || role == RoleEnum.Agent || role == RoleEnum.SerialKiller
                        || role == RoleEnum.Juggernaut || role == RoleEnum.Vampire)
                     {
+                        AbilityDictionary.Remove(other.PlayerId);
                         if (CustomGameOptions.AmneTurnNeutAssassin) new Assassin(amnesiac);
                         if (other.Is(AbilityEnum.Assassin)) AbilityDictionary.Remove(other.PlayerId);
                     }
