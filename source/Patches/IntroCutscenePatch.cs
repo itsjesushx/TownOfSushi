@@ -93,7 +93,8 @@ namespace TownOfSushi.Patches
             }
         }
 
-        public static IEnumerator<WaitForSeconds> EndShowRole(IntroCutscene __instance) {
+        public static IEnumerator<WaitForSeconds> EndShowRole(IntroCutscene __instance) 
+        {
             yield return new WaitForSeconds(5f);
             __instance.YouAreText.gameObject.SetActive(false);
             __instance.RoleText.gameObject.SetActive(false);

@@ -71,6 +71,30 @@ namespace TownOfSushi.Roles
         }
     }
     
+    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Update))]
+    public static class WitchMeetingHudUpdate
+    {
+        public static void Postfix(MeetingHud __instance)
+        {
+            var localPlayer = PlayerControl.LocalPlayer;
+            var _role = GetPlayerRole(localPlayer);
+            if (_role?.RoleType != RoleEnum.Witch) return;
+            if (localPlayer.Data.IsDead) return;
+            var role = (Witch)_role;
+            foreach (var state in __instance.playerStates)
+            {
+                var targetId = state.TargetPlayerId;
+                var playerData = PlayerById(targetId)?.Data;
+                if (playerData == null || playerData.Disconnected)
+                {
+                    role.SpelledPlayers.Remove(targetId);
+                    continue;
+                }
+                if (role.SpelledPlayers.Contains(targetId)) state.NameText.text += " <color=#FF0000FF> [†]</color>";
+            }
+        }
+    }
+
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]   
     public class HudCurse
     {
