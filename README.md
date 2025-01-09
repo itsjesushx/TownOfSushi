@@ -34,7 +34,6 @@
 | |[Trapper](#trapper) | [Serial Killer](#serial-killer) |  |
 | |  | [Juggernaut](#juggernaut)  |  |
 | | |[Plaguebearer](#plaguebearer) |  |
-| | | |  |
 
 -----------------------
 # Releases
@@ -1211,8 +1210,8 @@ If you have any bugs or any need to contact me, join the [Discord Server](https:
 [Lifeboat](https://github.com/SubmergedAmongUs/Lifeboat) - Useful Methods class.\
 [Reactor](https://github.com/NuclearPowered/Reactor) - The framework of the mod.\
 [SuperNewRoles](https://github.com/SuperNewRoles/SuperNewRoles)  - For the Disable Lobby Music option.\
-[TownOfUs Reworked](https://github.com/AlchlcDvl/TownOfUsReworked) - Random Spawns option, part of the End Game Summary rework code, the Death Reason code, Some of the Vulture.cs code & more\
-[Stellar Roles](https://github.com/Mr-Fluuff/StellarRolesAU/) - Main Menu Patch, some of the End Game Summary rework code & Custom Message code.\
+[TownOfUs Reworked](https://github.com/AlchlcDvl/TownOfUsReworked) - Part of the End Game Summary rework code, the Death Reason code, Some of the Vulture.cs code & more\
+[Stellar Roles](https://github.com/Mr-Fluuff/StellarRolesAU/) - For the Romantic Role, Main Menu Patch, some of the End Game Summary rework code & Custom Message code.\
 [BepInEx](https://github.com/BepInEx) - For hooking game functions\
 [Among-Us-Vigilante-Mod](https://github.com/Woodi-dev/Among-Us-Vigilante-Mod) - For the Vigilante role.\
 [Among-Us-Love-Couple-Mod](https://github.com/Woodi-dev/Among-Us-Love-Couple-Mod) - For the inspiration of Lovers role.\
