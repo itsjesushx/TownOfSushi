@@ -62,10 +62,6 @@ namespace TownOfSushi
         {
             bool TryGetModifiedAppearance(out VisualAppearance appearance);
         }
-        public interface IVisualAlteration2
-        {
-            bool TryGetModifiedAppearance2(out VisualAppearance appearance);
-        }
 
         public static void GroupCamouflage()
         {
