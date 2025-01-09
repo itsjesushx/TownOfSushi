@@ -30,7 +30,6 @@ namespace TownOfSushi.Roles
             Color = Colors.Vigilante;
             RoleType = RoleEnum.Vigilante;
             Faction = Faction.Crewmates;
-
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.CrewKilling;
             RemainingKills = CustomGameOptions.VigilanteKills;
@@ -140,8 +139,8 @@ namespace TownOfSushi.Roles
             if (vigilanteUI != null || !(__instance.state == MeetingHud.VoteStates.Voted || __instance.state == MeetingHud.VoteStates.NotVoted)) return;
             __instance.playerStates.ToList().ForEach(x => x.gameObject.SetActive(false));
             
-            Transform PhoneUI = UnityEngine.Object.FindObjectsOfType<Transform>().FirstOrDefault(x => x.name == "PhoneUI");
-            Transform container = UnityEngine.Object.Instantiate(PhoneUI, __instance.transform);
+            Transform PhoneUI = Object.FindObjectsOfType<Transform>().FirstOrDefault(x => x.name == "PhoneUI");
+            Transform container = Object.Instantiate(PhoneUI, __instance.transform);
             container.transform.localPosition = new Vector3(0, 0, -5f);
             vigilanteUI = container.gameObject;
 
@@ -167,7 +166,7 @@ namespace TownOfSushi.Roles
                     x.gameObject.SetActive(true);
                     if (PlayerControl.LocalPlayer.Data.IsDead && x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("ShootButton").gameObject);
                 });
-                UnityEngine.Object.Destroy(container.gameObject);
+                Object.Destroy(container.gameObject);
             }));
 
             List<Transform> buttons = new List<Transform>();
@@ -177,9 +176,9 @@ namespace TownOfSushi.Roles
             {
                 Transform buttonParent = (new GameObject()).transform;
                 buttonParent.SetParent(container);
-                Transform button = UnityEngine.Object.Instantiate(buttonTemplate, buttonParent);
-                Transform buttonMask = UnityEngine.Object.Instantiate(maskTemplate, buttonParent);
-                TMPro.TextMeshPro label = UnityEngine.Object.Instantiate(textTemplate, button);
+                Transform button = Object.Instantiate(buttonTemplate, buttonParent);
+                Transform buttonMask = Object.Instantiate(maskTemplate, buttonParent);
+                TMPro.TextMeshPro label = Object.Instantiate(textTemplate, button);
                 button.GetComponent<SpriteRenderer>().sprite = ShipStatus.Instance.CosmeticsCache.GetNameplate("nameplate_NoPlate").Image;
                 buttons.Add(button);
                 int row = i/5, col = i%5;

@@ -30,8 +30,9 @@ namespace TownOfSushi.Patches
             }
         }
 
-        static void populateButtonsPostfix(MeetingHud __instance) {
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Vigilante) && !PlayerControl.LocalPlayer.IsJailed() && !PlayerControl.LocalPlayer.Data.IsDead && GetRole<Vigilante>(PlayerControl.LocalPlayer).RemainingKills > 0)
+        static void PopulateButtonsPostfix(MeetingHud __instance) 
+        {
+            if (PlayerControl.LocalPlayer.Is(RoleEnum.Vigilante) && !PlayerControl.LocalPlayer.IsJailed() && !PlayerControl.LocalPlayer.Data.IsDead  && PlayerControl.LocalPlayer != StartImitate.ImitatingPlayer && GetRole<Vigilante>(PlayerControl.LocalPlayer).RemainingKills > 0)
             {
                 for (int i = 0; i < __instance.playerStates.Length; i++)
                 {
@@ -39,7 +40,7 @@ namespace TownOfSushi.Patches
                     if (AddButtonVigilante.IsExempt(playerVoteArea)) continue;
 
                     GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
-                    GameObject targetBox = UnityEngine.Object.Instantiate(template, playerVoteArea.transform);
+                    GameObject targetBox = Object.Instantiate(template, playerVoteArea.transform);
                     targetBox.name = "ShootButton";
                     targetBox.transform.localPosition = new Vector3(-0.95f, 0.03f, -1.3f);
                     SpriteRenderer renderer = targetBox.GetComponent<SpriteRenderer>();
@@ -96,7 +97,7 @@ namespace TownOfSushi.Patches
         class MeetingServerStartPatch {
             static void Postfix(MeetingHud __instance)
             {
-                populateButtonsPostfix(__instance);
+                PopulateButtonsPostfix(__instance);
             }
         }
 
@@ -105,7 +106,7 @@ namespace TownOfSushi.Patches
             static void Postfix(MeetingHud __instance, [HarmonyArgument(0)]MessageReader reader, [HarmonyArgument(1)]bool initialState)
             {
                 if (initialState) {
-                    populateButtonsPostfix(__instance);
+                    PopulateButtonsPostfix(__instance);
                 }
             }
         }

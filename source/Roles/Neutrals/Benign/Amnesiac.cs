@@ -339,12 +339,12 @@ namespace TownOfSushi.Roles
                         var romantic = new Amnesiac(other);
                         romantic.ReDoTaskText();
                     }
-                    if (role == RoleEnum.Vampire) 
+                    if (role == RoleEnum.Vampire)
                     {
                         var vampire = new Vampire(other);
                         vampire.ReDoTaskText();
                     }
-                    if (role == RoleEnum.Framer) 
+                    if (role == RoleEnum.Framer)
                     {
                         var Framer = new Framer(other);
                         Framer.ReDoTaskText();
@@ -355,8 +355,12 @@ namespace TownOfSushi.Roles
                        || role == RoleEnum.Agent || role == RoleEnum.SerialKiller
                        || role == RoleEnum.Juggernaut || role == RoleEnum.Vampire)
                     {
-                        AbilityDictionary.Remove(other.PlayerId);
-                        if (CustomGameOptions.AmneTurnNeutAssassin) new Assassin(amnesiac);
+                        if (CustomGameOptions.AmneTurnNeutAssassin) 
+                        {
+                            AbilityDictionary.Remove(amnesiac.PlayerId);
+                            var assassin = new Assassin(amnesiac);
+                            assassin.ReDoTaskText();
+                        }
                         if (other.Is(AbilityEnum.Assassin)) AbilityDictionary.Remove(other.PlayerId);
                     }
                 }
@@ -374,7 +378,12 @@ namespace TownOfSushi.Roles
                         player.nameText().color = Colors.Impostor;
                     }
                 }
-                if (CustomGameOptions.AmneTurnImpAssassin) new Assassin(amnesiac);
+                if (CustomGameOptions.AmneTurnImpAssassin)
+                {
+                    AbilityDictionary.Remove(amnesiac.PlayerId);
+                    var assassin = new Assassin(amnesiac);
+                    assassin.ReDoTaskText();
+                }
             }
 
             if (role == RoleEnum.Romantic)

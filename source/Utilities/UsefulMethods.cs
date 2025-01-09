@@ -1,6 +1,5 @@
 using System.Collections;
 using BepInEx.Unity.IL2CPP.Utils;
-
 using TMPro;
 
 namespace TownOfSushi.Utilities;
