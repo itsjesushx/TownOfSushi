@@ -7,7 +7,7 @@
 ### ***- This mod is just a hobby so updates may not be so fast.***
 ### ***- This mod is NOT for mobile and console versions.***
 ### ***- This README page is currently under editing, most things here are either missing or subject to change.***
-### ***- Join the [Discord Server](https://discord.gg/CBhjFw6Wqb) for suggestions or any problems!***
+### ***- Join my [Discord Server](https://discord.gg/CBhjFw6Wqb) for suggestions or any problems!***
 
 [**Installation**](#installation)
 - [Requirements](#requirements)
