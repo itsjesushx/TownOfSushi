@@ -28,7 +28,6 @@ namespace TownOfSushi.Roles
             LoreText = "A lost soul, you are haunted by the roles of those who have passed. As the Amnesiac, you have the unique ability to remember the role of a deceased player, adopting their powers and abilities. With each life lost, you gain the chance to assume a new identity, allowing you to shift allegiances and goals in a bid to survive and thrive in the chaos.";
             Color = Colors.Amnesiac;
             RoleType = RoleEnum.Amnesiac;
-
             Faction = Faction.Neutral;
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.NeutralBenign;
@@ -227,7 +226,6 @@ namespace TownOfSushi.Roles
 
     public static class RememberRole
     {
-        public static Sprite Sprite => TownOfSushi.Arrow;
         public static void Remember(Amnesiac amneRole, PlayerControl other)
         {
             var role = GetRole(other);
@@ -352,10 +350,11 @@ namespace TownOfSushi.Roles
                     if (role == RoleEnum.Plaguebearer ||
                         role == RoleEnum.Arsonist || role == RoleEnum.Glitch
                        || role == RoleEnum.Pestilence || role == RoleEnum.Hitman
+                       || role == RoleEnum.Vampire
                        || role == RoleEnum.Agent || role == RoleEnum.SerialKiller
                        || role == RoleEnum.Juggernaut || role == RoleEnum.Vampire)
                     {
-                        if (CustomGameOptions.AmneTurnNeutAssassin) 
+                        if (CustomGameOptions.AmneTurnNeutAssassin)
                         {
                             AbilityDictionary.Remove(amnesiac.PlayerId);
                             var assassin = new Assassin(amnesiac);

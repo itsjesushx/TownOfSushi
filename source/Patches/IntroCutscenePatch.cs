@@ -77,8 +77,19 @@ namespace TownOfSushi.Patches
                 var neutralColor = new Color32(76, 84, 78, 255);
                 __instance.BackgroundBar.material.color = neutralColor;
                 __instance.TeamTitle.text = "Neutral";
-                PlayerControl.LocalPlayer.Data.Role.IntroSound = GetIntroSound(RoleTypes.Shapeshifter);
                 __instance.TeamTitle.color = neutralColor;
+                if (PlayerControl.LocalPlayer.Is(RoleAlignment.NeutralKilling))
+                {
+                    PlayerControl.LocalPlayer.Data.Role.IntroSound = GetIntroSound(RoleTypes.Shapeshifter);
+                }
+                if (PlayerControl.LocalPlayer.Is(RoleAlignment.NeutralEvil))
+                {
+                    PlayerControl.LocalPlayer.Data.Role.IntroSound = GetIntroSound(RoleTypes.Phantom);
+                }
+                if (PlayerControl.LocalPlayer.Is(RoleAlignment.NeutralBenign))
+                {
+                    PlayerControl.LocalPlayer.Data.Role.IntroSound = GetIntroSound(RoleTypes.GuardianAngel);
+                }
             }
         }
 
