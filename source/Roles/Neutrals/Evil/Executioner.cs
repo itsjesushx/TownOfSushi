@@ -46,7 +46,7 @@ namespace TownOfSushi.Roles
             if (player.PlayerId == ((Executioner)role).target.PlayerId)
             {
                 ExecutionerWin = true;
-                Rpc(CustomRPC.ExecutionerWin);
+                StartRPC(CustomRPC.ExecutionerWin);
                 EndGame();
             }
         }
@@ -79,7 +79,7 @@ namespace TownOfSushi.Roles
             if (!role.target.Data.IsDead && !role.target.Data.Disconnected && !role.target.Is(RoleEnum.Vampire)) return;
             if (ExecutionerWin) return;
 
-            Rpc(CustomRPC.ExecutionerToJester, PlayerControl.LocalPlayer.PlayerId);
+            StartRPC(CustomRPC.ExecutionerToJester, PlayerControl.LocalPlayer.PlayerId);
 
             ExecutionerChangeRole(PlayerControl.LocalPlayer);
         }

@@ -58,7 +58,7 @@ namespace TownOfSushi.Roles
                 if (interact[3] == true)
                 {
                     VampirePerformConvert.Convert(role.ClosestPlayer);
-                    Rpc(CustomRPC.Bite, role.ClosestPlayer.PlayerId);
+                    StartRPC(CustomRPC.Bite, role.ClosestPlayer.PlayerId);
                 }
                 if (interact[0] == true)
                 {

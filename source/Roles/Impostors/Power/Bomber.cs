@@ -70,7 +70,7 @@ namespace TownOfSushi.Roles
                 else if (player.IsShielded())
                 {
                     var medic = player.GetMedic().Player.PlayerId;
-                    Rpc(CustomRPC.AttemptSound, medic, player.PlayerId);
+                    StartRPC(CustomRPC.AttemptSound, medic, player.PlayerId);
                     MedicStopKill.BreakShield(medic, player.PlayerId, CustomGameOptions.ShieldBreaks);
                 }
             }
@@ -189,7 +189,7 @@ namespace TownOfSushi.Roles
                     else PlayerControl.LocalPlayer.SetKillTimer(GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown + CustomGameOptions.DetonateDelay);
                     DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(null);
                     role.Bomb = BombExtentions.CreateBomb(pos);
-                    Rpc(CustomRPC.Plant, pos.x, pos.y, pos.z);
+                    StartRPC(CustomRPC.Plant, pos.x, pos.y, pos.z);
                     return false;
                 }
                 else return false;

@@ -17,7 +17,7 @@ namespace TownOfSushi
     public class TownOfSushi : BasePlugin
     {
         public const string Id = "me.itsjesushx.townofsushi";
-        public const string VersionString = "1.2.0";
+        public const string VersionString = "1.2.1";
         public static Version Version = Version.Parse(VersionString);
         internal static BepInEx.Logging.ManualLogSource Logger;
         public Harmony Harmony { get; } = new Harmony(Id);
@@ -179,11 +179,12 @@ namespace TownOfSushi
             PalettePatch.Load();
             CustomHatManager.LoadHats();
             ClassInjector.RegisterTypeInIl2Cpp<ColorBehaviour>();
-            _ = CredentialsPatch.MOTD.LoadMOTDs();
             Harmony.PatchAll();
             AddComponent<ModUpdateBehaviour>();
             SubmergedCompatibility.Initialize();
+            
             ServerManager.DefaultRegions = new Il2CppReferenceArray<IRegionInfo>(new IRegionInfo[0]);
+            
             DeadSeeGhosts = Config.Bind("Settings", "Dead See Other Ghosts", true, "Whether you see other dead player's ghosts while your dead");
             DeadSeeRoles = Config.Bind("Settings", "Dead See Roles", true, "Whether you see other dead player's role while your dead");
             DeadSeeTasks = Config.Bind("Settings", "Dead See Tasks", true, "Whether you see other dead player's task while you're dead");

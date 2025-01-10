@@ -135,7 +135,7 @@ namespace TownOfSushi.Roles
                     role.StalkedPlayer = role.ClosestStalkPlayer;
                     role.MaxUses--;
                     role.Stalk();
-                    Rpc(CustomRPC.HunterStalk, PlayerControl.LocalPlayer.PlayerId, role.ClosestStalkPlayer.PlayerId);
+                    StartRPC(CustomRPC.HunterStalk, PlayerControl.LocalPlayer.PlayerId, role.ClosestStalkPlayer.PlayerId);
                 }
                 if (stalkInteract[0] == true)
                 {

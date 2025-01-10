@@ -242,14 +242,13 @@ namespace TownOfSushi.Roles
         public static T Gen<T>(Type type, PlayerControl player, CustomRPC rpc)
         {
             var role = (T)Activator.CreateInstance(type, new object[] { player });
-            Rpc(rpc, player.PlayerId);
+            StartRPC(rpc, player.PlayerId);
             return role;
         }
         public static T GenRole<T>(Type type, PlayerControl player)
         {
             var role = (T)Activator.CreateInstance(type, new object[] { player });
-            Rpc(CustomRPC.SetRole, player.PlayerId, (string)type.FullName);
-            System.Console.WriteLine($"{player.Data.DefaultOutfit.PlayerName} GETS THE ROLE {(string)type.FullName}");
+            StartRPC(CustomRPC.SetRole, player.PlayerId, (string)type.FullName);
             return role;
         }
         public static T GenRole<T>(Type type, List<PlayerControl> players)
@@ -435,7 +434,7 @@ namespace TownOfSushi.Roles
 
             if (CheckNoImpsNoCrews())
             {
-                Rpc(CustomRPC.NobodyWins);
+                StartRPC(CustomRPC.NobodyWins);
                 NobodyWins = true;
                 EndGame(GameOverReason.ImpostorDisconnect);
                 return false;
@@ -462,7 +461,7 @@ namespace TownOfSushi.Roles
                         {
                             if (PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 2) return false;
                             ImpostorsWin = true;
-                            Rpc(CustomRPC.ImpostorWin);
+                            StartRPC(CustomRPC.ImpostorWin);
                             EndGame();
                             return false;
                         }
@@ -475,7 +474,7 @@ namespace TownOfSushi.Roles
                         if (reactorSystemType.Countdown < 0f)
                         {
                             ImpostorsWin = true;
-                            Rpc(CustomRPC.ImpostorWin);
+                            StartRPC(CustomRPC.ImpostorWin);
                             EndGame();
                             return false;
                         }
@@ -488,7 +487,7 @@ namespace TownOfSushi.Roles
                         if (reactorSystemType.Countdown < 0f)
                         {
                             ImpostorsWin = true;
-                            Rpc(CustomRPC.ImpostorWin);
+                            StartRPC(CustomRPC.ImpostorWin);
                             EndGame();
                             return false;
                         }
@@ -501,7 +500,7 @@ namespace TownOfSushi.Roles
                     if (crews.Count != 0)
                     {
                         CrewmatesWin = true;
-                        Rpc(CustomRPC.CrewmateWin);
+                        StartRPC(CustomRPC.CrewmateWin);
                         EndGame(GameOverReason.HumansByVote);
                         return false;
                     }

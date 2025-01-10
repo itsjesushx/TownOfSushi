@@ -232,7 +232,7 @@ namespace TownOfSushi.Roles
         {
             MurderPlayer(doomsayerP, voteArea, player);
             DoomKillCount(player, doomsayer);
-            Utils.Rpc(CustomRPC.DoomsayerKill, player.PlayerId, doomsayer.PlayerId);
+            Utils.StartRPC(CustomRPC.DoomsayerKill, player.PlayerId, doomsayer.PlayerId);
         }
 
         public static void MurderPlayer(Doomsayer doomsayerP, PlayerControl player)
@@ -250,7 +250,7 @@ namespace TownOfSushi.Roles
             if (doom.GuessedCorrectly == CustomGameOptions.DoomsayerGuessesToWin)
             {
                 DoomsayerWin = true;
-                Rpc(CustomRPC.DoomsayerWin);
+                StartRPC(CustomRPC.DoomsayerWin);
                 EndGame();
             }
         }
@@ -336,7 +336,7 @@ namespace TownOfSushi.Roles
                     swapper.Buttons.Clear();
                     SwapVotes.Swap1 = null;
                     SwapVotes.Swap2 = null;
-                    Rpc(CustomRPC.SetSwaps, sbyte.MaxValue, sbyte.MaxValue);
+                    StartRPC(CustomRPC.SetSwaps, sbyte.MaxValue, sbyte.MaxValue);
                 }
 
                 

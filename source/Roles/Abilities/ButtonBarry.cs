@@ -47,7 +47,7 @@ namespace TownOfSushi.Roles.Abilities
 
             role.ButtonUsed = true;
 
-            Rpc(CustomRPC.BarryButton, PlayerControl.LocalPlayer.PlayerId);
+            StartRPC(CustomRPC.BarryButton, PlayerControl.LocalPlayer.PlayerId);
 
             if (AmongUsClient.Instance.AmHost)
             {

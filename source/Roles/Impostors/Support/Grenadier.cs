@@ -296,7 +296,7 @@ namespace TownOfSushi.Roles
                 var abilityUsed = AbilityUsed(PlayerControl.LocalPlayer);
                 if (!abilityUsed) return false;
 
-                Rpc(CustomRPC.FlashGrenade, PlayerControl.LocalPlayer.PlayerId);
+                StartRPC(CustomRPC.FlashGrenade, PlayerControl.LocalPlayer.PlayerId);
                 role.TimeRemaining = CustomGameOptions.GrenadeDuration;
                 role.Flash();
                 return false;

@@ -220,7 +220,7 @@ namespace TownOfSushi.Roles
 
                 if (SwapVotes.Swap1 == null || SwapVotes.Swap2 == null) return true;
 
-                Utils.Rpc(CustomRPC.SetSwaps, SwapVotes.Swap1.TargetPlayerId, SwapVotes.Swap2.TargetPlayerId);
+                Utils.StartRPC(CustomRPC.SetSwaps, SwapVotes.Swap1.TargetPlayerId, SwapVotes.Swap2.TargetPlayerId);
                 return true;
             }
         }
@@ -345,11 +345,11 @@ namespace TownOfSushi.Roles
 
                 if (SwapVotes.Swap1 == null || SwapVotes.Swap2 == null)
                 {
-                    Utils.Rpc(CustomRPC.SetSwaps, sbyte.MaxValue, sbyte.MaxValue);
+                    Utils.StartRPC(CustomRPC.SetSwaps, sbyte.MaxValue, sbyte.MaxValue);
                     return;
                 }
 
-                Utils.Rpc(CustomRPC.SetSwaps, SwapVotes.Swap1.TargetPlayerId, SwapVotes.Swap2.TargetPlayerId);
+                Utils.StartRPC(CustomRPC.SetSwaps, SwapVotes.Swap1.TargetPlayerId, SwapVotes.Swap2.TargetPlayerId);
             }
 
             return Listener;

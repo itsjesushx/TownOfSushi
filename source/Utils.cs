@@ -24,7 +24,6 @@ namespace TownOfSushi
         {
             player.SetOutfit(CustomPlayerOutfitType.Default);
         }
-
         public class VisualAppearance    
         {        
             public float SpeedFactor { get; set; } = 1.0f;        
@@ -49,7 +48,7 @@ namespace TownOfSushi
             }
             var targetId = byte.MaxValue;
             if (target != null) targetId = target.PlayerId;
-            Rpc(CustomRPC.AbilityTrigger, player.PlayerId, targetId);
+            StartRPC(CustomRPC.AbilityTrigger, player.PlayerId, targetId);
             foreach (Role hunterRole in GetRoles(RoleEnum.Hunter))
             {
                 Hunter hunter = (Hunter)hunterRole;
@@ -175,9 +174,7 @@ namespace TownOfSushi
             
             var taskersFlag = player.Is(Faction.Crewmates) || player.Is(RoleEnum.Agent) || player.Is(RoleAlignment.NeutralBenign);
             var noTaskers = player.Is(Faction.Neutral) || player.Is(Faction.Impostors);
-            var flag1 = taskersFlag;
-            var flag2 = noTaskers;
-            var flag = flag1 || !flag2;
+            var flag = taskersFlag && !noTaskers;
             return flag;
         }
 
@@ -357,7 +354,7 @@ namespace TownOfSushi
                 if (player.IsShielded())
                 {
                     var medic = player.GetMedic().Player.PlayerId;
-                    Rpc(CustomRPC.AttemptSound, medic, player.PlayerId);
+                    StartRPC(CustomRPC.AttemptSound, medic, player.PlayerId);
 
                     if (CustomGameOptions.ShieldBreaks) fullCooldownReset = true;
                     else zeroSecReset = true;
@@ -377,7 +374,7 @@ namespace TownOfSushi
                 else if (player.IsShielded())
                 {
                     var medic = player.GetMedic().Player.PlayerId;
-                    Rpc(CustomRPC.AttemptSound, medic, player.PlayerId);
+                    StartRPC(CustomRPC.AttemptSound, medic, player.PlayerId);
 
                     if (CustomGameOptions.ShieldBreaks) fullCooldownReset = true;
                     else zeroSecReset = true;
@@ -393,7 +390,7 @@ namespace TownOfSushi
                     if (target.IsShielded())
                     {
                         var medic = target.GetMedic().Player.PlayerId;
-                        Rpc(CustomRPC.AttemptSound, medic, target.PlayerId);
+                        StartRPC(CustomRPC.AttemptSound, medic, target.PlayerId);
 
                         if (CustomGameOptions.ShieldBreaks) fullCooldownReset = true;
                         else zeroSecReset = true;
@@ -450,7 +447,7 @@ namespace TownOfSushi
             }
             else if (target.IsShielded() && IsBeingKilled)
             {
-                Rpc(CustomRPC.AttemptSound, target.GetMedic().Player.PlayerId, target.PlayerId);
+                StartRPC(CustomRPC.AttemptSound, target.GetMedic().Player.PlayerId, target.PlayerId);
 
                 System.Console.WriteLine(CustomGameOptions.ShieldBreaks + "- shield break");
                 if (CustomGameOptions.ShieldBreaks) fullCooldownReset = true;
@@ -606,19 +603,19 @@ namespace TownOfSushi
         public static void RpcMurderPlayer(PlayerControl killer, PlayerControl target)
         {
             MurderPlayer(killer, target, true);
-            Rpc(CustomRPC.BypassKill, killer.PlayerId, target.PlayerId);
+            StartRPC(CustomRPC.BypassKill, killer.PlayerId, target.PlayerId);
         }
 
         public static void RpcMurderPlayerNoJump(PlayerControl killer, PlayerControl target)
         {
             MurderPlayer(killer, target, false);
-            Rpc(CustomRPC.BypassKill2, killer.PlayerId, target.PlayerId);
+            StartRPC(CustomRPC.BypassKill2, killer.PlayerId, target.PlayerId);
         }
 
         public static void RpcMultiMurderPlayer(PlayerControl killer, PlayerControl target)
         {
             MurderPlayer(killer, target, false);
-            Rpc(CustomRPC.BypassMultiKill, killer.PlayerId, target.PlayerId);
+            StartRPC(CustomRPC.BypassMultiKill, killer.PlayerId, target.PlayerId);
         }
 
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.StartMeeting))]
@@ -999,7 +996,7 @@ namespace TownOfSushi
                     {
                         if (body.ParentId == target.PlayerId)
                         {
-                            Rpc(CustomRPC.BaitReport, killer.PlayerId, target.PlayerId);
+                            StartRPC(CustomRPC.BaitReport, killer.PlayerId, target.PlayerId);
                             break;
                         }
                     }
@@ -1057,15 +1054,15 @@ namespace TownOfSushi
             return first.Zip(second, (x, y) => (x, y));
         }
 
-        public static void Flash(Color color, float duration=1f) 
+        public static void Flash(Color color, float duration = 1f) 
         {
-            if (FastDestroyableSingleton<HudManager>.Instance == null || FastDestroyableSingleton<HudManager>.Instance.FullScreen == null) return;
-            FastDestroyableSingleton<HudManager>.Instance.FullScreen.gameObject.SetActive(true);
-            FastDestroyableSingleton<HudManager>.Instance.FullScreen.enabled = true;
-            FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(duration, new Action<float>((p) => {
-                var renderer = FastDestroyableSingleton<HudManager>.Instance.FullScreen;
+            if (DestroyableSingleton<HudManager>.Instance == null || DestroyableSingleton<HudManager>.Instance.FullScreen == null) return;
+            DestroyableSingleton<HudManager>.Instance.FullScreen.gameObject.SetActive(true);
+            DestroyableSingleton<HudManager>.Instance.FullScreen.enabled = true;
+            DestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(duration, new Action<float>((p) => {
+                var renderer = DestroyableSingleton<HudManager>.Instance.FullScreen;
 
-                if (p < 0.5) 
+                if (p < 0.5)
                 {
                     if (renderer != null)
                         renderer.color = new Color(color.r, color.g, color.b, Mathf.Clamp01(p * 2 * 0.75f));
@@ -1075,40 +1072,6 @@ namespace TownOfSushi
                 }
                 if (p == 1f && renderer != null) renderer.enabled = false;
             })));
-        }
-
-        public static void RemoveTasks(this PlayerControl player)
-        {
-            var totalTasks = GameOptionsManager.Instance.currentNormalGameOptions.NumCommonTasks + GameOptionsManager.Instance.currentNormalGameOptions.NumLongTasks +
-                             GameOptionsManager.Instance.currentNormalGameOptions.NumShortTasks;
-
-
-            foreach (var task in player.myTasks)
-                if (task.TryCast<NormalPlayerTask>() != null)
-                {
-                    var normalPlayerTask = task.Cast<NormalPlayerTask>();
-
-                    var updateArrow = normalPlayerTask.taskStep > 0;
-
-                    normalPlayerTask.taskStep = 0;
-                    normalPlayerTask.Initialize();
-                    if (normalPlayerTask.TaskType == TaskTypes.PickUpTowels)
-                        foreach (var console in Object.FindObjectsOfType<TowelTaskConsole>())
-                            console.Image.color = Color.white;
-                    normalPlayerTask.taskStep = 0;
-                    if (normalPlayerTask.TaskType == TaskTypes.UploadData)
-                        normalPlayerTask.taskStep = 1;
-                    if ((normalPlayerTask.TaskType == TaskTypes.EmptyGarbage || normalPlayerTask.TaskType == TaskTypes.EmptyChute)
-                        && (GameOptionsManager.Instance.currentNormalGameOptions.MapId == 0 ||
-                        GameOptionsManager.Instance.currentNormalGameOptions.MapId == 3 ||
-                        GameOptionsManager.Instance.currentNormalGameOptions.MapId == 4))
-                        normalPlayerTask.taskStep = 1;
-                    if (updateArrow)
-                        normalPlayerTask.UpdateArrowAndLocation();
-
-                    var taskInfo = player.Data.FindTaskById(task.Id);
-                    taskInfo.Complete = false;
-                }
         }
 
         public static void DestroyAll(this IEnumerable<Component> listie)
@@ -1129,7 +1092,7 @@ namespace TownOfSushi
             }
         }
 
-        public static void Rpc(params object[] data)
+        public static void StartRPC(params object[] data)
         {
             if (data[0] is not CustomRPC) throw new ArgumentException($"first parameter must be a {typeof(CustomRPC).FullName}");
 
@@ -1194,8 +1157,10 @@ namespace TownOfSushi
         }      
 
         [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Update))]
-        class MeetingHudUpdatePatch {
-            static void Postfix(MeetingHud __instance) {
+        class MeetingHudUpdatePatch
+        {
+            static void Postfix(MeetingHud __instance) 
+            {
                 // Deactivate skip Button if skipping on emergency meetings is disabled 
                 if ((voteTarget == null && CustomGameOptions.SkipButtonDisable == DisableSkipButtonMeetings.Emergency) || (CustomGameOptions.SkipButtonDisable == DisableSkipButtonMeetings.Always)) {
                     __instance.SkipVoteButton.gameObject.SetActive(false);
@@ -1296,7 +1261,7 @@ namespace TownOfSushi
 
         public static bool IsKillingRole(this PlayerControl player)
         {
-            if ( player.Is(Faction.Impostors) || player.Is(RoleAlignment.NeutralKilling)) return true;
+            if (player.Is(Faction.Impostors) || player.Is(RoleAlignment.NeutralKilling)) return true;
             return false;
         }
 
@@ -1630,38 +1595,6 @@ namespace TownOfSushi
                 TownOfSushi.Logger.LogError("Error loading sprite from path: " + path);
             }
             return null;
-        }
-        
-        //Code from TOH-Enhanced
-        public static string GetRegionName(IRegionInfo region = null)
-        {
-            region ??= ServerManager.Instance.CurrentRegion;
-            string name = region.Name;
-            if (AmongUsClient.Instance.NetworkMode != NetworkModes.OnlineGame)
-            {
-                name = "Local Game";
-                return name;
-            }
-            
-            if (region.PingServer.EndsWith("among.us", StringComparison.Ordinal))
-            {
-                // Official server
-                if (name == "North America") name = "Vanilla North America";
-                else if (name == "Europe") name = "Vanilla Europe";
-                else if (name == "Asia") name = "Vanilla Asia";
-                
-                return name;
-            }
-            var Ip = region.Servers.FirstOrDefault()?.Ip ?? string.Empty;
-            if (Ip.Contains("aumods.us", StringComparison.Ordinal)
-            || Ip.Contains("duikbo.at", StringComparison.Ordinal))
-            {
-                if (Ip.Contains("au-eu")) name = "Modded Europe (MEU)";
-                else if (Ip.Contains("au-as")) name = "Modded Asia (MAS)"; 
-                else if (Ip.Contains("www.")) name = "Modded North America (MNA)";
-                return name;
-            }
-            return name;
         }
 
         public static unsafe Texture2D LoadTextureFromResources(string path) 

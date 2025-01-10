@@ -207,7 +207,7 @@ namespace TownOfSushi.Roles
                 {
                     if (Player.IsShielded())
                     {
-                        Rpc(CustomRPC.AttemptSound, Player.GetMedic().Player.PlayerId, Player.PlayerId);
+                        StartRPC(CustomRPC.AttemptSound, Player.GetMedic().Player.PlayerId, Player.PlayerId);
 
                         System.Console.WriteLine(CustomGameOptions.ShieldBreaks + "- shield break");
                         if (CustomGameOptions.ShieldBreaks)
@@ -219,7 +219,7 @@ namespace TownOfSushi.Roles
                     {
                         Coroutines.Start(TransportPlayers(TransportPlayer1.PlayerId, Player.PlayerId, true));
 
-                        Rpc(CustomRPC.Transport, TransportPlayer1.PlayerId, Player.PlayerId, true);
+                        StartRPC(CustomRPC.Transport, TransportPlayer1.PlayerId, Player.PlayerId, true);
                         return;
                     }
                     transRole.LastTransported = DateTime.UtcNow;
@@ -229,7 +229,7 @@ namespace TownOfSushi.Roles
                 {
                     if (Player.IsShielded())
                     {
-                        Rpc(CustomRPC.AttemptSound, Player.GetMedic().Player.PlayerId, Player.PlayerId);
+                        StartRPC(CustomRPC.AttemptSound, Player.GetMedic().Player.PlayerId, Player.PlayerId);
 
                         System.Console.WriteLine(CustomGameOptions.ShieldBreaks + "- shield break");
                         if (CustomGameOptions.ShieldBreaks)
@@ -241,7 +241,7 @@ namespace TownOfSushi.Roles
                     {
                         Coroutines.Start(TransportPlayers(TransportPlayer2.PlayerId, Player.PlayerId, true));
 
-                        Rpc(CustomRPC.Transport, TransportPlayer2.PlayerId, Player.PlayerId, true);
+                        StartRPC(CustomRPC.Transport, TransportPlayer2.PlayerId, Player.PlayerId, true);
                         return;
                     }
                     transRole.LastTransported = DateTime.UtcNow;
@@ -252,7 +252,7 @@ namespace TownOfSushi.Roles
 
                 Coroutines.Start(TransportPlayers(TransportPlayer1.PlayerId, TransportPlayer2.PlayerId, false));
 
-                Rpc(CustomRPC.Transport, TransportPlayer1.PlayerId, TransportPlayer2.PlayerId, false);
+                StartRPC(CustomRPC.Transport, TransportPlayer1.PlayerId, TransportPlayer2.PlayerId, false);
             }
             else
             {
@@ -414,7 +414,7 @@ namespace TownOfSushi.Roles
                 }
                 else
                 {
-                    Rpc(CustomRPC.SetUntransportable, PlayerControl.LocalPlayer.PlayerId);
+                    StartRPC(CustomRPC.SetUntransportable, PlayerControl.LocalPlayer.PlayerId);
                 }
             }
         }
@@ -430,7 +430,7 @@ namespace TownOfSushi.Roles
                 }
                 else
                 {
-                    Rpc(CustomRPC.SetUntransportable, PlayerControl.LocalPlayer.PlayerId);
+                    StartRPC(CustomRPC.SetUntransportable, PlayerControl.LocalPlayer.PlayerId);
                 }
             }
         }

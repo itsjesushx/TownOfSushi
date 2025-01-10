@@ -114,7 +114,7 @@ namespace TownOfSushi.Roles
                 if (!abilityUsed) return false;
                 var position = PlayerControl.LocalPlayer.transform.position;
                 var id = GetAvailableId();
-                Rpc(CustomRPC.Mine, id, PlayerControl.LocalPlayer.PlayerId, position, position.z + 0.001f);
+                StartRPC(CustomRPC.Mine, id, PlayerControl.LocalPlayer.PlayerId, position, position.z + 0.001f);
                 SpawnVent(id, role, position, position.z + 0.001f);
                 return false;
             }

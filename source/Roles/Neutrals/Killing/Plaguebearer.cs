@@ -36,7 +36,7 @@ namespace TownOfSushi.Roles
         {
             new WaitForSeconds(1f);
             SpreadInfection(source, target);
-            Rpc(CustomRPC.Infect, Player.PlayerId, source.PlayerId, target.PlayerId);
+            StartRPC(CustomRPC.Infect, Player.PlayerId, source.PlayerId, target.PlayerId);
         }
 
         public void SpreadInfection(PlayerControl source, PlayerControl target)
@@ -194,7 +194,7 @@ namespace TownOfSushi.Roles
                 if (transform)
                 {
                     role.TurnPestilence();
-                    Rpc(CustomRPC.TurnPestilence, PlayerControl.LocalPlayer.PlayerId);
+                    StartRPC(CustomRPC.TurnPestilence, PlayerControl.LocalPlayer.PlayerId);
                 }
             }
         }

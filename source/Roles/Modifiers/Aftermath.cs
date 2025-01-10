@@ -48,7 +48,7 @@ namespace TownOfSushi.Roles.Modifiers
                 }
                 blackmailer.Blackmailed = player;
 
-                Rpc(CustomRPC.Blackmail, player.PlayerId, player.PlayerId);
+                StartRPC(CustomRPC.Blackmail, player.PlayerId, player.PlayerId);
             }
             else if (role is Glitch glitch)
             {
@@ -58,7 +58,7 @@ namespace TownOfSushi.Roles.Modifiers
             {
                 if (escapist.EscapePoint != new Vector3(0f, 0f, 0f))
                 {
-                    Rpc(CustomRPC.Escape, PlayerControl.LocalPlayer.PlayerId, escapist.EscapePoint);
+                    StartRPC(CustomRPC.Escape, PlayerControl.LocalPlayer.PlayerId, escapist.EscapePoint);
                     escapist.LastEscape = DateTime.UtcNow;
                     Escapist.Escape(escapist.Player);
                 }
@@ -67,14 +67,14 @@ namespace TownOfSushi.Roles.Modifiers
             {
                 if (!grenadier.Enabled)
                 {
-                    Rpc(CustomRPC.FlashGrenade, PlayerControl.LocalPlayer.PlayerId);
+                    StartRPC(CustomRPC.FlashGrenade, PlayerControl.LocalPlayer.PlayerId);
                     grenadier.TimeRemaining = CustomGameOptions.GrenadeDuration;
                     grenadier.Flash();
                 }
             }
             else if (role is Janitor janitor)
             {
-                Rpc(CustomRPC.JanitorClean, PlayerControl.LocalPlayer.PlayerId, db.ParentId);
+                StartRPC(CustomRPC.JanitorClean, PlayerControl.LocalPlayer.PlayerId, db.ParentId);
 
                 Coroutines.Start(JanitorCoroutine.CleanCoroutine(db, janitor));
             }
@@ -82,7 +82,7 @@ namespace TownOfSushi.Roles.Modifiers
             {
                 var position = PlayerControl.LocalPlayer.transform.position;
                 var id = PlaceVent.GetAvailableId();
-                Rpc(CustomRPC.Mine, id, PlayerControl.LocalPlayer.PlayerId, position, position.z + 0.001f);
+                StartRPC(CustomRPC.Mine, id, PlayerControl.LocalPlayer.PlayerId, position, position.z + 0.001f);
                 PlaceVent.SpawnVent(id, miner, position, position.z + 0.001f);
                 miner.LastMined = DateTime.UtcNow;
             }
@@ -90,7 +90,7 @@ namespace TownOfSushi.Roles.Modifiers
             {
                 if (morphling.Player.GetCustomOutfitType() != CustomPlayerOutfitType.Morph)
                 {
-                    Rpc(CustomRPC.Morph, PlayerControl.LocalPlayer.PlayerId, corpse.PlayerId);
+                    StartRPC(CustomRPC.Morph, PlayerControl.LocalPlayer.PlayerId, corpse.PlayerId);
                     morphling.TimeRemaining = CustomGameOptions.MorphlingDuration;
                     if (morphling.SampledPlayer == null) morphling._morphButton.graphic.sprite = TownOfSushi.MorphSprite;
                     morphling.SampledPlayer = corpse;
@@ -102,7 +102,7 @@ namespace TownOfSushi.Roles.Modifiers
             {
                 if (swooper.Player.GetCustomOutfitType() != CustomPlayerOutfitType.Swooper)
                 {
-                    Rpc(CustomRPC.Swoop, PlayerControl.LocalPlayer.PlayerId);
+                    StartRPC(CustomRPC.Swoop, PlayerControl.LocalPlayer.PlayerId);
                     swooper.TimeRemaining = CustomGameOptions.SwoopDuration;
                     swooper.Swoop();
                 }
@@ -127,14 +127,14 @@ namespace TownOfSushi.Roles.Modifiers
 
                     position.y -= 0.3636f;
 
-                    Rpc(CustomRPC.Drop, PlayerControl.LocalPlayer.PlayerId, position, position.z);
+                    StartRPC(CustomRPC.Drop, PlayerControl.LocalPlayer.PlayerId, position, position.z);
 
                     var body = undertaker.CurrentlyDragging;
                     undertaker.CurrentlyDragging = null;
                     body.transform.position = position;
                 }
 
-                Rpc(CustomRPC.Drag, PlayerControl.LocalPlayer.PlayerId, db.ParentId);
+                StartRPC(CustomRPC.Drag, PlayerControl.LocalPlayer.PlayerId, db.ParentId);
                 undertaker.CurrentlyDragging = db;
                 UndertakerKillButtonTarget.SetTarget(undertaker._dragDropButton, null, undertaker);
                 undertaker._dragDropButton.graphic.sprite = TownOfSushi.DropSprite;
@@ -160,14 +160,14 @@ namespace TownOfSushi.Roles.Modifiers
 
                     position.y -= 0.3636f;
 
-                    Rpc(CustomRPC.HitmanDrop, PlayerControl.LocalPlayer.PlayerId, position, position.z);
+                    StartRPC(CustomRPC.HitmanDrop, PlayerControl.LocalPlayer.PlayerId, position, position.z);
 
                     var body = hitman.CurrentlyDragging;
                     hitman.CurrentlyDragging = null;
                     body.transform.position = position;
                 }
 
-                Rpc(CustomRPC.HitmanDrag, PlayerControl.LocalPlayer.PlayerId, db.ParentId);
+                StartRPC(CustomRPC.HitmanDrag, PlayerControl.LocalPlayer.PlayerId, db.ParentId);
                 hitman.CurrentlyDragging = db;
                 HitmanKillButtonTarget.SetTarget(hitman._dragDropButtonHitman, null, hitman);
                 hitman._dragDropButtonHitman.graphic.sprite = TownOfSushi.DropSprite;
@@ -179,7 +179,7 @@ namespace TownOfSushi.Roles.Modifiers
             {
                 if (!venerer.Enabled)
                 {
-                    Rpc(CustomRPC.Camouflage, PlayerControl.LocalPlayer.PlayerId, venerer.Kills);
+                    StartRPC(CustomRPC.Camouflage, PlayerControl.LocalPlayer.PlayerId, venerer.Kills);
                     venerer.TimeRemaining = CustomGameOptions.AbilityDuration;
                     venerer.KillsAtStartAbility = venerer.Kills;
                     venerer.Ability();
@@ -204,7 +204,7 @@ namespace TownOfSushi.Roles.Modifiers
                 else PlayerControl.LocalPlayer.SetKillTimer(GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown + CustomGameOptions.DetonateDelay);
                 DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(null);
                 bomber.Bomb = BombExtentions.CreateBomb(pos);
-                Rpc(CustomRPC.Plant, pos.x, pos.y, pos.z);
+                StartRPC(CustomRPC.Plant, pos.x, pos.y, pos.z);
             }
         }
     }

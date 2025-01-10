@@ -123,7 +123,7 @@ namespace TownOfSushi.Roles
                 var abilityUsed = AbilityUsed(PlayerControl.LocalPlayer);
                 if (!abilityUsed) return false;
 
-                Rpc(CustomRPC.Swoop, PlayerControl.LocalPlayer.PlayerId);
+                StartRPC(CustomRPC.Swoop, PlayerControl.LocalPlayer.PlayerId);
                 role.TimeRemaining = CustomGameOptions.SwoopDuration;
                 role.Swoop();
                 return false;

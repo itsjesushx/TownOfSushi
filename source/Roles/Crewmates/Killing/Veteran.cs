@@ -89,7 +89,7 @@ namespace TownOfSushi.Roles
                 role.TimeRemaining = CustomGameOptions.AlertDuration;
                 role.UsesLeft--;
                 role.Alert();
-                Rpc(CustomRPC.Alert, PlayerControl.LocalPlayer.PlayerId);
+                StartRPC(CustomRPC.Alert, PlayerControl.LocalPlayer.PlayerId);
                 return false;
             }
 

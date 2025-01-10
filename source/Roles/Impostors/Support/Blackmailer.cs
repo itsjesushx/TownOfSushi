@@ -261,7 +261,7 @@ namespace TownOfSushi.Roles
                         else role.Blackmailed.nameText().color = Color.clear;
                     }
                     role.Blackmailed = target;
-                    Rpc(CustomRPC.Blackmail, PlayerControl.LocalPlayer.PlayerId, target.PlayerId);
+                    StartRPC(CustomRPC.Blackmail, PlayerControl.LocalPlayer.PlayerId, target.PlayerId);
                 }
                 role.BlackmailButton.SetCoolDown(0.01f, 1f);
                 return false;

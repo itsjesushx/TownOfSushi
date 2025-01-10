@@ -148,7 +148,7 @@ namespace TownOfSushi.Roles
                         foreach (var pb in GetRoles(RoleEnum.Plaguebearer)) ((Plaguebearer)pb).RpcSpreadInfection(player, role.Player);
                     }
 
-                    Utils.Rpc(CustomRPC.Drag, PlayerControl.LocalPlayer.PlayerId, playerId);
+                    Utils.StartRPC(CustomRPC.Drag, PlayerControl.LocalPlayer.PlayerId, playerId);
 
                     role.CurrentlyDragging = role.CurrentTarget;
 
@@ -177,7 +177,7 @@ namespace TownOfSushi.Roles
 
                     position.y -= 0.3636f;
 
-                    Utils.Rpc(CustomRPC.Drop, PlayerControl.LocalPlayer.PlayerId, position, position.z);
+                    Utils.StartRPC(CustomRPC.Drop, PlayerControl.LocalPlayer.PlayerId, position, position.z);
 
                     var body = role.CurrentlyDragging;
                     foreach (var body2 in role.CurrentlyDragging.bodyRenderers) body2.material.SetFloat("_Outline", 0f);

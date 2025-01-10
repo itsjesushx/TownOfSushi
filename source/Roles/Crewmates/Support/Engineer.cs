@@ -43,7 +43,7 @@ namespace TownOfSushi.Roles
             var abilityUsed = AbilityUsed(PlayerControl.LocalPlayer);
             if (!abilityUsed) return false;
             role.MaxUses -= 1;
-            Rpc(CustomRPC.EngineerFix, PlayerControl.LocalPlayer.NetId);
+            StartRPC(CustomRPC.EngineerFix, PlayerControl.LocalPlayer.NetId);
             switch (GameOptionsManager.Instance.currentNormalGameOptions.MapId)
             {
                 case 0:
@@ -165,14 +165,14 @@ namespace TownOfSushi.Roles
         {
             Patches.SubmergedCompatibility.RepairOxygen();
 
-            Utils.Rpc(CustomRPC.SubmergedFixOxygen, PlayerControl.LocalPlayer.NetId);
+            Utils.StartRPC(CustomRPC.SubmergedFixOxygen, PlayerControl.LocalPlayer.NetId);
 
             return false;
         }
 
         private static bool FixLights(SwitchSystem lights)
         {
-            Utils.Rpc(CustomRPC.FixLights);
+            Utils.StartRPC(CustomRPC.FixLights);
 
             lights.ActualSwitches = lights.ExpectedSwitches;
 

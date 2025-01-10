@@ -373,7 +373,7 @@ namespace TownOfSushi
                     exe.target = exeTargets[Random.RandomRangeInt(0, exeTargets.Count)];
                     exeTargets.Remove(exe.target);
 
-                    Rpc(CustomRPC.SetTarget, role.Player.PlayerId, exe.target.PlayerId);
+                    StartRPC(CustomRPC.SetTarget, role.Player.PlayerId, exe.target.PlayerId);
                 }
             }
 
@@ -402,7 +402,7 @@ namespace TownOfSushi
                         evilGATargets.Remove(ga.target);
                     }
 
-                    Rpc(CustomRPC.SetGATarget, role.Player.PlayerId, ga.target.PlayerId);
+                    StartRPC(CustomRPC.SetGATarget, role.Player.PlayerId, ga.target.PlayerId);
                 }
             }
         }
@@ -1000,11 +1000,11 @@ namespace TownOfSushi
 
                 if (ShowRoundOneShield.FirstRoundShielded != null)
                 {
-                    Rpc(CustomRPC.Start, ShowRoundOneShield.FirstRoundShielded.PlayerId);
+                    StartRPC(CustomRPC.Start, ShowRoundOneShield.FirstRoundShielded.PlayerId);
                 }
                 else
                 {
-                    Rpc(CustomRPC.Start, byte.MaxValue);
+                    StartRPC(CustomRPC.Start, byte.MaxValue);
                 }
 
                 if (GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek) return;

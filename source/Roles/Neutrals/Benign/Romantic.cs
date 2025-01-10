@@ -58,7 +58,7 @@ namespace TownOfSushi.Roles
             {
                 role.Beloved = role.ClosestPlayer;
                 role.AlreadyPicked = true;
-                Rpc(CustomRPC.SetRomanticTarget, PlayerControl.LocalPlayer.PlayerId, role.ClosestPlayer.PlayerId);
+                StartRPC(CustomRPC.SetRomanticTarget, PlayerControl.LocalPlayer.PlayerId, role.ClosestPlayer.PlayerId);
             }
             if (interact[0] == true)
             {
@@ -113,7 +113,6 @@ namespace TownOfSushi.Roles
     public static class LoversChat
     {
         private static DateTime MeetingStartTime = DateTime.MinValue;
-
         [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
         public class MeetingStart
         {
@@ -128,6 +127,7 @@ namespace TownOfSushi.Roles
             public static bool Prefix(ChatController __instance, [HarmonyArgument(0)] PlayerControl sourcePlayer)
             {
                 if (__instance != HudManager.Instance.Chat) return true;
+
                 var localPlayer = PlayerControl.LocalPlayer;
                 if (localPlayer == null) return true;
                 Boolean shouldSeeMessage = localPlayer.Data.IsDead || localPlayer.RomanticCoupleChat(sourcePlayer) ||
@@ -145,6 +145,7 @@ namespace TownOfSushi.Roles
         {
             public static void Postfix(HudManager __instance)
             {
+                
                 if (PlayerControl.LocalPlayer.HasRomanticCouple() & !__instance.Chat.isActiveAndEnabled)
                     __instance.Chat.SetVisible(true);
             }
@@ -159,7 +160,7 @@ namespace TownOfSushi.Roles
             if (CustomGameOptions.GAKnowsTargetRole) return;
             foreach (var player in __instance.playerStates)
                 if (player.TargetPlayerId == role.Beloved.PlayerId)
-                    player.NameText.text += "<color=#FF66CCFF> ♥</color>";
+                    player.NameText.text += "<color=#FF66CCFF> [♥]</color>";
         }
 
         private static void Postfix(HudManager __instance)
@@ -178,7 +179,7 @@ namespace TownOfSushi.Roles
 
             if (!role.Beloved.Data.IsDead && !role.Beloved.Data.Disconnected) return;
 
-            Rpc(CustomRPC.RomanticChangeRole, PlayerControl.LocalPlayer.PlayerId);
+            StartRPC(CustomRPC.RomanticChangeRole, PlayerControl.LocalPlayer.PlayerId);
             DestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(false);
 
             RomanticChangeRole(PlayerControl.LocalPlayer);

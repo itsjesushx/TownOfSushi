@@ -142,7 +142,7 @@ namespace TownOfSushi.Roles
                 if (Object.FindObjectsOfType<DeadBody>().Any(x => x.ParentId == dead.PlayerId && !role.MediatedPlayers.Keys.Contains(x.ParentId)))
                 {
                     role.AddMediatePlayer(dead.PlayerId);
-                    Rpc(CustomRPC.Mediate, dead.PlayerId, PlayerControl.LocalPlayer.PlayerId);
+                    StartRPC(CustomRPC.Mediate, dead.PlayerId, PlayerControl.LocalPlayer.PlayerId);
                     if (CustomGameOptions.DeadRevealed != DeadRevealed.All) return false;
                 }
             }

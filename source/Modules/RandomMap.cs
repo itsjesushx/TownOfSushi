@@ -59,7 +59,7 @@ namespace TownOfSushi.Modules
                 GameOptionsManager.Instance.currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Noisemaker, 0, 0);
                 GameOptionsManager.Instance.currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Shapeshifter, 0, 0);
                 GameOptionsManager.Instance.currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Phantom, 0, 0);
-                Rpc(CustomRPC.SetSettings, map);
+                StartRPC(CustomRPC.SetSettings, map);
             }
             return true;
         }

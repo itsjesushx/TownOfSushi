@@ -12,12 +12,9 @@ namespace TownOfSushi.Patches
             if (GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek) return true;
             var role = GetPlayerRole(__instance.HauntTarget);
             var modifier = GetModifier(__instance.HauntTarget);
-            var ability = GetAbility(__instance.HauntTarget);
-            var abilityName = ability == null ? "" : $" [{ability.Name}]";
-            var modifierName = modifier == null ? "" : $" ({modifier.Name})";
             var roleName = role == null ? "" : $"{role.Name}";
 
-            if (TownOfSushi.DeadSeeRoles.Value) __instance.FilterText.text = $"{roleName}{modifierName}{abilityName} ({__instance.HauntTarget.DeathReason()})";
+            if (TownOfSushi.DeadSeeRoles.Value) __instance.FilterText.text = $"{roleName}({__instance.HauntTarget.DeathReason()})";
             else __instance.FilterText.text = "";
             
             return false;

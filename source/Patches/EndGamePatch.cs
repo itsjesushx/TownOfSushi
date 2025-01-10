@@ -44,13 +44,12 @@ namespace TownOfSushi.Patches
             if (CameraEffect.singleton) CameraEffect.singleton.materials.Clear();
             AdditionalTempData.Clear();
             var GameSummaryText = "";
-            // Theres a better way of doing this e.g. switch statement or dictionary. But this works for now.
             foreach (var playerControl in PlayerControl.AllPlayerControls) 
             {
                 GameSummaryText = "";
                 foreach (var role in RoleHistory.Where(x => x.Key == playerControl.PlayerId))
                 {
-                    #region Crewmate Roles
+                    // Crewmate Roles
 
                     if (role.Value == RoleEnum.Crewmate) { GameSummaryText += "<color=#" + Colors.Crewmate.ToHtmlStringRGBA() + ">Crewmate</color> > "; }
                     else if (role.Value == RoleEnum.Mystic) { GameSummaryText += "<color=#" + Colors.Mystic.ToHtmlStringRGBA() + ">Mystic</color> > "; }
@@ -72,9 +71,7 @@ namespace TownOfSushi.Patches
                     else if (role.Value == RoleEnum.Veteran) { GameSummaryText += "<color=#" + Colors.Veteran.ToHtmlStringRGBA() + ">Veteran</color> > "; }
                     else if (role.Value == RoleEnum.Hunter) { GameSummaryText += "<color=#" + Colors.Hunter.ToHtmlStringRGBA() + ">Hunter</color> > "; }
 
-                    #endregion
-
-                    #region Impostor Roles
+                    // Impostor Roles
 
                     else if (role.Value == RoleEnum.Impostor) { GameSummaryText += "<color=#" + Colors.Impostor.ToHtmlStringRGBA() + ">Impostor</color> > "; }
                     else if (role.Value == RoleEnum.Grenadier) { GameSummaryText += "<color=#" + Colors.Impostor.ToHtmlStringRGBA() + ">Grenadier</color> > "; }
@@ -90,17 +87,13 @@ namespace TownOfSushi.Patches
                     else if (role.Value == RoleEnum.Warlock) { GameSummaryText += "<color=#" + Colors.Impostor.ToHtmlStringRGBA() + ">Warlock</color> > "; }
                     else if (role.Value == RoleEnum.Escapist) { GameSummaryText += "<color=#" + Colors.Impostor.ToHtmlStringRGBA() + ">Escapist</color> > "; }
 
-                    #endregion
-
-                    #region Neutral Benign Roles
+                    // Neutral Benign Roles
 
                     else if (role.Value == RoleEnum.Amnesiac) { GameSummaryText += "<color=#" + Colors.Amnesiac.ToHtmlStringRGBA() + ">Amnesiac</color> > "; }
                     else if (role.Value == RoleEnum.Romantic) { GameSummaryText += "<color=#" + Colors.Romantic.ToHtmlStringRGBA() + ">Romantic</color> > "; }
                     else if (role.Value == RoleEnum.GuardianAngel) { GameSummaryText += "<color=#" + Colors.GuardianAngel.ToHtmlStringRGBA() + ">Guardian Angel</color> > "; }
 
-                    #endregion
-
-                    #region Neutral Evil Roles
+                    // Neutral Evil Roles
 
                     else if (role.Value == RoleEnum.Vulture) { GameSummaryText += "<color=#" + Colors.Vulture.ToHtmlStringRGBA() + ">Vulture</color> > "; }
                     else if (role.Value == RoleEnum.Doomsayer) { GameSummaryText += "<color=#" + Colors.Doomsayer.ToHtmlStringRGBA() + ">Doomsayer</color> > "; }
@@ -108,9 +101,7 @@ namespace TownOfSushi.Patches
                     else if (role.Value == RoleEnum.Jester) { GameSummaryText += "<color=#" + Colors.Jester.ToHtmlStringRGBA() + ">Jester</color> > "; }
                     else if (role.Value == RoleEnum.Executioner) { GameSummaryText += "<color=#" + Colors.Executioner.ToHtmlStringRGBA() + ">Executioner</color> > "; }
 
-                    #endregion
-
-                    #region Neutral Killing Roles
+                    // Neutral Killing Roles
 
                     else if (role.Value == RoleEnum.Juggernaut) { GameSummaryText += "<color=#" + Colors.Juggernaut.ToHtmlStringRGBA() + ">Juggernaut</color> > "; }
                     else if (role.Value == RoleEnum.Arsonist) { GameSummaryText += "<color=#" + Colors.Arsonist.ToHtmlStringRGBA() + ">Arsonist</color> > "; }
@@ -122,13 +113,11 @@ namespace TownOfSushi.Patches
                     else if (role.Value == RoleEnum.Hitman) { GameSummaryText += "<color=#" + Colors.Hitman.ToHtmlStringRGBA() + ">Hitman</color> > "; }
                     else if (role.Value == RoleEnum.Werewolf) { GameSummaryText += "<color=#" + Colors.Werewolf.ToHtmlStringRGBA() + ">Werewolf</color> > "; }
                     else if (role.Value == RoleEnum.Glitch) { GameSummaryText += "<color=#" + Colors.Glitch.ToHtmlStringRGBA() + ">Glitch</color> > "; }
-                    
-                    #endregion
                 }
                 
                 if (!string.IsNullOrEmpty(GameSummaryText)) GameSummaryText = GameSummaryText.Remove(GameSummaryText.Length - 3);
                 
-                #region Modifiers
+                // Modifiers
                 if (playerControl.Is(ModifierEnum.Giant)) { GameSummaryText += " (<color=#" + Colors.Giant.ToHtmlStringRGBA() + ">Giant</color>)"; }
                 else if (playerControl.Is(ModifierEnum.Aftermath)) { GameSummaryText += " (<color=#" + Colors.Aftermath.ToHtmlStringRGBA() + ">Aftermath</color>)"; }
                 else if (playerControl.Is(ModifierEnum.Mini)) { GameSummaryText += " (<color=#" + Colors.Mini.ToHtmlStringRGBA() + ">Mini</color>)"; }
@@ -139,9 +128,8 @@ namespace TownOfSushi.Patches
                 else if (playerControl.Is(ModifierEnum.Underdog)) { GameSummaryText += " (<color=#" + Colors.Impostor.ToHtmlStringRGBA() + ">Underdog</color>)";}
                 else if (playerControl.Is(ModifierEnum.Frosty)) { GameSummaryText += " (<color=#" + Colors.Frosty.ToHtmlStringRGBA() + ">Frosty</color>)";}
 
-                #endregion
+                // Abilities
 
-                #region Abilities
                 if (playerControl.Is(AbilityEnum.Drunk)) { GameSummaryText += " [<color=#" + Colors.Drunk.ToHtmlStringRGBA() + ">Drunk</color>] ";}
                 else if (playerControl.Is(AbilityEnum.Chameleon)) { GameSummaryText += " [<color=#" + Colors.Chameleon.ToHtmlStringRGBA() + ">Chameleon</color>] ";}
                 else if (playerControl.Is(AbilityEnum.Assassin)) { GameSummaryText += " [<color=#" + Colors.Impostor.ToHtmlStringRGBA() + ">Assassin</color>] ";}
@@ -154,12 +142,11 @@ namespace TownOfSushi.Patches
                 else if (playerControl.Is(AbilityEnum.Sleuth)) { GameSummaryText += " [<color=#" + Colors.Sleuth.ToHtmlStringRGBA() + ">Sleuth</color>] ";}
                 else if (playerControl.Is(AbilityEnum.Radar)) { GameSummaryText += " [<color=#" + Colors.Radar.ToHtmlStringRGBA() + ">Radar</color>] ";}
                 
-                #endregion
                 
-                #region Stats
+                
+                // Stats
 
                 var player = GetPlayerRole(playerControl);
-                //Stats
                 if (playerControl.IsShielded())
                 {
                     GameSummaryText += ColorString(Colors.Medic, $" | [<b>+</b>] ");
@@ -225,9 +212,7 @@ namespace TownOfSushi.Patches
                 {
                     GameSummaryText += ColorString(Color.green, $" | Correct Kills: {player.CorrectKills}");
                 }
-
                 GameSummaryText += " | " + playerControl.DeathReason();
-                #endregion
                 AdditionalTempData.GameSummaryText.Add(new AdditionalTempData.PlayerRoleInfo() { PlayerName = playerControl.Data.PlayerName, GameSummaryText = GameSummaryText });
             }
         }
@@ -293,7 +278,6 @@ namespace TownOfSushi.Patches
             roleSummaryTextMesh.fontSize = 1f;
             roleSummaryTextMesh.text = $"{roleSummaryText}";
             roleSummaryTextMesh.GetComponent<RectTransform>().anchoredPosition = new(position.x + 3.5f, position.y - 0.1f);
-
             AdditionalTempData.Clear();
         }
     }
@@ -319,7 +303,6 @@ namespace TownOfSushi.Patches
                 }
 
                 var ImpostorsAlive = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(Faction.Impostors) && !x.Data.IsDead && !x.Data.Disconnected && !AddHauntPatch.AssassinatedPlayers.Contains(x)).ToList();
-                var NeutralKillerAlive = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(RoleAlignment.NeutralKilling) && !x.Data.IsDead && !x.Data.Disconnected && !AddHauntPatch.AssassinatedPlayers.Contains(x)).ToList();
                 var AliveKillers = PlayerControl.AllPlayerControls.ToArray().Where(x => x.IsKillingRole() && !x.Data.IsDead && !x.Data.Disconnected && !AddHauntPatch.AssassinatedPlayers.Contains(x)).ToList();
                 var PassiveAlive = PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Is(Faction.Impostors) && !x.Is(RoleAlignment.NeutralKilling) && !x.Data.IsDead && !x.Data.Disconnected && !AddHauntPatch.AssassinatedPlayers.Contains(x)).ToList();
                 var CrewKillerAlive = PlayerControl.AllPlayerControls.ToArray().Where(x => x.IsCrewKiller() && !x.Data.IsDead && !x.Data.Disconnected && !AddHauntPatch.AssassinatedPlayers.Contains(x)).ToList();
@@ -334,12 +317,20 @@ namespace TownOfSushi.Patches
                 var VampiresAlive = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(RoleEnum.Vampire) && !x.Data.IsDead && !x.Data.Disconnected && !AddHauntPatch.AssassinatedPlayers.Contains(x)).ToList();
                 var AliveSerialKiller = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(RoleEnum.SerialKiller) && !x.Data.IsDead && !x.Data.Disconnected && !AddHauntPatch.AssassinatedPlayers.Contains(x)).ToList();
 
-                if (ImpostorsAlive.Count  >= PassiveAlive.Count &&
-                    NeutralKillerAlive.Count == 0 &&
+                if (ImpostorsAlive.Count >= PassiveAlive.Count - ImpostorsAlive.Count && 
+                    PlaguebearerAlive.Count == 0 &&
+                    GlitchAlive.Count == 0 &&
+                    PestilenceAlive.Count == 0 &&
+                    VampiresAlive.Count == 0 &&
+                    ArsoAlive.Count == 0 &&
+                    JuggernautAlive.Count == 0 &&
+                    HitmanAlive.Count == 0 &&
+                    AliveSerialKiller.Count == 0 &&
+                    WerewolfAlive.Count == 0 &&
                     CrewKillerAlive.Count == 0)
                     {
                         ImpostorsWin = true;
-                        Rpc(CustomRPC.ImpostorWin);
+                        StartRPC(CustomRPC.ImpostorWin);
                         EndGame(GameOverReason.ImpostorByVote);
                         yield break;
                     }
@@ -357,7 +348,7 @@ namespace TownOfSushi.Patches
                     CrewKillerAlive.Count == 0)
                     {
                         HitmanWin = true;
-                        Rpc(CustomRPC.HitmanWin);
+                        StartRPC(CustomRPC.HitmanWin);
                         EndGame();
                         yield break;
                     }
@@ -376,7 +367,7 @@ namespace TownOfSushi.Patches
                     CrewKillerAlive.Count == 0)
                     {
                         AgentWin = true;
-                        Rpc(CustomRPC.AgentWin);
+                        StartRPC(CustomRPC.AgentWin);
                         EndGame();
                         yield break;
                     }
@@ -395,7 +386,7 @@ namespace TownOfSushi.Patches
                     CrewKillerAlive.Count == 0)
                     {
                         GlitchWin = true;
-                        Rpc(CustomRPC.GlitchWin);
+                        StartRPC(CustomRPC.GlitchWin);
                         EndGame();
                         yield break;
                     }
@@ -415,7 +406,7 @@ namespace TownOfSushi.Patches
                     CrewKillerAlive.Count == 0)
                     {
                         ArsonistWin = true;
-                        Rpc(CustomRPC.ArsonistWin);
+                        StartRPC(CustomRPC.ArsonistWin);
                         EndGame();
                         yield break;
                     }
@@ -434,7 +425,7 @@ namespace TownOfSushi.Patches
                     CrewKillerAlive.Count == 0)
                     {
                         VampireWins = true;
-                        Rpc(CustomRPC.TeamVampiresWin);
+                        StartRPC(CustomRPC.TeamVampiresWin);
                         EndGame();
                         yield break;
                     }
@@ -453,7 +444,7 @@ namespace TownOfSushi.Patches
                     CrewKillerAlive.Count == 0)
                     {
                         PlaguebearerWin = true;
-                        Rpc(CustomRPC.PlaguebearerWin);
+                        StartRPC(CustomRPC.PlaguebearerWin);
                         EndGame();
                         yield break;
                     }
@@ -470,7 +461,7 @@ namespace TownOfSushi.Patches
                     CrewKillerAlive.Count == 0)
                     {
                         PestilenceWin = true;
-                        Rpc(CustomRPC.PestilenceWin);
+                        StartRPC(CustomRPC.PestilenceWin);
                         EndGame();
                         yield break;
                     }
@@ -490,7 +481,7 @@ namespace TownOfSushi.Patches
                     CrewKillerAlive.Count == 0)
                     {
                         JuggernautWin = true;
-                        Rpc(CustomRPC.JuggernautWin);
+                        StartRPC(CustomRPC.JuggernautWin);
                         EndGame();
                         yield break;
                     }
@@ -509,7 +500,7 @@ namespace TownOfSushi.Patches
                     CrewKillerAlive.Count == 0)
                     {
                         SerialKillerWin = true;
-                        Rpc(CustomRPC.SerialKillerWin);
+                        StartRPC(CustomRPC.SerialKillerWin);
                         EndGame();
                         yield break; 
                     }
@@ -529,7 +520,7 @@ namespace TownOfSushi.Patches
                     CrewKillerAlive.Count == 0)
                     {
                         WerewolfWin = true;
-                        Rpc(CustomRPC.WerewolfWin);
+                        StartRPC(CustomRPC.WerewolfWin);
                         EndGame();
                         yield break;
                     }
@@ -537,7 +528,7 @@ namespace TownOfSushi.Patches
                 if (AliveKillers.Count == 0)
                 {
                     CrewmatesWin = true;
-                    Rpc(CustomRPC.CrewmateWin);
+                    StartRPC(CustomRPC.CrewmateWin);
                     EndGame(GameOverReason.HumansByVote);
                     yield break;
                 }

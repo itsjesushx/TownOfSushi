@@ -114,7 +114,7 @@ namespace TownOfSushi.Roles
                 if (faction == 0) role.RevealedFaction = Faction.Crewmates;
                 else if (faction == 1) role.RevealedAlignment = RoleAlignment.NeutralEvil;
                 else role.RevealedFaction = Faction.Impostors;
-                Rpc(CustomRPC.Confess, PlayerControl.LocalPlayer.PlayerId, role.Confessor.PlayerId, faction);
+                StartRPC(CustomRPC.Confess, PlayerControl.LocalPlayer.PlayerId, role.Confessor.PlayerId, faction);
                 
             }
             if (interact[0] == true)

@@ -58,7 +58,7 @@
                 else if (player.IsShielded())
                 {
                     var medic = player.GetMedic().Player.PlayerId;
-                    Rpc(CustomRPC.AttemptSound, medic, player.PlayerId);
+                    StartRPC(CustomRPC.AttemptSound, medic, player.PlayerId);
                     MedicStopKill.BreakShield(medic, player.PlayerId, CustomGameOptions.ShieldBreaks);
                 }
             }

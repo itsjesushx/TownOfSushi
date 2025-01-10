@@ -88,7 +88,7 @@ namespace TownOfSushi.Roles
                 if (interact[3] == true)
                 {
                     role.Maul();
-                    Rpc(CustomRPC.Maul, PlayerControl.LocalPlayer.PlayerId);
+                    StartRPC(CustomRPC.Maul, PlayerControl.LocalPlayer.PlayerId);
                 }
                 
                 if (interact[0] == true)

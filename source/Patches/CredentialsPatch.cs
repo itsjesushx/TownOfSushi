@@ -1,6 +1,4 @@
-using System.Net.Http;
 using TMPro;
-using System.Threading.Tasks;
 //Original code from TheOtherRoles (https://github.com/TheOtherRolesAU/TheOtherRoles/blob/main/TheOtherRoles/Patches/CredentialsPatch.cs)
 
 namespace TownOfSushi.Patches
@@ -24,18 +22,17 @@ $@"<size=60%> <color=#FF0000FF>Formerly: Slushiegoose & Polus.gg</color></size>"
             public static Sprite horseBannerSprite;
             public static Sprite banner2Sprite;
             private static PingTracker instance;
-            public static GameObject MOTDObject;
-            public static TextMeshPro ModText;
 
-            static void Postfix(PingTracker __instance) {
+            static void Postfix(PingTracker __instance) 
+            {
                 var torLogo = new GameObject("bannerLogo_TOS");
                 torLogo.transform.SetParent(GameObject.Find("RightPanel").transform, false);
                 torLogo.transform.localPosition = new Vector3(-0.4f, 1f, 5f);
                 renderer = torLogo.AddComponent<SpriteRenderer>();
-                loadSprites();
+                LoadSprites();
                 renderer.sprite = LoadSpriteFromResources("TownOfSushi.Resources.TownOfSushiBanner.png", 130f);
                 instance = __instance;
-                loadSprites();
+                LoadSprites();
                 renderer.sprite = bannerSprite;
                 var CredentialObject = new GameObject("CredentialsTOS");
                 var Credentials = CredentialObject.AddComponent<TextMeshPro>();
@@ -45,32 +42,18 @@ $@"<size=60%> <color=#FF0000FF>Formerly: Slushiegoose & Polus.gg</color></size>"
 
                 Credentials.transform.SetParent(torLogo.transform);
                 Credentials.transform.localPosition = Vector3.down * 1.25f;
-                MOTDObject = new GameObject("torMOTD");
-                ModText = MOTDObject.AddComponent<TextMeshPro>();
-                ModText.alignment = TMPro.TextAlignmentOptions.Center;
-                ModText.fontSize *= 0.04f;
-                ModText.transform.SetParent(torLogo.transform);
-                ModText.enableWordWrapping = true;
-                var rect = ModText.gameObject.GetComponent<RectTransform>();
-                rect.sizeDelta = new Vector2(5.2f, 0.25f);
-                ModText.transform.localPosition = Vector3.down * 2.25f;
-                ModText.color = new Color(1, 53f / 255, 31f / 255);
-                Material mat = ModText.fontSharedMaterial;
-                mat.shaderKeywords = new string[] { "OUTLINE_ON" };
-                ModText.SetOutlineColor(Color.white);
-                ModText.SetOutlineThickness(0.025f);
             }
 
-            public static void loadSprites() 
+            public static void LoadSprites() 
             {
                 if (bannerSprite == null) bannerSprite = LoadSpriteFromResources("TownOfSushi.Resources.TownOfSushiBanner.png", 130f);
                 if (banner2Sprite == null) banner2Sprite = LoadSpriteFromResources("TownOfSushi.Resources.TownOfSushiBanner.png", 300f);
                 if (horseBannerSprite == null) horseBannerSprite = LoadSpriteFromResources("TownOfSushi.Resources.TownOfSushiBanner.png", 300f);
             }
 
-            public static void updateSprite() 
+            public static void UpdateSprite() 
             {
-                loadSprites();
+                LoadSprites();
                 if (renderer != null) {
                     float fadeDuration = 1f;
                     instance.StartCoroutine(Effects.Lerp(fadeDuration, new Action<float>((p) => {
@@ -84,47 +67,6 @@ $@"<size=60%> <color=#FF0000FF>Formerly: Slushiegoose & Polus.gg</color></size>"
                     })));
                 }
             }
-        }
-
-        [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.LateUpdate))]
-        public static class MOTD 
-        {
-            public static List<string> motds = new List<string>();
-            private static float timer = 0f;
-            private static float maxTimer = 5f;
-            private static int currentIndex = 0;
-
-            public static void Postfix() 
-            {
-                if (motds.Count == 0) {
-                    timer = maxTimer;
-                    return;
-                }
-                if (motds.Count > currentIndex && LogoPatch.ModText != null)
-                    LogoPatch.ModText.SetText(motds[currentIndex]);
-                else return;
-
-                // fade in and out:
-                float alpha = Mathf.Clamp01(Mathf.Min(new float[] { timer, maxTimer - timer }));
-                if (motds.Count == 1) alpha = 1;
-                LogoPatch.ModText.color = LogoPatch.ModText.color.SetAlpha(alpha);
-                timer -= Time.deltaTime;
-                if (timer <= 0) {
-                    timer = maxTimer;
-                    currentIndex = (currentIndex + 1) % motds.Count;
-                }
-            }
-
-            public static async Task LoadMOTDs() 
-            {
-                HttpClient client = new HttpClient();
-                HttpResponseMessage response = await client.GetAsync("https://raw.githubusercontent.com/itsjesushx/SushiAssets/main/motd.txt");
-                response.EnsureSuccessStatusCode();
-                string motds = await response.Content.ReadAsStringAsync();
-                foreach(string line in motds.Split("\n", StringSplitOptions.RemoveEmptyEntries)) {
-                        MOTD.motds.Add(line);
-                }
-            }
-        }        
+        } 
     }
 }

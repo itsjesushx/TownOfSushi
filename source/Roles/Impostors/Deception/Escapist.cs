@@ -135,7 +135,7 @@ namespace TownOfSushi.Roles
                     if (role.EscapeTimer() != 0) return false;
                     var abilityUsed = AbilityUsed(PlayerControl.LocalPlayer);
                     if (!abilityUsed) return false;
-                    Rpc(CustomRPC.Escape, PlayerControl.LocalPlayer.PlayerId, role.EscapePoint);
+                    StartRPC(CustomRPC.Escape, PlayerControl.LocalPlayer.PlayerId, role.EscapePoint);
                     role.LastEscape = DateTime.UtcNow;
                     Escapist.Escape(role.Player);
                 }

@@ -85,7 +85,7 @@ namespace TownOfSushi.Roles
                 if (role.AbilityTimer() != 0 || role.Kills < 1) return false;
                 var abilityUsed = AbilityUsed(PlayerControl.LocalPlayer);
                 if (!abilityUsed) return false;
-                Rpc(CustomRPC.Camouflage, PlayerControl.LocalPlayer.PlayerId, role.Kills);
+                StartRPC(CustomRPC.Camouflage, PlayerControl.LocalPlayer.PlayerId, role.Kills);
                 role.TimeRemaining = CustomGameOptions.AbilityDuration;
                 role.KillsAtStartAbility = role.Kills;
                 role.Ability();

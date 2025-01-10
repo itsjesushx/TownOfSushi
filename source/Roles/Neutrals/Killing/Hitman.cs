@@ -133,7 +133,7 @@ namespace TownOfSushi.Roles
             public static Dictionary<byte, DateTime> tickDictionary = new();
             public static IEnumerator Morph(Hitman __instance, PlayerControl morphPlayer)
             {
-                Rpc(CustomRPC.SetHitmanMorph, PlayerControl.LocalPlayer.PlayerId, morphPlayer.PlayerId);
+                StartRPC(CustomRPC.SetHitmanMorph, PlayerControl.LocalPlayer.PlayerId, morphPlayer.PlayerId);
 
                 var abilityUsed = AbilityUsed(PlayerControl.LocalPlayer);
                 if (!abilityUsed) yield break;
@@ -168,7 +168,7 @@ namespace TownOfSushi.Roles
                         __instance.MorphTarget = null;
                         Unmorph(__instance.Player);
 
-                        Rpc(CustomRPC.RpcResetAnim2, PlayerControl.LocalPlayer.PlayerId, morphPlayer.PlayerId);
+                        StartRPC(CustomRPC.RpcResetAnim2, PlayerControl.LocalPlayer.PlayerId, morphPlayer.PlayerId);
                         yield break;
                     }
 
@@ -460,7 +460,7 @@ namespace TownOfSushi.Roles
                         foreach (var pb in GetRoles(RoleEnum.Plaguebearer)) ((Plaguebearer)pb).RpcSpreadInfection(player, role.Player);
                     }
 
-                    Rpc(CustomRPC.HitmanDrag, PlayerControl.LocalPlayer.PlayerId, playerId);
+                    StartRPC(CustomRPC.HitmanDrag, PlayerControl.LocalPlayer.PlayerId, playerId);
 
                     role.CurrentlyDragging = role.CurrentTarget;
 
@@ -489,7 +489,7 @@ namespace TownOfSushi.Roles
 
                     position.y -= 0.3636f;
 
-                    Rpc(CustomRPC.HitmanDrop, PlayerControl.LocalPlayer.PlayerId, position, position.z);
+                    StartRPC(CustomRPC.HitmanDrop, PlayerControl.LocalPlayer.PlayerId, position, position.z);
 
                     var body = role.CurrentlyDragging;
                     foreach (var body2 in role.CurrentlyDragging.bodyRenderers) body2.material.SetFloat("_Outline", 0f);

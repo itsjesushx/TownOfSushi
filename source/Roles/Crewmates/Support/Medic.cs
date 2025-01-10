@@ -282,7 +282,7 @@ namespace TownOfSushi.Roles
             var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer);
             if (interact[3] == true)
             {
-                Rpc(CustomRPC.Protect, PlayerControl.LocalPlayer.PlayerId, role.ClosestPlayer.PlayerId);
+                StartRPC(CustomRPC.Protect, PlayerControl.LocalPlayer.PlayerId, role.ClosestPlayer.PlayerId);
 
                 role.ShieldedPlayer = role.ClosestPlayer;
                 role.UsedAbility = true;

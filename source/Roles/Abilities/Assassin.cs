@@ -256,7 +256,7 @@ namespace TownOfSushi.Roles.Modifiers
         {
             MurderPlayer(assassinP, voteArea, player);
             AssassinKillCount(player, assassin);
-            Rpc(CustomRPC.AssassinKill, player.PlayerId, assassin.PlayerId);
+            StartRPC(CustomRPC.AssassinKill, player.PlayerId, assassin.PlayerId);
         }
 
         public static void MurderPlayer(Assassin assassinP, PlayerControl player)
@@ -342,7 +342,7 @@ namespace TownOfSushi.Roles.Modifiers
                     swapper.Buttons.Clear();
                     SwapVotes.Swap1 = null;
                     SwapVotes.Swap2 = null;
-                    Rpc(CustomRPC.SetSwaps, sbyte.MaxValue, sbyte.MaxValue);
+                    StartRPC(CustomRPC.SetSwaps, sbyte.MaxValue, sbyte.MaxValue);
                 }
 
                 if (player.Is(RoleEnum.Imitator))

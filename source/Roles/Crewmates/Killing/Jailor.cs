@@ -113,7 +113,7 @@ namespace TownOfSushi.Roles
                         Flash(Color.green);
                     }
                     ExecuteKill(role, role.Jailed);
-                    Rpc(CustomRPC.Jail, role.Player.PlayerId, (byte)1);
+                    StartRPC(CustomRPC.Jail, role.Player.PlayerId, (byte)1);
                     role.Jailed = null;
             }
 
@@ -204,7 +204,7 @@ namespace TownOfSushi.Roles
                         swapper.Buttons.Clear();
                         SwapVotes.Swap1 = null;
                         SwapVotes.Swap2 = null;
-                        Rpc(CustomRPC.SetSwaps, sbyte.MaxValue, sbyte.MaxValue);
+                        StartRPC(CustomRPC.SetSwaps, sbyte.MaxValue, sbyte.MaxValue);
                     }
 
                     if (player.Is(RoleEnum.Jailor))
@@ -453,7 +453,7 @@ namespace TownOfSushi.Roles
             if (interact[3] == true)
             {
                 role.Jailed = role.ClosestPlayer;
-                Rpc(CustomRPC.Jail, PlayerControl.LocalPlayer.PlayerId, (byte)0, role.Jailed.PlayerId);
+                StartRPC(CustomRPC.Jail, PlayerControl.LocalPlayer.PlayerId, (byte)0, role.Jailed.PlayerId);
             }
             if (interact[0] == true)
             {

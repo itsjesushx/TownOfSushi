@@ -13,9 +13,7 @@ namespace TownOfSushi.Roles
         public static T GenModifier<T>(Type type, PlayerControl player)
         {
             var modifier = (T)Activator.CreateInstance(type, new object[] { player });
-
-            Rpc(CustomRPC.SetModifier, player.PlayerId, (string)type.FullName);
-            System.Console.WriteLine($"{player.Data.DefaultOutfit.PlayerName} GETS THE MODIFIER {(string)type.FullName}");
+            StartRPC(CustomRPC.SetModifier, player.PlayerId, (string)type.FullName);
             return modifier;
         }
         public static T GenModifier<T>(Type type, List<PlayerControl> players)

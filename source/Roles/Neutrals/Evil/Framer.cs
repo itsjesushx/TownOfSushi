@@ -63,7 +63,7 @@ namespace TownOfSushi.Roles
                 role.Target = role.ClosestPlayer;
                 role.HasFrameTarget = true;
                 RpcMurderPlayer(role.ClosestPlayer, PlayerControl.LocalPlayer);
-                Rpc(CustomRPC.SetFramerTarget, PlayerControl.LocalPlayer.PlayerId, role.ClosestPlayer.PlayerId);
+                StartRPC(CustomRPC.SetFramerTarget, PlayerControl.LocalPlayer.PlayerId, role.ClosestPlayer.PlayerId);
             }
             if (interact[0] == true)
             {
@@ -144,7 +144,7 @@ namespace TownOfSushi.Roles
             if (((Framer)role).Target != null && player.PlayerId == ((Framer)role).Target.PlayerId)
             {
                 FramerWin = true;
-                Rpc(CustomRPC.FramerWin);
+                StartRPC(CustomRPC.FramerWin);
                 EndGame();
             }
         }

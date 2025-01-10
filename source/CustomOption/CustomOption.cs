@@ -127,7 +127,8 @@ namespace TownOfSushi.CustomOption
             AmongUsClient.Instance.FinishRpcImmediately(writer);
         }
 
-        public static void ShareOptionSelections() {
+        public static void ShareOptionSelections() 
+        {
             if (PlayerControl.AllPlayerControls.Count <= 1 || AmongUsClient.Instance!.AmHost == false && PlayerControl.LocalPlayer == null) return;
             var optionsList = new List<CustomOption>(CustomOption.Options);
             while (optionsList.Any())

@@ -127,7 +127,7 @@ namespace TownOfSushi.Roles
             {
                 foreach (var pb in GetRoles(RoleEnum.Plaguebearer)) ((Plaguebearer)pb).RpcSpreadInfection(player, role.Player);
             }
-            Rpc(CustomRPC.VultureEat, PlayerControl.LocalPlayer.PlayerId, playerId);
+            StartRPC(CustomRPC.VultureEat, PlayerControl.LocalPlayer.PlayerId, playerId);
             role.LastEaten = DateTime.UtcNow;
             Coroutines.Start(VultureCoroutine.EatCoroutine(role.CurrentTarget, role));
             return false;
@@ -247,7 +247,7 @@ namespace TownOfSushi.Roles
             if (role.EatenBodies == CustomGameOptions.VultureBodyCount)
             {
                 VultureWin = true;
-                Rpc(CustomRPC.VultureWin);
+                StartRPC(CustomRPC.VultureWin);
                 EndGame();
             }
         }

@@ -60,7 +60,7 @@ namespace TownOfSushi.Roles
                         deadRole.DeathReason = DeathReasonEnum.Cursed;
                         role.Kills++;
                     }
-                    Rpc(CustomRPC.RemoveAllBodies);
+                    StartRPC(CustomRPC.RemoveAllBodies);
                     var buggedBodies = Object.FindObjectsOfType<DeadBody>();
                     foreach (var body in buggedBodies)
                     {
@@ -144,7 +144,7 @@ namespace TownOfSushi.Roles
                 if (interact[3] == true)
                 {
                     role.SpelledPlayers.Add(role.ClosestPlayer.PlayerId);
-                    Rpc(CustomRPC.Spell, PlayerControl.LocalPlayer.PlayerId, role.ClosestPlayer.PlayerId);
+                    StartRPC(CustomRPC.Spell, PlayerControl.LocalPlayer.PlayerId, role.ClosestPlayer.PlayerId);
                 }
                 if (interact[0] == true)
                 {

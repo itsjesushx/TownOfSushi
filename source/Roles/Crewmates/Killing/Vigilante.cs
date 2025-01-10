@@ -239,7 +239,7 @@ namespace TownOfSushi.Roles
         {
             MurderPlayer(vigilanteP, voteArea, player);
             VigiKillCount(player, vigilante);
-            Utils.Rpc(CustomRPC.VigilanteKill, player.PlayerId, vigilante.PlayerId);
+            Utils.StartRPC(CustomRPC.VigilanteKill, player.PlayerId, vigilante.PlayerId);
         }
 
         public static void MurderPlayer(Vigilante vigilanteP, PlayerControl player)
@@ -380,7 +380,7 @@ namespace TownOfSushi.Roles
                 swapper.Buttons.Clear();
                 SwapVotes.Swap1 = null;
                 SwapVotes.Swap2 = null;
-                Rpc(CustomRPC.SetSwaps, sbyte.MaxValue, sbyte.MaxValue);
+                StartRPC(CustomRPC.SetSwaps, sbyte.MaxValue, sbyte.MaxValue);
             }
 
             if (player.Is(RoleEnum.Jailor))
@@ -560,7 +560,7 @@ namespace TownOfSushi.Roles
                 if (role.ClosestPlayer.IsShielded())
                 {
                     var medic = role.ClosestPlayer.GetMedic().Player.PlayerId;
-                    Rpc(CustomRPC.AttemptSound, medic, role.ClosestPlayer.PlayerId);
+                    StartRPC(CustomRPC.AttemptSound, medic, role.ClosestPlayer.PlayerId);
 
                     if (CustomGameOptions.ShieldBreaks) role.LastKilled = DateTime.UtcNow;
 
@@ -571,7 +571,7 @@ namespace TownOfSushi.Roles
                 else if (role.Player.IsShielded())
                 {
                     var medic = role.Player.GetMedic().Player.PlayerId;
-                    Rpc(CustomRPC.AttemptSound, medic, role.Player.PlayerId);
+                    StartRPC(CustomRPC.AttemptSound, medic, role.Player.PlayerId);
                     if (CustomGameOptions.ShieldBreaks) role.LastKilled = DateTime.UtcNow;
                     MedicStopKill.BreakShield(medic, role.Player.PlayerId, CustomGameOptions.ShieldBreaks);
                     RpcMurderPlayer(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer);
@@ -593,7 +593,7 @@ namespace TownOfSushi.Roles
             else if (role.ClosestPlayer.IsShielded())
             {
                 var medic = role.ClosestPlayer.GetMedic().Player.PlayerId;
-                Rpc(CustomRPC.AttemptSound, medic, role.ClosestPlayer.PlayerId);
+                StartRPC(CustomRPC.AttemptSound, medic, role.ClosestPlayer.PlayerId);
 
                 if (CustomGameOptions.ShieldBreaks) role.LastKilled = DateTime.UtcNow;
 

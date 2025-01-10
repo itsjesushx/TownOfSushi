@@ -119,7 +119,7 @@ namespace TownOfSushi.Roles
                     foreach (var pb in GetRoles(RoleEnum.Plaguebearer)) ((Plaguebearer)pb).RpcSpreadInfection(player, role.Player);
                 }
 
-                Rpc(CustomRPC.JanitorClean, PlayerControl.LocalPlayer.PlayerId, playerId);
+                StartRPC(CustomRPC.JanitorClean, PlayerControl.LocalPlayer.PlayerId, playerId);
                 Coroutines.Start(JanitorCoroutine.CleanCoroutine(role.CurrentTarget, role));
                 return false;
             }

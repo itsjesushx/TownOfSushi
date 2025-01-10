@@ -144,7 +144,7 @@ namespace TownOfSushi.Roles
                 role.TimeRemaining = CustomGameOptions.ProtectDuration;
                 role.MaxUses--;
                 role.Protect();
-                Rpc(CustomRPC.GAProtect, PlayerControl.LocalPlayer.PlayerId);
+                StartRPC(CustomRPC.GAProtect, PlayerControl.LocalPlayer.PlayerId);
                 return false;
             }
             return true;
@@ -219,7 +219,7 @@ namespace TownOfSushi.Roles
 
             if (!role.target.Data.IsDead && !role.target.Data.Disconnected) return;
 
-            Rpc(CustomRPC.GuardianAngelChangeRole, PlayerControl.LocalPlayer.PlayerId);
+            StartRPC(CustomRPC.GuardianAngelChangeRole, PlayerControl.LocalPlayer.PlayerId);
 
             Object.Destroy(role.UsesText);
             DestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(false);

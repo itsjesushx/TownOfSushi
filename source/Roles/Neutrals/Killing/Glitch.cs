@@ -91,7 +91,7 @@ namespace TownOfSushi.Roles
 
         public void RpcSetHacked(PlayerControl hacked)
         {
-            Rpc(CustomRPC.SetHacked, Player.PlayerId, hacked.PlayerId);
+            StartRPC(CustomRPC.SetHacked, Player.PlayerId, hacked.PlayerId);
             SetHacked(hacked);
         }
 
@@ -235,7 +235,7 @@ namespace TownOfSushi.Roles
 
             public static IEnumerator Mimic(Glitch __instance, PlayerControl mimicPlayer)
             {
-                Rpc(CustomRPC.SetMimic, PlayerControl.LocalPlayer.PlayerId, mimicPlayer.PlayerId);
+                StartRPC(CustomRPC.SetMimic, PlayerControl.LocalPlayer.PlayerId, mimicPlayer.PlayerId);
 
                 var abilityUsed = AbilityUsed(PlayerControl.LocalPlayer);
                 if (!abilityUsed) yield break;
@@ -271,7 +271,7 @@ namespace TownOfSushi.Roles
                         __instance.MimicTarget = null;
                         Unmorph(__instance.Player);
 
-                        Rpc(CustomRPC.RpcResetAnim, PlayerControl.LocalPlayer.PlayerId, mimicPlayer.PlayerId);
+                        StartRPC(CustomRPC.RpcResetAnim, PlayerControl.LocalPlayer.PlayerId, mimicPlayer.PlayerId);
                         yield break;
                     }
 

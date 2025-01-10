@@ -8,7 +8,7 @@ namespace TownOfSushi
         {
             SpriteRenderer spriteRenderer = Object.Instantiate<SpriteRenderer>(__instance.PlayerVotePrefab);
 
-            if (TownOfSushi.DeadSeeVotes.Value || PlayerControl.LocalPlayer.Data.IsDead)
+            if (TownOfSushi.DeadSeeVotes.Value && PlayerControl.LocalPlayer.Data.IsDead)
             {
                 PlayerMaterial.SetColors(voterPlayer.DefaultOutfit.ColorId, spriteRenderer);
             }

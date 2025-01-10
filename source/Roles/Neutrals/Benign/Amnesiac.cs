@@ -173,11 +173,11 @@ namespace TownOfSushi.Roles
                         }
                         if (Remember == null)
                         {
-                            Rpc(CustomRPC.Remember, Amnesiac.Player.PlayerId, sbyte.MaxValue);
+                            StartRPC(CustomRPC.Remember, Amnesiac.Player.PlayerId, sbyte.MaxValue);
                             return;
                         }
 
-                        Rpc(CustomRPC.Remember, Amnesiac.Player.PlayerId, player.PlayerId);
+                        StartRPC(CustomRPC.Remember, Amnesiac.Player.PlayerId, player.PlayerId);
                     }
                 }
             }
@@ -332,7 +332,7 @@ namespace TownOfSushi.Roles
                 }
                 else
                 {
-                    if (role != RoleEnum.Vampire  || role != RoleEnum.Framer) 
+                    if (role != RoleEnum.Vampire) 
                     {
                         var romantic = new Amnesiac(other);
                         romantic.ReDoTaskText();
@@ -341,11 +341,6 @@ namespace TownOfSushi.Roles
                     {
                         var vampire = new Vampire(other);
                         vampire.ReDoTaskText();
-                    }
-                    if (role == RoleEnum.Framer)
-                    {
-                        var Framer = new Framer(other);
-                        Framer.ReDoTaskText();
                     }
                     if (role == RoleEnum.Plaguebearer ||
                         role == RoleEnum.Arsonist || role == RoleEnum.Glitch
@@ -705,7 +700,7 @@ namespace TownOfSushi.Roles
             var player = PlayerById(playerId);
             if (amnesiac.ToRemember == null) return;
 
-            Rpc(CustomRPC.StartRemember, PlayerControl.LocalPlayer.PlayerId, playerId);
+            StartRPC(CustomRPC.StartRemember, PlayerControl.LocalPlayer.PlayerId, playerId);
             RememberRole.Remember(amnesiac, player);
             amnesiac.Remembered = true;
         }

@@ -43,16 +43,13 @@ namespace TownOfSushi.Roles
         public static T GenAbility<T>(Type type, PlayerControl player)
         {
             var ability = (T)Activator.CreateInstance(type, new object[] { player });
-
-            Rpc(CustomRPC.SetAbility, player.PlayerId, (string)type.FullName);
-            System.Console.WriteLine($"{player.Data.DefaultOutfit.PlayerName} GETS THE ABILITY {(string)type.FullName}");
+            StartRPC(CustomRPC.SetAbility, player.PlayerId, (string)type.FullName);
             return ability;
         }
 
         public static T GenAbility<T>(Type type, List<PlayerControl> players)
         {
             var player = players[Random.RandomRangeInt(0, players.Count)];
-
             var ability = GenAbility<T>(type, player);
             players.Remove(player);
             return ability;

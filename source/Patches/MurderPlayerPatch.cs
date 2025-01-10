@@ -28,7 +28,7 @@ namespace TownOfSushi.Patches
                     }
                     else
                     {
-                        Rpc(CustomRPC.CheckMurder, PlayerControl.LocalPlayer.PlayerId, __instance.currentTarget.PlayerId);
+                        StartRPC(CustomRPC.CheckMurder, PlayerControl.LocalPlayer.PlayerId, __instance.currentTarget.PlayerId);
                     }
                     __instance.SetTarget(null);
                 }

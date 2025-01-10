@@ -208,7 +208,7 @@ namespace TownOfSushi.Roles
 
             Imitate(imitator);
 
-            Rpc(CustomRPC.StartImitate, imitator.Player.PlayerId);
+            StartRPC(CustomRPC.StartImitate, imitator.Player.PlayerId);
         }
 
         public static void Postfix(ExileController __instance) => ImitatorExileControllerPostfix(__instance);
@@ -445,11 +445,11 @@ namespace TownOfSushi.Roles
 
                     if (Imitate == null)
                     {
-                        Rpc(CustomRPC.Imitate, imitator.Player.PlayerId, sbyte.MaxValue);
+                        StartRPC(CustomRPC.Imitate, imitator.Player.PlayerId, sbyte.MaxValue);
                         return;
                     }
 
-                    Rpc(CustomRPC.Imitate, imitator.Player.PlayerId, imitator.ImitatePlayer.PlayerId);
+                    StartRPC(CustomRPC.Imitate, imitator.Player.PlayerId, imitator.ImitatePlayer.PlayerId);
                 }
             }
         }

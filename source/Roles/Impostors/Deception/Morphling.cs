@@ -184,7 +184,7 @@ namespace TownOfSushi.Roles
                     if (role.MorphTimer() != 0) return false;
                     var abilityUsed = AbilityUsed(PlayerControl.LocalPlayer);
                     if (!abilityUsed) return false;
-                    Rpc(CustomRPC.Morph, PlayerControl.LocalPlayer.PlayerId, role.SampledPlayer.PlayerId);
+                    StartRPC(CustomRPC.Morph, PlayerControl.LocalPlayer.PlayerId, role.SampledPlayer.PlayerId);
                     role.TimeRemaining = CustomGameOptions.MorphlingDuration;
                     role.MorphedPlayer = role.SampledPlayer;
                     Morph(role.Player, role.SampledPlayer);
