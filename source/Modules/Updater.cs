@@ -10,7 +10,7 @@ namespace TownOfSushi.Modules
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start))]
     public class ModUpdaterButton
     {
-        private static Sprite TOUUpdateSprite => TownOfSushi.UpdaterButton;
+        private static Sprite TOSUpdateSprite => TownOfSushi.UpdaterButton;
         private static Sprite SubmergedUpdateSprite => TownOfSushi.UpdateSubmergedButton;
         private static void Prefix(MainMenuManager __instance)
         {
@@ -26,8 +26,8 @@ namespace TownOfSushi.Modules
                 {
                     string action = AUversion > RequiredVersions.Keys.Max() ? "downgrade" : "update";
                     string info =
-                        $"ALERT\nTown of Us {TownOfSushi.VersionString} requires {RequiredVersions.Values.Last()}\nyou have {Application.version}\nPlease {action} your among us version"
-                        + "\nvisit Github or Discord for any help";
+                        $"ALERT\nTown Of Sushi {TownOfSushi.VersionString} requires {RequiredVersions.Values.Last()}\nyou have {Application.version}\nPlease {action} your among us version"
+                        + "\nVisit Github or Discord for any help";
                     TwitchManager man = DestroyableSingleton<TwitchManager>.Instance;
                     ModUpdater.InfoPopup = UnityEngine.Object.Instantiate(man.TwitchPopup);
                     ModUpdater.InfoPopup.TextAreaTMP.fontSize *= 0.68f;
@@ -39,7 +39,7 @@ namespace TownOfSushi.Modules
                     return;
                 }
             }
-            if (ModUpdater.HasTOUUpdate)
+            if (ModUpdater.HasTOSUpdate)
             {
                 //If there's an update, create and show the update button
                 UpdateButton(__instance, () => ModUpdater.ExecuteUpdate("TOS"));
@@ -66,8 +66,8 @@ namespace TownOfSushi.Modules
                 SpriteRenderer ButtonSprite = Button.transform.GetChild(1).GetComponent<SpriteRenderer>();
                 passiveButton.OnClick = new UnityEngine.UI.Button.ButtonClickedEvent();
 
-                ButtonSprite.sprite = TOUUpdateSprite;
-                Button.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = TOUUpdateSprite;
+                ButtonSprite.sprite = TOSUpdateSprite;
+                Button.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = TOSUpdateSprite;
 
                 Button.transform.SetParent(GameObject.Find("RightPanel").transform);
                 var pos = Button.GetComponent<AspectPosition>();
@@ -109,12 +109,12 @@ namespace TownOfSushi.Modules
     public class ModUpdater
     {
         public static bool Running = false;
-        public static bool HasTOUUpdate = false;
+        public static bool HasTOSUpdate = false;
         public static bool HasSubmergedUpdate = false;
         public static bool InvalidAUVersion = false;
-        public static string UpdateTOUURI = null;
+        public static string UpdateTOSURI = null;
         public static string UpdateSubmergedURI = null;
-        private static Task UpdateTOUTask = null;
+        private static Task UpdateTOSTask = null;
         private static Task UpdateSubmergedTask = null;
         public static GenericPopup InfoPopup;
         public static HttpClient Httpclient = new() 
@@ -151,11 +151,11 @@ namespace TownOfSushi.Modules
             {
                 info = "Updating Town Of Sushi\nPlease wait...";
                 InfoPopup.Show(info);
-                if (UpdateTOUTask == null)
+                if (UpdateTOSTask == null)
                 {
-                    if (UpdateTOUURI != null)
+                    if (UpdateTOSURI != null)
                     {
-                        UpdateTOUTask = downloadUpdate("TOS");
+                        UpdateTOSTask = DownloadUpdate("TOS");
                     }
                     else
                     {
@@ -175,7 +175,7 @@ namespace TownOfSushi.Modules
                 {
                     if (UpdateSubmergedURI != null)
                     {
-                        UpdateSubmergedTask = downloadUpdate("Submerged");
+                        UpdateSubmergedTask = DownloadUpdate("Submerged");
                     }
                     else
                     {
@@ -241,16 +241,16 @@ namespace TownOfSushi.Modules
                     diff = TownOfSushi.Version.CompareTo(ver);
                     if (diff < 0)
                     { // TOS update required
-                        HasTOUUpdate = true;
+                        HasTOSUpdate = true;
                     }
                 }
                 else if (updateType == "Submerged")
                 {
                     //account for broken version
-                    if (Patches.SubmergedCompatibility.Version == null) HasSubmergedUpdate = true;
+                    if (SubmergedCompatibility.Version == null) HasSubmergedUpdate = true;
                     else
                     {
-                        diff = Patches.SubmergedCompatibility.Version.CompareTo(SemanticVersioning.Version.Parse(tagname.Replace("v", ""))); ;
+                        diff = SubmergedCompatibility.Version.CompareTo(SemanticVersioning.Version.Parse(tagname.Replace("v", ""))); ;
                         if (diff < 0)
                         { // Submerged update required
                             HasSubmergedUpdate = true;
@@ -267,7 +267,7 @@ namespace TownOfSushi.Modules
                     {
                         if (updateType == "TOS")
                         {
-                            UpdateTOUURI = asset.browser_download_url;
+                            UpdateTOSURI = asset.browser_download_url;
                         }
                         else if (updateType == "Submerged")
                         {
@@ -284,14 +284,14 @@ namespace TownOfSushi.Modules
             return false;
         }
 
-        public static async Task<bool> downloadUpdate(string updateType = "TOS")
+        public static async Task<bool> DownloadUpdate(string updateType = "TOS")
         {
             //Downloads the new TownOfSushi/Submerged dll from GitHub into the plugins folder
             string downloadDLL = "";
             string info = "";
             if (updateType == "TOS")
             {
-                downloadDLL = UpdateTOUURI;
+                downloadDLL = UpdateTOSURI;
                 info = "Town Of Sushi\nupdated successfully.\nPlease RESTART the game.";
             }
             else if (updateType == "Submerged")
