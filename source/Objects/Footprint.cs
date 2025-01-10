@@ -1,4 +1,4 @@
-using TownOfSushi.Modules.ColorsMod;
+using TownOfSushi.Modules.CustomColors;
 
 namespace TownOfSushi.Objects
 {

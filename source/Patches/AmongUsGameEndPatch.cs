@@ -320,6 +320,18 @@ namespace TownOfSushi.Patches
                     }
                 }
             }
+            foreach (var role in Role.GetRoles(RoleEnum.Amnesiac))
+            {
+                var Amnesiac = (Amnesiac)role;
+                if (!Amnesiac.Player.Data.IsDead && !Amnesiac.Player.Data.Disconnected)
+                {
+                    var isImp = EndGameResult.CachedWinners.Count != 0 && EndGameResult.CachedWinners[0].IsImpostor;
+                    var AmnesiacWinData = new CachedPlayerData(Amnesiac.Player.Data);
+                    if (isImp) AmnesiacWinData.IsImpostor = true;
+                    if (PlayerControl.LocalPlayer != Amnesiac.Player) AmnesiacWinData.IsYou = false;
+                    EndGameResult.CachedWinners.Add(AmnesiacWinData);
+                }
+            }
             foreach (var role in GetRoles(RoleEnum.GuardianAngel))
             {
                 var ga = (GuardianAngel)role;

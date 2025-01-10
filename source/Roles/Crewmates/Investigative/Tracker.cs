@@ -1,5 +1,5 @@
 using TMPro;
-using TownOfSushi.Modules.ColorsMod;
+using TownOfSushi.Modules.CustomColors;
 
 namespace TownOfSushi.Roles
 {
