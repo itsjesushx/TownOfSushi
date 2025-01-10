@@ -176,7 +176,7 @@ namespace TownOfSushi
             LockSprite = CreateSprite("TownOfSushi.Resources.Lock.png");
             TargetIcon = CreateSprite("TownOfSushi.Resources.TargetIcon.png", 150f);
             UpdateSubmergedButton = CreateSprite("TownOfSushi.Resources.UpdateSubmergedButton.png");
-            UpdaterButton = CreateSprite("TownOfSushi.Resources.InGameUpdater.png");
+            UpdaterButton = CreateSprite("TownOfSushi.Resources.ToS_Update.png");
 
             PalettePatch.Load();
             CustomHatManager.LoadHats();

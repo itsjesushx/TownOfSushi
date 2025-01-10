@@ -42,7 +42,7 @@ namespace TownOfSushi.Modules
             if (ModUpdater.HasTOUUpdate)
             {
                 //If there's an update, create and show the update button
-                UpdateButton(__instance, () => ModUpdater.ExecuteUpdate("TOU"));
+                UpdateButton(__instance, () => ModUpdater.ExecuteUpdate("TOS"));
             }
             if (ModUpdater.HasSubmergedUpdate)
             {
@@ -91,7 +91,7 @@ namespace TownOfSushi.Modules
 
                 //Set popup stuff
                 TwitchManager man = DestroyableSingleton<TwitchManager>.Instance;
-                ModUpdater.InfoPopup = UnityEngine.Object.Instantiate(man.TwitchPopup);
+                ModUpdater.InfoPopup = Object.Instantiate(man.TwitchPopup);
                 ModUpdater.InfoPopup.TextAreaTMP.fontSize *= 0.7f;
                 ModUpdater.InfoPopup.TextAreaTMP.enableAutoSizing = false;
             }
@@ -130,7 +130,7 @@ namespace TownOfSushi.Modules
             if (Running) return;
             Running = true;
 
-            checkForUpdate("TOU").GetAwaiter().GetResult();
+            checkForUpdate("TOS").GetAwaiter().GetResult();
 
             //Only check of Submerged update if Submerged is already installed
             string codeBase = Assembly.GetExecutingAssembly().Location;
@@ -144,18 +144,18 @@ namespace TownOfSushi.Modules
             clearOldVersions();
         }
 
-        public static void ExecuteUpdate(string updateType = "TOU")
+        public static void ExecuteUpdate(string updateType = "TOS")
         {
             string info = "";
-            if (updateType == "TOU")
+            if (updateType == "TOS")
             {
-                info = "Updating Town Of Us\nPlease wait...";
+                info = "Updating Town Of Sushi\nPlease wait...";
                 InfoPopup.Show(info);
                 if (UpdateTOUTask == null)
                 {
                     if (UpdateTOUURI != null)
                     {
-                        UpdateTOUTask = downloadUpdate("TOU");
+                        UpdateTOUTask = downloadUpdate("TOS");
                     }
                     else
                     {
@@ -204,15 +204,15 @@ namespace TownOfSushi.Modules
                 PluginSingleton<TownOfSushi>.Instance.Log.LogMessage("Exception occured when clearing old versions:\n" + e);
             }
         }
-        public static async Task<bool> checkForUpdate(string updateType = "TOU")
+        public static async Task<bool> checkForUpdate(string updateType = "TOS")
         {
-            //Checks the github api for Town Of Us tags. Compares current version (from VersionString in TownOfSushi.cs) to the latest tag version(on GitHub)
+            //Checks the github api for Town Of Sushi tags. Compares current version (from VersionString in TownOfSushi.cs) to the latest tag version(on GitHub)
             try
             {
                 string githubURI = "";
-                if (updateType == "TOU")
+                if (updateType == "TOS")
                 {
-                    githubURI = "https://api.github.com/repos/eDonnes124/Town-Of-Us-R/releases/latest";
+                    githubURI = "https://api.github.com/repos/itsjesushx/TownOfSushi/releases/latest";
                 }
                 else if (updateType == "Submerged")
                 {
@@ -236,11 +236,11 @@ namespace TownOfSushi.Modules
 
                 int diff = 0;
                 Version ver = Version.Parse(tagname.Replace("v", ""));
-                if (updateType == "TOU")
-                { //Check TOU version
+                if (updateType == "TOS")
+                { //Check TOS version
                     diff = TownOfSushi.Version.CompareTo(ver);
                     if (diff < 0)
-                    { // TOU update required
+                    { // TOS update required
                         HasTOUUpdate = true;
                     }
                 }
@@ -265,7 +265,7 @@ namespace TownOfSushi.Modules
                     if (asset.browser_download_url == null) continue;
                     if (asset.browser_download_url.EndsWith(".dll"))
                     {
-                        if (updateType == "TOU")
+                        if (updateType == "TOS")
                         {
                             UpdateTOUURI = asset.browser_download_url;
                         }
@@ -284,15 +284,15 @@ namespace TownOfSushi.Modules
             return false;
         }
 
-        public static async Task<bool> downloadUpdate(string updateType = "TOU")
+        public static async Task<bool> downloadUpdate(string updateType = "TOS")
         {
             //Downloads the new TownOfSushi/Submerged dll from GitHub into the plugins folder
             string downloadDLL = "";
             string info = "";
-            if (updateType == "TOU")
+            if (updateType == "TOS")
             {
                 downloadDLL = UpdateTOUURI;
-                info = "Town Of Us\nupdated successfully.\nPlease RESTART the game.";
+                info = "Town Of Sushi\nupdated successfully.\nPlease RESTART the game.";
             }
             else if (updateType == "Submerged")
             {
