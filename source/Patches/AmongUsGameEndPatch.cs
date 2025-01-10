@@ -320,7 +320,7 @@ namespace TownOfSushi.Patches
                     }
                 }
             }
-            foreach (var role in Role.GetRoles(RoleEnum.Amnesiac))
+            foreach (var role in GetRoles(RoleEnum.Amnesiac))
             {
                 var Amnesiac = (Amnesiac)role;
                 if (!Amnesiac.Player.Data.IsDead && !Amnesiac.Player.Data.Disconnected)
