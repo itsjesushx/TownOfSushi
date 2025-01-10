@@ -90,6 +90,7 @@ namespace TownOfSushi
         public static Sprite LockSprite;
         public static Sprite TargetIcon;
         public static Sprite UpdateSubmergedButton;
+        public static Sprite UpdaterButton;
         private static DLoadImage _iCallLoadImage;
 
         public static ConfigEntry<bool> DeadSeeGhosts { get; set; }
@@ -175,12 +176,12 @@ namespace TownOfSushi
             LockSprite = CreateSprite("TownOfSushi.Resources.Lock.png");
             TargetIcon = CreateSprite("TownOfSushi.Resources.TargetIcon.png", 150f);
             UpdateSubmergedButton = CreateSprite("TownOfSushi.Resources.UpdateSubmergedButton.png");
+            UpdaterButton = CreateSprite("TownOfSushi.Resources.InGameUpdater.png");
 
             PalettePatch.Load();
             CustomHatManager.LoadHats();
             ClassInjector.RegisterTypeInIl2Cpp<ColorBehaviour>();
             Harmony.PatchAll();
-            AddComponent<ModUpdateBehaviour>();
             SubmergedCompatibility.Initialize();
             
             ServerManager.DefaultRegions = new Il2CppReferenceArray<IRegionInfo>(new IRegionInfo[0]);

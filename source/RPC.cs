@@ -897,7 +897,7 @@ namespace TownOfSushi
                         var abilityUser = Utils.PlayerById(reader.ReadByte());
                         var abilitytargetId = reader.ReadByte();
                         var abilitytarget = abilitytargetId == byte.MaxValue ? null : Utils.PlayerById(abilitytargetId);
-                        foreach (Role hunterRole2 in Role.GetRoles(RoleEnum.Hunter))
+                        foreach (Role hunterRole2 in GetRoles(RoleEnum.Hunter))
                         {
                             Hunter hunter = (Hunter)hunterRole2;
                             if (hunter.StalkedPlayer == abilityUser) hunter.RpcCatchPlayer(abilityUser);

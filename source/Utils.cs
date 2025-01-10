@@ -1575,6 +1575,17 @@ namespace TownOfSushi
             return string.Format("<color=#{0:X2}{1:X2}{2:X2}{3:X2}>{4}</color>", ToByte(c.r), ToByte(c.g), ToByte(c.b), ToByte(c.a), s);
         }
 
+        [HarmonyPatch(typeof(LobbyBehaviour), nameof(LobbyBehaviour.Start))]    
+        public static class LobbyBehaviourPatch    
+        {        
+            [HarmonyPostfix]        
+            public static void Postfix()         
+            {            
+                // Fix Grenadier blind in lobby            
+                ((Renderer)DestroyableSingleton<HudManager>.Instance.FullScreen).gameObject.active = false;        
+            }    
+        }
+
         private static byte ToByte(float f) {
             f = Mathf.Clamp01(f);
             return (byte)(f * 255);

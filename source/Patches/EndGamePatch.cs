@@ -7,25 +7,21 @@ namespace TownOfSushi.Patches
     static class AdditionalTempData 
     {
         public static List<PlayerRoleInfo> GameSummaryText = new List<PlayerRoleInfo>();
-
         public static void Clear() 
         {
             GameSummaryText.Clear();
         }
-
         internal class PlayerRoleInfo
         {
             public string PlayerName { get; set; }
             public string GameSummaryText { get; set; }
         }
-
         internal class Winners
         {
             public string PlayerName { get; set; }
             public RoleEnum Role { get; set; }
         }
     }
-
 
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnGameEnd))]
     public class OnGameEndPatch 
