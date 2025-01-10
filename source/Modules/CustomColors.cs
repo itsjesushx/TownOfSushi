@@ -36,11 +36,11 @@
     [HarmonyPatch(typeof(ChatNotification), nameof(ChatNotification.SetUp))]
     public class ChatNotificationColors
     {
-        public static bool Prefix(ChatNotification __instance, PlayerControl player, string text) 
+        public static bool Prefix(ChatNotification __instance, PlayerControl sender, string text) 
         {
             __instance.timeOnScreen = 5f;
             __instance.gameObject.SetActive(true);
-            __instance.SetCosmetics(player.Data);
+            __instance.SetCosmetics(sender.Data);
             string str;
             Color color;
             try 
@@ -57,7 +57,7 @@
                 TownOfSushi.Logger.LogMessage($"{c.r}, {c.g}, {c.b}");
             }
             __instance.playerColorText.text = __instance.player.ColorBlindName;
-            __instance.playerNameText.text = "<color=#" + str + ">" + (string.IsNullOrEmpty(player.Data.PlayerName) ? "..." : player.Data.PlayerName);
+            __instance.playerNameText.text = "<color=#" + str + ">" + (string.IsNullOrEmpty(sender.Data.PlayerName) ? "..." : sender.Data.PlayerName);
             __instance.playerNameText.outlineColor = color;
             __instance.chatText.text = text;
             return false;

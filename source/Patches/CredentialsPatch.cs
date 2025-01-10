@@ -41,7 +41,7 @@ $@"<size=60%> <color=#FF0000FF>Formerly: Slushiegoose & Polus.gg</color></size>"
                 Credentials.fontSize *= 0.05f;
 
                 Credentials.transform.SetParent(torLogo.transform);
-                Credentials.transform.localPosition = Vector3.down * 1.25f;
+                Credentials.transform.localPosition = Vector3.down * 1.45f;
             }
 
             public static void LoadSprites() 
