@@ -34,7 +34,6 @@ namespace TownOfSushi.CustomOption
         public static int TrapperOn => Mathf.RoundToInt(CustomOptionHolder.TrapperOn.GetFloat());
         public static int DrunkOn => Mathf.RoundToInt(CustomOptionHolder.DrunkOn.GetFloat());
         public static int AgentOn => Mathf.RoundToInt(CustomOptionHolder.AgentOn.GetFloat());
-        public static int TransporterOn => Mathf.RoundToInt(CustomOptionHolder.TransporterOn.GetFloat());
         public static int MediumOn => Mathf.RoundToInt(CustomOptionHolder.MediumOn.GetFloat());
         public static int RomanticOn => Mathf.RoundToInt(CustomOptionHolder.RomanticOn.GetFloat());
         public static int GuardianAngelOn => Mathf.RoundToInt(CustomOptionHolder.GuardianAngelOn.GetFloat());
@@ -185,15 +184,13 @@ namespace TownOfSushi.CustomOption
         public static float TrackCd => CustomOptionHolder.TrackCooldown.GetFloat();
         public static bool ResetOnNewRound => CustomOptionHolder.ResetOnNewRound.GetBool();
         public static int MaxTracks => Mathf.RoundToInt(CustomOptionHolder.MaxTracks.GetFloat());
-        public static float TransportCooldown => CustomOptionHolder.TransportCooldown.GetFloat();
-        public static int TransportMaxUses => Mathf.RoundToInt(CustomOptionHolder.TransportMaxUses.GetFloat());
-        public static bool TransporterVitals => CustomOptionHolder.TransporterVitals.GetBool();
         public static float MediateCooldown => CustomOptionHolder.MediateCooldown.GetFloat();
         public static float JailCd => CustomOptionHolder.JailCooldown.GetFloat();
         public static int MaxExecutes => Mathf.RoundToInt(CustomOptionHolder.MaxExecutes.GetFloat());
         public static bool ShowMediatePlayer => CustomOptionHolder.ShowMediatePlayer.GetBool();
         public static bool SwapperButton => CustomOptionHolder.SwapperButton.GetBool();
         public static bool ShowMediumToDead => CustomOptionHolder.ShowMediumToDead.GetBool();
+        public static bool MediumVitals => CustomOptionHolder.MediumVitals.GetBool();
         public static DeadRevealed DeadRevealed => (DeadRevealed)CustomOptionHolder.DeadRevealed.GetSelection();
         public static float PickStartTimer => CustomOptionHolder.PickStartTimer.GetFloat();
         public static float ProtectKCReset => CustomOptionHolder.ProtectKCReset.GetFloat();

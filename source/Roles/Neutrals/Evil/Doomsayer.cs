@@ -40,7 +40,6 @@ namespace TownOfSushi.Roles
                 if (CustomGameOptions.OracleOn > 0) ColorMapping.Add("Oracle", Colors.Oracle);
                 if (CustomGameOptions.SeerOn > 0) ColorMapping.Add("Seer", Colors.Seer);
                 if (CustomGameOptions.TrackerOn > 0) ColorMapping.Add("Tracker", Colors.Tracker);
-                if (CustomGameOptions.TransporterOn > 0) ColorMapping.Add("Transporter", Colors.Transporter);
                 if (CustomGameOptions.TrapperOn > 0) ColorMapping.Add("Trapper", Colors.Trapper);
                 if (CustomGameOptions.VeteranOn > 0) ColorMapping.Add("Veteran", Colors.Veteran);
                 if (CustomGameOptions.VigilanteOn > 0) ColorMapping.Add("Vigilante", Colors.Vigilante);
@@ -468,7 +467,7 @@ namespace TownOfSushi.Roles
                 || player.Is(RoleEnum.Venerer) || player.Is(RoleEnum.SerialKiller))
                 return $"You observe that {player.GetDefaultOutfit().PlayerName} is well trained in hunting down prey";
             else if (player.Is(RoleEnum.Arsonist) || player.Is(RoleEnum.Miner) || player.Is(RoleEnum.Plaguebearer)
-                  || player.Is(RoleEnum.Seer) || player.Is(RoleEnum.Transporter))
+                  || player.Is(RoleEnum.Seer))
                 return $"You observe that {player.GetDefaultOutfit().PlayerName} spreads fear amonst the group";
             else if (player.Is(RoleEnum.Engineer) || player.Is(RoleEnum.Escapist) || player.Is(RoleEnum.Grenadier)
                 || player.Is(RoleEnum.GuardianAngel) || player.Is(RoleEnum.Medic)|| player.Is(RoleEnum.Romantic))
@@ -505,8 +504,8 @@ namespace TownOfSushi.Roles
                 return "(" + ColorString(Colors.Investigator,"Investigator") + ", " + ColorString(Colors.Impostor,"Swooper") + ", " + ColorString(Colors.Tracker,"Tracker") + ", "+ ColorString(Colors.Impostor,"Venerer ") + " or " + ColorString(Colors.SerialKiller,"SerialKiller") + ")";
             
             else if (player.Is(RoleEnum.Arsonist) || player.Is(RoleEnum.Miner) || player.Is(RoleEnum.Plaguebearer)
-                  ||player.Is(RoleEnum.Seer) || player.Is(RoleEnum.Transporter))
-                return "(" + ColorString(Colors.Arsonist,"Arsonist") + ", " + ColorString(Colors.Impostor,"Miner") + ", " + ColorString(Colors.Plaguebearer,"Plaguebearer") + ", "+ ColorString(Colors.Seer,"Seer ") + " or " + ColorString(Colors.Transporter,"Transporter") + ")";
+                  ||player.Is(RoleEnum.Seer))
+                return "(" + ColorString(Colors.Arsonist,"Arsonist") + ", " + ColorString(Colors.Impostor,"Miner") + ", " + ColorString(Colors.Plaguebearer,"Plaguebearer") + " or "+ ColorString(Colors.Seer,"Seer ")+ ")";
             
             else if (player.Is(RoleEnum.Engineer) || player.Is(RoleEnum.Escapist) || player.Is(RoleEnum.Grenadier)
                 || player.Is(RoleEnum.GuardianAngel) || player.Is(RoleEnum.Medic) || player.Is(RoleEnum.Romantic))

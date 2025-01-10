@@ -168,6 +168,12 @@ namespace TownOfSushi.Roles
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
     public class VultureHudManagerUpdate
     {
+        private static void UpdateMeeting(MeetingHud __instance, Vulture role)
+        {
+            foreach (var player in __instance.playerStates)
+                if (player.TargetPlayerId == role.Player.PlayerId)
+                    player.NameText.text += $" <color=#8C4005>({role.BodiesRemainingToWin()})</color>";
+        }
         public static Sprite Arrow => TownOfSushi.Arrow;
         public static void Postfix(HudManager __instance)
         {
@@ -179,6 +185,8 @@ namespace TownOfSushi.Roles
             var data = PlayerControl.LocalPlayer.Data;
             var isDead = data.IsDead;
             var truePosition = PlayerControl.LocalPlayer.GetTruePosition();
+
+            if (MeetingHud.Instance != null) UpdateMeeting(MeetingHud.Instance, role);
 
             if (CustomGameOptions.EatArrows && !PlayerControl.LocalPlayer.Data.IsDead)
             {

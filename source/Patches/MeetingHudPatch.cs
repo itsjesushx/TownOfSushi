@@ -94,7 +94,8 @@ namespace TownOfSushi.Patches
         }
 
         [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.ServerStart))]
-        class MeetingServerStartPatch {
+        class MeetingServerStartPatch 
+        {
             static void Postfix(MeetingHud __instance)
             {
                 PopulateButtonsPostfix(__instance);
@@ -102,10 +103,12 @@ namespace TownOfSushi.Patches
         }
 
         [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Deserialize))]
-        class MeetingDeserializePatch {
+        class MeetingDeserializePatch 
+        {
             static void Postfix(MeetingHud __instance, [HarmonyArgument(0)]MessageReader reader, [HarmonyArgument(1)]bool initialState)
             {
-                if (initialState) {
+                if (initialState) 
+                {
                     PopulateButtonsPostfix(__instance);
                 }
             }

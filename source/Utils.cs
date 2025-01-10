@@ -1214,7 +1214,7 @@ namespace TownOfSushi
             if (role.DeathReason == DeathReasonEnum.Killed)
                 reason = "Killed";
             else if (role.DeathReason == DeathReasonEnum.Ejected)
-                reason = "Ejected";
+                reason = "Voted Out";
             else if (role.DeathReason == DeathReasonEnum.Guessed)
                 reason = "Guessed";
             else if (role.DeathReason == DeathReasonEnum.Alive)
@@ -1365,11 +1365,6 @@ namespace TownOfSushi
                     tracker.TrackerArrows.Values.DestroyAll();
                     tracker.TrackerArrows.Clear();
                 }
-            }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Transporter))
-            {
-                var transporter = GetRole<Transporter>(PlayerControl.LocalPlayer);
-                transporter.LastTransported = DateTime.UtcNow;
             }
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Veteran))
             {

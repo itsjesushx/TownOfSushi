@@ -53,7 +53,6 @@ namespace TownOfSushi
         public static Sprite DetonateSprite;
         public static Sprite JailSprite;
         public static Sprite InJailSprite;
-        public static Sprite TransportSprite;
         public static Sprite MediateSprite;
         public static Sprite ProtectSprite;
         public static Sprite RomanticPick;
@@ -90,6 +89,7 @@ namespace TownOfSushi
         public static Sprite LockSprite;
         public static Sprite TargetIcon;
         public static Sprite UpdateSubmergedButton;
+        public static Sprite BannerInGame;
         private static DLoadImage _iCallLoadImage;
 
         public static ConfigEntry<bool> DeadSeeGhosts { get; set; }
@@ -141,7 +141,6 @@ namespace TownOfSushi
             PlantSprite = CreateSprite("TownOfSushi.Resources.Plant.png");
             VultureEat = CreateSprite("TownOfSushi.Resources.Vulture.png");
             DetonateSprite = CreateSprite("TownOfSushi.Resources.Detonate.png");
-            TransportSprite = CreateSprite("TownOfSushi.Resources.Transport.png");
             MediateSprite = CreateSprite("TownOfSushi.Resources.Mediate.png");
             RomanticPick = CreateSprite("TownOfSushi.Resources.Poison.png");
             ProtectSprite = CreateSprite("TownOfSushi.Resources.Protect.png");
@@ -175,6 +174,7 @@ namespace TownOfSushi
             LockSprite = CreateSprite("TownOfSushi.Resources.Lock.png");
             TargetIcon = CreateSprite("TownOfSushi.Resources.TargetIcon.png", 150f);
             UpdateSubmergedButton = CreateSprite("TownOfSushi.Resources.UpdateSubmergedButton.png");
+            BannerInGame = CreateSprite("TownOfSushi.Resources.BannerInGame.png");
 
             PalettePatch.Load();
             CustomHatManager.LoadHats();

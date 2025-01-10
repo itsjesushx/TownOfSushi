@@ -10,7 +10,7 @@ namespace TownOfSushi.Patches
     }
     
     [HarmonyPatch(typeof(AmongUs.Data.Legacy.LegacySaveManager), nameof(AmongUs.Data.Legacy.LegacySaveManager.GetPrefsName))]
-    public class LegacySaveManagerPatch    
+    public class LegacySaveManagerPatch
     {
         public static void Postfix(ref string __result)        
         {            

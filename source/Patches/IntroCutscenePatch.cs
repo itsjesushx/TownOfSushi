@@ -88,7 +88,7 @@ namespace TownOfSushi.Patches
                 }
                 if (PlayerControl.LocalPlayer.Is(RoleAlignment.NeutralBenign))
                 {
-                    PlayerControl.LocalPlayer.Data.Role.IntroSound = GetIntroSound(RoleTypes.GuardianAngel);
+                    PlayerControl.LocalPlayer.Data.Role.IntroSound = GetIntroSound(RoleTypes.Noisemaker);
                 }
             }
         }

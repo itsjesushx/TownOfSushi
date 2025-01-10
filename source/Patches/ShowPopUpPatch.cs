@@ -1,6 +1,5 @@
 using System.Text;
 
-//show lore
 namespace TownOfSushi.Patches
 {
     [HarmonyPatch(typeof(ControllerManager), nameof(ControllerManager.Update))]

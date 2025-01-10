@@ -771,15 +771,6 @@ namespace TownOfSushi
                         ga2Role.TimeRemaining = CustomGameOptions.ProtectDuration;
                         ga2Role.Protect();
                         break;
-                    case CustomRPC.Transport:
-                        Coroutines.Start(Transporter.TransportPlayers(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean()));
-                        break;
-                    case CustomRPC.SetUntransportable:
-                        if (PlayerControl.LocalPlayer.Is(RoleEnum.Transporter))
-                        {
-                            GetRole<Transporter>(PlayerControl.LocalPlayer).UntransportablePlayers.Add(reader.ReadByte(), DateTime.UtcNow);
-                        }
-                        break;
                     case CustomRPC.Mediate:
                         var mediatedPlayer = PlayerById(reader.ReadByte());
                         var medium = GetRole<Medium>(PlayerById(reader.ReadByte()));
@@ -1038,10 +1029,7 @@ namespace TownOfSushi
 
                     if (CustomGameOptions.TrackerOn > 0)
                         CrewmateRoles.Add((typeof(Tracker), CustomGameOptions.TrackerOn, false));
-
-                    if (CustomGameOptions.TransporterOn > 0)
-                        CrewmateRoles.Add((typeof(Transporter), CustomGameOptions.TransporterOn, false));
-
+                    
                     if (CustomGameOptions.MediumOn > 0)
                         CrewmateRoles.Add((typeof(Medium), CustomGameOptions.MediumOn, false));
                     

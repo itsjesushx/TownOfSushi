@@ -31,7 +31,7 @@ namespace TownOfSushi.Patches
         [HarmonyPatch(typeof(Console), nameof(Console.CanUse))]
         private class Console_CanUse
         {
-            private static bool Prefix(Console __instance, [HarmonyArgument(0)] NetworkedPlayerInfo playerInfo, ref float __result, ref bool Use, ref bool Use2)
+            private static bool Prefix(Console __instance, [HarmonyArgument(0)] NetworkedPlayerInfo playerInfo, ref float __result, ref bool canUse, ref bool couldUse)
             {
                 var playerControl = playerInfo.Object;
 
@@ -44,8 +44,8 @@ namespace TownOfSushi.Patches
                 if (flag && !__instance.AllowImpostor)
                 {
                     __result = float.MaxValue;
-                    Use = false;
-                    Use2 = false;
+                    canUse = false;
+                    couldUse = false;
                     return false;
                 }
                 return true;

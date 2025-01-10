@@ -109,12 +109,6 @@ namespace TownOfSushi.Patches
                         track.UsesText.color = Palette.DisabledClear;
                         track.UsesText.material.SetFloat("_Desat", 1f);
                     }
-                    else if (PlayerControl.LocalPlayer.Is(RoleEnum.Transporter))
-                    {
-                        var trans = GetRole<Transporter>(PlayerControl.LocalPlayer);
-                        trans.UsesText.color = Palette.DisabledClear;
-                        trans.UsesText.material.SetFloat("_Desat", 1f);
-                    }
                     else if (PlayerControl.LocalPlayer.Is(RoleEnum.Trapper))
                     {
                         var trap = GetRole<Trapper>(PlayerControl.LocalPlayer);

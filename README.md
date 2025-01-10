@@ -30,8 +30,8 @@
 |  [Bomber](#bomber)  | [Seer](#seer) | [Amnesiac](#amnesiac)| | [Tiebreaker](#tiebreaker) |
 |  [Witch](#witch)| [Tracker](#tracker) |  [Agent](#agent) | |
 | | [Swapper](#swapper)  | [Hitman](#hitman) |  |
-| | [Transporter](#transporter)  |[Glitch](#glitch) |  |
-| |[Trapper](#trapper) | [Serial Killer](#serial-killer) |  |
+| | [Trapper](#trapper)   |[Glitch](#glitch) |  |
+| || [Serial Killer](#serial-killer) |  |
 | |  | [Juggernaut](#juggernaut)  |  |
 | | |[Plaguebearer](#plaguebearer) |  |
 
@@ -41,6 +41,7 @@
 |----------|-------------|-----------------|
 | V2024.10.29s & V2024.10.29e | v1.0.0 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/v1.0.0/TownOfSushi.v1.0.0.zip) |
 | V2024.10.29s & V2024.10.29e | v1.2.0 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/v1.2.0/TOS.v1.2.0.zip) |
+| V2024.10.29s & V2024.10.29e | v1.2.1 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/v1.2.1/TOS.v1.2.1.zip) |
 
 -----------------------
 # Installation
@@ -413,6 +414,7 @@ However, if someone is dead, the Medium and the dead player will be able to see 
 | Mediate Cooldown | The cooldown of the Medium's Mediate button | Time | 10s |
 | Reveal Appearance of Mediate Target | Whether the Ghosts will show as themselves, or camouflaged | Toggle | True |
 | Reveal the Medium to the Mediate Target | Whether the ghosts can see that the Medium is the Medium | Toggle | True |
+| Medium Can Use Vitals| Whether the Medium can see Vitals | Toggle | False |
 | Who is Revealed | Which players are revealed to the Medium | Oldest Dead / Newest Dead / All Dead | Oldest Dead |
 
 -----------------------
@@ -426,20 +428,6 @@ All the votes for the first player will instead be counted towards the second pl
 |----------|:-------------:|:------:|:------:|
 | Swapper | The percentage probability of the Swapper appearing | Percentage | 0% |
 | Swapper Can Button | Whether the Swapper Can Press the Button | Toggle | True |
-
------------------------
-## Transporter
-### **Team: Crewmates**
-The Transporter is a Crewmate that can change the locations of two random players at will.\
-Players who have been transported are alerted with a blue flash on their screen.
-
-### Game Options
-| Name | Description | Type | Default |
-|----------|:-------------:|:------:|:------:|
-| Transporter | The percentage probability of the Transporter appearing | Percentage | 0% |
-| Transport Cooldown | The cooldown of the Transporter's transport ability | Time | 25s |
-| Max Uses | The amount of times the Transport ability can be used | Number | 5 |
-| Transporter can use Vitals | Whether the Transporter has the ability to use Vitals | Toggle | False |
 
 -----------------------
 # Neutral Roles

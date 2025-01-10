@@ -7,11 +7,11 @@ namespace TownOfSushi.Roles
             Name = "Warlock";
             StartText = () => "Charge Up Your Kill Button To Multi Kill";
             TaskText = () => "Kill people in small bursts";
+            RoleInfo = "As the warlock, you have to wait until your charger gets to 100% to kill, you can kill anyone that does not have protection with your kill button, just like a serial killer on bloodlust. The difference is that warlock kills faster.";
             LoreText = "A dark sorcerer, you harness the power of dark magic to strike fear into the hearts of the crew. As the Warlock, you can charge up your kill ability, allowing you to unleash a devastating multi-kill in short bursts. The more you charge, the deadlier your strikes become, giving you the power to eliminate multiple targets at once and wreak havoc on the crew.";
             Color = Colors.Impostor;
             RoleType = RoleEnum.Warlock;
             Faction = Faction.Impostors;
-
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.ImpPower;
             ChargePercent = 0;

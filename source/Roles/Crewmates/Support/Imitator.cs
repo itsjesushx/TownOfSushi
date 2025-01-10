@@ -11,7 +11,7 @@ namespace TownOfSushi.Roles
         public List<RoleEnum> ImitatableRoles = new List<RoleEnum>
         {
             RoleEnum.Investigator, RoleEnum.Mystic, RoleEnum.Seer, RoleEnum.Tracker, RoleEnum.Vigilante, 
-            RoleEnum.Veteran, RoleEnum.Engineer, RoleEnum.Medium, RoleEnum.Transporter, RoleEnum.Trapper, 
+            RoleEnum.Veteran, RoleEnum.Engineer, RoleEnum.Medium, RoleEnum.Trapper, 
             RoleEnum.Medic, RoleEnum.Oracle, RoleEnum.Hunter
         };
         public Imitator(PlayerControl player) : base(player)
@@ -19,7 +19,7 @@ namespace TownOfSushi.Roles
             Name = "Imitator";
             StartText = () => "Use the true-hearted dead to benefit the crew";
             TaskText = () => "Use dead roles to benefit the crew";
-            RoleInfo = "The Imitator is able to copy the abilities of dead crewmates to help the crew. The Imitator can not Imitate roles that work during meetings. This is the list of the roles that the imitator can Copy: Investigator, Mystic, Seer, Tracker, Vigilante, Veteran, Engineer, Medium, Transporter, Trapper, Medic, Oracle, Hunter.";
+            RoleInfo = "The Imitator is able to copy the abilities of dead crewmates to help the crew. The Imitator can not Imitate roles that work during meetings. This is the list of the roles that the imitator can Copy: Investigator, Mystic, Seer, Tracker, Vigilante, Veteran, Engineer, Medium, Trapper, Medic, Oracle, Hunter.";
             LoreText = "A master of adaptation, you possess the rare ability to channel the powers of the fallen. As the Imitator, you can use the abilities of the dead to aid the living, turning their sacrifices into a boon for the crew. Your unique talent allows you to adapt to any situation, bringing the strength of the departed back to the crew's side in the fight against the Impostors.";
             Color = Colors.Imitator;
             RoleType = RoleEnum.Imitator;
@@ -241,7 +241,6 @@ namespace TownOfSushi.Roles
             if (imitatorRole == RoleEnum.Veteran) new Veteran(ImitatingPlayer);
             if (imitatorRole == RoleEnum.Engineer) new Engineer(ImitatingPlayer);
             if (imitatorRole == RoleEnum.Medium) new Medium(ImitatingPlayer);
-            if (imitatorRole == RoleEnum.Transporter) new Transporter(ImitatingPlayer);
             if (imitatorRole == RoleEnum.Trapper) new Trapper(ImitatingPlayer);
             if (imitatorRole == RoleEnum.Oracle) new Oracle(ImitatingPlayer);
             if (imitatorRole == RoleEnum.Hunter) new Hunter(ImitatingPlayer);
@@ -302,12 +301,6 @@ namespace TownOfSushi.Roles
                         var mysticRole = GetRole<Mystic>(PlayerControl.LocalPlayer);
                         mysticRole.BodyArrows.Values.DestroyAll();
                         mysticRole.BodyArrows.Clear();
-                    }
-
-                    if (PlayerControl.LocalPlayer.Is(RoleEnum.Transporter))
-                    {
-                        var transporterRole = GetRole<Transporter>(PlayerControl.LocalPlayer);
-                        Object.Destroy(transporterRole.UsesText);
                     }
 
                     if (PlayerControl.LocalPlayer.Is(RoleEnum.Mystic))

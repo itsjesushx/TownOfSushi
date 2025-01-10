@@ -200,7 +200,7 @@ namespace TownOfSushi.Roles
             if (CustomGameOptions.GAKnowsTargetRole) return;
             foreach (var player in __instance.playerStates)
                 if (player.TargetPlayerId == role.target.PlayerId)
-                    player.NameText.text += "<color=#FFFFFFFF> ★</color>";
+                    player.NameText.text += "<color=#FFFFFFFF> [★]</color>";
         }
 
         private static void Postfix(HudManager __instance)

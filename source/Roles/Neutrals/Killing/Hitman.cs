@@ -471,7 +471,7 @@ namespace TownOfSushi.Roles
                 else
                 {
                     if (!__instance.enabled) return false;
-                    var abilityUsed = Utils.AbilityUsed(PlayerControl.LocalPlayer);
+                    var abilityUsed = AbilityUsed(PlayerControl.LocalPlayer);
                     if (!abilityUsed) return false;
                     Vector3 position = PlayerControl.LocalPlayer.transform.position;
 

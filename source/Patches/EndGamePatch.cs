@@ -61,7 +61,6 @@ namespace TownOfSushi.Patches
                     else if (role.Value == RoleEnum.Imitator) { GameSummaryText += "<color=#" + Colors.Imitator.ToHtmlStringRGBA() + ">Imitator</color> > "; }
                     else if (role.Value == RoleEnum.Vigilante) { GameSummaryText += "<color=#" + Colors.Vigilante.ToHtmlStringRGBA() + ">Vigilante</color> > "; }
                     else if (role.Value == RoleEnum.Tracker) { GameSummaryText += "<color=#" + Colors.Tracker.ToHtmlStringRGBA() + ">Tracker</color> > "; }
-                    else if (role.Value == RoleEnum.Transporter) { GameSummaryText += "<color=#" + Colors.Transporter.ToHtmlStringRGBA() + ">Transporter</color> > "; }
                     else if (role.Value == RoleEnum.Medium) { GameSummaryText += "<color=#" + Colors.Medium.ToHtmlStringRGBA() + ">Medium</color> > "; }
                     else if (role.Value == RoleEnum.Trapper) { GameSummaryText += "<color=#" + Colors.Trapper.ToHtmlStringRGBA() + ">Trapper</color> > "; }
                     else if (role.Value == RoleEnum.Veteran) { GameSummaryText += "<color=#" + Colors.Veteran.ToHtmlStringRGBA() + ">Veteran</color> > "; }
@@ -167,9 +166,9 @@ namespace TownOfSushi.Patches
                 {
                     GameSummaryText += ColorString(Colors.Impostor, $" | [†] ");
                 }
-                if (playerControl.Is(RoleEnum.Vulture))
+                if (playerControl.Is(RoleEnum.Vulture) && !VultureWin)
                 {
-                    GameSummaryText += ColorString(Colors.Vulture, $" | ({GetRole<Vulture>(playerControl).BodiesRemainingToWin()} bodies to eat left)");
+                    GameSummaryText += ColorString(Colors.Vulture, $" | ({GetRole<Vulture>(playerControl).BodiesRemainingToWin()} to eat left)");
                 }
                 if (playerControl.HasTasks())
                 {

@@ -11,10 +11,9 @@ namespace TownOfSushi.Patches
         {
             if (GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek) return true;
             var role = GetPlayerRole(__instance.HauntTarget);
-            var modifier = GetModifier(__instance.HauntTarget);
             var roleName = role == null ? "" : $"{role.Name}";
 
-            if (TownOfSushi.DeadSeeRoles.Value) __instance.FilterText.text = $"{roleName}({__instance.HauntTarget.DeathReason()})";
+            if (TownOfSushi.DeadSeeRoles.Value) __instance.FilterText.text = $"{roleName} ({__instance.HauntTarget.DeathReason()})";
             else __instance.FilterText.text = "";
             
             return false;
@@ -75,15 +74,6 @@ namespace TownOfSushi.Patches
                 catch { }
             }
             AssassinatedPlayers.Clear();
-        }
-
-        public static void Postfix(ExileController __instance) => ExileControllerPostfix(__instance);
-
-        [HarmonyPatch(typeof(Object), nameof(Object.Destroy), new Type[] { typeof(GameObject) })]
-        public static void Prefix(GameObject obj)
-        {
-            if (!SubmergedCompatibility.Loaded || GameOptionsManager.Instance?.currentNormalGameOptions?.MapId != 6) return;
-            if (obj.name?.Contains("ExileCutscene") == true) ExileControllerPostfix(ExileControllerPatch.lastExiled);
         }
     }
 }

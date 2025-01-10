@@ -52,11 +52,6 @@
                 __instance.KillButton.graphic.sprite = TownOfSushi.TrackSprite;
                 flag = true;
             }
-            else if (PlayerControl.LocalPlayer.Is(RoleEnum.Transporter))
-            {
-                __instance.KillButton.graphic.sprite = TownOfSushi.TransportSprite;
-                flag = true;
-            }
             else if (PlayerControl.LocalPlayer.Is(RoleEnum.Medium))
             {
                 __instance.KillButton.graphic.sprite = TownOfSushi.MediateSprite;

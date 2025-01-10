@@ -12,7 +12,7 @@ namespace TownOfSushi.Roles
         public List<RoleEnum> RolesToRemember = new List<RoleEnum>
         {
             RoleEnum.Investigator, RoleEnum.Mystic, RoleEnum.Seer, RoleEnum.Tracker, RoleEnum.Vigilante, RoleEnum.Veteran,
-            RoleEnum.Engineer, RoleEnum.Medium, RoleEnum.Transporter, RoleEnum.Trapper, RoleEnum.Medic, RoleEnum.Vulture, RoleEnum.Oracle,
+            RoleEnum.Engineer, RoleEnum.Medium, RoleEnum.Trapper, RoleEnum.Medic, RoleEnum.Vulture, RoleEnum.Oracle,
             RoleEnum.Hunter, RoleEnum.Jester, RoleEnum.Executioner, RoleEnum.Witch, RoleEnum.Warlock, RoleEnum.Jailor,
             RoleEnum.Agent, RoleEnum.Hitman, RoleEnum.Miner, RoleEnum.Morphling, RoleEnum.Glitch, RoleEnum.Blackmailer, RoleEnum.Juggernaut,
             RoleEnum.Swapper, RoleEnum.Amnesiac, RoleEnum.GuardianAngel, RoleEnum.Werewolf, RoleEnum.SerialKiller, RoleEnum.Arsonist,
@@ -246,7 +246,6 @@ namespace TownOfSushi.Roles
                 case RoleEnum.Veteran:
                 case RoleEnum.Crewmate:
                 case RoleEnum.Tracker:
-                case RoleEnum.Transporter:
                 case RoleEnum.Medium:
                 case RoleEnum.Mystic:
                 case RoleEnum.Swapper:
@@ -468,15 +467,6 @@ namespace TownOfSushi.Roles
                 mysticRole.BodyArrows.Clear();
                 mysticRole.LastExamined = DateTime.UtcNow;
                 DestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(false);
-            }
-
-            else if (role == RoleEnum.Transporter)
-            {
-                var tpRole = GetRole<Transporter>(amnesiac);
-                tpRole.TransportPlayer1 = null;
-                tpRole.TransportPlayer2 = null;
-                tpRole.LastTransported = DateTime.UtcNow;
-                tpRole.MaxUses = CustomGameOptions.TransportMaxUses;
             }
 
             else if (role == RoleEnum.Medium)

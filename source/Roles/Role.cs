@@ -180,6 +180,15 @@ namespace TownOfSushi.Roles
                 }
             }
 
+            foreach (var role in GetRoles(RoleEnum.Vulture))
+            {
+                var vulture = (Vulture) role;
+                if (PlayerControl.LocalPlayer.Data.IsDead && !vulture.Player.Data.IsDead && vulture.Player == Player)
+                {
+                    PlayerName += $" ({vulture.BodiesRemainingToWin()})";
+                }
+            }
+
            if (Player.HasTasks())
             {
                 if (PlayerControl.LocalPlayer.Data.IsDead && TownOfSushi.DeadSeeTasks.Value || Player == PlayerControl.LocalPlayer && MeetingHud.Instance && TownOfSushi.ShowTasks.Value)

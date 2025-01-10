@@ -69,12 +69,6 @@ namespace TownOfSushi.Patches
                 tracker.LastTracked = DateTime.UtcNow;
                 tracker.LastTracked = tracker.LastTracked.AddSeconds(CustomGameOptions.InitialCooldowns - CustomGameOptions.TrackCd);
             }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Transporter))
-            {
-                var transporter = GetRole<Transporter>(PlayerControl.LocalPlayer);
-                transporter.LastTransported = DateTime.UtcNow;
-                transporter.LastTransported = transporter.LastTransported.AddSeconds(CustomGameOptions.InitialCooldowns - CustomGameOptions.TransportCooldown);
-            }
 
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Trapper))
             {

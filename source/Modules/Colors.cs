@@ -14,7 +14,6 @@
         public readonly static Color32  Seer = new Color32(255, 204, 128, byte.MaxValue);
         public readonly static Color32  Vigilante = new Color32(255, 255, 153, byte.MaxValue);
         public readonly static Color32  Veteran = new Color32(153, 128, 64, byte.MaxValue);
-        public readonly static Color32  Transporter = new Color32(0, 238, 255, byte.MaxValue);
         public readonly static Color32  Medium = new Color32(166, 128, 255, byte.MaxValue);
         public readonly static Color32  Mystic = new Color32(77, 154, 230, byte.MaxValue);
         public readonly static Color32  Trapper = new Color32(167, 209, 179, byte.MaxValue);

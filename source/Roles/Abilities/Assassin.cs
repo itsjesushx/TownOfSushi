@@ -30,7 +30,6 @@ namespace TownOfSushi.Roles.Modifiers
             if (CustomGameOptions.OracleOn > 0) ColorMapping.Add("Oracle", Colors.Oracle);
             if (CustomGameOptions.SeerOn > 0) ColorMapping.Add("Seer", Colors.Seer);
             if (CustomGameOptions.TrackerOn > 0) ColorMapping.Add("Tracker", Colors.Tracker);
-            if (CustomGameOptions.TransporterOn > 0) ColorMapping.Add("Transporter", Colors.Transporter);
             if (CustomGameOptions.TrapperOn > 0) ColorMapping.Add("Trapper", Colors.Trapper);
             if (CustomGameOptions.VeteranOn > 0 ) ColorMapping.Add("Veteran", Colors.Veteran);
             if (CustomGameOptions.VigilanteOn > 0 ) ColorMapping.Add("Vigilante", Colors.Vigilante);
