@@ -14,7 +14,7 @@
 - [Steam Guide](#steam-guide)
 - [Epic Games Guide](#epic-games-guide)
 
-***★ Roles / Modifiers / Abilities / Gamemodes ★***
+**★ Roles / Modifiers / Abilities / Gamemodes ★**
 
 | Impostors | Crewmates | Neutrals | Modifiers | Abilities | GameModes
 |----------|-------------|-----------------|----------------|----------------|----------------|
@@ -40,10 +40,9 @@
 | Among Us - Version| Mod Version | Link |
 |----------|-------------|-----------------|
 | V2024.10.29s & V2024.10.29e | v1.0.0 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/v1.0.0/TownOfSushi.v1.0.0.zip) |
-| V2024.10.29s & V2024.10.29e | v1.2.0 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/v1.2.0/TownOfSushi.v1.0.0.zip) |
+| V2024.10.29s & V2024.10.29e | v1.2.0 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/v1.2.0/TOS.v1.2.0.zip) |
 
 -----------------------
-
 # Installation
 ## Requirements
 - Among Us
