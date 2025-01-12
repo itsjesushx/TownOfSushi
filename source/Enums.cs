@@ -7,8 +7,9 @@ namespace TownOfSushi
         Engineer,
         Investigator,
         Medic,
-        Seer,
+        Detective,
         Witch,
+        Seer,
         Executioner,
         Glitch,
         Arsonist,
@@ -16,7 +17,6 @@ namespace TownOfSushi
         Hunter,
         Swapper,
         Vigilante,
-        Guardian,
         Werewolf,
         Veteran,
         Amnesiac,
@@ -66,7 +66,8 @@ namespace TownOfSushi
         DoubleShot,
         Bait,
         Underdog,
-        Frosty
+        Frosty,
+        None
     }
 
     public enum AbilityEnum
@@ -81,7 +82,8 @@ namespace TownOfSushi
         Multitasker,
         Chameleon,
         Flash,                
-        ButtonBarry
+        ButtonBarry,
+        None
     }
     public enum Faction
     {

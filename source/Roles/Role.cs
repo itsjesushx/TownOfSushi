@@ -55,6 +55,11 @@ namespace TownOfSushi.Roles
         {
             RoleHistory.Add(KeyValuePair.Create(_player.PlayerId, role));
         }
+        public bool HasRoleChanged()
+        {    
+            var playerHistory = RoleHistory.Where(x => x.Key == Player.PlayerId).Select(x => x.Value).Distinct().ToList();
+            return playerHistory.Count > 1;
+        }
         public void RemoveFromRoleHistory(RoleEnum role)
         {
             RoleHistory.Remove(KeyValuePair.Create(_player.PlayerId, role));

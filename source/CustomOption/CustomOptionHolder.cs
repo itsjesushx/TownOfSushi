@@ -42,7 +42,10 @@ namespace TownOfSushi.CustomOption
         public static CustomOption NeutralKillingShowsEvil;
 
         public static CustomOption SeerOn;
-        public static CustomOption SeerCooldown;
+        public static CustomOption SeerCd;
+
+        public static CustomOption DetectiveOn;
+        public static CustomOption DetectiveCooldown;
         public static CustomOption CrewKillingRed;
         public static CustomOption NeutBenignRed;
         public static CustomOption NeutEvilRed;
@@ -485,13 +488,16 @@ namespace TownOfSushi.CustomOption
             NeutralEvilShowsEvil = CustomOption.Create(59, Types.Crewmate, "Neutral Evil Roles Show Evil", false, OracleOn);
             NeutralKillingShowsEvil = CustomOption.Create(60, Types.Crewmate, "Neutral Killing Roles Show Evil", true, OracleOn);
 
+            SeerOn = CustomOption.Create(6451, Types.Crewmate, ColorString(Colors.Seer, "Seer"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            SeerCd = CustomOption.Create(6452, Types.Crewmate, "Cooldown", 25f, 10f, 60f, 2.5f, SeerOn);
 
-            SeerOn = CustomOption.Create(61, Types.Crewmate, ColorString(Colors.Seer, "Seer"), 0f, 0f, 100f, 10f, null, true, format: "%");
-            SeerCooldown = CustomOption.Create(62, Types.Crewmate, "Cooldown", 25f, 10f, 60f, 2.5f, SeerOn);
-            CrewKillingRed = CustomOption.Create(63, Types.Crewmate, "Crew Killing Roles Are Red", false, SeerOn);
-            NeutBenignRed = CustomOption.Create(64, Types.Crewmate, "Neutral Benign Roles Are Red", false, SeerOn);
-            NeutEvilRed = CustomOption.Create(65, Types.Crewmate, "Neutral Evil Roles Are Red", false, SeerOn);
-            NeutKillingRed = CustomOption.Create(66, Types.Crewmate, "Neutral Killing Roles Are Red", true, SeerOn);
+
+            DetectiveOn = CustomOption.Create(61, Types.Crewmate, ColorString(Colors.Detective, "Detective"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            DetectiveCooldown = CustomOption.Create(62, Types.Crewmate, "Cooldown", 25f, 10f, 60f, 2.5f, DetectiveOn);
+            CrewKillingRed = CustomOption.Create(63, Types.Crewmate, "Crew Killing Roles Are Red", false, DetectiveOn);
+            NeutBenignRed = CustomOption.Create(64, Types.Crewmate, "Neutral Benign Roles Are Red", false, DetectiveOn);
+            NeutEvilRed = CustomOption.Create(65, Types.Crewmate, "Neutral Evil Roles Are Red", false, DetectiveOn);
+            NeutKillingRed = CustomOption.Create(66, Types.Crewmate, "Neutral Killing Roles Are Red", true, DetectiveOn);
 
 
             TrackerOn =

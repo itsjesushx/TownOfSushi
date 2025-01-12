@@ -17,7 +17,7 @@ namespace TownOfSushi.Roles
             RoleType = RoleEnum.Mystic;
             Faction = Faction.Crewmates;
 
-            AddToRoleHistory(RoleType);
+
             RoleAlignment = RoleAlignment.CrewInvest;
         }
         public void DestroyArrow(byte targetPlayerId)
@@ -251,10 +251,10 @@ namespace TownOfSushi.Roles
                  || player.Is(RoleEnum.Medium) ||  player.Is(RoleEnum.Hitman) || player.Is(RoleEnum.Undertaker) || player.Is(RoleEnum.Vampire))
                 return "Your target has an unusual obsession with dead bodies";
             else if (player.Is(RoleEnum.Investigator) || player.Is(RoleEnum.Swooper) || player.Is(RoleEnum.Tracker)
-                || player.Is(RoleEnum.Venerer) || player.Is(RoleEnum.Werewolf) || player.Is(RoleEnum.SerialKiller))
+                || player.Is(RoleEnum.Venerer) || player.Is(RoleEnum.Werewolf) || player.Is(RoleEnum.Seer) || player.Is(RoleEnum.SerialKiller))
                 return "Your target is well trained in hunting down prey";
             else if (player.Is(RoleEnum.Arsonist) || player.Is(RoleEnum.Miner) || player.Is(RoleEnum.Plaguebearer)
-                  ||player.Is(RoleEnum.Seer))
+                  ||player.Is(RoleEnum.Detective))
                 return "Your target spreads fear amonst the group";
             else if (player.Is(RoleEnum.Engineer) || player.Is(RoleEnum.Escapist) || player.Is(RoleEnum.Grenadier)
                 || player.Is(RoleEnum.GuardianAngel) || player.Is(RoleEnum.Medic) || player.Is(RoleEnum.Romantic))
@@ -284,11 +284,11 @@ namespace TownOfSushi.Roles
                  || player.Is(RoleEnum.Medium) || player.Is(RoleEnum.Undertaker) || player.Is(RoleEnum.Hitman) || player.Is(RoleEnum.Vampire))
                 return "(Amnesiac, Janitor, Medium, Hitman Undertaker, Vulture or Vampire)";
             else if (player.Is(RoleEnum.Investigator) || player.Is(RoleEnum.Swooper) || player.Is(RoleEnum.Tracker)
-                || player.Is(RoleEnum.Venerer) || player.Is(RoleEnum.Werewolf) || player.Is(RoleEnum.SerialKiller))
-                return "(Investigator, Swooper, Tracker, Vampire Hunter, Venerer, Serial Killer or Werewolf)";
+                || player.Is(RoleEnum.Venerer) || player.Is(RoleEnum.Werewolf) || player.Is(RoleEnum.Seer)  || player.Is(RoleEnum.SerialKiller))
+                return "(Investigator, Swooper, Tracker, Venerer, Seer, Serial Killer or Werewolf)";
             else if (player.Is(RoleEnum.Arsonist) || player.Is(RoleEnum.Miner) || player.Is(RoleEnum.Plaguebearer)
-                  ||player.Is(RoleEnum.Seer))
-                return "(Arsonist, Miner, Plaguebearer or Seer)";
+                  ||player.Is(RoleEnum.Detective))
+                return "(Arsonist, Miner, Plaguebearer or Detective)";
             else if (player.Is(RoleEnum.Engineer) || player.Is(RoleEnum.Escapist) || player.Is(RoleEnum.Grenadier)
                 || player.Is(RoleEnum.GuardianAngel) || player.Is(RoleEnum.Medic) || player.Is(RoleEnum.Romantic))
                 return "(Engineer, Escapist, Grenadier, Guardian Angel, Medic or Romantic)";

@@ -19,7 +19,7 @@ namespace TownOfSushi.Roles
             RoleType = RoleEnum.Romantic;
             Faction = Faction.Neutral;
             LastPick = DateTime.UtcNow;
-            AddToRoleHistory(RoleType);
+
             RoleAlignment = RoleAlignment.NeutralBenign;
         }
 
@@ -189,7 +189,7 @@ namespace TownOfSushi.Roles
         {
             var ga = GetRole<Romantic>(player);
             player.myTasks.RemoveAt(0);
-            RoleDictionary.Remove(player.PlayerId);
+            
 
             if (CustomGameOptions.RomanticOnBelovedDeath == RomanticBecomeOptions.Jester)
             {
@@ -211,7 +211,8 @@ namespace TownOfSushi.Roles
             }
             else
             {
-                new Crewmate(player);
+                var crew = new Crewmate(player);
+                crew.ReDoTaskText();
             }
         }
     }

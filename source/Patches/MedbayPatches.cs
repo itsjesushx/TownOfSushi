@@ -2,7 +2,6 @@ namespace TownOfSushi
 {
     internal class MedScan
 	{
-
 		[HarmonyPatch(typeof(MedScanMinigame))]
 		private static class MedScanMinigamePatch
 		{

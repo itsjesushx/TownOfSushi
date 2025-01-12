@@ -18,7 +18,7 @@ namespace TownOfSushi.Roles
             RoleType = RoleEnum.Witch;
             Faction = Faction.Impostors;
 
-            AddToRoleHistory(RoleType);
+
             RoleAlignment = RoleAlignment.ImpPower;
         }
 
@@ -43,59 +43,6 @@ namespace TownOfSushi.Roles
         }
     }
 
-    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Close))]
-    class WitchExileControllerBeginPatch 
-    {
-        private static void Postfix(MeetingHud __instance)
-        {
-            var witches = AllRoles.Where(x => x.RoleType == RoleEnum.Witch && x.Player != null).Cast<Witch>();
-            foreach (var role in witches)
-            {
-                foreach (var spelledId in role.SpelledPlayers)
-                {
-                    var spelledPlayer = PlayerById(spelledId);
-                    var deadRole = GetPlayerRole(spelledPlayer);
-                    if (spelledPlayer != null && !spelledPlayer.Data.IsDead)
-                    {
-                        RpcMurderPlayer(spelledPlayer, spelledPlayer);
-                        deadRole.DeathReason = DeathReasonEnum.Cursed;
-                        role.Kills++;
-                    }
-                    StartRPC(CustomRPC.RemoveAllBodies);
-                    var buggedBodies = Object.FindObjectsOfType<DeadBody>();
-                    foreach (var body in buggedBodies)
-                    {
-                        body.gameObject.Destroy();
-                    }
-                }
-            }
-        }
-    }
-    
-    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Update))]
-    public static class WitchMeetingHudUpdate
-    {
-        public static void Postfix(MeetingHud __instance)
-        {
-            var localPlayer = PlayerControl.LocalPlayer;
-            var _role = GetPlayerRole(localPlayer);
-            if (_role?.RoleType != RoleEnum.Witch) return;
-            if (localPlayer.Data.IsDead) return;
-            var role = (Witch)_role;
-            foreach (var state in __instance.playerStates)
-            {
-                var targetId = state.TargetPlayerId;
-                var playerData = PlayerById(targetId)?.Data;
-                if (playerData == null || playerData.Disconnected)
-                {
-                    role.SpelledPlayers.Remove(targetId);
-                    continue;
-                }
-                if (role.SpelledPlayers.Contains(targetId)) state.NameText.text += " <color=#FF0000FF> [†]</color>";
-            }
-        }
-    }
-
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]   
     public class HudCurse
     {
@@ -112,6 +59,15 @@ namespace TownOfSushi.Roles
                 role.SpellButton = Object.Instantiate(__instance.KillButton, __instance.KillButton.transform.parent);
                 role.SpellButton.graphic.enabled = true;
                 role.SpellButton.gameObject.SetActive(false);
+            }
+
+            foreach (var playerId in role.SpelledPlayers)
+            {
+                var player = PlayerById(playerId);
+                var data = player?.Data;
+                if (data == null || data.Disconnected || data.IsDead || PlayerControl.LocalPlayer.Data.IsDead || playerId == PlayerControl.LocalPlayer.PlayerId)
+                    continue;
+                player.nameText().text += " <color=#FF0000FF> [†]</color>";
             }
                 role.SpellButton.graphic.sprite = Blackmail;
                 role.SpellButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)

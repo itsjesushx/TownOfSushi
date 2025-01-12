@@ -22,6 +22,34 @@ namespace TownOfSushi.Roles
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.NeutralEvil;
         }
+        public void ChangeRole(PlayerControl player)
+        {
+            player.myTasks.RemoveAt(0);
+
+            if (CustomGameOptions.OnTargetDead == OnTargetDead.Jester)
+            {
+                var jester = new Jester(player);
+                jester.SpawnedAs = false;
+                jester.ReDoTaskText();
+            }
+            else if (CustomGameOptions.OnTargetDead == OnTargetDead.Amnesiac)
+            {
+                var amnesiac = new Amnesiac(player);
+                amnesiac.SpawnedAs = false;
+                amnesiac.ReDoTaskText();
+            }
+            else if (CustomGameOptions.OnTargetDead == OnTargetDead.Framer)
+            {
+                var amnesiac = new Framer(player);
+                amnesiac.SpawnedAs = false;
+                amnesiac.ReDoTaskText();
+            }
+            else
+            {
+                var crew = new Crewmate(player);
+                crew.ReDoTaskText();
+            }
+        }
     }
 
     [HarmonyPatch(typeof(ExileController), nameof(ExileController.BeginForGameplay))]
@@ -81,36 +109,7 @@ namespace TownOfSushi.Roles
 
             StartRPC(CustomRPC.ExecutionerToJester, PlayerControl.LocalPlayer.PlayerId);
 
-            ExecutionerChangeRole(PlayerControl.LocalPlayer);
-        }
-
-        public static void ExecutionerChangeRole(PlayerControl player)
-        {
-            player.myTasks.RemoveAt(0);
-            RoleDictionary.Remove(player.PlayerId);
-
-            if (CustomGameOptions.OnTargetDead == OnTargetDead.Jester)
-            {
-                var jester = new Jester(player);
-                jester.SpawnedAs = false;
-                jester.ReDoTaskText();
-            }
-            else if (CustomGameOptions.OnTargetDead == OnTargetDead.Amnesiac)
-            {
-                var amnesiac = new Amnesiac(player);
-                amnesiac.SpawnedAs = false;
-                amnesiac.ReDoTaskText();
-            }
-            else if (CustomGameOptions.OnTargetDead == OnTargetDead.Framer)
-            {
-                var amnesiac = new Framer(player);
-                amnesiac.SpawnedAs = false;
-                amnesiac.ReDoTaskText();
-            }
-            else
-            {
-                new Crewmate(player);
-            }
+            role.ChangeRole(PlayerControl.LocalPlayer);
         }
     }
 }

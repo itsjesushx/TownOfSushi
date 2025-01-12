@@ -18,7 +18,7 @@ namespace TownOfSushi.Roles
             Color = Colors.Swapper;
             RoleType = RoleEnum.Swapper;
             RoleAlignment = RoleAlignment.CrewSupport;
-            AddToRoleHistory(RoleType);
+
         }
     }
 

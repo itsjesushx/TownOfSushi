@@ -28,7 +28,7 @@ namespace TownOfSushi.Roles.Modifiers
             // this will be gone for now 
                 //if (CustomGameOptions.JailorOn > 0) ColorMapping.Add("Jailor", Colors.Jailor);
             if (CustomGameOptions.OracleOn > 0) ColorMapping.Add("Oracle", Colors.Oracle);
-            if (CustomGameOptions.SeerOn > 0) ColorMapping.Add("Seer", Colors.Seer);
+            if (CustomGameOptions.DetectiveOn > 0) ColorMapping.Add("Detective", Colors.Detective);
             if (CustomGameOptions.TrackerOn > 0) ColorMapping.Add("Tracker", Colors.Tracker);
             if (CustomGameOptions.TrapperOn > 0) ColorMapping.Add("Trapper", Colors.Trapper);
             if (CustomGameOptions.VeteranOn > 0 ) ColorMapping.Add("Veteran", Colors.Veteran);
@@ -360,10 +360,6 @@ namespace TownOfSushi.Roles.Modifiers
             }
             player.Die(DeathReason.Kill, false);
 
-            var role2 = GetPlayerRole(player);
-            role2.DeathReason = DeathReasonEnum.Guessed;
-            role2.KilledBy = " By " + ColorString(Colors.Impostor, assassinP.PlayerName);
-
             var deadPlayer = new DeadPlayer
             {
                 PlayerId = player.PlayerId,
@@ -379,6 +375,13 @@ namespace TownOfSushi.Roles.Modifiers
             voteArea.Overlay.color = Color.white;
             voteArea.XMark.gameObject.SetActive(true);
             voteArea.XMark.transform.localScale = Vector3.one;
+
+            var role2 = GetPlayerRole(player);
+            role2.DeathReason = DeathReasonEnum.Guessed;
+            if (role2 != null)
+            {
+                role2.KilledBy = " By " + ColorString(Colors.Impostor, assassinPlayer.name);
+            }
 
             var meetingHud = MeetingHud.Instance;
             if (amOwner)

@@ -2,26 +2,22 @@ namespace TownOfSushi.Roles
 {
     public class Seer : Role
     {
-        public List<byte> Investigated = new List<byte>();
-
+        public PlayerControl Investigated;
+        public PlayerControl Investigated2;
         public Seer(PlayerControl player) : base(player)
         {
-            var RedOrGreen = CustomGameOptions.NeutEvilRed ? "red" : "green";
-            var RedOrGreen2 = CustomGameOptions.NeutBenignRed ? "red" : "green";
-            var RedOrGreen3 = CustomGameOptions.NeutKillingRed ? "red" : "green";
             Name = "Seer";
-            StartText = () => "Reveal The Alliance Of Other Players";
-            TaskText = () => "Reveal alliances of other players to find the Impostors";
-            RoleInfo = $"The Seer is able to investigate the alignment of other players. If the player is a Crewmate, their name will be green, if they are an Impostor, their name will be red. If the player is a Neutral Evil role, their name will be {RedOrGreen}, and {RedOrGreen2} if they are a Neutral Benign Role. Neutral Killing Roles Will appear {RedOrGreen3} The Seer can only investigate one player every {CustomGameOptions.SeerCd} seconds.";
-            LoreText = "Endowed with the power of insight, you possess the ability to unveil the true alliances of those around you. As the Seer, your gift allows you to discern the loyalties of your crewmates, shining a light on potential Impostors. Use your abilities wisely to protect the crew and expose deception.";
+            StartText = () => "Investigate the faction of other players";
+            TaskText = () => "Investigate factions of other players to find the Impostors";
+            RoleInfo = "The Seer is able to choose two targets, upon a meeting starts, the Seer will be notified wether the targets are on the same team or not, in the voting screen the Seer will see a green Y if they are, else they will have a red X next to their names.";
+            LoreText = "Gifted with an extraordinary insight, the Seer can peer into the factions of their crewmates. Tasked with revealing the truth hidden in the shadows, they aim to bring light to deception and uncover the impostors among the crew. Beware, for the Seer's knowledge can make them a prime target for evildoers.";
             RoleAlignment = RoleAlignment.CrewInvest;
             Color = Colors.Seer;
             LastInvestigated = DateTime.UtcNow;
             RoleType = RoleEnum.Seer; 
         }
-        public PlayerControl ClosestPlayer;
-        public DateTime LastInvestigated { get; set; }
-        public float SeerTimer()
+
+        public float SeerTimer1()
         {
             var utcNow = DateTime.UtcNow;
             var timeSpan = utcNow - LastInvestigated;
@@ -30,72 +26,19 @@ namespace TownOfSushi.Roles
             if (flag2) return 0;
             return (num - (float) timeSpan.TotalMilliseconds) / 1000f;
         }
-    }
-
-    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
-    public class UpdateSeer
-    {
-        private static void UpdateMeeting(MeetingHud __instance, Seer seer)
+        public DateTime LastInvestigated { get; set; }
+        public bool HasInvested1;
+        public bool HasInvested2;
+        public PlayerControl ClosestPlayer;
+        public KillButton _InvestigateButton;
+        public KillButton InvestigateButton
         {
-            foreach (var player in PlayerControl.AllPlayerControls)
+            get => _InvestigateButton;
+            set
             {
-                if (!seer.Investigated.Contains(player.PlayerId)) continue;
-                foreach (var state in __instance.playerStates)
-                {
-                    if (player.PlayerId != state.TargetPlayerId) continue;
-                    var roleType = GetRole(player);
-                    switch (roleType)
-                    {
-                        default:
-                        if ((player.Is(Faction.Crewmates) && !(player.Is(RoleEnum.Veteran) || player.Is(RoleEnum.Hunter) || player.Is(RoleEnum.Vigilante))) ||
-                        (( player.Is(RoleEnum.Veteran) || player.Is(RoleEnum.Hunter) || player.Is(RoleEnum.Vigilante)) && !CustomGameOptions.CrewKillingRed) ||
-                        (player.Is(RoleAlignment.NeutralBenign) && !CustomGameOptions.NeutBenignRed) ||
-                        (player.Is(RoleAlignment.NeutralEvil) && !CustomGameOptions.NeutEvilRed) ||
-                        (player.Is(RoleAlignment.NeutralKilling) && !CustomGameOptions.NeutKillingRed))
-                        {
-                            state.NameText.color = Color.green;
-                        }
-                        else
-                        {
-                            state.NameText.color = Color.red;
-                        }
-                        break;
-                    }
-                }
-            }
-        }
-
-        [HarmonyPriority(Priority.Last)]
-        private static void Postfix(HudManager __instance)
-        {
-            if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return;
-
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Seer)) return;
-            var seer = GetRole<Seer>(PlayerControl.LocalPlayer);
-            if (MeetingHud.Instance != null) UpdateMeeting(MeetingHud.Instance, seer);
-            foreach (var player in PlayerControl.AllPlayerControls)
-            {
-                if (!seer.Investigated.Contains(player.PlayerId)) continue;
-                var roleType = GetPlayerRole(player);
-                switch (roleType)
-                {
-                    default:
-                        var colour = Color.red;
-                        if ((player.Is(Faction.Crewmates) && !(player.Is(RoleEnum.Veteran) || player.Is(RoleEnum.Vigilante))) ||
-                            ((player.Is(RoleEnum.Veteran) || player.Is(RoleEnum.Hunter)  || player.Is(RoleEnum.Vigilante)) && !CustomGameOptions.CrewKillingRed) ||
-                            (player.Is(RoleAlignment.NeutralBenign) && !CustomGameOptions.NeutBenignRed) ||
-                            (player.Is(RoleAlignment.NeutralEvil) && !CustomGameOptions.NeutEvilRed) ||
-                            (player.Is(RoleAlignment.NeutralKilling) && !CustomGameOptions.NeutKillingRed))
-                        {
-                            colour = Color.green;
-                        }
-                        if (player.Is(AbilityEnum.Chameleon)) colour.a = GetAbility<Chameleon>(player).Opacity;
-                        player.nameText().color = colour;
-                    break;
-                }
+                _InvestigateButton = value;
+                ExtraButtons.Clear();
+                ExtraButtons.Add(value);
             }
         }
     }
@@ -110,7 +53,7 @@ namespace TownOfSushi.Roles
             if (!flag) return true;
             var role = GetRole<Seer>(PlayerControl.LocalPlayer);
             if (!PlayerControl.LocalPlayer.CanMove || role.ClosestPlayer == null) return false;
-            var flag2 = role.SeerTimer() == 0f;
+            var flag2 = role.SeerTimer1() == 0f;
             if (!flag2) return false;
             if (!__instance.enabled) return false;
             var maxDistance = KillDistance();
@@ -119,23 +62,50 @@ namespace TownOfSushi.Roles
             if (role.ClosestPlayer == null) return false;
 
             var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer, false);
-            if (interact[3] == true)
+            if (!role.HasInvested1)
             {
-                role.Investigated.Add(role.ClosestPlayer.PlayerId);
-                
-            }
-            if (interact[0] == true)
-            {
-                role.LastInvestigated = DateTime.UtcNow;
+                if (interact[3] == true)
+                {
+                    role.Investigated = role.ClosestPlayer;                
+                    role.HasInvested1 = true;
+                    role.HasInvested2 = false;
+                }
+                if (interact[0] == true)            
+                {                
+                    role.LastInvestigated = DateTime.UtcNow;                
+                    return false;            
+                }           
+                else if (interact[1] == true)            
+                {                
+                    role.LastInvestigated = DateTime.UtcNow;                
+                    role.LastInvestigated = role.LastInvestigated.AddSeconds(CustomGameOptions.ProtectKCReset - CustomGameOptions.SeerCd);
+                    return false;
+                }
+                else if (interact[2] == true) return false;
                 return false;
             }
-            else if (interact[1] == true)
+
+            if (!role.HasInvested2)
             {
-                role.LastInvestigated = DateTime.UtcNow;
-                role.LastInvestigated = role.LastInvestigated.AddSeconds(CustomGameOptions.ProtectKCReset - CustomGameOptions.SeerCd);
+                if (interact[3] == true)
+                {                
+                    role.Investigated2 = role.ClosestPlayer;                
+                    role.HasInvested2 = true;
+                }
+                if (interact[0] == true)            
+                {
+                    role.LastInvestigated = DateTime.UtcNow;                
+                    return false;            
+                }
+                else if (interact[1] == true)            
+                {
+                    role.LastInvestigated = DateTime.UtcNow;                
+                    role.LastInvestigated = role.LastInvestigated.AddSeconds(CustomGameOptions.ProtectKCReset - CustomGameOptions.SeerCd);
+                    return false;
+                }
+                else if (interact[2] == true) return false;
                 return false;
             }
-            else if (interact[2] == true) return false;
             return false;
         }
     }
@@ -151,22 +121,23 @@ namespace TownOfSushi.Roles
 
         public static void UpdateInvButton(HudManager __instance)
         {
+            var investigateButton = __instance.KillButton;
+            var role = GetRole<Seer>(PlayerControl.LocalPlayer);
+
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
             if (PlayerControl.LocalPlayer == null) return;
             if (PlayerControl.LocalPlayer.Data == null) return;
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Seer)) return;
-            var investigateButton = __instance.KillButton;
-
-            var role = GetRole<Seer>(PlayerControl.LocalPlayer);
+            if (role.HasInvested2) return;
 
             investigateButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
                     && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
-            investigateButton.SetCoolDown(role.SeerTimer(), CustomGameOptions.SeerCd);
+            investigateButton.SetCoolDown(role.SeerTimer1(), CustomGameOptions.SeerCd);
 
             var notInvestigated = PlayerControl.AllPlayerControls
                 .ToArray()
-                .Where(x => !role.Investigated.Contains(x.PlayerId))
+                .Where(x => x != role.Investigated && x != role.Investigated2)
                 .ToList();
 
             SetTarget(ref role.ClosestPlayer, investigateButton, float.NaN, notInvestigated);
@@ -182,6 +153,97 @@ namespace TownOfSushi.Roles
             {
                 renderer.color = Palette.DisabledClear;
                 renderer.material.SetFloat("_Desat", 1f);
+            }
+        }
+    }
+    
+    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
+    public class SeerReport
+    {
+        public static void Postfix(MeetingHud __instance)
+        {
+            var seer = GetRole<Seer>(PlayerControl.LocalPlayer);
+            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Seer)) return;
+            if (PlayerControl.LocalPlayer.Data.IsDead) return;
+            if (seer.Investigated.Data.IsDead || seer.Investigated.Data.Disconnected 
+            || seer.Investigated2.Data.Disconnected || seer.Investigated2.Data.IsDead) return;
+
+            var playerResults = SeerResults();
+            if (seer.Investigated != null && seer.Investigated2 != null)
+            {
+                if (!string.IsNullOrWhiteSpace(playerResults)) DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, playerResults);
+                SoundManager.Instance.PlaySound(ShipStatus.Instance.SabotageSound, false, 1f, null);            
+                Flash(seer.Color);
+            }
+        }
+        public static string SeerResults()
+        {
+            //theres probably a better way for this but this works for now
+            var seer = GetRole<Seer>(PlayerControl.LocalPlayer);
+            var differentFaction = false;
+
+            if ((seer.Investigated.Is(Faction.Crewmates) && !seer.Investigated2.Is(Faction.Crewmates)) ||
+                (seer.Investigated.Is(Faction.Neutral) && !seer.Investigated2.Is(Faction.Neutral)) ||
+                (seer.Investigated.Is(Faction.Impostors) && !seer.Investigated2.Is(Faction.Impostors)) ||
+                (seer.Investigated2.Is(Faction.Impostors) && !seer.Investigated.Is(Faction.Impostors)) ||
+                (seer.Investigated2.Is(Faction.Crewmates) && !seer.Investigated.Is(Faction.Crewmates)) ||
+                (seer.Investigated2.Is(Faction.Neutral) && !seer.Investigated.Is(Faction.Neutral)))
+            {
+                differentFaction = true;
+            }
+
+            if (differentFaction == true) return ColorString(Color.red, $"{seer.Investigated.GetDefaultOutfit().PlayerName} and {seer.Investigated2.GetDefaultOutfit().PlayerName} have a different faction!");
+            else return ColorString(Color.green, $"{seer.Investigated.GetDefaultOutfit().PlayerName} and {seer.Investigated2.GetDefaultOutfit().PlayerName} are on the same team!");
+        }
+    }
+
+    public class SeerMeetingUpdate
+    {
+        [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Update))]
+        public class MeetingHud_Update
+        {
+            public static void Postfix(MeetingHud __instance)
+            {
+                    foreach (var role in GetRoles(RoleEnum.Seer))
+                    {
+                        var seer = (Seer)role;
+
+                        if (seer.Player.Data.IsDead) return;
+                        if (seer.Investigated.Data.IsDead || seer.Investigated2.Data.IsDead) return;
+
+                        var differentFaction = false;
+                        if ((seer.Investigated.Is(Faction.Crewmates) && !seer.Investigated2.Is(Faction.Crewmates)) || 
+                        (seer.Investigated.Is(Faction.Neutral) && !seer.Investigated2.Is(Faction.Neutral)) ||
+                        (seer.Investigated.Is(Faction.Impostors) && !seer.Investigated2.Is(Faction.Impostors)) ||
+                        (seer.Investigated2.Is(Faction.Impostors) && !seer.Investigated.Is(Faction.Impostors)) ||
+                        (seer.Investigated2.Is(Faction.Crewmates) && !seer.Investigated.Is(Faction.Crewmates)) ||
+                        (seer.Investigated2.Is(Faction.Neutral) && !seer.Investigated.Is(Faction.Neutral)))            
+                        {                
+                            differentFaction = true;            
+                        }
+                        
+                        if (seer.Player.Data.IsDead  || seer.Investigated.Data.IsDead  || seer.Investigated2.Data.IsDead) return;
+                        if (differentFaction == true)
+                        {
+                            var playerState = __instance.playerStates.FirstOrDefault(x => x.TargetPlayerId == seer.Investigated.PlayerId);
+                            var playerState2 = __instance.playerStates.FirstOrDefault(x => x.TargetPlayerId == seer.Investigated2.PlayerId);
+                            if (playerState != null && playerState2 != null)
+                            {
+                                playerState.NameText.text += " <color=#FF0000FF> [X]</color>";
+                                playerState2.NameText.text += " <color=#FF0000FF> [X]</color>";
+                            }
+                        }
+                        else 
+                        {
+                            var playerState = __instance.playerStates.FirstOrDefault(x => x.TargetPlayerId == seer.Investigated.PlayerId);
+                            var playerState2 = __instance.playerStates.FirstOrDefault(x => x.TargetPlayerId == seer.Investigated2.PlayerId);
+                            if (playerState != null && playerState2 != null)
+                            {
+                                playerState.NameText.text += " <color=#00FF0D> [Y]</color>";
+                                playerState2.NameText.text += " <color=#00FF0D> [Y]</color>";
+                            }
+                        }
+                    }
             }
         }
     }

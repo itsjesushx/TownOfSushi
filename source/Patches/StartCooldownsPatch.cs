@@ -42,11 +42,18 @@ namespace TownOfSushi.Patches
                 medium.LastMediated = medium.LastMediated.AddSeconds(CustomGameOptions.InitialCooldowns - CustomGameOptions.MediateCooldown);
             }
 
+            if (PlayerControl.LocalPlayer.Is(RoleEnum.Detective))
+            {
+                var detective = GetRole<Detective>(PlayerControl.LocalPlayer);
+                detective.LastInvestigated = DateTime.UtcNow;
+                detective.LastInvestigated = detective.LastInvestigated.AddSeconds(CustomGameOptions.InitialCooldowns - CustomGameOptions.DetectiveCd);
+            }
+
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Seer))
             {
-                var seer = GetRole<Seer>(PlayerControl.LocalPlayer);
-                seer.LastInvestigated = DateTime.UtcNow;
-                seer.LastInvestigated = seer.LastInvestigated.AddSeconds(CustomGameOptions.InitialCooldowns - CustomGameOptions.SeerCd);
+                var Seer = GetRole<Seer>(PlayerControl.LocalPlayer);
+                Seer.LastInvestigated = DateTime.UtcNow;
+                Seer.LastInvestigated = Seer.LastInvestigated.AddSeconds(CustomGameOptions.InitialCooldowns - CustomGameOptions.SeerCd);
             }
 
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Oracle))
@@ -200,7 +207,7 @@ namespace TownOfSushi.Patches
                     writer.Write(exe.Player.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
 
-                    ExeTargetColor.ExecutionerChangeRole(exe.Player);
+                    exe.ChangeRole(exe.Player);
                 }
             }
 
@@ -227,7 +234,7 @@ namespace TownOfSushi.Patches
                     writer.Write(ga.Player.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
 
-                    GATargetColor.GuardianAngelChangeRole(ga.Player);
+                    ga.ChangeRole(ga.Player);
                 }
             }
 

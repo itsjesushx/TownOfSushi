@@ -679,10 +679,12 @@ namespace TownOfSushi
                         else oracle.RevealedFaction = Faction.Impostors;
                         break;
                     case CustomRPC.ExecutionerToJester:
-                        ExeTargetColor.ExecutionerChangeRole(PlayerById(reader.ReadByte()));
+                    var exec = GetRole<Executioner>(PlayerById(reader.ReadByte()));
+                        exec.ChangeRole(PlayerById(reader.ReadByte()));
                         break;
                     case CustomRPC.GuardianAngelChangeRole:
-                        GATargetColor.GuardianAngelChangeRole(PlayerById(reader.ReadByte()));
+                    var ga2 = GetRole<GuardianAngel>(PlayerById(reader.ReadByte()));
+                        ga2.ChangeRole(PlayerById(reader.ReadByte()));
                         break;
                     case CustomRPC.RomanticChangeRole:
                         RomanticChangeRolePatch.RomanticChangeRole(PlayerById(reader.ReadByte()));
@@ -766,8 +768,8 @@ namespace TownOfSushi
                         if (PlayerControl.LocalPlayer.Data.IsImpostor()) Coroutines.Start(BombTeammate.BombShowTeammate(new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle())));
                         break;
                     case CustomRPC.GAProtect:
-                        var ga2 = PlayerById(reader.ReadByte());
-                        var ga2Role = GetRole<GuardianAngel>(ga2);
+                        var ga22 = PlayerById(reader.ReadByte());
+                        var ga2Role = GetRole<GuardianAngel>(ga22);
                         ga2Role.TimeRemaining = CustomGameOptions.ProtectDuration;
                         ga2Role.Protect();
                         break;
@@ -1021,11 +1023,14 @@ namespace TownOfSushi
                     if (CustomGameOptions.SwapperOn > 0)
                         CrewmateRoles.Add((typeof(Swapper), CustomGameOptions.SwapperOn, true));
 
-                    if (CustomGameOptions.SeerOn > 0)
-                        CrewmateRoles.Add((typeof(Seer), CustomGameOptions.SeerOn, false));
+                    if (CustomGameOptions.DetectiveOn > 0)
+                        CrewmateRoles.Add((typeof(Detective), CustomGameOptions.DetectiveOn, true));
 
                     if (CustomGameOptions.VeteranOn > 0)
                         CrewmateRoles.Add((typeof(Veteran), CustomGameOptions.VeteranOn, false));
+
+                    if (CustomGameOptions.SeerOn > 0)
+                        CrewmateRoles.Add((typeof(Seer), CustomGameOptions.SeerOn, true));
 
                     if (CustomGameOptions.TrackerOn > 0)
                         CrewmateRoles.Add((typeof(Tracker), CustomGameOptions.TrackerOn, false));

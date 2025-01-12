@@ -24,7 +24,7 @@ namespace TownOfSushi.Roles
             LastTrapped = DateTime.UtcNow;
             Faction = Faction.Crewmates;
 
-            AddToRoleHistory(RoleType);
+
             RoleAlignment = RoleAlignment.CrewInvest;
             trappedPlayers = new List<RoleEnum>();
             MaxUses = CustomGameOptions.MaxTraps;

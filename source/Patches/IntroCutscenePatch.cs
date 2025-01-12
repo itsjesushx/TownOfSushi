@@ -104,8 +104,10 @@ namespace TownOfSushi.Patches
         }
 
         [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.CreatePlayer))]
-        class CreatePlayerPatch {
-            public static void Postfix(IntroCutscene __instance, bool impostorPositioning, ref PoolablePlayer __result) {
+        class CreatePlayerPatch 
+        {
+            public static void Postfix(IntroCutscene __instance, bool impostorPositioning, ref PoolablePlayer __result) 
+            {
                 if (impostorPositioning) __result.SetNameColor(Palette.ImpostorRed);
             }
         }
@@ -115,7 +117,8 @@ namespace TownOfSushi.Patches
         class SetUpRoleTextPatch 
         {
             static int seed = 0;
-            static public void SetRoleTexts(IntroCutscene __instance) {
+            static public void SetRoleTexts(IntroCutscene __instance) 
+            {
                 // Don't override the intro of the vanilla roles
                 Role roleInfo = GetPlayerRole(PlayerControl.LocalPlayer);
                 Modifier modifierInfo = GetModifier(PlayerControl.LocalPlayer);
@@ -164,8 +167,10 @@ namespace TownOfSushi.Patches
         }
 
         [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginImpostor))]
-        class BeginImpostorPatch {
-            public static void Prefix(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam) {
+        class BeginImpostorPatch 
+        {
+            public static void Prefix(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam) 
+            {
                 AddNeutralIntroIcons(__instance, ref yourTeam);
             }
 

@@ -21,7 +21,7 @@ namespace TownOfSushi.Roles
             RoleType = RoleEnum.Morphling;
             Faction = Faction.Impostors;
 
-            AddToRoleHistory(RoleType);
+
             RoleAlignment = RoleAlignment.ImpDeception;
         }
 

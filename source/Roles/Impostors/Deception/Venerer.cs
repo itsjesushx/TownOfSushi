@@ -20,7 +20,7 @@ namespace TownOfSushi.Roles
             RoleType = RoleEnum.Venerer;
             Faction = Faction.Impostors;
 
-            AddToRoleHistory(RoleType);
+
             RoleAlignment = RoleAlignment.ImpDeception;
         }
 

@@ -26,9 +26,38 @@ namespace TownOfSushi.Roles
             LastProtected = DateTime.UtcNow;
             RoleType = RoleEnum.GuardianAngel;
             Faction = Faction.Neutral;
-            AddToRoleHistory(RoleType);
+
             RoleAlignment = RoleAlignment.NeutralBenign;
             MaxUses = CustomGameOptions.MaxProtects;
+        }
+        public void ChangeRole(PlayerControl player)
+        {
+            player.myTasks.RemoveAt(0);
+
+            if (CustomGameOptions.GaOnTargetDeath == BecomeOptions.Jester)
+            {
+                var jester = new Jester(player);
+                jester.SpawnedAs = false;
+                jester.ReDoTaskText();
+            }
+            else if (CustomGameOptions.GaOnTargetDeath == BecomeOptions.Amnesiac)
+            {
+                var amnesiac = new Amnesiac(player);
+                amnesiac.SpawnedAs = false;
+                amnesiac.ReDoTaskText();
+            }
+            else if (CustomGameOptions.GaOnTargetDeath == BecomeOptions.Framer)
+            {
+                var amnesiac = new Framer(player);
+                amnesiac.SpawnedAs = false;
+                amnesiac.ReDoTaskText();
+            }
+            else
+            {
+                var crew = new Crewmate(player);
+                crew.ReDoTaskText();
+
+            }
         }
         public bool Protecting => TimeRemaining > 0f;
         public float ProtectTimer()
@@ -224,37 +253,7 @@ namespace TownOfSushi.Roles
             Object.Destroy(role.UsesText);
             DestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(false);
 
-            GuardianAngelChangeRole(PlayerControl.LocalPlayer);
-        }
-
-        public static void GuardianAngelChangeRole(PlayerControl player)
-        {
-            var ga = GetRole<GuardianAngel>(player);
-            player.myTasks.RemoveAt(0);
-            RoleDictionary.Remove(player.PlayerId);
-
-            if (CustomGameOptions.GaOnTargetDeath == BecomeOptions.Jester)
-            {
-                var jester = new Jester(player);
-                jester.SpawnedAs = false;
-                jester.ReDoTaskText();
-            }
-            else if (CustomGameOptions.GaOnTargetDeath == BecomeOptions.Amnesiac)
-            {
-                var amnesiac = new Amnesiac(player);
-                amnesiac.SpawnedAs = false;
-                amnesiac.ReDoTaskText();
-            }
-            else if (CustomGameOptions.GaOnTargetDeath == BecomeOptions.Framer)
-            {
-                var amnesiac = new Framer(player);
-                amnesiac.SpawnedAs = false;
-                amnesiac.ReDoTaskText();
-            }
-            else
-            {
-                new Crewmate(player);
-            }
+            role.ChangeRole(PlayerControl.LocalPlayer);
         }
     }
 }

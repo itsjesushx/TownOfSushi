@@ -56,6 +56,7 @@ namespace TownOfSushi
             }
             return true;
         }
+        public static PlayerControl PlayerByVoteArea(PlayerVoteArea state) => PlayerById(state.TargetPlayerId);
 
         public interface IVisualAlteration
         {
@@ -1335,10 +1336,10 @@ namespace TownOfSushi
                 medium.MediatedPlayers.Values.DestroyAll();
                 medium.MediatedPlayers.Clear();
             }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Seer))
+            if (PlayerControl.LocalPlayer.Is(RoleEnum.Detective))
             {
-                var seer = GetRole<Seer>(PlayerControl.LocalPlayer);
-                seer.LastInvestigated = DateTime.UtcNow;
+                var detective = GetRole<Detective>(PlayerControl.LocalPlayer);
+                detective.LastInvestigated = DateTime.UtcNow;
             }
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Oracle))
             {
@@ -1392,6 +1393,11 @@ namespace TownOfSushi
                 trapper.LastTrapped = DateTime.UtcNow;
                 trapper.trappedPlayers.Clear();
                 if (CustomGameOptions.TrapsRemoveOnNewRound) trapper.traps.ClearTraps();
+            }
+            if (PlayerControl.LocalPlayer.Is(RoleEnum.Seer))
+            {
+                var Seer = GetRole<Seer>(PlayerControl.LocalPlayer);
+                Seer.LastInvestigated = DateTime.UtcNow;
             }
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Investigator))
             {

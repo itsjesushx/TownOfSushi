@@ -11,7 +11,7 @@ namespace TownOfSushi.Roles
         public PlayerControl ToRemember = null;
         public List<RoleEnum> RolesToRemember = new List<RoleEnum>
         {
-            RoleEnum.Investigator, RoleEnum.Mystic, RoleEnum.Seer, RoleEnum.Tracker, RoleEnum.Vigilante, RoleEnum.Veteran,
+            RoleEnum.Investigator, RoleEnum.Mystic, RoleEnum.Seer, RoleEnum.Undertaker, RoleEnum.Detective, RoleEnum.Tracker, RoleEnum.Vigilante, RoleEnum.Veteran,
             RoleEnum.Engineer, RoleEnum.Medium, RoleEnum.Trapper, RoleEnum.Medic, RoleEnum.Vulture, RoleEnum.Oracle,
             RoleEnum.Hunter, RoleEnum.Jester, RoleEnum.Executioner, RoleEnum.Witch, RoleEnum.Warlock, RoleEnum.Jailor,
             RoleEnum.Agent, RoleEnum.Hitman, RoleEnum.Miner, RoleEnum.Morphling, RoleEnum.Glitch, RoleEnum.Blackmailer, RoleEnum.Juggernaut,
@@ -248,6 +248,7 @@ namespace TownOfSushi.Roles
                 case RoleEnum.Tracker:
                 case RoleEnum.Medium:
                 case RoleEnum.Mystic:
+                case RoleEnum.Detective:
                 case RoleEnum.Swapper:
                 case RoleEnum.Trapper:
                 case RoleEnum.Imitator:
@@ -477,10 +478,18 @@ namespace TownOfSushi.Roles
                 medRole.LastMediated = DateTime.UtcNow;
             }
 
+            else if (role == RoleEnum.Detective)
+            {
+                var seerRole = GetRole<Detective>(amnesiac);
+                seerRole.Investigated.RemoveRange(0, seerRole.Investigated.Count);
+                seerRole.LastInvestigated = DateTime.UtcNow;
+            }
+
             else if (role == RoleEnum.Seer)
             {
                 var seerRole = GetRole<Seer>(amnesiac);
-                seerRole.Investigated.RemoveRange(0, seerRole.Investigated.Count);
+                seerRole.Investigated = null;
+                seerRole.Investigated2 = null;
                 seerRole.LastInvestigated = DateTime.UtcNow;
             }
 

@@ -16,7 +16,7 @@ namespace TownOfSushi.Roles
             RoleType = RoleEnum.Escapist;
             Faction = Faction.Impostors;
 
-            AddToRoleHistory(RoleType);
+
             RoleAlignment = RoleAlignment.ImpDeception;
         }
         public KillButton EscapeButton

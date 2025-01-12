@@ -9,9 +9,10 @@
         public readonly static Color32  Tracker = new Color32(100, 58, 220, byte.MaxValue);
         public readonly static Color32  Investigator = new Color32(0, 179, 179, byte.MaxValue);
         public readonly static Color32  Jailor = new Color32(166, 166, 166, byte.MaxValue);
+        public readonly static Color32 Seer = new Color32(255, 5, 180, byte.MaxValue);
         public readonly static Color32  Medic = new Color32(126, 251, 194, byte.MaxValue);
         public readonly static Color32  Hunter = new Color32(41, 171, 134, byte.MaxValue);
-        public readonly static Color32  Seer = new Color32(255, 204, 128, byte.MaxValue);
+        public readonly static Color32  Detective = new Color32(255, 204, 128, byte.MaxValue);
         public readonly static Color32  Vigilante = new Color32(255, 255, 153, byte.MaxValue);
         public readonly static Color32  Veteran = new Color32(153, 128, 64, byte.MaxValue);
         public readonly static Color32  Medium = new Color32(166, 128, 255, byte.MaxValue);

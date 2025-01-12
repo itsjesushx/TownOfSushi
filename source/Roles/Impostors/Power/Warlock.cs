@@ -12,7 +12,7 @@ namespace TownOfSushi.Roles
             Color = Colors.Impostor;
             RoleType = RoleEnum.Warlock;
             Faction = Faction.Impostors;
-            AddToRoleHistory(RoleType);
+
             RoleAlignment = RoleAlignment.ImpPower;
             ChargePercent = 0;
         }

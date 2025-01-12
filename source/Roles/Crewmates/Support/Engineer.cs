@@ -13,7 +13,7 @@ namespace TownOfSushi.Roles
             RoleType = RoleEnum.Engineer;
             Faction = Faction.Crewmates;
 
-            AddToRoleHistory(RoleType);
+
             RoleAlignment = RoleAlignment.CrewSupport;
             MaxUses = CustomGameOptions.MaxFixes;
         }

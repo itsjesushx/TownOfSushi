@@ -27,11 +27,11 @@
 | [Blackmailer](#blackmailer) | [Veteran](#veteran) |  [Pestilence](#plaguebearer) |[Underdog](#underdog) | [Multitasker](#multitasker)|
 | [Warlock](#warlock) | [Medic](#medic) | [Executioner](#executioner)  |   [Diseased](#diseased) | [Radar](#radar) |
 |  [Undertaker](#undertaker) | [Imitator](#imitator) | [Romantic](#romantic) |  | [Sleuth](#sleuth) |
-|  [Bomber](#bomber)  | [Seer](#seer) | [Amnesiac](#amnesiac)| | [Tiebreaker](#tiebreaker) |
+|  [Bomber](#bomber)  | [Detective](#detective) | [Amnesiac](#amnesiac)| | [Tiebreaker](#tiebreaker) |
 |  [Witch](#witch)| [Tracker](#tracker) |  [Agent](#agent) | |
 | | [Swapper](#swapper)  | [Hitman](#hitman) |  |
 | | [Trapper](#trapper)   |[Glitch](#glitch) |  |
-| || [Serial Killer](#serial-killer) |  |
+| | [Seer](#seer) | [Serial Killer](#serial-killer) |  |
 | |  | [Juggernaut](#juggernaut)  |  |
 | | |[Plaguebearer](#plaguebearer) |  |
 
@@ -212,23 +212,34 @@ The second, is that every meeting the Oracle receives a confession about who mig
 | Neutral Killing show up as Evil | Neutral Killing roles show up as Evil | Toggle | True |
 
 -----------------------
-## Seer
+## Detective
 ### **Team: Crewmates**
-The Seer is a Crewmate that can reveal the alliance of other players.\
-Based on settings, the Seer can find out whether a player is a Good or an Evil role.\
+The Detective is a Crewmate that can reveal the alliance of other players.\
+Based on settings, the Detective can find out whether a player is a Good or an Evil role.\
 A player's name will change color depending on faction and role.
 ### Game Options
 | Name | Description | Type | Default |
 |----------|:-------------:|:------:|:------:|
-| Seer | The percentage probability of the Seer appearing | Percentage | 0% |
-| Seer Cooldown | The Cooldown of the Seer's Reveal button | Time | 25s |
+| Detective | The percentage probability of the Detective appearing | Percentage | 0% |
+| Detective Cooldown | The Cooldown of the Detective's Reveal button | Time | 25s |
 | Crewmate Killing Roles Are Red | Crewmate Killing roles show up as Red | Toggle | False |
 | Neutral Benign Roles Are Red | Neutral Benign roles show up as Red | Toggle | False |
 | Neutral Evil Roles Are Red | Neutral Evil roles show up as Red | Toggle | False |
 | Neutral Killing Roles Are Red | Neutral Killing roles show up as Red | Toggle | True |
-
 -----------------------
 
+## Seer
+### **Team: Crewmates**
+The Seer is a Crewmate that can reveal the faction of two players.\
+The Seer will get notified in chat once a meeting starts if the targets have the same faction or not.\
+The Seer will also see a green Y next to the targets names if they have the same faction, else it will show a red X.\
+After the Seer reveals the faction of the two players, they can not try to change their targets until next meeting.
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Seer | The percentage probability of the Detective appearing | Percentage | 0% |
+| Seer Cooldown | The Cooldown of the Seer's Reveal button | Time | 25s |
+-----------------------
 ## Tracker
 ### **Team: Crewmates**
 

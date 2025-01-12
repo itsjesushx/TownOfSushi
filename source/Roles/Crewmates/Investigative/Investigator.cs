@@ -21,7 +21,7 @@ namespace TownOfSushi.Roles
             RoleType = RoleEnum.Investigator;
             Faction = Faction.Crewmates;
 
-            AddToRoleHistory(RoleType);
+
             RoleAlignment = RoleAlignment.CrewInvest;
         }
         public KillButton ExamineButton

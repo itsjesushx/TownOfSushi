@@ -15,12 +15,12 @@ namespace TownOfSushi.Roles
             StartText = () => "Get other payer's to confess their sins";
             TaskText = () => "Get another player to confess on your passing";
             RoleInfo = $"The Oracle can compel another player to confess their secrets upon death. The oracle will get information about 3 players being possibly evil each meeting. The Oracle can only make a player confess once per meeting. When the Oracle dies, the player they made confess will be reveal their faction with a probability of {CustomGameOptions.RevealAccuracy}% to be right.";
-            LoreText = "A seer blessed with the power of foresight, you can guide the crew even in death. As the Oracle, your final moments are crucial, compelling another player to confess their secrets. Your revelations can sway the tide of suspicion and uncover the truth hidden within the shadows of the ship.";
+            LoreText = "A detective blessed with the power of foresight, you can guide the crew even in death. As the Oracle, your final moments are crucial, compelling another player to confess their secrets. Your revelations can sway the tide of suspicion and uncover the truth hidden within the shadows of the ship.";
             Color = Colors.Oracle;
             LastConfessed = DateTime.UtcNow;
             Accuracy = CustomGameOptions.RevealAccuracy;
             Faction = Faction.Crewmates;
-            AddToRoleHistory(RoleType);
+
             RoleAlignment = RoleAlignment.CrewInvest;
             FirstMeetingDead = true;
             FirstMeetingDead = false;

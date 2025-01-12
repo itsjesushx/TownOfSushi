@@ -20,7 +20,8 @@ using Version = SemanticVersioning.Version;
 
 namespace TownOfSushi.Modules
 {
-    public class ModUpdateBehaviour : MonoBehaviour {
+    public class ModUpdateBehaviour : MonoBehaviour 
+    {
         public static readonly bool CheckForSubmergedUpdates = true;
         public static bool showPopUp = true;
         public static bool updateInProgress = false;
@@ -55,7 +56,8 @@ namespace TownOfSushi.Modules
         [HideFromIl2Cpp]
         public UpdateData RequiredUpdateData => TOUUpdate ?? SubmergedUpdate;
 
-        public void Awake() {
+        public void Awake() 
+        {
             if (Instance) Destroy(this);
             Instance = this;
 
@@ -67,7 +69,8 @@ namespace TownOfSushi.Modules
             }
         }
 
-        private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode) 
+        {
             if (updateInProgress || scene.name != "MainMenu") return;
             if (RequiredUpdateData is null) {
                 showPopUp = false;
@@ -106,10 +109,11 @@ namespace TownOfSushi.Modules
         }
 
         [HideFromIl2Cpp]
-        public IEnumerator CoUpdate() {
+        public IEnumerator CoUpdate() 
+        {
             updateInProgress = true;
             var isSubmerged = TOUUpdate is null;
-            var updateName = (isSubmerged ? "Submerged" : "Town Of Sushi");
+            var updateName = isSubmerged ? "Submerged" : "Town Of Sushi";
 
             var popup = Instantiate(TwitchManager.Instance.TwitchPopup);
             popup.TextAreaTMP.fontSize *= 0.7f;
@@ -167,7 +171,8 @@ namespace TownOfSushi.Modules
         }
 
         [HideFromIl2Cpp]
-        public static IEnumerator CoCheckUpdates() {
+        public static IEnumerator CoCheckUpdates() 
+        {
             var touUpdateCheck = Task.Run(() => Instance.GetGithubUpdate("itsjesushx", "TownOfSushi"));
             while (!touUpdateCheck.IsCompleted) yield return null;
             if (touUpdateCheck.Result != null && touUpdateCheck.Result.IsNewer(Version.Parse(TownOfSushi.VersionString))) {

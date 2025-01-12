@@ -30,7 +30,7 @@ namespace TownOfSushi.Roles
             Color = Colors.Vigilante;
             RoleType = RoleEnum.Vigilante;
             Faction = Faction.Crewmates;
-            AddToRoleHistory(RoleType);
+
             RoleAlignment = RoleAlignment.CrewKilling;
             RemainingKills = CustomGameOptions.VigilanteKills;
 
@@ -310,7 +310,10 @@ namespace TownOfSushi.Roles
             
             var role2 = GetPlayerRole(player);
             role2.DeathReason = DeathReasonEnum.Guessed;
-            role2.KilledBy = " By " + Utils.ColorString(Colors.Vigilante, vigilanteP.PlayerName);
+            if (role2 != null)
+            {
+                role2.KilledBy = " By " + ColorString(Colors.Vigilante, vigilantePlayer.name);
+            }
 
 
             var deadPlayer = new DeadPlayer

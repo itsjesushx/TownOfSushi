@@ -24,7 +24,7 @@ namespace TownOfSushi.Roles
             LastJailed = DateTime.UtcNow;
             RoleAlignment = RoleAlignment.CrewKilling;
             RoleType = RoleEnum.Jailor;
-            AddToRoleHistory(RoleType);
+
             Executes = CustomGameOptions.MaxExecutes;
             CanJail = true;
         }
@@ -219,7 +219,10 @@ namespace TownOfSushi.Roles
 
             var role2 = GetPlayerRole(player);
             role2.DeathReason = DeathReasonEnum.Executed;
-            role2.KilledBy = " By " + ColorString(Colors.Jailor, jailor.PlayerName);
+            if (role2 != null)
+            {
+                role2.KilledBy = " By " + ColorString(Colors.Jailor, jailor.Player.name);
+            }
 
             var deadPlayer = new DeadPlayer
             {

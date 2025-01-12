@@ -20,7 +20,7 @@
             if (!Kill) Kill = __instance.KillButton.graphic.sprite;
 
             var flag = false;
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Seer))
+            if (PlayerControl.LocalPlayer.Is(RoleEnum.Detective))
             {
                 __instance.KillButton.graphic.sprite = TownOfSushi.SeerSprite;
                 flag = true;
@@ -30,6 +30,11 @@
                 __instance.KillButton.graphic.sprite = __instance.KillButton.graphic.sprite;
                 __instance.KillButton.buttonLabelText.gameObject.SetActive(true);
                 __instance.KillButton.buttonLabelText.text = "FRAME";
+                flag = true;
+            }
+            else if (PlayerControl.LocalPlayer.Is(RoleEnum.Seer))
+            {
+                __instance.KillButton.graphic.sprite = TownOfSushi.SeerSprite;
                 flag = true;
             }
             else if (PlayerControl.LocalPlayer.Is(RoleEnum.Medic))

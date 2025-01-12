@@ -2,7 +2,7 @@ using System.Collections;
 using System.Text;
 using TMPro;
 
-namespace TownOfSushi.Patches 
+namespace TownOfSushi.Patches
 {
     static class AdditionalTempData 
     {
@@ -35,182 +35,115 @@ namespace TownOfSushi.Patches
             ToggleZoom(reset: true);
         }
 
-        public static void Postfix(AmongUsClient __instance, [HarmonyArgument(0)] EndGameResult endGameResult)
+        public static void Postfix()
         {
-            if (CameraEffect.singleton) CameraEffect.singleton.materials.Clear();
-            AdditionalTempData.Clear();
-            var GameSummaryText = "";
-            foreach (var playerControl in PlayerControl.AllPlayerControls) 
+            AdditionalTempData.GameSummaryText.Clear();
+            const string endString = "</color>";
+
+            //There's a better way of doing this e.g. switch statement or dictionary. But this works for now.
+            foreach (var playerControl in PlayerControl.AllPlayerControls)
             {
-                GameSummaryText = "";
-                foreach (var role in RoleHistory.Where(x => x.Key == playerControl.PlayerId))
-                {
-                    // Crewmate Roles
+                //foreach (var role in RoleHistory.Where(x => x.Key == playerControl.PlayerId))
+                var SummaryText = "";
 
-                    if (role.Value == RoleEnum.Crewmate) { GameSummaryText += "<color=#" + Colors.Crewmate.ToHtmlStringRGBA() + ">Crewmate</color> > "; }
-                    else if (role.Value == RoleEnum.Mystic) { GameSummaryText += "<color=#" + Colors.Mystic.ToHtmlStringRGBA() + ">Mystic</color> > "; }
-                    else if (role.Value == RoleEnum.Engineer) { GameSummaryText += "<color=#" + Colors.Engineer.ToHtmlStringRGBA() + ">Engineer</color> > "; }
-                    else if (role.Value == RoleEnum.Investigator) { GameSummaryText += "<color=#" + Colors.Investigator.ToHtmlStringRGBA() + ">Investigator</color> > "; }
-                    else if (role.Value == RoleEnum.Medic) { GameSummaryText += "<color=#" + Colors.Medic.ToHtmlStringRGBA() + ">Medic</color> > "; }
-                    else if (role.Value == RoleEnum.Vigilante) { GameSummaryText += "<color=#" + Colors.Vigilante.ToHtmlStringRGBA() + ">Vigilante</color> > "; }
-                    else if (role.Value == RoleEnum.Guardian) { GameSummaryText += "<color=#" + Colors.Guardian.ToHtmlStringRGBA() + ">Guardian</color> > "; }
-                    else if (role.Value == RoleEnum.Seer) { GameSummaryText += "<color=#" + Colors.Seer.ToHtmlStringRGBA() + ">Seer</color> > "; }
-                    else if (role.Value == RoleEnum.Jailor) { GameSummaryText += "<color=#" + Colors.Jailor.ToHtmlStringRGBA() + ">Jailor</color> > "; }
-                    else if (role.Value == RoleEnum.Oracle) { GameSummaryText += "<color=#" + Colors.Oracle.ToHtmlStringRGBA() + ">Oracle</color> > "; }
-                    else if (role.Value == RoleEnum.Swapper) { GameSummaryText += "<color=#" + Colors.Swapper.ToHtmlStringRGBA() + ">Swapper</color> > "; }
-                    else if (role.Value == RoleEnum.Imitator) { GameSummaryText += "<color=#" + Colors.Imitator.ToHtmlStringRGBA() + ">Imitator</color> > "; }
-                    else if (role.Value == RoleEnum.Vigilante) { GameSummaryText += "<color=#" + Colors.Vigilante.ToHtmlStringRGBA() + ">Vigilante</color> > "; }
-                    else if (role.Value == RoleEnum.Tracker) { GameSummaryText += "<color=#" + Colors.Tracker.ToHtmlStringRGBA() + ">Tracker</color> > "; }
-                    else if (role.Value == RoleEnum.Medium) { GameSummaryText += "<color=#" + Colors.Medium.ToHtmlStringRGBA() + ">Medium</color> > "; }
-                    else if (role.Value == RoleEnum.Trapper) { GameSummaryText += "<color=#" + Colors.Trapper.ToHtmlStringRGBA() + ">Trapper</color> > "; }
-                    else if (role.Value == RoleEnum.Veteran) { GameSummaryText += "<color=#" + Colors.Veteran.ToHtmlStringRGBA() + ">Veteran</color> > "; }
-                    else if (role.Value == RoleEnum.Hunter) { GameSummaryText += "<color=#" + Colors.Hunter.ToHtmlStringRGBA() + ">Hunter</color> > "; }
-
-                    // Impostor Roles
-
-                    else if (role.Value == RoleEnum.Impostor) { GameSummaryText += "<color=#" + Colors.Impostor.ToHtmlStringRGBA() + ">Impostor</color> > "; }
-                    else if (role.Value == RoleEnum.Grenadier) { GameSummaryText += "<color=#" + Colors.Impostor.ToHtmlStringRGBA() + ">Grenadier</color> > "; }
-                    else if (role.Value == RoleEnum.Janitor) { GameSummaryText += "<color=#" + Colors.Impostor.ToHtmlStringRGBA() + ">Janitor</color> > "; }
-                    else if (role.Value == RoleEnum.Miner) { GameSummaryText += "<color=#" + Colors.Impostor.ToHtmlStringRGBA() + ">Miner</color> > "; }
-                    else if (role.Value == RoleEnum.Bomber) { GameSummaryText += "<color=#" + Colors.Impostor.ToHtmlStringRGBA() + ">Bomber</color> > "; }
-                    else if (role.Value == RoleEnum.Witch) { GameSummaryText += "<color=#" + Colors.Impostor.ToHtmlStringRGBA() + ">Witch</color> > "; }
-                    else if (role.Value == RoleEnum.Morphling) { GameSummaryText += "<color=#" + Colors.Impostor.ToHtmlStringRGBA() + ">Morphling</color> > "; }
-                    else if (role.Value == RoleEnum.Swooper) { GameSummaryText += "<color=#" + Colors.Impostor.ToHtmlStringRGBA() + ">Swooper</color> > "; }
-                    else if (role.Value == RoleEnum.Undertaker) { GameSummaryText += "<color=#" + Colors.Impostor.ToHtmlStringRGBA() + ">Undertaker</color> > "; }
-                    else if (role.Value == RoleEnum.Blackmailer) { GameSummaryText += "<color=#" + Colors.Impostor.ToHtmlStringRGBA() + ">Blackmailer</color> > "; }
-                    else if (role.Value == RoleEnum.Venerer) { GameSummaryText += "<color=#" + Colors.Impostor.ToHtmlStringRGBA() + ">Venerer</color> > "; }
-                    else if (role.Value == RoleEnum.Warlock) { GameSummaryText += "<color=#" + Colors.Impostor.ToHtmlStringRGBA() + ">Warlock</color> > "; }
-                    else if (role.Value == RoleEnum.Escapist) { GameSummaryText += "<color=#" + Colors.Impostor.ToHtmlStringRGBA() + ">Escapist</color> > "; }
-
-                    // Neutral Benign Roles
-
-                    else if (role.Value == RoleEnum.Amnesiac) { GameSummaryText += "<color=#" + Colors.Amnesiac.ToHtmlStringRGBA() + ">Amnesiac</color> > "; }
-                    else if (role.Value == RoleEnum.Romantic) { GameSummaryText += "<color=#" + Colors.Romantic.ToHtmlStringRGBA() + ">Romantic</color> > "; }
-                    else if (role.Value == RoleEnum.GuardianAngel) { GameSummaryText += "<color=#" + Colors.GuardianAngel.ToHtmlStringRGBA() + ">Guardian Angel</color> > "; }
-
-                    // Neutral Evil Roles
-
-                    else if (role.Value == RoleEnum.Vulture) { GameSummaryText += "<color=#" + Colors.Vulture.ToHtmlStringRGBA() + ">Vulture</color> > "; }
-                    else if (role.Value == RoleEnum.Doomsayer) { GameSummaryText += "<color=#" + Colors.Doomsayer.ToHtmlStringRGBA() + ">Doomsayer</color> > "; }
-                    else if (role.Value == RoleEnum.Framer) { GameSummaryText += "<color=#" + Colors.Framer.ToHtmlStringRGBA() + ">Framer</color> > "; }
-                    else if (role.Value == RoleEnum.Jester) { GameSummaryText += "<color=#" + Colors.Jester.ToHtmlStringRGBA() + ">Jester</color> > "; }
-                    else if (role.Value == RoleEnum.Executioner) { GameSummaryText += "<color=#" + Colors.Executioner.ToHtmlStringRGBA() + ">Executioner</color> > "; }
-
-                    // Neutral Killing Roles
-
-                    else if (role.Value == RoleEnum.Juggernaut) { GameSummaryText += "<color=#" + Colors.Juggernaut.ToHtmlStringRGBA() + ">Juggernaut</color> > "; }
-                    else if (role.Value == RoleEnum.Arsonist) { GameSummaryText += "<color=#" + Colors.Arsonist.ToHtmlStringRGBA() + ">Arsonist</color> > "; }
-                    else if (role.Value == RoleEnum.Plaguebearer) { GameSummaryText += "<color=#" + Colors.Plaguebearer.ToHtmlStringRGBA() + ">Plaguebearer</color> > "; }
-                    else if (role.Value == RoleEnum.Pestilence) { GameSummaryText += "<color=#" + Colors.Pestilence.ToHtmlStringRGBA() + ">Pestilence</color> > "; }
-                    else if (role.Value == RoleEnum.SerialKiller) { GameSummaryText += "<color=#" + Colors.SerialKiller.ToHtmlStringRGBA() + ">Serial Killer</color> > "; }
-                    else if (role.Value == RoleEnum.Vampire) { GameSummaryText += "<color=#" + Colors.Vampire.ToHtmlStringRGBA() + ">Vampire</color> > "; }
-                    else if (role.Value == RoleEnum.Agent) { GameSummaryText += "<color=#" + Colors.Agent.ToHtmlStringRGBA() + ">Agent</color> > "; }
-                    else if (role.Value == RoleEnum.Hitman) { GameSummaryText += "<color=#" + Colors.Hitman.ToHtmlStringRGBA() + ">Hitman</color> > "; }
-                    else if (role.Value == RoleEnum.Werewolf) { GameSummaryText += "<color=#" + Colors.Werewolf.ToHtmlStringRGBA() + ">Werewolf</color> > "; }
-                    else if (role.Value == RoleEnum.Glitch) { GameSummaryText += "<color=#" + Colors.Glitch.ToHtmlStringRGBA() + ">Glitch</color> > "; }
-                }
-                
-                if (!string.IsNullOrEmpty(GameSummaryText)) GameSummaryText = GameSummaryText.Remove(GameSummaryText.Length - 3);
-                
-                // Modifiers
-                if (playerControl.Is(ModifierEnum.Giant)) { GameSummaryText += " (<color=#" + Colors.Giant.ToHtmlStringRGBA() + ">Giant</color>)"; }
-                else if (playerControl.Is(ModifierEnum.Aftermath)) { GameSummaryText += " (<color=#" + Colors.Aftermath.ToHtmlStringRGBA() + ">Aftermath</color>)"; }
-                else if (playerControl.Is(ModifierEnum.Mini)) { GameSummaryText += " (<color=#" + Colors.Mini.ToHtmlStringRGBA() + ">Mini</color>)"; }
-                else if (playerControl.Is(ModifierEnum.Bait)) { GameSummaryText += " (<color=#" + Colors.Bait.ToHtmlStringRGBA() + ">Bait</color>)";}
-                else if (playerControl.Is(ModifierEnum.Diseased)) { GameSummaryText += " (<color=#" + Colors.Diseased.ToHtmlStringRGBA() + ">Diseased</color>)";}
-                else if (playerControl.Is(ModifierEnum.Disperser)) { GameSummaryText += " (<color=#" + Colors.Impostor.ToHtmlStringRGBA() + ">Disperser</color>)";}
-                else if (playerControl.Is(ModifierEnum.DoubleShot)) { GameSummaryText += " (<color=#" + Colors.Impostor.ToHtmlStringRGBA() + ">Double Shot</color>)";}
-                else if (playerControl.Is(ModifierEnum.Underdog)) { GameSummaryText += " (<color=#" + Colors.Impostor.ToHtmlStringRGBA() + ">Underdog</color>)";}
-                else if (playerControl.Is(ModifierEnum.Frosty)) { GameSummaryText += " (<color=#" + Colors.Frosty.ToHtmlStringRGBA() + ">Frosty</color>)";}
-
-                // Abilities
-
-                if (playerControl.Is(AbilityEnum.Drunk)) { GameSummaryText += " [<color=#" + Colors.Drunk.ToHtmlStringRGBA() + ">Drunk</color>] ";}
-                else if (playerControl.Is(AbilityEnum.Chameleon)) { GameSummaryText += " [<color=#" + Colors.Chameleon.ToHtmlStringRGBA() + ">Chameleon</color>] ";}
-                else if (playerControl.Is(AbilityEnum.Assassin)) { GameSummaryText += " [<color=#" + Colors.Impostor.ToHtmlStringRGBA() + ">Assassin</color>] ";}
-                else if (playerControl.Is(AbilityEnum.Flash)) { GameSummaryText += " [<color=#" + Colors.Flash.ToHtmlStringRGBA() + ">Flash</color>] ";}
-                else if (playerControl.Is(AbilityEnum.Multitasker)) { GameSummaryText += " [<color=#" + Colors.Multitasker.ToHtmlStringRGBA() + ">Multitasker</color>] ";}
-                else if (playerControl.Is(AbilityEnum.ButtonBarry)) { GameSummaryText += " [<color=#" + Colors.ButtonBarry.ToHtmlStringRGBA() + ">Button Barry</color>] ";}
-                else if (playerControl.Is(AbilityEnum.Tiebreaker)) { GameSummaryText += " [<color=#" + Colors.Tiebreaker.ToHtmlStringRGBA() + ">Tiebreaker</color>] "; }
-                else if (playerControl.Is(AbilityEnum.Spy)) { GameSummaryText += " [<color=#" + Colors.Spy.ToHtmlStringRGBA() + ">Spy</color>] ";}
-                else if (playerControl.Is(AbilityEnum.Torch)) { GameSummaryText += " [<color=#" + Colors.Torch.ToHtmlStringRGBA() + ">Torch</color>] ";}
-                else if (playerControl.Is(AbilityEnum.Sleuth)) { GameSummaryText += " [<color=#" + Colors.Sleuth.ToHtmlStringRGBA() + ">Sleuth</color>] ";}
-                else if (playerControl.Is(AbilityEnum.Radar)) { GameSummaryText += " [<color=#" + Colors.Radar.ToHtmlStringRGBA() + ">Radar</color>] ";}
-                
-                
-                
-                // Stats
-
+                var info = playerControl.AllPlayerInfo();
+                var role = info[0] as Role;
+                var modifier = info[1] as Modifier;
+                var ability = info[2] as Ability;
                 var player = GetPlayerRole(playerControl);
+
+                if (info[0] != null)
+                {
+                    SummaryText += $"{role.ColorString}{role.Name}</color>";
+                }
+
+                if (modifier?.ModifierType != null)
+                    SummaryText += $" ({modifier?.ColorString}{modifier?.Name}{endString})";
+
+                if (ability?.AbilityType != null)
+                    SummaryText += $" [{ability?.ColorString}{ability?.Name}{endString}]";
+                    
+                var hasReason = false;
                 if (playerControl.IsShielded())
                 {
-                    GameSummaryText += ColorString(Colors.Medic, $" | [<b>+</b>] ");
+                    SummaryText += ColorString(Colors.Medic, $" | [<b>+</b>]");
                 }
                 if (playerControl.IsBeloved() || playerControl.IsRomantic())
                 {
-                    GameSummaryText += ColorString(Colors.Romantic, $" | [♥] ");
+                    SummaryText += ColorString(Colors.Romantic, $" | [♥]");
                 }
                 if (playerControl.IsGATarget())
                 {
-                    GameSummaryText += ColorString(Colors.GuardianAngel, $" | [★] ");
+                    SummaryText += ColorString(Colors.GuardianAngel, $" | [★]");
                 }
                 if (playerControl.IsExeTarget())
                 {
-                    GameSummaryText += ColorString(Colors.Executioner, $" | [⦿] ");
+                    SummaryText += ColorString(Colors.Executioner, $" | [⦿]");
                 }
                 if (playerControl.IsFramerTarget())
                 {
-                    GameSummaryText += ColorString(Colors.Framer, $" | [F] ");
+                    SummaryText += ColorString(Colors.Framer, $" | [F]");
                 }
                 if (playerControl.IsSpelled())
                 {
-                    GameSummaryText += ColorString(Colors.Impostor, $" | [†] ");
+                    SummaryText += ColorString(Colors.Impostor, $" | [†]");
                 }
                 if (playerControl.Is(RoleEnum.Vulture) && !VultureWin)
                 {
-                    GameSummaryText += ColorString(Colors.Vulture, $" | ({GetRole<Vulture>(playerControl).BodiesRemainingToWin()} to eat left)");
+                    SummaryText += ColorString(Colors.Vulture, $" | ({GetRole<Vulture>(playerControl).BodiesRemainingToWin()} to eat left)");
                 }
                 if (playerControl.HasTasks())
                 {
-                    if ((player.TotalTasks - player.TasksLeft)/player.TotalTasks == 1) GameSummaryText += $" | Tasks: " + ColorString(Color.green, $"{player.TotalTasks - player.TasksLeft}/{player.TotalTasks}");
-                    else GameSummaryText += $" | Tasks: {player.TotalTasks - player.TasksLeft}/{player.TotalTasks}";
+                    if ((player.TotalTasks - player.TasksLeft)/player.TotalTasks == 1) SummaryText += $" | Tasks: " + ColorString(Color.green, $"{player.TotalTasks - player.TasksLeft}/{player.TotalTasks}");
+                    else SummaryText += $" | Tasks: {player.TotalTasks - player.TasksLeft}/{player.TotalTasks}";
                 }
                 if (player.Kills > 0 && !playerControl.Is(Faction.Crewmates))
                 {
-                    GameSummaryText += ColorString(Colors.Impostor, $" | Kills: {player.Kills}");
+                    SummaryText += ColorString(Colors.Impostor, $" | Kills: {player.Kills}");
                 }
                 if (player.CorrectShot > 0)
                 {
-                    GameSummaryText += ColorString(Color.green, $" | Correct Shots: {player.CorrectShot}");
+                    SummaryText += ColorString(Color.green, $" | Correct Shots: {player.CorrectShot}");
                 }
                 if (player.IncorrectShots > 0)
                 {
-                    GameSummaryText += ColorString(Colors.Impostor, $" | Incorrect Shots: {player.IncorrectShots}");
+                    SummaryText += ColorString(Colors.Impostor, $" | Incorrect Shots: {player.IncorrectShots}");
                 }
                 if (player.CorrectAssassinKills > 0)
                 {
-                    GameSummaryText += ColorString(Color.green, $" | Guesses: {player.CorrectAssassinKills}");
+                    SummaryText += ColorString(Color.green, $" | Guesses: {player.CorrectAssassinKills}");
                 }
                 if (player.IncorrectAssassinKills > 0)
                 {
-                    GameSummaryText += ColorString(Colors.Impostor, " | Misguessed");
+                    SummaryText += ColorString(Colors.Impostor, " | Misguessed");
+                    hasReason = true;
                 }
                 if (player.CorrectVigilanteShot > 0)
                 {
-                    GameSummaryText += ColorString(Colors.Vigilante, $" | Correct Shots: {player.CorrectVigilanteShot}");
+                    SummaryText += ColorString(Colors.Vigilante, $" | Correct Shots: {player.CorrectVigilanteShot}");
                 }
                 if (player.Misfired)
                 {
-                    GameSummaryText += ColorString(Color.red, $" | Misfired");
+                    SummaryText += ColorString(Color.red, $" | Misfired");
+                    hasReason = true;
                 }
                 if (player.CorrectKills > 0)
                 {
-                    GameSummaryText += ColorString(Color.green, $" | Correct Kills: {player.CorrectKills}");
+                    SummaryText += ColorString(Color.green, $" | Correct Kills: {player.CorrectKills}");
                 }
-                GameSummaryText += " | " + playerControl.DeathReason();
-                AdditionalTempData.GameSummaryText.Add(new AdditionalTempData.PlayerRoleInfo() { PlayerName = playerControl.Data.PlayerName, GameSummaryText = GameSummaryText });
+                if (!hasReason)
+                {
+                    SummaryText += $" | {playerControl.DeathReason()}";
+                }
+
+                var info2 = new AdditionalTempData.PlayerRoleInfo()
+                {
+                    PlayerName = playerControl.Data.PlayerName,
+                    GameSummaryText = SummaryText
+                };
+                AdditionalTempData.GameSummaryText.Add(info2);
+                }
             }
-        }
     }
 
     [HarmonyPatch(typeof(EndGameManager), nameof(EndGameManager.SetEverythingUp))]
@@ -349,7 +282,7 @@ namespace TownOfSushi.Patches
                     }
 
                 
-                if (AgentAlive.Count >= PassiveAlive.Count - AgentAlive.Count && 
+                if (AgentAlive.Count >= PassiveAlive.Count - AgentAlive.Count &&
                     PlaguebearerAlive.Count == 0 &&
                     GlitchAlive.Count == 0 &&
                     PestilenceAlive.Count == 0 &&

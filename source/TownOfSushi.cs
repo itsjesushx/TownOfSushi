@@ -17,7 +17,7 @@ namespace TownOfSushi
     public class TownOfSushi : BasePlugin
     {
         public const string Id = "me.itsjesushx.townofsushi";
-        public const string VersionString = "1.2.1";
+        public const string VersionString = "1.3.0";
         public static Version Version = Version.Parse(VersionString);
         internal static BepInEx.Logging.ManualLogSource Logger;
         public Harmony Harmony { get; } = new Harmony(Id);

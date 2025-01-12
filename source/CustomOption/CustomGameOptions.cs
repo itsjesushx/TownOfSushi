@@ -13,9 +13,10 @@ namespace TownOfSushi.CustomOption
         public static int JanitorOn => Mathf.RoundToInt(CustomOptionHolder.JanitorOn.GetFloat());
         public static int EngineerOn => Mathf.RoundToInt(CustomOptionHolder.EngineerOn.GetFloat());
         public static int AmnesiacOn => Mathf.RoundToInt(CustomOptionHolder.AmnesiacOn.GetFloat());
+        public static int SeerOn => Mathf.RoundToInt(CustomOptionHolder.SeerOn.GetFloat());
         public static int InvestigatorOn => Mathf.RoundToInt(CustomOptionHolder.InvestigatorOn.GetFloat());
         public static int MedicOn => Mathf.RoundToInt(CustomOptionHolder.MedicOn.GetFloat());
-        public static int SeerOn => Mathf.RoundToInt(CustomOptionHolder.SeerOn.GetFloat());
+        public static int DetectiveOn => Mathf.RoundToInt(CustomOptionHolder.DetectiveOn.GetFloat());
         public static int GlitchOn => Mathf.RoundToInt(CustomOptionHolder.GlitchOn.GetFloat());
         public static int MorphlingOn => Mathf.RoundToInt(CustomOptionHolder.MorphlingOn.GetFloat());
         public static int ExecutionerOn => Mathf.RoundToInt(CustomOptionHolder.ExecutionerOn.GetFloat());
@@ -90,7 +91,8 @@ namespace TownOfSushi.CustomOption
         public static float MedicReportNameDuration => CustomOptionHolder.MedicReportNameDuration.GetFloat();
         public static float MedicReportColorDuration => CustomOptionHolder.MedicReportColorDuration.GetFloat();
         public static bool ShowReports => CustomOptionHolder.MedicReportSwitch.GetBool();
-        public static float SeerCd => CustomOptionHolder.SeerCooldown.GetFloat();
+        public static float DetectiveCd => CustomOptionHolder.DetectiveCooldown.GetFloat();
+        public static float SeerCd => CustomOptionHolder.SeerCd.GetFloat();
         public static bool CrewKillingRed => CustomOptionHolder.CrewKillingRed.GetBool();
         public static bool NeutBenignRed => CustomOptionHolder.NeutBenignRed.GetBool();
         public static bool NeutEvilRed => CustomOptionHolder.NeutEvilRed.GetBool();

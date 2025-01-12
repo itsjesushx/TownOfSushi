@@ -19,7 +19,7 @@ namespace TownOfSushi.Roles
             LastAlerted = DateTime.UtcNow;
             Faction = Faction.Crewmates;
 
-            AddToRoleHistory(RoleType);
+
             RoleAlignment = RoleAlignment.CrewKilling;
             RoleType = RoleEnum.Veteran;
             UsesLeft = CustomGameOptions.MaxAlerts;
