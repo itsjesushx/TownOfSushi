@@ -66,23 +66,23 @@ namespace TownOfSushi.Patches
                 var hasReason = false;
                 if (playerControl.IsShielded())
                 {
-                    SummaryText += ColorString(Colors.Medic, $" | [<b>+</b>]");
+                    SummaryText += $" | {ColorString(Colors.Medic, $"[<b>+</b>]")}";
                 }
                 if (playerControl.IsBeloved() || playerControl.IsRomantic())
                 {
-                    SummaryText += ColorString(Colors.Romantic, $" | [♥]");
+                    SummaryText += $" | {ColorString(Colors.Romantic, $"[♥]")}";
                 }
                 if (playerControl.IsGATarget())
                 {
-                    SummaryText += ColorString(Colors.GuardianAngel, $" | [★]");
+                    SummaryText += $" | {ColorString(Colors.GuardianAngel, $"[★]")}";
                 }
                 if (playerControl.IsExeTarget())
                 {
-                    SummaryText += ColorString(Colors.Executioner, $" | [⦿]");
+                    SummaryText += $" | {ColorString(Colors.Executioner, $"[⦿]")}";
                 }
                 if (playerControl.IsFramerTarget())
                 {
-                    SummaryText += ColorString(Colors.Framer, $" | [F]");
+                    SummaryText  += $" | {ColorString(Colors.Framer, $"[F]")}";
                 }
                 if (playerControl.IsSpelled())
                 {
@@ -99,41 +99,45 @@ namespace TownOfSushi.Patches
                 }
                 if (player.Kills > 0 && !playerControl.Is(Faction.Crewmates))
                 {
-                    SummaryText += ColorString(Colors.Impostor, $" | Kills: {player.Kills}");
+                    SummaryText  += $" | {ColorString(Color.red, $"Kills: {player.Kills}")}";
                 }
                 if (player.CorrectShot > 0)
                 {
-                    SummaryText += ColorString(Color.green, $" | Correct Shots: {player.CorrectShot}");
+                    SummaryText  += $" | {ColorString(Color.green, $"Correct Shots: {player.CorrectShot}")}";
                 }
                 if (player.IncorrectShots > 0)
                 {
-                    SummaryText += ColorString(Colors.Impostor, $" | Incorrect Shots: {player.IncorrectShots}");
+                    SummaryText  += $" | {ColorString(Color.red, $"Incorrect Shots: {player.IncorrectShots}")}";
                 }
                 if (player.CorrectAssassinKills > 0)
                 {
-                    SummaryText += ColorString(Color.green, $" | Guesses: {player.CorrectAssassinKills}");
+                    SummaryText  += $" | {ColorString(Color.green, $"Guesses: {player.CorrectAssassinKills}")}";
                 }
                 if (player.IncorrectAssassinKills > 0)
                 {
-                    SummaryText += ColorString(Colors.Impostor, " | Misguessed");
+                    SummaryText  += $" | {ColorString(Color.green, $"Failed Guess: {player.IncorrectAssassinKills}")}";
                     hasReason = true;
                 }
                 if (player.CorrectVigilanteShot > 0)
                 {
-                    SummaryText += ColorString(Colors.Vigilante, $" | Correct Shots: {player.CorrectVigilanteShot}");
+                    SummaryText  += $" | {ColorString(Colors.Vigilante, $"Correct Shots: {player.CorrectVigilanteShot}")}";
+                }
+                if (player.CorrectDeputyShot > 0)
+                {
+                    SummaryText  += $" | {ColorString(Colors.Deputy, $"Correct Shots: {player.CorrectDeputyShot}")}";
                 }
                 if (player.Misfired)
                 {
-                    SummaryText += ColorString(Color.red, $" | Misfired");
+                    SummaryText += $" | {ColorString(Color.red, $"Misfired")}";
                     hasReason = true;
                 }
                 if (player.CorrectKills > 0)
                 {
-                    SummaryText += ColorString(Color.green, $" | Correct Kills: {player.CorrectKills}");
+                    SummaryText += $" | {ColorString(Color.green, $"Correct Kills: {player.CorrectKills}")}";
                 }
                 if (!hasReason)
                 {
-                    SummaryText += $" | {playerControl.DeathReason()}";
+                    SummaryText += $" | {playerControl.GetDeadInfo()}";
                 }
 
                 var info2 = new AdditionalTempData.PlayerRoleInfo()

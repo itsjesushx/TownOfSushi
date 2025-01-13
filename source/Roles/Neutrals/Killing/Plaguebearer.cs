@@ -47,9 +47,15 @@ namespace TownOfSushi.Roles
         public void TurnPestilence()
         {
             var oldRole = GetPlayerRole(Player);
-            var killsList = (oldRole.CorrectAssassinKills, oldRole.IncorrectAssassinKills);
+            var killsList = (oldRole.Kills, oldRole.CorrectKills,  oldRole.CorrectDeputyShot, oldRole.CorrectShot, oldRole.IncorrectShots, oldRole.CorrectVigilanteShot, oldRole.CorrectAssassinKills, oldRole.IncorrectAssassinKills);
             RoleDictionary.Remove(Player.PlayerId);
             var role = new Pestilence(Player);
+            role.Kills = killsList.Kills;
+            role.CorrectVigilanteShot = killsList.CorrectVigilanteShot;
+            role.CorrectKills = killsList.CorrectKills;
+            role.IncorrectShots = killsList.IncorrectShots;
+            role.CorrectShot = killsList.CorrectShot;
+            role.CorrectDeputyShot = killsList.CorrectDeputyShot;
             role.CorrectAssassinKills = killsList.CorrectAssassinKills;
             role.IncorrectAssassinKills = killsList.IncorrectAssassinKills;
             if (Player == PlayerControl.LocalPlayer)
@@ -156,13 +162,17 @@ namespace TownOfSushi.Roles
             var infectButton = __instance.KillButton;
             var role = GetRole<Plaguebearer>(PlayerControl.LocalPlayer);
 
-            foreach (var playerId in role.InfectedPlayers)
+            foreach (var player1 in role.InfectedPlayers)
             {
-                var player = PlayerById(playerId);
+                var player = PlayerById(player1);
                 var data = player?.Data;
                 if (data == null || data.Disconnected || data.IsDead || PlayerControl.LocalPlayer.Data.IsDead)
                     continue;
-                player.nameText().text += "<color=#E6FFB3FF> [♨]</color>";
+                var nameText = player.nameText();
+                if (nameText != null)
+                {
+                    nameText.text += "<color=#E6FFB3FF> [♨]</color>";
+                }
             }
 
             infectButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)

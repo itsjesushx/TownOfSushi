@@ -19,13 +19,19 @@ namespace TownOfSushi.Roles
 
         public void ChangeRole()
         {
-            var oldRole = GetPlayerRole(Player);
-            var killsList = (oldRole.CorrectAssassinKills, oldRole.IncorrectAssassinKills);
+            var role = GetPlayerRole(Player);
+            var killsList = (role.Kills, role.CorrectKills,  role.CorrectDeputyShot, role.CorrectShot, role.IncorrectShots, role.CorrectVigilanteShot, role.CorrectAssassinKills, role.IncorrectAssassinKills);
             RoleDictionary.Remove(Player.PlayerId);
-            var role = new Hitman(Player);
-            role.CorrectAssassinKills = killsList.CorrectAssassinKills;
-            role.IncorrectAssassinKills = killsList.IncorrectAssassinKills;
-            role.LastMorph = DateTime.UtcNow;
+            var role2 = new Hitman(Player);
+            role2.Kills = killsList.Kills;
+            role2.CorrectVigilanteShot = killsList.CorrectVigilanteShot;
+            role2.CorrectKills = killsList.CorrectKills;
+            role2.IncorrectShots = killsList.IncorrectShots;
+            role2.CorrectShot = killsList.CorrectShot;
+            role2.CorrectDeputyShot = killsList.CorrectDeputyShot;
+            role2.CorrectAssassinKills = killsList.CorrectAssassinKills;
+            role2.IncorrectAssassinKills = killsList.IncorrectAssassinKills;
+            role2.LastMorph = DateTime.UtcNow;
             if (Player == PlayerControl.LocalPlayer)
             {
                 Flash(Colors.Hitman);

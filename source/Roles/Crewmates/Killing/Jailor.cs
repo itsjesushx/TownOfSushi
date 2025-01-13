@@ -120,7 +120,7 @@ namespace TownOfSushi.Roles
             return Listener;
         }
 
-        public static void ExecuteKill (Jailor jailor, PlayerControl player)
+        public static void ExecuteKill(Jailor jailor, PlayerControl player)
         {
             PlayerVoteArea voteArea = MeetingHud.Instance.playerStates.First(
                 x => x.TargetPlayerId == player.PlayerId
@@ -213,16 +213,17 @@ namespace TownOfSushi.Roles
                         jailor2.ExecuteButton.Destroy();
                         jailor2.UsesText.Destroy();
                     }
+
+                    if (player.Is(RoleEnum.Deputy))
+                    {
+                        var Deputy = GetRole<Deputy>(PlayerControl.LocalPlayer);
+                        Deputy.ExecuteButton.Destroy();
+                    }
                 
             }
             player.Die(DeathReason.Kill, false);
 
-            var role2 = GetPlayerRole(player);
-            role2.DeathReason = DeathReasonEnum.Executed;
-            if (role2 != null)
-            {
-                role2.KilledBy = " By " + ColorString(Colors.Jailor, jailor.Player.name);
-            }
+            GameHistory.CreateDeathReason(player, CustomDeathReason.Executed, jailor.Player);
 
             var deadPlayer = new DeadPlayer
             {

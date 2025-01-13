@@ -24,6 +24,7 @@ namespace TownOfSushi
         Tracker,
         Framer,
         Medium,
+        Deputy,
         Trapper,
         Romantic,
         GuardianAngel,
@@ -144,6 +145,7 @@ namespace TownOfSushi
         VultureEat,
         EngineerFix,
         Jail,
+        ExecuteDeputyKill,
         Protect,
         Plant,
         AttemptSound,
@@ -159,6 +161,7 @@ namespace TownOfSushi
         ShareOptions,
         HitmanDrop,
         AssassinKill,
+        DeputyKill,
         VigilanteKill,
         DoomsayerKill,
         FlashGrenade,
@@ -205,15 +208,15 @@ namespace TownOfSushi
         CheckMurder,
         SubmergedFixOxygen
     }
-    public enum DeathReasonEnum
+    public enum CustomDeathReason 
     {
-        Alive,
-        Ejected,
-        Guessed,
-        Killed,
+        Exile,
+        Kill,
+        Disconnect,
+        Guess,
+        WitchExile,
         Executed,
-        Cursed,
-        Suicide
+        Arson,
     }
     public enum DisableSkipButtonMeetings
     {

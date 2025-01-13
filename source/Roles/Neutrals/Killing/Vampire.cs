@@ -99,8 +99,8 @@ namespace TownOfSushi.Roles
     {
         public static void Convert(PlayerControl target)
         {
-            var oldRole = GetPlayerRole(target);
-            var killsList = (oldRole.CorrectKills, oldRole.IncorrectShots, oldRole.CorrectAssassinKills, oldRole.IncorrectAssassinKills);
+            var role = GetPlayerRole(target);
+            var killsList = (role.Kills, role.CorrectKills,  role.CorrectDeputyShot, role.CorrectShot, role.IncorrectShots, role.CorrectVigilanteShot, role.CorrectAssassinKills, role.IncorrectAssassinKills);
 
             if (target == StartImitate.ImitatingPlayer) StartImitate.ImitatingPlayer = null;
 
@@ -189,31 +189,39 @@ namespace TownOfSushi.Roles
             RoleDictionary.Remove(target.PlayerId);
             if (PlayerControl.LocalPlayer == target)
             {
-                var role = new Vampire(PlayerControl.LocalPlayer);
-                role.CorrectKills = killsList.CorrectKills;
-                role.IncorrectShots = killsList.IncorrectShots;
-                role.CorrectAssassinKills = killsList.CorrectAssassinKills;
-                role.IncorrectAssassinKills = killsList.IncorrectAssassinKills;
-                role.ReDoTaskText();
+                var role2 = new Vampire(PlayerControl.LocalPlayer);
+                role2.Kills = killsList.Kills;
+                role2.CorrectVigilanteShot = killsList.CorrectVigilanteShot;
+                role2.CorrectKills = killsList.CorrectKills;
+                role2.IncorrectShots = killsList.IncorrectShots;
+                role2.CorrectShot = killsList.CorrectShot;
+                role2.CorrectDeputyShot = killsList.CorrectDeputyShot;
+                role2.CorrectAssassinKills = killsList.CorrectAssassinKills;
+                role2.IncorrectAssassinKills = killsList.IncorrectAssassinKills;
+                role2.ReDoTaskText();
                 Utilities.UsefulMethods.ShowTextToast("You are now a Vampire!", 3.5f);
                 SoundManager.Instance.PlaySound(ShipStatus.Instance.SabotageSound, false, 1f, null);
                 Flash(Colors.Vampire);
             }
             else
             {
-                var role = new Vampire(target);
-                role.CorrectKills = killsList.CorrectKills;
-                role.IncorrectShots = killsList.IncorrectShots;
-                role.CorrectAssassinKills = killsList.CorrectAssassinKills;
-                role.IncorrectAssassinKills = killsList.IncorrectAssassinKills;
+                var role3 = new Vampire(target);
+                role3.Kills = killsList.Kills;
+                role3.CorrectVigilanteShot = killsList.CorrectVigilanteShot;
+                role3.CorrectKills = killsList.CorrectKills;
+                role3.IncorrectShots = killsList.IncorrectShots;
+                role3.CorrectShot = killsList.CorrectShot;
+                role3.CorrectDeputyShot = killsList.CorrectDeputyShot;
+                role3.CorrectAssassinKills = killsList.CorrectAssassinKills;
+                role3.IncorrectAssassinKills = killsList.IncorrectAssassinKills;
             }
 
             if (CustomGameOptions.NewVampCanAssassin) 
             {
                 AbilityDictionary.Remove(target.PlayerId);
                 new Assassin(target);
-                var role = GetRole<Vampire>(target);
-                role.ReDoTaskText();
+                var role33 = GetRole<Vampire>(target);
+                role33.ReDoTaskText();
             }
         }
     }

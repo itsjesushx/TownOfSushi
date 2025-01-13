@@ -30,7 +30,7 @@ namespace TownOfSushi.Roles
         }
         public static IEnumerator CheckJesterWin(ExileController __instance)
         {
-            yield return new WaitForSeconds(7f);
+            yield return new WaitForSeconds(5f);
 
             var exiled = __instance.initData.networkedPlayer;
             

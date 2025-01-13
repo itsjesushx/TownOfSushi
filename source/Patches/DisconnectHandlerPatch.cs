@@ -68,6 +68,12 @@ namespace TownOfSushi.Patches
                     jailor.UsesText.Destroy();
                 }
 
+                if (PlayerControl.LocalPlayer.Is(RoleEnum.Deputy) && !PlayerControl.LocalPlayer.Data.IsDead)
+                {
+                    var Deputy = GetRole<Deputy>(PlayerControl.LocalPlayer);
+                    Deputy.ExecuteButton.Destroy();
+                }
+
                 if (PlayerControl.LocalPlayer.Is(RoleEnum.Imitator) && !PlayerControl.LocalPlayer.Data.IsDead)
                 {
                     var imitatorRole = GetRole<Imitator>(PlayerControl.LocalPlayer);

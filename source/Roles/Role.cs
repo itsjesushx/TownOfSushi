@@ -4,7 +4,6 @@ namespace TownOfSushi.Roles
     {
         public static readonly Dictionary<byte, Role> RoleDictionary = new Dictionary<byte, Role>();
         public static readonly List<KeyValuePair<byte, RoleEnum>> RoleHistory = new List<KeyValuePair<byte, RoleEnum>>();
-        protected internal DeathReasonEnum DeathReason { get; set; } = DeathReasonEnum.Alive;
         protected internal RoleAlignment RoleAlignment { get; set; } = RoleAlignment.None;
         public Func<string> StartText;
         public Func<string> TaskText;
@@ -37,6 +36,7 @@ namespace TownOfSushi.Roles
         protected internal int TotalTasks => Player.Data.Tasks.Count;
         protected internal int Kills { get; set; } = 0;
         protected internal int CorrectKills { get; set; } = 0;
+        protected internal int CorrectDeputyShot { get; set; } = 0;
         protected internal bool Misfired { get; set; } = false;
         protected internal int CorrectVigilanteShot { get; set; } = 0;
         protected internal int IncorrectShots { get; set; } = 0;

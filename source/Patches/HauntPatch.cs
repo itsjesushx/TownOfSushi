@@ -13,7 +13,7 @@ namespace TownOfSushi.Patches
             var role = GetPlayerRole(__instance.HauntTarget);
             var roleName = role == null ? "" : $"{role.Name}";
 
-            if (TownOfSushi.DeadSeeRoles.Value) __instance.FilterText.text = $"{roleName} ({__instance.HauntTarget.DeathReason()})";
+            if (TownOfSushi.DeadSeeRoles.Value) __instance.FilterText.text = $"{roleName} ({__instance.HauntTarget.GetDeadInfo()})";
             else __instance.FilterText.text = "";
             
             return false;

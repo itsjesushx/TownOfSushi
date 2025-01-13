@@ -343,12 +343,7 @@ namespace TownOfSushi.Roles
             }
             player.Die(DeathReason.Kill, false);
 
-            var role2 = GetPlayerRole(player);
-            role2.DeathReason = DeathReasonEnum.Guessed;
-            if (role2 != null)
-            {
-                role2.KilledBy = " By " + ColorString(Colors.Doomsayer, doomsayerPlayer.name);
-            }
+            GameHistory.CreateDeathReason(player, CustomDeathReason.Guess, doomsayerPlayer);
 
             var deadPlayer = new DeadPlayer
             {
@@ -410,6 +405,18 @@ namespace TownOfSushi.Roles
                 var jailor = GetRole<Jailor>(PlayerControl.LocalPlayer);
                 jailor.ExecuteButton.Destroy();
                 jailor.UsesText.Destroy();
+            }
+
+            else if (player.Is(RoleEnum.Deputy))
+            {
+                var Deputy = GetRole<Deputy>(PlayerControl.LocalPlayer);
+                Deputy.ExecuteButton.Destroy();
+            }
+            
+            if (player.Is(RoleEnum.Deputy))
+            {
+                var Deputy = GetRole<Deputy>(PlayerControl.LocalPlayer);
+                Deputy.ExecuteButton.Destroy();
             }
 
             if (AmongUsClient.Instance.AmHost) meetingHud.CheckForEndVoting();

@@ -22,7 +22,10 @@ namespace TownOfSushi.CustomOption
         public static CustomOption VigilanteGuessNeutralBenign;
         public static CustomOption VigilanteGuessNeutralEvil;
         public static CustomOption VigilanteGuessNeutralKilling;
-        public static CustomOption VigilanteAfterVoting;      
+        public static CustomOption VigilanteAfterVoting;
+
+        public static CustomOption DeputyOn;
+        public static CustomOption DeputyKills;
 
         public static CustomOption MysticOn;
         public static CustomOption MysticArrowDuration;
@@ -192,7 +195,6 @@ namespace TownOfSushi.CustomOption
         public static CustomOption SwooperOn;
         public static CustomOption SwoopCooldown;
         public static CustomOption SwoopDuration;
-        public static CustomOption SwooperVent;
 
         public static CustomOption GrenadierOn;
         public static CustomOption GrenadeCooldown;
@@ -516,6 +518,9 @@ namespace TownOfSushi.CustomOption
             MaxTraps = CustomOption.Create(80, Types.Crewmate, "Maximum Number Of Traps Per Game", 5, 1, 15, 1, TrapperOn);
             TrapSize = CustomOption.Create(81, Types.Crewmate, "Trap Size", 0.25f, 0.05f, 1f, 0.05f, TrapperOn, format: "x");
             MinAmountOfPlayersInTrap = CustomOption.Create(82, Types.Crewmate, "Minimum Number Of Roles Required To Trigger Trap", 3, 1, 5, 1, TrapperOn);
+
+            DeputyOn = CustomOption.Create(992222, Types.Crewmate, ColorString(Colors.Deputy, "Deputy"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            DeputyKills = CustomOption.Create(100222, Types.Crewmate, "Number Of Deputy Kills", 1, 1, 15, 1, DeputyOn);
                 
             
             HunterOn = CustomOption.Create(84, Types.Crewmate, ColorString(Colors.Hunter, "Hunter"), 0f, 0f, 100f, 10f, null, true, format: "%");
@@ -716,7 +721,6 @@ namespace TownOfSushi.CustomOption
             SwooperOn = CustomOption.Create(239, Types.Impostor, ColorString(Colors.Impostor, "Swooper"), 0f, 0f, 100f, 10f, null, true, format: "%");
             SwoopCooldown = CustomOption.Create(241, Types.Impostor, "Swoop Cooldown", 25f, 10f, 60f, 2.5f, SwooperOn, format: "s");
             SwoopDuration = CustomOption.Create(242, Types.Impostor, "Swoop Duration", 10f, 5f, 15f, 1f, SwooperOn, format: "s");
-            SwooperVent = CustomOption.Create(243, Types.Impostor, "Can Vent", false, SwooperOn);
 
             VenererOn = CustomOption.Create(244, Types.Impostor, ColorString(Colors.Impostor, "Venerer"), 0f, 0f, 100f, 10f, null, true, format: "%");
             AbilityCooldown = CustomOption.Create(245, Types.Impostor, "Ability Cooldown", 25f, 10f, 60f, 2.5f, VenererOn, format: "s");

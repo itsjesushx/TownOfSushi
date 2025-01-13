@@ -5,6 +5,7 @@ namespace TownOfSushi.CustomOption
         public static int MaxRoleHistoryListSize = 100;
         public static int WerewolfOn => Mathf.RoundToInt(CustomOptionHolder.WerewolfOn.GetFloat());
         public static int JuggernautOn => Mathf.RoundToInt(CustomOptionHolder.JuggernautOn.GetFloat());
+        public static int DeputyOn => Mathf.RoundToInt(CustomOptionHolder.DeputyOn.GetFloat());
         public static int JesterOn => Mathf.RoundToInt(CustomOptionHolder.JesterOn.GetFloat());
         public static int FramerOn => Mathf.RoundToInt(CustomOptionHolder.FramerOn.GetFloat());
         public static int HunterOn => Mathf.RoundToInt(CustomOptionHolder.HunterOn.GetFloat());
@@ -116,7 +117,6 @@ namespace TownOfSushi.CustomOption
         public static float MineCd => CustomOptionHolder.MineCooldown.GetFloat();
         public static float SwoopCd => CustomOptionHolder.SwoopCooldown.GetFloat();
         public static float SwoopDuration => CustomOptionHolder.SwoopDuration.GetFloat();
-        public static bool SwooperVent => CustomOptionHolder.SwooperVent.GetBool();
         public static bool ImpostorSeeRoles => CustomOptionHolder.ImpostorSeeRoles.GetBool();
         public static bool FirstDeathShield => CustomOptionHolder.FirstDeathShield.GetBool();
         public static float DouseCd => CustomOptionHolder.DouseCooldown.GetFloat();
@@ -169,6 +169,7 @@ namespace TownOfSushi.CustomOption
         public static bool AssassinMultiKill => CustomOptionHolder.AssassinMultiKill.GetBool();
         public static float UnderdogKillBonus => CustomOptionHolder.UnderdogKillBonus.GetFloat();
         public static bool UnderdogIncreasedKC => CustomOptionHolder.UnderdogIncreasedKC.GetBool();
+        public static int DeputyKills => Mathf.RoundToInt(CustomOptionHolder.DeputyKills.GetFloat());
         public static bool VigilanteGuessNeutralBenign => CustomOptionHolder.VigilanteGuessNeutralBenign.GetBool();
         public static bool VigilanteGuessNeutralEvil => CustomOptionHolder.VigilanteGuessNeutralEvil.GetBool();
         public static bool VigilanteGuessNeutralKilling => CustomOptionHolder.VigilanteGuessNeutralKilling.GetBool();

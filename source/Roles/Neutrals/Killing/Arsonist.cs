@@ -121,13 +121,17 @@
                 role.IgniteButton.gameObject.SetActive(false);
             }
 
-            foreach (var playerId in role.DousedPlayers)
+            foreach (var player1 in role.DousedPlayers)
             {
-                var player = PlayerById(playerId);
+                var player = PlayerById(player1);
                 var data = player?.Data;
                 if (data == null || data.Disconnected || data.IsDead || PlayerControl.LocalPlayer.Data.IsDead)
                     continue;
-                player.nameText().text += "<color=#FF4D00FF> [♨]</color>";
+                var nameText = player.nameText();
+                if (nameText != null)
+                {
+                    nameText.text += "<color=#FF4D00FF> [♨]</color>";
+                }
             }
 
             role.IgniteButton.graphic.sprite = IgniteSprite;
@@ -219,7 +223,11 @@
                     if (!role.DousedPlayers.Contains(role.ClosestPlayerIgnite.PlayerId)) return false;
 
                     var interact2 = Interact(PlayerControl.LocalPlayer, role.ClosestPlayerIgnite);
-                    if (interact2[3] == true) role.Ignite();
+                    if (interact2[3] == true) 
+                    {
+                        role.Ignite();
+                        GameHistory.CreateDeathReason(role.ClosestPlayerIgnite, CustomDeathReason.Arson, role.Player);
+                    }
                     if (interact2[0] == true)
                     {
                         role.LastDoused = DateTime.UtcNow;

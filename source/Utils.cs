@@ -731,6 +731,9 @@ namespace TownOfSushi
 
                 }
 
+                PlayerHistory deadPlayer = new PlayerHistory(target, DateTime.UtcNow, CustomDeathReason.Kill, killer);
+                GameHistory.deadPlayers.Add(deadPlayer);
+
                 if (killer == PlayerControl.LocalPlayer)
                     SoundManager.Instance.PlaySound(PlayerControl.LocalPlayer.KillSfx, false, 0.8f);
 
@@ -816,17 +819,6 @@ namespace TownOfSushi
                     killer.MyPhysics.StartCoroutine(killer.KillAnimations.Random().CoPerformKill(killer, target));
                 }
                 else killer.MyPhysics.StartCoroutine(killer.KillAnimations.Random().CoPerformKill(target, target));
-
-
-
-                if (killer != target)
-                {
-                    targetRole.KilledBy = " By " + ColorString(killerRole.Color, killerRole.PlayerName);
-                    targetRole.DeathReason = DeathReasonEnum.Killed;
-                }
-                else
-                    targetRole.DeathReason = DeathReasonEnum.Suicide;
-
 
                 if (target.Is(ModifierEnum.Frosty))
                 {
@@ -1197,42 +1189,56 @@ namespace TownOfSushi
             return null;
         }
         
-        public static string DeathReason(this PlayerControl player)
+        public static string GetDeadInfo(this PlayerControl p) 
         {
-            if (player == null)
-                return "";
+            string result = "";
+            // Death Reason on Ghosts
+            if (p.Data.IsDead) 
+            {
+                string text = "";
+                var player = GameHistory.deadPlayers.FirstOrDefault(x => x.player.PlayerId == p.PlayerId);
             
-            var role = GetPlayerRole(player);
+            Color ColorOfKiller = new();
+            if (player != null && player.GetKiller != null) 
+            {
+                ColorOfKiller = GetPlayerRole(player.GetKiller).Color;
+            }
 
-            if (role == null)
-                return " ERROR";
-
-            var reason = "";
-            var killedBy = "";
-            var result = "";
-
-            if (role.DeathReason == DeathReasonEnum.Killed)
-                reason = "Killed";
-            else if (role.DeathReason == DeathReasonEnum.Ejected)
-                reason = "Voted Out";
-            else if (role.DeathReason == DeathReasonEnum.Guessed)
-                reason = "Guessed";
-            else if (role.DeathReason == DeathReasonEnum.Alive)
-                reason = "Alive";
-            else if (role.DeathReason == DeathReasonEnum.Executed)
-                reason = "Executed";
-            else if (role.DeathReason == DeathReasonEnum.Cursed)
-                reason = "Cursed";
-            else if (role.DeathReason == DeathReasonEnum.Suicide)
-                reason = "Suicide";
-            
-            if (role.DeathReason != DeathReasonEnum.Alive  && role.DeathReason != DeathReasonEnum.Ejected && role.DeathReason != DeathReasonEnum.Suicide)
-                killedBy = role.KilledBy;
-            
-            result = reason + killedBy;
-
+            if (player != null) 
+            {
+                switch (player.Reason) 
+                {
+                    case CustomDeathReason.Disconnect:
+                        text = "Disconnected";
+                        break;
+                    case CustomDeathReason.Exile:
+                        text = "Voted out";
+                        break;
+                            
+                    case CustomDeathReason.Kill:
+                        text = $"killed by {ColorString(ColorOfKiller, player.GetKiller.Data.PlayerName)}";
+                        break;
+                            
+                    case CustomDeathReason.Guess:
+                        text = $"Guessed by {ColorString(ColorOfKiller, player.GetKiller.Data.PlayerName)}";
+                        break;
+                            
+                    case CustomDeathReason.Executed:
+                        text = $"Executed by {ColorString(ColorOfKiller, player.GetKiller.Data.PlayerName)}";
+                        break;
+                    case CustomDeathReason.WitchExile:
+                        text = $"{ColorString(Color.red, "Cursed")} by {ColorString(Color.red, player.GetKiller.Data.PlayerName)}";
+                        break;
+                    case CustomDeathReason.Arson:
+                        text = $"Ignited by {ColorString(Colors.Arsonist, player.GetKiller.Data.PlayerName)}";
+                        break;
+                    }
+                    result = text;
+                }
+            }
             return result;
         }
+
 
         public static void AddToRoleOutro(EndGameManager instance, RoleEnum roleType, string winText, Func<Role, bool> winCondition)
         {
@@ -1283,6 +1289,11 @@ namespace TownOfSushi
             {
                 var jailor = GetRole<Jailor>(player);
                 if (jailor.Executes > 0) return true;
+            }
+            else if (player.Is(RoleEnum.Deputy))
+            {
+                var Deputy = GetRole<Deputy>(player);
+                if (Deputy.RemainingKills > 0) return true;
             }
             else if (player.Is(RoleEnum.Veteran))
             {

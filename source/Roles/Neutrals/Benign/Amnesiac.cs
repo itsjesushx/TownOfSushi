@@ -17,7 +17,7 @@ namespace TownOfSushi.Roles
             RoleEnum.Agent, RoleEnum.Hitman, RoleEnum.Miner, RoleEnum.Morphling, RoleEnum.Glitch, RoleEnum.Blackmailer, RoleEnum.Juggernaut,
             RoleEnum.Swapper, RoleEnum.Amnesiac, RoleEnum.GuardianAngel, RoleEnum.Undertaker, RoleEnum.Werewolf, RoleEnum.SerialKiller, RoleEnum.Arsonist,
             RoleEnum.Grenadier, RoleEnum.Crewmate, RoleEnum.Impostor, RoleEnum.Vampire, RoleEnum.Bomber, RoleEnum.Plaguebearer, RoleEnum.Pestilence, RoleEnum.Romantic, RoleEnum.Swooper,
-            RoleEnum.Venerer, RoleEnum.Janitor, RoleEnum.Escapist, RoleEnum.Doomsayer, RoleEnum.Framer, RoleEnum.Seer
+            RoleEnum.Venerer, RoleEnum.Janitor, RoleEnum.Deputy, RoleEnum.Escapist, RoleEnum.Doomsayer, RoleEnum.Framer, RoleEnum.Seer
         };
         public Amnesiac(PlayerControl player) : base(player)
         {
@@ -247,6 +247,7 @@ namespace TownOfSushi.Roles
                 case RoleEnum.Crewmate:
                 case RoleEnum.Seer:
                 case RoleEnum.Tracker:
+                case RoleEnum.Deputy:
                 case RoleEnum.Medium:
                 case RoleEnum.Mystic:
                 case RoleEnum.Swapper:
@@ -418,6 +419,14 @@ namespace TownOfSushi.Roles
                 jailorRole.Jailed = null;
                 jailorRole.Executes = CustomGameOptions.MaxExecutes;
                 jailorRole.CanJail = true;
+            }
+
+            else if (role == RoleEnum.Deputy)
+            {
+                var Deputy = GetRole<Deputy>(PlayerControl.LocalPlayer);
+                Deputy.ExecuteButton.Destroy();
+                Deputy.HasExectutedAlready = false;
+                Deputy.RemainingKills = CustomGameOptions.DeputyKills;
             }
 
             else if (role == RoleEnum.Vigilante)
@@ -663,14 +672,14 @@ namespace TownOfSushi.Roles
                 DestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(false);
             }
 
-            var killsList = (newRole.Kills, newRole.CorrectKills, newRole.CorrectAssassinKills, newRole.IncorrectAssassinKills);
+            var killsList = (newRole.Kills, newRole.CorrectKills,  newRole.CorrectDeputyShot, newRole.CorrectShot, newRole.IncorrectShots, newRole.CorrectVigilanteShot, newRole.CorrectAssassinKills, newRole.IncorrectAssassinKills);
             var otherRole = GetPlayerRole(other);
-            newRole.Kills = otherRole.Kills;
-            newRole.CorrectKills = otherRole.CorrectKills;
-            newRole.CorrectAssassinKills = otherRole.CorrectAssassinKills;
-            newRole.IncorrectAssassinKills = otherRole.IncorrectAssassinKills;
             otherRole.Kills = killsList.Kills;
+            otherRole.CorrectVigilanteShot = killsList.CorrectVigilanteShot;
             otherRole.CorrectKills = killsList.CorrectKills;
+            otherRole.IncorrectShots = killsList.IncorrectShots;
+            otherRole.CorrectShot = killsList.CorrectShot;
+            otherRole.CorrectDeputyShot = killsList.CorrectDeputyShot;
             otherRole.CorrectAssassinKills = killsList.CorrectAssassinKills;
             otherRole.IncorrectAssassinKills = killsList.IncorrectAssassinKills;
         }

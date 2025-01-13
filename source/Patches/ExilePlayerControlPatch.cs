@@ -4,15 +4,8 @@ namespace TownOfSushi.Patches
     [HarmonyPriority(Priority.First)]
     class ExileController2
     {
-        public static NetworkedPlayerInfo lastExiled;
-        public static void Prefix(ExileController __instance, [HarmonyArgument(0)]ref NetworkedPlayerInfo exiled)
+        public static void Prefix()
         {
-            lastExiled = exiled;
-
-            var exiled2 = exiled.Object;
-            var role = GetPlayerRole(exiled2);
-            role.DeathReason = DeathReasonEnum.Ejected;
-
             var witches = AllRoles.Where(x => x.RoleType == RoleEnum.Witch && x.Player != null).Cast<Witch>();
             foreach (var roles in witches)
             {
@@ -21,24 +14,25 @@ namespace TownOfSushi.Patches
                     var spelledPlayer = PlayerById(spelledId);
                     if (spelledPlayer != null && !spelledPlayer.Data.IsDead)
                     {
-                        RpcMurderPlayer(spelledPlayer, spelledPlayer);
-                        role.Kills++;
-
-                        var role2 = GetPlayerRole(spelledPlayer);
-                        role2.DeathReason = DeathReasonEnum.Cursed;
-                        if (role2 != null)
-                        {
-                            role2.KilledBy = " By " + ColorString(Colors.Impostor, role.Player.name);            
-                        }
+                        spelledPlayer.Exiled();
+                        roles.Kills++;
+                        GameHistory.CreateDeathReason(spelledPlayer, CustomDeathReason.WitchExile, roles.Player);
                     }
                 }
             }
 
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Seer)) return;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return;
-            var seer = GetRole<Seer>(PlayerControl.LocalPlayer);
-            seer.HasInvested1 = false;
-            seer.HasInvested2 = false;
+            var seer = AllRoles.Where(x => x.RoleType == RoleEnum.Seer  && !x.Player.Data.IsDead && x.Player != null).Cast<Seer>();
+            foreach (var roles2 in seer)
+            {
+                roles2.HasInvested1 = false;
+                roles2.HasInvested2 = false;
+            }
+
+            var deputy = AllRoles.Where(x => x.RoleType == RoleEnum.Deputy && !x.Player.Data.IsDead && x.Player != null).Cast<Deputy>();
+            foreach (var roles3 in deputy)
+            {
+                roles3.HasExectutedAlready = false;
+            }
         }
     }
 
@@ -50,6 +44,15 @@ namespace TownOfSushi.Patches
         public static void Prefix(ExileController __instance)
         {
             lastExiled = __instance;
+        }
+    }
+    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Exiled))]
+    public static class ExilePlayerPatch
+    {
+        public static void Postfix(PlayerControl __instance)
+        {
+            PlayerHistory deadPlayer = new PlayerHistory(__instance, DateTime.UtcNow, CustomDeathReason.Exile, null);
+            GameHistory.deadPlayers.Add(deadPlayer);
         }
     }
 

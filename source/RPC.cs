@@ -456,6 +456,22 @@ namespace TownOfSushi
                                 break;
                         }
                         break;
+                    case CustomRPC.ExecuteDeputyKill:    
+                        var deputy = PlayerById(reader.ReadByte());    
+                        var targetPlayerId = reader.ReadByte(); // Read the specific target's PlayerId    
+                        var deputyRole = GetRole<Deputy>(deputy);    
+                        var targetPlayer2 = PlayerById(targetPlayerId);    
+                        if (targetPlayer2.Is(Faction.Crewmates))    
+                        {
+                            deputyRole.IncorrectShots += 1;
+                            deputyRole.RemainingKills = 0;
+                        }
+                        else
+                        {
+                           deputyRole.CorrectDeputyShot += 1;
+                        }
+                        AddExecuteButtons.ExecuteKill(deputyRole, targetPlayer2);
+                        break;
                     case CustomRPC.Start:
                         readByte = reader.ReadByte();
                         ShowRoundOneShield.FirstRoundShielded = readByte == byte.MaxValue ? null : PlayerById(readByte);
@@ -1044,6 +1060,9 @@ namespace TownOfSushi
                     
                     if (CustomGameOptions.JailorOn > 0)
                         CrewmateRoles.Add((typeof(Jailor), CustomGameOptions.JailorOn, true));
+
+                    if (CustomGameOptions.DeputyOn > 0)
+                        CrewmateRoles.Add((typeof(Deputy), CustomGameOptions.DeputyOn, true));
                     
                     if (CustomGameOptions.SwapperOn > 0)
                         CrewmateRoles.Add((typeof(Swapper), CustomGameOptions.SwapperOn, true));

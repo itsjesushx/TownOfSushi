@@ -253,7 +253,7 @@ namespace TownOfSushi.Roles
         {
             var vigi = GetRole<Vigilante>(vigilante);
             if (player == vigilante) vigi.IncorrectAssassinKills += 1;
-            else vigi.CorrectAssassinKills += 1;
+            else vigi.CorrectVigilanteShot += 1;
         }
         public static void MurderPlayer(
             Vigilante vigilanteP,
@@ -308,12 +308,7 @@ namespace TownOfSushi.Roles
             }
             player.Die(DeathReason.Kill, false);
             
-            var role2 = GetPlayerRole(player);
-            role2.DeathReason = DeathReasonEnum.Guessed;
-            if (role2 != null)
-            {
-                role2.KilledBy = " By " + ColorString(Colors.Vigilante, vigilantePlayer.name);
-            }
+            GameHistory.CreateDeathReason(player, CustomDeathReason.Guess, vigilantePlayer);
 
 
             var deadPlayer = new DeadPlayer
@@ -391,6 +386,12 @@ namespace TownOfSushi.Roles
                 var jailor = GetRole<Jailor>(PlayerControl.LocalPlayer);
                 jailor.ExecuteButton.Destroy();
                 jailor.UsesText.Destroy();
+            }
+
+            if (player.Is(RoleEnum.Deputy))
+            {
+                var Deputy = GetRole<Deputy>(PlayerControl.LocalPlayer);
+                Deputy.ExecuteButton.Destroy();
             }
 
             if (player.Is(RoleEnum.Imitator) && !player.Data.IsDead)

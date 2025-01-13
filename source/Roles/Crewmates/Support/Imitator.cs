@@ -232,7 +232,7 @@ namespace TownOfSushi.Roles
             }
             if (imitatorRole == RoleEnum.Crewmate) return;
             var role = GetPlayerRole(ImitatingPlayer);
-            var killsList = (role.Kills, role.CorrectKills,  role.CorrectShot, role.IncorrectShots, role.CorrectVigilanteShot, role.CorrectAssassinKills, role.IncorrectAssassinKills);
+            var killsList = (role.Kills, role.CorrectKills,  role.CorrectDeputyShot, role.CorrectShot, role.IncorrectShots, role.CorrectVigilanteShot, role.CorrectAssassinKills, role.IncorrectAssassinKills);
             RoleDictionary.Remove(ImitatingPlayer.PlayerId);
             if (imitatorRole == RoleEnum.Investigator) new Investigator(ImitatingPlayer);
             if (imitatorRole == RoleEnum.Mystic) new Mystic(ImitatingPlayer);
@@ -258,6 +258,7 @@ namespace TownOfSushi.Roles
             newRole.CorrectKills = killsList.CorrectKills;
             newRole.IncorrectShots = killsList.IncorrectShots;
             newRole.CorrectShot = killsList.CorrectShot;
+            newRole.CorrectDeputyShot = killsList.CorrectDeputyShot;
             newRole.CorrectAssassinKills = killsList.CorrectAssassinKills;
             newRole.IncorrectAssassinKills = killsList.IncorrectAssassinKills;
         }

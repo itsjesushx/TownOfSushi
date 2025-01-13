@@ -34,7 +34,7 @@ namespace TownOfSushi.Roles
         }
         private static IEnumerator CheckExecutionerWin(ExileController __instance)
         {
-            yield return new WaitForSeconds(7f);
+            yield return new WaitForSeconds(5f);
 
             var exiled = __instance.initData.networkedPlayer;
 

@@ -376,13 +376,8 @@ namespace TownOfSushi.Roles.Modifiers
             voteArea.Overlay.color = Color.white;
             voteArea.XMark.gameObject.SetActive(true);
             voteArea.XMark.transform.localScale = Vector3.one;
-
-            var role2 = GetPlayerRole(player);
-            role2.DeathReason = DeathReasonEnum.Guessed;
-            if (role2 != null)
-            {
-                role2.KilledBy = " By " + ColorString(Colors.Impostor, assassinPlayer.name);
-            }
+            
+            GameHistory.CreateDeathReason(player, CustomDeathReason.Guess, assassinPlayer);
 
             var meetingHud = MeetingHud.Instance;
             if (amOwner)
@@ -424,6 +419,13 @@ namespace TownOfSushi.Roles.Modifiers
                 jailor.ExecuteButton.Destroy();
                 jailor.UsesText.Destroy();
             }
+
+            if (player.Is(RoleEnum.Deputy))
+            {
+                var Deputy = GetRole<Deputy>(PlayerControl.LocalPlayer);
+                Deputy.ExecuteButton.Destroy();
+            }
+            
             if (AmongUsClient.Instance.AmHost) meetingHud.CheckForEndVoting();
 
             AddHauntPatch.AssassinatedPlayers.Add(player);
