@@ -19,6 +19,8 @@ namespace TownOfSushi
         public const string Id = "me.itsjesushx.townofsushi";
         public const string VersionString = "1.3.0";
         public static Version Version = Version.Parse(VersionString);
+        public static bool IsMCI => IL2CPPChainloader.Instance.Plugins.TryGetValue("dragonbreath.au.mci", out _);
+        public static bool MCILoaded => IsMCI && AmongUsClient.Instance.NetworkMode == NetworkModes.LocalGame;
         internal static BepInEx.Logging.ManualLogSource Logger;
         public Harmony Harmony { get; } = new Harmony(Id);
         public static int optionsPage = 2;

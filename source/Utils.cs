@@ -56,7 +56,6 @@ namespace TownOfSushi
             }
             return true;
         }
-        public static PlayerControl PlayerByVoteArea(PlayerVoteArea state) => PlayerById(state.TargetPlayerId);
 
         public interface IVisualAlteration
         {
@@ -1308,6 +1307,41 @@ namespace TownOfSushi
             }
 
             return flag;
+        }
+        public static void SetGameStarting() 
+        {
+            GameStartManagerPatch.GameStartManagerUpdatePatch.startingTimer = 5f;
+        }
+        public static void StopStart(byte playerId) 
+        {
+            if (AmongUsClient.Instance.AmHost && CustomGameOptions.AnyoneStopStart) 
+            {
+                GameStartManager.Instance.ResetStartState();
+                PlayerControl.LocalPlayer.RpcSendChat($"{PlayerById(playerId).Data.PlayerName} stopped the game start!");
+            }
+        }
+        public static void ShareGameVersion()
+        {
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.VersionHandshake, Hazel.SendOption.Reliable, -1);
+            writer.Write((byte)TownOfSushi.Version.Major);
+            writer.Write((byte)TownOfSushi.Version.Minor);
+            writer.Write((byte)TownOfSushi.Version.Build);
+            writer.Write(AmongUsClient.Instance.AmHost ? GameStartManagerPatch.timer : -1f);
+            writer.WritePacked(AmongUsClient.Instance.ClientId);
+            writer.Write((byte)(TownOfSushi.Version.Revision < 0 ? 0xFF : TownOfSushi.Version.Revision));
+            writer.Write(Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.ToByteArray());
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
+            VersionHandshake(TownOfSushi.Version.Major, TownOfSushi.Version.Minor, TownOfSushi.Version.Build, TownOfSushi.Version.Revision, Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId, AmongUsClient.Instance.ClientId);
+        }
+
+        public static void VersionHandshake(int major, int minor, int build, int revision, Guid guid, int clientId) 
+        {
+            System.Version ver;
+            if (revision < 0) 
+                ver = new System.Version(major, minor, build);
+            else 
+                ver = new System.Version(major, minor, build, revision);
+            GameStartManagerPatch.playerVersions[clientId] = new GameStartManagerPatch.PlayerVersion(ver, guid);
         }
 
         #region Submerged Utils

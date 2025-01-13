@@ -16,6 +16,7 @@ namespace TownOfSushi.Roles
             RoleAlignment = RoleAlignment.CrewInvest;
             Color = Colors.Detective;
             LastInvestigated = DateTime.UtcNow;
+            AddToRoleHistory(RoleType);
             RoleType = RoleEnum.Detective; 
         }
         public PlayerControl ClosestPlayer;

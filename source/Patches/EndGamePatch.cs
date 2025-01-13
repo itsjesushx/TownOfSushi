@@ -232,7 +232,7 @@ namespace TownOfSushi.Patches
 
                 var ImpostorsAlive = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(Faction.Impostors) && !x.Data.IsDead && !x.Data.Disconnected && !AddHauntPatch.AssassinatedPlayers.Contains(x)).ToList();
                 var AliveKillers = PlayerControl.AllPlayerControls.ToArray().Where(x => x.IsKillingRole() && !x.Data.IsDead && !x.Data.Disconnected && !AddHauntPatch.AssassinatedPlayers.Contains(x)).ToList();
-                var PassiveAlive = PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Is(Faction.Impostors) && !x.Is(RoleAlignment.NeutralKilling) && !x.Data.IsDead && !x.Data.Disconnected && !AddHauntPatch.AssassinatedPlayers.Contains(x)).ToList();
+                var PassiveAlive = PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected && !AddHauntPatch.AssassinatedPlayers.Contains(x)).ToList();
                 var CrewKillerAlive = PlayerControl.AllPlayerControls.ToArray().Where(x => x.IsCrewKiller() && !x.Data.IsDead && !x.Data.Disconnected && !AddHauntPatch.AssassinatedPlayers.Contains(x)).ToList();
                 var GlitchAlive = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(RoleEnum.Glitch) && !x.Data.IsDead && !x.Data.Disconnected && !AddHauntPatch.AssassinatedPlayers.Contains(x)).ToList();
                 var HitmanAlive = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(RoleEnum.Hitman) && !x.Data.IsDead && !x.Data.Disconnected && !AddHauntPatch.AssassinatedPlayers.Contains(x)).ToList();
@@ -245,7 +245,7 @@ namespace TownOfSushi.Patches
                 var VampiresAlive = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(RoleEnum.Vampire) && !x.Data.IsDead && !x.Data.Disconnected && !AddHauntPatch.AssassinatedPlayers.Contains(x)).ToList();
                 var AliveSerialKiller = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(RoleEnum.SerialKiller) && !x.Data.IsDead && !x.Data.Disconnected && !AddHauntPatch.AssassinatedPlayers.Contains(x)).ToList();
 
-                if (ImpostorsAlive.Count >= PassiveAlive.Count - ImpostorsAlive.Count && 
+                if (ImpostorsAlive.Count >= PassiveAlive.Count - ImpostorsAlive.Count &&
                     PlaguebearerAlive.Count == 0 &&
                     GlitchAlive.Count == 0 &&
                     PestilenceAlive.Count == 0 &&

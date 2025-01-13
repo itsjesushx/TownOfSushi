@@ -37,14 +37,16 @@ namespace TownOfSushi.Modules
             public JObject Request;
             public Version Version => Version.Parse(Tag);
 
-            public UpdateData(JObject data) {
+            public UpdateData(JObject data) 
+            {
                 Tag = data["tag_name"]?.ToString().TrimStart('v');
                 Content = data["body"]?.ToString();
                 TimeString = DateTime.FromBinary(((Il2CppSystem.DateTime)data["published_at"]).ToBinaryRaw()).ToString();
                 Request = data;
             }
 
-            public bool IsNewer(Version version) {
+            public bool IsNewer(Version version) 
+            {
                 if (!Version.TryParse(Tag, out var myVersion)) return false;
                 return myVersion.BaseVersion() > version.BaseVersion();
             }
@@ -113,7 +115,7 @@ namespace TownOfSushi.Modules
         {
             updateInProgress = true;
             var isSubmerged = TOUUpdate is null;
-            var updateName = isSubmerged ? "Submerged" : "Town Of Sushi";
+            var updateName = (isSubmerged ? "Submerged" : "Town Of Sushi");
 
             var popup = Instantiate(TwitchManager.Instance.TwitchPopup);
             popup.TextAreaTMP.fontSize *= 0.7f;
@@ -207,7 +209,8 @@ namespace TownOfSushi.Modules
             }
         }
 
-        private bool TryUpdateSubmergedInternally() {
+        private bool TryUpdateSubmergedInternally() 
+        {
             if (SubmergedUpdate == null) return false;
             try {
                 if (!SubmergedCompatibility.Loaded) return false;
@@ -223,7 +226,8 @@ namespace TownOfSushi.Modules
                 File.Delete(SubmergedCompatibility.Assembly.Location);
 
             }
-            catch (Exception e) {
+            catch (Exception e) 
+            {
                 TownOfSushi.Logger.LogError(e);
                 return false;
             }

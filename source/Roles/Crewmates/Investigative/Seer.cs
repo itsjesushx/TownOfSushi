@@ -13,6 +13,7 @@ namespace TownOfSushi.Roles
             LoreText = "Gifted with an extraordinary insight, the Seer can peer into the factions of their crewmates. Tasked with revealing the truth hidden in the shadows, they aim to bring light to deception and uncover the impostors among the crew. Beware, for the Seer's knowledge can make them a prime target for evildoers.";
             RoleAlignment = RoleAlignment.CrewInvest;
             Color = Colors.Seer;
+            AddToRoleHistory(RoleType);
             LastInvestigated = DateTime.UtcNow;
             RoleType = RoleEnum.Seer; 
         }

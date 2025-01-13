@@ -207,7 +207,7 @@ namespace TownOfSushi.Patches
                     writer.Write(exe.Player.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
 
-                    exe.ChangeRole(exe.Player);
+                    ExeTargetColor.ExecutionerChangeRole(exe.Player);
                 }
             }
 
@@ -234,7 +234,7 @@ namespace TownOfSushi.Patches
                     writer.Write(ga.Player.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
 
-                    ga.ChangeRole(ga.Player);
+                    GATargetColor.GuardianAngelChangeRole(ga.Player);
                 }
             }
 

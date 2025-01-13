@@ -39,10 +39,10 @@ namespace TownOfSushi.Patches
 
             if (
                 player.Is(RoleEnum.Engineer)
-                || (player.Is(Faction.Impostors) && !player.Is(RoleEnum.Undertaker) && !player.Is(RoleEnum.Swooper))
                 || (player.Is(RoleEnum.Swooper) && CustomGameOptions.SwooperVent)
-                || (player.Is(RoleEnum.Undertaker) && GetRole<Undertaker>(player).CurrentlyDragging == null)
                 || (player.Is(RoleEnum.Undertaker) && GetRole<Undertaker>(player).CurrentlyDragging != null && CustomGameOptions.UndertakerVentWithBody)
+                || (player.Is(RoleEnum.Undertaker) && GetRole<Undertaker>(player).CurrentlyDragging == null)
+                || (player.Is(Faction.Impostors) && !player.Is(RoleEnum.Undertaker) && !player.Is(RoleEnum.Swooper))
                 || (player.Is(RoleEnum.Hitman) && GetRole<Hitman>(player).CurrentlyDragging != null && CustomGameOptions.HitmanVentWithBody)
                 || (player.Is(RoleEnum.Glitch) && CustomGameOptions.GlitchVent)
                 || (player.Is(RoleEnum.Vulture) && CustomGameOptions.VultureVent)

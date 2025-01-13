@@ -25,7 +25,7 @@ namespace TownOfSushi.Roles
             RoleType = RoleEnum.Grenadier;
             Faction = Faction.Impostors;
 
-
+            AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.ImpSupport;
         }
 

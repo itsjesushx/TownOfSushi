@@ -20,7 +20,7 @@ namespace TownOfSushi.Roles
             LastConfessed = DateTime.UtcNow;
             Accuracy = CustomGameOptions.RevealAccuracy;
             Faction = Faction.Crewmates;
-
+            AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.CrewInvest;
             FirstMeetingDead = true;
             FirstMeetingDead = false;

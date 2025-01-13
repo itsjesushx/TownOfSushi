@@ -679,12 +679,10 @@ namespace TownOfSushi
                         else oracle.RevealedFaction = Faction.Impostors;
                         break;
                     case CustomRPC.ExecutionerToJester:
-                    var exec = GetRole<Executioner>(PlayerById(reader.ReadByte()));
-                        exec.ChangeRole(PlayerById(reader.ReadByte()));
+                        ExeTargetColor.ExecutionerChangeRole(PlayerById(reader.ReadByte()));
                         break;
                     case CustomRPC.GuardianAngelChangeRole:
-                    var ga2 = GetRole<GuardianAngel>(PlayerById(reader.ReadByte()));
-                        ga2.ChangeRole(PlayerById(reader.ReadByte()));
+                        GATargetColor.GuardianAngelChangeRole(PlayerById(reader.ReadByte()));
                         break;
                     case CustomRPC.RomanticChangeRole:
                         RomanticChangeRolePatch.RomanticChangeRole(PlayerById(reader.ReadByte()));
@@ -768,8 +766,8 @@ namespace TownOfSushi
                         if (PlayerControl.LocalPlayer.Data.IsImpostor()) Coroutines.Start(BombTeammate.BombShowTeammate(new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle())));
                         break;
                     case CustomRPC.GAProtect:
-                        var ga22 = PlayerById(reader.ReadByte());
-                        var ga2Role = GetRole<GuardianAngel>(ga22);
+                        var ga2 = PlayerById(reader.ReadByte());
+                        var ga2Role = GetRole<GuardianAngel>(ga2);
                         ga2Role.TimeRemaining = CustomGameOptions.ProtectDuration;
                         ga2Role.Protect();
                         break;
@@ -896,6 +894,33 @@ namespace TownOfSushi
                             if (hunter.StalkedPlayer == abilityUser) hunter.RpcCatchPlayer(abilityUser);
                         }
                         break;
+                    case CustomRPC.StopStart:
+                        StopStart(reader.ReadByte());
+                        break;
+                    case CustomRPC.SetGameStarting:
+                        SetGameStarting();
+                        break;
+                    case CustomRPC.VersionHandshake:
+                        byte major = reader.ReadByte();
+                        byte minor = reader.ReadByte();
+                        byte patch = reader.ReadByte();
+                        float timer = reader.ReadSingle();
+                        if (!AmongUsClient.Instance.AmHost && timer >= 0f) GameStartManagerPatch.timer = timer;
+                        int versionOwnerId = reader.ReadPackedInt32();
+                        byte revision = 0xFF;
+                        Guid guid;
+                        if (reader.Length - reader.Position >= 17) 
+                        { // enough bytes left to read
+                            revision = reader.ReadByte();
+                            // GUID
+                            byte[] gbytes = reader.ReadBytes(16);
+                            guid = new Guid(gbytes);
+                        }     
+                        else {
+                            guid = new Guid(new byte[16]);
+                        }
+                        VersionHandshake(major, minor, patch, revision == 0xFF ? -1 : revision, guid, versionOwnerId);
+                    break;
                     case CustomRPC.Retribution:
                         var hunter2 = GetRole<Hunter>(Utils.PlayerById(reader.ReadByte()));
                         var hunterLastVoted = PlayerById(reader.ReadByte());
@@ -1024,13 +1049,13 @@ namespace TownOfSushi
                         CrewmateRoles.Add((typeof(Swapper), CustomGameOptions.SwapperOn, true));
 
                     if (CustomGameOptions.DetectiveOn > 0)
-                        CrewmateRoles.Add((typeof(Detective), CustomGameOptions.DetectiveOn, true));
+                        CrewmateRoles.Add((typeof(Detective), CustomGameOptions.DetectiveOn, false));
 
                     if (CustomGameOptions.VeteranOn > 0)
                         CrewmateRoles.Add((typeof(Veteran), CustomGameOptions.VeteranOn, false));
 
                     if (CustomGameOptions.SeerOn > 0)
-                        CrewmateRoles.Add((typeof(Seer), CustomGameOptions.SeerOn, true));
+                        CrewmateRoles.Add((typeof(Seer), CustomGameOptions.SeerOn, false));
 
                     if (CustomGameOptions.TrackerOn > 0)
                         CrewmateRoles.Add((typeof(Tracker), CustomGameOptions.TrackerOn, false));

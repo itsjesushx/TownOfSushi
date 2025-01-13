@@ -380,6 +380,7 @@ namespace TownOfSushi.CustomOption
         public static CustomOption RandomMapLevelImpostor;
 
         public static CustomOption ColourblindComms;
+        public static CustomOption AnyoneStopStart;
         public static CustomOption ImpostorSeeRoles;
         public static CustomOption CamoCommsKillAnyone;
         public static CustomOption InitialCooldowns;
@@ -417,6 +418,7 @@ namespace TownOfSushi.CustomOption
             #region  General Mod Settings
             CamoCommsKillAnyone = CustomOption.Create(2, Types.General, "Kill Anyone During Camouflaged Comms", false, null, true, heading: "Custom Game Options");
             ColourblindComms = CustomOption.Create(3, Types.General, "Camouflaged Comms", false);
+            AnyoneStopStart = CustomOption.Create(3333, Types.General, "All Players Can Stop The Start", false);
             ImpostorSeeRoles = CustomOption.Create(4, Types.General, "Impostors Can See The Roles Of Their Team", false);
             InitialCooldowns = CustomOption.Create(5, Types.General, "Game Start Cooldowns", 10f, 10f, 30f, 2.5f, format: "s");
             ParallelMedScans = CustomOption.Create(6, Types.General, "Parallel Medbay Scans", false);

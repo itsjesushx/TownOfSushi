@@ -237,7 +237,7 @@ After the Seer reveals the faction of the two players, they can not try to chang
 ### Game Options
 | Name | Description | Type | Default |
 |----------|:-------------:|:------:|:------:|
-| Seer | The percentage probability of the Detective appearing | Percentage | 0% |
+| Seer | The percentage probability of the Seer appearing | Percentage | 0% |
 | Seer Cooldown | The Cooldown of the Seer's Reveal button | Time | 25s |
 -----------------------
 ## Tracker

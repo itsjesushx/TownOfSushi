@@ -11,13 +11,13 @@ namespace TownOfSushi.Roles
         public PlayerControl ToRemember = null;
         public List<RoleEnum> RolesToRemember = new List<RoleEnum>
         {
-            RoleEnum.Investigator, RoleEnum.Mystic, RoleEnum.Seer, RoleEnum.Undertaker, RoleEnum.Detective, RoleEnum.Tracker, RoleEnum.Vigilante, RoleEnum.Veteran,
+            RoleEnum.Investigator, RoleEnum.Mystic, RoleEnum.Detective, RoleEnum.Tracker, RoleEnum.Vigilante, RoleEnum.Veteran,
             RoleEnum.Engineer, RoleEnum.Medium, RoleEnum.Trapper, RoleEnum.Medic, RoleEnum.Vulture, RoleEnum.Oracle,
             RoleEnum.Hunter, RoleEnum.Jester, RoleEnum.Executioner, RoleEnum.Witch, RoleEnum.Warlock, RoleEnum.Jailor,
             RoleEnum.Agent, RoleEnum.Hitman, RoleEnum.Miner, RoleEnum.Morphling, RoleEnum.Glitch, RoleEnum.Blackmailer, RoleEnum.Juggernaut,
-            RoleEnum.Swapper, RoleEnum.Amnesiac, RoleEnum.GuardianAngel, RoleEnum.Werewolf, RoleEnum.SerialKiller, RoleEnum.Arsonist,
+            RoleEnum.Swapper, RoleEnum.Amnesiac, RoleEnum.GuardianAngel, RoleEnum.Undertaker, RoleEnum.Werewolf, RoleEnum.SerialKiller, RoleEnum.Arsonist,
             RoleEnum.Grenadier, RoleEnum.Crewmate, RoleEnum.Impostor, RoleEnum.Vampire, RoleEnum.Bomber, RoleEnum.Plaguebearer, RoleEnum.Pestilence, RoleEnum.Romantic, RoleEnum.Swooper,
-            RoleEnum.Venerer, RoleEnum.Janitor, RoleEnum.Escapist, RoleEnum.Doomsayer, RoleEnum.Framer
+            RoleEnum.Venerer, RoleEnum.Janitor, RoleEnum.Escapist, RoleEnum.Doomsayer, RoleEnum.Framer, RoleEnum.Seer
         };
         public Amnesiac(PlayerControl player) : base(player)
         {
@@ -241,14 +241,14 @@ namespace TownOfSushi.Roles
                 case RoleEnum.Engineer:
                 case RoleEnum.Investigator:
                 case RoleEnum.Medic:
-                case RoleEnum.Seer:
+                case RoleEnum.Detective:
                 case RoleEnum.Hunter:
                 case RoleEnum.Veteran:
                 case RoleEnum.Crewmate:
+                case RoleEnum.Seer:
                 case RoleEnum.Tracker:
                 case RoleEnum.Medium:
                 case RoleEnum.Mystic:
-                case RoleEnum.Detective:
                 case RoleEnum.Swapper:
                 case RoleEnum.Trapper:
                 case RoleEnum.Imitator:
@@ -355,7 +355,6 @@ namespace TownOfSushi.Roles
                             var assassin = new Assassin(amnesiac);
                             assassin.ReDoTaskText();
                         }
-                        if (other.Is(AbilityEnum.Assassin)) AbilityDictionary.Remove(other.PlayerId);
                     }
                 }
             }
@@ -480,17 +479,9 @@ namespace TownOfSushi.Roles
 
             else if (role == RoleEnum.Detective)
             {
-                var seerRole = GetRole<Detective>(amnesiac);
-                seerRole.Investigated.RemoveRange(0, seerRole.Investigated.Count);
-                seerRole.LastInvestigated = DateTime.UtcNow;
-            }
-
-            else if (role == RoleEnum.Seer)
-            {
-                var seerRole = GetRole<Seer>(amnesiac);
-                seerRole.Investigated = null;
-                seerRole.Investigated2 = null;
-                seerRole.LastInvestigated = DateTime.UtcNow;
+                var Detective = GetRole<Detective>(amnesiac);
+                Detective.Investigated.RemoveRange(0, Detective.Investigated.Count);
+                Detective.LastInvestigated = DateTime.UtcNow;
             }
 
             else if (role == RoleEnum.Oracle)
@@ -505,6 +496,14 @@ namespace TownOfSushi.Roles
                 var arsoRole = GetRole<Arsonist>(amnesiac);
                 arsoRole.DousedPlayers.RemoveRange(0, arsoRole.DousedPlayers.Count);
                 arsoRole.LastDoused = DateTime.UtcNow;
+            }
+
+            else if (role == RoleEnum.Seer)
+            {
+                var Seer = GetRole<Seer>(amnesiac);
+                Seer.Investigated = null;
+                Seer.Investigated2 = null;
+                Seer.LastInvestigated = DateTime.UtcNow;
             }
 
             else if (role == RoleEnum.GuardianAngel)

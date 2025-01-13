@@ -24,8 +24,7 @@ namespace TownOfSushi.Roles
             LastTracked = DateTime.UtcNow;
             RoleType = RoleEnum.Tracker;
             Faction = Faction.Crewmates;
-
-
+            AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.CrewInvest;
             MaxUses = CustomGameOptions.MaxTracks;
         }

@@ -20,7 +20,7 @@ namespace TownOfSushi.Roles
             RoleType = RoleEnum.Miner;  
             Faction = Faction.Impostors;
 
-
+            AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.ImpSupport;
         }
 

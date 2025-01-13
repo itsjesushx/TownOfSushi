@@ -30,7 +30,7 @@ namespace TownOfSushi.Roles
             Color = Colors.Vigilante;
             RoleType = RoleEnum.Vigilante;
             Faction = Faction.Crewmates;
-
+            AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.CrewKilling;
             RemainingKills = CustomGameOptions.VigilanteKills;
 

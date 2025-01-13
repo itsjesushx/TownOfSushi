@@ -110,6 +110,7 @@ namespace TownOfSushi.CustomOption
         public static float MorphlingCd => CustomOptionHolder.MorphlingCooldown.GetFloat();
         public static float MorphlingDuration => CustomOptionHolder.MorphlingDuration.GetFloat();
         public static bool ColourblindComms => CustomOptionHolder.ColourblindComms.GetBool();
+        public static bool AnyoneStopStart => CustomOptionHolder.AnyoneStopStart.GetBool();
         public static OnTargetDead OnTargetDead => (OnTargetDead)CustomOptionHolder.OnTargetDead.GetSelection();
         public static bool ExecutionerButton => CustomOptionHolder.ExecutionerButton.GetBool();
         public static float MineCd => CustomOptionHolder.MineCooldown.GetFloat();

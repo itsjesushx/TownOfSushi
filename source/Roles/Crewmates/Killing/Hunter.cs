@@ -15,7 +15,7 @@ namespace TownOfSushi.Roles
             LastKilled = DateTime.UtcNow;
             RoleAlignment = RoleAlignment.CrewKilling;
             RoleType = RoleEnum.Hunter;
-
+            AddToRoleHistory(RoleType);
             MaxUses = CustomGameOptions.HunterStalkUses;
         }
 
@@ -196,7 +196,7 @@ namespace TownOfSushi.Roles
                 var hunter = GetRole<Hunter>(player);
                 if (hunter.LastVoted != null && hunter.LastVoted != player && !hunter.LastVoted.Is(RoleEnum.Pestilence))
                 {
-                    foreach (var role in AllRoles.Where(x => x.RoleType == RoleEnum.Executioner))
+                    foreach (var role in Role.AllRoles.Where(x => x.RoleType == RoleEnum.Executioner))
                     {
                         var exe = (Executioner)role;
                         if (exe.target == player) return;

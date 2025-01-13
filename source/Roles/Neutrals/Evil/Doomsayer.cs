@@ -36,6 +36,7 @@ namespace TownOfSushi.Roles
                 if (CustomGameOptions.SwapperOn > 0) ColorMapping.Add("Swapper", Colors.Swapper);
                 // this will be gone for now 
                 //if (CustomGameOptions.JailorOn > 0) ColorMapping.Add("Jailor", Colors.Jailor);
+                if (CustomGameOptions.SeerOn > 0) ColorMapping.Add("Seer", Colors.Seer);
                 if (CustomGameOptions.MysticOn > 0) ColorMapping.Add("Mystic", Colors.Mystic);
                 if (CustomGameOptions.OracleOn > 0) ColorMapping.Add("Oracle", Colors.Oracle);
                 if (CustomGameOptions.DetectiveOn > 0) ColorMapping.Add("Detective", Colors.Detective);
@@ -462,7 +463,7 @@ namespace TownOfSushi.Roles
                   || player.Is(RoleEnum.Glitch))
                 return $"You observe that {player.GetDefaultOutfit().PlayerName} has an altered perception of reality";
             else if (player.Is(RoleEnum.Blackmailer) ||player.Is(RoleEnum.Witch)|| player.Is(RoleEnum.Doomsayer)
-                 || player.Is(RoleEnum.Oracle) || player.Is(RoleEnum.Trapper) || player.Is(RoleEnum.Agent))
+                 || player.Is(RoleEnum.Oracle) || player.Is(RoleEnum.Trapper) || player.Is(RoleEnum.Seer) || player.Is(RoleEnum.Agent))
                 return $"You observe that {player.GetDefaultOutfit().PlayerName} has an insight for private information";
             else if (player.Is(RoleEnum.Amnesiac) || player.Is(RoleEnum.Janitor)
                  || player.Is(RoleEnum.Medium) || player.Is(RoleEnum.Undertaker) ||player.Is(RoleEnum.Hitman) || player.Is(RoleEnum.Vulture) || player.Is(RoleEnum.Vampire))
@@ -496,8 +497,8 @@ namespace TownOfSushi.Roles
                 return "(" + ColorString(Colors.Imitator,"Imitator") + ", " + ColorString(Colors.Impostor,"Morphling") +", "+ ColorString(Colors.Mystic,"Mystic") + " or " + ColorString(Colors.Glitch,"Glitch") + ")";
             
             else if (player.Is(RoleEnum.Blackmailer)|| player.Is(RoleEnum.Doomsayer)
-                 || player.Is(RoleEnum.Oracle) || player.Is(RoleEnum.Witch)|| player.Is(RoleEnum.Trapper) || player.Is(RoleEnum.Agent))
-                return "(" + ColorString(Colors.Impostor,"Blackmailer") + ", " + ColorString(Colors.Agent,"Agent") + ", " + ColorString(Colors.Doomsayer,"Doomsayer") +", "+ ColorString(Colors.Oracle,"Oracle") + ", "+ ColorString(Colors.Impostor,"Witch ") + " or " + ColorString(Colors.Trapper, "Trapper") + ")";
+                 || player.Is(RoleEnum.Oracle) || player.Is(RoleEnum.Witch)|| player.Is(RoleEnum.Trapper) || player.Is(RoleEnum.Seer) || player.Is(RoleEnum.Agent))
+                return "(" + ColorString(Colors.Impostor,"Blackmailer") + ", " + ColorString(Colors.Agent,"Agent") + ", " + ColorString(Colors.Seer,"Seer") + ", " + ColorString(Colors.Doomsayer,"Doomsayer") +", "+ ColorString(Colors.Oracle,"Oracle") + ", "+ ColorString(Colors.Impostor,"Witch ") + " or " + ColorString(Colors.Trapper, "Trapper") + ")";
             
             else if (player.Is(RoleEnum.Amnesiac) || player.Is(RoleEnum.Janitor)
                  || player.Is(RoleEnum.Medium) || player.Is(RoleEnum.Undertaker) || player.Is(RoleEnum.Hitman) ||player.Is(RoleEnum.Vampire)|| player.Is(RoleEnum.Vulture) )
@@ -505,7 +506,7 @@ namespace TownOfSushi.Roles
             
             else if (player.Is(RoleEnum.Investigator) || player.Is(RoleEnum.Swooper) || player.Is(RoleEnum.Tracker)
                  || player.Is(RoleEnum.Venerer) || player.Is(RoleEnum.SerialKiller))
-                return "(" + ColorString(Colors.Investigator,"Investigator") + ", " + ColorString(Colors.Impostor,"Swooper") + ", " + ColorString(Colors.Tracker,"Tracker") + ", "+ ColorString(Colors.Impostor,"Venerer ") + " or " + ColorString(Colors.SerialKiller,"SerialKiller") + ")";
+                return "(" + ColorString(Colors.Investigator,"Investigator") + ", " + ColorString(Colors.Impostor,"Swooper") + ", " + ColorString(Colors.Tracker,"Tracker") + ", "+ ColorString(Colors.Impostor,"Venerer ") + " or " + ColorString(Colors.SerialKiller,"Serial Killer") + ")";
             
             else if (player.Is(RoleEnum.Arsonist) || player.Is(RoleEnum.Miner) || player.Is(RoleEnum.Plaguebearer)
                   ||player.Is(RoleEnum.Detective))

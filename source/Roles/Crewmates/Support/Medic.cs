@@ -18,7 +18,7 @@ namespace TownOfSushi.Roles
             RoleType = RoleEnum.Medic;
             Faction = Faction.Crewmates;
 
-
+            AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.CrewSupport;
             ShieldedPlayer = null;
             LightDarkColors.Add(0, "darker"); // Red

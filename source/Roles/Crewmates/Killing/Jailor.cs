@@ -24,7 +24,7 @@ namespace TownOfSushi.Roles
             LastJailed = DateTime.UtcNow;
             RoleAlignment = RoleAlignment.CrewKilling;
             RoleType = RoleEnum.Jailor;
-
+            AddToRoleHistory(RoleType);
             Executes = CustomGameOptions.MaxExecutes;
             CanJail = true;
         }

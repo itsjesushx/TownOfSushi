@@ -18,7 +18,7 @@ namespace TownOfSushi.Roles
             RoleType = RoleEnum.Witch;
             Faction = Faction.Impostors;
 
-
+            AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.ImpPower;
         }
 
@@ -42,6 +42,7 @@ namespace TownOfSushi.Roles
             return (num - (float)timeSpan.TotalMilliseconds) / 1000f;
         }
     }
+
 
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]   
     public class HudCurse

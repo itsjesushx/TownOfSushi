@@ -125,7 +125,7 @@
             {
                 var player = PlayerById(playerId);
                 var data = player?.Data;
-                if (data == null || data.Disconnected || data.IsDead || PlayerControl.LocalPlayer.Data.IsDead || playerId == PlayerControl.LocalPlayer.PlayerId)
+                if (data == null || data.Disconnected || data.IsDead || PlayerControl.LocalPlayer.Data.IsDead)
                     continue;
                 player.nameText().text += "<color=#FF4D00FF> [♨]</color>";
             }

@@ -21,10 +21,9 @@ namespace TownOfSushi.Roles
             LoreText = "A stealthy and strategic expert, you specialize in setting traps to catch the killers in the act. As the Trapper, you can place traps around the map to catch unsuspecting players. Your keen sense of timing and knowledge of the environment make you a crucial asset in hunting down the Impostors hiding among the crew.";
             Color = Colors.Trapper;
             RoleType = RoleEnum.Trapper;
+            AddToRoleHistory(RoleType);
             LastTrapped = DateTime.UtcNow;
             Faction = Faction.Crewmates;
-
-
             RoleAlignment = RoleAlignment.CrewInvest;
             trappedPlayers = new List<RoleEnum>();
             MaxUses = CustomGameOptions.MaxTraps;

@@ -21,7 +21,7 @@ namespace TownOfSushi.Roles
             StartingCooldown = DateTime.UtcNow;
             RoleType = RoleEnum.Bomber;
             Faction = Faction.Impostors;
-
+            AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.ImpPower;
         }
         public KillButton PlantButton
