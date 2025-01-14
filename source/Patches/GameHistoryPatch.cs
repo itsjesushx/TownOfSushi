@@ -2,7 +2,6 @@ namespace TownOfSushi.Patches
 {
     public class PlayerHistory
     {
-
         public PlayerControl player;
         public DateTime timeOfDeath;
         public CustomDeathReason Reason;

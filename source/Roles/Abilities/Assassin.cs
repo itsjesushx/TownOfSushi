@@ -56,6 +56,7 @@ namespace TownOfSushi.Roles.Modifiers
             if (CustomGameOptions.MorphlingOn > 0 && !PlayerControl.LocalPlayer.Is(Faction.Impostors)) ColorMapping.Add("Morphling", Colors.Impostor);
             if (CustomGameOptions.MinerOn > 0 && !PlayerControl.LocalPlayer.Is(Faction.Impostors)) ColorMapping.Add("Miner", Colors.Impostor);
             if (CustomGameOptions.SwooperOn > 0 && !PlayerControl.LocalPlayer.Is(Faction.Impostors)) ColorMapping.Add("Swooper", Colors.Impostor);
+            if (CustomGameOptions.PoisonerOn > 0 && !PlayerControl.LocalPlayer.Is(Faction.Impostors)) ColorMapping.Add("Poisoner", Colors.Impostor);
             if (CustomGameOptions.VenererOn > 0 && !PlayerControl.LocalPlayer.Is(Faction.Impostors)) ColorMapping.Add("Venerer", Colors.Impostor);
             if (CustomGameOptions.UndertakerOn > 0 && !PlayerControl.LocalPlayer.Is(Faction.Impostors)) ColorMapping.Add("Undertaker", Colors.Impostor);
             if (CustomGameOptions.WarlockOn > 0 && !PlayerControl.LocalPlayer.Is(Faction.Impostors)) ColorMapping.Add("Warlock", Colors.Impostor);

@@ -26,21 +26,12 @@ namespace TownOfSushi.Patches
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnGameEnd))]
     public class OnGameEndPatch 
     {
-        public static GameOverReason GameOverReason;
-        public static void Prefix(AmongUsClient __instance, [HarmonyArgument(0)]ref EndGameResult endGameResult) 
-        {
-            GameOverReason = endGameResult.GameOverReason;
-            if ((int)endGameResult.GameOverReason >= 10) endGameResult.GameOverReason = GameOverReason.ImpostorByKill;
-            // Reset zoomed out ghosts
-            ToggleZoom(reset: true);
-        }
-
         public static void Postfix()
         {
+            // Reset zoomed out ghosts
+            ToggleZoom(reset: true);
             AdditionalTempData.GameSummaryText.Clear();
             const string endString = "</color>";
-
-            //There's a better way of doing this e.g. switch statement or dictionary. But this works for now.
             foreach (var playerControl in PlayerControl.AllPlayerControls)
             {
                 //foreach (var role in RoleHistory.Where(x => x.Key == playerControl.PlayerId))
@@ -54,7 +45,7 @@ namespace TownOfSushi.Patches
 
                 if (info[0] != null)
                 {
-                    SummaryText += $"{role.ColorString}{role.Name}</color>";
+                    SummaryText += $"{role.ColorString}{role.Name}{endString}";
                 }
 
                 if (modifier?.ModifierType != null)
@@ -63,7 +54,6 @@ namespace TownOfSushi.Patches
                 if (ability?.AbilityType != null)
                     SummaryText += $" [{ability?.ColorString}{ability?.Name}{endString}]";
                     
-                var hasReason = false;
                 if (playerControl.IsShielded())
                 {
                     SummaryText += $" | {ColorString(Colors.Medic, $"[<b>+</b>]")}";
@@ -86,7 +76,7 @@ namespace TownOfSushi.Patches
                 }
                 if (playerControl.IsSpelled())
                 {
-                    SummaryText += ColorString(Colors.Impostor, $" | [†]");
+                    SummaryText += $" | {ColorString(Colors.Impostor, $"[†]")}";
                 }
                 if (playerControl.Is(RoleEnum.Vulture) && !VultureWin)
                 {
@@ -115,8 +105,7 @@ namespace TownOfSushi.Patches
                 }
                 if (player.IncorrectAssassinKills > 0)
                 {
-                    SummaryText  += $" | {ColorString(Color.green, $"Failed Guess: {player.IncorrectAssassinKills}")}";
-                    hasReason = true;
+                    SummaryText  += $" | {ColorString(Color.green, $"Failed Guess")}";
                 }
                 if (player.CorrectVigilanteShot > 0)
                 {
@@ -129,13 +118,12 @@ namespace TownOfSushi.Patches
                 if (player.Misfired)
                 {
                     SummaryText += $" | {ColorString(Color.red, $"Misfired")}";
-                    hasReason = true;
                 }
                 if (player.CorrectKills > 0)
                 {
                     SummaryText += $" | {ColorString(Color.green, $"Correct Kills: {player.CorrectKills}")}";
                 }
-                if (!hasReason)
+                if (playerControl.Data.IsDead) 
                 {
                     SummaryText += $" | {playerControl.GetDeadInfo()}";
                 }

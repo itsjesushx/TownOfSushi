@@ -282,6 +282,13 @@ namespace TownOfSushi.Patches
                 jailor.LastJailed = jailor.LastJailed.AddSeconds(CustomGameOptions.InitialCooldowns - CustomGameOptions.JailCd);
             }
 
+            if (PlayerControl.LocalPlayer.Is(RoleEnum.Poisoner))
+            {
+                var Poisoner = GetRole<Poisoner>(PlayerControl.LocalPlayer);
+                Poisoner.LastPoisoned = DateTime.UtcNow;
+                Poisoner.LastPoisoned = Poisoner.LastPoisoned.AddSeconds(CustomGameOptions.InitialCooldowns - CustomGameOptions.PoisonCd);
+            }
+
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Vampire))
             {
                 var vamp = GetRole<Vampire>(PlayerControl.LocalPlayer);

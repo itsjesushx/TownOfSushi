@@ -13,6 +13,7 @@ namespace TownOfSushi
         Executioner,
         Glitch,
         Arsonist,
+        Posioner,
         Jailor,
         Hunter,
         Swapper,
@@ -21,6 +22,7 @@ namespace TownOfSushi
         Veteran,
         Amnesiac,
         Juggernaut,
+        Poisoner,
         Tracker,
         Framer,
         Medium,
@@ -160,6 +162,8 @@ namespace TownOfSushi
         HitmanDrag,
         ShareOptions,
         HitmanDrop,
+        Poison,
+        PoisonKill,
         AssassinKill,
         DeputyKill,
         VigilanteKill,
@@ -211,11 +215,14 @@ namespace TownOfSushi
     public enum CustomDeathReason 
     {
         Exile,
+        Poisoned,
         Kill,
         Disconnect,
         Guess,
         WitchExile,
+        Bombed,
         Executed,
+        ExecutedByDeputy,
         Arson,
     }
     public enum DisableSkipButtonMeetings

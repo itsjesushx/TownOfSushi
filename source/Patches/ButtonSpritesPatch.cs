@@ -143,7 +143,7 @@
             {
                 __instance.ImpostorVentButton.transform.localPosition = new Vector3(-2f, 0f, 0f);
             }
-            else if (PlayerControl.LocalPlayer.Is(RoleEnum.SerialKiller))
+            else if (PlayerControl.LocalPlayer.Is(RoleEnum.SerialKiller)  || PlayerControl.LocalPlayer.Is(RoleEnum.Poisoner))
             {
                 __instance.ImpostorVentButton.transform.localPosition = new Vector3(-1f, 1f, 0f);
             }

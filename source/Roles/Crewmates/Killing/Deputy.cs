@@ -179,7 +179,7 @@ namespace TownOfSushi.Roles
             }
             player.Die(DeathReason.Kill, false);
 
-            GameHistory.CreateDeathReason(player, CustomDeathReason.Executed, deputy.Player);
+            GameHistory.CreateDeathReason(player, CustomDeathReason.ExecutedByDeputy, deputy.Player);
 
             var deadPlayer = new DeadPlayer
             {
@@ -240,9 +240,9 @@ namespace TownOfSushi.Roles
         }
 
         public static void Postfix(MeetingHud __instance)
-        {    
+        {
             if (PlayerControl.LocalPlayer.Data.IsDead || !PlayerControl.LocalPlayer.Is(RoleEnum.Deputy)) return;    
-            var depRole = GetRole<Deputy>(PlayerControl.LocalPlayer);    
+            var depRole = GetRole<Deputy>(PlayerControl.LocalPlayer);
             if (depRole.RemainingKills <= 0) return;
             
             for (int i = 0; i < __instance.playerStates.Length; i++)    

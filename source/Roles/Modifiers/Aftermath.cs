@@ -1,4 +1,3 @@
-
 using System.Collections;
 
 namespace TownOfSushi.Roles.Modifiers
@@ -28,10 +27,10 @@ namespace TownOfSushi.Roles.Modifiers
                 {
                 }
             }
-            Coroutines.Start(delay(player, corpse, db));
+            Coroutines.Start(Delay(player, corpse, db));
         }
 
-        private static IEnumerator delay(PlayerControl player, PlayerControl corpse, DeadBody db)
+        private static IEnumerator Delay(PlayerControl player, PlayerControl corpse, DeadBody db)
         {
             yield return new WaitForSecondsRealtime(0.2f);
             var role = GetPlayerRole(player);
@@ -62,6 +61,20 @@ namespace TownOfSushi.Roles.Modifiers
                     escapist.LastEscape = DateTime.UtcNow;
                     Escapist.Escape(escapist.Player);
                 }
+            }
+            else if (role is Poisoner poisoner)
+            {
+                try
+                {
+                    poisoner.PoisonedPlayer = poisoner.Player;
+                    poisoner.PoisonButton.graphic.sprite = TownOfSushi.PoisonSprite;
+                    if (poisoner.PoisonedPlayer != null && poisoner.PoisonedPlayer == PlayerControl.LocalPlayer)
+                    {
+                        poisoner.Poison();
+                    }
+                    poisoner.PoisonedPlayer = PlayerControl.LocalPlayer; //Only do this to stop repeatedly trying to re-kill poisoned player. null didn't work for some reason
+                }
+                catch{}
             }
             else if (role is Grenadier grenadier)
             {

@@ -472,6 +472,17 @@ namespace TownOfSushi
                         }
                         AddExecuteButtons.ExecuteKill(deputyRole, targetPlayer2);
                         break;
+                    case CustomRPC.Poison:
+                        var poisoner = PlayerById(reader.ReadByte());
+                        var poisoned = PlayerById(reader.ReadByte());
+                        var poisonerRole = GetRole<Poisoner>(poisoner);
+                        poisonerRole.PoisonedPlayer = poisoned;
+                        break;
+                    case CustomRPC.PoisonKill:
+                        var poisoner1 = PlayerById(reader.ReadByte());
+                        var poisonerRole1 = GetRole<Poisoner>(poisoner1);
+                        poisonerRole1.PoisonKill();
+                        break;
                     case CustomRPC.Start:
                         readByte = reader.ReadByte();
                         ShowRoundOneShield.FirstRoundShielded = readByte == byte.MaxValue ? null : PlayerById(readByte);
@@ -1046,6 +1057,7 @@ namespace TownOfSushi
                 if (CustomGameOptions.GameMode == GameMode.Classic || CustomGameOptions.GameMode == GameMode.AllAny)
                 {
                     #region Crewmate Roles
+                    
                     if (CustomGameOptions.VigilanteOn > 0)
                         CrewmateRoles.Add((typeof(Vigilante), CustomGameOptions.VigilanteOn, false));
                     
@@ -1098,6 +1110,7 @@ namespace TownOfSushi
                         CrewmateRoles.Add((typeof(Oracle), CustomGameOptions.OracleOn, true));
 
                     #endregion
+
                     #region Neutral Roles
                     if (CustomGameOptions.JesterOn > 0)
                         NeutralEvilRoles.Add((typeof(Jester), CustomGameOptions.JesterOn, false));
@@ -1151,7 +1164,9 @@ namespace TownOfSushi
                         NeutralKillingRoles.Add((typeof(Juggernaut), CustomGameOptions.JuggernautOn, false));
 
                     #endregion
+
                     #region Impostor Roles
+
                     if (CustomGameOptions.UndertakerOn > 0)
                         ImpostorRoles.Add((typeof(Undertaker), CustomGameOptions.UndertakerOn, false));
 
@@ -1163,6 +1178,9 @@ namespace TownOfSushi
 
                     if (CustomGameOptions.MinerOn > 0 && !MiraHQMap())
                         ImpostorRoles.Add((typeof(Miner), CustomGameOptions.MinerOn, true));
+                    
+                    if (CustomGameOptions.PoisonerOn > 0)
+                        ImpostorRoles.Add((typeof(Poisoner), CustomGameOptions.PoisonerOn, true));
 
                     if (CustomGameOptions.SwooperOn > 0 && !FungleMap())
                         ImpostorRoles.Add((typeof(Swooper), CustomGameOptions.SwooperOn, false));
@@ -1187,7 +1205,9 @@ namespace TownOfSushi
 
                     if (CustomGameOptions.VenererOn > 0 && !FungleMap() && !CustomGameOptions.ColourblindComms)
                         ImpostorRoles.Add((typeof(Venerer), CustomGameOptions.VenererOn, true));
+
                     #endregion
+
                     #region Modifiers
                     
                     if (Check(CustomGameOptions.GiantOn))

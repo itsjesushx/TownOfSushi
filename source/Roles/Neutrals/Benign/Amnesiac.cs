@@ -17,7 +17,7 @@ namespace TownOfSushi.Roles
             RoleEnum.Agent, RoleEnum.Hitman, RoleEnum.Miner, RoleEnum.Morphling, RoleEnum.Glitch, RoleEnum.Blackmailer, RoleEnum.Juggernaut,
             RoleEnum.Swapper, RoleEnum.Amnesiac, RoleEnum.GuardianAngel, RoleEnum.Undertaker, RoleEnum.Werewolf, RoleEnum.SerialKiller, RoleEnum.Arsonist,
             RoleEnum.Grenadier, RoleEnum.Crewmate, RoleEnum.Impostor, RoleEnum.Vampire, RoleEnum.Bomber, RoleEnum.Plaguebearer, RoleEnum.Pestilence, RoleEnum.Romantic, RoleEnum.Swooper,
-            RoleEnum.Venerer, RoleEnum.Janitor, RoleEnum.Deputy, RoleEnum.Escapist, RoleEnum.Doomsayer, RoleEnum.Framer, RoleEnum.Seer
+            RoleEnum.Venerer, RoleEnum.Janitor, RoleEnum.Poisoner, RoleEnum.Deputy, RoleEnum.Escapist, RoleEnum.Doomsayer, RoleEnum.Framer, RoleEnum.Seer
         };
         public Amnesiac(PlayerControl player) : base(player)
         {
@@ -377,6 +377,20 @@ namespace TownOfSushi.Roles
                     AbilityDictionary.Remove(amnesiac.PlayerId);
                     var assassin = new Assassin(amnesiac);
                     assassin.ReDoTaskText();
+                }
+                if (amnesiac.Is(RoleEnum.Poisoner))
+                {
+                    if (PlayerControl.LocalPlayer == amnesiac)
+                    {
+                        var poisonerRole = GetRole<Poisoner>(amnesiac);
+                        poisonerRole.LastPoisoned = DateTime.UtcNow;
+                        DestroyableSingleton<HudManager>.Instance.KillButton.graphic.enabled = false;
+                    }
+                    else if (PlayerControl.LocalPlayer == other)
+                    {
+                        DestroyableSingleton<HudManager>.Instance.KillButton.enabled = true;
+                        DestroyableSingleton<HudManager>.Instance.KillButton.graphic.enabled = true;
+                    }
                 }
             }
 

@@ -150,6 +150,7 @@ namespace TownOfSushi.CustomOption
         public static float HitmanDragCd => CustomOptionHolder.HitmanDragCooldown.GetFloat();
         public static float HitmanDragSpeed => CustomOptionHolder.HitmanDragSpeed.GetFloat();
         public static float HitmanMorphCooldown => CustomOptionHolder.HitmanMorphCooldown.GetFloat();
+        public static int PoisonerOn => Mathf.RoundToInt(CustomOptionHolder.PoisonerOn.GetFloat());
         public static float HitmanMorphDuration => CustomOptionHolder.HitmanMorphDuration.GetFloat();
         public static float HitmanKCd => CustomOptionHolder.HitmanKillCooldown.GetFloat();
         public static float EatArrowDelay => CustomOptionHolder.EatArrowDelay.GetFloat();
@@ -231,6 +232,8 @@ namespace TownOfSushi.CustomOption
         public static float StabKillCd => CustomOptionHolder.StabKillCooldown.GetFloat();
         public static bool SerialKillerVent => CustomOptionHolder.SerialKillerVent.GetBool();
         public static float TrapCooldown => CustomOptionHolder.TrapCooldown.GetFloat();
+        public static float PoisonCd => CustomOptionHolder.PoisonCooldown.GetFloat();
+        public static float PoisonDelay => CustomOptionHolder.PoisonDelay.GetFloat();
         public static bool TrapsRemoveOnNewRound => CustomOptionHolder.TrapsRemoveOnNewRound.GetBool();
         public static int MaxTraps => Mathf.RoundToInt(CustomOptionHolder.MaxTraps.GetFloat());
         public static float DisperseCooldown => CustomOptionHolder.DisperseCooldown.GetFloat();

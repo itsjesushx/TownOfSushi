@@ -29,10 +29,10 @@
 |  [Undertaker](#undertaker) | [Imitator](#imitator) | [Romantic](#romantic) |  | [Sleuth](#sleuth) |
 |  [Bomber](#bomber)  | [Detective](#detective) | [Amnesiac](#amnesiac)| | [Tiebreaker](#tiebreaker) |
 |  [Witch](#witch)| [Tracker](#tracker) |  [Agent](#agent) | |
-| | [Swapper](#swapper)  | [Hitman](#hitman) |  |
+| [Poisoner](#poisoner) | [Swapper](#swapper)  | [Hitman](#hitman) |  |
 | | [Trapper](#trapper)   |[Glitch](#glitch) |  |
 | | [Seer](#seer) | [Serial Killer](#serial-killer) |  |
-| |  | [Juggernaut](#juggernaut)  |  |
+| | [Deputy](#deputy)  | [Juggernaut](#juggernaut)  |  |
 | | |[Plaguebearer](#plaguebearer) |  |
 
 -----------------------
@@ -287,6 +287,19 @@ When the Veteran is on alert, anyone, whether crew, neutral or impostor, if they
 | Alert Cooldown | The cooldown on the Veteran's alert button. | Time | 5s |
 | Alert Duration | The duration of the alert | Time | 25s |
 | Maximum Number of Alerts | The number of times the Veteran can alert throughout the game | Number | 3 |
+
+-----------------------
+## Deptuy
+### **Team: Crewmates**
+
+The Deptuy is a Crewmate that can shoot players during meetings.\
+If the Deptuy shoots a non-killing role, they cant shoot again, if they shoot a killing role, they can shoot again next meeting.\
+The Deptuy can only shoot once per meeting.
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Deptuy | The percentage probability of the Deptuy appearing | Percentage | 0% |
+| Maximum Number of Kills | The number of times the Deptuy can shoot | Number | 3 |
 
 -----------------------
 ## Vigilante
@@ -874,6 +887,20 @@ These vents only connect to each other, forming a new passway.
 | Mine Cooldown | The cooldown of the Miner's Mine button | Time | 25s |
 
 -----------------------
+## Poisoner
+### **Team: Impostors**
+
+The Poisoner is an Impostor who has to poison another play instead of kill.\
+When they poison a player, the poisoned player dies either upon the start of the next meeting or after a set duration.
+
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Poisoner | The percentage probability of the Poisoner appearing | Percentage | 0% |
+| Poison Cooldown | The cooldown of the Poisoner's Poison button | Time | 25s |
+| Poison Delay | The delay of the kill after being poisoned | Time | 5s |
+
+-----------------------
 ## Undertaker
 ### **Team: Impostors**
 
@@ -1001,7 +1028,7 @@ If they voted another player, they will get voted out.
 Modifiers are added on top of players' roles.
 ## Aftermath
 ### **Applied to: Crewmates**
-Killing the Aftermath All their killer to use their ability (if they have one and it's not in use).
+Killing the Aftermath All their killer to use their ability. If the Poisoner kills the Aftermath, they will Suicide.
 ### Game Options
 | Name | Description | Type | Default |
 |----------|:-------------:|:------:|:------:|

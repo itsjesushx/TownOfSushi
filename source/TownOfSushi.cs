@@ -86,6 +86,8 @@ namespace TownOfSushi
         public static Sprite CamouflageSprite;
         public static Sprite CamoSprintSprite;
         public static Sprite CamoSprintFreezeSprite;
+        public static Sprite PoisonSprite;
+        public static Sprite PoisonedSprite;
         public static Sprite HackSprite;
         public static Sprite MimicSprite;
         public static Sprite LockSprite;
@@ -138,13 +140,15 @@ namespace TownOfSushi
             MaulSprite = CreateSprite("TownOfSushi.Resources.Maul.png");
             AlertSprite = CreateSprite("TownOfSushi.Resources.Alert.png");
             RememberSprite = CreateSprite("TownOfSushi.Resources.Remember.png");
+            PoisonSprite = CreateSprite("TownOfSushi.Resources.Poison.png");
+            PoisonedSprite = CreateSprite("TownOfSushi.Resources.Poisoned.png");
             StalkSprite = CreateSprite("TownOfSushi.Resources.Stalk.png");
             TrackSprite = CreateSprite("TownOfSushi.Resources.Track.png");
             PlantSprite = CreateSprite("TownOfSushi.Resources.Plant.png");
             VultureEat = CreateSprite("TownOfSushi.Resources.Vulture.png");
             DetonateSprite = CreateSprite("TownOfSushi.Resources.Detonate.png");
             MediateSprite = CreateSprite("TownOfSushi.Resources.Mediate.png");
-            RomanticPick = CreateSprite("TownOfSushi.Resources.Poison.png");
+            RomanticPick = CreateSprite("TownOfSushi.Resources.Protect.png");
             ProtectSprite = CreateSprite("TownOfSushi.Resources.Protect.png");
             BlackmailSprite = CreateSprite("TownOfSushi.Resources.Blackmail.png");
             BlackmailLetterSprite = CreateSprite("TownOfSushi.Resources.BlackmailLetter.png");

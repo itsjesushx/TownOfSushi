@@ -1189,14 +1189,15 @@ namespace TownOfSushi
             return null;
         }
         
-        public static string GetDeadInfo(this PlayerControl p) 
+        public static string GetDeadInfo(this PlayerControl playerControl) 
         {
+            // Note: add a new death reason for all roles that dont kill normally (ex like bomb, poison, distance kills to be exact)
             string result = "";
             // Death Reason on Ghosts
-            if (p.Data.IsDead) 
+            if (playerControl.Data.IsDead) 
             {
                 string text = "";
-                var player = GameHistory.deadPlayers.FirstOrDefault(x => x.player.PlayerId == p.PlayerId);
+                var player = GameHistory.deadPlayers.FirstOrDefault(x => x.player.PlayerId == playerControl.PlayerId);
             
             Color ColorOfKiller = new();
             if (player != null && player.GetKiller != null) 
@@ -1211,12 +1212,17 @@ namespace TownOfSushi
                     case CustomDeathReason.Disconnect:
                         text = "Disconnected";
                         break;
+
                     case CustomDeathReason.Exile:
                         text = "Voted out";
                         break;
                             
                     case CustomDeathReason.Kill:
                         text = $"killed by {ColorString(ColorOfKiller, player.GetKiller.Data.PlayerName)}";
+                        break;
+                    
+                    case CustomDeathReason.Poisoned:
+                        text = $"Poisoned by {ColorString(ColorOfKiller, player.GetKiller.Data.PlayerName)}";
                         break;
                             
                     case CustomDeathReason.Guess:
@@ -1226,11 +1232,21 @@ namespace TownOfSushi
                     case CustomDeathReason.Executed:
                         text = $"Executed by {ColorString(ColorOfKiller, player.GetKiller.Data.PlayerName)}";
                         break;
-                    case CustomDeathReason.WitchExile:
-                        text = $"{ColorString(Color.red, "Cursed")} by {ColorString(Color.red, player.GetKiller.Data.PlayerName)}";
+                    
+                    case CustomDeathReason.ExecutedByDeputy:
+                        text = $"Executed by {ColorString(ColorOfKiller, player.GetKiller.Data.PlayerName)}";
                         break;
+                    
+                    case CustomDeathReason.Bombed:
+                        text = $"Bombed by {ColorString(ColorOfKiller, player.GetKiller.Data.PlayerName)}";
+                        break;
+
+                    case CustomDeathReason.WitchExile:
+                        text = $"Cursed by {ColorString(ColorOfKiller, player.GetKiller.Data.PlayerName)}";
+                        break;
+
                     case CustomDeathReason.Arson:
-                        text = $"Ignited by {ColorString(Colors.Arsonist, player.GetKiller.Data.PlayerName)}";
+                        text = $"Ignited by {ColorString(ColorOfKiller, player.GetKiller.Data.PlayerName)}";
                         break;
                     }
                     result = text;
@@ -1551,6 +1567,11 @@ namespace TownOfSushi
                 var escapist = GetRole<Escapist>(PlayerControl.LocalPlayer);
                 escapist.LastEscape = DateTime.UtcNow;
                 escapist.EscapeButton.graphic.sprite = TownOfSushi.MarkSprite;
+            }
+            if (PlayerControl.LocalPlayer.Is(RoleEnum.Poisoner))
+            {
+                var Poisoner = GetRole<Poisoner>(PlayerControl.LocalPlayer);
+                Poisoner.LastPoisoned = DateTime.UtcNow;
             }
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Blackmailer))
             {

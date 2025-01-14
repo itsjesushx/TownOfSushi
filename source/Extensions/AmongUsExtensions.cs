@@ -97,6 +97,6 @@ namespace TownOfSushi.Extensions
         }
         public static TMPro.TextMeshPro nameText(this PlayerControl p) => p?.cosmetics?.nameText;
         public static TMPro.TextMeshPro NameText(this PoolablePlayer p) => p.cosmetics.nameText;
-        public static UnityEngine.SpriteRenderer myRend(this PlayerControl p) => p.cosmetics.currentBodySprite.BodySprite;
+        public static SpriteRenderer myRend(this PlayerControl p) => p.cosmetics.currentBodySprite.BodySprite;
     }
 }

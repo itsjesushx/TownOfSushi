@@ -196,6 +196,10 @@ namespace TownOfSushi.CustomOption
         public static CustomOption SwoopCooldown;
         public static CustomOption SwoopDuration;
 
+        public static CustomOption PoisonerOn;
+        public static CustomOption PoisonDelay;
+        public static CustomOption PoisonCooldown;
+
         public static CustomOption GrenadierOn;
         public static CustomOption GrenadeCooldown;
         public static CustomOption GrenadeDuration;
@@ -727,6 +731,10 @@ namespace TownOfSushi.CustomOption
             AbilityDuration = CustomOption.Create(246, Types.Impostor, "Ability Duration", 10f, 5f, 15f, 1f, VenererOn, format: "s");
             SprintSpeed = CustomOption.Create(247, Types.Impostor, "Sprint Speed", 1.25f, 1.05f, 2.5f, 0.05f, VenererOn, format: "x");
             FreezeSpeed = CustomOption.Create(248, Types.Impostor, "Freeze Speed", 0.75f, 0.25f, 1f, 0.05f, VenererOn, format: "x");
+
+            PoisonerOn = CustomOption.Create(24422, Types.Impostor, ColorString(Colors.Impostor, "Poisoner"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            PoisonCooldown = CustomOption.Create(24522, Types.Impostor, "Cooldown", 25f, 10f, 60f, 2.5f, PoisonerOn, format: "s");
+            PoisonDelay = CustomOption.Create(24622, Types.Impostor, "Delay", 5f, 1f, 15f, 1f, PoisonerOn, format: "s");
 
             BomberOn = CustomOption.Create(249, Types.Impostor, ColorString(Colors.Impostor, "Bomber"), 0f, 0f, 100f, 10f, null, true, format: "%");
             DetonateDelay = CustomOption.Create(250, Types.Impostor, "Detonate Delay", 5f, 1f, 15f, 1f, BomberOn, format: "s");
