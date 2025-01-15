@@ -1,37 +1,42 @@
 namespace TownOfSushi.Patches
 {
     [HarmonyPatch(typeof(ExileController), nameof(ExileController.Begin))]
-    [HarmonyPriority(Priority.First)]
-    class ExileController2
+    public static class ExileRolesUpdate
     {
         public static void Prefix()
         {
             var witches = AllRoles.Where(x => x.RoleType == RoleEnum.Witch && x.Player != null).Cast<Witch>();
-            foreach (var roles in witches)
+            foreach (var role in witches)
             {
-                foreach (var spelledId in roles.SpelledPlayers)
+                foreach (var spelledId in role.SpelledPlayers)
                 {
                     var spelledPlayer = PlayerById(spelledId);
                     if (spelledPlayer != null && !spelledPlayer.Data.IsDead)
                     {
                         spelledPlayer.Exiled();
-                        roles.Kills++;
-                        GameHistory.CreateDeathReason(spelledPlayer, CustomDeathReason.WitchExile, roles.Player);
+                        role.Kills++;
+                        GameHistory.CreateDeathReason(spelledPlayer, CustomDeathReason.WitchExile, role.Player);
                     }
                 }
             }
 
             var seer = AllRoles.Where(x => x.RoleType == RoleEnum.Seer  && !x.Player.Data.IsDead && x.Player != null).Cast<Seer>();
-            foreach (var roles2 in seer)
+            foreach (var role2 in seer)
             {
-                roles2.HasInvested1 = false;
-                roles2.HasInvested2 = false;
+                role2.HasInvested1 = false;
+                role2.HasInvested2 = false;
             }
 
             var deputy = AllRoles.Where(x => x.RoleType == RoleEnum.Deputy && !x.Player.Data.IsDead && x.Player != null).Cast<Deputy>();
-            foreach (var roles3 in deputy)
+            foreach (var role3 in deputy)
             {
-                roles3.HasExectutedAlready = false;
+                role3.HasExectutedAlready = false;
+            }
+
+            var crusader = AllRoles.Where(x => x.RoleType == RoleEnum.Crusader && !x.Player.Data.IsDead && x.Player != null).Cast<Crusader>();
+            foreach (var role4 in crusader)
+            {
+                role4.Fortified = null;
             }
         }
     }
@@ -46,6 +51,7 @@ namespace TownOfSushi.Patches
             lastExiled = __instance;
         }
     }
+
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Exiled))]
     public static class ExilePlayerPatch
     {

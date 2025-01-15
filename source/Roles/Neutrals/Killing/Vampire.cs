@@ -173,6 +173,18 @@ namespace TownOfSushi.Roles
                     trapperRole.traps.ClearTraps();
                 }
 
+                if (PlayerControl.LocalPlayer.Is(RoleEnum.Framer))
+                {
+                    var framerRole = GetRole<Framer>(PlayerControl.LocalPlayer);
+                    framerRole.Target = null;
+                }
+
+                if (PlayerControl.LocalPlayer.Is(RoleEnum.Crusader))
+                {
+                    var crusaderRole = GetRole<Crusader>(PlayerControl.LocalPlayer);
+                    crusaderRole.Fortified = null;
+                }
+
                 if (PlayerControl.LocalPlayer.Is(RoleEnum.Investigator))
                 {
                     var InvestigatorRole = GetRole<Investigator>(PlayerControl.LocalPlayer);

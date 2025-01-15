@@ -24,6 +24,9 @@ namespace TownOfSushi.CustomOption
         public static CustomOption VigilanteGuessNeutralKilling;
         public static CustomOption VigilanteAfterVoting;
 
+        public static CustomOption CrusaderOn;
+        public static CustomOption FortifyCooldown;
+
         public static CustomOption DeputyOn;
         public static CustomOption DeputyKills;
 
@@ -563,7 +566,9 @@ namespace TownOfSushi.CustomOption
             MaxFixes = CustomOption.Create(117, Types.Crewmate, "Maximum Number Of Fixes", 5, 1, 15, 1, EngineerOn);
 
             ImitatorOn = CustomOption.Create(118, Types.Crewmate, ColorString(Colors.Imitator, "Imitator"), 0f, 0f, 100f, 10f, null, true, format: "%");
-            
+
+            CrusaderOn = CustomOption.Create(4011, Types.Crewmate, ColorString(Colors.Crusader, "Crusader"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            FortifyCooldown = CustomOption.Create(4111, Types.Crewmate, "Cooldown", 10f, 1f, 15f, 1f, CrusaderOn, format: "s");
 
             MedicOn = CustomOption.Create(119, Types.Crewmate, ColorString(Colors.Medic, "Medic"), 0f, 0f, 100f, 10f, null, true, format: "%");
             ShowShielded = CustomOption.Create(120, Types.Crewmate, "Show Shielded Player", new[] { "Self", "Medic", "Self+Medic", "Everyone" }, MedicOn);

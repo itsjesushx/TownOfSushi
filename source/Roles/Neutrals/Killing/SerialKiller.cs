@@ -168,7 +168,7 @@
             role.StabButton.graphic.sprite = StabSprite;
             role.StabButton.transform.localPosition = new Vector3(-2f, 0f, 0f);
             role.StabButton.buttonLabelText.gameObject.SetActive(true);
-             role.StabButton.buttonLabelText.text = "STAB";
+            role.StabButton.buttonLabelText.text = "STAB";
 
             role.StabButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
                     && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead

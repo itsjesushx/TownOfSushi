@@ -433,6 +433,28 @@ namespace TownOfSushi
                         var mstring2 = reader.ReadString();
                         Activator.CreateInstance(asm.GetType(mstring2), new object[] { player22 });
                         break;
+                    case CustomRPC.Fortify:
+                        switch (reader.ReadByte())
+                        {
+                            default:
+                            case 0: //set fortify
+                                var crusader = PlayerById(reader.ReadByte());
+                                var fortified = PlayerById(reader.ReadByte());
+                                var crusaderRole = GetRole<Crusader>(crusader);
+                                crusaderRole.Fortified = fortified;
+                                break;
+                            case 1: //fortify alert
+                                var crusaderPlayer = PlayerById(reader.ReadByte());
+                                var crusaderRole2 = GetRole<Crusader>(crusaderPlayer);
+                                if (PlayerControl.LocalPlayer == crusaderPlayer) 
+                                {
+                                    Flash(Colors.Crusader, 0.7f);
+                                    SoundManager.Instance.PlaySound(ShipStatus.Instance.SabotageSound, false, 1f, null);
+                                }
+                                break;
+                        }
+                        break;
+
                     case CustomRPC.Jail:
                         var jailor = PlayerById(reader.ReadByte());
                         var jailorRole = GetRole<Jailor>(jailor);
@@ -494,7 +516,7 @@ namespace TownOfSushi
                         ExileControllerPatch.lastExiled = null;
                         PatchKillTimer.GameStarted = false;
                         StartImitate.ImitatingPlayer = null;
-                        AddHauntPatch.AssassinatedPlayers.Clear();
+                        AssassinExileControllerPatch.AssassinatedPlayers.Clear();
                         break;
                     case CustomRPC.JanitorClean:
                         readByte1 = reader.ReadByte();
@@ -552,7 +574,6 @@ namespace TownOfSushi
                         var amnesiacTarget2 = PlayerById(reader.ReadByte());
                         amnesiacRole2.ToRemember = amnesiacTarget2;
                         RememberRole.Remember(amnesiacRole2, amnesiacTarget2);
-                        RememberRole.Remember(GetRole<Amnesiac>(amnesiac2), amnesiacTarget2);
                         break;
                     case CustomRPC.Remember:
                         var amnesiac = PlayerById(reader.ReadByte());
@@ -752,7 +773,7 @@ namespace TownOfSushi
                     case CustomRPC.AgentWin:
                         AgentWin = true;
                         break;
-                    case CustomRPC.TeamVampiresWin:
+                    case CustomRPC.VampireWin:
                         VampireWins = true;
                         break;
                     case CustomRPC.ImpostorWin:
@@ -1027,7 +1048,7 @@ namespace TownOfSushi
                 JailChat.JailorMessage = false;
                 ToggleZoom(reset : true);
                 StartImitate.ImitatingPlayer = null;
-                AddHauntPatch.AssassinatedPlayers.Clear();
+                AssassinExileControllerPatch.AssassinatedPlayers.Clear();
                 CrewmateRoles.Clear();
                 NeutralBenignRoles.Clear();
                 NeutralEvilRoles.Clear();
@@ -1069,6 +1090,9 @@ namespace TownOfSushi
 
                     if (CustomGameOptions.MedicOn > 0)
                         CrewmateRoles.Add((typeof(Medic), CustomGameOptions.MedicOn, true));
+
+                    if (CustomGameOptions.CrusaderOn > 0)
+                        CrewmateRoles.Add((typeof(Crusader), CustomGameOptions.CrusaderOn, true));
                     
                     if (CustomGameOptions.JailorOn > 0)
                         CrewmateRoles.Add((typeof(Jailor), CustomGameOptions.JailorOn, true));

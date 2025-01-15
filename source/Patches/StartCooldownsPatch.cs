@@ -118,6 +118,13 @@ namespace TownOfSushi.Patches
                 escapist.LastEscape = escapist.LastEscape.AddSeconds(CustomGameOptions.InitialCooldowns - CustomGameOptions.EscapeCd);
             }
 
+            if (PlayerControl.LocalPlayer.Is(RoleEnum.Crusader))
+            {
+                var Crusader = GetRole<Crusader>(PlayerControl.LocalPlayer);
+                Crusader.LastFortify = DateTime.UtcNow;
+                Crusader.LastFortify = Crusader.LastFortify.AddSeconds(CustomGameOptions.InitialCooldowns - CustomGameOptions.FortifyCd);
+            }
+
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Grenadier))
             {
                 var grenadier = GetRole<Grenadier>(PlayerControl.LocalPlayer);

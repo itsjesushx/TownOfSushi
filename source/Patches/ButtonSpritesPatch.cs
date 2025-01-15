@@ -69,9 +69,16 @@
             }
             else if (PlayerControl.LocalPlayer.Is(RoleEnum.Romantic))
             {
-                __instance.KillButton.graphic.sprite = TownOfSushi.ProtectSprite;
+                __instance.KillButton.graphic.sprite = TownOfSushi.RomanticPick;
                 __instance.KillButton.buttonLabelText.gameObject.SetActive(true);
                 __instance.KillButton.buttonLabelText.text = "PICK LOVER";
+                flag = true;
+            }
+            else if (PlayerControl.LocalPlayer.Is(RoleEnum.Crusader))
+            {
+                __instance.KillButton.graphic.sprite = TownOfSushi.FortifySprite;
+                __instance.KillButton.buttonLabelText.gameObject.SetActive(true);
+                __instance.KillButton.buttonLabelText.text = "FORTIFY";
                 flag = true;
             }
             else if (PlayerControl.LocalPlayer.Is(RoleEnum.GuardianAngel))

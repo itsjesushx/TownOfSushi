@@ -20,14 +20,16 @@ namespace TownOfSushi.Roles.Modifiers
             if (CustomGameOptions.EngineerOn > 0) ColorMapping.Add("Engineer", Colors.Engineer);
             if (CustomGameOptions.ImitatorOn > 0) ColorMapping.Add("Imitator", Colors.Imitator);
             if (CustomGameOptions.SwapperOn > 0) ColorMapping.Add("Swapper", Colors.Swapper);
+            if (CustomGameOptions.DeputyOn > 0) ColorMapping.Add("Deputy", Colors.Deputy);
             if (CustomGameOptions.SeerOn > 0) ColorMapping.Add("Seer", Colors.Seer);
             if (CustomGameOptions.HunterOn > 0) ColorMapping.Add("Hunter", Colors.Hunter);
             if (CustomGameOptions.InvestigatorOn > 0) ColorMapping.Add("Investigator", Colors.Investigator);
             if (CustomGameOptions.MedicOn > 0) ColorMapping.Add("Medic", Colors.Medic);
+            if (CustomGameOptions.CrusaderOn > 0) ColorMapping.Add("Crusader", Colors.Crusader);
             if (CustomGameOptions.MediumOn > 0) ColorMapping.Add("Medium", Colors.Medium);
             if (CustomGameOptions.MysticOn > 0) ColorMapping.Add("Mystic", Colors.Mystic);
             // this will be gone for now 
-                //if (CustomGameOptions.JailorOn > 0) ColorMapping.Add("Jailor", Colors.Jailor);
+            //if (CustomGameOptions.JailorOn > 0) ColorMapping.Add("Jailor", Colors.Jailor);
             if (CustomGameOptions.OracleOn > 0) ColorMapping.Add("Oracle", Colors.Oracle);
             if (CustomGameOptions.DetectiveOn > 0) ColorMapping.Add("Detective", Colors.Detective);
             if (CustomGameOptions.TrackerOn > 0) ColorMapping.Add("Tracker", Colors.Tracker);
@@ -210,13 +212,15 @@ namespace TownOfSushi.Roles.Modifiers
                             var modifier = GetModifier<DoubleShot>(PlayerControl.LocalPlayer);
                             if (dyingTarget == PlayerControl.LocalPlayer)
                             {
-                                if (!modifier.LifeUsed) {
+                                if (!modifier.LifeUsed) 
+                                {
                                     dyingTarget = null;
                                     Flash(Colors.Impostor, 1.5f);
                                     modifier.LifeUsed = true;
                                     __instance.playerStates.ToList().ForEach(x => { if (x.TargetPlayerId == focusedTarget.PlayerId && x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
                                 }
-                                else {
+                                else 
+                                {
                                     dyingTarget = PlayerControl.LocalPlayer;
                                 }
                             }
@@ -231,11 +235,8 @@ namespace TownOfSushi.Roles.Modifiers
                             __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
 
                         // Shoot player
-                       /* if (!dyingTarget.Is(RoleEnum.Pestilence) || PlayerControl.LocalPlayer.Is(RoleEnum.Pestilence))
-                        {*/
-                            AssassinKill.RpcMurderPlayer(ability, dyingTarget, PlayerControl.LocalPlayer);
-                            ability.RemainingKills--;
-                       // }
+                        AssassinKill.RpcMurderPlayer(ability, dyingTarget, PlayerControl.LocalPlayer);
+                        ability.RemainingKills--;
                     }
                 }));
                 i++;
@@ -429,7 +430,7 @@ namespace TownOfSushi.Roles.Modifiers
             
             if (AmongUsClient.Instance.AmHost) meetingHud.CheckForEndVoting();
 
-            AddHauntPatch.AssassinatedPlayers.Add(player);
+            AssassinExileControllerPatch.AssassinatedPlayers.Add(player);
         }
     }
 }

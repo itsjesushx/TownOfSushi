@@ -64,7 +64,7 @@ namespace TownOfSushi.Roles
             while (playersToDie.Count > CustomGameOptions.MaxKillsInDetonation) playersToDie.Remove(playersToDie[playersToDie.Count - 1]);
             foreach (var player in playersToDie)
             {
-                if (!player.IsShielded() && !player.Is(RoleEnum.Pestilence) && !player.IsProtected() && player != ShowRoundOneShield.FirstRoundShielded)
+                if (!player.IsShielded()&& !player.IsFortified()  && !player.Is(RoleEnum.Pestilence) && !player.IsProtected() && player != ShowRoundOneShield.FirstRoundShielded)
                 {
                     RpcMultiMurderPlayer(Player, player);
                     GameHistory.CreateDeathReason(player, CustomDeathReason.Bombed, Player);

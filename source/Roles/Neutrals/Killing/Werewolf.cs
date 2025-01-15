@@ -44,7 +44,7 @@ namespace TownOfSushi.Roles
         {
             foreach (var player in GetClosestPlayers(Player.GetTruePosition(), CustomGameOptions.MaulRadius))
             {
-                if (player.IsProtected() || Player == player || ClosestPlayer == player || player.IsShielded() || player == ShowRoundOneShield.FirstRoundShielded)
+                if (player.IsProtected() || Player == player || player.IsFortified() || ClosestPlayer == player || player.IsShielded() || player == ShowRoundOneShield.FirstRoundShielded)
                     continue;
 
                 if (!player.Is(RoleEnum.Pestilence))

@@ -277,7 +277,7 @@ namespace TownOfSushi.Roles
 
             if (AmongUsClient.Instance.AmHost) meetingHud.CheckForEndVoting();
 
-            AddHauntPatch.AssassinatedPlayers.Add(player);
+            AssassinExileControllerPatch.AssassinatedPlayers.Add(player);
         }
 
         public static void Postfix(MeetingHud __instance)

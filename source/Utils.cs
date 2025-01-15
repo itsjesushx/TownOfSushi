@@ -284,7 +284,17 @@ namespace TownOfSushi
             return GetRoles(RoleEnum.Witch).Any(role =>    
             {
                 var spelledPlayers = ((Witch)role).SpelledPlayers;
-                return spelledPlayers != null && spelledPlayers.Contains(player.PlayerId)  && !player.Data.IsDead && !role.Player.Data.IsDead;    
+                return spelledPlayers != null && spelledPlayers.Contains(player.PlayerId)  && !player.Data.IsDead  && role.Player.Data.Disconnected && !role.Player.Data.IsDead;    
+            });
+        }
+
+        public static bool IsFortified(this PlayerControl player)
+        {
+            return GetRoles(RoleEnum.Crusader).Any(role =>
+            {
+                var crusader = (Crusader)role;
+                var fortifiedPlayer = crusader.Fortified;
+                return fortifiedPlayer != null && player.PlayerId == fortifiedPlayer.PlayerId && !crusader.Player.Data.IsDead && !crusader.Player.Data.Disconnected;
             });
         }
 
@@ -295,6 +305,14 @@ namespace TownOfSushi
                 var shieldedPlayer = ((Medic)role).ShieldedPlayer;
                 return shieldedPlayer != null && player.PlayerId == shieldedPlayer.PlayerId;
             });
+        }
+        public static Crusader GetCrusader(this PlayerControl player)
+        {
+            return GetRoles(RoleEnum.Crusader).FirstOrDefault(role =>
+            {
+                var fortifiedPlayer = ((Crusader)role).Fortified;
+                return fortifiedPlayer != null && player.PlayerId == fortifiedPlayer.PlayerId;
+            }) as Crusader;
         }
         public static Medic GetMedic(this PlayerControl player)
         {
@@ -366,7 +384,20 @@ namespace TownOfSushi
                 else RpcMurderPlayer(target, player);
             }
 
-           
+            else if (target.IsFortified() && !IsBeingKilled)
+            {
+                Flash(Colors.Crusader, 0.7f);
+                SoundManager.Instance.PlaySound(ShipStatus.Instance.SabotageSound, false, 1f, null);
+                StartRPC(CustomRPC.Fortify, (byte)1, target.GetCrusader().Player.PlayerId);
+            }
+
+            else if (target.IsFortified() && IsBeingKilled)
+            {
+                RpcMurderPlayer(target, player);
+                Flash(Colors.Crusader, 0.7f);
+                SoundManager.Instance.PlaySound(ShipStatus.Instance.SabotageSound, false, 1f, null);
+                StartRPC(CustomRPC.Fortify, (byte)1, target.GetCrusader().Player.PlayerId);
+            }
             
             else if (target.IsOnAlert())
             {
@@ -1021,10 +1052,12 @@ namespace TownOfSushi
 
         public static void ResetWins()
         {
-            VampireWins = false;
             CrewmatesWin = false;
             ImpostorsWin = false;
+
             NobodyWins = false;
+
+            VampireWins = false;
             HitmanWin = false;
             GlitchWin = false;
             JuggernautWin = false;
@@ -1034,6 +1067,7 @@ namespace TownOfSushi
             PlaguebearerWin = false;
             ArsonistWin = false;
             SerialKillerWin = false;
+
             JesterWin = false;
             ExecutionerWin = false;
             FramerWin = false;
@@ -1167,6 +1201,7 @@ namespace TownOfSushi
 
             if (player.Is(RoleAlignment.CrewInvest)) name = "<color=#8BFDFDFF>Crew</color> (<color=#1D7CF2FF>Investigative</color>)";
             else if (player.Is(RoleAlignment.CrewKilling)) name = "<color=#8BFDFDFF>Crew</color> (<color=#1D7CF2FF>Killing</color>)";
+            else if (player.Is(RoleAlignment.CrewProtect)) name = "<color=#8BFDFDFF>Crew</color> (<color=#1D7CF2FF>Protective</color>)";
             else if (player.Is(RoleAlignment.CrewSupport)) name = "<color=#8BFDFDFF>Crew</color> (<color=#1D7CF2FF>Support</color>)";
             else if (player.Is(RoleAlignment.CrewSpecial)) name = "<color=#8BFDFDFF>Crew</color> (<color=#1D7CF2FF>Special</color>)";
             else if (player.Is(RoleAlignment.NeutralBenign)) name = "<color=#B3B3B3FF>Neutral</color> (<color=#1D7CF2FF>Benign</color>)";
@@ -1283,13 +1318,14 @@ namespace TownOfSushi
 
         public static bool IsKillingRole(this PlayerControl player)
         {
-            if (player.Is(Faction.Impostors) || player.Is(RoleAlignment.NeutralKilling)) return true;
+            if (player.Is(Faction.Impostors)) return true;
+            else if (player.Is(RoleAlignment.NeutralKilling)) return true;
             return false;
         }
 
         public static bool IsCrewKiller(this PlayerControl player)
         {
-            if ( player.Is(RoleEnum.Swapper) || player.Is(RoleEnum.Vigilante)) return true;
+            if (player.Is(RoleEnum.Swapper) || player.Is(RoleEnum.Vigilante)) return true;
             else if (player.Is(RoleEnum.Hunter))
             {
                 var hunter = GetRole<Hunter>(player);
@@ -1301,15 +1337,10 @@ namespace TownOfSushi
                 if (PlayerControl.AllPlayerControls.ToArray().Count(x => x.Data.IsDead && !x.Data.Disconnected &&
                 (x.Is(RoleEnum.Hunter) || x.Is(RoleEnum.Vigilante) || x.Is(RoleEnum.Veteran))) > 0) return true;
             }
-            else if (player.Is(RoleEnum.Jailor))
-            {
-                var jailor = GetRole<Jailor>(player);
-                if (jailor.Executes > 0) return true;
-            }
             else if (player.Is(RoleEnum.Deputy))
             {
                 var Deputy = GetRole<Deputy>(player);
-                if (Deputy.RemainingKills > 0) return true;
+                if (Deputy.RemainingKills > 0 && MeetingHud.Instance) return true;
             }
             else if (player.Is(RoleEnum.Veteran))
             {
@@ -1442,6 +1473,11 @@ namespace TownOfSushi
             {
                 var jailor = GetRole<Jailor>(PlayerControl.LocalPlayer);
                 jailor.LastJailed = DateTime.UtcNow;
+            }
+            if (PlayerControl.LocalPlayer.Is(RoleEnum.Crusader))
+            {
+                var Crusader = Role.GetRole<Crusader>(PlayerControl.LocalPlayer);
+                Crusader.LastFortify = DateTime.UtcNow;
             }
             foreach (var role in GetRoles(RoleEnum.Jailor))
             {

@@ -51,7 +51,7 @@ namespace TownOfSushi.Roles
         }
         public void PoisonKill()
         {
-            if (!PoisonedPlayer.IsShielded() && !PoisonedPlayer.Is(RoleEnum.Pestilence) && !PoisonedPlayer.IsProtected() && PoisonedPlayer != ShowRoundOneShield.FirstRoundShielded)
+            if (!PoisonedPlayer.IsShielded() && !PoisonedPlayer.IsFortified() && !PoisonedPlayer.Is(RoleEnum.Pestilence) && !PoisonedPlayer.IsProtected() && PoisonedPlayer != ShowRoundOneShield.FirstRoundShielded)
             {
                 RpcMurderPlayerNoJump(Player, PoisonedPlayer);
                 if (!PoisonedPlayer.Data.IsDead) SoundManager.Instance.PlaySound(PlayerControl.LocalPlayer.KillSfx, false, 0.5f);

@@ -273,7 +273,7 @@ namespace TownOfSushi.Roles
 
             Murder.KilledPlayers.Add(deadPlayer);
 
-            AddHauntPatch.AssassinatedPlayers.Add(player);
+            AssassinExileControllerPatch.AssassinatedPlayers.Add(player);
         }
     }
 

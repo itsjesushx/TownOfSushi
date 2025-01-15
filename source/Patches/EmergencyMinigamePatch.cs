@@ -28,6 +28,12 @@ namespace TownOfSushi.Patches
                 CanCallEmergency = false;
                 StatusText = "The Swapper can't start an emergency meeting";
             }
+            // Potentially deactivate emergency button when 2 players are left
+            if (PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 2)
+            {
+                CanCallEmergency = false;
+                StatusText = "2 Players alive only. Impossible to start a meeting!";
+            }
 
             if (!CanCallEmergency) 
             {

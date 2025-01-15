@@ -3,6 +3,7 @@ namespace TownOfSushi.CustomOption
     public static class CustomGameOptions
     {
         public static int MaxRoleHistoryListSize = 100;
+        public static int CrusaderOn => Mathf.RoundToInt(CustomOptionHolder.CrusaderOn.GetFloat());
         public static int WerewolfOn => Mathf.RoundToInt(CustomOptionHolder.WerewolfOn.GetFloat());
         public static int JuggernautOn => Mathf.RoundToInt(CustomOptionHolder.JuggernautOn.GetFloat());
         public static int DeputyOn => Mathf.RoundToInt(CustomOptionHolder.DeputyOn.GetFloat());
@@ -145,6 +146,7 @@ namespace TownOfSushi.CustomOption
         public static int MaxFixes => Mathf.RoundToInt(CustomOptionHolder.MaxFixes.GetFloat());
         public static bool VigilanteBodyReport => CustomOptionHolder.VigilanteBodyReport.GetBool();
         public static bool VeteranBodyReport => CustomOptionHolder.VeteranBodyReport.GetBool();
+        public static float FortifyCd => CustomOptionHolder.FortifyCooldown.GetFloat();
         public static float DragCd => CustomOptionHolder.DragCooldown.GetFloat();
         public static float UndertakerDragSpeed => CustomOptionHolder.UndertakerDragSpeed.GetFloat();
         public static float HitmanDragCd => CustomOptionHolder.HitmanDragCooldown.GetFloat();

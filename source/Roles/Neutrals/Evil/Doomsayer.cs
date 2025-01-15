@@ -32,7 +32,9 @@ namespace TownOfSushi.Roles
                 if (CustomGameOptions.InvestigatorOn > 0) ColorMapping.Add("Investigator", Colors.Investigator);
                 if (CustomGameOptions.HunterOn > 0) ColorMapping.Add("Hunter", Colors.Hunter);
                 if (CustomGameOptions.MedicOn > 0) ColorMapping.Add("Medic", Colors.Medic);
+                if (CustomGameOptions.CrusaderOn > 0) ColorMapping.Add("Crusader", Colors.Crusader);
                 if (CustomGameOptions.MediumOn > 0) ColorMapping.Add("Medium", Colors.Medium);
+                if (CustomGameOptions.DeputyOn > 0) ColorMapping.Add("Deputy", Colors.Deputy);
                 if (CustomGameOptions.SwapperOn > 0) ColorMapping.Add("Swapper", Colors.Swapper);
                 // this will be gone for now 
                 //if (CustomGameOptions.JailorOn > 0) ColorMapping.Add("Jailor", Colors.Jailor);
@@ -422,7 +424,7 @@ namespace TownOfSushi.Roles
 
             if (AmongUsClient.Instance.AmHost) meetingHud.CheckForEndVoting();
 
-            AddHauntPatch.AssassinatedPlayers.Add(player);
+            AssassinExileControllerPatch.AssassinatedPlayers.Add(player);
         }
     }
 

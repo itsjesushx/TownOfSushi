@@ -51,7 +51,7 @@
             foreach (var playerId in DousedPlayers)
             {
                 var player = PlayerById(playerId);
-                if (!player.IsShielded() && !player.IsProtected() && player != ShowRoundOneShield.FirstRoundShielded)
+                if (!player.IsShielded() && !player.IsFortified() && !player.IsProtected() && player != ShowRoundOneShield.FirstRoundShielded)
                 {
                     RpcMultiMurderPlayer(Player, player);
                 }

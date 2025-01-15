@@ -193,10 +193,13 @@ namespace TownOfSushi.Roles
 
                 button.GetComponent<PassiveButton>().OnClick.RemoveAllListeners();
                 if (!PlayerControl.LocalPlayer.Data.IsDead && !PlayerById((byte)__instance.playerStates[buttonTarget].TargetPlayerId).Data.IsDead) button.GetComponent<PassiveButton>().OnClick.AddListener((System.Action)(() => {
-                    if (selectedButton != button) {
+                    if (selectedButton != button) 
+                    {
                         selectedButton = button;
                         buttons.ForEach(x => x.GetComponent<SpriteRenderer>().color = x == selectedButton ? Color.red : Color.white);
-                    } else {
+                    } 
+                    else 
+                    {
                         PlayerControl focusedTarget = PlayerById((byte)__instance.playerStates[buttonTarget].TargetPlayerId);
                         if (!(__instance.state == MeetingHud.VoteStates.Voted || __instance.state == MeetingHud.VoteStates.NotVoted) || focusedTarget == null || role.RemainingKills <= 0 ) return;
 
@@ -217,6 +220,13 @@ namespace TownOfSushi.Roles
                         // Shoot player
                         VigilanteKill.RpcMurderPlayer(role, dyingTarget, PlayerControl.LocalPlayer);
                         role.RemainingKills--;
+
+                        if (dyingTarget.IsFortified()) 
+                        {
+                            dyingTarget = null;
+                            Flash(Colors.Crusader, 1.5f);
+                            __instance.playerStates.ToList().ForEach(x => { if (x.TargetPlayerId == focusedTarget.PlayerId && x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
+                        }
 
                         
                     }
@@ -408,7 +418,7 @@ namespace TownOfSushi.Roles
 
             if (AmongUsClient.Instance.AmHost) meetingHud.CheckForEndVoting();
 
-            AddHauntPatch.AssassinatedPlayers.Add(player);
+            AssassinExileControllerPatch.AssassinatedPlayers.Add(player);
         }
     }
 

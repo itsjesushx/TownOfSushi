@@ -33,7 +33,7 @@
 | | [Trapper](#trapper)   |[Glitch](#glitch) |  |
 | | [Seer](#seer) | [Serial Killer](#serial-killer) |  |
 | | [Deputy](#deputy)  | [Juggernaut](#juggernaut)  |  |
-| | |[Plaguebearer](#plaguebearer) |  |
+| | [Crusader](#crusader) |[Plaguebearer](#plaguebearer) |  |
 
 -----------------------
 # Releases
@@ -398,6 +398,21 @@ A report can contain the name of the killer or the color type (Darker/Lighter)
 | Shield breaks on murder attempt | Whether the Shield breaks when someone attempts to Kill them | Toggle | False |
 
 -----------------------
+## Crusader
+### **Team: Crewmates**
+The Crusader is a Crewmate that can fortify other players.\
+Fortified players cannot be interacted with.\
+If someone tries to interact with a fortified player,\
+Both the Crusader and the interactor receive an alert.\
+If the Fortified person gets a kill attempt, they will kill the attemper.
+
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Crusader | The percentage probability of the Crusader appearing | Percentage | 0% |
+| Fortify Cooldown | The cooldown of the Crusader's Fortify button | Time | 10s |
+-----------------------
+
 ## Engineer
 ### **Team: Crewmates**
 The Engineer is a Crewmate that can fix sabotages from anywhere on the map.\

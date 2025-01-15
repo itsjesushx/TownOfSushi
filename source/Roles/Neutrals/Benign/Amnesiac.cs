@@ -17,7 +17,7 @@ namespace TownOfSushi.Roles
             RoleEnum.Agent, RoleEnum.Hitman, RoleEnum.Miner, RoleEnum.Morphling, RoleEnum.Glitch, RoleEnum.Blackmailer, RoleEnum.Juggernaut,
             RoleEnum.Swapper, RoleEnum.Amnesiac, RoleEnum.GuardianAngel, RoleEnum.Undertaker, RoleEnum.Werewolf, RoleEnum.SerialKiller, RoleEnum.Arsonist,
             RoleEnum.Grenadier, RoleEnum.Crewmate, RoleEnum.Impostor, RoleEnum.Vampire, RoleEnum.Bomber, RoleEnum.Plaguebearer, RoleEnum.Pestilence, RoleEnum.Romantic, RoleEnum.Swooper,
-            RoleEnum.Venerer, RoleEnum.Janitor, RoleEnum.Poisoner, RoleEnum.Deputy, RoleEnum.Escapist, RoleEnum.Doomsayer, RoleEnum.Framer, RoleEnum.Seer
+            RoleEnum.Venerer, RoleEnum.Janitor, RoleEnum.Poisoner, RoleEnum.Crusader, RoleEnum.Deputy, RoleEnum.Escapist, RoleEnum.Doomsayer, RoleEnum.Seer
         };
         public Amnesiac(PlayerControl player) : base(player)
         {
@@ -254,6 +254,7 @@ namespace TownOfSushi.Roles
                 case RoleEnum.Trapper:
                 case RoleEnum.Imitator:
                 case RoleEnum.Oracle:
+                case RoleEnum.Crusader:
                 case RoleEnum.Jailor:
 
                     rememberImp = false;
@@ -266,7 +267,6 @@ namespace TownOfSushi.Roles
                 case RoleEnum.Arsonist:
                 case RoleEnum.Amnesiac:
                 case RoleEnum.Glitch:
-                case RoleEnum.Framer:
                 case RoleEnum.Juggernaut:
                 case RoleEnum.Romantic:
                 case RoleEnum.GuardianAngel:
@@ -304,18 +304,11 @@ namespace TownOfSushi.Roles
             var vowel = "aeiou".Contains(newRole.Name.ToLower()[0]);
             var article = vowel ? "an" : "a";
             
-            if (PlayerControl.LocalPlayer == amnesiac && newRole.RoleType != RoleEnum.Amnesiac)
+            if (PlayerControl.LocalPlayer == amnesiac)
             {
                 Utilities.UsefulMethods.ShowTextToast($"You remembered you were {article} {newRole.Name}!", 3.5f);            
                 SoundManager.Instance.PlaySound(ShipStatus.Instance.SabotageSound, false, 1f, null);            
                 Flash(newRole.Color);
-            }
-
-            if (PlayerControl.LocalPlayer == amnesiac && newRole.RoleType == RoleEnum.Amnesiac)
-            {
-                Utilities.UsefulMethods.ShowTextToast("You still don't remember who you were!", 3.5f);
-                SoundManager.Instance.PlaySound(ShipStatus.Instance.SabotageSound, false, 1f, null);
-                Flash(Colors.Impostor);
             }
 
             if (other == StartImitate.ImitatingPlayer)
@@ -324,7 +317,6 @@ namespace TownOfSushi.Roles
                 newRole.AddToRoleHistory(RoleEnum.Imitator);
             }
             else newRole.AddToRoleHistory(newRole.RoleType);
-
             if (rememberImp == false)
             {
                 if (rememberNeut == false)
@@ -333,22 +325,20 @@ namespace TownOfSushi.Roles
                 }
                 else
                 {
-                    if (role != RoleEnum.Vampire) 
-                    {
-                        var romantic = new Amnesiac(other);
-                        romantic.ReDoTaskText();
-                    }
                     if (role == RoleEnum.Vampire)
                     {
                         var vampire = new Vampire(other);
                         vampire.ReDoTaskText();
                     }
-                    if (role == RoleEnum.Plaguebearer ||
-                        role == RoleEnum.Arsonist || role == RoleEnum.Glitch
-                       || role == RoleEnum.Pestilence || role == RoleEnum.Hitman
-                       || role == RoleEnum.Vampire
-                       || role == RoleEnum.Agent || role == RoleEnum.SerialKiller
-                       || role == RoleEnum.Juggernaut || role == RoleEnum.Vampire)
+                    else
+                    {
+                        var amnesiacRole = new Amnesiac(other);
+                        amnesiacRole.ReDoTaskText();
+                    }
+                    if (role == RoleEnum.Plaguebearer || role == RoleEnum.Arsonist 
+                       || role == RoleEnum.Glitch || role == RoleEnum.Pestilence 
+                       || role == RoleEnum.Hitman || role == RoleEnum.Vampire
+                       || role == RoleEnum.Agent || role == RoleEnum.SerialKiller || role == RoleEnum.Juggernaut)
                     {
                         if (CustomGameOptions.AmneTurnNeutAssassin)
                         {
@@ -405,12 +395,6 @@ namespace TownOfSushi.Roles
             {
                 var vigilanteRole = GetRole<Werewolf>(amnesiac);
                 vigilanteRole.LastMauled = DateTime.UtcNow;
-            }
-
-            else if (role == RoleEnum.Framer)
-            {
-                var FramerRole = GetRole<Framer>(amnesiac);
-                FramerRole.LastFramed = DateTime.UtcNow;
             }
 
             else if (role == RoleEnum.Engineer)
@@ -514,6 +498,13 @@ namespace TownOfSushi.Roles
                 oracleRole.LastConfessed = DateTime.UtcNow;
             }
 
+            else if (role == RoleEnum.Crusader)
+            {
+                var wardenRole = GetRole<Crusader>(amnesiac);
+                wardenRole.LastFortify = DateTime.UtcNow;
+                wardenRole.Fortified = null;
+            }
+
             else if (role == RoleEnum.Arsonist)
             {
                 var arsoRole = GetRole<Arsonist>(amnesiac);
@@ -541,6 +532,7 @@ namespace TownOfSushi.Roles
                 var FramerRole = GetRole<Framer>(amnesiac);
                 FramerRole.LastFramed = DateTime.UtcNow;
                 FramerRole.HasFrameTarget = false;
+                FramerRole.Target = null;
             }
 
             else if (role == RoleEnum.Glitch)
@@ -726,13 +718,20 @@ namespace TownOfSushi.Roles
             amnesiac.Remembered = true;
         }
 
-        public static void Postfix(ExileController __instance) => ExileControllerPostfix(__instance);
+        public static void Postfix(ExileController __instance)
+        {    
+            if (__instance == null) return;    
+            ExileControllerPostfix(__instance);
+        }
 
         [HarmonyPatch(typeof(Object), nameof(Object.Destroy), new Type[] { typeof(GameObject) })]
         public static void Prefix(GameObject obj)
-        {
+        {    
             if (!SubmergedCompatibility.Loaded || GameOptionsManager.Instance?.currentNormalGameOptions?.MapId != 6) return;
-            if (obj.name?.Contains("ExileCutscene") == true) ExileControllerPostfix(ExileControllerPatch.lastExiled);
+            if (obj.name?.Contains("ExileCutscene") == true && ExileControllerPatch.lastExiled != null)    
+            {
+                ExileControllerPostfix(ExileControllerPatch.lastExiled);    
+            }
         }
     }
 }

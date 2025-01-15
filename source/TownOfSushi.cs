@@ -40,6 +40,7 @@ namespace TownOfSushi
         public static Sprite StalkSprite;
         public static Sprite DouseSprite;
         public static Sprite MaulSprite;
+        public static Sprite FortifySprite;
         public static Sprite VultureEat;
         public static Sprite IgniteSprite;
         public static Sprite ReviveSprite;
@@ -122,6 +123,7 @@ namespace TownOfSushi
             MorphSprite = CreateSprite("TownOfSushi.Resources.Morph.png");
             Arrow = CreateSprite("TownOfSushi.Resources.Arrow.png");
             MineSprite = CreateSprite("TownOfSushi.Resources.Mine.png");
+            FortifySprite = CreateSprite("TownOfSushi.Resources.Fortify.png");
             SwoopSprite = CreateSprite("TownOfSushi.Resources.Swoop.png");
             SwapperSwitch = CreateSprite("TownOfSushi.Resources.SwapperSwitch.png");
             SwapperSwitchDisabled = CreateSprite("TownOfSushi.Resources.SwapperSwitchDisabled.png");
@@ -148,7 +150,7 @@ namespace TownOfSushi
             VultureEat = CreateSprite("TownOfSushi.Resources.Vulture.png");
             DetonateSprite = CreateSprite("TownOfSushi.Resources.Detonate.png");
             MediateSprite = CreateSprite("TownOfSushi.Resources.Mediate.png");
-            RomanticPick = CreateSprite("TownOfSushi.Resources.Protect.png");
+            RomanticPick = CreateSprite("TownOfSushi.Resources.Romantic.png");
             ProtectSprite = CreateSprite("TownOfSushi.Resources.Protect.png");
             BlackmailSprite = CreateSprite("TownOfSushi.Resources.Blackmail.png");
             BlackmailLetterSprite = CreateSprite("TownOfSushi.Resources.BlackmailLetter.png");
@@ -157,7 +159,7 @@ namespace TownOfSushi
             LighterSprite = CreateSprite("TownOfSushi.Resources.Lighter.png");
             DarkerSprite = CreateSprite("TownOfSushi.Resources.Darker.png");
             InfectSprite = CreateSprite("TownOfSushi.Resources.Infect.png");
-            StabSprite = CreateSprite("TownOfSushi.Resources.Rampage.png");
+            StabSprite = CreateSprite("TownOfSushi.Resources.Stab.png");
             TrapSprite = CreateSprite("TownOfSushi.Resources.Trap.png");
             InspectSprite = CreateSprite("TownOfSushi.Resources.Inspect.png");
             JailSprite = CreateSprite("TownOfSushi.Resources.Jail.png");
