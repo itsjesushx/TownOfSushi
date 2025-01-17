@@ -4,7 +4,6 @@ using Il2CppInterop.Runtime.InteropTypes;
 using Reactor.Networking;
 using System.IO;
 using static TownOfSushi.Roles.Glitch;
-using TownOfSushi.Utilities;
 
 namespace TownOfSushi
 {
@@ -148,8 +147,8 @@ namespace TownOfSushi
 
         public static bool RomanticCoupleChat(this PlayerControl player, PlayerControl source)
         {
-            bool beloved = source.Is(RoleEnum.Romantic) && GetRole<Romantic>(source).Beloved.PlayerId == player.PlayerId;
-            bool romantic = player.Is(RoleEnum.Romantic) && GetRole<Romantic>(player).Beloved.PlayerId == source.PlayerId;
+            bool beloved = source.Is(RoleEnum.Romantic) && GetRole<Romantic>(source).Beloved.PlayerId == player.PlayerId && GetRole<Romantic>(player).AlreadyPicked;
+            bool romantic = player.Is(RoleEnum.Romantic) && GetRole<Romantic>(player).Beloved.PlayerId == source.PlayerId && GetRole<Romantic>(player).AlreadyPicked;
             return romantic || beloved;
         }
         public static bool HasRomanticCouple(this PlayerControl player)
@@ -256,14 +255,6 @@ namespace TownOfSushi
                 return beloved != null && player.PlayerId == beloved.PlayerId;
             });
         }
-        public static bool IsRomantic(this PlayerControl player)
-        {
-            return GetRoles(RoleEnum.Romantic).Any(role =>
-            {
-                var romantic = ((Romantic)role).Player;
-                return romantic != null && player.PlayerId == romantic.PlayerId;
-            });
-        }
         public static bool IsGATarget(this PlayerControl player)
         {
             return GetRoles(RoleEnum.GuardianAngel).Any(role =>
@@ -360,6 +351,7 @@ namespace TownOfSushi
             {
                 zeroSecReset = true;
             }
+
             else if (target.Is(RoleEnum.Pestilence))
             {
                 if (player.IsShielded())
@@ -374,6 +366,7 @@ namespace TownOfSushi
                 }
                 else if (player.IsProtected()) gaReset = true;
                 else if (player == ShowRoundOneShield.FirstRoundShielded) zeroSecReset = true;
+                else if (PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 2) RpcMurderPlayer(player, target);
                 else RpcMurderPlayer(target, player);
             }
 
@@ -730,14 +723,6 @@ namespace TownOfSushi
             if (data != null && !data.IsDead)
             {
                 if (ShowRoundOneShield.DiedFirst == "") ShowRoundOneShield.DiedFirst = target.GetDefaultOutfit().PlayerName;
-
-                if (killer.Is(AbilityEnum.Chameleon))
-                {
-                    var shy = GetAbility<Chameleon>(killer);
-                    shy.Opacity = 1f;
-                    ChameleonUpdate.SetVisiblity(killer, shy.Opacity);
-                    shy.Moving = true;
-                }
 
                 if (target.Is(RoleEnum.Jailor))
                 {

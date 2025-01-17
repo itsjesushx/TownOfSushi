@@ -1269,9 +1269,6 @@ namespace TownOfSushi
 
                     if (Check(CustomGameOptions.RadarOn))
                         Abilities.Add((typeof(Radar), CustomGameOptions.RadarOn));
-                    
-                    if (Check(CustomGameOptions.ChameleonOn))
-                        Abilities.Add((typeof(Chameleon), CustomGameOptions.ChameleonOn));
 
                     #endregion
                     #region Impostor Modifiers

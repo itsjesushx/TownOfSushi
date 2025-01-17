@@ -32,7 +32,6 @@ namespace TownOfSushi.Objects
                 if (players.ContainsKey(entry.PlayerId))
                 {
                     players[entry.PlayerId] += Time.deltaTime;
-                    //PluginSingleton<TownOfSushi>.Instance.Log.LogMessage($"player with byte {entry} is logged with time {players[entry]}");
                     if (players[entry.PlayerId] > CustomGameOptions.MinAmountOfTimeInTrap)
                     {
                         foreach (Trapper t in GetRoles(RoleEnum.Trapper))

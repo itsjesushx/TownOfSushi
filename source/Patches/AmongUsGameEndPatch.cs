@@ -1,3 +1,5 @@
+using Il2CppSystem.Collections.Generic;
+
 namespace TownOfSushi.Patches
 {
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnGameEnd))]
@@ -7,6 +9,7 @@ namespace TownOfSushi.Patches
         {
             try
             {
+                // Reset temporary data
                 Il2CppSystem.Collections.Generic.List<int> losers = new Il2CppSystem.Collections.Generic.List<int>();
 
                 foreach (var roleEnum in new RoleEnum[]
@@ -17,7 +20,7 @@ namespace TownOfSushi.Patches
                     RoleEnum.Vampire, RoleEnum.Werewolf
                 })
                 {
-                    foreach (var role in GetRoles(roleEnum) ?? new List<Role>())
+                    foreach (var role in GetRoles(roleEnum) ?? new System.Collections.Generic.List<Role>())
                     {
                         if (role.Player?.Data?.IsDead == false && role.Player?.GetDefaultOutfit() != null)
                         {
@@ -41,7 +44,7 @@ namespace TownOfSushi.Patches
                     return;
                 }
 
-                var winConditions = new Dictionary<Func<bool>, Action>
+                var winConditions = new System.Collections.Generic.Dictionary<Func<bool>, Action>
                 {
                     { () => JesterWin, () => AddWinners(RoleEnum.Jester) },
                     { () => WerewolfWin, () => AddWinners(RoleEnum.Werewolf) },
@@ -83,7 +86,7 @@ namespace TownOfSushi.Patches
         private static void AddWinners(RoleEnum roleEnum)
         {
             EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
-            foreach (var role in GetRoles(roleEnum) ?? new List<Role>())
+            foreach (var role in GetRoles(roleEnum) ?? new System.Collections.Generic.List<Role>())
             {
                 var roleData = new CachedPlayerData(role.Player.Data);
                 if (PlayerControl.LocalPlayer != role.Player) roleData.IsYou = false;
@@ -94,7 +97,7 @@ namespace TownOfSushi.Patches
         private static void AddWinners(Faction faction)
         {
             EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
-            foreach (var player in GetFactions(faction) ?? new List<Role>())
+            foreach (var player in GetFactions(faction) ?? new System.Collections.Generic.List<Role>())
             {
                 var roleData = new CachedPlayerData(player.Player.Data);
                 if (PlayerControl.LocalPlayer != player.Player) roleData.IsYou = false;
@@ -104,7 +107,7 @@ namespace TownOfSushi.Patches
 
         private static void AddSpecialWinners(RoleEnum roleEnum, Func<Role, bool> condition)
         {
-            foreach (var role in GetRoles(roleEnum) ?? new List<Role>())
+            foreach (var role in GetRoles(roleEnum) ?? new System.Collections.Generic.List<Role>())
             {
                 if (condition(role))
                 {
@@ -118,7 +121,7 @@ namespace TownOfSushi.Patches
 
         private static void AddGuardianAngelWinners()
         {
-            foreach (var role in GetRoles(RoleEnum.GuardianAngel) ?? new List<Role>())
+            foreach (var role in GetRoles(RoleEnum.GuardianAngel) ?? new System.Collections.Generic.List<Role>())
             {
                 var ga = (GuardianAngel)role;
                 var gaTargetData = new CachedPlayerData(ga.target.Data);
@@ -134,10 +137,9 @@ namespace TownOfSushi.Patches
                 }
             }
         }
-
         private static void AddRomanticWinners()
         {
-            foreach (var role in GetRoles(RoleEnum.Romantic) ?? new List<Role>())
+            foreach (var role in GetRoles(RoleEnum.Romantic) ?? new System.Collections.Generic.List<Role>())
             {
                 var romantic = (Romantic)role;
                 var romanticBelovedData = new CachedPlayerData(romantic.Beloved.Data);

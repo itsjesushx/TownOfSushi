@@ -395,7 +395,6 @@ namespace TownOfSushi.Roles
                         continue;
 
                     var colour = Color.black;
-                    if (player.Is(AbilityEnum.Chameleon)) colour.a = GetAbility<Chameleon>(player).Opacity;
                     player.nameText().color = colour;
                 }
             

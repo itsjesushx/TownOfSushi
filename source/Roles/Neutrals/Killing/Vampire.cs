@@ -52,7 +52,7 @@ namespace TownOfSushi.Roles
             if ((role.ClosestPlayer.Is(Faction.Crewmates) || (role.ClosestPlayer.Is(RoleAlignment.NeutralBenign)
                 && CustomGameOptions.CanBiteNeutralBenign) || (role.ClosestPlayer.Is(RoleAlignment.NeutralEvil)
                 && CustomGameOptions.CanBiteNeutralEvil)) &&
-                aliveVamps.Count == 1 && vamps.Count < CustomGameOptions.MaxVampiresPerGame && !ShowRoundOneShield.FirstRoundShielded && !role.ClosestPlayer.Is(AbilityEnum.Chameleon))
+                aliveVamps.Count == 1 && vamps.Count < CustomGameOptions.MaxVampiresPerGame && !ShowRoundOneShield.FirstRoundShielded && PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count > 5)
             {
                 var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer);
                 if (interact[3] == true)
@@ -124,6 +124,7 @@ namespace TownOfSushi.Roles
                 else if (PlayerControl.LocalPlayer.Is(RoleEnum.Vulture)) VultureKillButtonTarget.SetTarget(HudManager.Instance.KillButton, null, GetRole<Vulture>(PlayerControl.LocalPlayer));
 
                 if (PlayerControl.LocalPlayer.Is(RoleEnum.Investigator)) Footprint.DestroyAll(GetRole<Investigator>(PlayerControl.LocalPlayer));
+                if (PlayerControl.LocalPlayer.Is(RoleEnum.Crusader)) DestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(false);
 
                 if (PlayerControl.LocalPlayer.Is(RoleEnum.Vigilante)) 
                 {
@@ -173,12 +174,6 @@ namespace TownOfSushi.Roles
                     trapperRole.traps.ClearTraps();
                 }
 
-                if (PlayerControl.LocalPlayer.Is(RoleEnum.Crusader))
-                {
-                    var crusaderRole = GetRole<Crusader>(PlayerControl.LocalPlayer);
-                    crusaderRole.Fortified = null;
-                }
-
                 if (PlayerControl.LocalPlayer.Is(RoleEnum.Investigator))
                 {
                     var InvestigatorRole = GetRole<Investigator>(PlayerControl.LocalPlayer);
@@ -222,12 +217,9 @@ namespace TownOfSushi.Roles
                 role3.IncorrectAssassinKills = killsList.IncorrectAssassinKills;
             }
 
-            if (CustomGameOptions.NewVampCanAssassin) 
+            if (CustomGameOptions.NewVampCanAssassin && !AbilityDictionary.ContainsKey(target.PlayerId)) 
             {
-                AbilityDictionary.Remove(target.PlayerId);
-                new Assassin(target);
-                var role33 = GetRole<Vampire>(target);
-                role33.ReDoTaskText();
+                _ = new Assassin(target);
             }
         }
     }

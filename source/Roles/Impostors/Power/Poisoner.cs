@@ -14,7 +14,7 @@ namespace TownOfSushi.Roles
             Name = "Poisoner";
             StartText = () => $"Poison a player to murder them after {CustomGameOptions.PoisonDelay} seconds";
             TaskText = () => "Poison the crewmates";
-            RoleInfo = $"The Poisoner can poison a player every {CustomGameOptions.PoisonCd} seconds, after {CustomGameOptions.PoisonDelay} seconds the player die. Players with protection can't be killed by the poisoner. If you kill an Aftermath, you will suicide.";
+            RoleInfo = $"The Poisoner can poison a player every {CustomGameOptions.PoisonCd} seconds, after {CustomGameOptions.PoisonDelay} seconds the player die. Players with protection can't be killed by the poisoner. If you kill an Aftermath, you will suicide. If the poisoner is alive in the last 4, they will directly kill instead of poisoning.";
             LoreText = "A master of subtle and deadly arts, the Poisoner thrives in the shadows, silently sowing chaos among the crew. With a lethal touch, they ensure their victims never see their end coming, leaving only whispers of their presence behind.";
             Color = Palette.ImpostorRed;
             LastPoisoned = DateTime.UtcNow;
@@ -43,7 +43,7 @@ namespace TownOfSushi.Roles
             {
                 TimeRemaining = 0;
             }
-            if (PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 2 && !Player.Data.IsDead)
+            if (PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 4 && !Player.Data.IsDead)
             {
                 TimeRemaining = 0;
             }

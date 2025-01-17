@@ -22,7 +22,6 @@ namespace TownOfSushi.CustomOption
         public static int MorphlingOn => Mathf.RoundToInt(CustomOptionHolder.MorphlingOn.GetFloat());
         public static int ExecutionerOn => Mathf.RoundToInt(CustomOptionHolder.ExecutionerOn.GetFloat());
         public static int SpyOn => Mathf.RoundToInt(CustomOptionHolder.SpyOn.GetFloat());
-        public static int ChameleonOn => Mathf.RoundToInt(CustomOptionHolder.ChameleonOn.GetFloat());
         public static int WitchOn => Mathf.RoundToInt(CustomOptionHolder.WitchOn.GetFloat());
         public static int MinerOn => Mathf.RoundToInt(CustomOptionHolder.MinerOn.GetFloat());
         public static int SwooperOn => Mathf.RoundToInt(CustomOptionHolder.SwooperOn.GetFloat());
@@ -251,9 +250,6 @@ namespace TownOfSushi.CustomOption
         public static bool InvestigatorReportOn => CustomOptionHolder.InvestigatorReportOn.GetBool();
         public static float InvestigatorRoleDuration => CustomOptionHolder.InvestigatorRoleDuration.GetFloat();
         public static float InvestigatorFactionDuration => CustomOptionHolder.InvestigatorFactionDuration.GetFloat();
-        public static float InvisDelay => CustomOptionHolder.InvisDelay.GetFloat();
-        public static float TransformInvisDuration => CustomOptionHolder.TransformInvisDuration.GetFloat();
-        public static float FinalTransparency => CustomOptionHolder.FinalTransparency.GetFloat();
         public static float EscapeCd => CustomOptionHolder.EscapeCooldown.GetFloat();
         public static float DetonateDelay => CustomOptionHolder.DetonateDelay.GetFloat();
         public static int MaxKillsInDetonation => Mathf.RoundToInt(CustomOptionHolder.MaxKillsInDetonation.GetFloat());

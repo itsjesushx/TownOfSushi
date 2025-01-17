@@ -62,7 +62,7 @@ namespace TownOfSushi.Patches
                 {
                     SummaryText += $" | {ColorString(Colors.Crusader, $"[<b>+</b>]")}";
                 }
-                if (playerControl.IsBeloved() || playerControl.IsRomantic())
+                if (playerControl.IsBeloved())
                 {
                     SummaryText += $" | {ColorString(Colors.Romantic, $"[♥]")}";
                 }
@@ -105,7 +105,7 @@ namespace TownOfSushi.Patches
                 }
                 if (player.IncorrectAssassinKills > 0)
                 {
-                    SummaryText  += $" | {ColorString(Color.green, $"Failed Guess")}";
+                    SummaryText  += $" | {ColorString(Color.red, $"Failed Guess")}";
                 }
                 if (player.CorrectVigilanteShot > 0)
                 {

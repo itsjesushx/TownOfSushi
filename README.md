@@ -20,14 +20,14 @@
 |----------|-------------|-----------------|----------------|----------------|----------------|
 | [Escapist](#escapist) | [Hunter](#hunter) | [Jester](#jester) | [Aftermath](#aftermath) |[Assassin](#assassin-ability) | [Classic](#roles) |
 | [Grenadier](#grenadier) | [Engineer](#engineer) | [Arsonist](#arsonist) | [Disperser](#disperser) | [Button Barry](#button-barry)| [All Any](#all-any-settings) |
-| [Janitor](#janitor) | [Vigilante](#vigilante) | [Vampire](#vampire) | [Bait](#bait) | [Chameleon](#chameleon) |[Vanilla Hide 'n' Seek](https://www.innersloth.com/new-game-mode-hide-n-seek-is-here-emergency-meeting-35/) |
+| [Janitor](#janitor) | [Vigilante](#vigilante) | [Vampire](#vampire) | [Bait](#bait) | [Tiebreaker](#tiebreaker) |[Vanilla Hide 'n' Seek](https://www.innersloth.com/new-game-mode-hide-n-seek-is-here-emergency-meeting-35/) |
 | [Morphling](#morphling) | [Oracle](#oracle) | [Doomsayer](#doomsayer) |  [Double Shot](#double-shot) |[Spy](#spy) | |
 | [Venerer](#venerer) | [Investigator](#investigator) | [Vulture](#vulture) | [Frosty](#frosty) | [Drunk](#drunk)||
 | [Miner](#miner) | [Mystic](#mystic) | [Guardian Angel](#guardian-angel) |  [Giant](#giant)|[Flash](#flash) |
 | [Blackmailer](#blackmailer) | [Veteran](#veteran) |  [Pestilence](#plaguebearer) |[Underdog](#underdog) | [Multitasker](#multitasker)|
 | [Warlock](#warlock) | [Medic](#medic) | [Executioner](#executioner)  |   [Diseased](#diseased) | [Radar](#radar) |
 |  [Undertaker](#undertaker) | [Imitator](#imitator) | [Romantic](#romantic) |  | [Sleuth](#sleuth) |
-|  [Bomber](#bomber)  | [Detective](#detective) | [Amnesiac](#amnesiac)| | [Tiebreaker](#tiebreaker) |
+|  [Bomber](#bomber)  | [Detective](#detective) | [Amnesiac](#amnesiac)| |  |
 |  [Witch](#witch)| [Tracker](#tracker) |  [Agent](#agent) | |
 | [Poisoner](#poisoner) | [Swapper](#swapper)  | [Hitman](#hitman) |  |
 | | [Trapper](#trapper)   |[Glitch](#glitch) |  |
@@ -906,7 +906,8 @@ These vents only connect to each other, forming a new passway.
 ### **Team: Impostors**
 
 The Poisoner is an Impostor who has to poison another play instead of kill.\
-When they poison a player, the poisoned player dies either upon the start of the next meeting or after a set duration.
+When they poison a player, the poisoned player dies either upon the start of the next meeting or after a set duration.\
+If the poisoner is alive within the 4 last players, their kills will be direct rather than delayed.
 
 ### Game Options
 | Name | Description | Type | Default |
@@ -971,18 +972,6 @@ The Flash travels at a faster speed in comparison to a normal player.
 |----------|:-------------:|:------:|:------:|
 | Flash | The percentage probability of the Flash appearing | Percentage | 0% |
 | Speed | How fast the Flash moves in comparison to normal | Multiplier | 1.25x |
-
------------------------
-## Chameleon
-### **Applied to: All**
-The Chameleon becomes transparent when standing still for a short duration.
-### Game Options
-| Name | Description | Type | Default |
-|----------|:-------------:|:------:|:------:|
-| Chameleon | The percentage probability of the Chameleon appearing | Percentage | 0% |
-| Transparency Delay | The delay until the Chameleon starts turning transparent | Time | 5s |
-| Turn Transparent Duration | The duration of the Chameleon turning transparent | Time | 5s |
-| Final Opacity | The final opacity level of the Chameleon | Percentage | 20% |
 
 -----------------------
 

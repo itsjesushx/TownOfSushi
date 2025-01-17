@@ -92,7 +92,6 @@ namespace TownOfSushi.Roles
                         {
                             colour = Color.green;
                         }
-                        if (player.Is(AbilityEnum.Chameleon)) colour.a = GetAbility<Chameleon>(player).Opacity;
                         player.nameText().color = colour;
                     break;
                 }

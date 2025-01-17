@@ -43,6 +43,7 @@ namespace TownOfSushi.Roles
         private static List<GameObject> buttonPool = new List<GameObject>();
         public static void GenButton(Amnesiac role, int index, bool isDead)
         {
+            if (PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 4) return;
             if (role.Remembered) return;
             if (!isDead)
             {
@@ -340,11 +341,9 @@ namespace TownOfSushi.Roles
                        || role == RoleEnum.Hitman || role == RoleEnum.Vampire
                        || role == RoleEnum.Agent || role == RoleEnum.SerialKiller || role == RoleEnum.Juggernaut)
                     {
-                        if (CustomGameOptions.AmneTurnNeutAssassin)
+                        if (CustomGameOptions.AmneTurnNeutAssassin && !AbilityDictionary.ContainsKey(amnesiac.PlayerId))
                         {
-                            AbilityDictionary.Remove(amnesiac.PlayerId);
-                            var assassin = new Assassin(amnesiac);
-                            assassin.ReDoTaskText();
+                            _ = new Assassin(amnesiac);
                         }
                     }
                 }
@@ -362,11 +361,9 @@ namespace TownOfSushi.Roles
                         player.nameText().color = Colors.Impostor;
                     }
                 }
-                if (CustomGameOptions.AmneTurnImpAssassin)
+                if (CustomGameOptions.AmneTurnImpAssassin && !AbilityDictionary.ContainsKey(amnesiac.PlayerId))
                 {
-                    AbilityDictionary.Remove(amnesiac.PlayerId);
-                    var assassin = new Assassin(amnesiac);
-                    assassin.ReDoTaskText();
+                    _ = new Assassin(amnesiac);
                 }
                 if (amnesiac.Is(RoleEnum.Poisoner))
                 {
@@ -503,6 +500,7 @@ namespace TownOfSushi.Roles
                 var wardenRole = GetRole<Crusader>(amnesiac);
                 wardenRole.LastFortify = DateTime.UtcNow;
                 wardenRole.Fortified = null;
+                DestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(false);
             }
 
             else if (role == RoleEnum.Arsonist)

@@ -73,13 +73,6 @@ namespace TownOfSushi.Roles.Modifiers
             {
                 PlayerControl player = PlayerById(key);
                 player.transform.position = value;
-                if (player.Is(AbilityEnum.Chameleon))
-                {
-                    var shy = GetAbility<Chameleon>(player);
-                    shy.Opacity = 1f;
-                    ChameleonUpdate.SetVisiblity(player, shy.Opacity);
-                    shy.Moving = true;
-                }
                 if (PlayerControl.LocalPlayer == player) PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(value);
             }
 

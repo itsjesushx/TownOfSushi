@@ -175,20 +175,17 @@ namespace TownOfSushi.Roles
 
             if (MeetingHud.Instance != null) UpdateMeeting(MeetingHud.Instance, role);
 
-            if (role.Beloved != null && !CustomGameOptions.RomanticKnowsBelovedRole && !CamouflageUnCamouflagePatch.IsCamouflaged) 
-                role.Beloved.nameText().text += "<color=#FF66CCFF> ♥</color>";
+            if (!CustomGameOptions.RomanticKnowsBelovedRole && !CamouflageUnCamouflagePatch.IsCamouflaged) role.Beloved.nameText().text += "<color=#FF66CCFF> ♥</color>";
 
             if (role.Beloved == null || (!role.Beloved.Data.IsDead && !role.Beloved.Data.Disconnected)) return;
 
             StartRPC(CustomRPC.RomanticChangeRole, PlayerControl.LocalPlayer.PlayerId);
-            DestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(false);
 
             RomanticChangeRole(PlayerControl.LocalPlayer);
         }
 
         public static void RomanticChangeRole(PlayerControl player)
         {
-            var ga = GetRole<Romantic>(player);
             player.myTasks.RemoveAt(0);
             RoleDictionary.Remove(player.PlayerId);
 

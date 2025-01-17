@@ -274,11 +274,6 @@ namespace TownOfSushi.CustomOption
 
         public static CustomOption ButtonBarryOn;
 
-        public static CustomOption ChameleonOn;
-        public static CustomOption InvisDelay;
-        public static CustomOption TransformInvisDuration;
-        public static CustomOption FinalTransparency;
-
         public static CustomOption FlashOn;
         public static CustomOption FlashSpeed;
 
@@ -799,11 +794,6 @@ namespace TownOfSushi.CustomOption
             AssassinGuessNeutralEvil = CustomOption.Create(284, Types.ModifierAbility, "Can Guess Neutral Evil Roles", false);
 
             ButtonBarryOn = CustomOption.Create(285, Types.ModifierAbility, ColorString(Colors.ButtonBarry, "Button Barry"), 0f, 0f, 100f, 10f, null, true, format: "%");
-
-            ChameleonOn = CustomOption.Create(286, Types.ModifierAbility, ColorString(Colors.Chameleon, "Chameleon"), 0f, 0f, 100f, 10f, null, true, format: "%");
-            InvisDelay = CustomOption.Create(287, Types.ModifierAbility, "Transparency Delay", 5f, 1f, 15f, 1f, ChameleonOn, format: "s");
-            TransformInvisDuration = CustomOption.Create(288, Types.ModifierAbility, "Turn Transparent Duration", 5f, 1f, 15f, 1f, ChameleonOn, format: "s");
-            FinalTransparency = CustomOption.Create(289, Types.ModifierAbility, "Final Opacity", 20f, 0f, 80f, 10f, ChameleonOn, format: "%");
 
             DrunkOn = CustomOption.Create(290, Types.ModifierAbility, ColorString(Colors.Drunk, "Drunk"), 0f, 0f, 100f, 10f, null, true, format: "%");
             

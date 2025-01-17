@@ -207,14 +207,7 @@ namespace TownOfSushi.Roles
             
                 if (role.Blackmailed != null && !role.Blackmailed.Data.IsDead && !role.Blackmailed.Data.Disconnected)
                 {
-                    if (role.Blackmailed.GetCustomOutfitType() != CustomPlayerOutfitType.Camouflage &&
-                        role.Blackmailed.GetCustomOutfitType() != CustomPlayerOutfitType.Swooper)
-                    {
-                        var colour = new Color(0.3f, 0f, 0f);
-                        if (role.Blackmailed.Is(AbilityEnum.Chameleon)) colour.a = GetAbility<Chameleon>(role.Blackmailed).Opacity;
-                        role.Blackmailed.nameText().color = colour;
-                    }
-                    else role.Blackmailed.nameText().color = Color.clear;
+                    role.Blackmailed.nameText().color = Color.clear;
                 }
 
                 var imps = PlayerControl.AllPlayerControls.ToArray().Where(

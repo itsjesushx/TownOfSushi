@@ -54,8 +54,6 @@ namespace TownOfSushi
 
         Crewmate,
         Impostor,
-
-        Chameleon,
         None
     }
 
@@ -83,7 +81,6 @@ namespace TownOfSushi
         Sleuth,
         Tiebreaker,
         Multitasker,
-        Chameleon,
         Flash,                
         ButtonBarry,
         None
