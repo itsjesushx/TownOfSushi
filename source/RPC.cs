@@ -513,7 +513,7 @@ namespace TownOfSushi
                         ToggleZoom(reset : true);
                         JailChat.JailorMessage = false;
                         ResetWins();
-                        ExileControllerBeginPatch.lastExiled = null;
+                        ExileControllerPatch.lastExiled = null;
                         PatchKillTimer.GameStarted = false;
                         StartImitate.ImitatingPlayer = null;
                         AssassinExileControllerPatch.AssassinatedPlayers.Clear();
@@ -1033,7 +1033,7 @@ namespace TownOfSushi
                 }
                 else ShowRoundOneShield.FirstRoundShielded = null;
                 ShowRoundOneShield.DiedFirst = "";
-                ExileControllerBeginPatch.lastExiled = null;
+                ExileControllerPatch.lastExiled = null;
                 PatchKillTimer.GameStarted = false;
                 ResetWins();
                 JailChat.JailorMessage = false;
