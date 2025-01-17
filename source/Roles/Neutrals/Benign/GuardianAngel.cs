@@ -203,7 +203,7 @@ namespace TownOfSushi.Roles
                     player.NameText.text += "<color=#FFFFFFFF> [★]</color>";
         }
 
-        private static void Postfix(HudManager __instance)
+        private static void Postfix()
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
             if (PlayerControl.LocalPlayer == null) return;
@@ -217,7 +217,7 @@ namespace TownOfSushi.Roles
 
             if (!CustomGameOptions.GAKnowsTargetRole && !CamouflageUnCamouflagePatch.IsCamouflaged) role.target.nameText().text += "<color=#FFFFFFFF> ★</color>";
 
-            if (!role.target.Data.IsDead && !role.target.Data.Disconnected) return;
+            if (role.target == null || (!role.target.Data.IsDead && !role.target.Data.Disconnected)) return;
 
             StartRPC(CustomRPC.GuardianAngelChangeRole, PlayerControl.LocalPlayer.PlayerId);
 
@@ -242,12 +242,6 @@ namespace TownOfSushi.Roles
             else if (CustomGameOptions.GaOnTargetDeath == BecomeOptions.Amnesiac)
             {
                 var amnesiac = new Amnesiac(player);
-                amnesiac.SpawnedAs = false;
-                amnesiac.ReDoTaskText();
-            }
-            else if (CustomGameOptions.GaOnTargetDeath == BecomeOptions.Framer)
-            {
-                var amnesiac = new Framer(player);
                 amnesiac.SpawnedAs = false;
                 amnesiac.ReDoTaskText();
             }

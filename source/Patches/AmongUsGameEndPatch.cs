@@ -5,346 +5,150 @@ namespace TownOfSushi.Patches
     {
         public static void Postfix()
         {
-            Il2CppSystem.Collections.Generic.List<int> losers = new Il2CppSystem.Collections.Generic.List<int>();
-            foreach (var role in GetRoles(RoleEnum.Amnesiac))
+            try
             {
-                var amne = (Amnesiac)role;
-                losers.Add(amne.Player.GetDefaultOutfit().ColorId);
-            }
-            foreach (var role in GetRoles(RoleEnum.GuardianAngel))
-            {
-                var ga = (GuardianAngel)role;
-                losers.Add(ga.Player.GetDefaultOutfit().ColorId);
-            }
-            foreach (var role in GetRoles(RoleEnum.Romantic))
-            {
-                var Romantic = (Romantic)role;
-                losers.Add(Romantic.Player.GetDefaultOutfit().ColorId);
-            }
-            foreach (var role in GetRoles(RoleEnum.Doomsayer))
-            {
-                var doom = (Doomsayer)role;
-                losers.Add(doom.Player.GetDefaultOutfit().ColorId);
-            }
-            foreach (var role in GetRoles(RoleEnum.Executioner))
-            {
-                var exe = (Executioner)role;
-                losers.Add(exe.Player.GetDefaultOutfit().ColorId);
-            }
-            foreach (var role in GetRoles(RoleEnum.Jester))
-            {
-                var jest = (Jester)role;
-                losers.Add(jest.Player.GetDefaultOutfit().ColorId);
-            }
-            foreach (var role in GetRoles(RoleEnum.Agent))
-            {
-                var agent = (Agent)role;
-                losers.Add(agent.Player.GetDefaultOutfit().ColorId);
-            }
-            foreach (var role in GetRoles(RoleEnum.Vulture))
-            {
-                var sc = (Vulture)role;
-                losers.Add(sc.Player.GetDefaultOutfit().ColorId);
-            }
-            foreach (var role in GetRoles(RoleEnum.Hitman))
-            {
-                var sc = (Hitman)role;
-                losers.Add(sc.Player.GetDefaultOutfit().ColorId);
-            }
-            foreach (var role in GetRoles(RoleEnum.Arsonist))
-            {
-                var arso = (Arsonist)role;
-                losers.Add(arso.Player.GetDefaultOutfit().ColorId);
-            }
-            foreach (var role in GetRoles(RoleEnum.Juggernaut))
-            {
-                var jugg = (Juggernaut)role;
-                losers.Add(jugg.Player.GetDefaultOutfit().ColorId);
-            }
-            foreach (var role in GetRoles(RoleEnum.Pestilence))
-            {
-                var pest = (Pestilence)role;
-                losers.Add(pest.Player.GetDefaultOutfit().ColorId);
-            }
-            foreach (var role in GetRoles(RoleEnum.Plaguebearer))
-            {
-                var pb = (Plaguebearer)role;
-                losers.Add(pb.Player.GetDefaultOutfit().ColorId);
-            }
-            foreach (var role in GetRoles(RoleEnum.Framer))
-            {
-                var pb = (Framer)role;
-                losers.Add(pb.Player.GetDefaultOutfit().ColorId);
-            }
-            foreach (var role in GetRoles(RoleEnum.Glitch))
-            {
-                var glitch = (Glitch)role;
-                losers.Add(glitch.Player.GetDefaultOutfit().ColorId);
-            }
-            foreach (var role in GetRoles(RoleEnum.Vampire))
-            {
-                var vamp = (Vampire)role;
-                losers.Add(vamp.Player.GetDefaultOutfit().ColorId);
-            }
-            foreach (var role in GetRoles(RoleEnum.Werewolf))
-            {
-                var ww = (Werewolf)role;
-                losers.Add(ww.Player.GetDefaultOutfit().ColorId);
-            }
+                Il2CppSystem.Collections.Generic.List<int> losers = new Il2CppSystem.Collections.Generic.List<int>();
 
-            var toRemoveWinners = EndGameResult.CachedWinners.ToArray().Where(o => losers.Contains(o.ColorId)).ToArray();
-            for (int i = 0; i < toRemoveWinners.Count(); i++) EndGameResult.CachedWinners.Remove(toRemoveWinners[i]);
-
-            if (NobodyWins)
-            {
-                EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
-                return;
-            }
-
-            if (JesterWin)
-            {
-                EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
-                foreach (var RoleGetter in GetRoles(RoleEnum.Jester))
+                foreach (var roleEnum in new RoleEnum[]
                 {
-                    var role = (Jester)RoleGetter;
-                    var roleData = new CachedPlayerData(role.Player.Data);
-                    if (PlayerControl.LocalPlayer != role.Player) roleData.IsYou = false;
-                    EndGameResult.CachedWinners.Add(roleData);
-                }
-            }
-
-            if (WerewolfWin)
-            {
-                EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
-                foreach (var RoleGetter in GetRoles(RoleEnum.Werewolf))
+                    RoleEnum.Amnesiac, RoleEnum.GuardianAngel, RoleEnum.Romantic, RoleEnum.Doomsayer, RoleEnum.Executioner,
+                    RoleEnum.Jester, RoleEnum.Agent, RoleEnum.Vulture, RoleEnum.Hitman, RoleEnum.Arsonist,
+                    RoleEnum.Juggernaut, RoleEnum.Pestilence, RoleEnum.Plaguebearer, RoleEnum.Glitch,
+                    RoleEnum.Vampire, RoleEnum.Werewolf
+                })
                 {
-                    var role = (Werewolf)RoleGetter;
-                    var roleData = new CachedPlayerData(role.Player.Data);
-                    if (PlayerControl.LocalPlayer != role.Player) roleData.IsYou = false;
-                    EndGameResult.CachedWinners.Add(roleData);
-                }
-            }
-
-            if (VultureWin)
-            {
-                EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
-                foreach (var RoleGetter in GetRoles(RoleEnum.Vulture))
-                {
-                    var role = (Vulture)RoleGetter;
-                    var roleData = new CachedPlayerData(role.Player.Data);
-                    if (PlayerControl.LocalPlayer != role.Player) roleData.IsYou = false;
-                    EndGameResult.CachedWinners.Add(roleData);
-                }
-            }
-
-            if (JuggernautWin)
-            {
-                EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
-                foreach (var RoleGetter in GetRoles(RoleEnum.Juggernaut))
-                {
-                    var role = (Juggernaut)RoleGetter;
-                    var roleData = new CachedPlayerData(role.Player.Data);
-                    if (PlayerControl.LocalPlayer != role.Player) roleData.IsYou = false;
-                    EndGameResult.CachedWinners.Add(roleData);
-                }
-            }
-
-            if (PestilenceWin)
-            {
-                EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
-                foreach (var RoleGetter in GetRoles(RoleEnum.Pestilence))
-                {
-                    var role = (Pestilence)RoleGetter;
-                    var roleData = new CachedPlayerData(role.Player.Data);
-                    if (PlayerControl.LocalPlayer != role.Player) roleData.IsYou = false;
-                    EndGameResult.CachedWinners.Add(roleData);
-                }
-            }
-
-            if (VampireWins)
-            {
-                EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
-                foreach (var RoleGetter in GetRoles(RoleEnum.Vampire))
-                {
-                    var role = (Vampire)RoleGetter;
-                    var roleData = new CachedPlayerData(role.Player.Data);
-                    if (PlayerControl.LocalPlayer != role.Player) roleData.IsYou = false;
-                    EndGameResult.CachedWinners.Add(roleData);
-                }
-            }
-
-            if (PlaguebearerWin)
-            {
-                EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
-                foreach (var RoleGetter in GetRoles(RoleEnum.Plaguebearer))
-                {
-                    var role = (Plaguebearer)RoleGetter;
-                    var roleData = new CachedPlayerData(role.Player.Data);
-                    if (PlayerControl.LocalPlayer != role.Player) roleData.IsYou = false;
-                    EndGameResult.CachedWinners.Add(roleData);
-                }
-            }
-
-            if (GlitchWin)
-            {
-                EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
-                foreach (var RoleGetter in GetRoles(RoleEnum.Glitch))
-                {
-                    var role = (Glitch)RoleGetter;
-                    var roleData = new CachedPlayerData(role.Player.Data);
-                    if (PlayerControl.LocalPlayer != role.Player) roleData.IsYou = false;
-                    EndGameResult.CachedWinners.Add(roleData);
-                }
-            }
-
-            if (ArsonistWin)
-            {
-                EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
-                foreach (var RoleGetter in GetRoles(RoleEnum.Arsonist))
-                {
-                    var role = (Arsonist)RoleGetter;
-                    var roleData = new CachedPlayerData(role.Player.Data);
-                    if (PlayerControl.LocalPlayer != role.Player) roleData.IsYou = false;
-                    EndGameResult.CachedWinners.Add(roleData);
-                }
-            }
-
-            if (AgentWin)
-            {
-                EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
-                foreach (var RoleGetter in GetRoles(RoleEnum.Agent))
-                {
-                    var role = (Agent)RoleGetter;
-                    var roleData = new CachedPlayerData(role.Player.Data);
-                    if (PlayerControl.LocalPlayer != role.Player) roleData.IsYou = false;
-                    EndGameResult.CachedWinners.Add(roleData);
-                }
-            }
-
-            if (SerialKillerWin)
-            {
-                EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
-                foreach (var RoleGetter in GetRoles(RoleEnum.SerialKiller))
-                {
-                    var role = (SerialKiller)RoleGetter;
-                    var roleData = new CachedPlayerData(role.Player.Data);
-                    if (PlayerControl.LocalPlayer != role.Player) roleData.IsYou = false;
-                    EndGameResult.CachedWinners.Add(roleData);
-                }
-            }
-
-            if (ExecutionerWin)
-            {
-                EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
-                foreach (var RoleGetter in GetRoles(RoleEnum.Executioner))
-                {
-                    var role = (Executioner)RoleGetter;
-                    var roleData = new CachedPlayerData(role.Player.Data);
-                    if (PlayerControl.LocalPlayer != role.Player) roleData.IsYou = false;
-                    EndGameResult.CachedWinners.Add(roleData);
-                }
-            }
-            
-
-            if (DoomsayerWin)
-            {
-                EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
-                foreach (var RoleGetter in GetRoles(RoleEnum.Doomsayer))
-                {
-                    var role = (Doomsayer)RoleGetter;
-                    var roleData = new CachedPlayerData(role.Player.Data);
-                    if (PlayerControl.LocalPlayer != role.Player) roleData.IsYou = false;
-                    EndGameResult.CachedWinners.Add(roleData);
-                }
-            }
-
-            if (FramerWin)
-            {
-                EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
-                foreach (var RoleGetter in GetRoles(RoleEnum.Framer))
-                {
-                    var role = (Framer)RoleGetter;
-                    var roleData = new CachedPlayerData(role.Player.Data);
-                    if (PlayerControl.LocalPlayer != role.Player) roleData.IsYou = false;
-                    EndGameResult.CachedWinners.Add(roleData);
-                }
-            }
-
-            if (HitmanWin)
-            {
-                EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
-                foreach (var role in GetRoles(RoleEnum.Hitman))
-                {
-                    var hit = (Hitman)role;
-                    var hitData = new CachedPlayerData(hit.Player.Data);
-                    if (PlayerControl.LocalPlayer != hit.Player) hitData.IsYou = false;
-                    EndGameResult.CachedWinners.Add(hitData);
-                }
-            }
-
-            if (CrewmatesWin)
-            {
-                EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
-                foreach (var faction in GetFactions(Faction.Crewmates))
-                {
-                    var crewData = new CachedPlayerData(faction.Player.Data);
-                    if (PlayerControl.LocalPlayer != faction.Player) crewData.IsYou = false;
-                        EndGameResult.CachedWinners.Add(crewData);
-                }
-            }
-
-            if (ImpostorsWin)
-            {
-                EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
-                foreach (var faction in GetFactions(Faction.Impostors))
-                {
-                    var ImpData = new CachedPlayerData(faction.Player.Data);
-                    if (PlayerControl.LocalPlayer != faction.Player) ImpData.IsYou = false;
-                        EndGameResult.CachedWinners.Add(ImpData);
-                }
-            }
-
-            foreach (var role in GetRoles(RoleEnum.Romantic))
-            {
-                var rom = (Romantic)role;
-                var romTargetData = new CachedPlayerData(rom.Beloved.Data);
-                foreach (CachedPlayerData winner in EndGameResult.CachedWinners.ToArray())
-                {
-                    if (romTargetData.ColorId == winner.ColorId)
+                    foreach (var role in GetRoles(roleEnum) ?? new List<Role>())
                     {
-                        var isImp = EndGameResult.CachedWinners[0].IsImpostor;
-                        var romWinData = new CachedPlayerData(rom.Player.Data);
-                        if (isImp) romWinData.IsImpostor = true;
-                        if (PlayerControl.LocalPlayer != rom.Player) romWinData.IsYou = false;
-                        EndGameResult.CachedWinners.Add(romWinData);
+                        if (role.Player?.Data?.IsDead == false && role.Player?.GetDefaultOutfit() != null)
+                        {
+                            losers.Add(role.Player.GetDefaultOutfit().ColorId);
+                        }
                     }
                 }
-            }
-            foreach (var role in GetRoles(RoleEnum.Amnesiac))
-            {
-                var Amnesiac = (Amnesiac)role;
-                if (!Amnesiac.Player.Data.IsDead && !Amnesiac.Player.Data.Disconnected)
+
+                var toRemoveWinners = EndGameResult.CachedWinners.ToArray()
+                    .Where(o => losers.Contains(o.ColorId))
+                    .ToArray();
+
+                foreach (var winner in toRemoveWinners)
                 {
-                    var isImp = EndGameResult.CachedWinners.Count != 0 && EndGameResult.CachedWinners[0].IsImpostor;
-                    var AmnesiacWinData = new CachedPlayerData(Amnesiac.Player.Data);
-                    if (isImp) AmnesiacWinData.IsImpostor = true;
-                    if (PlayerControl.LocalPlayer != Amnesiac.Player) AmnesiacWinData.IsYou = false;
-                    EndGameResult.CachedWinners.Add(AmnesiacWinData);
+                    EndGameResult.CachedWinners.Remove(winner);
+                }
+
+                if (NobodyWins)
+                {
+                    EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
+                    return;
+                }
+
+                var winConditions = new Dictionary<Func<bool>, Action>
+                {
+                    { () => JesterWin, () => AddWinners(RoleEnum.Jester) },
+                    { () => WerewolfWin, () => AddWinners(RoleEnum.Werewolf) },
+                    { () => VultureWin, () => AddWinners(RoleEnum.Vulture) },
+                    { () => JuggernautWin, () => AddWinners(RoleEnum.Juggernaut) },
+                    { () => PestilenceWin, () => AddWinners(RoleEnum.Pestilence) },
+                    { () => VampireWins, () => AddWinners(RoleEnum.Vampire) },
+                    { () => PlaguebearerWin, () => AddWinners(RoleEnum.Plaguebearer) },
+                    { () => GlitchWin, () => AddWinners(RoleEnum.Glitch) },
+                    { () => ArsonistWin, () => AddWinners(RoleEnum.Arsonist) },
+                    { () => AgentWin, () => AddWinners(RoleEnum.Agent) },
+                    { () => SerialKillerWin, () => AddWinners(RoleEnum.SerialKiller) },
+                    { () => ExecutionerWin, () => AddWinners(RoleEnum.Executioner) },
+                    { () => DoomsayerWin, () => AddWinners(RoleEnum.Doomsayer) },
+                    { () => HitmanWin, () => AddWinners(RoleEnum.Hitman) },
+                    { () => CrewmatesWin, () => AddWinners(Faction.Crewmates) },
+                    { () => ImpostorsWin, () => AddWinners(Faction.Impostors) }
+                };
+
+                foreach (var condition in winConditions)
+                {
+                    if (condition.Key())
+                    {
+                        condition.Value();
+                        break;
+                    }
+                }
+
+                AddSpecialWinners(RoleEnum.Amnesiac, (role) => !role.Player.Data.IsDead && !role.Player.Data.Disconnected);
+                AddGuardianAngelWinners();
+                AddRomanticWinners();
+            }
+            catch (Exception ex)
+            {
+                TownOfSushi.Logger.LogError($"Error in OnGameEndPatch: {ex}");
+            }
+        }
+
+        private static void AddWinners(RoleEnum roleEnum)
+        {
+            EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
+            foreach (var role in GetRoles(roleEnum) ?? new List<Role>())
+            {
+                var roleData = new CachedPlayerData(role.Player.Data);
+                if (PlayerControl.LocalPlayer != role.Player) roleData.IsYou = false;
+                EndGameResult.CachedWinners.Add(roleData);
+            }
+        }
+
+        private static void AddWinners(Faction faction)
+        {
+            EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
+            foreach (var player in GetFactions(faction) ?? new List<Role>())
+            {
+                var roleData = new CachedPlayerData(player.Player.Data);
+                if (PlayerControl.LocalPlayer != player.Player) roleData.IsYou = false;
+                EndGameResult.CachedWinners.Add(roleData);
+            }
+        }
+
+        private static void AddSpecialWinners(RoleEnum roleEnum, Func<Role, bool> condition)
+        {
+            foreach (var role in GetRoles(roleEnum) ?? new List<Role>())
+            {
+                if (condition(role))
+                {
+                    var isImp = EndGameResult.CachedWinners.Count > 0 && EndGameResult.CachedWinners[0].IsImpostor;
+                    var roleData = new CachedPlayerData(role.Player.Data) { IsImpostor = isImp };
+                    if (PlayerControl.LocalPlayer != role.Player) roleData.IsYou = false;
+                    EndGameResult.CachedWinners.Add(roleData);
                 }
             }
-            foreach (var role in GetRoles(RoleEnum.GuardianAngel))
+        }
+
+        private static void AddGuardianAngelWinners()
+        {
+            foreach (var role in GetRoles(RoleEnum.GuardianAngel) ?? new List<Role>())
             {
                 var ga = (GuardianAngel)role;
                 var gaTargetData = new CachedPlayerData(ga.target.Data);
-                foreach (CachedPlayerData winner in EndGameResult.CachedWinners.ToArray())
+                foreach (var winner in EndGameResult.CachedWinners.ToArray())
                 {
                     if (gaTargetData.ColorId == winner.ColorId)
                     {
                         var isImp = EndGameResult.CachedWinners[0].IsImpostor;
-                        var gaWinData = new CachedPlayerData(ga.Player.Data);
-                        if (isImp) gaWinData.IsImpostor = true;
+                        var gaWinData = new CachedPlayerData(ga.Player.Data) { IsImpostor = isImp };
                         if (PlayerControl.LocalPlayer != ga.Player) gaWinData.IsYou = false;
                         EndGameResult.CachedWinners.Add(gaWinData);
+                    }
+                }
+            }
+        }
+
+        private static void AddRomanticWinners()
+        {
+            foreach (var role in GetRoles(RoleEnum.Romantic) ?? new List<Role>())
+            {
+                var romantic = (Romantic)role;
+                var romanticBelovedData = new CachedPlayerData(romantic.Beloved.Data);
+                foreach (var winner in EndGameResult.CachedWinners.ToArray())
+                {
+                    if (romanticBelovedData.ColorId == winner.ColorId)
+                    {
+                        var isImp = EndGameResult.CachedWinners[0].IsImpostor;
+                        var romanticWinData = new CachedPlayerData(romantic.Player.Data) { IsImpostor = isImp };
+                        if (PlayerControl.LocalPlayer != romantic.Player) romanticWinData.IsYou = false;
+                        EndGameResult.CachedWinners.Add(romanticWinData);
                     }
                 }
             }

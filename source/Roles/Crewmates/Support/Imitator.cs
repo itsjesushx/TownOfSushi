@@ -213,12 +213,12 @@ namespace TownOfSushi.Roles
 
         public static void Postfix(ExileController __instance) => ImitatorExileControllerPostfix(__instance);
 
-        [HarmonyPatch(typeof(Object), nameof(Object.Destroy), new Type[] { typeof(GameObject) })]
+      /*  [HarmonyPatch(typeof(Object), nameof(Object.Destroy), new Type[] { typeof(GameObject) })]
         public static void Prefix(GameObject obj)
         {
             if (!SubmergedCompatibility.Loaded || GameOptionsManager.Instance?.currentNormalGameOptions?.MapId != 6) return;
             if (obj.name?.Contains("ExileCutscene") == true) ImitatorExileControllerPostfix(ExileControllerPatch.lastExiled);
-        }
+        }*/
 
         public static void Imitate(Imitator imitator)
         {

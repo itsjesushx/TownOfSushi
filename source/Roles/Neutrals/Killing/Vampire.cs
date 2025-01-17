@@ -52,7 +52,7 @@ namespace TownOfSushi.Roles
             if ((role.ClosestPlayer.Is(Faction.Crewmates) || (role.ClosestPlayer.Is(RoleAlignment.NeutralBenign)
                 && CustomGameOptions.CanBiteNeutralBenign) || (role.ClosestPlayer.Is(RoleAlignment.NeutralEvil)
                 && CustomGameOptions.CanBiteNeutralEvil)) &&
-                aliveVamps.Count == 1 && vamps.Count < CustomGameOptions.MaxVampiresPerGame && !ShowRoundOneShield.FirstRoundShielded)
+                aliveVamps.Count == 1 && vamps.Count < CustomGameOptions.MaxVampiresPerGame && !ShowRoundOneShield.FirstRoundShielded && !role.ClosestPlayer.Is(AbilityEnum.Chameleon))
             {
                 var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer);
                 if (interact[3] == true)
@@ -171,12 +171,6 @@ namespace TownOfSushi.Roles
                     var trapperRole = GetRole<Trapper>(PlayerControl.LocalPlayer);
                     Object.Destroy(trapperRole.UsesText);
                     trapperRole.traps.ClearTraps();
-                }
-
-                if (PlayerControl.LocalPlayer.Is(RoleEnum.Framer))
-                {
-                    var framerRole = GetRole<Framer>(PlayerControl.LocalPlayer);
-                    framerRole.Target = null;
                 }
 
                 if (PlayerControl.LocalPlayer.Is(RoleEnum.Crusader))

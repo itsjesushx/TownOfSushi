@@ -247,14 +247,7 @@ namespace TownOfSushi
                 return exeTarget != null && player.PlayerId == exeTarget.PlayerId;
             });
         }
-        public static bool IsFramerTarget(this PlayerControl player)
-        {
-            return GetRoles(RoleEnum.Framer).Any(role =>
-            {
-                var exeTarget = ((Framer)role).Target;
-                return exeTarget != null && player.PlayerId == exeTarget.PlayerId;
-            });
-        }
+
         public static bool IsBeloved(this PlayerControl player)
         {
             return GetRoles(RoleEnum.Romantic).Any(role =>
@@ -1070,7 +1063,6 @@ namespace TownOfSushi
 
             JesterWin = false;
             ExecutionerWin = false;
-            FramerWin = false;
             DoomsayerWin = false;
             VultureWin = false;
         }
@@ -1531,11 +1523,6 @@ namespace TownOfSushi
             {
                 var arsonist = GetRole<Arsonist>(PlayerControl.LocalPlayer);
                 arsonist.LastDoused = DateTime.UtcNow;
-            }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Framer))
-            {
-                var arsonist = GetRole<Framer>(PlayerControl.LocalPlayer);
-                arsonist.LastFramed = DateTime.UtcNow;
             }
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Vulture))
             {

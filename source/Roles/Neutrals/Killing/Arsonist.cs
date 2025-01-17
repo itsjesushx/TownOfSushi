@@ -93,12 +93,12 @@
 
         public static void Postfix(ExileController __instance) => ExileControllerPostfix(__instance);
 
-        [HarmonyPatch(typeof(Object), nameof(Object.Destroy), new Type[] { typeof(GameObject) })]
+       /* [HarmonyPatch(typeof(Object), nameof(Object.Destroy), new Type[] { typeof(GameObject) })]
         public static void Prefix(GameObject obj)
         {
             if (!SubmergedCompatibility.Loaded || GameOptionsManager.Instance?.currentNormalGameOptions?.MapId != 6) return;
             if (obj.name?.Contains("ExileCutscene") == true) ExileControllerPostfix(ExileControllerPatch.lastExiled);
-        }
+        }*/
     }
 
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
@@ -125,7 +125,7 @@
             {
                 var player = PlayerById(player1);
                 var data = player?.Data;
-                if (data == null || data.Disconnected || data.IsDead || PlayerControl.LocalPlayer.Data.IsDead)
+                if ((data == null || data.Disconnected || data.IsDead || PlayerControl.LocalPlayer.Data.IsDead) && player != role.Player)
                     continue;
                 var nameText = player.nameText();
                 if (nameText != null)

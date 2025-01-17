@@ -336,10 +336,6 @@ namespace TownOfSushi.CustomOption
         public static CustomOption EatArrows;
         public static CustomOption EatArrowDelay;
 
-        public static CustomOption FramerOn;
-        public static CustomOption FramerCd;
-        public static CustomOption FramerImpVision;
-
         public static CustomOption DoomsayerOn;
         public static CustomOption ObserveCooldown;
         public static CustomOption DoomsayerGuessNeutralBenign;
@@ -599,7 +595,7 @@ namespace TownOfSushi.CustomOption
             ProtectKCReset = CustomOption.Create(171, Types.Neutral, "Kill Cooldown Reset When Protected", 2.5f, 0f, 15f, 0.5f, GuardianAngelOn, format: "s");
             MaxProtects = CustomOption.Create(172, Types.Neutral, "Maximum Number Of Protects", 5, 1, 15, 1, GuardianAngelOn);
             ShowProtect = CustomOption.Create(173, Types.Neutral, "Show Protected Player", new[] { "Self", "Guardian Angel", "Self+GA", "Everyone" }, GuardianAngelOn);
-            GaOnTargetDeath = CustomOption.Create(174, Types.Neutral, "GA Becomes On Target Dead", new[] { "Crew", "Amnesiac", "Jester", "Framer" }, GuardianAngelOn);
+            GaOnTargetDeath = CustomOption.Create(174, Types.Neutral, "GA Becomes On Target Dead", new[] { "Crew", "Amnesiac", "Jester"}, GuardianAngelOn);
             GATargetKnows = CustomOption.Create(175, Types.Neutral, "Target Knows GA Exists", false, GuardianAngelOn);
             GAKnowsTargetRole = CustomOption.Create(176, Types.Neutral, "GA Knows Targets Role", false, GuardianAngelOn);
             EvilTargetPercent = CustomOption.Create(177, Types.Neutral, "Evil Target Chance", 0f, 0f, 100f, 10f, GuardianAngelOn, format: "%");
@@ -626,12 +622,8 @@ namespace TownOfSushi.CustomOption
             
             
             ExecutionerOn = CustomOption.Create(148, Types.Neutral,  ColorString(Colors.Executioner, "Executioner"), 0f, 0f, 100f, 10f, null, true, format: "%");
-            OnTargetDead = CustomOption.Create(149, Types.Neutral, "Executioner Becomes On Target Dead", new[] { "Crew", "Amnesiac", "Jester", "Framer" }, ExecutionerOn);
+            OnTargetDead = CustomOption.Create(149, Types.Neutral, "Executioner Becomes On Target Dead", new[] { "Crew", "Amnesiac", "Jester" }, ExecutionerOn);
             ExecutionerButton = CustomOption.Create(150, Types.Neutral, "Executioner Can Button", true, ExecutionerOn);
-
-            FramerOn = CustomOption.Create(1582, Types.Neutral, ColorString(Colors.Framer, "Framer"), 0f, 0f, 100f, 10f, null, true, format: "%");
-            FramerCd = CustomOption.Create(1591, Types.Neutral, "Cooldown", 10f, 10f, 60f, 2.5f, FramerOn, format: "s");
-            FramerImpVision = CustomOption.Create(1603, Types.Neutral, "Has Impostor Vision", false, FramerOn);
 
             JesterOn = CustomOption.Create(151, Types.Neutral, ColorString(Colors.Jester, "Jester"), 0f, 0f, 100f, 10f, null, true, format: "%");
             JesterButton = CustomOption.Create(152, Types.Neutral, "Can Button", true, JesterOn);

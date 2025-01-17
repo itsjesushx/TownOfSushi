@@ -101,12 +101,6 @@ namespace TownOfSushi.Roles
                 amnesiac.SpawnedAs = false;
                 amnesiac.ReDoTaskText();
             }
-            else if (CustomGameOptions.OnTargetDead == OnTargetDead.Framer)
-            {
-                var amnesiac = new Framer(player);
-                amnesiac.SpawnedAs = false;
-                amnesiac.ReDoTaskText();
-            }
             else
             {
                 new Crewmate(player);

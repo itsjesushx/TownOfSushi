@@ -25,13 +25,6 @@
                 __instance.KillButton.graphic.sprite = TownOfSushi.SeerSprite;
                 flag = true;
             }
-            else if (PlayerControl.LocalPlayer.Is(RoleEnum.Framer))
-            {
-                __instance.KillButton.graphic.sprite = __instance.KillButton.graphic.sprite;
-                __instance.KillButton.buttonLabelText.gameObject.SetActive(true);
-                __instance.KillButton.buttonLabelText.text = "FRAME";
-                flag = true;
-            }
             else if (PlayerControl.LocalPlayer.Is(RoleEnum.Seer))
             {
                 __instance.KillButton.graphic.sprite = TownOfSushi.SeerSprite;
@@ -150,7 +143,7 @@
             {
                 __instance.ImpostorVentButton.transform.localPosition = new Vector3(-2f, 0f, 0f);
             }
-            else if (PlayerControl.LocalPlayer.Is(RoleEnum.SerialKiller)  || PlayerControl.LocalPlayer.Is(RoleEnum.Poisoner))
+            else if (PlayerControl.LocalPlayer.Is(RoleEnum.SerialKiller)  || PlayerControl.LocalPlayer.Is(RoleEnum.Poisoner) || PlayerControl.LocalPlayer.Is(RoleEnum.Arsonist))
             {
                 __instance.ImpostorVentButton.transform.localPosition = new Vector3(-1f, 1f, 0f);
             }

@@ -43,6 +43,10 @@ namespace TownOfSushi.Roles
             {
                 TimeRemaining = 0;
             }
+            if (PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 2 && !Player.Data.IsDead)
+            {
+                TimeRemaining = 0;
+            }
             if (TimeRemaining <= 0)
             {
                 PoisonKill();

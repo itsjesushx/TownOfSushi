@@ -527,14 +527,6 @@ namespace TownOfSushi.Roles
                 gaRole.MaxUses = CustomGameOptions.MaxProtects;
             }
 
-            else if (role == RoleEnum.Framer)
-            {
-                var FramerRole = GetRole<Framer>(amnesiac);
-                FramerRole.LastFramed = DateTime.UtcNow;
-                FramerRole.HasFrameTarget = false;
-                FramerRole.Target = null;
-            }
-
             else if (role == RoleEnum.Glitch)
             {
                 var glitchRole = GetRole<Glitch>(amnesiac);
@@ -694,44 +686,40 @@ namespace TownOfSushi.Roles
     [HarmonyPatch(typeof(AirshipExileController), nameof(AirshipExileController.WrapUpAndSpawn))]
     public static class AmnesiacAirshipExileController_WrapUpAndSpawn
     {
-        public static void Postfix(AirshipExileController __instance) => StartRemember.ExileControllerPostfix(__instance);
+        public static void Postfix(AirshipExileController __instance) => StartRemember.AmnesiacExileControllerPostfix(__instance);
     }
     
     [HarmonyPatch(typeof(ExileController), nameof(ExileController.WrapUp))]
     public static class StartRemember
     {
-        public static PlayerControl RememberingPlayer;
-        public static void ExileControllerPostfix(ExileController __instance)
+        public static void AmnesiacExileControllerPostfix(ExileController __instance)
         {
             var exiled = __instance.initData.networkedPlayer?.Object;
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Amnesiac)) return;
             if (PlayerControl.LocalPlayer.Data.IsDead || PlayerControl.LocalPlayer.Data.Disconnected) return;
             if (exiled == PlayerControl.LocalPlayer) return;
             var amnesiac = GetRole<Amnesiac>(PlayerControl.LocalPlayer);
-
-            var playerId = amnesiac.ToRemember.PlayerId;
-            var player = PlayerById(playerId);
             if (amnesiac.ToRemember == null) return;
 
-            StartRPC(CustomRPC.StartRemember, PlayerControl.LocalPlayer.PlayerId, playerId);
-            RememberRole.Remember(amnesiac, player);
+            StartRPC(CustomRPC.StartRemember, PlayerControl.LocalPlayer.PlayerId, amnesiac.ToRemember.PlayerId);
+            RememberRole.Remember(amnesiac, amnesiac.ToRemember);
             amnesiac.Remembered = true;
         }
 
         public static void Postfix(ExileController __instance)
         {    
             if (__instance == null) return;    
-            ExileControllerPostfix(__instance);
+            AmnesiacExileControllerPostfix(__instance);
         }
 
-        [HarmonyPatch(typeof(Object), nameof(Object.Destroy), new Type[] { typeof(GameObject) })]
+      /*  [HarmonyPatch(typeof(Object), nameof(Object.Destroy), new Type[] { typeof(GameObject) })]
         public static void Prefix(GameObject obj)
         {    
             if (!SubmergedCompatibility.Loaded || GameOptionsManager.Instance?.currentNormalGameOptions?.MapId != 6) return;
-            if (obj.name?.Contains("ExileCutscene") == true && ExileControllerPatch.lastExiled != null)    
+            if (obj.name?.Contains("ExileCutscene") == true && ExileControllerBeginPatch.lastExiled != null)    
             {
-                ExileControllerPostfix(ExileControllerPatch.lastExiled);    
+                AmnesiacExileControllerPostfix(ExileControllerBeginPatch.lastExiled);    
             }
-        }
+        }*/
     }
 }

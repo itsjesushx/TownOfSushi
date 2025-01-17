@@ -42,7 +42,6 @@
         public readonly static Color32  GuardianAngel = new Color32(255, 255, 255, byte.MaxValue);
         public readonly static Color32  Plaguebearer = new Color32(230, 255, 179, byte.MaxValue);
         public readonly static Color32  Pestilence = new Color32(66, 66, 66, byte.MaxValue);
-        public readonly static Color32 Framer = new Color32(237, 228, 97, byte.MaxValue);
         public readonly static Color32  Werewolf = new Color32(168, 102, 41, byte.MaxValue);
         public readonly static Color32  Vulture = new Color32(140, 64, 5, byte.MaxValue);
         public readonly static Color32  Doomsayer = new Color32(0, 255, 128, byte.MaxValue);

@@ -157,27 +157,28 @@ namespace TownOfSushi.Roles
     {
         private static void UpdateMeeting(MeetingHud __instance, Romantic role)
         {
-            if (CustomGameOptions.GAKnowsTargetRole) return;
+            if (CustomGameOptions.RomanticKnowsBelovedRole) return;
             foreach (var player in __instance.playerStates)
                 if (player.TargetPlayerId == role.Beloved.PlayerId)
                     player.NameText.text += "<color=#FF66CCFF> [♥]</color>";
         }
 
-        private static void Postfix(HudManager __instance)
+        private static void Postfix()
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
+            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Romantic)) return;
             if (PlayerControl.LocalPlayer == null) return;
             if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Romantic)) return;
             if (PlayerControl.LocalPlayer.Data.IsDead) return;
 
             var role = GetRole<Romantic>(PlayerControl.LocalPlayer);
 
             if (MeetingHud.Instance != null) UpdateMeeting(MeetingHud.Instance, role);
 
-            if (!CustomGameOptions.RomanticKnowsBelovedRole && !CamouflageUnCamouflagePatch.IsCamouflaged) role.Beloved.nameText().text += "<color=#FF66CCFF> ♥</color>";
+            if (role.Beloved != null && !CustomGameOptions.RomanticKnowsBelovedRole && !CamouflageUnCamouflagePatch.IsCamouflaged) 
+                role.Beloved.nameText().text += "<color=#FF66CCFF> ♥</color>";
 
-            if (!role.Beloved.Data.IsDead && !role.Beloved.Data.Disconnected) return;
+            if (role.Beloved == null || (!role.Beloved.Data.IsDead && !role.Beloved.Data.Disconnected)) return;
 
             StartRPC(CustomRPC.RomanticChangeRole, PlayerControl.LocalPlayer.PlayerId);
             DestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(false);

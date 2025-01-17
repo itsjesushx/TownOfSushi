@@ -30,7 +30,6 @@ namespace TownOfSushi
             var switchSystem = GameOptionsManager.Instance.currentNormalGameOptions.MapId == 5 ? null : __instance.Systems[SystemTypes.Electrical]?.TryCast<SwitchSystem>();
             if (player.IsImpostor() || player._object.Is(RoleAlignment.NeutralKilling) ||
                 (player._object.Is(RoleEnum.Jester) && CustomGameOptions.JesterImpVision) ||
-                (player._object.Is(RoleEnum.Framer) && CustomGameOptions.FramerImpVision) ||
                 (player._object.Is(RoleEnum.Vulture) && CustomGameOptions.VultureImpVision))
             {
                 __result = __instance.MaxLightRadius * GameOptionsManager.Instance.currentNormalGameOptions.ImpostorLightMod;

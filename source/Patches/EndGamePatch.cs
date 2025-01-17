@@ -31,10 +31,10 @@ namespace TownOfSushi.Patches
             // Reset zoomed out ghosts
             ToggleZoom(reset: true);
             AdditionalTempData.GameSummaryText.Clear();
+            
             const string endString = "</color>";
             foreach (var playerControl in PlayerControl.AllPlayerControls)
             {
-                //foreach (var role in RoleHistory.Where(x => x.Key == playerControl.PlayerId))
                 var SummaryText = "";
 
                 var info = playerControl.AllPlayerInfo();
@@ -73,10 +73,6 @@ namespace TownOfSushi.Patches
                 if (playerControl.IsExeTarget())
                 {
                     SummaryText += $" | {ColorString(Colors.Executioner, $"[⦿]")}";
-                }
-                if (playerControl.IsFramerTarget())
-                {
-                    SummaryText  += $" | {ColorString(Colors.Framer, $"[F]")}";
                 }
                 if (playerControl.IsSpelled())
                 {

@@ -81,7 +81,7 @@ namespace TownOfSushi.Roles
 
         public static bool NeutralEvilWin()
         {
-            return JesterWin || ExecutionerWin || VultureWin || DoomsayerWin  || FramerWin;
+            return JesterWin || ExecutionerWin || VultureWin || DoomsayerWin;
         }
         internal virtual bool VampireCriteria()
         {
@@ -153,14 +153,6 @@ namespace TownOfSushi.Roles
                 if (Player == exe.target && PlayerControl.LocalPlayer.Data.IsDead && !exe.Player.Data.IsDead)
                 {
                     PlayerName += "<color=#CCCCCCFF> [⦿]</color>";
-                }
-            }
-            foreach (var role in GetRoles(RoleEnum.Framer))
-            {
-                var framer = (Framer) role;
-                if (Player == framer.Target && PlayerControl.LocalPlayer.Data.IsDead && !framer.Player.Data.IsDead)
-                {
-                    PlayerName += "<color=#EDE461> [F]</color>";
                 }
             }
             foreach (var role in GetRoles(RoleEnum.Arsonist))
@@ -377,7 +369,7 @@ namespace TownOfSushi.Roles
                 AbilityDictionary.Clear();
             }
         }
-        [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.GetString), typeof(StringNames),
+       /* [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.GetString), typeof(StringNames),
             typeof(Il2CppReferenceArray<Il2CppSystem.Object>))]
         public static class TranslationController_GetString
         {
@@ -401,7 +393,7 @@ namespace TownOfSushi.Roles
                         }
                 }
             }
-        }
+        }*/
 
         public static bool NobodyWins;
         public static bool VampireWins;
@@ -420,7 +412,6 @@ namespace TownOfSushi.Roles
         public static bool ExecutionerWin;
         public static bool DoomsayerWin;
         public static bool VultureWin;
-        public static bool FramerWin;
 
         internal static bool NobodyEndCriteria(LogicGameFlowNormal __instance)
         {

@@ -13,13 +13,6 @@ namespace TownOfSushi.Patches
                 detective.LastExamined = detective.LastExamined.AddSeconds(CustomGameOptions.InitialCooldowns - CustomGameOptions.ExamineCd);
             }
 
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Framer))
-            {
-                var Framer = GetRole<Framer>(PlayerControl.LocalPlayer);
-                Framer.LastFramed = DateTime.UtcNow;
-                Framer.LastFramed = Framer.LastFramed.AddSeconds(CustomGameOptions.InitialCooldowns - CustomGameOptions.FramerCd);
-            }
-
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Mystic))
             {
                 var mystic = GetRole<Mystic>(PlayerControl.LocalPlayer);
@@ -261,9 +254,9 @@ namespace TownOfSushi.Patches
 
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Romantic))
             {
-                var surv = GetRole<Romantic>(PlayerControl.LocalPlayer);
-                surv.LastPick = DateTime.UtcNow;
-                surv.LastPick = surv.LastPick.AddSeconds(CustomGameOptions.InitialCooldowns - CustomGameOptions.PickStartTimer);
+                var romantic = GetRole<Romantic>(PlayerControl.LocalPlayer);
+                romantic.LastPick = DateTime.UtcNow;
+                romantic.LastPick = romantic.LastPick.AddSeconds(CustomGameOptions.InitialCooldowns - CustomGameOptions.PickStartTimer);
             }
 
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Werewolf))
