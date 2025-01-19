@@ -33,7 +33,6 @@ namespace TownOfSushi.Patches
                     var player = PlayerById(playerVoteArea.TargetPlayerId);
                     if (player.Is(AbilityEnum.Tiebreaker))
                     {
-                        var TB = GetAbility<Tiebreaker>(player);
                         if (dictionary.TryGetValue(playerVoteArea.VotedFor, out var num2))
                             dictionary[playerVoteArea.VotedFor] = num2 + 1;
                         else

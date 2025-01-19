@@ -125,7 +125,7 @@
             {
                 var player = PlayerById(player1);
                 var data = player?.Data;
-                if ((data == null || data.Disconnected || data.IsDead || PlayerControl.LocalPlayer.Data.IsDead) && player != role.Player)
+                if (data == null || data.Disconnected || data.IsDead || PlayerControl.LocalPlayer.Data.IsDead)
                     continue;
                 var nameText = player.nameText();
                 if (nameText != null)

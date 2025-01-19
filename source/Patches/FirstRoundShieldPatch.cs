@@ -11,8 +11,10 @@ namespace TownOfSushi.Patches
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
     public static class PlayerControlFixedUpdatePatch
     {
-        static void setBasePlayerOutlines() {
-            foreach (PlayerControl target in PlayerControl.AllPlayerControls) {
+        static void SetBasePlayerOutlines() 
+        {
+            foreach (PlayerControl target in PlayerControl.AllPlayerControls) 
+            {
                 if (target == null || target.cosmetics?.currentBodySprite?.BodySprite == null) continue;
 
                 bool isMorphedMorphling = false;
@@ -80,34 +82,21 @@ namespace TownOfSushi.Patches
                     }
                 }
 
-                foreach (var arsoRole in GetRoles(RoleEnum.Arsonist))
+                if (hasVisibleShield) 
                 {
-                    var arsonist = (Arsonist)arsoRole;
-
-                    foreach (var player in arsonist.DousedPlayers)
-                    {
-                        PlayerControl dousedPlayer = PlayerById(player);
-
-                        if (!CamouflageUnCamouflagePatch.IsCamouflaged && arsonist.Player != null && dousedPlayer != null && ((target == dousedPlayer && !isMorphedMorphling && !isMorphedHitman && !isMorphedGlitch && !isMorphedVenerer && !isSwoopedSwooper) || (isMorphedMorphling && GetRole<Morphling>(target).MorphedPlayer == dousedPlayer) || (isMorphedGlitch && GetRole<Glitch>(target).MimicTarget == dousedPlayer)|| (isMorphedHitman && GetRole<Hitman>(target).MorphTarget == dousedPlayer))) {
-                            hasVisibleShield = PlayerControl.LocalPlayer == arsonist.Player;
-                            color = arsonist.Color;
-                        }
-                    }
-                }
-
-                if (hasVisibleShield) {
                     target.cosmetics.currentBodySprite.BodySprite.material.SetFloat("_Outline", 1f);
                     target.cosmetics.currentBodySprite.BodySprite.material.SetColor("_OutlineColor", color);
                 }
             }
         }
 
-        public static void Postfix(PlayerControl __instance) {
+        public static void Postfix(PlayerControl __instance) 
+        {
             if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started || GameOptionsManager.Instance.currentGameOptions.GameMode == GameModes.HideNSeek) return;
             
             if (PlayerControl.LocalPlayer == __instance) {
                 // Update player outlines
-                setBasePlayerOutlines();
+                SetBasePlayerOutlines();
             }
         }
     }

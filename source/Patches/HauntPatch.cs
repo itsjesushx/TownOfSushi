@@ -3,7 +3,6 @@ namespace TownOfSushi.Patches
     [HarmonyPatch]
     public static class HauntMenuMinigamePatch 
     {
-
         // Show the role name instead of just Crewmate / Impostor
         [HarmonyPostfix]
         [HarmonyPatch(typeof(HauntMenuMinigame), nameof(HauntMenuMinigame.SetFilterText))]

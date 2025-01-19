@@ -157,7 +157,7 @@ namespace TownOfSushi
             foreach (var role in GetRoles(RoleEnum.Romantic))
                 if (((Romantic)role).Beloved != null && ((Romantic)role).Beloved.PlayerId == player.PlayerId)
                     beloved = true;
-            return player.Is(RoleEnum.Romantic) || beloved;
+            return (player.Is(RoleEnum.Romantic) || beloved) && GetRole<Romantic>(player).AlreadyPicked;
         }
 
         public static bool LastImp()

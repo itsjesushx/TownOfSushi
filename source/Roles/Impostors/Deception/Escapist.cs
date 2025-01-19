@@ -71,8 +71,6 @@ namespace TownOfSushi.Roles
     {
         public static Sprite MarkSprite => TownOfSushi.MarkSprite;
         public static Sprite EscapeSprite => TownOfSushi.EscapeSprite;
-
-
         public static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
@@ -107,7 +105,6 @@ namespace TownOfSushi.Roles
     {
         public static Sprite MarkSprite => TownOfSushi.MarkSprite;
         public static Sprite EscapeSprite => TownOfSushi.EscapeSprite;
-
         public static bool Prefix(KillButton __instance)
         {
             var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Escapist);

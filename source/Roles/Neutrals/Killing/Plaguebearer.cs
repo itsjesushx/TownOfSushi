@@ -144,7 +144,8 @@ namespace TownOfSushi.Roles
                     role.InfectedPlayers.Remove(targetId);
                     continue;
                 }
-                if (role.InfectedPlayers.Contains(targetId) && role.Player.PlayerId != targetId) state.NameText.text += "<color=#E6FFB3FF> [♨]</color>";
+                if (role.InfectedPlayers.Contains(targetId) && 
+                role.Player.PlayerId != targetId) state.NameText.text += "<color=#E6FFB3FF> [♨]</color>";
             }
         }
     }
@@ -162,17 +163,16 @@ namespace TownOfSushi.Roles
             var infectButton = __instance.KillButton;
             var role = GetRole<Plaguebearer>(PlayerControl.LocalPlayer);
 
-            foreach (var player1 in role.InfectedPlayers)
+            foreach (var playerId in role.InfectedPlayers)
             {
-                var player = PlayerById(player1);
+                var player = Utils.PlayerById(playerId);
                 var data = player?.Data;
-                if ((data == null || data.Disconnected || data.IsDead || PlayerControl.LocalPlayer.Data.IsDead) && player != role.Player)
+                if (data == null || data.Disconnected || data.IsDead || PlayerControl.LocalPlayer.Data.IsDead || playerId == PlayerControl.LocalPlayer.PlayerId)
                     continue;
-                var nameText = player.nameText();
-                if (nameText != null)
-                {
-                    nameText.text += "<color=#E6FFB3FF> [♨]</color>";
-                }
+
+                player.myRend().material.SetColor("_VisorColor", role.Color);
+
+                player.nameText().color = Colors.Plaguebearer;
             }
 
             infectButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
