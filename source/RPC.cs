@@ -1267,8 +1267,8 @@ namespace TownOfSushi
                     if (Check(CustomGameOptions.SleuthOn))
                         Abilities.Add((typeof(Sleuth), CustomGameOptions.SleuthOn));
 
-                    if (Check(CustomGameOptions.RadarOn))
-                        Abilities.Add((typeof(Radar), CustomGameOptions.RadarOn));
+                    if (Check(CustomGameOptions.ParanoiacOn))
+                        Abilities.Add((typeof(Paranoiac), CustomGameOptions.ParanoiacOn));
 
                     #endregion
                     #region Impostor Modifiers

@@ -283,7 +283,7 @@ namespace TownOfSushi.CustomOption
         public static CustomOption MiniOn;
         public static CustomOption MiniSpeed;
 
-        public static CustomOption RadarOn;
+        public static CustomOption ParanoiacOn;
 
         public static CustomOption SleuthOn;
 
@@ -808,7 +808,7 @@ namespace TownOfSushi.CustomOption
 
             MultitaskerOn = CustomOption.Create(295, Types.ModifierAbility, ColorString(Colors.Multitasker, "Multitasker"), 0f, 0f, 100f, 10f, null, true, format: "%");
 
-            RadarOn = CustomOption.Create(296, Types.ModifierAbility, ColorString(Colors.Radar, "Radar"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            ParanoiacOn = CustomOption.Create(296, Types.ModifierAbility, ColorString(Colors.Paranoiac, "Paranoiac"), 0f, 0f, 100f, 10f, null, true, format: "%");
             
             SleuthOn = CustomOption.Create(297, Types.ModifierAbility, ColorString(Colors.Sleuth, "Sleuth"), 0f, 0f, 100f, 10f, null, true, format: "%");
             

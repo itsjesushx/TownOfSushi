@@ -30,6 +30,7 @@ namespace TownOfSushi.Roles
         }
         public static IEnumerator CheckJesterWin(ExileController __instance)
         {
+            //delay it so it shows the eject animation
             yield return new WaitForSeconds(5f);
 
             var exiled = __instance.initData.networkedPlayer;

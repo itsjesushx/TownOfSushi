@@ -34,6 +34,7 @@ namespace TownOfSushi.Roles
         }
         private static IEnumerator CheckExecutionerWin(ExileController __instance)
         {
+            //delay it so it shows the eject animation
             yield return new WaitForSeconds(5f);
 
             var exiled = __instance.initData.networkedPlayer;

@@ -63,7 +63,7 @@ namespace TownOfSushi.Roles.Modifiers
                 }
             }
             else if (role is Poisoner poisoner)
-            {
+            {// Poisoner gets poisoned at the same time they poison the Aftermath so they die at the same time.
                 try
                 {
                     poisoner.PoisonedPlayer = poisoner.Player;

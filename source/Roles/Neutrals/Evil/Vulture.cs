@@ -168,6 +168,7 @@ namespace TownOfSushi.Roles
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
     public class VultureHudManagerUpdate
     {
+        // show to the vulture player how many bodies they need to eat
         private static void UpdateMeeting(MeetingHud __instance, Vulture role)
         {
             foreach (var player in __instance.playerStates)

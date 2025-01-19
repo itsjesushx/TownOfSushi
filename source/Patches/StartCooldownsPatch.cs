@@ -296,19 +296,19 @@ namespace TownOfSushi.Patches
                 vamp.LastBit = vamp.LastBit.AddSeconds(CustomGameOptions.InitialCooldowns - CustomGameOptions.BiteCd);
             }
 
-            if (PlayerControl.LocalPlayer.Is(AbilityEnum.Radar))
+            if (PlayerControl.LocalPlayer.Is(AbilityEnum.Paranoiac))
             {
-                var radar = GetAbility<Radar>(PlayerControl.LocalPlayer);
+                var paranoiac = GetAbility<Paranoiac>(PlayerControl.LocalPlayer);
                 var gameObj = new GameObject();
                 var arrow = gameObj.AddComponent<ArrowBehaviour>();
                 gameObj.transform.parent = PlayerControl.LocalPlayer.gameObject.transform;
                 var renderer = gameObj.AddComponent<SpriteRenderer>();
                 renderer.sprite = Sprite;
-                renderer.color = Colors.Radar;
+                renderer.color = Colors.Paranoiac;
                 arrow.image = renderer;
                 gameObj.layer = 5;
                 arrow.target = PlayerControl.LocalPlayer.transform.position;
-                radar.RadarArrow.Add(arrow);
+                paranoiac.ParanoiacArrow.Add(arrow);
             }
         }
     }

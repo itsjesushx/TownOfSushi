@@ -52,7 +52,9 @@ namespace TownOfSushi.Roles
             if ((role.ClosestPlayer.Is(Faction.Crewmates) || (role.ClosestPlayer.Is(RoleAlignment.NeutralBenign)
                 && CustomGameOptions.CanBiteNeutralBenign) || (role.ClosestPlayer.Is(RoleAlignment.NeutralEvil)
                 && CustomGameOptions.CanBiteNeutralEvil)) &&
-                aliveVamps.Count == 1 && vamps.Count < CustomGameOptions.MaxVampiresPerGame && !ShowRoundOneShield.FirstRoundShielded && PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count > 5)
+                aliveVamps.Count == 1 && vamps.Count < CustomGameOptions.MaxVampiresPerGame && !ShowRoundOneShield.FirstRoundShielded 
+                //(can't bite with less than 6 players)
+                && PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count > 5)
             {
                 var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer);
                 if (interact[3] == true)
@@ -217,6 +219,7 @@ namespace TownOfSushi.Roles
                 role3.IncorrectAssassinKills = killsList.IncorrectAssassinKills;
             }
 
+            //only add Assassin if the target does not have an ability already
             if (CustomGameOptions.NewVampCanAssassin && !AbilityDictionary.ContainsKey(target.PlayerId)) 
             {
                 _ = new Assassin(target);

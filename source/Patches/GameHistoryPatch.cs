@@ -13,13 +13,11 @@ namespace TownOfSushi.Patches
             this.Reason = Reason;
             this.GetKiller = GetKiller;
         }
-
     }
 
     static class GameHistory 
     {
         public static List<PlayerHistory> deadPlayers = new List<PlayerHistory>();
-
         public static void CreateDeathReason(PlayerControl player, CustomDeathReason Reason, PlayerControl killer = null) 
         {
             var target = deadPlayers.FirstOrDefault(x => x.player.PlayerId == player.PlayerId);

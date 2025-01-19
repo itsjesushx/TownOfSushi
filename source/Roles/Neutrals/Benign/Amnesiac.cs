@@ -341,6 +341,7 @@ namespace TownOfSushi.Roles
                        || role == RoleEnum.Hitman || role == RoleEnum.Vampire
                        || role == RoleEnum.Agent || role == RoleEnum.SerialKiller || role == RoleEnum.Juggernaut)
                     {
+                        //only add Assassin if the amnesiac does not have an ability already
                         if (CustomGameOptions.AmneTurnNeutAssassin && !AbilityDictionary.ContainsKey(amnesiac.PlayerId))
                         {
                             _ = new Assassin(amnesiac);
@@ -361,6 +362,7 @@ namespace TownOfSushi.Roles
                         player.nameText().color = Colors.Impostor;
                     }
                 }
+                //only add Assassin if the amnesiac does not have an ability already
                 if (CustomGameOptions.AmneTurnImpAssassin && !AbilityDictionary.ContainsKey(amnesiac.PlayerId))
                 {
                     _ = new Assassin(amnesiac);

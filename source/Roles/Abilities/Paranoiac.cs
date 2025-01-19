@@ -1,39 +1,39 @@
 namespace TownOfSushi.Roles.Abilities
 {
-    public class Radar : Ability
+    public class Paranoiac : Ability
     {
-        public List<ArrowBehaviour> RadarArrow = new List<ArrowBehaviour>();
+        public List<ArrowBehaviour> ParanoiacArrow = new List<ArrowBehaviour>();
         public PlayerControl ClosestPlayer;
-        public Radar(PlayerControl player) : base(player)
+        public Paranoiac(PlayerControl player) : base(player)
         {
-            Name = "Radar";
-            TaskText = () => "Be on high alert";
-            Color = Colors.Radar;
-            AbilityType = AbilityEnum.Radar;
+            Name = "Paranoiac";
+            TaskText = () => "Be always on high alert";
+            Color = Colors.Paranoiac;
+            AbilityType = AbilityEnum.Paranoiac;
         }
     }
 
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
-    public class RadarUpdateArrow
+    public class ParanoiacUpdateArrow
     {
         public static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
             if (PlayerControl.LocalPlayer == null) return;
             if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(AbilityEnum.Radar)) return;
+            if (!PlayerControl.LocalPlayer.Is(AbilityEnum.Paranoiac)) return;
 
-            var radar = GetAbility<Radar>(PlayerControl.LocalPlayer);
-            if (radar.Player.Data.IsDead)
+            var paranoiac = GetAbility<Paranoiac>(PlayerControl.LocalPlayer);
+            if (paranoiac.Player.Data.IsDead)
             {
-                radar.RadarArrow.DestroyAll();
-                radar.RadarArrow.Clear();
+                paranoiac.ParanoiacArrow.DestroyAll();
+                paranoiac.ParanoiacArrow.Clear();
             }
 
-            foreach (var arrow in radar.RadarArrow)
+            foreach (var arrow in paranoiac.ParanoiacArrow)
             {
-                radar.ClosestPlayer = GetClosestPlayer(PlayerControl.LocalPlayer, PlayerControl.AllPlayerControls.ToArray().ToList());
-                arrow.target = radar.ClosestPlayer.transform.position;
+                paranoiac.ClosestPlayer = GetClosestPlayer(PlayerControl.LocalPlayer, PlayerControl.AllPlayerControls.ToArray().ToList());
+                arrow.target = paranoiac.ClosestPlayer.transform.position;
             }
         }
 

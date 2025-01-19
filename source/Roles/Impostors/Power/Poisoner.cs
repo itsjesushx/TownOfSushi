@@ -1,7 +1,6 @@
 namespace TownOfSushi.Roles
 {
     public class Poisoner : Role
-
     {
         public KillButton _poisonButton;
         public PlayerControl ClosestPlayer;
@@ -43,6 +42,7 @@ namespace TownOfSushi.Roles
             {
                 TimeRemaining = 0;
             }
+            // directly kill when the players alive are 4 or less
             if (PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 4 && !Player.Data.IsDead)
             {
                 TimeRemaining = 0;

@@ -24,14 +24,10 @@ namespace TownOfSushi.Roles
             LastFlashed = DateTime.UtcNow;
             RoleType = RoleEnum.Grenadier;
             Faction = Faction.Impostors;
-
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.ImpSupport;
         }
-
         public bool Flashed => TimeRemaining > 0f;
-
-
         public KillButton FlashButton
         {
             get => _flashButton;

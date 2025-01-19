@@ -147,9 +147,9 @@ namespace TownOfSushi
 
         public static bool RomanticCoupleChat(this PlayerControl player, PlayerControl source)
         {
-            bool beloved = source.Is(RoleEnum.Romantic) && GetRole<Romantic>(source).Beloved.PlayerId == player.PlayerId && GetRole<Romantic>(player).AlreadyPicked;
-            bool romantic = player.Is(RoleEnum.Romantic) && GetRole<Romantic>(player).Beloved.PlayerId == source.PlayerId && GetRole<Romantic>(player).AlreadyPicked;
-            return romantic || beloved;
+            bool beloved = source.Is(RoleEnum.Romantic) && GetRole<Romantic>(source).Beloved.PlayerId == player.PlayerId;
+            bool romantic = player.Is(RoleEnum.Romantic) && GetRole<Romantic>(player).Beloved.PlayerId == source.PlayerId;
+            return (romantic || beloved) && GetRole<Romantic>(player).AlreadyPicked;
         }
         public static bool HasRomanticCouple(this PlayerControl player)
         {

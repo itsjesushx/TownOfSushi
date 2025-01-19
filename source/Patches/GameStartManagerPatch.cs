@@ -245,7 +245,8 @@ namespace TownOfSushi.Patches
                         
                         PlayerVersion PV = playerVersions[client.Id];
                         int diff = TownOfSushi.Version.CompareTo(PV.version);
-                        if (diff != 0 || !PV.GuidMatches()) {
+                        if (diff != 0 || !PV.GuidMatches()) 
+                        {
                             continueStart = false;
                             break;
                         }

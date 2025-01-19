@@ -70,7 +70,7 @@
         public readonly static Color32  Flash = new Color32(255, 128, 128, byte.MaxValue);
         public readonly static Color32  Sleuth = new Color32(128, 51, 51, byte.MaxValue);
         public readonly static Color32  Tiebreaker = new Color32(153, 230, 153, byte.MaxValue);
-        public readonly static Color32  Radar = new Color32(255, 0, 128, byte.MaxValue);
+        public readonly static Color32  Paranoiac = new Color32(255, 0, 128, byte.MaxValue);
         public readonly static Color32  Multitasker = new Color32(255, 127, 77, byte.MaxValue);
 
         

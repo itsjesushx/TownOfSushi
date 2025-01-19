@@ -22,7 +22,6 @@ namespace TownOfSushi.Roles
             HackTarget = null;
             IsUsingMimic = false;
             RoleType = RoleEnum.Glitch;
-
             StartText = () => "Murder, Mimic, Hack... Data Lost";
             TaskText = () => "Murder everyone to win";
             RoleInfo = "Glitch is a Neutral role with its own win condition. Glitch's aim is to kill everyone and be the last person standing. Glitch can Hack players, resulting in them being unable to report bodies and do tasks. Hacking prevents the hacked player from doing anything but walk around the map. This role cannot spawn on Fungle. Glitch can Mimic someone, which results in them looking exactly like the other person.";

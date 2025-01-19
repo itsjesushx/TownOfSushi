@@ -1,5 +1,6 @@
 namespace TownOfSushi.Patches
 {
+    //Disable report button when 2 players are left alive only
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
     public static class ReportButtonUpdatePatch
     {
@@ -17,6 +18,7 @@ namespace TownOfSushi.Patches
         }
     }
 
+    //so reports can't happen by clicking the corpse either
     [HarmonyPatch(typeof(DeadBody), nameof(DeadBody.OnClick))]
     public static class DeadBodyOnClickUpdate
     {

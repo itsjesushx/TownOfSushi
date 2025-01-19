@@ -217,7 +217,6 @@ namespace TownOfSushi.Roles
         public void ReDoTaskText()
         {
             bool createTask;
-            var hasFakeTasks = Player.HasTasks() ? "" : "\nYour tasks are fake!";
             try
             {
                 var firstText = Player.myTasks.ToArray()[0].Cast<ImportantTextTask>();
@@ -232,13 +231,13 @@ namespace TownOfSushi.Roles
             {
                 var task = new GameObject(Name + "Task").AddComponent<ImportantTextTask>();
                 task.transform.SetParent(Player.transform, false);
-                task.Text = $"{ColorString}Role: {Name}\n{TaskText()}\nAlignment: {Player.AlignmentText()}{hasFakeTasks}</color>";
+                task.Text = $"{ColorString}Role: {Name}\n{TaskText()}\nAlignment: {Player.AlignmentText()}</color>";
                 Player.myTasks.Insert(0, task);
 
                 return;
             }
             Player.myTasks.ToArray()[0].Cast<ImportantTextTask>().Text =
-                $"{ColorString}Role: {Name}\n{TaskText()}\nAlignment: {Player.AlignmentText()}{hasFakeTasks}</color>";
+                $"{ColorString}Role: {Name}\n{TaskText()}\nAlignment: {Player.AlignmentText()}</color>";
         }
         public static T Gen<T>(Type type, PlayerControl player, CustomRPC rpc)
         {
@@ -309,7 +308,6 @@ namespace TownOfSushi.Roles
                 var role = GetPlayerRole(player);
                 var modifier = GetModifier(player);
                 var ability = GetAbility(player);
-                var hasFakeTasks = player.HasTasks() ? "" : "\nYour tasks are fake!";
 
                 if (modifier != null)
                 {
@@ -332,7 +330,7 @@ namespace TownOfSushi.Roles
                 if (role.RoleType == RoleEnum.Amnesiac && role.Player != PlayerControl.LocalPlayer) return;
                 var task = new GameObject(role.Name + "Task").AddComponent<ImportantTextTask>();
                 task.transform.SetParent(player.transform, false);
-                task.Text = $"{role.ColorString}Role: {role.Name}\n{role.TaskText()}\nAlignment: {player.AlignmentText()}{hasFakeTasks}</color>";
+                task.Text = $"{role.ColorString}Role: {role.Name}\n{role.TaskText()}\nAlignment: {player.AlignmentText()}</color>";
                 player.myTasks.Insert(0, task);
             }
         }
@@ -369,7 +367,7 @@ namespace TownOfSushi.Roles
                 AbilityDictionary.Clear();
             }
         }
-       /* [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.GetString), typeof(StringNames),
+       [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.GetString), typeof(StringNames),
             typeof(Il2CppReferenceArray<Il2CppSystem.Object>))]
         public static class TranslationController_GetString
         {
@@ -388,12 +386,12 @@ namespace TownOfSushi.Roles
                             var info = ExileController.Instance.initData.networkedPlayer;
                             var role = GetPlayerRole(info.Object);
                             if (role == null) return;
-                            __result = $"{info.PlayerName} was {role.Name}.";
+                            __result = $"{info.PlayerName} was The {role.Name}.";
                             return;
                         }
                 }
             }
-        }*/
+        }
 
         public static bool NobodyWins;
         public static bool VampireWins;

@@ -1,5 +1,3 @@
-using Il2CppSystem.Collections.Generic;
-
 namespace TownOfSushi.Patches
 {
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnGameEnd))]
@@ -44,7 +42,7 @@ namespace TownOfSushi.Patches
                     return;
                 }
 
-                var winConditions = new System.Collections.Generic.Dictionary<Func<bool>, Action>
+                var winConditions = new Dictionary<Func<bool>, Action>
                 {
                     { () => JesterWin, () => AddWinners(RoleEnum.Jester) },
                     { () => WerewolfWin, () => AddWinners(RoleEnum.Werewolf) },

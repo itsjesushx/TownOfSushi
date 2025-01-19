@@ -61,7 +61,7 @@ namespace TownOfSushi.CustomOption
         public static int BaitOn => Mathf.RoundToInt(CustomOptionHolder.BaitOn.GetFloat());
         public static int SleuthOn => Mathf.RoundToInt(CustomOptionHolder.SleuthOn.GetFloat());
         public static int AftermathOn => Mathf.RoundToInt(CustomOptionHolder.AftermathOn.GetFloat());
-        public static int RadarOn => Mathf.RoundToInt(CustomOptionHolder.RadarOn.GetFloat());
+        public static int ParanoiacOn => Mathf.RoundToInt(CustomOptionHolder.ParanoiacOn.GetFloat());
         public static int DisperserOn => Mathf.RoundToInt(CustomOptionHolder.DisperserOn.GetFloat());
         public static int MultitaskerOn => Mathf.RoundToInt(CustomOptionHolder.MultitaskerOn.GetFloat());
         public static int DoubleShotOn => Mathf.RoundToInt(CustomOptionHolder.DoubleShotOn.GetFloat());
