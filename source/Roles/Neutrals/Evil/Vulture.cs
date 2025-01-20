@@ -15,7 +15,7 @@ namespace TownOfSushi.Roles
             Name = "Vulture";
             StartText = () => "Eat dead bodies to win";
             TaskText = () => $"Eat dead bodies to win";
-            RoleInfo = "The Vulture is a Neutral role with its own win condition. Their goal is to eat an amount of dead bodies to win. The body dissapears when the Vulture eats it, similar to how Janitor cleans bodies. If they eat the amount of bodies the setting is set to, they win.";
+            RoleInfo = $"The Vulture is a Neutral role with its own win condition. Their goal is to eat an amount of {CustomGameOptions.VultureBodyCount} dead bodies to win. The body dissapears when the Vulture eats it, similar to how Janitor cleans bodies. If they eat the amount of bodies the setting is set to, they win.";
             LoreText = "A scavenger of the dead, you thrive on the bodies left behind by others. As the Vulture, your goal is to feast on the remains of the fallen, growing stronger with each victim consumed. The more bodies you consume, the closer you get to victory. However, your hunger is insatiable, and you must be careful not to reveal your true nature, for if the crew realizes your intentions, your feast may be cut short.";
             Color = Colors.Vulture;
             RoleType = RoleEnum.Vulture;
@@ -66,6 +66,7 @@ namespace TownOfSushi.Roles
             var data = PlayerControl.LocalPlayer.Data;
             var isDead = data.IsDead;
             var truePosition = PlayerControl.LocalPlayer.GetTruePosition();
+            if (role.CurrentTarget == null || PlayerControl.LocalPlayer == null) return;
             var maxDistance = KillDistance();
             var flag = (GameOptionsManager.Instance.currentNormalGameOptions.GhostsDoTasks || !data.IsDead) &&
                        (!AmongUsClient.Instance || !AmongUsClient.Instance.IsGameOver) &&
