@@ -6,7 +6,7 @@ namespace TownOfSushi.Roles
         public static void Postfix(EndGameManager __instance)
         {
             if (NeutralEvilWin()) return;
-
+            
             AddToRoleOutro(__instance, RoleEnum.Plaguebearer, "Plaguebearer Wins!", role => PlaguebearerWin);
             AddToRoleOutro(__instance, RoleEnum.Pestilence, "Pestilence Wins!", role => PestilenceWin);
             AddToRoleOutro(__instance, RoleEnum.Agent, "Agent Wins!", role => AgentWin);
