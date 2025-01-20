@@ -202,7 +202,7 @@ namespace TownOfSushi.Roles
                 role2.CorrectAssassinKills = killsList.CorrectAssassinKills;
                 role2.IncorrectAssassinKills = killsList.IncorrectAssassinKills;
                 role2.ReDoTaskText();
-                Utilities.UsefulMethods.ShowTextToast("You are now a Vampire!", 3.5f);
+                ShowTextToast("You are now a Vampire!", 3.5f);
                 SoundManager.Instance.PlaySound(ShipStatus.Instance.SabotageSound, false, 1f, null);
                 Flash(Colors.Vampire);
             }

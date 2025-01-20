@@ -1239,7 +1239,7 @@ If you have any bugs or any need to contact me, join the [Discord Server](https:
 -----------------------
 # Credits & Resources
 [TownOfUs-R](https://github.com/eDonnes124/Town-Of-Us) - Original Codebase.\
-[Lifeboat](https://github.com/SubmergedAmongUs/Lifeboat) - Useful Methods class.\
+[Lifeboat](https://github.com/SubmergedAmongUs/Lifeboat) - ShowTextToast class.\
 [Reactor](https://github.com/NuclearPowered/Reactor) - The framework of the mod.\
 [SuperNewRoles](https://github.com/SuperNewRoles/SuperNewRoles)  - For the Disable Lobby Music option.\
 [TownOfUs Reworked](https://github.com/AlchlcDvl/TownOfUsReworked) - Part of the End Game Summary rework code, the Death Reason code, Some of the Vulture.cs code & more\

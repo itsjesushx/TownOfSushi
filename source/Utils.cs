@@ -4,6 +4,7 @@ using Il2CppInterop.Runtime.InteropTypes;
 using Reactor.Networking;
 using System.IO;
 using static TownOfSushi.Roles.Glitch;
+using BepInEx.Unity.IL2CPP.Utils;
 
 namespace TownOfSushi
 {
@@ -150,6 +151,30 @@ namespace TownOfSushi
             bool beloved = source.Is(RoleEnum.Romantic) && GetRole<Romantic>(source).Beloved.PlayerId == player.PlayerId;
             bool romantic = player.Is(RoleEnum.Romantic) && GetRole<Romantic>(player).Beloved.PlayerId == source.PlayerId;
             return romantic || beloved;
+        }
+
+        public static void ShowTextToast(string text, float delay = 1.25f)
+        {
+            HudManager.Instance.StartCoroutine(CoTextToast(text, delay));
+        }
+        public static IEnumerator CoTextToast(string text, float delay)
+        {
+            GameObject taskOverlay = Object.Instantiate(HudManager.Instance.TaskCompleteOverlay.gameObject, HudManager.Instance.transform);
+            taskOverlay.SetActive(true);
+            taskOverlay.GetComponentInChildren<TextTranslatorTMP>().DestroyImmediate();
+            taskOverlay.GetComponentInChildren<TMPro.TextMeshPro>().text = text;
+            
+            yield return Effects.Slide2D(taskOverlay.transform, new Vector2(0f, -8f), Vector2.zero, 0.25f);
+            
+            for (float time = 0f; time < delay; time += Time.deltaTime)
+            {
+                yield return null;
+            }
+            
+            yield return Effects.Slide2D(taskOverlay.transform, Vector2.zero, new Vector2(0f, 8f), 0.25f);
+            
+            taskOverlay.SetActive(true);
+            taskOverlay.Destroy();
         }
         public static bool HasRomanticCouple(this PlayerControl player)
         {
@@ -855,7 +880,7 @@ namespace TownOfSushi
                     BaitReport(killer, target);
                 }
 
-                //UsefulMethods.ShowTextToast("", 5f);
+                //ShowTextToast("", 5f);
 
                 if (target.Is(ModifierEnum.Aftermath))
                 {
