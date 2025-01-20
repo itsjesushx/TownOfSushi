@@ -61,6 +61,7 @@
                     StartRPC(CustomRPC.AttemptSound, medic, player.PlayerId);
                     MedicStopKill.BreakShield(medic, player.PlayerId, CustomGameOptions.ShieldBreaks);
                 }
+                GameHistory.CreateDeathReason(player, CustomDeathReason.Arson, Player);
             }
             DousedPlayers.Clear();
         }
@@ -226,7 +227,6 @@
                     if (interact2[3] == true) 
                     {
                         role.Ignite();
-                        GameHistory.CreateDeathReason(role.ClosestPlayerIgnite, CustomDeathReason.Arson, role.Player);
                     }
                     if (interact2[0] == true)
                     {
