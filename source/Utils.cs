@@ -1716,7 +1716,7 @@ namespace TownOfSushi
                 Stream stream = assembly.GetManifestResourceStream(path);
                 var length = stream.Length;
                 var byteTexture = new Il2CppStructArray<byte>(length);
-                stream.Read(new Span<byte>(IntPtr.Add(byteTexture.Pointer, IntPtr.Size * 4).ToPointer(), (int) length));
+                stream.Read(new Span<byte>((byte*)byteTexture.Pointer + IntPtr.Size * 4, (int)length));
                 ImageConversion.LoadImage(texture, byteTexture, false);
                 return texture;
             } catch {
