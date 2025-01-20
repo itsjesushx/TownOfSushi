@@ -188,7 +188,6 @@ namespace TownOfSushi
             CustomHatManager.LoadHats();
             ClassInjector.RegisterTypeInIl2Cpp<ColorBehaviour>();
             Harmony.PatchAll();
-            AddComponent<ModUpdateBehaviour>();
             SubmergedCompatibility.Initialize();
             
             ServerManager.DefaultRegions = new Il2CppReferenceArray<IRegionInfo>(new IRegionInfo[0]);
