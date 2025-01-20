@@ -1028,7 +1028,7 @@ namespace TownOfSushi
             return PlayerControl.LocalPlayer.myTasks.ToArray().Any((x) => x.TaskType == TaskTypes.MushroomMixupSabotage);
         }
 
-        public static void ResetWins()
+        public static void ResetWinners()
         {
             CrewmatesWin = false;
             ImpostorsWin = false;

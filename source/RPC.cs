@@ -512,7 +512,7 @@ namespace TownOfSushi
                         Murder.KilledPlayers.Clear();
                         ToggleZoom(reset : true);
                         JailChat.JailorMessage = false;
-                        ResetWins();
+                        ResetWinners();
                         ExileControllerPatch.lastExiled = null;
                         PatchKillTimer.GameStarted = false;
                         StartImitate.ImitatingPlayer = null;
@@ -1035,7 +1035,7 @@ namespace TownOfSushi
                 ShowRoundOneShield.DiedFirst = "";
                 ExileControllerPatch.lastExiled = null;
                 PatchKillTimer.GameStarted = false;
-                ResetWins();
+                ResetWinners();
                 JailChat.JailorMessage = false;
                 ToggleZoom(reset : true);
                 StartImitate.ImitatingPlayer = null;
