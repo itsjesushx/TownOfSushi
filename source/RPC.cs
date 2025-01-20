@@ -433,28 +433,19 @@ namespace TownOfSushi
                         var mstring2 = reader.ReadString();
                         Activator.CreateInstance(asm.GetType(mstring2), new object[] { player22 });
                         break;
-                    case CustomRPC.Fortify:
-                        switch (reader.ReadByte())
-                        {
-                            default:
-                            case 0: //set fortify
-                                var crusader = PlayerById(reader.ReadByte());
-                                var fortified = PlayerById(reader.ReadByte());
-                                var crusaderRole = GetRole<Crusader>(crusader);
-                                crusaderRole.Fortified = fortified;
-                                break;
-                            case 1: //fortify alert
-                                var crusaderPlayer = PlayerById(reader.ReadByte());
-                                var crusaderRole2 = GetRole<Crusader>(crusaderPlayer);
-                                if (PlayerControl.LocalPlayer == crusaderPlayer) 
-                                {
-                                    Flash(Colors.Crusader, 0.7f);
-                                    SoundManager.Instance.PlaySound(ShipStatus.Instance.SabotageSound, false, 1f, null);
-                                }
-                                break;
-                        }
+                    case CustomRPC.Start:
+                        readByte = reader.ReadByte();
+                        ShowRoundOneShield.FirstRoundShielded = readByte == byte.MaxValue ? null : PlayerById(readByte);
+                        ShowRoundOneShield.DiedFirst = "";
+                        Murder.KilledPlayers.Clear();
+                        ToggleZoom(reset : true);
+                        JailChat.JailorMessage = false;
+                        ResetWinners();
+                        ExileControllerPatch.lastExiled = null;
+                        PatchKillTimer.GameStarted = false;
+                        StartImitate.ImitatingPlayer = null;
+                        AssassinExileControllerPatch.AssassinatedPlayers.Clear();
                         break;
-
                     case CustomRPC.Jail:
                         var jailor = PlayerById(reader.ReadByte());
                         var jailorRole = GetRole<Jailor>(jailor);
@@ -505,18 +496,26 @@ namespace TownOfSushi
                         var poisonerRole1 = GetRole<Poisoner>(poisoner1);
                         poisonerRole1.PoisonKill();
                         break;
-                    case CustomRPC.Start:
-                        readByte = reader.ReadByte();
-                        ShowRoundOneShield.FirstRoundShielded = readByte == byte.MaxValue ? null : PlayerById(readByte);
-                        ShowRoundOneShield.DiedFirst = "";
-                        Murder.KilledPlayers.Clear();
-                        ToggleZoom(reset : true);
-                        JailChat.JailorMessage = false;
-                        ResetWinners();
-                        ExileControllerPatch.lastExiled = null;
-                        PatchKillTimer.GameStarted = false;
-                        StartImitate.ImitatingPlayer = null;
-                        AssassinExileControllerPatch.AssassinatedPlayers.Clear();
+                    case CustomRPC.Fortify:
+                        switch (reader.ReadByte())
+                        {
+                            default:
+                            case 0: //set fortify
+                                var crusader = PlayerById(reader.ReadByte());
+                                var fortified = PlayerById(reader.ReadByte());
+                                var crusaderRole = GetRole<Crusader>(crusader);
+                                crusaderRole.Fortified = fortified;
+                                break;
+                            case 1: //fortify alert
+                                var crusaderPlayer = PlayerById(reader.ReadByte());
+                                var crusaderRole2 = GetRole<Crusader>(crusaderPlayer);
+                                if (PlayerControl.LocalPlayer == crusaderPlayer) 
+                                {
+                                    Flash(Colors.Crusader, 0.7f);
+                                    SoundManager.Instance.PlaySound(ShipStatus.Instance.SabotageSound, false, 1f, null);
+                                }
+                                break;
+                        }
                         break;
                     case CustomRPC.JanitorClean:
                         readByte1 = reader.ReadByte();
