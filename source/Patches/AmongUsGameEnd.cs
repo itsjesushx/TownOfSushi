@@ -137,15 +137,20 @@ namespace TownOfSushi.Patches
         }
         private static void AddRomanticWinners()
         {
-            foreach (var role in GetRoles(RoleEnum.Romantic) ?? new System.Collections.Generic.List<Role>())
+            var romanticRoles = GetRoles(RoleEnum.Romantic) ?? new List<Role>();
+            foreach (var role in romanticRoles)
             {
-                var romantic = (Romantic)role;
+                var romantic = role as Romantic;
+
+                if (romantic?.Beloved?.Data == null || EndGameResult.CachedWinners == null) continue;
+
                 var romanticBelovedData = new CachedPlayerData(romantic.Beloved.Data);
+
                 foreach (var winner in EndGameResult.CachedWinners.ToArray())
                 {
                     if (romanticBelovedData.ColorId == winner.ColorId)
                     {
-                        var isImp = EndGameResult.CachedWinners[0].IsImpostor;
+                        var isImp = EndGameResult.CachedWinners.Count > 0 && EndGameResult.CachedWinners[0].IsImpostor;
                         var romanticWinData = new CachedPlayerData(romantic.Player.Data) { IsImpostor = isImp };
                         if (PlayerControl.LocalPlayer != romantic.Player) romanticWinData.IsYou = false;
                         EndGameResult.CachedWinners.Add(romanticWinData);

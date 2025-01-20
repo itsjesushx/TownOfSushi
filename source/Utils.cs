@@ -149,7 +149,7 @@ namespace TownOfSushi
         {
             bool beloved = source.Is(RoleEnum.Romantic) && GetRole<Romantic>(source).Beloved.PlayerId == player.PlayerId;
             bool romantic = player.Is(RoleEnum.Romantic) && GetRole<Romantic>(player).Beloved.PlayerId == source.PlayerId;
-            return (romantic || beloved) && GetRole<Romantic>(player).AlreadyPicked;
+            return romantic || beloved;
         }
         public static bool HasRomanticCouple(this PlayerControl player)
         {
@@ -157,7 +157,7 @@ namespace TownOfSushi
             foreach (var role in GetRoles(RoleEnum.Romantic))
                 if (((Romantic)role).Beloved != null && ((Romantic)role).Beloved.PlayerId == player.PlayerId)
                     beloved = true;
-            return (player.Is(RoleEnum.Romantic) || beloved) && GetRole<Romantic>(player).AlreadyPicked;
+            return player.Is(RoleEnum.Romantic) || beloved;
         }
 
         public static bool LastImp()

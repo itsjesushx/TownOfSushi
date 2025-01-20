@@ -9,7 +9,6 @@ namespace TownOfSushi.Roles
             Player = player;
             AbilityDictionary.Add(player.PlayerId, this);
         }
-
         public static IEnumerable<Ability> AllAbilities => AbilityDictionary.Values.ToList();
         protected internal string Name { get; set; }
         public string PlayerName { get; set; }

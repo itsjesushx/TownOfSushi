@@ -107,6 +107,7 @@ namespace TownOfSushi.Roles
                 if (flag2) return false;
                 if (!__instance.enabled) return false;
                 var maxDistance = KillDistance();
+                if (role.CurrentTarget == null || PlayerControl.LocalPlayer == null) return false;
                 if (Vector2.Distance(role.CurrentTarget.TruePosition,
                     PlayerControl.LocalPlayer.GetTruePosition()) > maxDistance) return false;
                 var playerId = role.CurrentTarget.ParentId;

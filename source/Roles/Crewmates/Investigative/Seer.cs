@@ -210,6 +210,7 @@ namespace TownOfSushi.Roles
                         var seer = (Seer)role;
 
                         if (seer.Player.Data.IsDead) return;
+                        if (seer.Investigated == null || seer.Investigated2 == null) return;
                         if (seer.Investigated.Data.IsDead || seer.Investigated2.Data.IsDead) return;
 
                         var differentFaction = false;
@@ -224,6 +225,7 @@ namespace TownOfSushi.Roles
                         }
                         
                         if (seer.Player.Data.IsDead  || seer.Investigated.Data.IsDead  || seer.Investigated2.Data.IsDead) return;
+                        if (seer.Investigated == null || seer.Investigated2 == null) return;
                         if (differentFaction == true)
                         {
                             var playerState = __instance.playerStates.FirstOrDefault(x => x.TargetPlayerId == seer.Investigated.PlayerId);
