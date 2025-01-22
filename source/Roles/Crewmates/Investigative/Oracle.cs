@@ -49,9 +49,9 @@ namespace TownOfSushi.Roles
                     if (player.PlayerId != state.TargetPlayerId) continue;
                     if (player == role.Confessor)
                     {
-                        if (role.RevealedFaction == Faction.Crewmates) state.NameText.text = "<color=#00FFFFFF>(Crew) </color>" + state.NameText.text;
-                        else if (role.RevealedFaction == Faction.Impostors) state.NameText.text = "<color=#FF0000FF>(Imp) </color>" + state.NameText.text;
-                        else state.NameText.text = "<color=#808080FF>(Neut) </color>" + state.NameText.text;
+                        if (role.RevealedFaction == Faction.Crewmates) state.NameText.text = $"(<color=#00FFFFFF>{CustomGameOptions.RevealAccuracy}% Crew</color>) " + state.NameText.text;
+                        else if (role.RevealedFaction == Faction.Impostors) state.NameText.text = $"(<color=#FF0000FF>{CustomGameOptions.RevealAccuracy}% Imp</color>) " + state.NameText.text;
+                        else state.NameText.text = $"(<color=#808080FF>{CustomGameOptions.RevealAccuracy}% Neut</color>) " + state.NameText.text;
                     }
                 }
             }
