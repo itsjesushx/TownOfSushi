@@ -2,7 +2,7 @@ using static TownOfSushi.Objects.BombExtentions;
 
 namespace TownOfSushi
 {
-    public static class RPCHandling
+    public static class RPCHandler
     {
         private static readonly List<(Type, int, bool)> CrewmateInvestigativeRoles = new();
         private static readonly List<(Type, int, bool)> CrewmateKillingRoles = new();
@@ -29,12 +29,6 @@ namespace TownOfSushi
             if (probability == 100) return true;
             var num = Random.RandomRangeInt(1, 101);
             return num <= probability;
-        }
-        
-        private static int PickRoleCount(int min, int max)
-        {
-            if (min > max) min = max;
-            return Random.RandomRangeInt(min, max + 1);
         }
         private static (Type, int, bool) SelectRole(List<(Type, int, bool)> roles)
         {

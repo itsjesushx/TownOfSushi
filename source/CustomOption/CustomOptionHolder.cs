@@ -57,6 +57,11 @@ namespace TownOfSushi.CustomOption
         public static CustomOption NeutEvilRed;
         public static CustomOption NeutKillingRed;
 
+        public static CustomOption LookoutOn;
+        public static CustomOption WatchCooldown;
+        public static CustomOption LoResetOnNewRound;
+        public static CustomOption MaxWatches;
+
         public static CustomOption HunterOn;
         public static CustomOption HunterKillCd;
         public static CustomOption HunterStalkCd;
@@ -594,14 +599,12 @@ namespace TownOfSushi.CustomOption
             SeerOn = CustomOption.Create(6451, Types.Crewmate, ColorString(Colors.Seer, "Seer"), 0f, 0f, 100f, 10f, null, true, format: "%");
             SeerCd = CustomOption.Create(6452, Types.Crewmate, "Cooldown", 25f, 10f, 60f, 2.5f, SeerOn);
 
-
             DetectiveOn = CustomOption.Create(61, Types.Crewmate, ColorString(Colors.Detective, "Detective"), 0f, 0f, 100f, 10f, null, true, format: "%");
             DetectiveCooldown = CustomOption.Create(62, Types.Crewmate, "Cooldown", 25f, 10f, 60f, 2.5f, DetectiveOn);
             CrewKillingRed = CustomOption.Create(63, Types.Crewmate, "Crew Killing Roles Are Red", false, DetectiveOn);
             NeutBenignRed = CustomOption.Create(64, Types.Crewmate, "Neutral Benign Roles Are Red", false, DetectiveOn);
             NeutEvilRed = CustomOption.Create(65, Types.Crewmate, "Neutral Evil Roles Are Red", false, DetectiveOn);
             NeutKillingRed = CustomOption.Create(66, Types.Crewmate, "Neutral Killing Roles Are Red", true, DetectiveOn);
-
 
             TrackerOn =
                 CustomOption.Create(71, Types.Crewmate, ColorString(Colors.Tracker, "Tracker"), 0f, 0f, 100f, 10f, null, true, format: "%");
@@ -620,6 +623,11 @@ namespace TownOfSushi.CustomOption
 
             DeputyOn = CustomOption.Create(992222, Types.Crewmate, ColorString(Colors.Deputy, "Deputy"), 0f, 0f, 100f, 10f, null, true, format: "%");
             DeputyKills = CustomOption.Create(100222, Types.Crewmate, "Number Of Deputy Kills", 1, 1, 15, 1, DeputyOn);
+
+            LookoutOn = CustomOption.Create(84441, Types.Crewmate, ColorString(Colors.Lookout, "Lookout"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            WatchCooldown = CustomOption.Create(85551, Types.Crewmate, "Watch Cooldown", 25f, 10f, 60f, 2.5f, LookoutOn, format: "s");
+            LoResetOnNewRound = CustomOption.Create(86661, Types.Crewmate, "Lookout Watches Reset After Each Round", true, LookoutOn);
+            MaxWatches = CustomOption.Create(87771, Types.Crewmate, "Maximum Number Of Players That Can Be Watched", 5, 1, 15, 1, LookoutOn, format: "s");
                 
             
             HunterOn = CustomOption.Create(84, Types.Crewmate, ColorString(Colors.Hunter, "Hunter"), 0f, 0f, 100f, 10f, null, true, format: "%");
