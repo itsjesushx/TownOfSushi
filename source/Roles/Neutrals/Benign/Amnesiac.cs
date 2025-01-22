@@ -43,7 +43,7 @@ namespace TownOfSushi.Roles
         private static List<GameObject> buttonPool = new List<GameObject>();
         public static void GenButton(Amnesiac role, int index, bool isDead)
         {
-            if (PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 3) return;
+            if (PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 4) return;
             if (role.Remembered) return;
             if (!isDead)
             {
