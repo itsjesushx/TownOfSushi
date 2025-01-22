@@ -32,6 +32,7 @@ namespace TownOfSushi.Roles
             if (CustomGameOptions.MedicOn > 0) ColorMapping.Add("Medic", Colors.Medic);
             if (CustomGameOptions.CrusaderOn > 0) ColorMapping.Add("Crusader", Colors.Crusader);
             if (CustomGameOptions.MediumOn > 0) ColorMapping.Add("Medium", Colors.Medium);
+            if (CustomGameOptions.LookoutOn > 0) ColorMapping.Add("Lookout", Colors.Lookout);
             if (CustomGameOptions.DeputyOn > 0) ColorMapping.Add("Deputy", Colors.Deputy);
             if (CustomGameOptions.SwapperOn > 0) ColorMapping.Add("Swapper", Colors.Swapper);
             // this will be gone for now 
@@ -474,7 +475,7 @@ namespace TownOfSushi.Roles
             else if (player.Is(RoleEnum.Amnesiac) || player.Is(RoleEnum.Janitor)
                  || player.Is(RoleEnum.Medium) || player.Is(RoleEnum.Undertaker) ||player.Is(RoleEnum.Hitman) || player.Is(RoleEnum.Vulture) || player.Is(RoleEnum.Vampire))
                 return $"You observe that {player.GetDefaultOutfit().PlayerName} has an unusual obsession with dead bodies";
-            else if (player.Is(RoleEnum.Investigator) || player.Is(RoleEnum.Swooper) || player.Is(RoleEnum.Tracker)
+            else if (player.Is(RoleEnum.Investigator) || player.Is(RoleEnum.Swooper) || player.Is(RoleEnum.Lookout) || player.Is(RoleEnum.Tracker)
                 || player.Is(RoleEnum.Venerer) || player.Is(RoleEnum.SerialKiller))
                 return $"You observe that {player.GetDefaultOutfit().PlayerName} is well trained in hunting down prey";
             else if (player.Is(RoleEnum.Arsonist) || player.Is(RoleEnum.Miner) || player.Is(RoleEnum.Plaguebearer)
@@ -510,9 +511,9 @@ namespace TownOfSushi.Roles
                  || player.Is(RoleEnum.Medium) || player.Is(RoleEnum.Undertaker) || player.Is(RoleEnum.Hitman) ||player.Is(RoleEnum.Vampire)|| player.Is(RoleEnum.Vulture) )
                 return "("+ ColorString(Colors.Amnesiac,"Amnesiac") + ", " + ColorString(Colors.Vulture,"Vulture") + ", " + ColorString(Colors.Impostor,"Janitor") +", "+ ColorString(Colors.Medium,"Medium") + ", "+ ColorString(Colors.Impostor,"Undertaker ")+ ", "+ ColorString(Colors.Hitman,"Hitman ") + " or " + ColorString(Colors.Vampire,"Vampire") + ")";
             
-            else if (player.Is(RoleEnum.Investigator) || player.Is(RoleEnum.Swooper) || player.Is(RoleEnum.Tracker)
+            else if (player.Is(RoleEnum.Investigator) || player.Is(RoleEnum.Swooper) || player.Is(RoleEnum.Lookout) || player.Is(RoleEnum.Tracker)
                  || player.Is(RoleEnum.Venerer) || player.Is(RoleEnum.SerialKiller))
-                return "(" + ColorString(Colors.Investigator,"Investigator") + ", " + ColorString(Colors.Impostor,"Swooper") + ", " + ColorString(Colors.Tracker,"Tracker") + ", "+ ColorString(Colors.Impostor,"Venerer ") + " or " + ColorString(Colors.SerialKiller,"Serial Killer") + ")";
+                return "(" + ColorString(Colors.Investigator,"Investigator") + ", " + ColorString(Colors.Impostor,"Swooper") + ", " + ColorString(Colors.Lookout,"Lookout") + ", " + ColorString(Colors.Tracker,"Tracker") + ", "+ ColorString(Colors.Impostor,"Venerer ") + " or " + ColorString(Colors.SerialKiller,"Serial Killer") + ")";
             
             else if (player.Is(RoleEnum.Arsonist) || player.Is(RoleEnum.Miner) || player.Is(RoleEnum.Plaguebearer)
                   ||player.Is(RoleEnum.Detective))

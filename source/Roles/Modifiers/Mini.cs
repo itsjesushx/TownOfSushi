@@ -13,7 +13,7 @@ namespace TownOfSushi.Roles.Modifiers
         public bool TryGetModifiedAppearance(out VisualAppearance appearance)
         {
             appearance = Player.GetDefaultAppearance();
-            appearance.SizeFactor = new Vector3(0.40f, 0.40f, 1f);
+            appearance.SizeFactor = new Vector3(0.4f, 0.4f, 1.0f);
             return true;
         }
     }

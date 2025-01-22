@@ -1176,8 +1176,21 @@ namespace TownOfSushi
                         readByte = reader.ReadByte();
                         var dienerBodies = Object.FindObjectsOfType<DeadBody>();
                         foreach (var body in dienerBodies)
+                        {
                             if (body.ParentId == readByte)
+                            {
                                 dienerRole.CurrentlyDragging = body;
+
+                                if (PlayerControl.LocalPlayer.Is(RoleEnum.Lookout))
+                                {
+                                    var lookout = Role.GetRole<Lookout>(PlayerControl.LocalPlayer);
+                                    if (lookout.Watching.ContainsKey(body.ParentId))
+                                    {
+                                        if (!lookout.Watching[body.ParentId].Contains(RoleEnum.Undertaker)) lookout.Watching[body.ParentId].Add(RoleEnum.Undertaker);
+                                    }
+                                }
+                            }
+                        }
 
                         break;
                     case CustomRPC.HitmanDrag:
@@ -1187,8 +1200,22 @@ namespace TownOfSushi
                         readByte = reader.ReadByte();
                         var dienerBodies2 = Object.FindObjectsOfType<DeadBody>();
                         foreach (var body in dienerBodies2)
+                        {
                             if (body.ParentId == readByte)
+                            {
                                 dienerRole2.CurrentlyDragging = body;
+
+                                if (PlayerControl.LocalPlayer.Is(RoleEnum.Lookout))
+                                {
+                                    var lookout = GetRole<Lookout>(PlayerControl.LocalPlayer);
+                                    if (lookout.Watching.ContainsKey(body.ParentId))
+                                    {
+                                        if (!lookout.Watching[body.ParentId].Contains(RoleEnum.Undertaker)) lookout.Watching[body.ParentId].Add(RoleEnum.Hitman);
+                                    }
+                                }
+                            }
+                        }
+
                         break;
                     case CustomRPC.Drop:
                         readByte1 = reader.ReadByte();
@@ -1218,11 +1245,20 @@ namespace TownOfSushi
                     case CustomRPC.AbilityTrigger:
                         var abilityUser = Utils.PlayerById(reader.ReadByte());
                         var abilitytargetId = reader.ReadByte();
-                        var abilitytarget = abilitytargetId == byte.MaxValue ? null : Utils.PlayerById(abilitytargetId);
+                        var abilitytarget = abilitytargetId == byte.MaxValue ? null : PlayerById(abilitytargetId);
                         foreach (Role hunterRole2 in GetRoles(RoleEnum.Hunter))
                         {
                             Hunter hunter = (Hunter)hunterRole2;
                             if (hunter.StalkedPlayer == abilityUser) hunter.RpcCatchPlayer(abilityUser);
+                        }
+                        if (PlayerControl.LocalPlayer.Is(RoleEnum.Lookout) && abilitytarget != null)
+                        {
+                            var lookout = GetRole<Lookout>(PlayerControl.LocalPlayer);
+                            if (lookout.Watching.ContainsKey(abilitytargetId))
+                            {
+                                RoleEnum playerRole = GetPlayerRole(PlayerById(abilityUser.PlayerId)).RoleType;
+                                if (!lookout.Watching[abilitytargetId].Contains(playerRole)) lookout.Watching[abilitytargetId].Add(playerRole);
+                            }
                         }
                         break;
                     case CustomRPC.StopStart:
@@ -1394,6 +1430,9 @@ namespace TownOfSushi
 
                 if (CustomGameOptions.CrusaderOn > 0)
                     CrewmateProtectiveRoles.Add((typeof(Crusader), CustomGameOptions.CrusaderOn, true));
+                
+                if (CustomGameOptions.LookoutOn > 0)
+                    CrewmateInvestigativeRoles.Add((typeof(Lookout), CustomGameOptions.LookoutOn, false || CustomGameOptions.UniqueRoles));
 
                 if (CustomGameOptions.InvestigatorOn > 0)
                     CrewmateInvestigativeRoles.Add((typeof(Investigator), CustomGameOptions.InvestigatorOn, false || CustomGameOptions.UniqueRoles));

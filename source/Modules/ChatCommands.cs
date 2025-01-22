@@ -79,24 +79,22 @@ namespace TownOfSushi.Modules
                         AddRoleMessage(RoleEnum.Executioner);
                         return false;
                     }
-                    else if (chatText.ToLower().StartsWith("/glitch") || chatText.ToLower().StartsWith("/ glitch") ||
-                        chatText.ToLower().StartsWith("/theglitch") || chatText.ToLower().StartsWith("/ theglitch") ||
-                        chatText.ToLower().StartsWith("/the glitch") || chatText.ToLower().StartsWith("/ the glitch"))
+                    else if (chatText.ToLower().StartsWith("/glitch") || chatText.ToLower().StartsWith("/ glitch"))
                     {
                         AddRoleMessage(RoleEnum.Glitch);
                         return false;
                     }
-                    else if (chatText.ToLower().StartsWith("/jest") || chatText.ToLower().StartsWith("/ jest"))
+                    else if (chatText.ToLower().StartsWith("/jester") || chatText.ToLower().StartsWith("/ jest"))
                     {
                         AddRoleMessage(RoleEnum.Jester);
                         return false;
                     }
-                    else if (chatText.ToLower().StartsWith("/gren") || chatText.ToLower().StartsWith("/ gren"))
+                    else if (chatText.ToLower().StartsWith("/grenadier") || chatText.ToLower().StartsWith("/gren"))
                     {
                         AddRoleMessage(RoleEnum.Grenadier);
                         return false;
                     }
-                    else if (chatText.ToLower().StartsWith("/jan") || chatText.ToLower().StartsWith("/ jan"))
+                    else if (chatText.ToLower().StartsWith("/janitor") || chatText.ToLower().StartsWith("/jan"))
                     {
                         AddRoleMessage(RoleEnum.Janitor);
                         return false;
@@ -331,6 +329,11 @@ namespace TownOfSushi.Modules
                         AddAbilityMessage(AbilityEnum.Torch);
                         return false;
                     }
+                    else if (chatText.ToLower().StartsWith("/lookout") || chatText.ToLower().StartsWith("/lo"))
+                    {
+                        AddRoleMessage(RoleEnum.Lookout);
+                        return false;
+                    }
                     else if (chatText.ToLower().StartsWith("/bb") || chatText.ToLower().StartsWith("/ bb"))
                     {
                         AddAbilityMessage(AbilityEnum.ButtonBarry);
@@ -478,6 +481,8 @@ namespace TownOfSushi.Modules
                     PlayerControl.LocalPlayer, "The Undertaker is an impostor who can drag bodies to different locations.");
                 if (role == RoleEnum.Werewolf) DestroyableSingleton<HudManager>.Instance.Chat.AddChat(
                     PlayerControl.LocalPlayer, "The Werewolf can kill all players within a certain radius.");
+                if (role == RoleEnum.Lookout) DestroyableSingleton<HudManager>.Instance.Chat.AddChat(
+                    PlayerControl.LocalPlayer, "The Lookout is a crewmate who can watch other players. They will see all players who interact with each player they watch.");
                 if (role == RoleEnum.Veteran) DestroyableSingleton<HudManager>.Instance.Chat.AddChat(
                     PlayerControl.LocalPlayer, "The Veteran is a crewmate who can alert to kill anyone who interacts with them.");
                 if (role == RoleEnum.Amnesiac) DestroyableSingleton<HudManager>.Instance.Chat.AddChat(

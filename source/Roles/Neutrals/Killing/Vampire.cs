@@ -163,6 +163,12 @@ namespace TownOfSushi.Roles
                     mysticRole.BodyArrows.Clear();
                 }
 
+                if (PlayerControl.LocalPlayer.Is(RoleEnum.Lookout))
+                {
+                    var loRole = GetRole<Lookout>(PlayerControl.LocalPlayer);
+                    Object.Destroy(loRole.UsesText);
+                }
+
                 if (PlayerControl.LocalPlayer.Is(RoleEnum.Veteran))
                 {
                     var veteranRole = GetRole<Veteran>(PlayerControl.LocalPlayer);

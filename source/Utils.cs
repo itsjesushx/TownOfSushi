@@ -54,6 +54,15 @@ namespace TownOfSushi
                 Hunter hunter = (Hunter)hunterRole;
                 if (hunter.StalkedPlayer == player) hunter.RpcCatchPlayer(player);
             }
+            if (PlayerControl.LocalPlayer.Is(RoleEnum.Lookout) && target != null)
+            {
+                var lookout = GetRole<Lookout>(PlayerControl.LocalPlayer);
+                if (lookout.Watching.ContainsKey(targetId))
+                {
+                    RoleEnum playerRole = GetPlayerRole(PlayerById(player.PlayerId)).RoleType;
+                    if (!lookout.Watching[targetId].Contains(playerRole)) lookout.Watching[targetId].Add(playerRole);
+                }
+            }
             return true;
         }
 
@@ -1458,6 +1467,29 @@ namespace TownOfSushi
                 {
                     tracker.TrackerArrows.Values.DestroyAll();
                     tracker.TrackerArrows.Clear();
+                }
+            }
+            if (PlayerControl.LocalPlayer.Is(RoleEnum.Lookout))
+            {
+                var lo = GetRole<Lookout>(PlayerControl.LocalPlayer);
+                lo.LastWatched = DateTime.UtcNow;
+                if (CustomGameOptions.LoResetOnNewRound)
+                {
+                    lo.UsesLeft = CustomGameOptions.MaxWatches;
+                    lo.Watching.Clear();
+                }
+                else
+                {
+                    List<byte> toRemove = new List<byte>();
+                    foreach (var (key, value) in lo.Watching)
+                    {
+                        value.Clear();
+                        if (PlayerById(key).Data.IsDead || PlayerById(key).Data.Disconnected) toRemove.Add(key);
+                    }
+                    foreach (var key in toRemove)
+                    {
+                        lo.Watching.Remove(key);
+                    }
                 }
             }
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Veteran))

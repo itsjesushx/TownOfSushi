@@ -17,7 +17,7 @@ namespace TownOfSushi.Roles
             RoleEnum.Agent, RoleEnum.Hitman, RoleEnum.Miner, RoleEnum.Morphling, RoleEnum.Glitch, RoleEnum.Blackmailer, RoleEnum.Juggernaut,
             RoleEnum.Swapper, RoleEnum.Amnesiac, RoleEnum.GuardianAngel, RoleEnum.Undertaker, RoleEnum.Werewolf, RoleEnum.SerialKiller, RoleEnum.Arsonist,
             RoleEnum.Grenadier, RoleEnum.Crewmate, RoleEnum.Impostor, RoleEnum.Vampire, RoleEnum.Bomber, RoleEnum.Plaguebearer, RoleEnum.Pestilence, RoleEnum.Romantic, RoleEnum.Swooper,
-            RoleEnum.Venerer, RoleEnum.Janitor, RoleEnum.Poisoner, RoleEnum.Crusader, RoleEnum.Deputy, RoleEnum.Escapist, RoleEnum.Doomsayer, RoleEnum.Seer
+            RoleEnum.Venerer, RoleEnum.Janitor, RoleEnum.Poisoner, RoleEnum.Lookout, RoleEnum.Crusader, RoleEnum.Deputy, RoleEnum.Escapist, RoleEnum.Doomsayer, RoleEnum.Seer
         };
         public Amnesiac(PlayerControl player) : base(player)
         {
@@ -229,6 +229,15 @@ namespace TownOfSushi.Roles
     {
         public static void Remember(Amnesiac amneRole, PlayerControl other)
         {
+            if (PlayerControl.LocalPlayer.Is(RoleEnum.Lookout))
+            {
+                var lookout = GetRole<Lookout>(PlayerControl.LocalPlayer);
+                if (lookout.Watching.ContainsKey(other.PlayerId))
+                {
+                    if (!lookout.Watching[other.PlayerId].Contains(RoleEnum.Amnesiac)) lookout.Watching[other.PlayerId].Add(RoleEnum.Amnesiac);
+                }
+            }
+
             var role = GetRole(other);
             var amnesiac = amneRole.Player;
 
@@ -255,6 +264,7 @@ namespace TownOfSushi.Roles
                 case RoleEnum.Trapper:
                 case RoleEnum.Imitator:
                 case RoleEnum.Oracle:
+                case RoleEnum.Lookout:
                 case RoleEnum.Crusader:
                 case RoleEnum.Jailor:
 
@@ -488,6 +498,14 @@ namespace TownOfSushi.Roles
                 var Detective = GetRole<Detective>(amnesiac);
                 Detective.Investigated.RemoveRange(0, Detective.Investigated.Count);
                 Detective.LastInvestigated = DateTime.UtcNow;
+            }
+
+            else if (role == RoleEnum.Lookout)
+            {
+                var loRole = GetRole<Lookout>(amnesiac);
+                loRole.UsesLeft = CustomGameOptions.MaxWatches;
+                loRole.Watching.Clear();
+                loRole.LastWatched = DateTime.UtcNow;
             }
 
             else if (role == RoleEnum.Oracle)

@@ -2,8 +2,8 @@ namespace TownOfSushi.CustomOption
 {
     public static class CustomGameOptions
     {
-        public static int MaxRoleHistoryListSize = 100;
         public static int CrusaderOn => Mathf.RoundToInt(CustomOptionHolder.CrusaderOn.GetFloat());
+        public static int LookoutOn => Mathf.RoundToInt(CustomOptionHolder.LookoutOn.GetFloat());
         public static int WerewolfOn => Mathf.RoundToInt(CustomOptionHolder.WerewolfOn.GetFloat());
         public static int JuggernautOn => Mathf.RoundToInt(CustomOptionHolder.JuggernautOn.GetFloat());
         public static int DeputyOn => Mathf.RoundToInt(CustomOptionHolder.DeputyOn.GetFloat());
@@ -225,6 +225,9 @@ namespace TownOfSushi.CustomOption
         public static int MaxDisperses => Mathf.RoundToInt(CustomOptionHolder.MaxDisperses.GetFloat());
         public static float MinAmountOfTimeInTrap => CustomOptionHolder.MinAmountOfTimeInTrap.GetFloat();
         public static float TrapSize => CustomOptionHolder.TrapSize.GetFloat();
+        public static float WatchCooldown => CustomOptionHolder.WatchCooldown.GetFloat();
+        public static bool LoResetOnNewRound => CustomOptionHolder.LoResetOnNewRound.GetBool();
+        public static int MaxWatches => Mathf.RoundToInt(CustomOptionHolder.MaxWatches.GetFloat());
         public static int MinAmountOfPlayersInTrap => Mathf.RoundToInt(CustomOptionHolder.MinAmountOfPlayersInTrap.GetFloat());
         public static float MysticExamineCd => CustomOptionHolder.MysticExamineCooldown.GetFloat();
         public static bool MysticReportOn => CustomOptionHolder.MysticReportOn.GetBool();

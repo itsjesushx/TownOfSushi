@@ -70,6 +70,8 @@ namespace TownOfSushi.Roles
                 player.nameText().text += " <color=#FF0000FF> [†]</color>";
             }
                 role.SpellButton.graphic.sprite = Blackmail;
+                role.SpellButton.buttonLabelText.gameObject.SetActive(true);
+                role.SpellButton.buttonLabelText.text = "CURSE";
                 role.SpellButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
                 && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
                 && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);

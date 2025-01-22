@@ -34,6 +34,7 @@
 | | [Seer](#seer) | [Serial Killer](#serial-killer) |  |
 | | [Deputy](#deputy)  | [Juggernaut](#juggernaut)  |  |
 | | [Crusader](#crusader) |[Plaguebearer](#plaguebearer) |  |
+| | [Lookout](#lookout) | |  |
 
 -----------------------
 
@@ -177,6 +178,20 @@ If the killer of the inspected player dies, the following round the examine butt
 | Time Where Investigator Reports Will Have Role | If a body has been dead for shorter than this amount, the Investigator's report will contain the killer's role | Time | 15s |
 | Time Where Investigator Reports Will Have Faction | If a body has been dead for shorter than this amount, the Investigator's report will contain the killer's faction | Time | 30s |
 | Can Detect Last Killer | Whether the Investigator can also detect the last player who killed (resets on round start) | Toggle | False |
+
+-----------------------
+## Lookout
+### **Team: Crewmates**
+
+The Lookout is a Crewmate that can watch other players during rounds.\
+During meetings they will see all roles who interact with each watched player.
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Lookout | The percentage probability of the Lookout appearing | Percentage | 0% |
+| Watch Cooldown | The cooldown on the Lookout's Watch button | Time | 25s |
+| Lookout Watches Reset After Each Round | Whether Lookout Watches are removed after each meeting | Toggle | True |
+| Maximum Number Of Players That Can Be Watched | The number of people they can watch | Number | 5 |
 
 -----------------------
 ## Mystic

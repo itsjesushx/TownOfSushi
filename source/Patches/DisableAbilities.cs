@@ -103,6 +103,12 @@ namespace TownOfSushi.Patches
                         engi.UsesText.color = Palette.DisabledClear;
                         engi.UsesText.material.SetFloat("_Desat", 1f);
                     }
+                    else if (PlayerControl.LocalPlayer.Is(RoleEnum.Lookout))
+                    {
+                        var lo = GetRole<Lookout>(PlayerControl.LocalPlayer);
+                        lo.UsesText.color = Palette.DisabledClear;
+                        lo.UsesText.material.SetFloat("_Desat", 1f);
+                    }
                     else if (PlayerControl.LocalPlayer.Is(RoleEnum.Tracker))
                     {
                         var track = GetRole<Tracker>(PlayerControl.LocalPlayer);

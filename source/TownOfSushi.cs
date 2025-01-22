@@ -85,6 +85,7 @@ namespace TownOfSushi
         public static Sprite ConfessSprite;
         public static Sprite NoAbilitySprite;
         public static Sprite CamouflageSprite;
+        public static Sprite WatchSprite;
         public static Sprite CamoSprintSprite;
         public static Sprite CamoSprintFreezeSprite;
         public static Sprite PoisonSprite;
@@ -159,6 +160,7 @@ namespace TownOfSushi
             LighterSprite = CreateSprite("TownOfSushi.Resources.Lighter.png");
             DarkerSprite = CreateSprite("TownOfSushi.Resources.Darker.png");
             InfectSprite = CreateSprite("TownOfSushi.Resources.Infect.png");
+            WatchSprite = CreateSprite("TownOfSushi.Resources.Watch.png");
             StabSprite = CreateSprite("TownOfSushi.Resources.Stab.png");
             TrapSprite = CreateSprite("TownOfSushi.Resources.Trap.png");
             InspectSprite = CreateSprite("TownOfSushi.Resources.Inspect.png");

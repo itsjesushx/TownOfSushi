@@ -89,6 +89,11 @@
                 __instance.KillButton.graphic.sprite = TownOfSushi.EngineerFix;
                 flag = true;
             }
+            else if (PlayerControl.LocalPlayer.Is(RoleEnum.Lookout))
+            {
+                __instance.KillButton.graphic.sprite = TownOfSushi.WatchSprite;
+                flag = true;
+            }
             else if (PlayerControl.LocalPlayer.Is(RoleEnum.Trapper))
             {
                 __instance.KillButton.graphic.sprite = TownOfSushi.TrapSprite;

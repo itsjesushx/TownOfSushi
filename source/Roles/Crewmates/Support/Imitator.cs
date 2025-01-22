@@ -7,6 +7,7 @@ namespace TownOfSushi.Roles
         public PlayerControl ImitatePlayer = null;
         public PlayerControl LastExaminedPlayer = null;
         public List<RoleEnum> trappedPlayers = null;
+        public Dictionary<byte, List<RoleEnum>> watchedPlayers = null;
         public PlayerControl confessingPlayer = null;
         public List<RoleEnum> ImitatableRoles = new List<RoleEnum>
         {
@@ -183,6 +184,29 @@ namespace TownOfSushi.Roles
 
                 if (!string.IsNullOrWhiteSpace(playerResults)) DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, playerResults);
             }
+            else if (imitatorRole.watchedPlayers != null)
+            {
+                foreach (var (key, value) in imitatorRole.watchedPlayers)
+                {
+                    var name = PlayerById(key).Data.PlayerName;
+                    if (value.Count == 0)
+                    {
+                        if (DestroyableSingleton<HudManager>.Instance)
+                            DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, $"No players interacted with {name}");
+                    }
+                    else
+                    {
+                        string message = $"Roles seen interacting with {name}:\n";
+                        foreach (RoleEnum role in value.OrderBy(x => Guid.NewGuid()))
+                        {
+                            message += $" {role},";
+                        }
+                        message = message.Remove(message.Length - 1, 1);
+                        if (DestroyableSingleton<HudManager>.Instance)
+                            DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, message);
+                    }
+                }
+            }
         }
     }
 
@@ -235,6 +259,7 @@ namespace TownOfSushi.Roles
             var killsList = (role.Kills, role.CorrectKills,  role.CorrectDeputyShot, role.CorrectShot, role.IncorrectShots, role.CorrectVigilanteShot, role.CorrectAssassinKills, role.IncorrectAssassinKills);
             RoleDictionary.Remove(ImitatingPlayer.PlayerId);
             if (imitatorRole == RoleEnum.Investigator) new Investigator(ImitatingPlayer);
+            if (imitatorRole == RoleEnum.Lookout) new Lookout(ImitatingPlayer);
             if (imitatorRole == RoleEnum.Mystic) new Mystic(ImitatingPlayer);
             if (imitatorRole == RoleEnum.Seer) new Seer(ImitatingPlayer);
             if (imitatorRole == RoleEnum.Tracker) new Tracker(ImitatingPlayer);
@@ -277,6 +302,7 @@ namespace TownOfSushi.Roles
             {
                 PlayerControl lastExaminedPlayer = null;
                 List<RoleEnum> trappedPlayers = null;
+                Dictionary<byte, List<RoleEnum>> seenPlayers = null;
                 PlayerControl confessingPlayer = null;
 
                 if (PlayerControl.LocalPlayer == StartImitate.ImitatingPlayer)
@@ -324,6 +350,13 @@ namespace TownOfSushi.Roles
                         trappedPlayers = trapperRole.trappedPlayers;
                     }
 
+                    if (PlayerControl.LocalPlayer.Is(RoleEnum.Lookout))
+                    {
+                        var loRole = GetRole<Lookout>(PlayerControl.LocalPlayer);
+                        Object.Destroy(loRole.UsesText);
+                        seenPlayers = loRole.Watching;
+                    }
+
                     if (PlayerControl.LocalPlayer.Is(RoleEnum.Hunter))
                     {
                         var hunterRole = Role.GetRole<Hunter>(PlayerControl.LocalPlayer);
@@ -365,6 +398,7 @@ namespace TownOfSushi.Roles
                 var imitator = new Imitator(StartImitate.ImitatingPlayer);
                 imitator.trappedPlayers = trappedPlayers;
                 imitator.confessingPlayer = confessingPlayer;
+                imitator.watchedPlayers = seenPlayers;
                 var newRole = GetPlayerRole(StartImitate.ImitatingPlayer);
                 newRole.RemoveFromRoleHistory(newRole.RoleType);
                 newRole.Kills = killsList.Kills;

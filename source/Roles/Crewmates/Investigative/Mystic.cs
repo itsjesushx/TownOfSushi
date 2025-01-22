@@ -249,7 +249,7 @@ namespace TownOfSushi.Roles
             else if (player.Is(RoleEnum.Amnesiac) || player.Is(RoleEnum.Janitor) || player.Is(RoleEnum.Vulture)
                  || player.Is(RoleEnum.Medium) ||  player.Is(RoleEnum.Hitman) || player.Is(RoleEnum.Undertaker) || player.Is(RoleEnum.Vampire))
                 return "Your target has an unusual obsession with dead bodies";
-            else if (player.Is(RoleEnum.Investigator) || player.Is(RoleEnum.Swooper) || player.Is(RoleEnum.Tracker)
+            else if (player.Is(RoleEnum.Investigator) || player.Is(RoleEnum.Swooper) || player.Is(RoleEnum.Lookout) ||  player.Is(RoleEnum.Tracker)
                 || player.Is(RoleEnum.Venerer) || player.Is(RoleEnum.Werewolf) || player.Is(RoleEnum.Seer) || player.Is(RoleEnum.SerialKiller))
                 return "Your target is well trained in hunting down prey";
             else if (player.Is(RoleEnum.Arsonist) || player.Is(RoleEnum.Miner) || player.Is(RoleEnum.Plaguebearer)
@@ -282,9 +282,9 @@ namespace TownOfSushi.Roles
             else if (player.Is(RoleEnum.Amnesiac) || player.Is(RoleEnum.Janitor) || player.Is(RoleEnum.Vulture)
                  || player.Is(RoleEnum.Medium) || player.Is(RoleEnum.Undertaker) || player.Is(RoleEnum.Hitman) || player.Is(RoleEnum.Vampire))
                 return "(Amnesiac, Janitor, Medium, Hitman Undertaker, Vulture or Vampire)";
-            else if (player.Is(RoleEnum.Investigator) || player.Is(RoleEnum.Swooper) || player.Is(RoleEnum.Tracker)
+            else if (player.Is(RoleEnum.Investigator) || player.Is(RoleEnum.Swooper) || player.Is(RoleEnum.Lookout) || player.Is(RoleEnum.Tracker)
                 || player.Is(RoleEnum.Venerer) || player.Is(RoleEnum.Werewolf) || player.Is(RoleEnum.Seer)  || player.Is(RoleEnum.SerialKiller))
-                return "(Investigator, Swooper, Tracker, Venerer, Seer, Serial Killer or Werewolf)";
+                return "(Investigator, Swooper, Tracker, Venerer, Lookout, Seer, Serial Killer or Werewolf)";
             else if (player.Is(RoleEnum.Arsonist) || player.Is(RoleEnum.Miner) || player.Is(RoleEnum.Plaguebearer)
                   ||player.Is(RoleEnum.Detective))
                 return "(Arsonist, Miner, Plaguebearer or Detective)";
