@@ -4,7 +4,7 @@ namespace TownOfSushi.Roles
     {
         public PlayerControl Fortified;
         public PlayerControl ClosestPlayer;
-        public DateTime LastFortify;
+        public DateTime StartingCooldown { get; set; }
         public Crusader (PlayerControl player) : base (player)
         {
             Name = "Crusader";
@@ -15,16 +15,16 @@ namespace TownOfSushi.Roles
             Color = Colors.Crusader;
             RoleType = RoleEnum.Crusader;
             Faction = Faction.Crewmates;
-            LastFortify = DateTime.UtcNow;
+            StartingCooldown = DateTime.UtcNow;
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.CrewProtect;
             Fortified = null;
         }
-        public float FortifyTimer()
+        public float StartTimer()
         {
             var utcNow = DateTime.UtcNow;
-            var timeSpan = utcNow - LastFortify;
-            var num = CustomGameOptions.FortifyCd * 1000f;
+            var timeSpan = utcNow - StartingCooldown;
+            var num = 10000f;
             var flag2 = num - (float)timeSpan.TotalMilliseconds < 0f;
             if (flag2) return 0;
             return (num - (float)timeSpan.TotalMilliseconds) / 1000f;
@@ -47,7 +47,7 @@ namespace TownOfSushi.Roles
             fortifyButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
                     && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
-            fortifyButton.SetCoolDown(role.FortifyTimer(), CustomGameOptions.FortifyCd);
+            fortifyButton.SetCoolDown(role.StartTimer(), 10f);
 
             var notFortified = PlayerControl.AllPlayerControls
                 .ToArray()
@@ -81,8 +81,7 @@ namespace TownOfSushi.Roles
             if (!flag) return true;
             var role = GetRole<Crusader>(PlayerControl.LocalPlayer);
             if (!PlayerControl.LocalPlayer.CanMove || role.ClosestPlayer == null) return false;
-            var flag2 = role.FortifyTimer() == 0f;
-            if (!flag2) return false;
+            if (role.StartTimer() != 0f) return false;
             if (!__instance.enabled) return false;
             var maxDistance = KillDistance();
             if (Vector2.Distance(role.ClosestPlayer.GetTruePosition(),
@@ -95,18 +94,6 @@ namespace TownOfSushi.Roles
                 role.Fortified = role.ClosestPlayer;
                 StartRPC(CustomRPC.Fortify, (byte)0, PlayerControl.LocalPlayer.PlayerId, role.Fortified.PlayerId);
             }
-            if (interact[0] == true)
-            {
-                role.LastFortify = DateTime.UtcNow;
-                return false;
-            }
-            else if (interact[1] == true)
-            {
-                role.LastFortify = DateTime.UtcNow;
-                role.LastFortify = role.LastFortify.AddSeconds(CustomGameOptions.ProtectKCReset - CustomGameOptions.FortifyCd);
-                return false;
-            }
-            else if (interact[2] == true) return false;
             return false;
         }
     }

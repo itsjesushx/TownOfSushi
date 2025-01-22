@@ -13,7 +13,9 @@ namespace TownOfSushi.Objects
         public Color Color;
         public Vector3 Position;
         public Investigator Role;
-
+        public bool IsRainbow = false;
+        public bool IsGalaxy = false;
+        public bool IsMonochrome = false;
         public Footprint(PlayerControl player, Investigator role)
         {
             Role = role;
@@ -22,7 +24,108 @@ namespace TownOfSushi.Objects
 
             Player = player;
             _time = (int) Time.time;
-            Color = Color.black;
+            Color = Palette.PlayerColors[player.GetDefaultOutfit().ColorId];
+            if (ColorUtils.IsRainbow(player.GetDefaultOutfit().ColorId)) IsRainbow = true;
+            if (ColorUtils.IsMonochrome(player.GetDefaultOutfit().ColorId)) IsMonochrome = true;
+            if (ColorUtils.IsGalaxy(player.GetDefaultOutfit().ColorId)) IsGalaxy = true;
+            if (Grey || (player.Is(RoleEnum.Venerer) && GetRole<Venerer>(player).IsCamouflaged))
+            {
+                Color = new Color(0.2f, 0.2f, 0.2f, 1f);
+                IsRainbow = false;
+                IsGalaxy = false;
+                IsMonochrome = false;
+            }
+            if (player.Is(RoleEnum.Morphling))
+            {
+                var morphling = GetRole<Morphling>(player);
+                if (morphling.Morphed)
+                {
+                    Color = Palette.PlayerColors[morphling.MorphedPlayer.GetDefaultOutfit().ColorId];
+                    if (ColorUtils.IsRainbow(morphling.MorphedPlayer.GetDefaultOutfit().ColorId)) IsRainbow = true;
+                    else IsRainbow = false;
+                }
+            }
+            if (player.Is(RoleEnum.Morphling))
+            {
+                var morphling = GetRole<Morphling>(player);
+                if (morphling.Morphed)
+                {
+                    Color = Palette.PlayerColors[morphling.MorphedPlayer.GetDefaultOutfit().ColorId];
+                    if (ColorUtils.IsMonochrome(morphling.MorphedPlayer.GetDefaultOutfit().ColorId)) IsMonochrome = true;
+                    else IsMonochrome = false;
+                }
+            }
+            if (player.Is(RoleEnum.Morphling))
+            {
+                var morphling = GetRole<Morphling>(player);
+                if (morphling.Morphed)
+                {
+                    Color = Palette.PlayerColors[morphling.MorphedPlayer.GetDefaultOutfit().ColorId];
+                    if (ColorUtils.IsGalaxy(morphling.MorphedPlayer.GetDefaultOutfit().ColorId)) IsGalaxy = true;
+                    else IsGalaxy = false;
+                }
+            }
+            if (player.Is(RoleEnum.Glitch))
+            {
+                var glitch = GetRole<Glitch>(player);
+                if (glitch.IsUsingMimic)
+                {
+                    Color = Palette.PlayerColors[glitch.MimicTarget.GetDefaultOutfit().ColorId];
+                    if (ColorUtils.IsRainbow(glitch.MimicTarget.GetDefaultOutfit().ColorId)) IsRainbow = true;
+                    else IsRainbow = false;
+                }
+            }
+            if (player.Is(RoleEnum.Glitch))
+            {
+                var glitch = GetRole<Glitch>(player);
+                if (glitch.IsUsingMimic)
+                {
+                    Color = Palette.PlayerColors[glitch.MimicTarget.GetDefaultOutfit().ColorId];
+                    if (ColorUtils.IsGalaxy(glitch.MimicTarget.GetDefaultOutfit().ColorId)) IsGalaxy = true;
+                    else IsGalaxy = false;
+                }
+            }
+            if (player.Is(RoleEnum.Glitch))
+            {
+                var glitch = GetRole<Glitch>(player);
+                if (glitch.IsUsingMimic)
+                {
+                    Color = Palette.PlayerColors[glitch.MimicTarget.GetDefaultOutfit().ColorId];
+                    if (ColorUtils.IsMonochrome(glitch.MimicTarget.GetDefaultOutfit().ColorId)) IsMonochrome = true;
+                    else IsMonochrome = false;
+                }
+            }
+
+            if (player.Is(RoleEnum.Hitman))
+            {
+                var hitman = GetRole<Hitman>(player);
+                if (hitman.IsUsingMorph)
+                {
+                    Color = Palette.PlayerColors[hitman.MorphTarget.GetDefaultOutfit().ColorId];
+                    if (ColorUtils.IsRainbow(hitman.MorphTarget.GetDefaultOutfit().ColorId)) IsRainbow = true;
+                    else IsRainbow = false;
+                }
+            }
+            if (player.Is(RoleEnum.Hitman))
+            {
+                var hitman = GetRole<Hitman>(player);
+                if (hitman.IsUsingMorph)
+                {
+                    Color = Palette.PlayerColors[hitman.MorphTarget.GetDefaultOutfit().ColorId];
+                    if (ColorUtils.IsGalaxy(hitman.MorphTarget.GetDefaultOutfit().ColorId)) IsGalaxy = true;
+                    else IsGalaxy = false;
+                }
+            }
+            if (player.Is(RoleEnum.Hitman))
+            {
+                var hitman = GetRole<Hitman>(player);
+                if (hitman.IsUsingMorph)
+                {
+                    Color = Palette.PlayerColors[hitman.MorphTarget.GetDefaultOutfit().ColorId];
+                    if (ColorUtils.IsMonochrome(hitman.MorphTarget.GetDefaultOutfit().ColorId)) IsMonochrome = true;
+                    else IsMonochrome = false;
+                }
+            }
 
             Start();
             role.AllPrints.Add(this);
@@ -68,13 +171,10 @@ namespace TownOfSushi.Objects
 
             if (alpha < 0 || alpha > 1)
                 alpha = 0;
-            
-            if (ColorUtils.IsRainbow(Player.GetDefaultOutfit().ColorId) & !Grey)
-                Color = ColorUtils.Rainbow;
-            else if (Grey)
-                Color = new Color(0.2f, 0.2f, 0.2f, 1f);
-            else
-                Color = Palette.PlayerColors[Player.GetDefaultOutfit().ColorId];
+
+            if (IsRainbow) Color = ColorUtils.Rainbow;
+            if (IsGalaxy) Color = ColorUtils.Galaxy;
+            if (IsMonochrome) Color = ColorUtils.Monochrome;
 
             Color = new Color(Color.r, Color.g, Color.b, alpha);
             _spriteRenderer.color = Color;

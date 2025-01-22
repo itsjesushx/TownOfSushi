@@ -499,9 +499,9 @@ namespace TownOfSushi.Roles
 
             else if (role == RoleEnum.Crusader)
             {
-                var wardenRole = GetRole<Crusader>(amnesiac);
-                wardenRole.LastFortify = DateTime.UtcNow;
-                wardenRole.Fortified = null;
+                var Crusader = GetRole<Crusader>(amnesiac);
+                Crusader.StartingCooldown = Crusader.StartingCooldown.AddSeconds(-10f);
+                Crusader.Fortified = null;
                 DestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(false);
             }
 

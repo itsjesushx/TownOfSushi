@@ -388,26 +388,28 @@ namespace TownOfSushi.CustomOption
         public static CustomOption SkipButtonDisable;
         public static CustomOption FirstDeathShield;
 
+        public static CustomOption RoleListSettings;
+        public static CustomOption UniqueRoles;
+        public static CustomOption Slot1;
+        public static CustomOption Slot2;
+        public static CustomOption Slot3;
+        public static CustomOption Slot4;
+        public static CustomOption Slot5;
+        public static CustomOption Slot6;
+        public static CustomOption Slot7;
+        public static CustomOption Slot8;
+        public static CustomOption Slot9;
+        public static CustomOption Slot10;
+        public static CustomOption Slot11;
+        public static CustomOption Slot12;
+        public static CustomOption Slot13;
+        public static CustomOption Slot14;
+        public static CustomOption Slot15;
+
         public static CustomOption VentImprovements;
         public static CustomOption VitalsLab;
         public static CustomOption ColdTempDeathValley;
         public static CustomOption WifiChartCourseSwap;
-
-        public static CustomOption GameMode;
-
-        public static CustomOption MinNeutralBenignRoles;
-        public static CustomOption MaxNeutralBenignRoles;
-        public static CustomOption MinNeutralEvilRoles;
-        public static CustomOption MaxNeutralEvilRoles;
-        public static CustomOption MinNeutralKillingRoles;
-        public static CustomOption MaxNeutralKillingRoles;
-
-        public static CustomOption RandomNumberImps;
-
-        public static CustomOption NeutralRoles;
-        public static CustomOption VeteranCount;
-        public static CustomOption AddArsonist;
-        public static CustomOption AddPlaguebearer;
 
         #endregion
         public static void Load()
@@ -416,6 +418,114 @@ namespace TownOfSushi.CustomOption
 
             PresetSelection = CustomOption.Create(1, Types.General, "Preset", Presets, null, true);
             #region  General Mod Settings
+
+            UniqueRoles = CustomOption.Create(22230, Types.General, "All Roles Are Unique", true, null, true, heading: "Role List Settings");
+            Slot1 = CustomOption.Create(22234, Types.General, "Slot 1", new[] { "<color=#66FFFFFF>Crew</color> Investigative",
+                "<color=#66FFFFFF>Crew</color> Killing", "<color=#66FFFFFF>Crew</color> Protective", "<color=#66FFFFFF>Crew</color> Support",
+                "Common <color=#66FFFFFF>Crew</color>", "Random <color=#66FFFFFF>Crew</color>", "<color=#999999FF>Neutral</color> Benign",
+                "<color=#999999FF>Neutral</color> Evil", "<color=#999999FF>Neutral</color> Killing", "Common <color=#999999FF>Neutral</color>",
+                "Random <color=#999999FF>Neutral</color>", "<color=#FF0000FF>Imp</color> Concealing", "<color=#FF0000FF>Imp</color> Killing",
+                "<color=#FF0000FF>Imp</color> Support", "Common <color=#FF0000FF>Imp</color>", "Random <color=#FF0000FF>Imp</color>",
+                "Non-<color=#FF0000FF>Imp</color>", "Any" }, UniqueRoles);
+            Slot2 = CustomOption.Create(22235, Types.General, "Slot 2", new[] { "<color=#66FFFFFF>Crew</color> Investigative",
+                "<color=#66FFFFFF>Crew</color> Killing", "<color=#66FFFFFF>Crew</color> Protective", "<color=#66FFFFFF>Crew</color> Support",
+                "Common <color=#66FFFFFF>Crew</color>", "Random <color=#66FFFFFF>Crew</color>", "<color=#999999FF>Neutral</color> Benign",
+                "<color=#999999FF>Neutral</color> Evil", "<color=#999999FF>Neutral</color> Killing", "Common <color=#999999FF>Neutral</color>",
+                "Random <color=#999999FF>Neutral</color>", "<color=#FF0000FF>Imp</color> Concealing", "<color=#FF0000FF>Imp</color> Killing",
+                "<color=#FF0000FF>Imp</color> Support", "Common <color=#FF0000FF>Imp</color>", "Random <color=#FF0000FF>Imp</color>",
+                "Non-<color=#FF0000FF>Imp</color>", "Any" }, UniqueRoles);
+            Slot3 = CustomOption.Create(22236, Types.General, "Slot 3", new[] { "<color=#66FFFFFF>Crew</color> Investigative",
+                "<color=#66FFFFFF>Crew</color> Killing", "<color=#66FFFFFF>Crew</color> Protective", "<color=#66FFFFFF>Crew</color> Support",
+                "Common <color=#66FFFFFF>Crew</color>", "Random <color=#66FFFFFF>Crew</color>", "<color=#999999FF>Neutral</color> Benign",
+                "<color=#999999FF>Neutral</color> Evil", "<color=#999999FF>Neutral</color> Killing", "Common <color=#999999FF>Neutral</color>",
+                "Random <color=#999999FF>Neutral</color>", "<color=#FF0000FF>Imp</color> Concealing", "<color=#FF0000FF>Imp</color> Killing",
+                "<color=#FF0000FF>Imp</color> Support", "Common <color=#FF0000FF>Imp</color>", "Random <color=#FF0000FF>Imp</color>",
+                "Non-<color=#FF0000FF>Imp</color>", "Any" }, UniqueRoles);
+            Slot4 = CustomOption.Create(22237, Types.General, "Slot 4", new[] { "<color=#66FFFFFF>Crew</color> Investigative",
+                "<color=#66FFFFFF>Crew</color> Killing", "<color=#66FFFFFF>Crew</color> Protective", "<color=#66FFFFFF>Crew</color> Support",
+                "Common <color=#66FFFFFF>Crew</color>", "Random <color=#66FFFFFF>Crew</color>", "<color=#999999FF>Neutral</color> Benign",
+                "<color=#999999FF>Neutral</color> Evil", "<color=#999999FF>Neutral</color> Killing", "Common <color=#999999FF>Neutral</color>",
+                "Random <color=#999999FF>Neutral</color>", "<color=#FF0000FF>Imp</color> Concealing", "<color=#FF0000FF>Imp</color> Killing",
+                "<color=#FF0000FF>Imp</color> Support", "Common <color=#FF0000FF>Imp</color>", "Random <color=#FF0000FF>Imp</color>",
+                "Non-<color=#FF0000FF>Imp</color>", "Any" }, UniqueRoles);
+            Slot5 = CustomOption.Create(22238, Types.General, "Slot 5", new[] { "<color=#66FFFFFF>Crew</color> Investigative",
+                "<color=#66FFFFFF>Crew</color> Killing", "<color=#66FFFFFF>Crew</color> Protective", "<color=#66FFFFFF>Crew</color> Support",
+                "Common <color=#66FFFFFF>Crew</color>", "Random <color=#66FFFFFF>Crew</color>", "<color=#999999FF>Neutral</color> Benign",
+                "<color=#999999FF>Neutral</color> Evil", "<color=#999999FF>Neutral</color> Killing", "Common <color=#999999FF>Neutral</color>",
+                "Random <color=#999999FF>Neutral</color>", "<color=#FF0000FF>Imp</color> Concealing", "<color=#FF0000FF>Imp</color> Killing",
+                "<color=#FF0000FF>Imp</color> Support", "Common <color=#FF0000FF>Imp</color>", "Random <color=#FF0000FF>Imp</color>",
+                "Non-<color=#FF0000FF>Imp</color>", "Any" }, UniqueRoles);
+            Slot6 = CustomOption.Create(22239, Types.General, "Slot 6", new[] { "<color=#66FFFFFF>Crew</color> Investigative",
+                "<color=#66FFFFFF>Crew</color> Killing", "<color=#66FFFFFF>Crew</color> Protective", "<color=#66FFFFFF>Crew</color> Support",
+                "Common <color=#66FFFFFF>Crew</color>", "Random <color=#66FFFFFF>Crew</color>", "<color=#999999FF>Neutral</color> Benign",
+                "<color=#999999FF>Neutral</color> Evil", "<color=#999999FF>Neutral</color> Killing", "Common <color=#999999FF>Neutral</color>",
+                "Random <color=#999999FF>Neutral</color>", "<color=#FF0000FF>Imp</color> Concealing", "<color=#FF0000FF>Imp</color> Killing",
+                "<color=#FF0000FF>Imp</color> Support", "Common <color=#FF0000FF>Imp</color>", "Random <color=#FF0000FF>Imp</color>",
+                "Non-<color=#FF0000FF>Imp</color>", "Any" }, UniqueRoles);
+            Slot7 = CustomOption.Create(22245, Types.General, "Slot 7", new[] { "<color=#66FFFFFF>Crew</color> Investigative",
+                "<color=#66FFFFFF>Crew</color> Killing", "<color=#66FFFFFF>Crew</color> Protective", "<color=#66FFFFFF>Crew</color> Support",
+                "Common <color=#66FFFFFF>Crew</color>", "Random <color=#66FFFFFF>Crew</color>", "<color=#999999FF>Neutral</color> Benign",
+                "<color=#999999FF>Neutral</color> Evil", "<color=#999999FF>Neutral</color> Killing", "Common <color=#999999FF>Neutral</color>",
+                "Random <color=#999999FF>Neutral</color>", "<color=#FF0000FF>Imp</color> Concealing", "<color=#FF0000FF>Imp</color> Killing",
+                "<color=#FF0000FF>Imp</color> Support", "Common <color=#FF0000FF>Imp</color>", "Random <color=#FF0000FF>Imp</color>",
+                "Non-<color=#FF0000FF>Imp</color>", "Any" }, UniqueRoles);
+            Slot8 = CustomOption.Create(22243, Types.General, "Slot 8", new[] { "<color=#66FFFFFF>Crew</color> Investigative",
+                "<color=#66FFFFFF>Crew</color> Killing", "<color=#66FFFFFF>Crew</color> Protective", "<color=#66FFFFFF>Crew</color> Support",
+                "Common <color=#66FFFFFF>Crew</color>", "Random <color=#66FFFFFF>Crew</color>", "<color=#999999FF>Neutral</color> Benign",
+                "<color=#999999FF>Neutral</color> Evil", "<color=#999999FF>Neutral</color> Killing", "Common <color=#999999FF>Neutral</color>",
+                "Random <color=#999999FF>Neutral</color>", "<color=#FF0000FF>Imp</color> Concealing", "<color=#FF0000FF>Imp</color> Killing",
+                "<color=#FF0000FF>Imp</color> Support", "Common <color=#FF0000FF>Imp</color>", "Random <color=#FF0000FF>Imp</color>",
+                "Non-<color=#FF0000FF>Imp</color>", "Any" }, UniqueRoles);
+            Slot9 = CustomOption.Create(22244, Types.General, "Slot 9", new[] { "<color=#66FFFFFF>Crew</color> Investigative",
+                "<color=#66FFFFFF>Crew</color> Killing", "<color=#66FFFFFF>Crew</color> Protective", "<color=#66FFFFFF>Crew</color> Support",
+                "Common <color=#66FFFFFF>Crew</color>", "Random <color=#66FFFFFF>Crew</color>", "<color=#999999FF>Neutral</color> Benign",
+                "<color=#999999FF>Neutral</color> Evil", "<color=#999999FF>Neutral</color> Killing", "Common <color=#999999FF>Neutral</color>",
+                "Random <color=#999999FF>Neutral</color>", "<color=#FF0000FF>Imp</color> Concealing", "<color=#FF0000FF>Imp</color> Killing",
+                "<color=#FF0000FF>Imp</color> Support", "Common <color=#FF0000FF>Imp</color>", "Random <color=#FF0000FF>Imp</color>",
+                "Non-<color=#FF0000FF>Imp</color>", "Any" }, UniqueRoles);
+            Slot10 = CustomOption.Create(22246, Types.General, "Slot 10", new[] { "<color=#66FFFFFF>Crew</color> Investigative",
+                "<color=#66FFFFFF>Crew</color> Killing", "<color=#66FFFFFF>Crew</color> Protective", "<color=#66FFFFFF>Crew</color> Support",
+                "Common <color=#66FFFFFF>Crew</color>", "Random <color=#66FFFFFF>Crew</color>", "<color=#999999FF>Neutral</color> Benign",
+                "<color=#999999FF>Neutral</color> Evil", "<color=#999999FF>Neutral</color> Killing", "Common <color=#999999FF>Neutral</color>",
+                "Random <color=#999999FF>Neutral</color>", "<color=#FF0000FF>Imp</color> Concealing", "<color=#FF0000FF>Imp</color> Killing",
+                "<color=#FF0000FF>Imp</color> Support", "Common <color=#FF0000FF>Imp</color>", "Random <color=#FF0000FF>Imp</color>",
+                "Non-<color=#FF0000FF>Imp</color>", "Any" }, UniqueRoles);
+            Slot11 = CustomOption.Create(22247, Types.General, "Slot 11", new[] { "<color=#66FFFFFF>Crew</color> Investigative",
+                "<color=#66FFFFFF>Crew</color> Killing", "<color=#66FFFFFF>Crew</color> Protective", "<color=#66FFFFFF>Crew</color> Support",
+                "Common <color=#66FFFFFF>Crew</color>", "Random <color=#66FFFFFF>Crew</color>", "<color=#999999FF>Neutral</color> Benign",
+                "<color=#999999FF>Neutral</color> Evil", "<color=#999999FF>Neutral</color> Killing", "Common <color=#999999FF>Neutral</color>",
+                "Random <color=#999999FF>Neutral</color>", "<color=#FF0000FF>Imp</color> Concealing", "<color=#FF0000FF>Imp</color> Killing",
+                "<color=#FF0000FF>Imp</color> Support", "Common <color=#FF0000FF>Imp</color>", "Random <color=#FF0000FF>Imp</color>",
+                "Non-<color=#FF0000FF>Imp</color>", "Any" }, UniqueRoles);
+            Slot12 = CustomOption.Create(22248, Types.General, "Slot 12", new[] { "<color=#66FFFFFF>Crew</color> Investigative",
+                "<color=#66FFFFFF>Crew</color> Killing", "<color=#66FFFFFF>Crew</color> Protective", "<color=#66FFFFFF>Crew</color> Support",
+                "Common <color=#66FFFFFF>Crew</color>", "Random <color=#66FFFFFF>Crew</color>", "<color=#999999FF>Neutral</color> Benign",
+                "<color=#999999FF>Neutral</color> Evil", "<color=#999999FF>Neutral</color> Killing", "Common <color=#999999FF>Neutral</color>",
+                "Random <color=#999999FF>Neutral</color>", "<color=#FF0000FF>Imp</color> Concealing", "<color=#FF0000FF>Imp</color> Killing",
+                "<color=#FF0000FF>Imp</color> Support", "Common <color=#FF0000FF>Imp</color>", "Random <color=#FF0000FF>Imp</color>",
+                "Non-<color=#FF0000FF>Imp</color>", "Any" }, UniqueRoles);
+            Slot13 = CustomOption.Create(22249, Types.General, "Slot 13", new[] { "<color=#66FFFFFF>Crew</color> Investigative",
+                "<color=#66FFFFFF>Crew</color> Killing", "<color=#66FFFFFF>Crew</color> Protective", "<color=#66FFFFFF>Crew</color> Support",
+                "Common <color=#66FFFFFF>Crew</color>", "Random <color=#66FFFFFF>Crew</color>", "<color=#999999FF>Neutral</color> Benign",
+                "<color=#999999FF>Neutral</color> Evil", "<color=#999999FF>Neutral</color> Killing", "Common <color=#999999FF>Neutral</color>",
+                "Random <color=#999999FF>Neutral</color>", "<color=#FF0000FF>Imp</color> Concealing", "<color=#FF0000FF>Imp</color> Killing",
+                "<color=#FF0000FF>Imp</color> Support", "Common <color=#FF0000FF>Imp</color>", "Random <color=#FF0000FF>Imp</color>",
+                "Non-<color=#FF0000FF>Imp</color>", "Any" }, UniqueRoles);
+            Slot14 = CustomOption.Create(22250, Types.General, "Slot 14", new[] { "<color=#66FFFFFF>Crew</color> Investigative",
+                "<color=#66FFFFFF>Crew</color> Killing", "<color=#66FFFFFF>Crew</color> Protective", "<color=#66FFFFFF>Crew</color> Support",
+                "Common <color=#66FFFFFF>Crew</color>", "Random <color=#66FFFFFF>Crew</color>", "<color=#999999FF>Neutral</color> Benign",
+                "<color=#999999FF>Neutral</color> Evil", "<color=#999999FF>Neutral</color> Killing", "Common <color=#999999FF>Neutral</color>",
+                "Random <color=#999999FF>Neutral</color>", "<color=#FF0000FF>Imp</color> Concealing", "<color=#FF0000FF>Imp</color> Killing",
+                "<color=#FF0000FF>Imp</color> Support", "Common <color=#FF0000FF>Imp</color>", "Random <color=#FF0000FF>Imp</color>",
+                "Non-<color=#FF0000FF>Imp</color>", "Any" }, UniqueRoles);
+            Slot15 = CustomOption.Create(22251, Types.General, "Slot 15", new[] { "<color=#66FFFFFF>Crew</color> Investigative",
+                "<color=#66FFFFFF>Crew</color> Killing", "<color=#66FFFFFF>Crew</color> Protective", "<color=#66FFFFFF>Crew</color> Support",
+                "Common <color=#66FFFFFF>Crew</color>", "Random <color=#66FFFFFF>Crew</color>", "<color=#999999FF>Neutral</color> Benign",
+                "<color=#999999FF>Neutral</color> Evil", "<color=#999999FF>Neutral</color> Killing", "Common <color=#999999FF>Neutral</color>",
+                "Random <color=#999999FF>Neutral</color>", "<color=#FF0000FF>Imp</color> Concealing", "<color=#FF0000FF>Imp</color> Killing",
+                "<color=#FF0000FF>Imp</color> Support", "Common <color=#FF0000FF>Imp</color>", "Random <color=#FF0000FF>Imp</color>",
+                "Non-<color=#FF0000FF>Imp</color>", "Any" }, UniqueRoles);
+                
             CamoCommsKillAnyone = CustomOption.Create(2, Types.General, "Kill Anyone During Camouflaged Comms", false, null, true, heading: "Custom Game Options");
             ColourblindComms = CustomOption.Create(3, Types.General, "Camouflaged Comms", false);
             AnyoneStopStart = CustomOption.Create(3333, Types.General, "All Players Can Stop The Start", false);
@@ -438,15 +548,6 @@ namespace TownOfSushi.CustomOption
             VitalsLab = CustomOption.Create(20, Types.General, "Vitals Moved To Lab", false);
             ColdTempDeathValley = CustomOption.Create(21, Types.General, "Cold Temp Moved To Death Valley", false);
             WifiChartCourseSwap = CustomOption.Create(22, Types.General, "Reboot Wifi And Chart Course Swapped", false);
-
-            GameMode = CustomOption.Create(23, Types.General, "Game Mode", new string[] { "Classic", "All Any"}, null, true, heading: "Game Mode Settings");
-
-            RandomNumberImps = CustomOption.Create(24, Types.General, "Random Number Of Impostors", true, null, true, heading: "All Any Settings");
-
-            NeutralRoles = CustomOption.Create(25, Types.General, "Neutral Roles", 1f, 0f, 5f, 1f, null, true, heading: "Killers Only Settings");
-            VeteranCount = CustomOption.Create(26, Types.General, "Veteran Count", 1f, 0f, 5f, 1f);
-            AddArsonist = CustomOption.Create(27, Types.General, "Add Arsonist", false);
-            AddPlaguebearer = CustomOption.Create(28, Types.General, "Add Plaguebearer", false);
 
             #endregion
 
@@ -574,13 +675,6 @@ namespace TownOfSushi.CustomOption
 
             #endregion
 
-            #region Passive Neutral Roles Settings
-            MinNeutralBenignRoles = CustomOption.Create(133, Types.Neutral, "Min Neutral Benign Roles", 1, 0, 5, 1, null, true, heading: "Neutral Roles Settings");
-            MaxNeutralBenignRoles = CustomOption.Create(134, Types.Neutral, "Max Neutral Benign Roles", 1, 0, 5, 1);
-            MinNeutralEvilRoles = CustomOption.Create(135, Types.Neutral, "Min Neutral Evil Roles", 1, 0, 5, 1);
-            MaxNeutralEvilRoles = CustomOption.Create(136, Types.Neutral, "Max Neutral Evil Roles", 1, 0, 5, 1);
-            #endregion
-
             #region Neutral Benign Roles
             AmnesiacOn = CustomOption.Create(165, Types.Neutral, ColorString(Colors.Amnesiac, "Amnesiac"), 0f, 0f, 100f, 10f, null, true, format: "%");
 
@@ -634,11 +728,6 @@ namespace TownOfSushi.CustomOption
             EatArrows = CustomOption.Create(163, Types.Neutral, "Gets Arrows To Dead Bodies", false, VultureOn);
             EatArrowDelay = CustomOption.Create(164, Types.Neutral, "Time After Death Arrows Appear", 5f, 0f, 15f, 1f, EatArrows, format: "s");
 
-            #endregion
-
-            #region Neutral Killimng Roles Settings
-            MinNeutralKillingRoles = CustomOption.Create(137, Types.NK, "Min Neutral Killing Roles", 1, 0, 5, 1, null, true, heading: "Neutral Killing Roles Settings");
-            MaxNeutralKillingRoles = CustomOption.Create(138, Types.NK, "Max Neutral Killing Roles", 1, 0, 5, 1);
             #endregion
 
             #region Neutral Killing Roles

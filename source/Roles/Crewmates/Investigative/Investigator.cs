@@ -123,6 +123,7 @@ namespace TownOfSushi.Roles
                 {
                     if (player == null || player.Data.IsDead ||
                         player.PlayerId == PlayerControl.LocalPlayer.PlayerId) continue;
+                        if (player.Is(RoleEnum.Swooper) && GetRole<Swooper>(player).IsSwooped) continue;
                     var canPlace = !investigator.AllPrints.Any(print =>
                         Vector3.Distance(print.Position, Position(player)) < 0.5f &&
                         print.Color.a > 0.5 &&

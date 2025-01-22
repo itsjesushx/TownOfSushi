@@ -15,9 +15,8 @@ namespace TownOfSushi.Roles
             Color = Colors.Impostor;
             RoleType = RoleEnum.Escapist;
             Faction = Faction.Impostors;
-
             AddToRoleHistory(RoleType);
-            RoleAlignment = RoleAlignment.ImpDeception;
+            RoleAlignment = RoleAlignment.ImpConcealing;
         }
         public KillButton EscapeButton
         {

@@ -872,47 +872,17 @@ namespace TownOfSushi.CustomOption
             else sb = new StringBuilder();
 
             foreach (CustomOption option in options) {
-                if (option.parent != null) {
+                if (option.parent != null) 
+                {
                     bool isIrrelevant = option.parent.GetSelection() == 0 || (option.parent.parent != null && option.parent.parent.GetSelection() == 0);
 
                     Color c = isIrrelevant ? Color.grey : Color.white;  // No use for now
                     if (isIrrelevant) continue;
                     sb.AppendLine(ColorString(c, $"{option.name}: {option.selections[option.selection].ToString()}{option.format}"));
-                } else 
+                } 
+                else 
                 {
-                    if (option == CustomOptionHolder.MinNeutralBenignRoles) 
-                    {
-                        var optionName = "Neutral Benign Roles";
-                        var min = CustomOptionHolder.MinNeutralBenignRoles.GetSelection();
-                        var max = CustomOptionHolder.MaxNeutralBenignRoles.GetSelection();
-                        if (min > max) min = max;
-                        var optionValue = (min == max) ? $"{max}" : $"{min} - {max}";
-                        sb.AppendLine($"{optionName}: {optionValue}");
-                    } 
-                    else if (option == CustomOptionHolder.MinNeutralKillingRoles) 
-                    {
-                        var optionName = "Neutral Killing Roles";
-                        var min = CustomOptionHolder.MinNeutralKillingRoles.GetSelection();
-                        var max = CustomOptionHolder.MaxNeutralKillingRoles.GetSelection();
-                        if (min > max) min = max;
-                        var optionValue = (min == max) ? $"{max}" : $"{min} - {max}";
-                        sb.AppendLine($"{optionName}: {optionValue}");
-                    }
-                    else if (option == CustomOptionHolder.MinNeutralEvilRoles) 
-                    {
-                        var optionName = "Neutral Evil Roles";
-                        var min = CustomOptionHolder.MinNeutralEvilRoles.GetSelection();
-                        var max = CustomOptionHolder.MaxNeutralEvilRoles.GetSelection();
-                        if (min > max) min = max;
-                        var optionValue = (min == max) ? $"{max}" : $"{min} - {max}";
-                        sb.AppendLine($"{optionName}: {optionValue}");
-                    } 
-                    else if ((option == CustomOptionHolder.MaxNeutralBenignRoles) || (option == CustomOptionHolder.MaxNeutralKillingRoles) || (option == CustomOptionHolder.MaxNeutralEvilRoles)) 
-                    {
-                        continue;
-                    } else {
-                        sb.AppendLine($"\n{option.name}: {option.selections[option.selection].ToString()}{option.format}");
-                    }
+                    sb.AppendLine($"\n{option.name}: {option.selections[option.selection].ToString()}{option.format}");
                 }
             }
             return sb.ToString();

@@ -6,6 +6,14 @@ namespace TownOfSushi.Patches
         public static Sprite Sprite => TownOfSushi.Arrow;
         public static void Postfix(IntroCutscene._CoBegin_d__35 __instance)
         {
+            foreach (var player in PlayerControl.AllPlayerControls)
+            {
+                if (player.Is(ModifierEnum.Mini) && player.transform.localPosition.y > 4 && MiraHQMap())
+                {
+                    player.transform.localPosition = new Vector3(player.transform.localPosition.x, 4f, player.transform.localPosition.z);
+                }
+            }
+
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Investigator))
             {
                 var detective = GetRole<Investigator>(PlayerControl.LocalPlayer);
@@ -109,13 +117,6 @@ namespace TownOfSushi.Patches
                 var escapist = GetRole<Escapist>(PlayerControl.LocalPlayer);
                 escapist.LastEscape = DateTime.UtcNow;
                 escapist.LastEscape = escapist.LastEscape.AddSeconds(CustomGameOptions.InitialCooldowns - CustomGameOptions.EscapeCd);
-            }
-
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Crusader))
-            {
-                var Crusader = GetRole<Crusader>(PlayerControl.LocalPlayer);
-                Crusader.LastFortify = DateTime.UtcNow;
-                Crusader.LastFortify = Crusader.LastFortify.AddSeconds(CustomGameOptions.InitialCooldowns - CustomGameOptions.FortifyCd);
             }
 
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Grenadier))

@@ -1252,7 +1252,7 @@ If you have any bugs or any need to contact me, join the [Discord Server](https:
 [TorchMod](https://github.com/tomozbot/TorchMod) - For the inspiration of the Torch modifier.\
 [XtraCube](https://github.com/XtraCube) - For the RainbowMod.\
 [PhasmoFireGod](https://twitch.tv/PhasmoFireGod) and [Ophidian](https://www.instagram.com/ixean.studio) - Button Art.\
-[TheOtherRoles](https://github.com/Eisbison/TheOtherRoles) - For the Credentials Patch Code, CustomOption Code + inspiration of the Vigilante, Tracker and Spy roles, as well as the Bait modifier. MOTD & Code for the Main menu and ping tracker as well.\
+[TheOtherRoles](https://github.com/TheOtherRolesAU/TheOtherRoles) - For the Credentials Patch Code, CustomOption Code + inspiration of the Vigilante, Tracker and Spy roles, as well as the Bait modifier. MOTD & Code for the Main menu and ping tracker as well.\
 [5up](https://www.twitch.tv/5uppp) and the Submarine Team - For the inspiration of the Grenadier role.\
 [Guus](https://github.com/OhMyGuus) - For support for the old Among Us versions (v2021.11.9.5 and v2021.12.15).\
 [MyDragonBreath](https://github.com/MyDragonBreath) - For Submerged Compatibility, the Trapper role, the Aftermath modifier and support for the new Among Us versions (v2022.6.21, v2023.6.13 & v2023.7.12).\

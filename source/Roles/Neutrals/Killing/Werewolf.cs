@@ -15,7 +15,6 @@ namespace TownOfSushi.Roles
             Color = Colors.Werewolf;
             LastMauled = DateTime.UtcNow;
             RoleType = RoleEnum.Werewolf;
-
             AddToRoleHistory(RoleType);
             Faction = Faction.Neutral;
             RoleAlignment = RoleAlignment.NeutralKilling;

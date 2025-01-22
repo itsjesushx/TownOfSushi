@@ -765,8 +765,7 @@ namespace TownOfSushi
 
                 }
 
-                PlayerHistory deadPlayer = new PlayerHistory(target, DateTime.UtcNow, CustomDeathReason.Kill, killer);
-                GameHistory.deadPlayers.Add(deadPlayer);
+                GameHistory.CreateDeathReason(target, CustomDeathReason.Kill, killer);
 
                 if (killer == PlayerControl.LocalPlayer)
                     SoundManager.Instance.PlaySound(PlayerControl.LocalPlayer.KillSfx, false, 0.8f);
@@ -1209,7 +1208,7 @@ namespace TownOfSushi
             else if (player.Is(RoleAlignment.NeutralBenign)) name = "<color=#B3B3B3FF>Neutral</color> (<color=#1D7CF2FF>Benign</color>)";
             else if (player.Is(RoleAlignment.NeutralEvil)) name = "<color=#B3B3B3FF>Neutral</color> (<color=#1D7CF2FF>Evil</color>)";
             else if (player.Is(RoleAlignment.NeutralKilling)) name = "<color=#B3B3B3FF>Neutral</color> (<color=#1D7CF2FF>Killing</color>)";
-            else if (player.Is(RoleAlignment.ImpDeception)) name = "<color=#FF0000FF>Imp</color> (<color=#1D7CF2FF>Deception</color>)";
+            else if (player.Is(RoleAlignment.ImpConcealing)) name = "<color=#FF0000FF>Imp</color> (<color=#1D7CF2FF>Concealing</color>)";
             else if (player.Is(RoleAlignment.ImpPower)) name = "<color=#FF0000FF>Imp</color> (<color=#1D7CF2FF>Power</color>)";
             else if (player.Is(RoleAlignment.ImpSpecial)) name = "<color=#FF0000FF>Imp</color> (<color=#1D7CF2FF>Special</color>)";
             else if (player.Is(RoleAlignment.ImpSupport)) name = "<color=#FF0000FF>Imp</color> (<color=#1D7CF2FF>Support</color>)";
@@ -1475,11 +1474,6 @@ namespace TownOfSushi
             {
                 var jailor = GetRole<Jailor>(PlayerControl.LocalPlayer);
                 jailor.LastJailed = DateTime.UtcNow;
-            }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Crusader))
-            {
-                var Crusader = Role.GetRole<Crusader>(PlayerControl.LocalPlayer);
-                Crusader.LastFortify = DateTime.UtcNow;
             }
             foreach (var role in GetRoles(RoleEnum.Jailor))
             {

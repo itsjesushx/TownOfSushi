@@ -122,29 +122,17 @@ namespace TownOfSushi.CustomOption
         public static int MaxDoused => Mathf.RoundToInt(CustomOptionHolder.MaxDoused.GetFloat());
         public static bool IgniteCdRemoved => CustomOptionHolder.IgniteCdRemoved.GetBool();
         public static bool ArsoVent => CustomOptionHolder.ArsoVent.GetBool();
-        public static int MinNeutralKillingRoles => Mathf.RoundToInt(CustomOptionHolder.MinNeutralKillingRoles.GetFloat());
-        public static int MaxNeutralKillingRoles => Mathf.RoundToInt(CustomOptionHolder.MaxNeutralKillingRoles.GetFloat());
-        public static int MinNeutralBenignRoles => Mathf.RoundToInt(CustomOptionHolder.MinNeutralBenignRoles.GetFloat());
-        public static int MaxNeutralBenignRoles => Mathf.RoundToInt(CustomOptionHolder.MaxNeutralBenignRoles.GetFloat());
-        public static int MinNeutralEvilRoles => Mathf.RoundToInt(CustomOptionHolder.MinNeutralEvilRoles.GetFloat());
-        public static int MaxNeutralEvilRoles => Mathf.RoundToInt(CustomOptionHolder.MaxNeutralEvilRoles.GetFloat());
-        public static bool RandomNumberImps => CustomOptionHolder.RandomNumberImps.GetBool();
-        public static int NeutralRoles => Mathf.RoundToInt(CustomOptionHolder.NeutralRoles.GetFloat());
-        public static int VeteranCount => Mathf.RoundToInt(CustomOptionHolder.VeteranCount.GetFloat());
         public static float HunterKillCd => CustomOptionHolder.HunterKillCd.GetFloat();
         public static float HunterStalkCd => CustomOptionHolder.HunterStalkCd.GetFloat();
         public static float HunterStalkDuration => CustomOptionHolder.HunterStalkDuration.GetFloat();
         public static int HunterStalkUses => Mathf.RoundToInt(CustomOptionHolder.HunterStalkUses.GetFloat());
         public static bool RetributionOnVote => CustomOptionHolder.RetributionOnVote.GetBool();
         public static bool HunterBodyReport => CustomOptionHolder.HunterBodyReport.GetBool();
-        public static bool AddArsonist => CustomOptionHolder.AddArsonist.GetBool();
-        public static bool AddPlaguebearer => CustomOptionHolder.AddPlaguebearer.GetBool();
         public static bool ParallelMedScans => CustomOptionHolder.ParallelMedScans.GetBool();
         public static bool CamoCommsKillAnyone => CustomOptionHolder.CamoCommsKillAnyone.GetBool();
         public static int MaxFixes => Mathf.RoundToInt(CustomOptionHolder.MaxFixes.GetFloat());
         public static bool VigilanteBodyReport => CustomOptionHolder.VigilanteBodyReport.GetBool();
         public static bool VeteranBodyReport => CustomOptionHolder.VeteranBodyReport.GetBool();
-        public static float FortifyCd => CustomOptionHolder.FortifyCooldown.GetFloat();
         public static float DragCd => CustomOptionHolder.DragCooldown.GetFloat();
         public static float UndertakerDragSpeed => CustomOptionHolder.UndertakerDragSpeed.GetFloat();
         public static float HitmanDragCd => CustomOptionHolder.HitmanDragCooldown.GetFloat();
@@ -217,7 +205,6 @@ namespace TownOfSushi.CustomOption
         public static float BlackmailCd => CustomOptionHolder.BlackmailCooldown.GetFloat();
         public static bool BlackmailInvisible => CustomOptionHolder.BlackmailInvisible.GetBool();
         public static float GiantSlow => CustomOptionHolder.GiantSlow.GetFloat();
-        public static float MiniSpeed => CustomOptionHolder.MiniSpeed.GetFloat();
         public static float FlashSpeed => CustomOptionHolder.FlashSpeed.GetFloat();
         public static float DiseasedMultiplier => CustomOptionHolder.DiseasedKillMultiplier.GetFloat();
         public static float BaitMinDelay => CustomOptionHolder.BaitMinDelay.GetFloat();
@@ -295,7 +282,21 @@ namespace TownOfSushi.CustomOption
         public static float RandomMapLevelImpostor => RandomMap.LevelImpLoaded ? CustomOptionHolder.RandomMapLevelImpostor.GetFloat() : 0f;
         public static DisableSkipButtonMeetings SkipButtonDisable =>
             (DisableSkipButtonMeetings)CustomOptionHolder.SkipButtonDisable.GetSelection();
-        public static GameMode GameMode =>
-            (GameMode)CustomOptionHolder.GameMode.GetSelection();
+        public static bool UniqueRoles => CustomOptionHolder.UniqueRoles.GetBool();
+        public static RoleOptions Slot1 => (RoleOptions)CustomOptionHolder.Slot1.GetSelection();
+        public static RoleOptions Slot2 => (RoleOptions)CustomOptionHolder.Slot2.GetSelection();
+        public static RoleOptions Slot3 => (RoleOptions)CustomOptionHolder.Slot3.GetSelection();
+        public static RoleOptions Slot4 => (RoleOptions)CustomOptionHolder.Slot4.GetSelection();
+        public static RoleOptions Slot5 => (RoleOptions)CustomOptionHolder.Slot5.GetSelection();
+        public static RoleOptions Slot6 => (RoleOptions)CustomOptionHolder.Slot6.GetSelection();
+        public static RoleOptions Slot7 => (RoleOptions)CustomOptionHolder.Slot7.GetSelection();
+        public static RoleOptions Slot8 => (RoleOptions)CustomOptionHolder.Slot8.GetSelection();
+        public static RoleOptions Slot9 => (RoleOptions)CustomOptionHolder.Slot9.GetSelection();
+        public static RoleOptions Slot10 => (RoleOptions)CustomOptionHolder.Slot10.GetSelection();
+        public static RoleOptions Slot11 => (RoleOptions)CustomOptionHolder.Slot11.GetSelection();
+        public static RoleOptions Slot12 => (RoleOptions)CustomOptionHolder.Slot12.GetSelection();
+        public static RoleOptions Slot13 => (RoleOptions)CustomOptionHolder.Slot13.GetSelection();
+        public static RoleOptions Slot14 => (RoleOptions)CustomOptionHolder.Slot14.GetSelection();
+        public static RoleOptions Slot15 => (RoleOptions)CustomOptionHolder.Slot15.GetSelection();
     }
 }

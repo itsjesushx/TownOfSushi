@@ -66,7 +66,6 @@ namespace TownOfSushi.Roles
             var data = PlayerControl.LocalPlayer.Data;
             var isDead = data.IsDead;
             var truePosition = PlayerControl.LocalPlayer.GetTruePosition();
-            if (role.CurrentTarget == null || PlayerControl.LocalPlayer == null) return;
             var maxDistance = KillDistance();
             var flag = (GameOptionsManager.Instance.currentNormalGameOptions.GhostsDoTasks || !data.IsDead) &&
                        (!AmongUsClient.Instance || !AmongUsClient.Instance.IsGameOver) &&

@@ -21,7 +21,7 @@ namespace TownOfSushi.Roles
             Faction = Faction.Impostors;
 
             AddToRoleHistory(RoleType);
-            RoleAlignment = RoleAlignment.ImpDeception;
+            RoleAlignment = RoleAlignment.ImpConcealing;
         }
 
         public bool IsCamouflaged => TimeRemaining > 0f;

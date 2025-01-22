@@ -104,7 +104,7 @@ namespace TownOfSushi
         NeutralKilling,
         ImpPower,
         ImpSpecial,
-        ImpDeception,
+        ImpConcealing,
         ImpSupport,
         None
     }
@@ -244,6 +244,27 @@ namespace TownOfSushi
         Amnesiac,
         Jester
     }
+    public enum RoleOptions
+    {
+        CrewInvest,
+        CrewKilling,
+        CrewProtective,
+        CrewSupport,
+        CrewCommon,
+        CrewRandom,
+        NeutBenign,
+        NeutEvil,
+        NeutKilling,
+        NeutCommon,
+        NeutRandom,
+        ImpConceal,
+        ImpPower,
+        ImpSupport,
+        ImpCommon,
+        ImpRandom,
+        NonImp,
+        Any
+    }
     public enum DeadRevealed
     {
         Oldest = 0,
@@ -262,11 +283,6 @@ namespace TownOfSushi
         Crew,
         Amnesiac,
         Jester
-    }
-    public enum GameMode
-    {
-        Classic,
-        AllAny
     }
     public enum AdminDeadPlayers
     {

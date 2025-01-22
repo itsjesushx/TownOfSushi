@@ -22,7 +22,7 @@ namespace TownOfSushi.Roles
             Faction = Faction.Impostors;
 
             AddToRoleHistory(RoleType);
-            RoleAlignment = RoleAlignment.ImpDeception;
+            RoleAlignment = RoleAlignment.ImpConcealing;
         }
 
         public KillButton MorphButton

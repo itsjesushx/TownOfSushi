@@ -17,7 +17,6 @@ namespace TownOfSushi.Roles
             LastSpelled = DateTime.UtcNow;
             RoleType = RoleEnum.Witch;
             Faction = Faction.Impostors;
-
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.ImpPower;
         }
