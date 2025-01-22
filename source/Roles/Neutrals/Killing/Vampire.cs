@@ -53,8 +53,8 @@ namespace TownOfSushi.Roles
                 && CustomGameOptions.CanBiteNeutralBenign) || (role.ClosestPlayer.Is(RoleAlignment.NeutralEvil)
                 && CustomGameOptions.CanBiteNeutralEvil)) &&
                 aliveVamps.Count == 1 && vamps.Count < CustomGameOptions.MaxVampiresPerGame && !ShowRoundOneShield.FirstRoundShielded 
-                //(can't bite with less than 6 players)
-                && PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count > 5)
+                //(can't bite with less than 5 players)
+                && PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count > 4)
             {
                 var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer);
                 if (interact[3] == true)
