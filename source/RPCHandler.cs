@@ -601,7 +601,7 @@ namespace TownOfSushi
             }
 
             // Hand out global modifiers.
-            var canHaveModifier = PlayerControl.AllPlayerControls.ToArray().Where(player => !player.Is(ModifierEnum.Disperser) && !player.Is(ModifierEnum.DoubleShot) && !player.Is(ModifierEnum.Underdog)).ToList();
+            var canHaveModifier = PlayerControl.AllPlayerControls.ToArray().Where(player => !player.Is(ModifierEnum.Disperser) && !player.Is(ModifierEnum.DoubleShot) && !player.Is(ModifierEnum.Underdog) && !player.Is(ModifierEnum.Saboteur)).ToList();
             canHaveModifier.Shuffle();
             Modifiers.SortModifiers(canHaveModifier.Count);
             Modifiers.Shuffle();
@@ -1603,6 +1603,9 @@ namespace TownOfSushi
 
                 if (Check(CustomGameOptions.DoubleShotOn))
                     AssassinAbilityModifiers.Add((typeof(DoubleShot), CustomGameOptions.DoubleShotOn));
+                
+                if (Check(CustomGameOptions.SaboteurOn))
+                    ImpostorModifiers.Add((typeof(Saboteur), CustomGameOptions.SaboteurOn));
 
                 if (CustomGameOptions.UnderdogOn > 0)
                     ImpostorModifiers.Add((typeof(Underdog), CustomGameOptions.UnderdogOn));

@@ -315,6 +315,9 @@ namespace TownOfSushi.CustomOption
         public static CustomOption UnderdogKillBonus;
         public static CustomOption UnderdogIncreasedKC;
 
+        public static CustomOption SaboteurOn;
+        public static CustomOption ReducedSaboCd;
+
         #endregion
 
         #region Neutral Evil Roles
@@ -923,6 +926,9 @@ namespace TownOfSushi.CustomOption
             DisperserOn = CustomOption.Create(302, Types.ModifierAbility, ColorString(Colors.Impostor, "Disperser"), 0f, 0f, 100f, 10f, null, true, format: "%");
             DisperseCooldown = CustomOption.Create(303, Types.ModifierAbility, "Cooldown", 25f, 10f, 40f, 2.5f, DisperserOn, format: "s");
             MaxDisperses = CustomOption.Create(304, Types.ModifierAbility, "Maximum Number Of Disperses Per Game", 5, 1, 15, 1, DisperserOn);
+
+            SaboteurOn = CustomOption.Create(30211, Types.ModifierAbility, ColorString(Colors.Impostor, "Saboteur"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            ReducedSaboCd = CustomOption.Create(30311, Types.ModifierAbility, "Reduced Sabotage Cooldown", 10f, 5f, 15f, 1f, SaboteurOn, format: "s");
             
             #endregion
         }

@@ -247,6 +247,11 @@ namespace TownOfSushi.Modules
                         AddRoleMessage(RoleEnum.Hitman);
                         return false;
                     }
+                    else if (chatText.ToLower().StartsWith("/saboteur") || chatText.ToLower().StartsWith("/sab"))
+                    {
+                        AddModifierMessage(ModifierEnum.Saboteur);
+                        return false;
+                    }
                     else if (chatText.ToLower().StartsWith("/witch") || chatText.ToLower().StartsWith("/ witch"))
                     {
                         AddRoleMessage(RoleEnum.Witch);
@@ -557,6 +562,7 @@ namespace TownOfSushi.Modules
                     PlayerControl.LocalPlayer, "The Underdog is an impostor modifier that grants Impostors a reduced kill cooldown when alone.");
                 if (modifier == ModifierEnum.Frosty) DestroyableSingleton<HudManager>.Instance.Chat.AddChat(
                     PlayerControl.LocalPlayer, "The Frosty is a crewmate modifier that reduces the speed of their killer temporarily.");
+                    
             }
             public static void AddAbilityMessage(AbilityEnum ability)
             {

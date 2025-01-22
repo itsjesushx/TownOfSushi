@@ -3,6 +3,7 @@ namespace TownOfSushi.CustomOption
     public static class CustomGameOptions
     {
         public static int CrusaderOn => Mathf.RoundToInt(CustomOptionHolder.CrusaderOn.GetFloat());
+        public static int SaboteurOn => Mathf.RoundToInt(CustomOptionHolder.SaboteurOn.GetFloat());
         public static int LookoutOn => Mathf.RoundToInt(CustomOptionHolder.LookoutOn.GetFloat());
         public static int WerewolfOn => Mathf.RoundToInt(CustomOptionHolder.WerewolfOn.GetFloat());
         public static int JuggernautOn => Mathf.RoundToInt(CustomOptionHolder.JuggernautOn.GetFloat());
@@ -281,6 +282,7 @@ namespace TownOfSushi.CustomOption
         public static float RandomMapPolus => CustomOptionHolder.RandomMapPolus.GetFloat();
         public static float RandomMapAirship => CustomOptionHolder.RandomMapAirship.GetFloat();
         public static float RandomMapFungle => CustomOptionHolder.RandomMapFungle.GetFloat();
+        public static float ReducedSaboCd => CustomOptionHolder.ReducedSaboCd.GetFloat();
         public static float RandomMapSubmerged => SubmergedCompatibility.Loaded ? CustomOptionHolder.RandomMapSubmerged.GetFloat() : 0f;
         public static float RandomMapLevelImpostor => RandomMap.LevelImpLoaded ? CustomOptionHolder.RandomMapLevelImpostor.GetFloat() : 0f;
         public static DisableSkipButtonMeetings SkipButtonDisable =>

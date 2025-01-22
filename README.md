@@ -27,7 +27,7 @@
 | [Blackmailer](#blackmailer) | [Veteran](#veteran) |  [Pestilence](#plaguebearer) |[Underdog](#underdog) | [Multitasker](#multitasker)|
 | [Warlock](#warlock) | [Medic](#medic) | [Executioner](#executioner)  |   [Diseased](#diseased) | [Paranoiac](#paranoiac) |
 |  [Undertaker](#undertaker) | [Imitator](#imitator) | [Romantic](#romantic) |  | [Sleuth](#sleuth) |
-|  [Bomber](#bomber)  | [Detective](#detective) | [Amnesiac](#amnesiac)| |  |
+|  [Bomber](#bomber)  | [Detective](#detective) | [Amnesiac](#amnesiac)| [Saboteur](#saboteur)  |  |
 |  [Witch](#witch)| [Tracker](#tracker) |  [Agent](#agent) | |
 | [Poisoner](#poisoner) | [Swapper](#swapper)  | [Hitman](#hitman) |  |
 | | [Trapper](#trapper)   |[Glitch](#glitch) |  |
@@ -1134,6 +1134,18 @@ When they are the only remaining Impostor, they will have their kill cooldown sh
 | Underdog | The percentage probability of the Underdog appearing | Percentage | 0% |
 | Kill Cooldown Bonus | The amount of time added or removed from the Underdog's Kill Cooldown | Time | 5s |
 | Increased Kill Cooldown  | Whether the Underdog's Kill Cooldown is Increased when 2+ Imps are alive | Toggle | True |
+
+-----------------------
+## Saboteur
+### **Applied to: Impostors**
+
+The Saboteur is an Impostor with a passive sabotage cooldown reduction.
+
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Saboteur | The percentage probability of the Saboteur appearing | Percentage | 0% |
+| Reduced Sabotage Bonus | The amount of time removed from the Saboteur's sabotage cooldowns | Time | 10s |
 
 -----------------------
 # Game Mode Settings
