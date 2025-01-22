@@ -238,6 +238,11 @@ namespace TownOfSushi.Modules
                         AddRoleMessage(RoleEnum.Warlock);
                         return false;
                     }
+                    else if (chatText.ToLower().StartsWith("/vult") || chatText.ToLower().StartsWith("/vulture"))
+                    {
+                        AddRoleMessage(RoleEnum.Vulture);
+                        return false;
+                    }
                     else if (chatText.ToLower().StartsWith("/hitman") || chatText.ToLower().StartsWith("/hit") 
                     || chatText.ToLower().StartsWith("/ hitman") ||  chatText.ToLower().StartsWith("/ hit") )
                     {
@@ -387,6 +392,14 @@ namespace TownOfSushi.Modules
                         else DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, "Invalid Command.");
                         return false;
                     }
+                    else if (chatText.ToLower().StartsWith("/a") || chatText.ToLower().StartsWith("/ a") || chatText.ToLower().StartsWith("/modifier") || chatText.ToLower().StartsWith("/ ability"))
+                    {
+                        var ability = GetAbility(PlayerControl.LocalPlayer);
+                        if (ability != null) AddAbilityMessage(ability.AbilityType);
+                        else if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started) DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, "You do not have an ability.");
+                        else DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, "Invalid Command.");
+                        return false;
+                    }
                 }
                 if ((chatText.ToLower().StartsWith("/jail") || chatText.ToLower().StartsWith("/ jail")) && sourcePlayer.Is(RoleEnum.Jailor) && MeetingHud.Instance)
                 {
@@ -426,7 +439,7 @@ namespace TownOfSushi.Modules
                 if (role == RoleEnum.Investigator) DestroyableSingleton<HudManager>.Instance.Chat.AddChat(
                     PlayerControl.LocalPlayer, "The Investigator is a crewmate with the ability to see other player's footsteps for a limited time.");
                     if (role == RoleEnum.Romantic) DestroyableSingleton<HudManager>.Instance.Chat.AddChat(
-                    PlayerControl.LocalPlayer, "As the Romantic, you must pick a player to love, working together to ensure both of your survival. " + ChooseOrNew + ".");
+                    PlayerControl.LocalPlayer, "As the Romantic, you must pick a player to love, working together to ensure both of your survival. You will " + ChooseOrNew + ".");
                 if (role == RoleEnum.Medic) DestroyableSingleton<HudManager>.Instance.Chat.AddChat(
                     PlayerControl.LocalPlayer, "The Medic is a crewmate who can place a shield on another player.");
                 if (role == RoleEnum.Swapper) DestroyableSingleton<HudManager>.Instance.Chat.AddChat(
