@@ -78,15 +78,7 @@ namespace TownOfSushi.Patches
                 if (PlayerControl.LocalPlayer.Is(RoleEnum.BountyHunter))
                 {
                     var bountyHunter = GetRole<BountyHunter>(PlayerControl.LocalPlayer);
-                    var possibleTargets = new List<PlayerControl>();
-                    foreach (PlayerControl players in PlayerControl.AllPlayerControls) 
-                    {
-                        if (!players.Data.IsDead && !players.Data.Disconnected && players != players.Data.Role.IsImpostor && !bountyHunter.Player.IsBeloved() && players.IsRomantic()) possibleTargets.Add(players);
-                    }
-                    if (possibleTargets.Count > 0)
-                    {
-                        if (bountyHunter.Bounty == player) bountyHunter.Bounty = possibleTargets[Random.Range(0, possibleTargets.Count)];
-                    }
+                    if (bountyHunter.Bounty == player) bountyHunter.Bounty = bountyHunter.AddBounty(player);
                 }
 
                 if (PlayerControl.LocalPlayer.Is(RoleEnum.Imitator) && !PlayerControl.LocalPlayer.Data.IsDead)

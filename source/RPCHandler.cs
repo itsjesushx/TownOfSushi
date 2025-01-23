@@ -664,6 +664,19 @@ namespace TownOfSushi
                 }
             }
 
+            /*var bounties = PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Is(Faction.Impostors) && !x.Data.IsDead && !x.Data.Disconnected).ToList();
+            foreach (var role in GetRoles(RoleEnum.BountyHunter))
+            {
+                var bh = (BountyHunter)role;
+                if (bounties.Count > 0)
+                {
+                    bh.Bounty = bounties[Random.RandomRangeInt(0, bounties.Count)];
+                    bounties.Remove(bh.Bounty);
+
+                    StartRPC(CustomRPC.SetBounty, role.Player.PlayerId, bh.Bounty.PlayerId);
+                }
+            }*/
+
             var goodGATargets = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(Faction.Crewmates)).ToList();
             var evilGATargets = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(Faction.Impostors) || x.Is(RoleAlignment.NeutralKilling)).ToList();
             foreach (var role in GetRoles(RoleEnum.GuardianAngel))

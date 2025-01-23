@@ -2,7 +2,7 @@ namespace TownOfSushi.Roles
 {
     public class BountyHunter : Role
     {
-        public PlayerControl Bounty;
+        public PlayerControl Bounty = null;
         public DateTime HuntEnd;
         public TMPro.TextMeshPro BountyCooldown;
         public bool Hunting = false;
@@ -23,6 +23,28 @@ namespace TownOfSushi.Roles
             Faction = Faction.Impostors;
             HuntEnd = DateTime.UtcNow;
         }
+        public PlayerControl AddBounty(PlayerControl toRemove = null)
+        {
+            var targets = PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected && !x.Is(Faction.Impostors) && x != toRemove && x != ShowRoundOneShield.FirstRoundShielded).ToList();
+            if (Player.IsBeloved())targets = PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected && !x.Is(Faction.Impostors) && !x.IsRomantic() && x != PlayerControl.LocalPlayer && x != ShowRoundOneShield.FirstRoundShielded && x != toRemove).ToList();
+            if (targets.Count == 0) targets = PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected && !x.Is(Faction.Impostors) && x != PlayerControl.LocalPlayer && x != ShowRoundOneShield.FirstRoundShielded && x != toRemove).ToList();
+
+            PlayerControl result = null;
+            foreach (var player in targets)
+            {
+                if (player.Data.IsDead || player.Data.Disconnected || player.PlayerId == Player.PlayerId) continue;
+                result = player;
+                break; // Exit the loop once a valid player is found
+            }
+
+            // If no valid player is found, return a random player from the targets list
+            if (result == null && targets.Count > 0)
+            {
+                result = targets[Random.Range(0, targets.Count)];
+            }
+
+            return result;
+        }
         public float HuntTimer()
         {
             var utcNow = DateTime.UtcNow;
@@ -39,9 +61,6 @@ namespace TownOfSushi.Roles
             if (PreyArrow.gameObject != null) Object.Destroy(PreyArrow.gameObject);
             PreyArrow = null;
             ReDoTaskText();
-            Flash(Colors.Impostor, 1f);
-            ShowTextToast($"{Bounty.GetDefaultOutfit().PlayerName} is your new bounty!", 3.5f);
-            SoundManager.Instance.PlaySound(ShipStatus.Instance.SabotageSound, false, 1f, null);
         }
     }
 
@@ -109,21 +128,9 @@ namespace TownOfSushi.Roles
             {
                 role.Hunting = true;
                 role.HuntEnd = DateTime.UtcNow.AddSeconds(CustomGameOptions.HuntDuration);
-                var possibleTargets = new List<PlayerControl>();
-                foreach (PlayerControl players in PlayerControl.AllPlayerControls) 
-                {
-                    if (!players.Data.IsDead && !players.Data.Disconnected && players != players.Data.Role.IsImpostor && !role.Player.IsBeloved() && players.IsRomantic()) possibleTargets.Add(players);
-                }
-                if (possibleTargets.Count > 0)
-                {
-                    role.Bounty = possibleTargets[Random.Range(0, possibleTargets.Count)];
-                }
+                role.Bounty = role.AddBounty();
                 role.ReDoTaskText();
-                Flash(Colors.Impostor, 1f);
-                ShowTextToast($"{role.Bounty.GetDefaultOutfit().PlayerName} is your new bounty!", 3.5f);
-                SoundManager.Instance.PlaySound(ShipStatus.Instance.SabotageSound, false, 1f, null);
             }
-
             if (role.Bounty != null)
             {
                 if (role.PreyArrow == null)

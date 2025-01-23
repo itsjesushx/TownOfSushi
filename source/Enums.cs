@@ -116,7 +116,7 @@ namespace TownOfSushi
         SetAbility,
         SetAssassin,
         SetTarget,
-        SetGATarget,        
+        SetGATarget,
         SetRomanticTarget,
         SetBHTarget,
         Spell,

@@ -887,6 +887,12 @@ namespace TownOfSushi
 
                 Murder.KilledPlayers.Add(deadBody);
 
+                if (PlayerControl.LocalPlayer.Is(RoleEnum.BountyHunter) && killer != PlayerControl.LocalPlayer)
+                {
+                    var bh = GetRole<BountyHunter>(PlayerControl.LocalPlayer);
+                    if (bh.Bounty == target) bh.Bounty = bh.AddBounty();
+                }
+
                 if (MeetingHud.Instance) target.Exiled();
 
                 if (!killer.AmOwner) return;
@@ -994,15 +1000,7 @@ namespace TownOfSushi
                         {
                             killer.SetKillTimer(CustomGameOptions.BountyHunterCorrectCd);
                         }
-                        var possibleTargets = new List<PlayerControl>();
-                        foreach (PlayerControl players in PlayerControl.AllPlayerControls) 
-                        {
-                            if (!players.Data.IsDead && !players.Data.Disconnected && players != players.Data.Role.IsImpostor && !bountyHunter.Player.IsBeloved() && players.IsRomantic()) possibleTargets.Add(players);
-                        }
-                        if (possibleTargets.Count > 0)
-                        {
-                            bountyHunter.Bounty = possibleTargets[Random.Range(0, possibleTargets.Count)];
-                        }
+                        bountyHunter.Bounty = bountyHunter.AddBounty();
                         bountyHunter.HuntEnd = bountyHunter.HuntEnd.AddSeconds(CustomGameOptions.HuntIncreaseDuration);
                     }
                     else
