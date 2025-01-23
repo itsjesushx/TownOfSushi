@@ -317,8 +317,8 @@ namespace TownOfSushi.Roles
             
             if (PlayerControl.LocalPlayer == amnesiac)
             {
-                ShowTextToast($"You remembered you were {article} {newRole.Name}!", 3.5f);            
-                SoundManager.Instance.PlaySound(ShipStatus.Instance.SabotageSound, false, 1f, null);            
+                ShowTextToast($"You remembered you were {article} {newRole.Name}!", 3.5f);
+                SoundManager.Instance.PlaySound(ShipStatus.Instance.SabotageSound, false, 1f, null);
                 Flash(newRole.Color);
             }
 

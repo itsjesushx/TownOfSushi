@@ -540,19 +540,19 @@ namespace TownOfSushi
             // Hand out appropriate roles to crewmates and impostors.
             foreach (var (type, _, unique) in crewRoles)
             {
-                Role.GenRole<Role>(type, crewmates);
+                GenRole<Role>(type, crewmates);
             }
             foreach (var (type, _, unique) in impRoles)
             {
-                Role.GenRole<Role>(type, impostors);
+                GenRole<Role>(type, impostors);
             }
 
             // Assign vanilla roles to anyone who did not receive a role.
             foreach (var crewmate in crewmates)
-                Role.GenRole<Role>(typeof(Crewmate), crewmate);
+                GenRole<Role>(typeof(Crewmate), crewmate);
 
             foreach (var impostor in impostors)
-                Role.GenRole<Role>(typeof(Impostor), impostor);
+                GenRole<Role>(typeof(Impostor), impostor);
 
             // Hand out assassin ability to killers according to the settings.
             var canHaveAbility = PlayerControl.AllPlayerControls.ToArray().Where(player => player.Is(Faction.Impostors)).ToList();
@@ -664,7 +664,7 @@ namespace TownOfSushi
                 }
             }
 
-            var goodGATargets = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(Faction.Crewmates) ).ToList();
+            var goodGATargets = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(Faction.Crewmates)).ToList();
             var evilGATargets = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(Faction.Impostors) || x.Is(RoleAlignment.NeutralKilling)).ToList();
             foreach (var role in GetRoles(RoleEnum.GuardianAngel))
             {
@@ -1277,11 +1277,12 @@ namespace TownOfSushi
                             byte[] gbytes = reader.ReadBytes(16);
                             guid = new Guid(gbytes);
                         }     
-                        else {
+                        else 
+                        {
                             guid = new Guid(new byte[16]);
                         }
                         VersionHandshake(major, minor, patch, revision == 0xFF ? -1 : revision, guid, versionOwnerId);
-                    break;
+                        break;
                     case CustomRPC.Retribution:
                         var hunter2 = GetRole<Hunter>(Utils.PlayerById(reader.ReadByte()));
                         var hunterLastVoted = PlayerById(reader.ReadByte());
@@ -1538,6 +1539,9 @@ namespace TownOfSushi
 
                 if (CustomGameOptions.BomberOn > 0)
                     ImpostorKillingRoles.Add((typeof(Bomber), CustomGameOptions.BomberOn, true));
+                
+                if (CustomGameOptions.BountyHunterOn > 0)
+                    ImpostorKillingRoles.Add((typeof(BountyHunter), CustomGameOptions.BountyHunterOn, true));
 
                 if (CustomGameOptions.WarlockOn > 0)
                     ImpostorKillingRoles.Add((typeof(Warlock), CustomGameOptions.WarlockOn, false || CustomGameOptions.UniqueRoles));
@@ -1607,7 +1611,7 @@ namespace TownOfSushi
                 if (Check(CustomGameOptions.SaboteurOn))
                     ImpostorModifiers.Add((typeof(Saboteur), CustomGameOptions.SaboteurOn));
 
-                if (CustomGameOptions.UnderdogOn > 0)
+                if (Check(CustomGameOptions.UnderdogOn))
                     ImpostorModifiers.Add((typeof(Underdog), CustomGameOptions.UnderdogOn));
                 #endregion
 

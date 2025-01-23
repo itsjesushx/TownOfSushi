@@ -360,6 +360,10 @@ namespace TownOfSushi.Roles
                     ((Mystic)role).BodyArrows.Values.DestroyAll();
                     ((Mystic)role).BodyArrows.Clear();
                 }
+                foreach (var role in AllRoles.Where(x => x.RoleType == RoleEnum.BountyHunter))
+                {
+                    ((BountyHunter)role).PreyArrow.Destroy();
+                }
 
                 RoleDictionary.Clear();
                 RoleHistory.Clear();

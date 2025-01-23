@@ -30,7 +30,7 @@
 |  [Bomber](#bomber)  | [Detective](#detective) | [Amnesiac](#amnesiac)| [Saboteur](#saboteur)  |  |
 |  [Witch](#witch)| [Tracker](#tracker) |  [Agent](#agent) | |
 | [Poisoner](#poisoner) | [Swapper](#swapper)  | [Hitman](#hitman) |  |
-| | [Trapper](#trapper)   |[Glitch](#glitch) |  |
+| [Bounty Hunter](#bounty-hunter) | [Trapper](#trapper)   |[Glitch](#glitch) |  |
 | | [Seer](#seer) | [Serial Killer](#serial-killer) |  |
 | | [Deputy](#deputy)  | [Juggernaut](#juggernaut)  |  |
 | | [Crusader](#crusader) |[Plaguebearer](#plaguebearer) |  |
@@ -866,6 +866,27 @@ However, they do not need to fully charge their kill button to use it.
 | Warlock | The percentage probability of the Warlock appearing | Percentage | 0% |
 | Time It Takes To Fully Charge | The time it takes to fully charge the Warlock's Kill Button | Time | 25s |
 | Time It Takes To Use Full Charge | The maximum duration a charge of the Warlock's Kill Button lasts | Time | 1s |
+-----------------------
+## Bounty Hunter
+### **Team: Impostors**
+The Bounty Hunter is an Impostor, that continuously get bounties (the targeted player doesn't get notified).\
+The target of the Bounty Hunter swaps after every meeting and after a configurable amount of time.\
+If the Bounty Hunter kills their target, their kill cooldown will be a lot less than usual.\
+Killing a player that's not their current target results in an increased kill cooldown.\
+There'll be an arrow pointing towards the current target.\
+\
+**NOTE:**
+- The target won't be an Impostor or the Bounty Hunter's Romantic.
+- Killing the target resets the timer and a new target will be selected.
+
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Bounty Hunter | The percentage probability of the Bounty Hunter appearing | Percentage | 0% |
+| Hunt Duration | How long the Bounty Hunter's hunt lasts for | Time | 25s |
+| Bounty Hunter Duration Increase Per Kill | How much time the hunt duration increases on a correct kill | Time | 10s |
+| Bounty Hunter Kill Cooldown On Correct Kill | The kill cooldown the Bounty Hunter has on a correct kill | Time | 10s |
+| Kill Cooldown Multiplier On Incorrect Kill | The increased time the kill cooldown has on an incorrect kill | Multiplier | 3x |
 -----------------------
 ## Blackmailer
 ### **Team: Impostors**

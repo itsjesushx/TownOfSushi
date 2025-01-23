@@ -82,6 +82,7 @@ namespace TownOfSushi.Roles
                 if (CustomGameOptions.JanitorOn > 0) ColorMapping.Add("Janitor", Colors.Impostor);
                 if (CustomGameOptions.WitchOn > 0) ColorMapping.Add("Witch", Colors.Impostor);
                 if (CustomGameOptions.MorphlingOn > 0) ColorMapping.Add("Morphling", Colors.Impostor);
+                if (CustomGameOptions.BountyHunterOn > 0) ColorMapping.Add("Bounty Hunter", Colors.Impostor);
                 if (CustomGameOptions.MinerOn > 0) ColorMapping.Add("Miner", Colors.Impostor);
                 if (CustomGameOptions.SwooperOn > 0) ColorMapping.Add("Swooper", Colors.Impostor);
                 if (CustomGameOptions.VenererOn > 0) ColorMapping.Add("Venerer", Colors.Impostor);
@@ -488,7 +489,7 @@ namespace TownOfSushi.Roles
                  ||player.Is(RoleEnum.Hunter) || player.Is(RoleEnum.Swapper) || player.Is(RoleEnum.Veteran))
                 return $"You observe that {player.GetDefaultOutfit().PlayerName} has a trick up their sleeve!";
             else if (player.Is(RoleEnum.Bomber) || player.Is(RoleEnum.Juggernaut) || player.Is(RoleEnum.Pestilence)
-                 || player.Is(RoleEnum.Vigilante) || player.Is(RoleEnum.Vigilante) || player.Is(RoleEnum.Warlock))
+                 || player.Is(RoleEnum.Vigilante) || player.Is(RoleEnum.Vigilante) || player.Is(RoleEnum.BountyHunter) ||player.Is(RoleEnum.Warlock))
                 return $"You observe that {player.GetDefaultOutfit().PlayerName} is capable of performing relentless attacks!";
             else if (player.Is(RoleEnum.Crewmate) || player.Is(RoleEnum.Impostor))
                 return $"You observe that {player.GetDefaultOutfit().PlayerName} appears to be roleless!";
@@ -528,8 +529,8 @@ namespace TownOfSushi.Roles
                 return "(" + ColorString(Colors.Doomsayer,"Doomsayer") + ", " + ColorString(Colors.Jester,"Jester") + ", " + ColorString(Colors.Swapper,"Swapper") + ", " + ColorString(Colors.Hunter,"Hunter") + " or " + ColorString(Colors.Veteran,"Veteran")+ ")";
             
             else if (player.Is(RoleEnum.Bomber) || player.Is(RoleEnum.Juggernaut) || player.Is(RoleEnum.Pestilence)
-                 || player.Is(RoleEnum.Vigilante) || player.Is(RoleEnum.Vigilante) || player.Is(RoleEnum.Warlock))
-                return "(" + ColorString(Colors.Impostor,"Bomber") + ", " + ColorString(Colors.Juggernaut,"Juggernaut") + ", " + ColorString(Colors.Pestilence,"Pestilence") +", "+ ColorString(Colors.Vigilante,"Vigilante") + ", "+ ColorString(Colors.Vigilante,"Vigilante ") + " or " + ColorString(Colors.Impostor,"Warlock")+ ")";
+                 || player.Is(RoleEnum.Vigilante) || player.Is(RoleEnum.Vigilante) || player.Is(RoleEnum.BountyHunter) || player.Is(RoleEnum.Warlock))
+                return "(" + ColorString(Colors.Impostor,"Bomber") + ", " + ColorString(Colors.Juggernaut,"Juggernaut") + ", " + ColorString(Colors.Impostor,"Bounty Hunter") + ", " + ColorString(Colors.Pestilence,"Pestilence") +", "+ ColorString(Colors.Vigilante,"Vigilante") + ", "+ ColorString(Colors.Vigilante,"Vigilante ") + " or " + ColorString(Colors.Impostor,"Warlock")+ ")";
             
             else if (player.Is(RoleEnum.Crewmate) || player.Is(RoleEnum.Impostor))
                 return "(" + ColorString(Colors.Impostor,"Impostor") + ", " + ColorString(Colors.Crewmate,"Crewmate") + ")";

@@ -289,6 +289,14 @@ namespace TownOfSushi
                 return beloved != null && player.PlayerId == beloved.PlayerId;
             });
         }
+        public static bool IsRomantic(this PlayerControl player)
+        {
+            return GetRoles(RoleEnum.Romantic).Any(role =>
+            {
+                var rom = ((Romantic)role).Player;
+                return rom != null && player.PlayerId == rom.PlayerId;
+            });
+        }
         public static bool IsGATarget(this PlayerControl player)
         {
             return GetRoles(RoleEnum.GuardianAngel).Any(role =>
@@ -970,6 +978,58 @@ namespace TownOfSushi
                     var normalKC = GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown * CustomGameOptions.DiseasedMultiplier;
                     var upperKC = (GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown + CustomGameOptions.UnderdogKillBonus) * CustomGameOptions.DiseasedMultiplier;
                     killer.SetKillTimer(UnderdogPerformKill.LastImp() ? lowerKC : (UnderdogPerformKill.IncreasedKC() ? normalKC : upperKC));
+                    return;
+                }
+
+                if (killer.Is(RoleEnum.BountyHunter))
+                {
+                    var bountyHunter = GetRole<BountyHunter>(killer);
+                    if (target == bountyHunter.Bounty)
+                    {
+                        if (target.Is(ModifierEnum.Diseased))
+                        {
+                            killer.SetKillTimer(CustomGameOptions.BountyHunterCorrectCd * CustomGameOptions.DiseasedMultiplier);
+                        }
+                        else
+                        {
+                            killer.SetKillTimer(CustomGameOptions.BountyHunterCorrectCd);
+                        }
+                        var possibleTargets = new List<PlayerControl>();
+                        foreach (PlayerControl players in PlayerControl.AllPlayerControls) 
+                        {
+                            if (!players.Data.IsDead && !players.Data.Disconnected && players != players.Data.Role.IsImpostor && !bountyHunter.Player.IsBeloved() && players.IsRomantic()) possibleTargets.Add(players);
+                        }
+                        if (possibleTargets.Count > 0)
+                        {
+                            bountyHunter.Bounty = possibleTargets[Random.Range(0, possibleTargets.Count)];
+                        }
+                        bountyHunter.HuntEnd = bountyHunter.HuntEnd.AddSeconds(CustomGameOptions.HuntIncreaseDuration);
+                    }
+                    else
+                    {
+                        if (target.Is(ModifierEnum.Diseased) && killer.Is(ModifierEnum.Underdog))
+                        {
+                            var lowerKC = (GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown - CustomGameOptions.UnderdogKillBonus) * CustomGameOptions.DiseasedMultiplier * CustomGameOptions.BountyHunterIncorrectCd;
+                            var normalKC = GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown * CustomGameOptions.DiseasedMultiplier * CustomGameOptions.BountyHunterIncorrectCd;
+                            var upperKC = (GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown + CustomGameOptions.UnderdogKillBonus) * CustomGameOptions.DiseasedMultiplier * CustomGameOptions.BountyHunterIncorrectCd;
+                            killer.SetKillTimer(UnderdogPerformKill.LastImp() ? lowerKC : (UnderdogPerformKill.IncreasedKC() ? normalKC : upperKC));
+                        }
+                        else if (target.Is(ModifierEnum.Diseased))
+                        {
+                            killer.SetKillTimer(GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown * CustomGameOptions.DiseasedMultiplier * CustomGameOptions.BountyHunterIncorrectCd);
+                        }
+                        else if (killer.Is(ModifierEnum.Underdog))
+                        {
+                            var lowerKC = (GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown - CustomGameOptions.UnderdogKillBonus) * CustomGameOptions.BountyHunterIncorrectCd;
+                            var normalKC = GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown * CustomGameOptions.BountyHunterIncorrectCd;
+                            var upperKC = (GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown + CustomGameOptions.UnderdogKillBonus) * CustomGameOptions.BountyHunterIncorrectCd;
+                            killer.SetKillTimer(UnderdogPerformKill.LastImp() ? lowerKC : (UnderdogPerformKill.IncreasedKC() ? normalKC : upperKC));
+                        }
+                        else killer.SetKillTimer(GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown * CustomGameOptions.BountyHunterIncorrectCd);
+                        bountyHunter.StopHunt();
+                        bountyHunter.HuntEnd = bountyHunter.HuntEnd.AddSeconds(-3000f);
+                    }
+                    bountyHunter.ReDoTaskText();
                     return;
                 }
 

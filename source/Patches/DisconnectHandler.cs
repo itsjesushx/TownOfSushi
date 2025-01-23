@@ -56,6 +56,7 @@ namespace TownOfSushi.Patches
                     button.GetComponent<PassiveButton>().OnClick = new Button.ButtonClickedEvent();
                     swapper.Buttons[voteArea.TargetPlayerId] = null;
                 }
+                
 
                 if (AddButtonVigilante.vigilanteUI != null) AddButtonVigilante.vigilanteUIExitButton.OnClick.Invoke();
                 if (AssassinAddButton.assassinUI != null) AssassinAddButton.assassinUIExitButton.OnClick.Invoke();
@@ -72,6 +73,20 @@ namespace TownOfSushi.Patches
                 {
                     var Deputy = GetRole<Deputy>(PlayerControl.LocalPlayer);
                     Deputy.ExecuteButton.Destroy();
+                }
+
+                if (PlayerControl.LocalPlayer.Is(RoleEnum.BountyHunter))
+                {
+                    var bountyHunter = GetRole<BountyHunter>(PlayerControl.LocalPlayer);
+                    var possibleTargets = new List<PlayerControl>();
+                    foreach (PlayerControl players in PlayerControl.AllPlayerControls) 
+                    {
+                        if (!players.Data.IsDead && !players.Data.Disconnected && players != players.Data.Role.IsImpostor && !bountyHunter.Player.IsBeloved() && players.IsRomantic()) possibleTargets.Add(players);
+                    }
+                    if (possibleTargets.Count > 0)
+                    {
+                        if (bountyHunter.Bounty == player) bountyHunter.Bounty = possibleTargets[Random.Range(0, possibleTargets.Count)];
+                    }
                 }
 
                 if (PlayerControl.LocalPlayer.Is(RoleEnum.Imitator) && !PlayerControl.LocalPlayer.Data.IsDead)

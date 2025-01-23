@@ -51,7 +51,7 @@ namespace TownOfSushi.Roles.Modifiers
             if (__instance.AnyActive) return;
             if (__instance.initialCooldown) return;
 
-            foreach (var modifier in Modifier.GetModifiers(ModifierEnum.Saboteur))
+            foreach (var modifier in GetModifiers(ModifierEnum.Saboteur))
             {
                 var sab = (Saboteur)modifier;
                 sab.Timer = __instance.Timer;

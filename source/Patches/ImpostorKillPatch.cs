@@ -31,7 +31,13 @@ namespace TownOfSushi
             }
             else if (interact[0] == true)
             {
-                if (PlayerControl.LocalPlayer.Is(ModifierEnum.Underdog))
+                if (PlayerControl.LocalPlayer.Is(RoleEnum.BountyHunter))
+                {
+                    var bh = GetRole<BountyHunter>(PlayerControl.LocalPlayer);
+                    if (bh.Bounty == target) PlayerControl.LocalPlayer.SetKillTimer(CustomGameOptions.BountyHunterCorrectCd);
+                    else PlayerControl.LocalPlayer.SetKillTimer(GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown * CustomGameOptions.BountyHunterIncorrectCd);
+                }
+                else if (PlayerControl.LocalPlayer.Is(ModifierEnum.Underdog))
                 {
                     var lowerKC = GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown - CustomGameOptions.UnderdogKillBonus;
                     var normalKC = GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown;

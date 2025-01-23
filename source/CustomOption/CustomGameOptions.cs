@@ -4,6 +4,7 @@ namespace TownOfSushi.CustomOption
     {
         public static int CrusaderOn => Mathf.RoundToInt(CustomOptionHolder.CrusaderOn.GetFloat());
         public static int SaboteurOn => Mathf.RoundToInt(CustomOptionHolder.SaboteurOn.GetFloat());
+        public static int BountyHunterOn => Mathf.RoundToInt(CustomOptionHolder.BountyHunterOn.GetFloat());
         public static int LookoutOn => Mathf.RoundToInt(CustomOptionHolder.LookoutOn.GetFloat());
         public static int WerewolfOn => Mathf.RoundToInt(CustomOptionHolder.WerewolfOn.GetFloat());
         public static int JuggernautOn => Mathf.RoundToInt(CustomOptionHolder.JuggernautOn.GetFloat());
@@ -261,6 +262,10 @@ namespace TownOfSushi.CustomOption
         public static float ChargeUpDuration => CustomOptionHolder.ChargeUpDuration.GetFloat();
         public static float ChargeUseDuration => CustomOptionHolder.ChargeUseDuration.GetFloat();
         public static float ConfessCd => CustomOptionHolder.ConfessCooldown.GetFloat();
+        public static float BountyHunterCorrectCd => CustomOptionHolder.BountyHunterCorrectCd.GetFloat();
+        public static float BountyHunterIncorrectCd => CustomOptionHolder.BountyHunterIncorrectCd.GetFloat();
+        public static float HuntIncreaseDuration => CustomOptionHolder.HuntIncreaseDuration.GetFloat();
+        public static float HuntDuration => CustomOptionHolder.HuntDuration.GetFloat();
         public static float RevealAccuracy => CustomOptionHolder.RevealAccuracy.GetFloat();
         public static bool NeutralBenignShowsEvil => CustomOptionHolder.NeutralBenignShowsEvil.GetBool();
         public static bool NeutralEvilShowsEvil => CustomOptionHolder.NeutralEvilShowsEvil.GetBool();

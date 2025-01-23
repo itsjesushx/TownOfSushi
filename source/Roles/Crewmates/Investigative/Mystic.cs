@@ -262,7 +262,7 @@ namespace TownOfSushi.Roles
                  || player.Is(RoleEnum.Hunter) || player.Is(RoleEnum.Veteran) || player.Is(RoleEnum.Swapper))
                 return "Your target has a trick up their sleeve";
             else if (player.Is(RoleEnum.Bomber) || player.Is(RoleEnum.Juggernaut) || player.Is(RoleEnum.Pestilence)
-                  || player.Is(RoleEnum.Vigilante) || player.Is(RoleEnum.Jailor) ||  player.Is(RoleEnum.Warlock))
+                  || player.Is(RoleEnum.Vigilante) || player.Is(RoleEnum.BountyHunter) || player.Is(RoleEnum.Jailor) ||  player.Is(RoleEnum.Warlock))
                 return "Your target is capable of performing relentless attacks";
             else if (player.Is(RoleEnum.Crewmate) || player.Is(RoleEnum.Impostor))
                 return "Your target appears to be roleless lol";
@@ -295,8 +295,8 @@ namespace TownOfSushi.Roles
                  || player.Is(RoleEnum.Hunter) || player.Is(RoleEnum.Swapper) || player.Is(RoleEnum.Veteran))
                 return "(Executioner, Jester, Hunter, Swapper, Traitor or Veteran)";
             else if (player.Is(RoleEnum.Bomber) || player.Is(RoleEnum.Jailor) || player.Is(RoleEnum.Juggernaut) || player.Is(RoleEnum.Pestilence)
-                 || player.Is(RoleEnum.Vigilante) || player.Is(RoleEnum.Warlock))
-                return "(Bomber, Juggernaut, Pestilence, Vigilante, Jailor or Warlock)";
+                 || player.Is(RoleEnum.Vigilante) || player.Is(RoleEnum.BountyHunter) || player.Is(RoleEnum.Warlock))
+                return "(Bomber, Juggernaut, Pestilence, Bounty Hunter, Vigilante, Jailor or Warlock)";
             else if (player.Is(RoleEnum.Crewmate) || player.Is(RoleEnum.Impostor))
                 return "(Crewmate or Impostor)";
             else return "Error";

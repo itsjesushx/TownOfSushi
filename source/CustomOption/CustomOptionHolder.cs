@@ -236,6 +236,12 @@ namespace TownOfSushi.CustomOption
         public static CustomOption BlackmailCooldown;
         public static CustomOption BlackmailInvisible;
 
+        public static CustomOption BountyHunterOn;
+        public static CustomOption BountyHunterCorrectCd;
+        public static CustomOption BountyHunterIncorrectCd;
+        public static CustomOption HuntIncreaseDuration;
+        public static CustomOption HuntDuration;
+
         public static CustomOption JanitorOn;
 
         public static CustomOption MinerOn;
@@ -827,6 +833,12 @@ namespace TownOfSushi.CustomOption
             PoisonerOn = CustomOption.Create(24422, Types.Impostor, ColorString(Colors.Impostor, "Poisoner"), 0f, 0f, 100f, 10f, null, true, format: "%");
             PoisonCooldown = CustomOption.Create(24522, Types.Impostor, "Cooldown", 25f, 10f, 60f, 2.5f, PoisonerOn, format: "s");
             PoisonDelay = CustomOption.Create(24622, Types.Impostor, "Delay", 5f, 1f, 15f, 1f, PoisonerOn, format: "s");
+
+            BountyHunterOn = CustomOption.Create(24441, Types.Impostor, ColorString(Colors.Impostor, "Bounty Hunter"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            BountyHunterCorrectCd = CustomOption.Create(24541, Types.Impostor, "Cooldown After Killing Bounty",2.5f, 0f, 30f, 2.5f, BountyHunterOn, format: "s");
+            BountyHunterIncorrectCd = CustomOption.Create(24641, Types.Impostor, "No-Bounty Kill Penalty", 3f, 1.25f, 5f, 0.25f, BountyHunterOn, format: "x");
+            HuntDuration = CustomOption.Create(24741, Types.Impostor, "Hunt Duration", 25f, 10f, 60f, 2.5f, BountyHunterOn, format: "s");
+            HuntIncreaseDuration = CustomOption.Create(24841, Types.Impostor, "Hunt Duration Increase Per Kill", 10f, 5f, 15f, 0.5f, BountyHunterOn, format: "s");
 
             BomberOn = CustomOption.Create(249, Types.Impostor, ColorString(Colors.Impostor, "Bomber"), 0f, 0f, 100f, 10f, null, true, format: "%");
             DetonateDelay = CustomOption.Create(250, Types.Impostor, "Detonate Delay", 5f, 1f, 15f, 1f, BomberOn, format: "s");
