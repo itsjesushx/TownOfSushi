@@ -289,14 +289,6 @@ namespace TownOfSushi
                 return beloved != null && player.PlayerId == beloved.PlayerId;
             });
         }
-        public static bool IsRomantic(this PlayerControl player)
-        {
-            return GetRoles(RoleEnum.Romantic).Any(role =>
-            {
-                var rom = ((Romantic)role).Player;
-                return rom != null && player.PlayerId == rom.PlayerId;
-            });
-        }
         public static bool IsGATarget(this PlayerControl player)
         {
             return GetRoles(RoleEnum.GuardianAngel).Any(role =>
@@ -902,8 +894,6 @@ namespace TownOfSushi
                     BaitReport(killer, target);
                 }
 
-                //ShowTextToast("", 5f);
-
                 if (target.Is(ModifierEnum.Aftermath))
                 {
                     Aftermath.ForceAbility(killer, target);
@@ -1098,24 +1088,30 @@ namespace TownOfSushi
                 }
             }
         }
-        public static bool MiraHQMap() {
+        public static bool MiraHQMap() 
+        {
             return GameOptionsManager.Instance.CurrentGameOptions.MapId == 1;
         }
 
-        public static bool AirshipMap() {
+        public static bool AirshipMap() 
+        {
             return GameOptionsManager.Instance.CurrentGameOptions.MapId == 4;
         }
-        public static bool SkeldMap() {
+        public static bool SkeldMap() 
+        {
             return GameOptionsManager.Instance.CurrentGameOptions.MapId == 0;
         }
-        public static bool PolusMap() {
+        public static bool PolusMap() 
+        {
             return GameOptionsManager.Instance.CurrentGameOptions.MapId == 2;
         }
 
-        public static bool FungleMap() {           
+        public static bool FungleMap() 
+        {           
             return GameOptionsManager.Instance.CurrentGameOptions.MapId == 5;
         }
-        public static bool MushroomSabotageActive() {
+        public static bool MushroomSabotageActive() 
+        {
             return PlayerControl.LocalPlayer.myTasks.ToArray().Any((x) => x.TaskType == TaskTypes.MushroomMixupSabotage);
         }
 
@@ -1160,7 +1156,9 @@ namespace TownOfSushi
                 {
                     if (renderer != null)
                         renderer.color = new Color(color.r, color.g, color.b, Mathf.Clamp01(p * 2 * 0.75f));
-                } else {
+                } 
+                else 
+                {
                     if (renderer != null)
                         renderer.color = new Color(color.r, color.g, color.b, Mathf.Clamp01((1 - p) * 2 * 0.75f));
                 }
@@ -1256,7 +1254,8 @@ namespace TownOfSushi
             static void Postfix(MeetingHud __instance) 
             {
                 // Deactivate skip Button if skipping on emergency meetings is disabled 
-                if ((voteTarget == null && CustomGameOptions.SkipButtonDisable == DisableSkipButtonMeetings.Emergency) || (CustomGameOptions.SkipButtonDisable == DisableSkipButtonMeetings.Always)) {
+                if ((voteTarget == null && CustomGameOptions.SkipButtonDisable == DisableSkipButtonMeetings.Emergency) || (CustomGameOptions.SkipButtonDisable == DisableSkipButtonMeetings.Always)) 
+                {
                     __instance.SkipVoteButton.gameObject.SetActive(false);
                 }
             }
@@ -1302,10 +1301,10 @@ namespace TownOfSushi
                 string text = "";
                 var player = GameHistory.deadPlayers.FirstOrDefault(x => x.player.PlayerId == playerControl.PlayerId);
             
-            Color ColorOfKiller = new();
+            Color KillerColor = new();
             if (player != null && player.GetKiller != null) 
             {
-                ColorOfKiller = GetPlayerRole(player.GetKiller).Color;
+                KillerColor = GetPlayerRole(player.GetKiller).Color;
             }
 
             if (player != null) 
@@ -1321,35 +1320,35 @@ namespace TownOfSushi
                         break;
                             
                     case CustomDeathReason.Kill:
-                        text = $"killed by {ColorString(ColorOfKiller, player.GetKiller.Data.PlayerName)}";
+                        text = $"killed by {ColorString(KillerColor, player.GetKiller.Data.PlayerName)}";
                         break;
                     
                     case CustomDeathReason.Poisoned:
-                        text = $"Poisoned by {ColorString(ColorOfKiller, player.GetKiller.Data.PlayerName)}";
+                        text = $"Poisoned by {ColorString(KillerColor, player.GetKiller.Data.PlayerName)}";
                         break;
                             
                     case CustomDeathReason.Guess:
-                        text = $"Guessed by {ColorString(ColorOfKiller, player.GetKiller.Data.PlayerName)}";
+                        text = $"Guessed by {ColorString(KillerColor, player.GetKiller.Data.PlayerName)}";
                         break;
                             
                     case CustomDeathReason.Executed:
-                        text = $"Executed by {ColorString(ColorOfKiller, player.GetKiller.Data.PlayerName)}";
+                        text = $"Executed by {ColorString(KillerColor, player.GetKiller.Data.PlayerName)}";
                         break;
                     
                     case CustomDeathReason.ExecutedByDeputy:
-                        text = $"Executed by {ColorString(ColorOfKiller, player.GetKiller.Data.PlayerName)}";
+                        text = $"Executed by {ColorString(KillerColor, player.GetKiller.Data.PlayerName)}";
                         break;
                     
                     case CustomDeathReason.Bombed:
-                        text = $"Bombed by {ColorString(ColorOfKiller, player.GetKiller.Data.PlayerName)}";
+                        text = $"Bombed by {ColorString(KillerColor, player.GetKiller.Data.PlayerName)}";
                         break;
 
                     case CustomDeathReason.WitchExile:
-                        text = $"Cursed by {ColorString(ColorOfKiller, player.GetKiller.Data.PlayerName)}";
+                        text = $"Cursed by {ColorString(KillerColor, player.GetKiller.Data.PlayerName)}";
                         break;
 
                     case CustomDeathReason.Arson:
-                        text = $"Ignited by {ColorString(ColorOfKiller, player.GetKiller.Data.PlayerName)}";
+                        text = $"Ignited by {ColorString(KillerColor, player.GetKiller.Data.PlayerName)}";
                         break;
                     }
                     result = text;

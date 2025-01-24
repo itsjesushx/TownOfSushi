@@ -43,14 +43,12 @@ namespace TownOfSushi
         public static Sprite FortifySprite;
         public static Sprite VultureEat;
         public static Sprite IgniteSprite;
-        public static Sprite ReviveSprite;
         public static Sprite ButtonSprite;
         public static Sprite DisperseSprite;
         public static Sprite DragSprite;
         public static Sprite DropSprite;
         public static Sprite FlashSprite;
         public static Sprite AlertSprite;
-        public static Sprite RememberSprite;
         public static Sprite TrackSprite;
         public static Sprite PlantSprite;
         public static Sprite DetonateSprite;
@@ -61,10 +59,6 @@ namespace TownOfSushi
         public static Sprite RomanticPick;
         public static Sprite BlackmailSprite;
         public static Sprite ExecuteSprite;
-        public static Sprite ZoomPlusButton;
-        public static Sprite ZoomMinusButton;
-        public static Sprite ZoomPlusActiveButton;
-        public static Sprite ZoomMinusActiveButton;
         public static Sprite BlackmailLetterSprite;
         public static Sprite BlackmailOverlaySprite;
         public static Sprite LighterSprite;
@@ -108,7 +102,7 @@ namespace TownOfSushi
         public override void Load()
         {
             RuntimeLocation = Path.GetDirectoryName(Assembly.GetAssembly(typeof(TownOfSushi)).Location);
-            ReactorCredits.Register<TownOfSushi>(ReactorCredits.AlwaysShow);
+            //ReactorCredits.Register<TownOfSushi>(ReactorCredits.AlwaysShow);
             System.Console.WriteLine("000.000.000.000/000000000000000000");
             Logger = Log;
             Instance = this;
@@ -130,19 +124,13 @@ namespace TownOfSushi
             SwapperSwitchDisabled = CreateSprite("TownOfSushi.Resources.SwapperSwitchDisabled.png");
             DouseSprite = CreateSprite("TownOfSushi.Resources.Douse.png");
             IgniteSprite = CreateSprite("TownOfSushi.Resources.Ignite.png");
-            ReviveSprite = CreateSprite("TownOfSushi.Resources.Revive.png");
             ButtonSprite = CreateSprite("TownOfSushi.Resources.Button.png");
             DisperseSprite = CreateSprite("TownOfSushi.Resources.Disperse.png");
             DragSprite = CreateSprite("TownOfSushi.Resources.Drag.png");
             DropSprite = CreateSprite("TownOfSushi.Resources.Drop.png");
-            ZoomPlusButton = CreateSprite("TownOfSushi.Resources.Plus.png");
-            ZoomMinusButton = CreateSprite("TownOfSushi.Resources.Minus.png");
-            ZoomPlusActiveButton = CreateSprite("TownOfSushi.Resources.PlusActive.png");
-            ZoomMinusActiveButton = CreateSprite("TownOfSushi.Resources.MinusActive.png");
             FlashSprite = CreateSprite("TownOfSushi.Resources.Flash.png");
             MaulSprite = CreateSprite("TownOfSushi.Resources.Maul.png");
             AlertSprite = CreateSprite("TownOfSushi.Resources.Alert.png");
-            RememberSprite = CreateSprite("TownOfSushi.Resources.Remember.png");
             PoisonSprite = CreateSprite("TownOfSushi.Resources.Poison.png");
             PoisonedSprite = CreateSprite("TownOfSushi.Resources.Poisoned.png");
             StalkSprite = CreateSprite("TownOfSushi.Resources.Stalk.png");
@@ -191,7 +179,6 @@ namespace TownOfSushi
             ClassInjector.RegisterTypeInIl2Cpp<ColorBehaviour>();
             Harmony.PatchAll();
             SubmergedCompatibility.Initialize();
-            
             ServerManager.DefaultRegions = new Il2CppReferenceArray<IRegionInfo>(new IRegionInfo[0]);
             
             DeadSeeGhosts = Config.Bind("Settings", "Dead See Other Ghosts", true, "Whether you see other dead player's ghosts while your dead");

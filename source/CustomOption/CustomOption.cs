@@ -1164,7 +1164,7 @@ namespace TownOfSushi.CustomOption
 
             if (!toggleZoomButton || !toggleZoomButtonObject) 
             {
-                // add a special button for settings viewing:
+                // add a special button for zooming out:
                 toggleZoomButtonObject = GameObject.Instantiate(__instance.MapButton.gameObject, __instance.MapButton.transform.parent);
                 toggleZoomButtonObject.transform.localPosition = __instance.MapButton.transform.localPosition + new Vector3(0, -1.25f, -500f);
                 toggleZoomButtonObject.name = "TOGGLEZOOMBUTTON";

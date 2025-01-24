@@ -263,9 +263,14 @@ namespace TownOfSushi.Modules
                         AddRoleMessage(RoleEnum.Warlock);
                         return false;
                     }
-                    else if (chatText.ToLower().StartsWith("/ora") || chatText.ToLower().StartsWith("/ ora"))
+                    else if (chatText.ToLower().StartsWith("/ora") || chatText.ToLower().StartsWith("/oracle"))
                     {
                         AddRoleMessage(RoleEnum.Oracle);
+                        return false;
+                    }
+                    else if (chatText.ToLower().StartsWith("/bh") || chatText.ToLower().StartsWith("/bounty hunter"))
+                    {
+                        AddRoleMessage(RoleEnum.BountyHunter);
                         return false;
                     }
                     else if (chatText.ToLower().StartsWith("/ven") || chatText.ToLower().StartsWith("/ ven"))
@@ -536,6 +541,8 @@ namespace TownOfSushi.Modules
                     "The Venerer is an impostor who improves their ability with each kill. First kill is camouflage, second is speed and third is global slow.");
                 if (role == RoleEnum.Crusader) DestroyableSingleton<HudManager>.Instance.Chat.AddChat(
                     PlayerControl.LocalPlayer, "As the Crusader, you can Fortify a crewmate with a spell to prevent them from being killed or interacted with by anyone. The spell lasts until next meeting. When the player has a kill attempt, the fortified player will murder the killer.");
+                if (role == RoleEnum.BountyHunter) DestroyableSingleton<HudManager>.Instance.Chat.AddChat(
+                    PlayerControl.LocalPlayer, "As the Bounty Hunter you are given a random target (bounty) to kill, if you kill them you gian a new target and a short cooldown, else you will get a long cooldown penalty.");
                 if (role == RoleEnum.Jailor) DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer,
                     "The Jailor is a crewmate who can jail other players. Jailed players cannot have meeting abilities used on them and cannot use meeting abilities themself. The Jailor and jailee may also privately talk to each other and the Jailor may also execute their jailee. If they execute a crewmate they lose the ability to jail players.");
                 if (role == RoleEnum.Deputy) DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer,

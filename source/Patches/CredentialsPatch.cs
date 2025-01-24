@@ -6,14 +6,46 @@ namespace TownOfSushi.Patches
     [HarmonyPatch]
     public static class CredentialsPatch 
     {
+        public static string FllCredentialsVersion = 
+$@"<size=130%><color=#B2FEFE>TownOfSushi</color></size> v{TownOfSushi.Version.ToString()}";
+public static string FullCredentials =
+$@"<size=60%>Created by <color=#B2FEFE>Jesushi</color>
+Emotionally Helped by <color=#B2FEFE>döll</color>
+Helped by <color=#B2FEFE>Cake</color>, <color=#B2FEFE>AlchlcDvl</color> & <color=#B2FEFE>50IQ</color>
+Originally Coded by <color=#B2FEFE>Donners</color> & <color=#B2FEFE>MyDragonBreath</color></size>";
     public static string MainScreenText =
-$@"Remodded by <color=#FF0000FF>Jesushi</color>
-<size=60%>Emotionally Helped by <color=#FF0000FF>döll</color>
-Helped by <color=#FF0000FF>Cake</color>, <color=#FF0000FF>AlchlcDvl</color> & <color=#FF0000FF>50IQ</color>
-Originally Coded by <color=#FF0000FF>Donners</color> & <color=#FF0000FF>MyDragonBreath</color></size>";
+$@"Created by <color=#B2FEFE>Jesushi</color>
+<size=60%>Emotionally Helped by <color=#B2FEFE>döll</color>
+Helped by <color=#B2FEFE>Cake</color>, <color=#B2FEFE>AlchlcDvl</color> & <color=#B2FEFE>50IQ</color>
+Originally Coded by <color=#B2FEFE>Donners</color> & <color=#B2FEFE>MyDragonBreath</color></size>";
     public static string CreditsText =
-$@"<size=60%> <color=#FF0000FF>Formerly: Slushiegoose & Polus.gg</color></size>";
+$@"<size=60%> <color=#B2FEFE>Formerly: Slushiegoose & Polus.gg</color></size>";
 
+        [HarmonyPatch(typeof(PingTracker), nameof(PingTracker.Update))]
+        internal static class PingTrackerPatch
+        {
+            private static float DeltaTime;
+            static void Postfix(PingTracker __instance)
+            {
+                __instance.text.alignment = TextAlignmentOptions.Top;
+                var position = __instance.GetComponent<AspectPosition>();
+                DeltaTime += (Time.deltaTime - DeltaTime) * 0.1f;
+                var FPS = Mathf.Round(1f / DeltaTime);
+                position.Alignment = AspectPosition.EdgeAlignments.Top;
+                if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started) 
+                {
+                    __instance.text.text = $"<size=130%><color=#B2FEFE>TownOfSushi</color></size> v{TownOfSushi.Version.ToString()} \n FPS: {FPS} " + __instance.text.text;
+                    position.DistanceFromEdge = new Vector3(1.5f, 0.11f, 0);
+                }
+                else 
+                {
+                    __instance.text.text = $"{FllCredentialsVersion}\n{FullCredentials}\n FPS: {FPS} {__instance.text.text}";
+                    position.DistanceFromEdge = new Vector3(0f, 0.1f, 0);
+                }
+                position.AdjustPosition();
+            }
+        }
+        
         [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start))]
         public static class LogoPatch
         {
@@ -67,6 +99,6 @@ $@"<size=60%> <color=#FF0000FF>Formerly: Slushiegoose & Polus.gg</color></size>"
                     })));
                 }
             }
-        } 
+        }
     }
 }

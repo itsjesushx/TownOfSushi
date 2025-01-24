@@ -32,7 +32,6 @@ namespace TownOfSushi.Patches
             ToggleZoom(reset: true);
             AdditionalTempData.GameSummaryText.Clear();
             
-            const string endString = "</color>";
             foreach (var playerControl in PlayerControl.AllPlayerControls)
             {
                 var SummaryText = "";
@@ -45,14 +44,14 @@ namespace TownOfSushi.Patches
 
                 if (info[0] != null)
                 {
-                    SummaryText += $"{role.ColorString}{role.Name}{endString}";
+                    SummaryText += $"{role.ColorString}{role.Name}</color>";
                 }
 
                 if (modifier?.ModifierType != null)
-                    SummaryText += $" ({modifier?.ColorString}{modifier?.Name}{endString})";
+                    SummaryText += $" ({modifier?.ColorString}{modifier?.Name}</color>)";
 
                 if (ability?.AbilityType != null)
-                    SummaryText += $" [{ability?.ColorString}{ability?.Name}{endString}]";
+                    SummaryText += $" [{ability?.ColorString}{ability?.Name}</color>]";
                     
                 if (playerControl.IsShielded())
                 {

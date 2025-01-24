@@ -615,8 +615,7 @@ namespace TownOfSushi.CustomOption
             NeutEvilRed = CustomOption.Create(65, Types.Crewmate, "Neutral Evil Roles Are Red", false, DetectiveOn);
             NeutKillingRed = CustomOption.Create(66, Types.Crewmate, "Neutral Killing Roles Are Red", true, DetectiveOn);
 
-            TrackerOn =
-                CustomOption.Create(71, Types.Crewmate, ColorString(Colors.Tracker, "Tracker"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            TrackerOn = CustomOption.Create(71, Types.Crewmate, ColorString(Colors.Tracker, "Tracker"), 0f, 0f, 100f, 10f, null, true, format: "%");
             UpdateInterval = CustomOption.Create(72, Types.Crewmate, "Arrow Update Interval", 5f, 0.5f, 15f, 0.5f, TrackerOn, format: "s");
             TrackCooldown = CustomOption.Create(73, Types.Crewmate, "Cooldown", 25f, 10f, 60f, 2.5f, TrackerOn, format: "s");
             ResetOnNewRound = CustomOption.Create(74, Types.Crewmate, "Arrows Reset After Each Round", false, TrackerOn);
@@ -636,8 +635,7 @@ namespace TownOfSushi.CustomOption
             LookoutOn = CustomOption.Create(84441, Types.Crewmate, ColorString(Colors.Lookout, "Lookout"), 0f, 0f, 100f, 10f, null, true, format: "%");
             WatchCooldown = CustomOption.Create(85551, Types.Crewmate, "Watch Cooldown", 25f, 10f, 60f, 2.5f, LookoutOn, format: "s");
             LoResetOnNewRound = CustomOption.Create(86661, Types.Crewmate, "Lookout Watches Reset After Each Round", true, LookoutOn);
-            MaxWatches = CustomOption.Create(87771, Types.Crewmate, "Maximum Number Of Players That Can Be Watched", 5, 1, 15, 1, LookoutOn, format: "s");
-                
+            MaxWatches = CustomOption.Create(87771, Types.Crewmate, "Maximum Number Of Players That Can Be Watched", 5, 1, 15, 1, LookoutOn);
             
             HunterOn = CustomOption.Create(84, Types.Crewmate, ColorString(Colors.Hunter, "Hunter"), 0f, 0f, 100f, 10f, null, true, format: "%");
             HunterKillCd = CustomOption.Create(85, Types.Crewmate, "Kill Cooldown", 25f, 10f, 60f, 2.5f, HunterOn, format: "s");

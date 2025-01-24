@@ -13,7 +13,7 @@ namespace TownOfSushi.Roles
             Name = "Bounty Hunter";
             StartText = () => $"Hunt your bounties down";
             TaskText = () => 
-                Bounty == null ? "Kill your given targets for a reduced kill cooldown" : "Hunt Down " + Bounty.GetDefaultOutfit().PlayerName;
+                Bounty == null ? "Kill your given targets for a reduced kill cooldown" : "Hunt Down your bounty " + Bounty.GetDefaultOutfit().PlayerName;
             RoleInfo = $"As the Bounty Hunter, you are given a target, which your task is to eliminate them, killing your target gives you a short cooldown, else will give you a long penalty cooldown.";
             LoreText = "Driven by greed and the thrill of the chase, the Bounty Hunter roams the ship with deadly precision. Their targets are not random; they are chosen with purpose, and each kill sharpens their resolve. Fueled by a relentless pursuit of their marks, the Bounty Hunter stops at nothing to fulfill their grim contract and secure their place as the most feared among the stars.";
             Color = Palette.ImpostorRed;
@@ -26,7 +26,8 @@ namespace TownOfSushi.Roles
         public PlayerControl AddBounty(PlayerControl toRemove = null)
         {
             var targets = PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected && !x.Is(Faction.Impostors) && x != toRemove && x != ShowRoundOneShield.FirstRoundShielded).ToList();
-            if (Player.IsBeloved())targets = PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected && !x.Is(Faction.Impostors) && !x.IsRomantic() && x != PlayerControl.LocalPlayer && x != ShowRoundOneShield.FirstRoundShielded && x != toRemove).ToList();
+            //exclude romantic if bounty hunter is beloved
+            if (Player.IsBeloved())targets = PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected && !x.Is(Faction.Impostors) && !x.Is(RoleEnum.Romantic) && x != PlayerControl.LocalPlayer && x != ShowRoundOneShield.FirstRoundShielded && x != toRemove).ToList();
             if (targets.Count == 0) targets = PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected && !x.Is(Faction.Impostors) && x != PlayerControl.LocalPlayer && x != ShowRoundOneShield.FirstRoundShielded && x != toRemove).ToList();
 
             PlayerControl result = null;
