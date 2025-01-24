@@ -19,15 +19,15 @@
 | Impostors | Crewmates | Neutrals | Modifiers | Abilities | GameModes
 |----------|-------------|-----------------|----------------|----------------|----------------|
 | [Escapist](#escapist) | [Hunter](#hunter) | [Jester](#jester) | [Aftermath](#aftermath) |[Assassin](#assassin-ability) | [Classic](#roles) |
-| [Grenadier](#grenadier) | [Engineer](#engineer) | [Arsonist](#arsonist) | [Disperser](#disperser) | [Button Barry](#button-barry)| [All Any](#all-any-settings) |
-| [Janitor](#janitor) | [Vigilante](#vigilante) | [Vampire](#vampire) | [Bait](#bait) | [Tiebreaker](#tiebreaker) |[Vanilla Hide 'n' Seek](https://www.innersloth.com/new-game-mode-hide-n-seek-is-here-emergency-meeting-35/) |
+| [Grenadier](#grenadier) | [Engineer](#engineer) | [Arsonist](#arsonist) | [Disperser](#disperser) | [Button Barry](#button-barry)| [Vanilla Hide 'n' Seek](https://www.innersloth.com/new-game-mode-hide-n-seek-is-here-emergency-meeting-35/) |
+| [Janitor](#janitor) | [Vigilante](#vigilante) | [Vampire](#vampire) | [Bait](#bait) | [Tiebreaker](#tiebreaker) | |
 | [Morphling](#morphling) | [Oracle](#oracle) | [Doomsayer](#doomsayer) |  [Double Shot](#double-shot) |[Spy](#spy) | |
 | [Venerer](#venerer) | [Investigator](#investigator) | [Vulture](#vulture) | [Frosty](#frosty) | [Drunk](#drunk)||
 | [Miner](#miner) | [Mystic](#mystic) | [Guardian Angel](#guardian-angel) |  [Giant](#giant)|[Flash](#flash) |
 | [Blackmailer](#blackmailer) | [Veteran](#veteran) |  [Pestilence](#plaguebearer) |[Underdog](#underdog) | [Multitasker](#multitasker)|
 | [Warlock](#warlock) | [Medic](#medic) | [Executioner](#executioner)  |   [Diseased](#diseased) | [Paranoiac](#paranoiac) |
-|  [Undertaker](#undertaker) | [Imitator](#imitator) | [Romantic](#romantic) |  | [Sleuth](#sleuth) |
-|  [Bomber](#bomber)  | [Detective](#detective) | [Amnesiac](#amnesiac)| [Saboteur](#saboteur)  |  |
+|  [Undertaker](#undertaker) | [Imitator](#imitator) | [Romantic](#romantic) | [Saboteur](#saboteur)   | [Sleuth](#sleuth) |
+|  [Bomber](#bomber)  | [Detective](#detective) | [Amnesiac](#amnesiac)|  |  |
 |  [Witch](#witch)| [Tracker](#tracker) |  [Agent](#agent) | |
 | [Poisoner](#poisoner) | [Swapper](#swapper)  | [Hitman](#hitman) |  |
 | [Bounty Hunter](#bounty-hunter) | [Trapper](#trapper)   |[Glitch](#glitch) |  |
@@ -37,7 +37,6 @@
 | | [Lookout](#lookout) | |  |
 
 -----------------------
-
 # Releases
 | Among Us - Version| Mod Version | Link |
 |----------|-------------|-----------------|
