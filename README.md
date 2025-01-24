@@ -1,6 +1,6 @@
 ### An Among Us mod that adds a bunch of roles, modifiers, abilities and game settings.
 
-![LOGO](./Images/TownOfSushiBanner.png)
+<p align="center">![LOGO](./Images/TownOfSushiBanner.png)</p>
 
 ### ***Notes:***
 ### ***- This repo uses [Town of Us Reactivated](https://github.com/eDonnes124/Town-Of-Us-R) as Codebase and is currently under development.***
