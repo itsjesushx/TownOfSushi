@@ -16,7 +16,7 @@ namespace TownOfSushi.Roles
         public Jailor(PlayerControl player) : base(player)
         {
             Name = "Jailor";
-            StartText = () => "Jail and execute the <color=#FF0000FF>Impostors</color>";
+            StartText = () => "Jail and execute the <color=#FF0000FF>Killers</color>";
             TaskText = () => "Execute and speak to the <color=#FF0000FF>Killers</color>";
             RoleInfo = "The Jailor is able to jail a player during meetings, jailing a player automatically makes them unable to chat with anyone but the Jailor in meetings. The jailor can talk to their jailee by typing /jail in the chat. The Jailor may execute their jailee if they believe they are an Impostor. If the Jailor executes an innocent player, they lose the ability to jail and execute for the rest of the game.";
             LoreText = "A stern enforcer of justice, you specialize in imprisoning and executing the Impostors that threaten the crew. As the Jailor, you have the power to confine suspected killers and interrogate them before making the final, irreversible decision. Your sense of duty and unwavering resolve make you a vital figure in maintaining order and eliminating the threat of the Impostors.";            

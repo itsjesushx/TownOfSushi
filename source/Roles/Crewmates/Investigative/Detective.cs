@@ -10,7 +10,7 @@ namespace TownOfSushi.Roles
             var RedOrGreen3 = CustomGameOptions.NeutKillingRed ? "red" : "green";
             Name = "Detective";
             StartText = () => "Investigate The Alliance Of Other Players";
-            TaskText = () => "Investigate alliances of other players to find the Impostors";
+            TaskText = () => "Investigate alliances to find the Killers";
             RoleInfo = $"The Detective is able to investigate the alignment of other players. If the player is a Crewmate, their name will be green, if they are an Impostor, their name will be red. If the player is a Neutral Evil role, their name will be {RedOrGreen}, and {RedOrGreen2} if they are a Neutral Benign Role. Neutral Killing Roles Will appear {RedOrGreen3} The Detective can only investigate one player every {CustomGameOptions.DetectiveCd} seconds.";
             LoreText = "Endowed with the power of insight, you possess the ability to unveil the true alliances of those around you. As the Detective, your gift allows you to discern the loyalties of your crewmates, shining a light on potential Impostors. Use your abilities wisely to protect the crew and expose deception.";
             RoleAlignment = RoleAlignment.CrewInvest;

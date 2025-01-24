@@ -1281,7 +1281,6 @@ namespace TownOfSushi
 
             return name;
         }
-
         public static PlayerControl PlayerByName(string name)
         {
             string lowercaseName = name.ToLower();

@@ -163,7 +163,6 @@ namespace TownOfSushi.CustomOption
         public static int DeputyKills => Mathf.RoundToInt(CustomOptionHolder.DeputyKills.GetFloat());
         public static bool VigilanteGuessNeutralBenign => CustomOptionHolder.VigilanteGuessNeutralBenign.GetBool();
         public static bool VigilanteGuessNeutralEvil => CustomOptionHolder.VigilanteGuessNeutralEvil.GetBool();
-        public static bool VigilanteGuessNeutralKilling => CustomOptionHolder.VigilanteGuessNeutralKilling.GetBool();
         public static int VigilanteKills => Mathf.RoundToInt(CustomOptionHolder.VigilanteKills.GetFloat());
         public static bool VigilanteMultiKill => CustomOptionHolder.VigilanteMultiKill.GetBool();
         public static bool VigilanteAfterVoting => CustomOptionHolder.VigilanteAfterVoting.GetBool();

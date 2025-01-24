@@ -9,8 +9,8 @@ namespace TownOfSushi.Roles
         public Mystic(PlayerControl player) : base(player)
         {
             Name = "Mystic";
-            StartText = () => "Find out about the kills";
-            TaskText = () => "Understand Kills & investigate about other players";
+            StartText = () => "Find info out about kills";
+            TaskText = () => "Find the killers with your abilities";
             RoleInfo = $"The mystic works similar to the Investigator, but with a twist. The Mystic can examine a player to see if they have killed someone recently. If the player has killed someone, the Mystic will be able to see the role/Faction of the killer. The Mystic can also examine a dead body to see who killed them and what role the killer is. The Mystic also gets a list of the possible roles that the examined player can be in meetings. Finally, the Mystic gets a flash and an Arrow pointing to dead bodies for {CustomGameOptions.MysticArrowDuration} seconds.";
             LoreText = "Gifted with an otherworldly sense, you can detect the echoes of violence and betrayal aboard the ship. As the Mystic, you unravel the mysteries behind the deaths of your crewmates, piecing together the truth to uncover the Impostors. Your intuition and insight are vital to the survival of the crew.";
             Color = Colors.Mystic;

@@ -182,11 +182,22 @@ namespace TownOfSushi.Roles
             }
 
            if (Player.HasTasks())
-            {
+           {
                 if (PlayerControl.LocalPlayer.Data.IsDead && TownOfSushi.DeadSeeTasks.Value || Player == PlayerControl.LocalPlayer && MeetingHud.Instance && TownOfSushi.ShowTasks.Value)
                 {
                     PlayerName += $" ({TotalTasks - TasksLeft}/{TotalTasks})";
                 }
+                if (HudManager.Instance.TaskPanel != null) 
+                {
+                    TMPro.TextMeshPro tabText = HudManager.Instance.TaskPanel.tab.transform.FindChild("TabText_TMP").GetComponent<TMPro.TextMeshPro>();
+                    tabText.SetText($"<color=#FAD934FF>Tasks ({TotalTasks - TasksLeft}/{TotalTasks})</color>");
+                }
+            }
+
+            if (HudManager.Instance.TaskPanel != null && !Player.HasTasks()) 
+            {
+                TMPro.TextMeshPro tabText = HudManager.Instance.TaskPanel.tab.transform.FindChild("TabText_TMP").GetComponent<TMPro.TextMeshPro>();
+                tabText.SetText("<color=#FF0000>Fake Tasks</color>");
             }
 
             foreach (PlayerControl p in PlayerControl.AllPlayerControls) 
@@ -201,7 +212,8 @@ namespace TownOfSushi.Roles
 
             if (!revealRole) return PlayerName;
 
-            return $"{PlayerName}\n{Name}";
+            if (MeetingHud.Instance) return $"{PlayerName}\n<size=68%>{Name}</size>";
+            else return $"<size=68%>{Name}</size>\n{PlayerName}</color>";
         }
 
         public static bool operator ==(Role a, Role b)
@@ -210,6 +222,7 @@ namespace TownOfSushi.Roles
             if (a is null || b is null) return false;
             return a.RoleType == b.RoleType && a.Player.PlayerId == b.Player.PlayerId;
         }
+
         public static bool operator !=(Role a, Role b)
         {
             return !(a == b);
@@ -220,7 +233,7 @@ namespace TownOfSushi.Roles
             try
             {
                 var firstText = Player.myTasks.ToArray()[0].Cast<ImportantTextTask>();
-                createTask = !firstText.Text.Contains("Role:");
+                createTask = !firstText.Text.Contains($"{ColorString}{Name}:");
             }
             catch (InvalidCastException)
             {
@@ -231,13 +244,13 @@ namespace TownOfSushi.Roles
             {
                 var task = new GameObject(Name + "Task").AddComponent<ImportantTextTask>();
                 task.transform.SetParent(Player.transform, false);
-                task.Text = $"{ColorString}Role: {Name}\n{TaskText()}\nAlignment: {Player.AlignmentText()}</color>";
+                task.Text = $"{ColorString}{Name}: {TaskText()}\nAlignment: {Player.AlignmentText()}</color>";
                 Player.myTasks.Insert(0, task);
 
                 return;
             }
             Player.myTasks.ToArray()[0].Cast<ImportantTextTask>().Text =
-                $"{ColorString}Role: {Name}\n{TaskText()}\nAlignment: {Player.AlignmentText()}</color>";
+                $"{ColorString}{Name}: {TaskText()}\nAlignment: {Player.AlignmentText()}</color>";
         }
         public static T Gen<T>(Type type, PlayerControl player, CustomRPC rpc)
         {
@@ -314,7 +327,7 @@ namespace TownOfSushi.Roles
                     var modTask = new GameObject(modifier.Name + "Task").AddComponent<ImportantTextTask>();
                     modTask.transform.SetParent(player.transform, false);
                     modTask.Text =
-                        $"{modifier.ColorString}Modifier: {modifier.Name}\n{modifier.TaskText()}</color>";
+                        $"{modifier.ColorString}{modifier.Name}: {modifier.TaskText()}</color>";
                     player.myTasks.Insert(0, modTask);
                 }
                 if (ability != null)
@@ -322,7 +335,7 @@ namespace TownOfSushi.Roles
                     var modTask = new GameObject(ability.Name + "Task").AddComponent<ImportantTextTask>();
                     modTask.transform.SetParent(player.transform, false);
                     modTask.Text =
-                        $"{ability.ColorString}Ability: {ability.Name}\n{ability.TaskText()}</color>";
+                        $"{ability.ColorString}{ability.Name}: {ability.TaskText()}</color>";
                     player.myTasks.Insert(0, modTask);
                 }
 
@@ -330,7 +343,7 @@ namespace TownOfSushi.Roles
                 if (role.RoleType == RoleEnum.Amnesiac && role.Player != PlayerControl.LocalPlayer) return;
                 var task = new GameObject(role.Name + "Task").AddComponent<ImportantTextTask>();
                 task.transform.SetParent(player.transform, false);
-                task.Text = $"{role.ColorString}Role: {role.Name}\n{role.TaskText()}\nAlignment: {player.AlignmentText()}</color>";
+                task.Text = $"{role.ColorString}{role.Name}: {role.TaskText()}\nAlignment: {player.AlignmentText()}</color>";
                 player.myTasks.Insert(0, task);
             }
         }
@@ -452,16 +465,15 @@ namespace TownOfSushi.Roles
             {
                 if (GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek) return true;
                 if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return false;
+                if (PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 2) return false;
                 if (!AmongUsClient.Instance.AmHost) return false;
                 if (ShipStatus.Instance.Systems != null)
                 {
                     if (ShipStatus.Instance.Systems.ContainsKey(SystemTypes.LifeSupp))
                     {
-                        if (PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 2) return false;
                         var lifeSuppSystemType = ShipStatus.Instance.Systems[SystemTypes.LifeSupp].Cast<LifeSuppSystemType>();
                         if (lifeSuppSystemType.Countdown < 0f)
                         {
-                            if (PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 2) return false;
                             ImpostorsWin = true;
                             StartRPC(CustomRPC.ImpostorWin);
                             EndGame();
@@ -471,7 +483,6 @@ namespace TownOfSushi.Roles
 
                     if (ShipStatus.Instance.Systems.ContainsKey(SystemTypes.Laboratory))
                     {
-                        if (PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 2) return false;
                         var reactorSystemType = ShipStatus.Instance.Systems[SystemTypes.Laboratory].Cast<ReactorSystemType>();
                         if (reactorSystemType.Countdown < 0f)
                         {
@@ -484,7 +495,6 @@ namespace TownOfSushi.Roles
 
                     if (ShipStatus.Instance.Systems.ContainsKey(SystemTypes.Reactor))
                     {
-                        if (PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 2) return false;
                         var reactorSystemType = ShipStatus.Instance.Systems[SystemTypes.Reactor].Cast<ICriticalSabotage>();
                         if (reactorSystemType.Countdown < 0f)
                         {

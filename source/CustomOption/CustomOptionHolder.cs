@@ -21,7 +21,6 @@ namespace TownOfSushi.CustomOption
         public static CustomOption VigilanteMultiKill;
         public static CustomOption VigilanteGuessNeutralBenign;
         public static CustomOption VigilanteGuessNeutralEvil;
-        public static CustomOption VigilanteGuessNeutralKilling;
         public static CustomOption VigilanteAfterVoting;
 
         public static CustomOption CrusaderOn;
@@ -661,7 +660,6 @@ namespace TownOfSushi.CustomOption
             VigilanteMultiKill = CustomOption.Create(101, Types.Crewmate, "Vigilante Can Kill More Than Once Per Meeting", false, VigilanteOn);
             VigilanteGuessNeutralBenign = CustomOption.Create(102, Types.Crewmate, "Vigilante Can Guess Neutral Benign Roles", false, VigilanteOn);
             VigilanteGuessNeutralEvil = CustomOption.Create(103, Types.Crewmate, "Vigilante Can Guess Neutral Evil Roles", false, VigilanteOn);
-            VigilanteGuessNeutralKilling = CustomOption.Create(104, Types.Crewmate, "Vigilante Can Guess Neutral Killing Roles", false, VigilanteOn);
             VigilanteAfterVoting = CustomOption.Create(105, Types.Crewmate, "Vigilante Can Guess After Voting", false, VigilanteOn);
             VigilanteKillOther = CustomOption.Create(106, Types.Crewmate, "Vigilante Miskill Kills Crewmate", false, VigilanteOn);
             VigilanteKillsNeutralEvil = CustomOption.Create(107, Types.Crewmate, "Vigilante Kills Neutral Evil", false, VigilanteOn);

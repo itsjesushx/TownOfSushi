@@ -8,7 +8,7 @@ namespace TownOfSushi.Roles
         public Jester(PlayerControl player) : base(player)
         {
             Name = "Jester";
-            StartText = () => "Get Voted Out";
+            StartText = () => "Get voted out";
             TaskText = () => SpawnedAs ? "Get voted out!" : "Your target was killed. Now you get voted out!";
             RoleInfo = "The Jester is a Neutral role with its own win condition. If they are voted out after a meeting, the game finishes and they win. However, the Jester does not win if the Crewmates, Impostors or another Neutral role wins.";
             LoreText = "A trickster at heart, your mission is to deceive the crew into voting you out. As the Jester, you must play the fool, sowing confusion and suspicion to ensure that the crew believes you are an Impostor. The more they doubt you, the closer you get to your victory. But beware: if you fail to be voted out, you risk becoming a liability for the crew, and your deceit will be their undoing.";

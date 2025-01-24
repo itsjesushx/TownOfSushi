@@ -14,7 +14,6 @@ namespace TownOfSushi.Roles
             LoreText = "A harbinger of decay, you are the Pestilence that spreads across the map, bringing death with every step. As Pestilence, your powers allow you to infect and destroy players that are close to you, turning everyone into your target. With your unstoppable abilities, you slowly wear down the crew, leaving destruction in your wake. No one is safe from your grasp, and the longer you survive, the more your influence grows. Your mission is clear—eradicate all life and leave only ruin in your wake.";
             Faction = Faction.Neutral;
             AddToRoleHistory(RoleType);
-
             RoleAlignment = RoleAlignment.NeutralKilling;
         }
         public PlayerControl ClosestPlayer;

@@ -8,7 +8,7 @@ namespace TownOfSushi.Roles
         {
             Name = "Seer";
             StartText = () => "Investigate the faction of other players";
-            TaskText = () => "Investigate factions of other players to find the Impostors";
+            TaskText = () => "Investigate factions to find the Killers";
             RoleInfo = "The Seer is able to choose two targets, upon a meeting starts, the Seer will be notified wether the targets are on the same team or not, in the voting screen the Seer will see a green Y if they are, else they will have a red X next to their names.";
             LoreText = "Gifted with an extraordinary insight, the Seer can peer into the factions of their crewmates. Tasked with revealing the truth hidden in the shadows, they aim to bring light to deception and uncover the impostors among the crew. Beware, for the Seer's knowledge can make them a prime target for evildoers.";
             RoleAlignment = RoleAlignment.CrewInvest;

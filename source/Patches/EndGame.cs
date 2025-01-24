@@ -84,7 +84,7 @@ namespace TownOfSushi.Patches
                 if (playerControl.HasTasks())
                 {
                     if ((player.TotalTasks - player.TasksLeft)/player.TotalTasks == 1) SummaryText += $" | Tasks: " + ColorString(Color.green, $"{player.TotalTasks - player.TasksLeft}/{player.TotalTasks}");
-                    else SummaryText += $" | Tasks: {player.TotalTasks - player.TasksLeft}/{player.TotalTasks}";
+                    else SummaryText += $" | <color=#FAD934FF>Tasks: {player.TotalTasks - player.TasksLeft}/{player.TotalTasks}</color>";
                 }
                 if (player.Kills > 0 && !playerControl.Is(Faction.Crewmates))
                 {

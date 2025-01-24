@@ -104,8 +104,8 @@ namespace TownOfSushi
 
        private static void GenEachRole(List<NetworkedPlayerInfo> infected)
         {
-            var impostors = Utils.GetImpostors(infected);
-            var crewmates = Utils.GetCrewmates(impostors);
+            var impostors = GetImpostors(infected);
+            var crewmates = GetCrewmates(impostors);
 
             var crewRoles = new List<(Type, int, bool)>();
             var impRoles = new List<(Type, int, bool)>();
@@ -664,19 +664,6 @@ namespace TownOfSushi
                 }
             }
 
-            /*var bounties = PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Is(Faction.Impostors) && !x.Data.IsDead && !x.Data.Disconnected).ToList();
-            foreach (var role in GetRoles(RoleEnum.BountyHunter))
-            {
-                var bh = (BountyHunter)role;
-                if (bounties.Count > 0)
-                {
-                    bh.Bounty = bounties[Random.RandomRangeInt(0, bounties.Count)];
-                    bounties.Remove(bh.Bounty);
-
-                    StartRPC(CustomRPC.SetBounty, role.Player.PlayerId, bh.Bounty.PlayerId);
-                }
-            }*/
-
             var goodGATargets = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(Faction.Crewmates)).ToList();
             var evilGATargets = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(Faction.Impostors) || x.Is(RoleAlignment.NeutralKilling)).ToList();
             foreach (var role in GetRoles(RoleEnum.GuardianAngel))
@@ -1217,7 +1204,7 @@ namespace TownOfSushi
                                     var lookout = GetRole<Lookout>(PlayerControl.LocalPlayer);
                                     if (lookout.Watching.ContainsKey(body.ParentId))
                                     {
-                                        if (!lookout.Watching[body.ParentId].Contains(RoleEnum.Undertaker)) lookout.Watching[body.ParentId].Add(RoleEnum.Hitman);
+                                        if (!lookout.Watching[body.ParentId].Contains(RoleEnum.Hitman)) lookout.Watching[body.ParentId].Add(RoleEnum.Hitman);
                                     }
                                 }
                             }
@@ -1250,7 +1237,7 @@ namespace TownOfSushi
                         new Assassin(PlayerById(reader.ReadByte()));
                         break;
                     case CustomRPC.AbilityTrigger:
-                        var abilityUser = Utils.PlayerById(reader.ReadByte());
+                        var abilityUser = PlayerById(reader.ReadByte());
                         var abilitytargetId = reader.ReadByte();
                         var abilitytarget = abilitytargetId == byte.MaxValue ? null : PlayerById(abilitytargetId);
                         foreach (Role hunterRole2 in GetRoles(RoleEnum.Hunter))
