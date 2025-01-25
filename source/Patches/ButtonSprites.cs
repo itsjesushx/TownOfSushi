@@ -157,6 +157,24 @@
             var controller = ConsoleJoystick.player.GetButtonDown(8);
             if (keyInt | controller && __instance.KillButton != null && flag && !PlayerControl.LocalPlayer.Data.IsDead)
                 __instance.KillButton.DoClick();
+            
+            var role = GetPlayerRole(PlayerControl.LocalPlayer);
+            bool AbilityKey = Rewired.ReInput.players.GetPlayer(0).GetButtonDown("ToS imp/nk");
+            if (role?.ExtraButtons != null && AbilityKey && !PlayerControl.LocalPlayer.Data.IsDead)
+                role?.ExtraButtons[0]?.DoClick();
+
+            if (GetAbility<ButtonBarry>(PlayerControl.LocalPlayer)?.ButtonUsed == false &&
+                Rewired.ReInput.players.GetPlayer(0).GetButtonDown("ToS bb/disperse/mimic") &&
+                !PlayerControl.LocalPlayer.Data.IsDead)
+            {
+                GetAbility<ButtonBarry>(PlayerControl.LocalPlayer).ButtonButton.DoClick();
+            }
+            else if (GetModifier<Disperser>(PlayerControl.LocalPlayer)?.MaxUses > 0 &&
+                     Rewired.ReInput.players.GetPlayer(0).GetButtonDown("ToS bb/disperse/mimic/hitman") &&
+                     !PlayerControl.LocalPlayer.Data.IsDead)
+            {
+                GetModifier<Disperser>(PlayerControl.LocalPlayer).DisperseButton.DoClick();
+            }
         }
 
         [HarmonyPatch(typeof(AbilityButton), nameof(AbilityButton.Update))]

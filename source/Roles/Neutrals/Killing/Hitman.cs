@@ -276,6 +276,7 @@ namespace TownOfSushi.Roles
                     __hInstance.MorphButton.isCoolingDown = false;
                     __hInstance.MorphButton.graphic.material.SetFloat("_Desat", 0f);
                     __hInstance.MorphButton.graphic.color = Palette.EnabledColor;
+                    if (Rewired.ReInput.players.GetPlayer(0).GetButtonDown("ToS bb/disperse/mimic/hitman")) __hInstance.MorphButton.DoClick();
                 }
                 else
                 {

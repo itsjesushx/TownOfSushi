@@ -379,7 +379,7 @@ namespace TownOfSushi.Roles
                 if (__gInstance.HackTarget != null)
                 {
                     __gInstance.HackTarget.myRend().material.SetColor("_OutlineColor", __gInstance.Color);
-                    if (Rewired.ReInput.players.GetPlayer(0).GetButtonDown("ToU hack")) __gInstance.HackButton.DoClick();
+                    if (Rewired.ReInput.players.GetPlayer(0).GetButtonDown("ToS hack")) __gInstance.HackButton.DoClick();
                 }
             }
 
@@ -454,6 +454,7 @@ namespace TownOfSushi.Roles
                     __gInstance.MimicButton.isCoolingDown = false;
                     __gInstance.MimicButton.graphic.material.SetFloat("_Desat", 0f);
                     __gInstance.MimicButton.graphic.color = Palette.EnabledColor;
+                    if (Rewired.ReInput.players.GetPlayer(0).GetButtonDown("ToS bb/disperse/mimic/hitman")) __gInstance.MimicButton.DoClick();
                 }
                 else
                 {
