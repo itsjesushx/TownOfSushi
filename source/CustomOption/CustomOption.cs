@@ -123,7 +123,7 @@ namespace TownOfSushi.CustomOption
             var writer = AmongUsClient.Instance!.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareOptions, SendOption.Reliable, -1);
             writer.Write((byte)1);
             writer.WritePacked((uint)option.id);
-            writer.WritePacked(Convert.ToSInt32(option.selection));
+            writer.WritePacked(Convert.ToInt32(option.selection));
             AmongUsClient.Instance.FinishRpcImmediately(writer);
         }
 
@@ -141,7 +141,7 @@ namespace TownOfSushi.CustomOption
                     var option = optionsList[0];
                     optionsList.RemoveAt(0);
                     writer.WritePacked((uint) option.id);
-                    writer.WritePacked(Convert.ToSInt32(option.selection));
+                    writer.WritePacked(Convert.ToInt32(option.selection));
                 }
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
             }
