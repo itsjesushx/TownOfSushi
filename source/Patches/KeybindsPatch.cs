@@ -11,7 +11,7 @@ namespace TownOfSushi.Patches
         private static void Prefix(InputManager_Base __instance)
         {
             //change the text shown on the screen for the kill keybind
-            __instance.userData.GetAction("ActionSecondary").descriptiveName = "Kill / Crew & neutral benign abilities / Infect & Douse";
+            __instance.userData.GetAction("ActionSecondary").descriptiveName = "Kill / Crew & Neutral Benign abilities / Infect & Douse";
             __instance.userData.RegisterBind("ToS imp/nk", "Impostor Abilities / Ignite");
             __instance.userData.RegisterBind("ToS bb/disperse/mimic/hitman", "Button Barry / Disperse / Glitch Mimic / Hitman Morph");
             __instance.userData.RegisterBind("ToS hack", "Glitch's Hack");

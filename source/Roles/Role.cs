@@ -212,8 +212,8 @@ namespace TownOfSushi.Roles
 
             if (!revealRole) return PlayerName;
 
-            if (MeetingHud.Instance) return $"{PlayerName}\n<size=68%>{Name}</size>";
-            else return $"<size=68%>{Name}</size>\n{PlayerName}</color>";
+            if (MeetingHud.Instance) return $"{PlayerName}\n<size=75%>{Name}</size>";
+            else return $"<size=75%>{Name}</size>\n{PlayerName}</color>";
         }
 
         public static bool operator ==(Role a, Role b)

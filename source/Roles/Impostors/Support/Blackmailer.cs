@@ -13,7 +13,7 @@ namespace TownOfSushi.Roles
         {
             Name = "Blackmailer";
             StartText = () => "Silence Crewmates During Meetings";
-            TaskText = () => "Silence a crewmate for the next meeting";
+            TaskText = () => "Silence a player for the next meeting";
             RoleInfo = $"The Blackmailer can silence a Crewmate during meetings, preventing them from speaking and casting doubt on their credibility. The target will be unable to speak during the next meeting, allowing the Blackmailer to control the flow of information and sow confusion among the Crewmates.";
             LoreText = "A cunning manipulator, you thrive on controlling information. As the Blackmailer, you can silence a Crewmate during meetings, preventing them from speaking and casting doubt on their credibility. With your ability to shut down key voices, you can turn the tide of discussions and ensure that your allies remain undetected while others are left defenseless.";
             Color = Colors.Impostor;

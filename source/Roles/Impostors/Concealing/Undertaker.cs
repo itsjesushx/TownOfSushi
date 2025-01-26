@@ -7,8 +7,8 @@ namespace TownOfSushi.Roles
         {
             var canVent = CustomGameOptions.UndertakerVentWithBody ? "can vent with a body" : "can't vent with a body";
             Name = "Undertaker";
-            StartText = () => "Drag Bodies And Hide Them";
-            TaskText = () => "Drag bodies around to hide them from being reported";
+            StartText = () => "Drag Bodies and hide them";
+            TaskText = () => "Drag bodies";
             RoleInfo = $"The Undertaker can drag bodies around to hide them from being reported. The Undertaker can drag a body to a location and then drop it to hide it from being reported. The Undertaker can only drag a body every {CustomGameOptions.DragCd} seconds. They {canVent}. Their speed is {CustomGameOptions.UndertakerDragSpeed}x.";
             LoreText = "A shadowy figure, you specialize in concealing the aftermath of your deeds. As the Undertaker, you can drag the bodies of the fallen and hide them from view, preventing others from uncovering your dark work. Your ability to erase evidence makes you a dangerous Impostor, leaving no trace of your actions and casting doubt on those who might suspect you.";
             Color = Colors.Impostor;

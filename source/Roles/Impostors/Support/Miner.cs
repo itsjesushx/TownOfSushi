@@ -12,7 +12,7 @@ namespace TownOfSushi.Roles
         {
             Name = "Miner";
             StartText = () => "From The Top, Make It Drop, That's A Vent";
-            TaskText = () => "Place vents around the map";
+            TaskText = () => "Place vents";
             RoleInfo = "The Miner is an Impostor that can create new vents. These vents only connect to each other, forming a new passway.";
             LoreText = "A skilled worker underground, you have the power to shape the map itself. As the Miner, you can place vents around the map, giving you and your allies new pathways for movement. Your ability to alter the landscape allows you to sneak around unnoticed, setting traps or escaping danger while the Crewmates remain unaware of the new routes you've created beneath their feet.";
             Color = Colors.Impostor;

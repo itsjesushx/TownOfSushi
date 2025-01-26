@@ -24,7 +24,6 @@ namespace TownOfSushi.Patches
                     p.SetPlayerMaterialColors(player.cosmetics.currentBodySprite.BodySprite);
                     player.SetSkin(data.DefaultOutfit.SkinId, data.DefaultOutfit.ColorId);
                     player.cosmetics.SetHat(data.DefaultOutfit.HatId, data.DefaultOutfit.ColorId);
-                   // PlayerControl.SetPetImage(data.DefaultOutfit.PetId, data.DefaultOutfit.ColorId, player.PetSlot);
                     player.cosmetics.nameText.text = data.PlayerName;
                     player.SetFlipX(true);
                     playerIcons[p.PlayerId] = player;
@@ -38,7 +37,7 @@ namespace TownOfSushi.Patches
                     var list = GameObject.FindObjectsOfType<Vent>().ToList();
                     var adminVent = list.FirstOrDefault(x => x.gameObject.name == "AdminVent");
                     var bathroomVent = list.FirstOrDefault(x => x.gameObject.name == "BathroomVent");
-                    BetterPolus.SpecimenVent = UnityEngine.Object.Instantiate<Vent>(adminVent);
+                    BetterPolus.SpecimenVent = Object.Instantiate<Vent>(adminVent);
                     BetterPolus.SpecimenVent.gameObject.AddSubmergedComponent(SubmergedCompatibility.Classes.ElevatorMover);
                     BetterPolus.SpecimenVent.transform.position = new Vector3(36.55068f, -21.5168f, -0.0215168f);
                     BetterPolus.SpecimenVent.Left = adminVent;
@@ -59,129 +58,144 @@ namespace TownOfSushi.Patches
     }
 
     [HarmonyPatch]
-    class IntroPatch 
+    class IntroPatch
     {
-        public static void AddNeutralIntroIcons(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam) {
-            // Intro solo teams
-            if (PlayerControl.LocalPlayer.Is(Faction.Neutral)) 
+        public static AudioClip GetIntroSound(RoleTypes roleType)
+        {
+            return RoleManager.Instance.AllRoles.Where((role) => role.Role == roleType).FirstOrDefault().IntroSound;
+        }
+        public static void SetupIntroTeamIcons(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam) {
+
+            //SoundManager.Instance.StopSound(CustomMain.customAssets.lobbyMusic);            
+
+            if (GameOptionsManager.Instance.currentGameMode == GameModes.Normal) 
             {
-                var soloTeam = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
-                soloTeam.Add(PlayerControl.LocalPlayer);
-                yourTeam = soloTeam;
+                if (PlayerControl.LocalPlayer.Is(Faction.Neutral)) 
+                {
+                    // Intro solo teams (rebels and neutrals)
+                    var soloTeam = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+                    soloTeam.Add(PlayerControl.LocalPlayer);
+                    yourTeam = soloTeam;
+
+                    if (PlayerControl.LocalPlayer.Is(RoleAlignment.NeutralKilling))
+                    {
+                        PlayerControl.LocalPlayer.Data.Role.IntroSound = GetIntroSound(RoleTypes.Shapeshifter);
+                    }
+                    if (PlayerControl.LocalPlayer.Is(RoleAlignment.NeutralEvil))
+                    {
+                        PlayerControl.LocalPlayer.Data.Role.IntroSound = GetIntroSound(RoleTypes.Phantom);
+                    }
+                    if (PlayerControl.LocalPlayer.Is(RoleAlignment.NeutralBenign))
+                    {
+                        PlayerControl.LocalPlayer.Data.Role.IntroSound = GetIntroSound(RoleTypes.Noisemaker);
+                    }
+                }
             }
         }
 
-        public static void AddNeutralIntro(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam) 
+        public static void SetupIntroTeam(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam) 
         {
-            if (PlayerControl.LocalPlayer.Is(Faction.Neutral)) 
+            if (GameOptionsManager.Instance.currentGameMode == GameModes.Normal) 
             {
-                var neutralColor = new Color32(76, 84, 78, 255);
-                __instance.BackgroundBar.material.color = neutralColor;
-                __instance.TeamTitle.text = "Neutral";
-                __instance.TeamTitle.color = neutralColor;
-                if (PlayerControl.LocalPlayer.Is(RoleAlignment.NeutralKilling))
+                foreach (var role in GetRoles(RoleEnum.GuardianAngel))
                 {
-                    PlayerControl.LocalPlayer.Data.Role.IntroSound = GetIntroSound(RoleTypes.Shapeshifter);
+                    var guardianAngel = (GuardianAngel)role;
+                    if (guardianAngel.target != null)
+                    {
+                        var target = guardianAngel.target;
+                        var player = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(x => x.PlayerId == target.PlayerId);
+                        if (player != null)
+                        {
+                            yourTeam.Add(player);
+                        }
+                    }
                 }
-                if (PlayerControl.LocalPlayer.Is(RoleAlignment.NeutralEvil))
+                if (PlayerControl.LocalPlayer.Is(Faction.Neutral) && !PlayerControl.LocalPlayer.Is(RoleEnum.GuardianAngel))
                 {
-                    PlayerControl.LocalPlayer.Data.Role.IntroSound = GetIntroSound(RoleTypes.Phantom);
+                    var neutralColor = new Color32(76, 84, 78, 255);
+                    __instance.ImpostorText.text = "Work alone to achieve your goal";
+                    __instance.BackgroundBar.material.color = neutralColor;
+                    __instance.TeamTitle.text = "Neutral";
+                    __instance.TeamTitle.color = neutralColor;
                 }
-                if (PlayerControl.LocalPlayer.Is(RoleAlignment.NeutralBenign))
+                if (PlayerControl.LocalPlayer.Is(Faction.Neutral) && PlayerControl.LocalPlayer.Is(RoleEnum.GuardianAngel))
                 {
-                    PlayerControl.LocalPlayer.Data.Role.IntroSound = GetIntroSound(RoleTypes.Noisemaker);
+                    var neutralColor = new Color32(76, 84, 78, 255);
+                    __instance.ImpostorText.text = $"Protect {GetRole<GuardianAngel>(PlayerControl.LocalPlayer).target.name} with your life";
+                    __instance.BackgroundBar.material.color = neutralColor;
+                    __instance.TeamTitle.text = "Neutral";
+                    __instance.TeamTitle.color = neutralColor;
+                }
+                else if (PlayerControl.LocalPlayer.Is(Faction.Crewmates))
+                {
+                    __instance.ImpostorText.text = "Find and vote out the <color=#FF0000>Killers</color>";
+                    __instance.TeamTitle.color = Palette.CrewmateBlue;
                 }
             }
         }
-
-        public static IEnumerator<WaitForSeconds> EndShowRole(IntroCutscene __instance) 
-        {
-            yield return new WaitForSeconds(5f);
-            __instance.YouAreText.gameObject.SetActive(false);
-            __instance.RoleText.gameObject.SetActive(false);
-            __instance.RoleBlurbText.gameObject.SetActive(false);
-            __instance.ourCrewmate.gameObject.SetActive(false);
-           
-        }
-
-        [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.CreatePlayer))]
-        class CreatePlayerPatch 
-        {
-            public static void Postfix(IntroCutscene __instance, bool impostorPositioning, ref PoolablePlayer __result) 
-            {
-                if (impostorPositioning) __result.SetNameColor(Palette.ImpostorRed);
-            }
-        }
-
 
         [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.ShowRole))]
-        class SetUpRoleTextPatch 
+        class ShowRolePatch
         {
-            static int seed = 0;
-            static public void SetRoleTexts(IntroCutscene __instance) 
+            public static void Postfix(IntroCutscene __instance) 
             {
                 // Don't override the intro of the vanilla roles
                 Role roleInfo = GetPlayerRole(PlayerControl.LocalPlayer);
                 Modifier modifierInfo = GetModifier(PlayerControl.LocalPlayer);
-                Ability abilityInfo = GetAbility(PlayerControl.LocalPlayer);
+                Ability abilityInfo = GetAbility(PlayerControl.LocalPlayer);               
 
-                __instance.RoleBlurbText.text = "";
-                if (roleInfo != null) 
+                Color color = new Color(__instance.YouAreText.color.r, __instance.YouAreText.color.g, __instance.YouAreText.color.b, 0f);
+                __instance.StartCoroutine(Effects.Lerp(0.5f, new Action<float>((t) => 
                 {
-                    __instance.RoleText.text = roleInfo.Name;
-                    __instance.RoleText.color = roleInfo.Color;
-                    __instance.YouAreText.color = roleInfo.Color;
-                    __instance.RoleBlurbText.text = roleInfo.StartText();
-                    __instance.RoleBlurbText.color = roleInfo.Color;
-                }
-                if (modifierInfo != null) 
-                {
-                    __instance.RoleBlurbText.text += ColorString(modifierInfo.Color, $"\n{modifierInfo.TaskText()}");
-                }
-                if (abilityInfo != null) 
-                {
-                    __instance.RoleBlurbText.text += ColorString(abilityInfo.Color, $"\n{abilityInfo.TaskText()}");
-                }
-            }
-            public static bool Prefix(IntroCutscene __instance) {
-                System.Random rnd = new System.Random((int)DateTime.Now.Ticks);
-                seed = rnd.Next(5000);
-                DestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(1f, new Action<float>((p) => {
-                    SetRoleTexts(__instance);
+                    if (roleInfo != null) 
+                    {
+                        __instance.RoleText.text = roleInfo.Name;
+                        __instance.RoleBlurbText.text = roleInfo.StartText();
+                        color = roleInfo.Color;
+                    }
+                    if (modifierInfo != null) 
+                    {
+                        __instance.RoleBlurbText.text += ColorString(modifierInfo.Color, $"\n{modifierInfo.TaskText()}");
+                    }
+                    if (abilityInfo != null) 
+                    {
+                        __instance.RoleBlurbText.text += ColorString(abilityInfo.Color, $"\n{abilityInfo.TaskText()}");
+                    }
+
+                    color.a = t;
+                    __instance.YouAreText.color = color;
+                    __instance.RoleText.color = color;
+                    __instance.RoleBlurbText.color = color;
                 })));
-                return true;
             }
         }
 
         [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginCrewmate))]
-        class BeginCrewmatePatch 
+        class BeginCrewmatePatch
         {
-            public static void Prefix(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> teamToDisplay) 
+            public static void Prefix(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> teamToDisplay) 
             {
-                AddNeutralIntroIcons(__instance, ref teamToDisplay);
+                SetupIntroTeamIcons(__instance, ref teamToDisplay);
             }
 
-            public static void Postfix(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> teamToDisplay) 
+            public static void Postfix(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> teamToDisplay) 
             {
-                AddNeutralIntro(__instance, ref teamToDisplay);
+                SetupIntroTeam(__instance, ref teamToDisplay);
             }
         }
 
         [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginImpostor))]
-        class BeginImpostorPatch 
+        class BeginImpostorPatch
         {
-            public static void Prefix(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam) 
+            public static void Prefix(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam) 
             {
-                AddNeutralIntroIcons(__instance, ref yourTeam);
+                SetupIntroTeamIcons(__instance, ref yourTeam);
             }
 
-            public static void Postfix(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam) {
-                AddNeutralIntro(__instance, ref yourTeam);
+            public static void Postfix(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam) 
+            {
+                SetupIntroTeam(__instance, ref yourTeam);
             }
-        }
-        public static AudioClip GetIntroSound(RoleTypes roleType)
-        {
-            return RoleManager.Instance.AllRoles.Where((role) => role.Role == roleType).FirstOrDefault().IntroSound;
         }
     }
 }

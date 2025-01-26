@@ -17,7 +17,7 @@ namespace TownOfSushi.Roles
         {
             Name = "Grenadier";
             StartText = () => "Hinder The Crewmates' Vision";
-            TaskText = () => "Blind the crewmates to get sneaky kills";
+            TaskText = () => "Blind the crewmates";
             RoleInfo = $"The Grenadier can make other players go blind for {CustomGameOptions.GrenadeDuration} seconds. blinding players make their screen go gray, but they can still use all of their abilities. The Grenadier can use this ability every {CustomGameOptions.GrenadeCd} seconds and this will not affect other Impostors or dead players.";
             LoreText = "A specialist in disruption, you excel at blinding the Crewmates and throwing them into confusion. As the Grenadier, you can use blinding grenades to obscure vision, making it easier to move unnoticed and take out your targets. Your ability to create chaos in critical moments gives the Impostors a tactical advantage, allowing you to strike while the crew is disoriented and vulnerable.";
             Color = Colors.Impostor;

@@ -1,5 +1,6 @@
 namespace TownOfSushi.Patches
 {
+    //does this code look bad? yes. does it work? yes. is it the best way to do it? no.
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnGameEnd))]
     public class AmongUsGameEndPatch
     {

@@ -684,6 +684,31 @@ namespace TownOfSushi
             }
         }
 
+        [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.StartMeeting))]
+        class ShipStatusStartMeetingPatch
+        {
+            static void Prefix()
+            {
+                var hudManager = HudManager.Instance;
+                if (hudManager.FullScreen == null)
+                    return;
+                var renderer = hudManager.FullScreen;
+                renderer.gameObject.SetActive(true);
+                renderer.enabled = true;
+                var color = Color.black;
+
+                HudManager.Instance.StartCoroutine(Effects.Lerp(0.8f, new Action<float>((p) =>
+                {
+                    var alpha = Mathf.Clamp01(p < 0.25f ? 1 : (1 - p));
+                    renderer.color = new Color(color.r, color.g, color.b, Mathf.Clamp01(1 - p));
+                    if (p == 1)
+                    {
+                        renderer.enabled = false;
+                    }
+                })));
+            }
+        }
+
         [HarmonyPatch(typeof (MapBehaviour), "FixedUpdate")]  
         public static class MapBehaviourPatch  
         {
@@ -1289,7 +1314,6 @@ namespace TownOfSushi
                     return player;
             return null;
         }
-        
         public static string GetDeadInfo(this PlayerControl playerControl) 
         {
             // Note: add a new death reason for all roles that dont kill normally (ex like bomb, poison, distance kills to be exact)

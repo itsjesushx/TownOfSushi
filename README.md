@@ -766,7 +766,6 @@ Once per round the Escapist can Mark a location which they can then escape to la
 |----------|:-------------:|:------:|:------:|
 | Escapist | The percentage probability of the Escapist appearing | Percentage | 0% |
 | Recall Cooldown | The cooldown of the Escapist's Recall button | Time | 25s |
-| Escapist can Vent | Whether the Escapist can Vent | Toggle | False |
 -----------------------
 ## Grenadier
 ### **Team: Impostors**
@@ -783,7 +782,6 @@ However, a sabotage and a smoke grenade can not be active at the same time.
 | Flash Grenade Duration | How long the Flash Grenade lasts for | Time | 10s |
 | Flash Radius | How wide the flash radius is | Multiplier | 1x |
 | Indicate Flashed Crewmates | Whether the Grenadier can see who has been flashed | Toggle | False |
-| Grenadier can Vent | Whether the Grenadier can Vent | Toggle | False |
 -----------------------
 ## Morphling
 ### **Team: Impostors**
@@ -799,7 +797,6 @@ They can then Morph into that person at any time for a limited amount of time.
 | Morphling | The percentage probability of the Morphling appearing | Percentage | 0% |
 | Morph Cooldown | The cooldown of the Morphling's Morph button | Time | 25s |
 | Morph Duration | How long the Morph lasts for | Time | 10s |
-| Morphling can Vent | Whether the Morphling can Vent | Toggle | False |
 -----------------------
 ## Swooper
 ### **Team: Impostors**
@@ -812,8 +809,6 @@ The Swooper is an Impostor that can temporarily turn invisible.
 | Swooper | The percentage probability of the Swooper appearing | Percentage | 0% |
 | Swooper Cooldown | The cooldown of the Swooper's Swoop button | Time | 25s |
 | Swooper Duration | How long the Swooping lasts for | Time | 10s |
-| Swooper can Vent | Whether the Swooper can Vent | Toggle | False |
-
 -----------------------
 ## Venerer
 ### **Team: Impostors**
@@ -850,7 +845,6 @@ Once the bomb detonates it will kill all crewmates (and Impostors!) inside the r
 | Detonate Delay | The delay of the detonation after bomb has been planted | Time | 5s |
 | Max Kills In Detonation | Maximum number of kills in the detonation | Time | 5s |
 | Detonate Radius | How wide the detonate radius is | Multiplier | 0.25x |
-| Bomber can Vent | Whether the Bomber can Vent | Toggle | False |
 -----------------------
 ## Warlock
 ### **Team: Impostors**
@@ -966,7 +960,6 @@ The Undertaker is an Impostor that can drag and drop bodies.
 | Undertaker | The percentage probability of the Undertaker appearing | Percentage | 0% |
 | Undertaker Drag Cooldown | The cooldown of the Undertaker Drag ability | Time | 25s |
 | Undertaker Speed While Dragging | How fast the Undertaker moves while dragging a body in comparison to normal | Multiplier | 0.75x |
-| Undertaker can Vent | Whether the Undertaker can Vent | Toggle | False |
 | Undertaker can Vent while Dragging | Whether the Undertaker can Vent when they are Dragging a Body | Toggle | False |
 
 -----------------------
@@ -1300,7 +1293,7 @@ If you have any bugs or any need to contact me, join the [Discord Server](https:
 [TorchMod](https://github.com/tomozbot/TorchMod) - For the inspiration of the Torch modifier.\
 [XtraCube](https://github.com/XtraCube) - For the RainbowMod.\
 [PhasmoFireGod](https://twitch.tv/PhasmoFireGod) and [Ophidian](https://www.instagram.com/ixean.studio) - Button Art.\
-[TheOtherRoles](https://github.com/TheOtherRolesAU/TheOtherRoles) - For the Credentials Patch Code, CustomOption Code + inspiration of the Vigilante, Tracker and Spy roles, as well as the Bait modifier. MOTD & Code for the Main menu and ping tracker as well.\
+[TheOtherRoles](https://github.com/TheOtherRolesAU/TheOtherRoles) - For the Credentials Patch Code, CustomOption Code + inspiration of the Vigilante, Tracker and Spy roles, as well as the Bait modifier. Code for the Main menu and ping tracker as well.\
 [5up](https://www.twitch.tv/5uppp) and the Submarine Team - For the inspiration of the Grenadier role.\
 [Guus](https://github.com/OhMyGuus) - For support for the old Among Us versions (v2021.11.9.5 and v2021.12.15).\
 [MyDragonBreath](https://github.com/MyDragonBreath) - For Submerged Compatibility, the Trapper role, the Aftermath modifier and support for the new Among Us versions (v2022.6.21, v2023.6.13 & v2023.7.12).\

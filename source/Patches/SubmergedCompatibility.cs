@@ -12,7 +12,7 @@ namespace TownOfSushi.Patches
         {
             if (SubmergedCompatibility.isSubmerged())
             {
-                Coroutines.Start(SubmergedCompatibility.waitMeeting(SubmergedCompatibility.resetTimers));
+                Coroutines.Start(SubmergedCompatibility.WaitMeeting(SubmergedCompatibility.resetTimers));
             }
         }
     }
@@ -203,10 +203,10 @@ namespace TownOfSushi.Patches
 
         public static void ExileRoleChangePostfix()
         {
-            Coroutines.Start(waitMeeting(resetTimers));
+            Coroutines.Start(WaitMeeting(resetTimers));
         }
 
-        public static IEnumerator waitMeeting(Action next)
+        public static IEnumerator WaitMeeting(Action next)
         {
             while (!PlayerControl.LocalPlayer.moveable)
             {

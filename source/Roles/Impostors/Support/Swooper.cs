@@ -13,7 +13,7 @@ namespace TownOfSushi.Roles
         {
             Name = "Swooper";
             StartText = () => "Turn Invisible Temporarily";
-            TaskText = () => "Turn invisible and sneakily kill";
+            TaskText = () => "Turn invisible";
             RoleInfo = $"The Swooper is an Impostor that can turn invisible for {CustomGameOptions.SwoopDuration} seconds.";
             LoreText = "A shadow in the night, you can disappear from sight and strike without warning. As the Swooper, you can turn invisible for a brief moment, allowing you to sneak up on Crewmates and eliminate them undetected. Your ability to vanish makes you a terrifying presence, capable of taking down your targets without a trace before fading back into the shadows.";
             Color = Colors.Impostor;

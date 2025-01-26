@@ -28,6 +28,7 @@ namespace TownOfSushi.Patches
                 CanCallEmergency = false;
                 StatusText = "The Swapper can't start an emergency meeting";
             }
+
             // Potentially deactivate emergency button when 2 players are left
             if (PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 2)
             {
@@ -44,20 +45,6 @@ namespace TownOfSushi.Patches
                 __instance.ButtonActive = false;
                 return;
             }
-        }
-    }
-    [HarmonyPatch(typeof(VitalsMinigame), nameof(VitalsMinigame.Begin))]
-    public class NoVitals
-    {
-        public static bool Prefix(VitalsMinigame __instance)
-        {
-            if (PlayerControl.LocalPlayer.Data.IsDead) return true;
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Medium) && !CustomGameOptions.MediumVitals)
-            {
-                Object.Destroy(__instance.gameObject);
-                return false;
-            }
-            return true;
         }
     }
 }

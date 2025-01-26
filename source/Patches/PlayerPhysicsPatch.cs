@@ -112,7 +112,7 @@
             }
 
             var playerBindings = PlayerControl.AllPlayerControls.ToArray().ToDictionary(player => player.PlayerId);
-            var bodies = UnityEngine.Object.FindObjectsOfType<DeadBody>();
+            var bodies = Object.FindObjectsOfType<DeadBody>();
             foreach (var body in bodies)
             {
                 try {
