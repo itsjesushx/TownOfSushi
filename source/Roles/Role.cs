@@ -233,7 +233,7 @@ namespace TownOfSushi.Roles
             try
             {
                 var firstText = Player.myTasks.ToArray()[0].Cast<ImportantTextTask>();
-                createTask = !firstText.Text.Contains($"{ColorString}{Name}:");
+                createTask = !firstText.Text.Contains("Role:");
             }
             catch (InvalidCastException)
             {
@@ -244,13 +244,13 @@ namespace TownOfSushi.Roles
             {
                 var task = new GameObject(Name + "Task").AddComponent<ImportantTextTask>();
                 task.transform.SetParent(Player.transform, false);
-                task.Text = $"{ColorString}{Name}: {TaskText()}\nAlignment: {Player.AlignmentText()}</color>";
+                task.Text = $"{ColorString}Role: {Name} \n{TaskText()}\nAlignment: {Player.AlignmentText()}</color>";
                 Player.myTasks.Insert(0, task);
 
                 return;
             }
             Player.myTasks.ToArray()[0].Cast<ImportantTextTask>().Text =
-                $"{ColorString}{Name}: {TaskText()}\nAlignment: {Player.AlignmentText()}</color>";
+                $"{ColorString}Role: {Name} \n{TaskText()}\nAlignment: {Player.AlignmentText()}</color>";
         }
         public static T Gen<T>(Type type, PlayerControl player, CustomRPC rpc)
         {
@@ -327,7 +327,7 @@ namespace TownOfSushi.Roles
                     var modTask = new GameObject(modifier.Name + "Task").AddComponent<ImportantTextTask>();
                     modTask.transform.SetParent(player.transform, false);
                     modTask.Text =
-                        $"{modifier.ColorString}{modifier.Name}: {modifier.TaskText()}</color>";
+                        $"{modifier.ColorString}Modifier: {modifier.Name}: \n{modifier.TaskText()}</color>";
                     player.myTasks.Insert(0, modTask);
                 }
                 if (ability != null)
@@ -335,7 +335,7 @@ namespace TownOfSushi.Roles
                     var modTask = new GameObject(ability.Name + "Task").AddComponent<ImportantTextTask>();
                     modTask.transform.SetParent(player.transform, false);
                     modTask.Text =
-                        $"{ability.ColorString}{ability.Name}: {ability.TaskText()}</color>";
+                        $"{ability.ColorString}Ability: {ability.Name}: \n{ability.TaskText()}</color>";
                     player.myTasks.Insert(0, modTask);
                 }
 
@@ -343,7 +343,7 @@ namespace TownOfSushi.Roles
                 if (role.RoleType == RoleEnum.Amnesiac && role.Player != PlayerControl.LocalPlayer) return;
                 var task = new GameObject(role.Name + "Task").AddComponent<ImportantTextTask>();
                 task.transform.SetParent(player.transform, false);
-                task.Text = $"{role.ColorString}{role.Name}: {role.TaskText()}\nAlignment: {player.AlignmentText()}</color>";
+                task.Text = $"{role.ColorString}Role: {role.Name} \n{role.TaskText()}\nAlignment: {player.AlignmentText()}</color>";
                 player.myTasks.Insert(0, task);
             }
         }

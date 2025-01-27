@@ -29,4 +29,30 @@ namespace TownOfSushi.Patches
             return true;
         }
     }
+
+    //disable sabotage button when 2 players are left alive only or when the impostor is dead.
+    [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.ShowSabotageMap))]
+    public static class ShowSabotageMapPatch 
+    {
+        public static bool Prefix(MapBehaviour __instance) 
+        {
+            if (PlayerControl.LocalPlayer.Data.IsDead || PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 2)
+            {
+                __instance.ShowNormalMap();
+                return false;
+            }
+            return true;
+        }
+    }
+    [HarmonyPatch(typeof(SabotageButton), nameof(SabotageButton.Refresh))]
+    class SabotageButtonFix
+    {
+        static void Postfix() 
+        {
+            if (PlayerControl.LocalPlayer.Data.IsDead || PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 2) 
+            {
+                DestroyableSingleton<HudManager>.Instance.SabotageButton.SetDisabled();
+            }
+        }
+    }
 }

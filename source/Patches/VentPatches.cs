@@ -18,6 +18,7 @@ namespace TownOfSushi.Patches
     [HarmonyPatch(typeof(Vent), nameof(Vent.CanUse))]
     public static class VentPatches
     {
+        public static bool IsVenter => CanUseVents(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.CachedPlayerData);
         public static bool CanUseVents(PlayerControl player, NetworkedPlayerInfo playerInfo)
         {
             if (GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek) return false;

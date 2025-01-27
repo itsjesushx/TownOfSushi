@@ -17,7 +17,6 @@ namespace TownOfSushi.Roles
             RoleInfo = "The Doomsayer is a Neutral role with its own win condition. Their goal is to assassinate a certain number of players. Once done so they win the game. They have an additional observe ability that hints towards certain player's roles.";
             LoreText = "A harbinger of fate, you see the truth in the chaos around you. As the Doomsayer, your task is to deduce the roles of others, using your sharp intuition and keen observation. Guessing correctly will lead to your victory, but each mistake brings you closer to defeat. Trust no one and use your knowledge wisely, for the game's outcome depends on your ability to uncover the truth behind every player’s role.";
             Color = Colors.Doomsayer;
-
             RoleType = RoleEnum.Doomsayer;
             LastObserved = DateTime.UtcNow;
             Faction = Faction.Neutral;
