@@ -1056,6 +1056,9 @@ namespace TownOfSushi
                     case CustomRPC.VampireWin:
                         VampireWins = true;
                         break;
+                    case CustomRPC.NobodyWins:
+                        NobodyWinsFunc();
+                        break;
                     case CustomRPC.ImpostorWin:
                         ImpostorsWin = true;
                         break;

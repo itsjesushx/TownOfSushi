@@ -427,7 +427,10 @@ namespace TownOfSushi.Roles
         public static bool ExecutionerWin;
         public static bool DoomsayerWin;
         public static bool VultureWin;
-
+        public static void NobodyWinsFunc()
+        {
+            NobodyWins = true;
+        }
         internal static bool NobodyEndCriteria(LogicGameFlowNormal __instance)
         {
             bool CheckNoImpsNoCrews()
@@ -439,7 +442,7 @@ namespace TownOfSushi.Roles
                 {
                     var role = GetPlayerRole(x);
                     if (role == null) return false;
-                    var flag2 = role.Faction == Faction.Neutral  && role.RoleAlignment != RoleAlignment.NeutralKilling;
+                    var flag2 = role.RoleAlignment == RoleAlignment.NeutralEvil || role.RoleAlignment == RoleAlignment.NeutralBenign;
 
                     return flag2;
                 });
@@ -450,7 +453,7 @@ namespace TownOfSushi.Roles
             if (CheckNoImpsNoCrews())
             {
                 StartRPC(CustomRPC.NobodyWins);
-                NobodyWins = true;
+                NobodyWinsFunc();
                 EndGame(GameOverReason.ImpostorDisconnect);
                 return false;
             }
