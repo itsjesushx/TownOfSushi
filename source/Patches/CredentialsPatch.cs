@@ -37,7 +37,7 @@ $@"<size=60%> <color=#B2FEFE>Formerly: Slushiegoose & Polus.gg</color></size>";
                     __instance.text.text = $"<size=130%><color=#B2FEFE>TownOfSushi</color></size> v{TownOfSushi.Version.ToString()} \n FPS: {FPS} " + __instance.text.text;
                     position.DistanceFromEdge = new Vector3(1.5f, 0.11f, 0);
                 }
-                else 
+                else
                 {
                     __instance.text.text = $"{FllCredentialsVersion}\n{FullCredentials}\n FPS: {FPS} {__instance.text.text}";
                     position.DistanceFromEdge = new Vector3(0f, 0.1f, 0);

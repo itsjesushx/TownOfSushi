@@ -80,13 +80,17 @@ namespace TownOfSushi.Patches
                     {
                         PlayerVersion PV = playerVersions[client.Id];
                         int diff = TownOfSushi.Version.CompareTo(PV.version);
-                        if (diff > 0) {
+                        if (diff > 0) 
+                        {
                             message += $"<color=#FF0000FF>{client.Character.Data.PlayerName} has an older version of Town Of Sushi (v{playerVersions[client.Id].version.ToString()})\n</color>";
                             versionMismatch = true;
-                        } else if (diff < 0) {
+                        } 
+                        else if (diff < 0) 
+                        {
                             message += $"<color=#FF0000FF>{client.Character.Data.PlayerName} has a newer version of Town Of Sushi (v{playerVersions[client.Id].version.ToString()})\n</color>";
                             versionMismatch = true;
-                        } else if (!PV.GuidMatches()) 
+                        } 
+                        else if (!PV.GuidMatches()) 
                         { // version presumably matches, check if Guid matches
                             message += $"<color=#FF0000FF>{client.Character.Data.PlayerName} has a modified version of TOR v{playerVersions[client.Id].version.ToString()} <size=30%>({PV.guid.ToString()})</size>\n</color>";
                             versionMismatch = true;
@@ -107,7 +111,8 @@ namespace TownOfSushi.Patches
                     {
                         __instance.GameStartText.transform.localPosition = Vector3.zero;
                         __instance.GameStartText.transform.localScale = new Vector3(1.2f, 1.2f, 1f);
-                        if (!__instance.GameStartText.text.StartsWith("Starting")) {
+                        if (!__instance.GameStartText.text.StartsWith("Starting")) 
+                        {
                             __instance.GameStartText.text = String.Empty;
                             __instance.GameStartTextParent.SetActive(false);
                         }
@@ -131,7 +136,8 @@ namespace TownOfSushi.Patches
                         startButtonText.fontSizeMax = startButtonText.fontSize;
                         startButtonText.gameObject.transform.localPosition = Vector3.zero;
                         PassiveButton startButtonPassiveButton = copiedStartButton.GetComponent<PassiveButton>();
-                        void StopStartFunc() {
+                        void StopStartFunc() 
+                        {
                             __instance.ResetStartState();
                             copiedStartButton.Destroy();
                             startingTimer = 0;
@@ -146,10 +152,12 @@ namespace TownOfSushi.Patches
                 }
 
                 // Client update with handshake infos
-                else {
+                else 
+                {
                     if (!playerVersions.ContainsKey(AmongUsClient.Instance.HostId) || TownOfSushi.Version.CompareTo(playerVersions[AmongUsClient.Instance.HostId].version) != 0) {
                         kickingTimer += Time.deltaTime;
-                        if (kickingTimer > 10) {
+                        if (kickingTimer > 10) 
+                        {
                             kickingTimer = 0;
 			                AmongUsClient.Instance.ExitGame(DisconnectReasons.ExitGame);
                             SceneChanger.ChangeScene("MainMenu");
@@ -159,12 +167,16 @@ namespace TownOfSushi.Patches
                         __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition + Vector3.up * 5;
                         __instance.GameStartText.transform.localScale = new Vector3(2f, 2f, 1f);
                         __instance.GameStartTextParent.SetActive(true);
-                    } else if (versionMismatch) {
+                    } 
+                    else if (versionMismatch) 
+                    {
                         __instance.GameStartText.text = $"<color=#FF0000FF>Players With Different Versions:\n</color>" + message;
                         __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition + Vector3.up * 5;
                         __instance.GameStartText.transform.localScale = new Vector3(2f, 2f, 1f);
                         __instance.GameStartTextParent.SetActive(true);
-                    } else {
+                    }
+                    else 
+                    {
                         __instance.GameStartText.transform.localPosition = Vector3.zero;
                         __instance.GameStartText.transform.localScale = new Vector3(1.2f, 1.2f, 1f);
                         if (!__instance.GameStartText.text.StartsWith("Starting")) {

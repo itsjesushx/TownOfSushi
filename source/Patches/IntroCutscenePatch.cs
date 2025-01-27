@@ -19,7 +19,7 @@ namespace TownOfSushi.Patches
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls) 
                 {
                     NetworkedPlayerInfo data = p.Data;
-                    PoolablePlayer player = UnityEngine.Object.Instantiate<PoolablePlayer>(__instance.PlayerPrefab, DestroyableSingleton<HudManager>.Instance.transform);
+                    PoolablePlayer player = Object.Instantiate<PoolablePlayer>(__instance.PlayerPrefab, DestroyableSingleton<HudManager>.Instance.transform);
                     playerPrefab = __instance.PlayerPrefab;
                     p.SetPlayerMaterialColors(player.cosmetics.currentBodySprite.BodySprite);
                     player.SetSkin(data.DefaultOutfit.SkinId, data.DefaultOutfit.ColorId);
@@ -64,15 +64,28 @@ namespace TownOfSushi.Patches
         {
             return RoleManager.Instance.AllRoles.Where((role) => role.Role == roleType).FirstOrDefault().IntroSound;
         }
-        public static void SetupIntroTeamIcons(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam) {
-
-            //SoundManager.Instance.StopSound(CustomMain.customAssets.lobbyMusic);            
-
+        public static void SetupIntroTeamIcons(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam) 
+        {    
             if (GameOptionsManager.Instance.currentGameMode == GameModes.Normal) 
             {
                 if (PlayerControl.LocalPlayer.Is(Faction.Neutral)) 
                 {
-                    // Intro solo teams (rebels and neutrals)
+                    foreach (var role in GetRoles(RoleEnum.GuardianAngel))
+                    {
+                        var guardianAngel = (GuardianAngel)role;
+                        if (guardianAngel.target != null)
+                        {
+                            var target = guardianAngel.target;
+                            var player = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(x => x.PlayerId == target.PlayerId);
+                            var soloTeam2 = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+                            soloTeam2.Add(player);
+                            if (player != null)
+                            {
+                                yourTeam = soloTeam2;
+                            }
+                        }
+                    }
+                    // Intro solo teams
                     var soloTeam = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
                     soloTeam.Add(PlayerControl.LocalPlayer);
                     yourTeam = soloTeam;
@@ -97,19 +110,6 @@ namespace TownOfSushi.Patches
         {
             if (GameOptionsManager.Instance.currentGameMode == GameModes.Normal) 
             {
-                foreach (var role in GetRoles(RoleEnum.GuardianAngel))
-                {
-                    var guardianAngel = (GuardianAngel)role;
-                    if (guardianAngel.target != null)
-                    {
-                        var target = guardianAngel.target;
-                        var player = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(x => x.PlayerId == target.PlayerId);
-                        if (player != null)
-                        {
-                            yourTeam.Add(player);
-                        }
-                    }
-                }
                 if (PlayerControl.LocalPlayer.Is(Faction.Neutral) && !PlayerControl.LocalPlayer.Is(RoleEnum.GuardianAngel))
                 {
                     var neutralColor = new Color32(76, 84, 78, 255);

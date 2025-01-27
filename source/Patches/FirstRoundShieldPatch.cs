@@ -9,7 +9,7 @@ namespace TownOfSushi.Patches
     }
 
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
-    public static class PlayerControlFixedUpdatePatch
+    public static class PlayerControlUpdatePatch
     {
         static void SetBasePlayerOutlines() 
         {

@@ -163,16 +163,16 @@ namespace TownOfSushi.Roles
 
         private static bool FixSubOxygen()
         {
-            Patches.SubmergedCompatibility.RepairOxygen();
+            SubmergedCompatibility.RepairOxygen();
 
-            Utils.StartRPC(CustomRPC.SubmergedFixOxygen, PlayerControl.LocalPlayer.NetId);
+            StartRPC(CustomRPC.SubmergedFixOxygen, PlayerControl.LocalPlayer.NetId);
 
             return false;
         }
 
         private static bool FixLights(SwitchSystem lights)
         {
-            Utils.StartRPC(CustomRPC.FixLights);
+            StartRPC(CustomRPC.FixLights);
 
             lights.ActualSwitches = lights.ExpectedSwitches;
 
