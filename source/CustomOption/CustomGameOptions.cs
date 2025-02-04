@@ -291,7 +291,7 @@ namespace TownOfSushi.CustomOption
         public static float RandomMapFungle => CustomOptionHolder.RandomMapFungle.GetFloat();
         public static float ReducedSaboCd => CustomOptionHolder.ReducedSaboCd.GetFloat();
         public static bool RandomSpawns => CustomOptionHolder.RandomSpawns.GetBool();
-        public static float RandomMapSubmerged => Loaded ? CustomOptionHolder.RandomMapSubmerged.GetFloat() : 0f;
+        public static float RandomMapSubmerged => SubmergedLoaded ? CustomOptionHolder.RandomMapSubmerged.GetFloat() : 0f;
         public static float RandomMapLevelImpostor => TownOfSushi.LevelImpLoaded ? CustomOptionHolder.RandomMapLevelImpostor.GetFloat() : 0f;
         public static DisableSkipButtonMeetings SkipButtonDisable =>
             (DisableSkipButtonMeetings)CustomOptionHolder.SkipButtonDisable.GetSelection();

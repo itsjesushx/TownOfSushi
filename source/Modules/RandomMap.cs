@@ -31,7 +31,7 @@ namespace TownOfSushi.Modules
             randomNumber -= CustomGameOptions.RandomMapAirship;
             if (randomNumber < CustomGameOptions.RandomMapFungle) return 5;
             randomNumber -= CustomGameOptions.RandomMapFungle;
-            if (Loaded && randomNumber < CustomGameOptions.RandomMapSubmerged) return 6;
+            if (SubmergedLoaded && randomNumber < CustomGameOptions.RandomMapSubmerged) return 6;
             randomNumber -= CustomGameOptions.RandomMapSubmerged;
             if (TownOfSushi.LevelImpLoaded && randomNumber < CustomGameOptions.RandomMapLevelImpostor) return 7;
 

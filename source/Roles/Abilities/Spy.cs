@@ -85,7 +85,7 @@ namespace TownOfSushi.Roles.Abilities
             {
                 var icon = icons[i];
                 var sprite = icon.GetComponent<SpriteRenderer>();
-                if (Loaded) sprite.color = new Color(1, 1, 1, 1);
+                if (SubmergedLoaded) sprite.color = new Color(1, 1, 1, 1);
                 if (sprite != null)
                 {
                     if (isSpy) PlayerMaterial.SetColors(colorMapping[i], sprite);

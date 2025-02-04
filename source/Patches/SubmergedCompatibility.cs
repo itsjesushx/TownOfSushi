@@ -28,7 +28,7 @@ namespace TownOfSushi.Patches
         public const ShipStatus.MapType SUBMERGED_MAP_TYPE = (ShipStatus.MapType)6;
 
         public static SemanticVersioning.Version Version { get; private set; }
-        public static bool Loaded { get; private set; }
+        public static bool SubmergedLoaded { get; private set; }
         public static BasePlugin Plugin { get; private set; }
         public static Assembly Assembly { get; private set; }
         public static Type[] Types { get; private set; }
@@ -39,7 +39,7 @@ namespace TownOfSushi.Patches
         {
             get
             {
-                if (!Loaded) return null;
+                if (!SubmergedLoaded) return null;
 
                 if (_submarineStatus is null || _submarineStatus.WasCollected || !_submarineStatus || _submarineStatus == null)
                 {
@@ -102,8 +102,8 @@ namespace TownOfSushi.Patches
 
         public static void Initialize()
         {
-            Loaded = IL2CPPChainloader.Instance.Plugins.TryGetValue(SUBMERGED_GUID, out PluginInfo plugin);
-            if (!Loaded) return;
+            SubmergedLoaded = IL2CPPChainloader.Instance.Plugins.TryGetValue(SUBMERGED_GUID, out PluginInfo plugin);
+            if (!SubmergedLoaded) return;
 
             Plugin = plugin!.Instance as BasePlugin;
             Version = plugin.Metadata.Version;
@@ -155,7 +155,7 @@ namespace TownOfSushi.Patches
 
         public static void CheckOutOfBoundsElevator(PlayerControl player)
         {
-            if (!Loaded) return;
+            if (!SubmergedLoaded) return;
             if (!IsSubmerged()) return;
 
             Tuple<bool, object> elevator = GetPlayerElevator(player);
@@ -227,34 +227,34 @@ namespace TownOfSushi.Patches
 
         public static MonoBehaviour AddSubmergedComponent(this GameObject obj, string typeName)
         {
-            if (!Loaded) return obj.AddComponent<MissingSubmergedBehaviour>();
+            if (!SubmergedLoaded) return obj.AddComponent<MissingSubmergedBehaviour>();
             bool validType = InjectedTypes.TryGetValue(typeName, out Type type);
             return validType ? obj.AddComponent(Il2CppType.From(type)).TryCast<MonoBehaviour>() : obj.AddComponent<MissingSubmergedBehaviour>();
         }
 
         public static float GetSubmergedNeutralLightRadius(bool isImpostor)
         {
-            if (!Loaded) return 0;
+            if (!SubmergedLoaded) return 0;
             return (float)CalculateLightRadiusMethod.Invoke(SubmarineStatus, new object[] { null, true, isImpostor });
         }
 
         public static void ChangeFloor(bool toUpper)
         {
-            if (!Loaded) return;
+            if (!SubmergedLoaded) return;
             MonoBehaviour _floorHandler = ((Component)GetFloorHandlerMethod.Invoke(null, new object[] { PlayerControl.LocalPlayer })).TryCast(FloorHandlerType) as MonoBehaviour;
             RpcRequestChangeFloorMethod.Invoke(_floorHandler, new object[] { toUpper });
         }
 
         public static bool getInTransition()
         {
-            if (!Loaded) return false;
+            if (!SubmergedLoaded) return false;
             return (bool)InTransitionField.GetValue(null);
         }
 
 
         public static void RepairOxygen()
         {
-            if (!Loaded) return;
+            if (!SubmergedLoaded) return;
             try
             {
                 Ship().RpcUpdateSystem((SystemTypes)130, 64);
@@ -267,7 +267,7 @@ namespace TownOfSushi.Patches
 
         }
 
-        public static bool IsSubmerged() => Loaded && Ship() && Ship().Type == SUBMERGED_MAP_TYPE;
+        public static bool IsSubmerged() => SubmergedLoaded && Ship() && Ship().Type == SUBMERGED_MAP_TYPE;
     }
 
     public class MissingSubmergedBehaviour : MonoBehaviour

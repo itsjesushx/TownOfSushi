@@ -240,7 +240,7 @@ namespace TownOfSushi.Roles
         [HarmonyPatch(typeof(Object), nameof(Object.Destroy), new Type[] { typeof(GameObject) })]
         public static void Prefix(GameObject obj)
         {
-            if (!Loaded || VanillaOptions()?.currentNormalGameOptions?.MapId != 6) return;
+            if (!SubmergedLoaded || VanillaOptions()?.currentNormalGameOptions?.MapId != 6) return;
             if (obj.name?.Contains("ExileCutscene") == true) ImitatorExileControllerPostfix(ExileControllerPatch.lastExiled);
         }
 
