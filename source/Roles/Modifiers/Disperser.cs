@@ -10,7 +10,7 @@ namespace TownOfSushi.Roles.Modifiers
         {
             Name = "Disperser";
             TaskText = () => "Separate the Crew";
-            Color = Colors.Impostor;
+            Color = ColorManager.Impostor;
             LastDispersed = DateTime.UtcNow;
             MaxUses = CustomGameOptions.MaxDisperses;
             ModifierType = ModifierEnum.Disperser;
@@ -48,12 +48,12 @@ namespace TownOfSushi.Roles.Modifiers
         {
             if (coordinates.ContainsKey(PlayerControl.LocalPlayer.PlayerId))
             {
-                Flash(Colors.Impostor, 2.5f);
-                if (Minigame.Instance)
+                Flash(ColorManager.Impostor, 2.5f);
+                if (TaskPanel())
                 {
                     try
                     {
-                        Minigame.Instance.Close();
+                        TaskPanel().Close();
                     }
                     catch
                     {
@@ -84,7 +84,7 @@ namespace TownOfSushi.Roles.Modifiers
                 PlayerControl.LocalPlayer.MyPhysics.StopAllCoroutines();
             }
 
-            if (SubmergedCompatibility.isSubmerged()) SubmergedCompatibility.ChangeFloor(PlayerControl.LocalPlayer.transform.position.y > -7f);
+            if (IsSubmerged()) ChangeFloor(PlayerControl.LocalPlayer.transform.position.y > -7f);
         }
 
         private Dictionary<byte, Vector2> GenerateDisperseCoordinates()
@@ -123,7 +123,7 @@ namespace TownOfSushi.Roles.Modifiers
             var role = GetModifier<Disperser>(PlayerControl.LocalPlayer);
             if (__instance != role.DisperseButton) return true;
             if (!PlayerControl.LocalPlayer.CanMove) return false;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return false;
+            if (IsDead()) return false;
             if (role.MaxUses <= 0) return false;
             if (!(role.DisperseTimer() == 0f)) return false;
             if (!__instance.enabled) return false;
@@ -166,7 +166,7 @@ namespace TownOfSushi.Roles.Modifiers
             role.DisperseButton.graphic.sprite = DisperseButton;
 
             role.DisperseButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
 
             role.DisperseButton.SetCoolDown(role.DisperseTimer(), CustomGameOptions.DisperseCooldown);

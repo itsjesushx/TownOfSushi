@@ -13,7 +13,7 @@ namespace TownOfSushi.Roles
             TaskText = () => "Cast a spell on players";
             RoleInfo = $"The witch can cast a spell on players, doing so adds a cross next to the player name, visible to everyone announcing they've been cursed. The spelled player can not be saved, and will be die after meeting.";
             LoreText = "A master of the arcane, you wield dark magic to curse your foes. As the Witch, you can cast a spell on players that ensures their demise after the meeting ends. Your powerful enchantments allow you to strike from afar, waiting for the perfect moment to unleash your lethal magic and eliminate your targets with a deadly curse.";
-            Color = Colors.Impostor;
+            Color = ColorManager.Impostor;
             LastSpelled = DateTime.UtcNow;
             RoleType = RoleEnum.Witch;
             Faction = Faction.Impostors;
@@ -65,7 +65,7 @@ namespace TownOfSushi.Roles
             {
                 var player = PlayerById(playerId);
                 var data = player?.Data;
-                if (data == null || data.Disconnected || data.IsDead || PlayerControl.LocalPlayer.Data.IsDead || playerId == PlayerControl.LocalPlayer.PlayerId)
+                if (data == null || data.Disconnected || data.IsDead || IsDead() || playerId == PlayerControl.LocalPlayer.PlayerId)
                     continue;
                 player.nameText().text += " <color=#FF0000FF> [†]</color>";
             }
@@ -73,7 +73,7 @@ namespace TownOfSushi.Roles
                 role.SpellButton.buttonLabelText.gameObject.SetActive(true);
                 role.SpellButton.buttonLabelText.text = "CURSE";
                 role.SpellButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                && !Meeting() && !IsDead()
                 && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
                 role.SpellButton.SetCoolDown(role.SpellTimer(), CustomGameOptions.SpellCd);
                 
@@ -93,7 +93,7 @@ namespace TownOfSushi.Roles
         {
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Witch)) return true;
             if (!PlayerControl.LocalPlayer.CanMove) return false;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return false;
+            if (IsDead()) return false;
             var role = GetRole<Witch>(PlayerControl.LocalPlayer);
             if (role.SpellTimer() != 0f) return false;
             

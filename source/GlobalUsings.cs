@@ -7,8 +7,11 @@ global using TownOfSushi.CustomOption;
 global using TownOfSushi.Patches;
 global using TownOfSushi.Objects;
 global using TownOfSushi.Modules.ScreenEffects;
+global using TownOfSushi.Modules.BetterMaps.BetterPolus;
+global using static TownOfSushi.Patches.SubmergedCompatibility;
 
 global using static TownOfSushi.Utils;
+global using static TownOfSushi.References;
 global using static TownOfSushi.Roles.Role;
 global using static TownOfSushi.Roles.Ability;
 global using static TownOfSushi.Roles.Modifier;

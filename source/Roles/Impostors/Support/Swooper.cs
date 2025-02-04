@@ -16,7 +16,7 @@ namespace TownOfSushi.Roles
             TaskText = () => "Turn invisible";
             RoleInfo = $"The Swooper is an Impostor that can turn invisible for {CustomGameOptions.SwoopDuration} seconds.";
             LoreText = "A shadow in the night, you can disappear from sight and strike without warning. As the Swooper, you can turn invisible for a brief moment, allowing you to sneak up on Crewmates and eliminate them undetected. Your ability to vanish makes you a terrifying presence, capable of taking down your targets without a trace before fading back into the shadows.";
-            Color = Colors.Impostor;
+            Color = ColorManager.Impostor;
             LastSwooped = DateTime.UtcNow;
             RoleType = RoleEnum.Swooper;
             Faction = Faction.Impostors;
@@ -57,7 +57,7 @@ namespace TownOfSushi.Roles
                 TimeRemaining = 0f;
             }
             var color = Color.clear;
-            if (PlayerControl.LocalPlayer.Data.IsImpostor() || PlayerControl.LocalPlayer.Data.IsDead) color.a = 0.1f;
+            if (PlayerControl.LocalPlayer.Data.IsImpostor() || IsDead()) color.a = 0.1f;
 
             if (Player.GetCustomOutfitType() != CustomPlayerOutfitType.Swooper)
             {
@@ -112,7 +112,7 @@ namespace TownOfSushi.Roles
             var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Swooper);
             if (!flag) return true;
             if (!PlayerControl.LocalPlayer.CanMove) return false;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return false;
+            if (IsDead()) return false;
             if (MushroomSabotageActive()) return false;
             var role = GetRole<Swooper>(PlayerControl.LocalPlayer);
             if (__instance == role.SwoopButton)
@@ -153,7 +153,7 @@ namespace TownOfSushi.Roles
             }
             role.SwoopButton.graphic.sprite = SwoopSprite;
             role.SwoopButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
 
             if (role.IsSwooped)

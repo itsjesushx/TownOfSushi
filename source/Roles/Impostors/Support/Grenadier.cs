@@ -20,7 +20,7 @@ namespace TownOfSushi.Roles
             TaskText = () => "Blind the crewmates";
             RoleInfo = $"The Grenadier can make other players go blind for {CustomGameOptions.GrenadeDuration} seconds. blinding players make their screen go gray, but they can still use all of their abilities. The Grenadier can use this ability every {CustomGameOptions.GrenadeCd} seconds and this will not affect other Impostors or dead players.";
             LoreText = "A specialist in disruption, you excel at blinding the Crewmates and throwing them into confusion. As the Grenadier, you can use blinding grenades to obscure vision, making it easier to move unnoticed and take out your targets. Your ability to create chaos in critical moments gives the Impostors a tactical advantage, allowing you to strike while the crew is disoriented and vulnerable.";
-            Color = Colors.Impostor;
+            Color = ColorManager.Impostor;
             LastFlashed = DateTime.UtcNow;
             RoleType = RoleEnum.Grenadier;
             Faction = Faction.Impostors;
@@ -61,7 +61,7 @@ namespace TownOfSushi.Roles
             TimeRemaining -= Time.deltaTime;
 
             //To stop the scenario where the flash and sabotage are called at the same time.
-            var system = ShipStatus.Instance.Systems[SystemTypes.Sabotage].Cast<SabotageSystemType>();
+            var system = Ship().Systems[SystemTypes.Sabotage].Cast<SabotageSystemType>();
             var sabActive = system.AnyActive;
 
             if (flashedPlayers.Contains(PlayerControl.LocalPlayer))
@@ -71,58 +71,58 @@ namespace TownOfSushi.Roles
                     float fade = (TimeRemaining - CustomGameOptions.GrenadeDuration) * -2.0f;
                     if (ShouldPlayerBeBlinded(PlayerControl.LocalPlayer))
                     {
-                        ((Renderer)DestroyableSingleton<HudManager>.Instance.FullScreen).enabled = true;
-                        ((Renderer)DestroyableSingleton<HudManager>.Instance.FullScreen).gameObject.active = true;
-                        DestroyableSingleton<HudManager>.Instance.FullScreen.color = Color.Lerp(normalVision, blindVision, fade);
+                        ((Renderer)HUDManager().FullScreen).enabled = true;
+                        ((Renderer)HUDManager().FullScreen).gameObject.active = true;
+                        HUDManager().FullScreen.color = Color.Lerp(normalVision, blindVision, fade);
                     }
                     else if (ShouldPlayerBeDimmed(PlayerControl.LocalPlayer))
                     {
-                        ((Renderer)DestroyableSingleton<HudManager>.Instance.FullScreen).enabled = true;
-                        ((Renderer)DestroyableSingleton<HudManager>.Instance.FullScreen).gameObject.active = true;
-                        DestroyableSingleton<HudManager>.Instance.FullScreen.color = Color.Lerp(normalVision, dimVision, fade);
+                        ((Renderer)HUDManager().FullScreen).enabled = true;
+                        ((Renderer)HUDManager().FullScreen).gameObject.active = true;
+                        HUDManager().FullScreen.color = Color.Lerp(normalVision, dimVision, fade);
                         try
                         {
-                            if (PlayerControl.LocalPlayer.Data.IsImpostor() && MapBehaviour.Instance.infectedOverlay.sabSystem.Timer < 0.5f)
+                            if (PlayerControl.LocalPlayer.Data.IsImpostor() && MapInstance().infectedOverlay.sabSystem.Timer < 0.5f)
                             {
-                                MapBehaviour.Instance.infectedOverlay.sabSystem.Timer = 0.5f;
+                                MapInstance().infectedOverlay.sabSystem.Timer = 0.5f;
                             }
                         }
                         catch { }
                     }
                     else
                     {
-                        ((Renderer)DestroyableSingleton<HudManager>.Instance.FullScreen).enabled = true;
-                        ((Renderer)DestroyableSingleton<HudManager>.Instance.FullScreen).gameObject.active = true;
-                        DestroyableSingleton<HudManager>.Instance.FullScreen.color = normalVision;
+                        ((Renderer)HUDManager().FullScreen).enabled = true;
+                        ((Renderer)HUDManager().FullScreen).gameObject.active = true;
+                        HUDManager().FullScreen.color = normalVision;
                     }
                 }
                 else if (TimeRemaining <= (CustomGameOptions.GrenadeDuration - 0.5f) && TimeRemaining >= 0.5f && (!sabActive))
                 {
                     if (ShouldPlayerBeBlinded(PlayerControl.LocalPlayer))
                     {
-                        ((Renderer)DestroyableSingleton<HudManager>.Instance.FullScreen).enabled = true;
-                        ((Renderer)DestroyableSingleton<HudManager>.Instance.FullScreen).gameObject.active = true;
-                        DestroyableSingleton<HudManager>.Instance.FullScreen.color = blindVision;
+                        ((Renderer)HUDManager().FullScreen).enabled = true;
+                        ((Renderer)HUDManager().FullScreen).gameObject.active = true;
+                        HUDManager().FullScreen.color = blindVision;
                     }
                     else if (ShouldPlayerBeDimmed(PlayerControl.LocalPlayer))
                     {
-                        ((Renderer)DestroyableSingleton<HudManager>.Instance.FullScreen).enabled = true;
-                        ((Renderer)DestroyableSingleton<HudManager>.Instance.FullScreen).gameObject.active = true;
-                        DestroyableSingleton<HudManager>.Instance.FullScreen.color = dimVision;
+                        ((Renderer)HUDManager().FullScreen).enabled = true;
+                        ((Renderer)HUDManager().FullScreen).gameObject.active = true;
+                        HUDManager().FullScreen.color = dimVision;
                         try
                         {
-                            if (PlayerControl.LocalPlayer.Data.IsImpostor() && MapBehaviour.Instance.infectedOverlay.sabSystem.Timer < 0.5f)
+                            if (PlayerControl.LocalPlayer.Data.IsImpostor() && MapInstance().infectedOverlay.sabSystem.Timer < 0.5f)
                             {
-                                MapBehaviour.Instance.infectedOverlay.sabSystem.Timer = 0.5f;
+                                MapInstance().infectedOverlay.sabSystem.Timer = 0.5f;
                             }
                         }
                         catch { }
                     }
                     else
                     {
-                        ((Renderer)DestroyableSingleton<HudManager>.Instance.FullScreen).enabled = true;
-                        ((Renderer)DestroyableSingleton<HudManager>.Instance.FullScreen).gameObject.active = true;
-                        DestroyableSingleton<HudManager>.Instance.FullScreen.color = normalVision;
+                        ((Renderer)HUDManager().FullScreen).enabled = true;
+                        ((Renderer)HUDManager().FullScreen).gameObject.active = true;
+                        HUDManager().FullScreen.color = normalVision;
                     }
                 }
                 else if (TimeRemaining < 0.5f && (!sabActive))
@@ -130,28 +130,28 @@ namespace TownOfSushi.Roles
                     float fade2 = (TimeRemaining * -2.0f) + 1.0f;
                     if (ShouldPlayerBeBlinded(PlayerControl.LocalPlayer))
                     {
-                        ((Renderer)DestroyableSingleton<HudManager>.Instance.FullScreen).enabled = true;
-                        ((Renderer)DestroyableSingleton<HudManager>.Instance.FullScreen).gameObject.active = true;
-                        DestroyableSingleton<HudManager>.Instance.FullScreen.color = Color.Lerp(blindVision, normalVision, fade2);
+                        ((Renderer)HUDManager().FullScreen).enabled = true;
+                        ((Renderer)HUDManager().FullScreen).gameObject.active = true;
+                        HUDManager().FullScreen.color = Color.Lerp(blindVision, normalVision, fade2);
                     }
                     else if (ShouldPlayerBeDimmed(PlayerControl.LocalPlayer))
                     {
-                        ((Renderer)DestroyableSingleton<HudManager>.Instance.FullScreen).enabled = true;
-                        ((Renderer)DestroyableSingleton<HudManager>.Instance.FullScreen).gameObject.active = true;
-                        DestroyableSingleton<HudManager>.Instance.FullScreen.color = Color.Lerp(dimVision, normalVision, fade2);
+                        ((Renderer)HUDManager().FullScreen).enabled = true;
+                        ((Renderer)HUDManager().FullScreen).gameObject.active = true;
+                        HUDManager().FullScreen.color = Color.Lerp(dimVision, normalVision, fade2);
                     }
                     else
                     {
-                        ((Renderer)DestroyableSingleton<HudManager>.Instance.FullScreen).enabled = true;
-                        ((Renderer)DestroyableSingleton<HudManager>.Instance.FullScreen).gameObject.active = true;
-                        DestroyableSingleton<HudManager>.Instance.FullScreen.color = normalVision;
+                        ((Renderer)HUDManager().FullScreen).enabled = true;
+                        ((Renderer)HUDManager().FullScreen).gameObject.active = true;
+                        HUDManager().FullScreen.color = normalVision;
                     }
                 }
                 else
                 {
-                    ((Renderer)DestroyableSingleton<HudManager>.Instance.FullScreen).enabled = true;
-                    ((Renderer)DestroyableSingleton<HudManager>.Instance.FullScreen).gameObject.active = true;
-                    DestroyableSingleton<HudManager>.Instance.FullScreen.color = normalVision;
+                    ((Renderer)HUDManager().FullScreen).enabled = true;
+                    ((Renderer)HUDManager().FullScreen).gameObject.active = true;
+                    HUDManager().FullScreen.color = normalVision;
                     TimeRemaining = 0.0f;
                 }
             }
@@ -160,9 +160,9 @@ namespace TownOfSushi.Roles
             {
                 try
                 {
-                    if (PlayerControl.LocalPlayer.Data.IsImpostor() && MapBehaviour.Instance.infectedOverlay.sabSystem.Timer < 0.5f)
+                    if (PlayerControl.LocalPlayer.Data.IsImpostor() && MapInstance().infectedOverlay.sabSystem.Timer < 0.5f)
                     {
-                        MapBehaviour.Instance.infectedOverlay.sabSystem.Timer = 0.5f;
+                        MapInstance().infectedOverlay.sabSystem.Timer = 0.5f;
                     }
                 }
                 catch { }
@@ -170,19 +170,19 @@ namespace TownOfSushi.Roles
         }
 
         private static bool ShouldPlayerBeDimmed(PlayerControl player) {
-            return (player.Data.IsImpostor() || player.Data.IsDead) && !MeetingHud.Instance;
+            return (player.Data.IsImpostor() || player.Data.IsDead) && !Meeting();
         }
 
         private static bool ShouldPlayerBeBlinded(PlayerControl player) {
-            return !player.Data.IsImpostor() && !player.Data.IsDead && !MeetingHud.Instance;
+            return !player.Data.IsImpostor() && !player.Data.IsDead && !Meeting();
         }
 
         public void UnFlash()
         {
             Enabled = false;
             LastFlashed = DateTime.UtcNow;
-            ((Renderer)DestroyableSingleton<HudManager>.Instance.FullScreen).enabled = true;
-            DestroyableSingleton<HudManager>.Instance.FullScreen.color = normalVision;
+            ((Renderer)HUDManager().FullScreen).enabled = true;
+            HUDManager().FullScreen.color = normalVision;
             flashedPlayers.Clear();
         }
     }
@@ -230,7 +230,7 @@ namespace TownOfSushi.Roles
                     if (player != PlayerControl.LocalPlayer && !player.Data.IsImpostor()) {
                         var tempColour = player.nameText().color;
                         var data = player?.Data;
-                        if (data == null || data.Disconnected || data.IsDead || PlayerControl.LocalPlayer.Data.IsDead)
+                        if (data == null || data.Disconnected || data.IsDead || IsDead())
                             continue;
                         if (role.flashedPlayers.Contains(player)) {
                             player.myRend().material.SetColor("_VisorColor", Color.black);
@@ -245,7 +245,7 @@ namespace TownOfSushi.Roles
 
             role.FlashButton.graphic.sprite = FlashSprite;
             role.FlashButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
 
             if (role.Flashed)
@@ -256,7 +256,7 @@ namespace TownOfSushi.Roles
 
             role.FlashButton.SetCoolDown(role.FlashTimer(), CustomGameOptions.GrenadeCd);
 
-            var system = ShipStatus.Instance.Systems[SystemTypes.Sabotage].Cast<SabotageSystemType>();
+            var system = Ship().Systems[SystemTypes.Sabotage].Cast<SabotageSystemType>();
             var specials = system.specials.ToArray();
             var dummyActive = system.AnyActive;
             var sabActive = specials.Any(s => s.IsActive);
@@ -281,14 +281,14 @@ namespace TownOfSushi.Roles
             var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Grenadier);
             if (!flag) return true;
             if (!PlayerControl.LocalPlayer.CanMove) return false;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return false;
+            if (IsDead()) return false;
             var role = GetRole<Grenadier>(PlayerControl.LocalPlayer);
             if (__instance == role.FlashButton)
             {
                 if (__instance.isCoolingDown) return false;
                 if (!__instance.isActiveAndEnabled) return false;
                 if (role.Player.inVent) return false;
-                var system = ShipStatus.Instance.Systems[SystemTypes.Sabotage].Cast<SabotageSystemType>();
+                var system = Ship().Systems[SystemTypes.Sabotage].Cast<SabotageSystemType>();
                 var sabActive = system.AnyActive;
                 if (sabActive) return false;
                 if (role.FlashTimer() != 0) return false;

@@ -12,15 +12,16 @@ namespace TownOfSushi
 {
     [BepInPlugin(Id, "TownOfSushi", VersionString)]
     [BepInDependency(ReactorPlugin.Id)]
-    [BepInDependency(SubmergedCompatibility.SUBMERGED_GUID, BepInDependency.DependencyFlags.SoftDependency)]
+    [BepInDependency(SUBMERGED_GUID, BepInDependency.DependencyFlags.SoftDependency)]
     [ReactorModFlags(Reactor.Networking.ModFlags.RequireOnAllClients)]
     public class TownOfSushi : BasePlugin
     {
         public const string Id = "me.itsjesushx.townofsushi";
-        public const string VersionString = "2.2.0";
+        public const string VersionString = "2.5.0";
         public static Version Version = Version.Parse(VersionString);
         public static bool IsMCI => IL2CPPChainloader.Instance.Plugins.TryGetValue("dragonbreath.au.mci", out _);
         public static bool MCILoaded => IsMCI && AmongUsClient.Instance.NetworkMode == NetworkModes.LocalGame;
+        public static bool LevelImpLoaded => IL2CPPChainloader.Instance.Plugins.TryGetValue("com.DigiWorm.LevelImposter", out _);
         internal static BepInEx.Logging.ManualLogSource Logger;
         public Harmony Harmony { get; } = new Harmony(Id);
         public static int optionsPage = 2;
@@ -34,6 +35,7 @@ namespace TownOfSushi
         public static Sprite SeerSprite;
         public static Sprite SampleSprite;
         public static Sprite MorphSprite;
+        public static Sprite VanillaEngiButton;
         public static Sprite Arrow;
         public static Sprite MineSprite;
         public static Sprite SwoopSprite;
@@ -95,13 +97,15 @@ namespace TownOfSushi
         public static ConfigEntry<bool> DeadSeeGhosts { get; set; }
         public static ConfigEntry<bool> DeadSeeRoles { get; set; }
         public static ConfigEntry<bool> DeadSeeTasks { get; set; }
+        public static ConfigEntry<bool> DisableLevels { get; set; }
+        public static ConfigEntry<bool> DisableNameplates { get; set; }
         public static ConfigEntry<bool> ShowTasks { get; set; }
         public static ConfigEntry<bool> DeadSeeVotes { get; set; }
         public static ConfigEntry<bool> DisableLobbyMusic { get; set; }
         public static string RuntimeLocation;
         public override void Load()
         {
-            RuntimeLocation = Path.GetDirectoryName(Assembly.GetAssembly(typeof(TownOfSushi)).Location);
+            RuntimeLocation = Path.GetDirectoryName(System.Reflection.Assembly.GetAssembly(typeof(TownOfSushi)).Location);
             //ReactorCredits.Register<TownOfSushi>(ReactorCredits.AlwaysShow);
             System.Console.WriteLine("000.000.000.000/000000000000000000");
             Logger = Log;
@@ -138,6 +142,7 @@ namespace TownOfSushi
             PlantSprite = CreateSprite("TownOfSushi.Resources.Plant.png");
             VultureEat = CreateSprite("TownOfSushi.Resources.Vulture.png");
             DetonateSprite = CreateSprite("TownOfSushi.Resources.Detonate.png");
+            VanillaEngiButton = CreateSprite("TownOfSushi.Resources.EngineerVent.png");
             MediateSprite = CreateSprite("TownOfSushi.Resources.Mediate.png");
             RomanticPick = CreateSprite("TownOfSushi.Resources.Romantic.png");
             ProtectSprite = CreateSprite("TownOfSushi.Resources.Protect.png");
@@ -178,7 +183,7 @@ namespace TownOfSushi
             CustomHatManager.LoadHats();
             ClassInjector.RegisterTypeInIl2Cpp<ColorBehaviour>();
             Harmony.PatchAll();
-            SubmergedCompatibility.Initialize();
+            Initialize();
             ServerManager.DefaultRegions = new Il2CppReferenceArray<IRegionInfo>(new IRegionInfo[0]);
             
             DeadSeeGhosts = Config.Bind("Settings", "Dead See Other Ghosts", true, "Whether you see other dead player's ghosts while your dead");
@@ -187,12 +192,14 @@ namespace TownOfSushi
             ShowTasks = Config.Bind("Settings", "See Tasks", true, "Whether you see  your own tasks while you are alive");
             DeadSeeVotes = Config.Bind("Settings", "Dead See Votes", true, "Whether you see other player's vote while your dead");
             DisableLobbyMusic = Config.Bind("Settings", "Disable Lobby Music", true, "Whether you hear the lobby music");
+            DisableLevels = Config.Bind("Settings", "Disable Levels", true, "Whether you see the levels");
+            DisableNameplates = Config.Bind("Settings", "Disable Nameplates", true, "Whether you see the nameplates");
         }
 
         public static Sprite CreateSprite(string name, float pixelsPerUnit = 100f)
         {
             var pivot = new Vector2(0.5f, 0.5f);
-            var assembly = Assembly.GetExecutingAssembly();
+            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
             var tex = AmongUsExtensions.CreateEmptyTexture();
             var imageStream = assembly.GetManifestResourceStream(name);
             var img = imageStream.ReadFully();

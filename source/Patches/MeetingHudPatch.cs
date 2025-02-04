@@ -32,7 +32,7 @@ namespace TownOfSushi.Patches
 
         static void PopulateButtonsPostfix(MeetingHud __instance) 
         {
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Vigilante) && !PlayerControl.LocalPlayer.IsJailed() && !PlayerControl.LocalPlayer.Data.IsDead  && PlayerControl.LocalPlayer != StartImitate.ImitatingPlayer && GetRole<Vigilante>(PlayerControl.LocalPlayer).RemainingKills > 0)
+            if (PlayerControl.LocalPlayer.Is(RoleEnum.Vigilante) && !PlayerControl.LocalPlayer.IsJailed() && !IsDead()  && PlayerControl.LocalPlayer != StartImitate.ImitatingPlayer && GetRole<Vigilante>(PlayerControl.LocalPlayer).RemainingKills > 0)
             {
                 for (int i = 0; i < __instance.playerStates.Length; i++)
                 {
@@ -52,7 +52,7 @@ namespace TownOfSushi.Patches
                 }
             }
 
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Doomsayer) && !PlayerControl.LocalPlayer.IsJailed() && !PlayerControl.LocalPlayer.Data.IsDead)
+            if (PlayerControl.LocalPlayer.Is(RoleEnum.Doomsayer) && !PlayerControl.LocalPlayer.IsJailed() && !IsDead())
             {
                 for (int i = 0; i < __instance.playerStates.Length; i++)
                 {
@@ -72,7 +72,7 @@ namespace TownOfSushi.Patches
                 }
             }
 
-            if (PlayerControl.LocalPlayer.Is(AbilityEnum.Assassin) && !PlayerControl.LocalPlayer.IsJailed() && !PlayerControl.LocalPlayer.Data.IsDead && GetAbility<Assassin>(PlayerControl.LocalPlayer).RemainingKills > 0)
+            if (PlayerControl.LocalPlayer.Is(AbilityEnum.Assassin) && !PlayerControl.LocalPlayer.IsJailed() && !IsDead() && GetAbility<Assassin>(PlayerControl.LocalPlayer).RemainingKills > 0)
             {
                 for (int i = 0; i < __instance.playerStates.Length; i++)
                 {
@@ -129,7 +129,7 @@ namespace TownOfSushi.Patches
             if (host != null)
             {
                 PlayerMaterial.SetColors(host.DefaultOutfit.ColorId, __instance.HostIcon);
-                __instance.ProceedButton.gameObject.GetComponentInChildren<TextMeshPro>().text = $"host: {host.PlayerName}";
+                __instance.ProceedButton.gameObject.GetComponentInChildren<TextMeshPro>().text = $"Lobby Host: {host.PlayerName}";
             }
         }
 
@@ -148,4 +148,21 @@ namespace TownOfSushi.Patches
             __instance.ProceedButton.gameObject.SetActive(true);
         }
     }
+
+    [HarmonyPatch(typeof(PlayerVoteArea), nameof(PlayerVoteArea.SetCosmetics))]
+        public static class PlayerStates
+        {
+            public static void Postfix(PlayerVoteArea __instance)
+            {
+                // Disable levels & Nameplates if needed
+                if (TownOfSushi.DisableNameplates.Value)
+                     __instance.Background.sprite = Ship().CosmeticsCache.GetNameplate("nameplate_NoPlate").Image;
+
+                if (TownOfSushi.DisableLevels.Value)
+                {
+                    __instance.LevelNumberText.GetComponentInParent<SpriteRenderer>().enabled = false;
+                    __instance.LevelNumberText.GetComponentInParent<SpriteRenderer>().gameObject.SetActive(false);
+                }
+            }
+        }
 }

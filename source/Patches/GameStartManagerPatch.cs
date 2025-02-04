@@ -143,7 +143,8 @@ namespace TownOfSushi.Patches
                             startingTimer = 0;
                         }
                         startButtonPassiveButton.OnClick.AddListener((Action)(() => StopStartFunc()));
-                        __instance.StartCoroutine(Effects.Lerp(.1f, new System.Action<float>((p) => {
+                        __instance.StartCoroutine(Effects.Lerp(.1f, new System.Action<float>((p) => 
+                        {
                             startButtonText.text = "";
                         })));
                         
@@ -280,7 +281,7 @@ namespace TownOfSushi.Patches
 
             public bool GuidMatches() 
             {
-                return Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.Equals(this.guid);
+                return System.Reflection.Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.Equals(this.guid);
             }
         }
     }

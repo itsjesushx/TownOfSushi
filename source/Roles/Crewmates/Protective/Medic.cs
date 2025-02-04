@@ -13,7 +13,7 @@ namespace TownOfSushi.Roles
             TaskText = () => "Protect a crewmate with a shield";
             RoleInfo = $"As the Medic, you can protect a crewmate with a shield to prevent them from being killed by the impostor. The shield lasts for the whole game. The shield {CanBreak}. When the player has a kill attempt, the Medic gets a flash indicating it. \n - Note: Having a shield does not mean the player is good";
             LoreText = "A skilled protector, you specialize in keeping your fellow Crewmates safe. As the Medic, you can create shields to protect others from harm, ensuring that the most vulnerable stay safe from the deadly hands of the Impostors. Your quick thinking and ability to safeguard others make you a vital part of the crew's survival.";
-            Color = Colors.Medic;
+            Color = ColorManager.Medic;
             StartingCooldown = DateTime.UtcNow;
             RoleType = RoleEnum.Medic;
             Faction = Faction.Crewmates;
@@ -60,6 +60,8 @@ namespace TownOfSushi.Roles
             LightDarkColors.Add(37, "lighter"); // Ice
             LightDarkColors.Add(38, "lighter"); // Sunrise
             LightDarkColors.Add(39, "lighter"); // Peach
+            LightDarkColors.Add(40, "lighter"); // Fire
+            LightDarkColors.Add(41, "lighter"); // Water
         }
         public float StartTimer()
         {
@@ -162,6 +164,8 @@ namespace TownOfSushi.Roles
                 {37, "lighter"},// Ice
                 {38, "lighter"},// Sunrise
                 {39, "lighter"},// Peach
+                {40, "lighter"},// Fire
+                {41, "lighter"},// Water
             };
             var typeOfColor = colors[br.Killer.GetDefaultOutfit().ColorId];
             return
@@ -255,7 +259,7 @@ namespace TownOfSushi.Roles
             var role = GetRole<Medic>(PlayerControl.LocalPlayer);
 
             protectButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
             protectButton.SetCoolDown(role.StartTimer(), 10f);
             if (role.UsedAbility) return;
@@ -268,12 +272,12 @@ namespace TownOfSushi.Roles
     {
         public static bool Prefix(KillButton __instance)
         {
-            if (__instance != DestroyableSingleton<HudManager>.Instance.KillButton) return true;
+            if (__instance != HUDManager().KillButton) return true;
             var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Medic);
             if (!flag) return true;
             var role = GetRole<Medic>(PlayerControl.LocalPlayer);
             if (!PlayerControl.LocalPlayer.CanMove) return false;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return false;
+            if (IsDead()) return false;
             if (!__instance.enabled) return false;
             if (role.UsedAbility || role.ClosestPlayer == null) return false;
             if (role.StartTimer() > 0) return false;
@@ -335,9 +339,9 @@ namespace TownOfSushi.Roles
 
             //System.Console.WriteLine("SEFENFTH");
 
-            if (DestroyableSingleton<HudManager>.Instance)
+            if (HUDManager())
                 // Send the message through chat only visible to the medic
-                DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, reportMsg);
+                HUDManager().Chat.AddChat(PlayerControl.LocalPlayer, reportMsg);
         }
     }
 
@@ -405,7 +409,7 @@ namespace TownOfSushi.Roles
             }
             if (CustomGameOptions.MedicReportColorDuration == 0) return;
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Medic)) return;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return;
+            if (IsDead()) return;
             var medicrole = GetRole<Medic>(PlayerControl.LocalPlayer);
             foreach (var voteArea in __instance.playerStates)
             {

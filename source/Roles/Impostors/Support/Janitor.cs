@@ -12,7 +12,7 @@ namespace TownOfSushi.Roles
             TaskText = () => "Clean bodies";
             RoleInfo = "The Janitor is an Impostor that can clean up bodies. Both their Kill and Clean ability have a shared cooldown, meaning they have to choose which one they want to use.";
             LoreText = "A stealthy cleaner, you specialize in erasing the signs of death. As the Janitor, you can clean up bodies, preventing Crewmates from discovering the remains and uncovering the truth. Your ability to hide the evidence of your kills allows you to maintain secrecy and further sow confusion, making it harder for the crew to piece together the mystery of who’s behind the attacks.";
-            Color = Colors.Impostor;
+            Color = ColorManager.Impostor;
             RoleType = RoleEnum.Janitor;
             Faction = Faction.Impostors;
             AddToRoleHistory(RoleType);
@@ -38,8 +38,8 @@ namespace TownOfSushi.Roles
 
         public static IEnumerator CleanCoroutine(DeadBody body, Janitor role)
         {
-            JanitorKillButtonTarget.SetTarget(DestroyableSingleton<HudManager>.Instance.KillButton, null, role);
-            role.Player.SetKillTimer(GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown);
+            JanitorKillButtonTarget.SetTarget(HUDManager().KillButton, null, role);
+            role.Player.SetKillTimer(VanillaOptions().currentNormalGameOptions.KillCooldown);
             SpriteRenderer renderer = null;
             foreach (var body2 in body.bodyRenderers) renderer = body2;
             var backColor = renderer.material.GetColor(BackColor);
@@ -63,7 +63,7 @@ namespace TownOfSushi.Roles
         public static bool Prefix(KillButton __instance)
         {
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Janitor)) return true;
-            return __instance == DestroyableSingleton<HudManager>.Instance.KillButton;
+            return __instance == HUDManager().KillButton;
         }
 
         public static void SetTarget(KillButton __instance, DeadBody target, Janitor role)
@@ -98,7 +98,7 @@ namespace TownOfSushi.Roles
             var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Janitor);
             if (!flag) return true;
             if (!PlayerControl.LocalPlayer.CanMove) return false;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return false;
+            if (IsDead()) return false;
             var role = GetRole<Janitor>(PlayerControl.LocalPlayer);
 
             if (__instance == role.CleanButton)
@@ -146,7 +146,7 @@ namespace TownOfSushi.Roles
             }
 
             role.CleanButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
             role.CleanButton.graphic.sprite = TownOfSushi.JanitorClean;
 
@@ -155,7 +155,7 @@ namespace TownOfSushi.Roles
             var isDead = data.IsDead;
             var truePosition = PlayerControl.LocalPlayer.GetTruePosition();
             var maxDistance = KillDistance();
-            var flag = (GameOptionsManager.Instance.currentNormalGameOptions.GhostsDoTasks || !data.IsDead) &&
+            var flag = (VanillaOptions().currentNormalGameOptions.GhostsDoTasks || !data.IsDead) &&
                        (!AmongUsClient.Instance || !AmongUsClient.Instance.IsGameOver) &&
                        PlayerControl.LocalPlayer.CanMove;
             var allocs = Physics2D.OverlapCircleAll(truePosition, maxDistance,
@@ -178,7 +178,7 @@ namespace TownOfSushi.Roles
             }
 
             JanitorKillButtonTarget.SetTarget(killButton, closestBody, role);
-            role.CleanButton.SetCoolDown(PlayerControl.LocalPlayer.killTimer, GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown);
+            role.CleanButton.SetCoolDown(PlayerControl.LocalPlayer.killTimer, VanillaOptions().currentNormalGameOptions.KillCooldown);
         }
     }
 }

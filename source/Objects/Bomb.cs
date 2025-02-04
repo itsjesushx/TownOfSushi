@@ -20,8 +20,8 @@ namespace TownOfSushi.Objects
         {
             var BombPref = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             BombPref.name = "Bomb";
-            BombPref.transform.localScale = new Vector3(CustomGameOptions.DetonateRadius * ShipStatus.Instance.MaxLightRadius * 2f, 
-                CustomGameOptions.DetonateRadius * ShipStatus.Instance.MaxLightRadius * 2f, CustomGameOptions.DetonateRadius * ShipStatus.Instance.MaxLightRadius * 2f);
+            BombPref.transform.localScale = new Vector3(CustomGameOptions.DetonateRadius * Ship().MaxLightRadius * 2f, 
+                CustomGameOptions.DetonateRadius * Ship().MaxLightRadius * 2f, CustomGameOptions.DetonateRadius * Ship().MaxLightRadius * 2f);
             GameObject.Destroy(BombPref.GetComponent<SphereCollider>());
             BombPref.GetComponent<MeshRenderer>().material = Bomber.bombMaterial;
             BombPref.transform.position = location;

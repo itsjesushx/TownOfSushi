@@ -20,7 +20,7 @@ namespace TownOfSushi.Roles
             TaskText = () => "Track suspicious players";
             RoleInfo = $"The Tracker is able to track the movements of other players. The Arrow's color will be the tracked players color. The arrow will update the position of the player every {CustomGameOptions.UpdateInterval} seconds. The Tracker can track {CustomGameOptions.MaxTracks} {playerOrPlayers} every {CustomGameOptions.TrackCd} seconds. The Arrows will {ResetOnNewRound} after each meeting.";
             LoreText = "A master observer, you specialize in monitoring the movements of your crewmates. As the Tracker, you can follow suspicious players, uncovering patterns and identifying potential threats. Your vigilance and attention to detail are vital to exposing the Impostors lurking in the shadows.";
-            Color = Colors.Tracker;
+            Color = ColorManager.Tracker;
             LastTracked = DateTime.UtcNow;
             RoleType = RoleEnum.Tracker;
             Faction = Faction.Crewmates;
@@ -93,10 +93,10 @@ namespace TownOfSushi.Roles
                 role.UsesText.text = role.MaxUses + "";
             }
             trackButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
             role.UsesText.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
             if (role.ButtonUsable) trackButton.SetCoolDown(role.TrackerTimer(), CustomGameOptions.TrackCd);
             else trackButton.SetCoolDown(0f, CustomGameOptions.TrackCd);
@@ -133,7 +133,7 @@ namespace TownOfSushi.Roles
         public static Sprite Sprite => TownOfSushi.Arrow;
         public static bool Prefix(KillButton __instance)
         {
-            if (__instance != DestroyableSingleton<HudManager>.Instance.KillButton) return true;
+            if (__instance != HUDManager().KillButton) return true;
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Tracker)) return true;
             var role = GetRole<Tracker>(PlayerControl.LocalPlayer);
             if (!PlayerControl.LocalPlayer.CanMove || role.ClosestPlayer == null) return false;
@@ -162,9 +162,16 @@ namespace TownOfSushi.Roles
                     
                     else if (ColorUtils.IsMonochrome(target.GetDefaultOutfit().ColorId))
                         renderer.color = ColorUtils.Monochrome;
+                    
+                    else if (ColorUtils.IsFire(target.GetDefaultOutfit().ColorId))
+                        renderer.color = ColorUtils.Fire;
                         
                     else if (ColorUtils.IsGalaxy(target.GetDefaultOutfit().ColorId))
                         renderer.color = ColorUtils.Galaxy;
+                    
+                    else if (ColorUtils.IsWater(target.GetDefaultOutfit().ColorId))
+                        renderer.color = ColorUtils.Water;
+    
                     else
                     {
                         renderer.color = Palette.PlayerColors[target.GetDefaultOutfit().ColorId];
@@ -210,7 +217,7 @@ namespace TownOfSushi.Roles
 
             var role = GetRole<Tracker>(PlayerControl.LocalPlayer);
 
-            if (PlayerControl.LocalPlayer.Data.IsDead)
+            if (IsDead())
             {
                 role.TrackerArrows.Values.DestroyAll();
                 role.TrackerArrows.Clear();
@@ -233,9 +240,15 @@ namespace TownOfSushi.Roles
                     
                     else if (ColorUtils.IsMonochrome(player.GetDefaultOutfit().ColorId))
                         arrow.Value.image.color = ColorUtils.Monochrome;
+                    
+                    else if (ColorUtils.IsFire(player.GetDefaultOutfit().ColorId))
+                        arrow.Value.image.color = ColorUtils.Fire;
 
                     else if (ColorUtils.IsGalaxy(player.GetDefaultOutfit().ColorId))
                         arrow.Value.image.color = ColorUtils.Galaxy;
+
+                    else if (ColorUtils.IsWater(player.GetDefaultOutfit().ColorId))
+                        arrow.Value.image.color = ColorUtils.Water;
                         
                     else if (CamoedLastTick)
                     {

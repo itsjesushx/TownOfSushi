@@ -95,29 +95,14 @@ namespace TownOfSushi.Roles
 
         public void ReDoTaskText()
         {
-            bool createTask;
             var ability = GetAbility(Player);
-            try
-            {
-                var firstText = Player.myTasks.ToArray()[0].Cast<ImportantTextTask>();
-                createTask = !firstText.Text.Contains("Ability:");
-            }
-            catch (InvalidCastException)
-            {
-                createTask = true;
-            }
-
-            if (createTask)
-            {
-                var task = new GameObject(ability.Name + "Task").AddComponent<ImportantTextTask>();
-                task.transform.SetParent(Player.transform, false);
-                task.Text = $"{ability.ColorString}Ability: {ability.Name}\n{ability.TaskText()}</color>";
-                Player.myTasks.Insert(0, task);
-
-                return;
-            }
-            Player.myTasks.ToArray()[0].Cast<ImportantTextTask>().Text =
-                $"{ability.ColorString}Ability: {ability.Name}\n{ability.TaskText()}</color>";
+            var task = new GameObject(ability.Name + "Task").AddComponent<ImportantTextTask>();
+            
+            task.transform.SetParent(Player.transform, false);
+            task.Text = $"{ability.ColorString}Ability: {ability.Name}\n{ability.TaskText()}</color>";
+            Player.myTasks.Insert(0, task);
+            Player.myTasks.ToArray()[5].Cast<ImportantTextTask>().Text =
+            $"{ability.ColorString}Ability: {ability.Name}\n{ability.TaskText()}</color>";
         }
 
         public static Ability GetAbilityValue(AbilityEnum abilityEnum)

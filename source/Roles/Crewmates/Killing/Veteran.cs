@@ -15,7 +15,7 @@ namespace TownOfSushi.Roles
             TaskText = () => "Alert to kill whoever interacts with you";
             RoleInfo = "The Veteran is able to alert, Alerting makes the Veteran Unkillable and will kill anyone who interacts with them except for the Pestilence. The Veteran dies if a Pestilence attempts to murder them even if they are on alert. The Veteran can alert a maximum of " + CustomGameOptions.MaxAlerts + " times.";
             LoreText = "A seasoned and battle-hardened defender, you are always on high alert. As the Veteran, you can trigger an alert to eliminate anyone who dares to interact with you. Your instincts are sharp, and your experience makes you a dangerous force—keeping the killers at bay with deadly precision.";
-            Color = Colors.Veteran;
+            Color = ColorManager.Veteran;
             LastAlerted = DateTime.UtcNow;
             Faction = Faction.Crewmates;
 
@@ -75,10 +75,10 @@ namespace TownOfSushi.Roles
             var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Veteran);
             if (!flag) return true;
             if (!PlayerControl.LocalPlayer.CanMove) return false;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return false;
+            if (IsDead()) return false;
             var role = GetRole<Veteran>(PlayerControl.LocalPlayer);
             if (!role.ButtonUsable) return false;
-            var alertButton = DestroyableSingleton<HudManager>.Instance.KillButton;
+            var alertButton = HUDManager().KillButton;
             if (__instance == alertButton)
             {
                 if (__instance.isCoolingDown) return false;
@@ -134,10 +134,10 @@ namespace TownOfSushi.Roles
             }
 
             alertButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
             role.UsesText.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
             if (role.OnAlert) alertButton.SetCoolDown(role.TimeRemaining, CustomGameOptions.AlertDuration);
             else if (role.ButtonUsable) alertButton.SetCoolDown(role.AlertTimer(), CustomGameOptions.AlertCd);
@@ -174,7 +174,7 @@ namespace TownOfSushi.Roles
 
             var data = __instance.Data;
             var stuff = Physics2D.OverlapCircleAll(truePosition, __instance.MaxReportDistance, Constants.Usables);
-            var flag = (GameOptionsManager.Instance.currentNormalGameOptions.GhostsDoTasks || !data.IsDead) &&
+            var flag = (VanillaOptions().currentNormalGameOptions.GhostsDoTasks || !data.IsDead) &&
                        (!AmongUsClient.Instance || !AmongUsClient.Instance.IsGameOver) && __instance.CanMove;
             var flag2 = false;
 
@@ -192,7 +192,7 @@ namespace TownOfSushi.Roles
                     }
                 }
 
-            DestroyableSingleton<HudManager>.Instance.ReportButton.SetActive(flag2);
+            HUDManager().ReportButton.SetActive(flag2);
         }
     }
 
@@ -205,7 +205,7 @@ namespace TownOfSushi.Roles
             if (CustomGameOptions.VeteranBodyReport) return true;
 
             if (AmongUsClient.Instance.IsGameOver) return false;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return false;
+            if (IsDead()) return false;
             foreach (var collider2D in Physics2D.OverlapCircleAll(__instance.GetTruePosition(),
                 __instance.MaxReportDistance, Constants.PlayersOnlyMask))
                 if (!(collider2D.tag != "DeadBody"))

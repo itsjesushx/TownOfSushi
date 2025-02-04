@@ -6,7 +6,7 @@ namespace TownOfSushi.Roles.Abilities
         {
             Name = "Flash";
             TaskText = () => "You are faster than others";
-            Color = Colors.Flash;
+            Color = ColorManager.Flash;
             AbilityType = AbilityEnum.Flash;
         }
         public bool TryGetModifiedAppearance(out VisualAppearance appearance)

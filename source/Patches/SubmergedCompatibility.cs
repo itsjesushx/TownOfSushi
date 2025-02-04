@@ -10,9 +10,9 @@ namespace TownOfSushi.Patches
     {
         public static void Postfix(IntroCutscene._ShowRole_d__41 __instance)
         {
-            if (SubmergedCompatibility.isSubmerged())
+            if (IsSubmerged())
             {
-                Coroutines.Start(SubmergedCompatibility.WaitMeeting(SubmergedCompatibility.resetTimers));
+                Coroutines.Start(WaitMeeting(resetTimers));
             }
         }
     }
@@ -43,15 +43,15 @@ namespace TownOfSushi.Patches
 
                 if (_submarineStatus is null || _submarineStatus.WasCollected || !_submarineStatus || _submarineStatus == null)
                 {
-                    if (ShipStatus.Instance is null || ShipStatus.Instance.WasCollected || !ShipStatus.Instance || ShipStatus.Instance == null)
+                    if (Ship() is null || Ship().WasCollected || !Ship() || Ship() == null)
                     {
                         return _submarineStatus = null;
                     }
                     else
                     {
-                        if (ShipStatus.Instance.Type == SUBMERGED_MAP_TYPE)
+                        if (Ship().Type == SUBMERGED_MAP_TYPE)
                         {
-                            return _submarineStatus = ShipStatus.Instance.GetComponent(Il2CppType.From(SubmarineStatusType))?.TryCast(SubmarineStatusType) as MonoBehaviour;
+                            return _submarineStatus = Ship().GetComponent(Il2CppType.From(SubmarineStatusType))?.TryCast(SubmarineStatusType) as MonoBehaviour;
                         }
                         else
                         {
@@ -156,7 +156,7 @@ namespace TownOfSushi.Patches
         public static void CheckOutOfBoundsElevator(PlayerControl player)
         {
             if (!Loaded) return;
-            if (!isSubmerged()) return;
+            if (!IsSubmerged()) return;
 
             Tuple<bool, object> elevator = GetPlayerElevator(player);
             if (!elevator.Item1) return;
@@ -171,7 +171,7 @@ namespace TownOfSushi.Patches
 
         public static void MoveDeadPlayerElevator(PlayerControl player)
         {
-            if (!isSubmerged()) return;
+            if (!IsSubmerged()) return;
             Tuple<bool, object> elevator = GetPlayerElevator(player);
             if (!elevator.Item1) return;
 
@@ -190,8 +190,8 @@ namespace TownOfSushi.Patches
 
         public static Tuple<bool, object> GetPlayerElevator(PlayerControl player)
         {
-            if (!isSubmerged()) return Tuple.Create(false, (object)null);
-            IList elevatorlist = Utils.createList(SubmarineElevator);
+            if (!IsSubmerged()) return Tuple.Create(false, (object)null);
+            IList elevatorlist = createList(SubmarineElevator);
             elevatorlist = (IList)SubmergedElevators.GetValue(SubmergedInstance.GetValue(null));
             foreach (object elevator in elevatorlist)
             {
@@ -213,7 +213,7 @@ namespace TownOfSushi.Patches
                 yield return null;
             }
             yield return new WaitForSeconds(0.5f);
-            while (DestroyableSingleton<HudManager>.Instance.PlayerCam.transform.Find("SpawnInMinigame(Clone)") != null)
+            while (HUDManager().PlayerCam.transform.Find("SpawnInMinigame(Clone)") != null)
             {
                 yield return null;
             }       
@@ -257,7 +257,7 @@ namespace TownOfSushi.Patches
             if (!Loaded) return;
             try
             {
-                ShipStatus.Instance.RpcUpdateSystem((SystemTypes)130, 64);
+                Ship().RpcUpdateSystem((SystemTypes)130, 64);
                 RepairDamageMethod.Invoke(SubmarineOxygenSystemInstanceField.GetValue(null), new object[] { PlayerControl.LocalPlayer, 64 });
             }
             catch (System.NullReferenceException)
@@ -267,10 +267,7 @@ namespace TownOfSushi.Patches
 
         }
 
-        public static bool isSubmerged()
-        {
-            return Loaded && ShipStatus.Instance && ShipStatus.Instance.Type == SUBMERGED_MAP_TYPE;
-        }
+        public static bool IsSubmerged() => Loaded && Ship() && Ship().Type == SUBMERGED_MAP_TYPE;
     }
 
     public class MissingSubmergedBehaviour : MonoBehaviour

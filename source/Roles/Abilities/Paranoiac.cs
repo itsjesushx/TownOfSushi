@@ -8,7 +8,7 @@ namespace TownOfSushi.Roles.Abilities
         {
             Name = "Paranoiac";
             TaskText = () => "Be always on high alert";
-            Color = Colors.Paranoiac;
+            Color = ColorManager.Paranoiac;
             AbilityType = AbilityEnum.Paranoiac;
         }
     }

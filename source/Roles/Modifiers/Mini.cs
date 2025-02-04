@@ -6,7 +6,7 @@ namespace TownOfSushi.Roles.Modifiers
         {
             Name = "Mini";
             TaskText = () => "You are tiny";
-            Color = Colors.Mini;
+            Color = ColorManager.Mini;
             ModifierType = ModifierEnum.Mini;
         }
 

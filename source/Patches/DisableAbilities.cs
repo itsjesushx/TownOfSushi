@@ -70,7 +70,7 @@ namespace TownOfSushi.Patches
                         var morph = GetRole<Hitman>(PlayerControl.LocalPlayer);
                         if (morph.IsUsingMorph) disableExtra = false;
                         if (!morph.CurrentlyDragging)
-                            HitmanKillButtonTarget.SetTarget(HudManager.Instance.KillButton, null, morph);
+                            HitmanKillButtonTarget.SetTarget(HUDManager().KillButton, null, morph);
                     }
                     else if (PlayerControl.LocalPlayer.Is(RoleEnum.Glitch))
                     {
@@ -83,19 +83,19 @@ namespace TownOfSushi.Patches
                         if (ww.Stabbing) disableExtra = false;
                     }
 
-                    if (HudManager.Instance.KillButton != null && disableKill)
+                    if (HUDManager().KillButton != null && disableKill)
                     {
-                        HudManager.Instance.KillButton.enabled = false;
-                        HudManager.Instance.KillButton.graphic.color = Palette.DisabledClear;
-                        HudManager.Instance.KillButton.graphic.material.SetFloat("_Desat", 1f);
+                        HUDManager().KillButton.enabled = false;
+                        HUDManager().KillButton.graphic.color = Palette.DisabledClear;
+                        HUDManager().KillButton.graphic.material.SetFloat("_Desat", 1f);
                     }
-                    if (PlayerControl.LocalPlayer.Is(RoleEnum.Janitor)) JanitorKillButtonTarget.SetTarget(HudManager.Instance.KillButton, null, GetRole<Janitor>(PlayerControl.LocalPlayer));
-                    else if (PlayerControl.LocalPlayer.Is(RoleEnum.Vulture)) VultureKillButtonTarget.SetTarget(HudManager.Instance.KillButton, null, GetRole<Vulture>(PlayerControl.LocalPlayer));
+                    if (PlayerControl.LocalPlayer.Is(RoleEnum.Janitor)) JanitorKillButtonTarget.SetTarget(HUDManager().KillButton, null, GetRole<Janitor>(PlayerControl.LocalPlayer));
+                    else if (PlayerControl.LocalPlayer.Is(RoleEnum.Vulture)) VultureKillButtonTarget.SetTarget(HUDManager().KillButton, null, GetRole<Vulture>(PlayerControl.LocalPlayer));
                     else if (PlayerControl.LocalPlayer.Is(RoleEnum.Undertaker))
                     {
                         var undertaker = GetRole<Undertaker>(PlayerControl.LocalPlayer);
                         if (!undertaker.CurrentlyDragging)
-                            UndertakerKillButtonTarget.SetTarget(HudManager.Instance.KillButton, null, undertaker);
+                            UndertakerKillButtonTarget.SetTarget(HUDManager().KillButton, null, undertaker);
                     }
                     else if (PlayerControl.LocalPlayer.Is(RoleEnum.Engineer))
                     {
@@ -183,9 +183,9 @@ namespace TownOfSushi.Patches
                     }
 
                     var disableTimer = (DateTime.UtcNow - tickDictionary[PlayerControl.LocalPlayer.PlayerId]).TotalMilliseconds/1000;
-                    if (MeetingHud.Instance || disableTimer > duration || PlayerControl.LocalPlayer?.Data.IsDead != false || AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started)
+                    if (Meeting() || disableTimer > duration || PlayerControl.LocalPlayer?.Data.IsDead != false || AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started)
                     {
-                        HudManager.Instance.KillButton.enabled = true;
+                        HUDManager().KillButton.enabled = true;
                         if (role?.ExtraButtons.Count > 0) role.ExtraButtons[0].enabled = true;
                         if (PlayerControl.LocalPlayer.Is(RoleEnum.Glitch))
                         {

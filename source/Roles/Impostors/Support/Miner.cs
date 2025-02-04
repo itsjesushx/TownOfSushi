@@ -15,7 +15,7 @@ namespace TownOfSushi.Roles
             TaskText = () => "Place vents";
             RoleInfo = "The Miner is an Impostor that can create new vents. These vents only connect to each other, forming a new passway.";
             LoreText = "A skilled worker underground, you have the power to shape the map itself. As the Miner, you can place vents around the map, giving you and your allies new pathways for movement. Your ability to alter the landscape allows you to sneak around unnoticed, setting traps or escaping danger while the Crewmates remain unaware of the new routes you've created beneath their feet.";
-            Color = Colors.Impostor;
+            Color = ColorManager.Impostor;
             LastMined = DateTime.UtcNow;
             RoleType = RoleEnum.Miner;  
             Faction = Faction.Impostors;
@@ -70,7 +70,7 @@ namespace TownOfSushi.Roles
 
             role.MineButton.graphic.sprite = MineSprite;
             role.MineButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
 
             role.MineButton.SetCoolDown(role.MineTimer(), CustomGameOptions.MineCd);
@@ -101,7 +101,7 @@ namespace TownOfSushi.Roles
             var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Miner);
             if (!flag) return true;
             if (!PlayerControl.LocalPlayer.CanMove) return false;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return false;
+            if (IsDead()) return false;
             var role = GetRole<Miner>(PlayerControl.LocalPlayer);
             if (__instance == role.MineButton)
             {
@@ -109,7 +109,7 @@ namespace TownOfSushi.Roles
                 if (!__instance.isActiveAndEnabled) return false;
                 if (!role.CanPlace) return false;
                 if (role.MineTimer() != 0) return false;
-                if (SubmergedCompatibility.GetPlayerElevator(PlayerControl.LocalPlayer).Item1) return false;
+                if (GetPlayerElevator(PlayerControl.LocalPlayer).Item1) return false;
                 var abilityUsed = AbilityUsed(PlayerControl.LocalPlayer);
                 if (!abilityUsed) return false;
                 var position = PlayerControl.LocalPlayer.transform.position;
@@ -144,17 +144,17 @@ namespace TownOfSushi.Roles
             vent.Right = null;
             vent.Center = null;
 
-            var allVents = ShipStatus.Instance.AllVents.ToList();
+            var allVents = Ship().AllVents.ToList();
             allVents.Add(vent);
-            ShipStatus.Instance.AllVents = allVents.ToArray();
+            Ship().AllVents = allVents.ToArray();
 
             role.Vents.Add(vent);
             role.LastMined = DateTime.UtcNow;
 
-            if (SubmergedCompatibility.isSubmerged())
+            if (IsSubmerged())
             {
                 vent.gameObject.layer = 12;
-                vent.gameObject.AddSubmergedComponent(SubmergedCompatibility.Classes.ElevatorMover); // just in case elevator vent is not blocked
+                vent.gameObject.AddSubmergedComponent(Classes.ElevatorMover); // just in case elevator vent is not blocked
                 if (vent.gameObject.transform.position.y > -7) vent.gameObject.transform.position = new Vector3(vent.gameObject.transform.position.x, vent.gameObject.transform.position.y, 0.03f);
                 else
                 {
@@ -170,7 +170,7 @@ namespace TownOfSushi.Roles
 
             while (true)
             {
-                if (ShipStatus.Instance.AllVents.All(v => v.Id != id)) return id;
+                if (Ship().AllVents.All(v => v.Id != id)) return id;
                 id++;
             }
         }

@@ -12,7 +12,7 @@ namespace TownOfSushi.Roles
             TaskText = () => "Teleport to get away";
             RoleInfo = "The Escapist can mark a location for them to teleport back to, and can teleport back to that location at any time. They can only teleport back to that location once. After that they must mark a new location.";
             LoreText = "A master of escape, you can slip away from danger in the blink of an eye. As the Escapist, you harness the power of teleportation to evade death and slip past the eyes of those who might catch you in the act. Your ability to vanish at will makes you a dangerous foe, capable of leaving behind confusion and chaos as you retreat to safety.";
-            Color = Colors.Impostor;
+            Color = ColorManager.Impostor;
             RoleType = RoleEnum.Escapist;
             Faction = Faction.Impostors;
             AddToRoleHistory(RoleType);
@@ -45,19 +45,19 @@ namespace TownOfSushi.Roles
             var position = escapistRole.EscapePoint;
             escapist.NetTransform.SnapTo(new Vector2(position.x, position.y));
 
-            if (SubmergedCompatibility.isSubmerged())
+            if (IsSubmerged())
             {
                 if (PlayerControl.LocalPlayer.PlayerId == escapist.PlayerId)
                 {
-                    SubmergedCompatibility.ChangeFloor(escapist.GetTruePosition().y > -7);
-                    SubmergedCompatibility.CheckOutOfBoundsElevator(PlayerControl.LocalPlayer);
+                    ChangeFloor(escapist.GetTruePosition().y > -7);
+                    CheckOutOfBoundsElevator(PlayerControl.LocalPlayer);
                 }
             }
 
             if (PlayerControl.LocalPlayer.PlayerId == escapist.PlayerId)
             {
                 Flash(new Color(0.6f, 0.1f, 0.2f, 1f), 2.5f);
-                if (Minigame.Instance) Minigame.Instance.Close();
+                if (TaskPanel()) TaskPanel().Close();
             }
             escapist.moveable = true;
             escapist.Collider.enabled = true;
@@ -90,7 +90,7 @@ namespace TownOfSushi.Roles
                 role.EscapeButton.graphic.sprite = MarkSprite;
 
             role.EscapeButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
             role.EscapeButton.graphic.color = Palette.EnabledColor;
             role.EscapeButton.graphic.material.SetFloat("_Desat", 0f);
@@ -109,7 +109,7 @@ namespace TownOfSushi.Roles
             var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Escapist);
             if (!flag) return true;
             if (!PlayerControl.LocalPlayer.CanMove) return false;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return false;
+            if (IsDead()) return false;
             var role = GetRole<Escapist>(PlayerControl.LocalPlayer);
             if (__instance == role.EscapeButton)
             {
@@ -121,7 +121,7 @@ namespace TownOfSushi.Roles
                     if (!abilityUsed) return false;
                     role.EscapePoint = PlayerControl.LocalPlayer.transform.position;
                     role.EscapeButton.graphic.sprite = EscapeSprite;
-                    DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(null);
+                    HUDManager().KillButton.SetTarget(null);
                     if (role.EscapeTimer() < 5f)
                         role.LastEscape = DateTime.UtcNow.AddSeconds(5 - CustomGameOptions.EscapeCd);
                 }

@@ -11,7 +11,7 @@ namespace TownOfSushi.Roles
             TaskText = () => "Shoot and kill evildoers in meetings";
             RoleInfo = $"The Deputy can shoot a player in meetings, if the player is a non-crewmate they die, else the deputy loses the ability to execute again.";
             LoreText = "The Deputy serves as the Crewmates' last line of defense. Tasked with maintaining order and justice aboard the ship, the Deputy uses their sharp instincts to identify and eliminate threats during meetings. However, their duty is not without peril—one wrong decision could lead to their own downfall.";
-            Color = Colors.Deputy;
+            Color = ColorManager.Deputy;
             RoleAlignment = RoleAlignment.CrewKilling;
             RoleType = RoleEnum.Deputy;
             AddToRoleHistory(RoleType);
@@ -27,7 +27,7 @@ namespace TownOfSushi.Roles
     {
         public static void GenButton(Deputy role, int index)
         {
-            var voteArea = MeetingHud.Instance.playerStates[index];
+            var voteArea = Meeting().playerStates[index];
             var confirmButton = voteArea.Buttons.transform.GetChild(0).gameObject;
             var newButton = Object.Instantiate(confirmButton, voteArea.transform);
             var renderer = newButton.GetComponent<SpriteRenderer>();
@@ -54,13 +54,13 @@ namespace TownOfSushi.Roles
             if (role.RemainingKills <= 0) return;
             if (role.HasExectutedAlready) return;
 
-            role.RemainingKills -= 1;        
+            role.RemainingKills -= 1;
             if (executeTarget.Is(Faction.Crewmates))        
             {            
                 role.IncorrectShots += 1;
                 role.RemainingKills = 0;
                 Flash(Color.red);
-                SoundManager.Instance.PlaySound(ShipStatus.Instance.SabotageSound, false, 1f, null);
+                Sound().PlaySound(Ship().SabotageSound, false, 1f, null);
             }
             else
             {            
@@ -75,15 +75,15 @@ namespace TownOfSushi.Roles
 
         public static void ExecuteKill (Deputy deputy, PlayerControl player)
         {
-            var voteArea = MeetingHud.Instance.playerStates .FirstOrDefault(x => x.TargetPlayerId == player.PlayerId);
+            var voteArea = Meeting().playerStates .FirstOrDefault(x => x.TargetPlayerId == player.PlayerId);
 
             if (player == null || voteArea == null) return;
 
-            var hudManager = DestroyableSingleton<HudManager>.Instance;
+            var hudManager = HUDManager();
 
                try
                 {
-                    SoundManager.Instance.PlaySound(PlayerControl.LocalPlayer.KillSfx, false, 1f);
+                    Sound().PlaySound(PlayerControl.LocalPlayer.KillSfx, false, 1f);
                 } 
                 catch {}
 
@@ -103,7 +103,7 @@ namespace TownOfSushi.Roles
                 player.RpcSetScanner(false);
                 ImportantTextTask importantTextTask = new GameObject("_Player").AddComponent<ImportantTextTask>();
                 importantTextTask.transform.SetParent(AmongUsClient.Instance.transform, false);
-                if (!GameOptionsManager.Instance.currentNormalGameOptions.GhostsDoTasks)
+                if (!VanillaOptions().currentNormalGameOptions.GhostsDoTasks)
                 {
                     for (int i = 0; i < player.myTasks.Count; i++)
                     {
@@ -199,7 +199,7 @@ namespace TownOfSushi.Roles
             voteArea.XMark.gameObject.SetActive(true);
             voteArea.XMark.transform.localScale = Vector3.one;
 
-            var meetingHud = MeetingHud.Instance;
+            var meetingHud = Meeting();
             if (amOwner)
             {
                 meetingHud.SetForegroundForDead();
@@ -222,7 +222,7 @@ namespace TownOfSushi.Roles
                 }
             }
 
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Imitator) && !PlayerControl.LocalPlayer.Data.IsDead)
+            if (PlayerControl.LocalPlayer.Is(RoleEnum.Imitator) && !IsDead())
             {
                 var imitatorRole = GetRole<Imitator>(PlayerControl.LocalPlayer);
                 if (!meetingHud.playerStates[PlayerControl.LocalPlayer.PlayerId].DidVote)
@@ -241,7 +241,7 @@ namespace TownOfSushi.Roles
 
         public static void Postfix(MeetingHud __instance)
         {
-            if (PlayerControl.LocalPlayer.Data.IsDead || !PlayerControl.LocalPlayer.Is(RoleEnum.Deputy)) return;    
+            if (IsDead() || !PlayerControl.LocalPlayer.Is(RoleEnum.Deputy)) return;    
             var depRole = GetRole<Deputy>(PlayerControl.LocalPlayer);
             if (depRole.RemainingKills <= 0) return;
             

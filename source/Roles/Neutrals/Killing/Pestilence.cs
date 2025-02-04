@@ -5,7 +5,7 @@ namespace TownOfSushi.Roles
         public Pestilence(PlayerControl owner) : base(owner)
         {
             Name = "Pestilence";
-            Color = Colors.Pestilence;
+            Color = ColorManager.Pestilence;
             LastKill = DateTime.UtcNow;
             RoleType = RoleEnum.Pestilence;
             StartText = () => "";
@@ -36,7 +36,7 @@ namespace TownOfSushi.Roles
         {
             var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Pestilence);
             if (!flag) return true;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return false;
+            if (IsDead()) return false;
             if (!PlayerControl.LocalPlayer.CanMove) return false;
             var role = GetRole<Pestilence>(PlayerControl.LocalPlayer);
             if (role.Player.inVent) return false;
@@ -77,7 +77,7 @@ namespace TownOfSushi.Roles
             var role = GetRole<Pestilence>(PlayerControl.LocalPlayer);
 
             __instance.KillButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
 
             __instance.KillButton.SetCoolDown(role.KillTimer(), CustomGameOptions.PestKillCd);

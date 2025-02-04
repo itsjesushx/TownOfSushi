@@ -21,7 +21,7 @@ namespace TownOfSushi.Patches
                         var stringb = new StringBuilder();
                         stringb.Append(ColorString(role.Color, $"{role.Name} Description: \n"));
                         stringb.Append(ColorString(role.Color, $"{role.RoleInfo}"));
-                        HudManager.Instance.ShowPopUp(stringb.ToString());
+                        HUDManager().ShowPopUp(stringb.ToString());
                     }
                     catch (Exception exs)
                     {
@@ -38,7 +38,7 @@ namespace TownOfSushi.Patches
                         var stringb = new StringBuilder();
                         stringb.Append(ColorString(role.Color, $"{role.Name} lore: \n"));
                         stringb.Append(ColorString(role.Color, $"{role.LoreText}"));
-                        HudManager.Instance.ShowPopUp(stringb.ToString());
+                        HUDManager().ShowPopUp(stringb.ToString());
                     }
                     catch (Exception exs)
                     {

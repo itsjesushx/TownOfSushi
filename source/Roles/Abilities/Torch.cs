@@ -6,7 +6,7 @@ namespace TownOfSushi.Roles.Abilities
         {
             Name = "Torch";
             TaskText = () => "You can see in the dark";
-            Color = Colors.Torch;
+            Color = ColorManager.Torch;
             AbilityType = AbilityEnum.Torch;
         }
     }

@@ -16,7 +16,7 @@ namespace TownOfSushi.Roles
             TaskText = () => "Morph into crewmates";
             RoleInfo = $"The Morphling can morph into the form of their fellow Crewmates, morphing changes the Morphling's look to make them not look sus. The morphling can only morph into a crewmate once every {CustomGameOptions.MorphlingCd} seconds and lasts for {CustomGameOptions.MorphlingDuration} seconds.";
             LoreText = "A master of disguise, you possess the ability to transform into any Crewmate. As the Morphling, you can morph into the form of your fellow Crewmates, blending in with the innocent and deceiving your enemies. Your power of transformation allows you to infiltrate and manipulate, making you an elusive and dangerous Impostor who can strike without warning.";
-            Color = Colors.Impostor;
+            Color = ColorManager.Impostor;
             LastMorphed = DateTime.UtcNow;
             RoleType = RoleEnum.Morphling;
             Faction = Faction.Impostors;
@@ -111,7 +111,7 @@ namespace TownOfSushi.Roles
                 role.MorphButton.graphic.sprite = SampleSprite;
 
             role.MorphButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
             if (role.MorphButton.graphic.sprite == SampleSprite)
             {
@@ -160,7 +160,7 @@ namespace TownOfSushi.Roles
             if (!flag) return true;
             if (!PlayerControl.LocalPlayer.CanMove) return false;
             if (MushroomSabotageActive()) return false;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return false;
+            if (IsDead()) return false;
             var role = GetRole<Morphling>(PlayerControl.LocalPlayer);
             var target = role.ClosestPlayer;
             if (__instance == role.MorphButton)
@@ -174,7 +174,7 @@ namespace TownOfSushi.Roles
                     role.SampledPlayer = target;
                     role.MorphButton.graphic.sprite = MorphSprite;
                     role.MorphButton.SetTarget(null);
-                    DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(null);
+                    HUDManager().KillButton.SetTarget(null);
                     if (role.MorphTimer() < 5f)
                         role.LastMorphed = DateTime.UtcNow.AddSeconds(5 - CustomGameOptions.MorphlingCd);
                 }
@@ -205,7 +205,7 @@ namespace TownOfSushi.Roles
             if (PlayerControl.LocalPlayer == null) return;
             if (PlayerControl.LocalPlayer.Data == null) return;
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Morphling)) return;
-            if (target != null && __instance == DestroyableSingleton<HudManager>.Instance.KillButton)
+            if (target != null && __instance == HUDManager().KillButton)
             if (target.Data.IsImpostor())
             {
                 __instance.graphic.color = Palette.DisabledClear;

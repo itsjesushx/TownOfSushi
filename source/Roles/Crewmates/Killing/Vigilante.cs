@@ -27,7 +27,7 @@ namespace TownOfSushi.Roles
             TaskText = () => "Shoot or guess the <color=#FF0000FF>Impostor</color>";
             RoleInfo = "The Vigilante is able to kill players during rounds, if the player they kill is an impostor, the Vigilante will survive. If the player they kill is a crewmate, the Vigilante will die. During meetings, the Vigilante can guess the roles of players. If they get it right, the player will die. If they get it wrong, the Vigilante will die.";
             LoreText = "A lone avenger, you take matters into your own hands. As the Vigilante, you have the power to eliminate suspected Impostors with a single shot, or you can risk a guess and expose the killers hiding among the crew. Your quick thinking and decisiveness make you a powerful ally, but a mistake could have deadly consequences for the innocents.";
-            Color = Colors.Vigilante;
+            Color = ColorManager.Vigilante;
             RoleType = RoleEnum.Vigilante;
             Faction = Faction.Crewmates;
             AddToRoleHistory(RoleType);
@@ -35,45 +35,45 @@ namespace TownOfSushi.Roles
             RemainingKills = CustomGameOptions.VigilanteKills;
 
 
-            ColorMapping.Add("Impostor", Colors.Impostor);
-            if (CustomGameOptions.BomberOn > 0) ColorMapping.Add("Bomber", Colors.Impostor);
-            if (CustomGameOptions.BlackmailerOn > 0) ColorMapping.Add("Blackmailer", Colors.Impostor);
-            if (CustomGameOptions.EscapistOn > 0) ColorMapping.Add("Escapist", Colors.Impostor);
-            if (CustomGameOptions.GrenadierOn > 0) ColorMapping.Add("Grenadier", Colors.Impostor);
-            if (CustomGameOptions.JanitorOn > 0) ColorMapping.Add("Janitor", Colors.Impostor);
-            if (CustomGameOptions.MorphlingOn > 0) ColorMapping.Add("Morphling", Colors.Impostor);
-            if (CustomGameOptions.MinerOn > 0) ColorMapping.Add("Miner", Colors.Impostor);
-            if (CustomGameOptions.SwooperOn > 0) ColorMapping.Add("Swooper", Colors.Impostor);
-            if (CustomGameOptions.VenererOn > 0) ColorMapping.Add("Venerer", Colors.Impostor);
-            if (CustomGameOptions.PoisonerOn > 0) ColorMapping.Add("Poisoner", Colors.Impostor);
-            if (CustomGameOptions.UndertakerOn > 0) ColorMapping.Add("Undertaker", Colors.Impostor);
-            if (CustomGameOptions.BountyHunterOn > 0) ColorMapping.Add("Bounty Hunter", Colors.Impostor);
-            if (CustomGameOptions.WitchOn > 0) ColorMapping.Add("Witch", Colors.Impostor);
-            if (CustomGameOptions.WarlockOn > 0) ColorMapping.Add("Warlock", Colors.Impostor);
+            ColorMapping.Add("Impostor", ColorManager.Impostor);
+            if (CustomGameOptions.BomberOn > 0) ColorMapping.Add("Bomber", ColorManager.Impostor);
+            if (CustomGameOptions.BlackmailerOn > 0) ColorMapping.Add("Blackmailer", ColorManager.Impostor);
+            if (CustomGameOptions.EscapistOn > 0) ColorMapping.Add("Escapist", ColorManager.Impostor);
+            if (CustomGameOptions.GrenadierOn > 0) ColorMapping.Add("Grenadier", ColorManager.Impostor);
+            if (CustomGameOptions.JanitorOn > 0) ColorMapping.Add("Janitor", ColorManager.Impostor);
+            if (CustomGameOptions.MorphlingOn > 0) ColorMapping.Add("Morphling", ColorManager.Impostor);
+            if (CustomGameOptions.MinerOn > 0) ColorMapping.Add("Miner", ColorManager.Impostor);
+            if (CustomGameOptions.SwooperOn > 0) ColorMapping.Add("Swooper", ColorManager.Impostor);
+            if (CustomGameOptions.VenererOn > 0) ColorMapping.Add("Venerer", ColorManager.Impostor);
+            if (CustomGameOptions.PoisonerOn > 0) ColorMapping.Add("Poisoner", ColorManager.Impostor);
+            if (CustomGameOptions.UndertakerOn > 0) ColorMapping.Add("Undertaker", ColorManager.Impostor);
+            if (CustomGameOptions.BountyHunterOn > 0) ColorMapping.Add("Bounty Hunter", ColorManager.Impostor);
+            if (CustomGameOptions.WitchOn > 0) ColorMapping.Add("Witch", ColorManager.Impostor);
+            if (CustomGameOptions.WarlockOn > 0) ColorMapping.Add("Warlock", ColorManager.Impostor);
 
-            if (CustomGameOptions.AgentOn > 0) ColorMapping.Add("Hitman", Colors.Hitman);
-            if (CustomGameOptions.AgentOn > 0) ColorMapping.Add("Agent", Colors.Agent); 
-            if (CustomGameOptions.ArsonistOn > 0) ColorMapping.Add("Arsonist", Colors.Arsonist);
-            if (CustomGameOptions.WerewolfOn > 0) ColorMapping.Add("Werewolf", Colors.Werewolf);
-            if (CustomGameOptions.JuggernautOn > 0) ColorMapping.Add("Juggernaut", Colors.Juggernaut);
-            if (CustomGameOptions.PlaguebearerOn > 0) ColorMapping.Add("Pestilence", Colors.Pestilence);
-            if (CustomGameOptions.PlaguebearerOn > 0) ColorMapping.Add("Plaguebearer", Colors.Plaguebearer);
-            if (CustomGameOptions.GlitchOn > 0) ColorMapping.Add("Glitch", Colors.Glitch);
-            if (CustomGameOptions.VampireOn > 0) ColorMapping.Add("Vampire", Colors.Vampire);
-            if (CustomGameOptions.SerialKillerOn > 0) ColorMapping.Add("Serial Killer", Colors.SerialKiller);
+            if (CustomGameOptions.AgentOn > 0) ColorMapping.Add("Hitman", ColorManager.Hitman);
+            if (CustomGameOptions.AgentOn > 0) ColorMapping.Add("Agent", ColorManager.Agent); 
+            if (CustomGameOptions.ArsonistOn > 0) ColorMapping.Add("Arsonist", ColorManager.Arsonist);
+            if (CustomGameOptions.WerewolfOn > 0) ColorMapping.Add("Werewolf", ColorManager.Werewolf);
+            if (CustomGameOptions.JuggernautOn > 0) ColorMapping.Add("Juggernaut", ColorManager.Juggernaut);
+            if (CustomGameOptions.PlaguebearerOn > 0) ColorMapping.Add("Pestilence", ColorManager.Pestilence);
+            if (CustomGameOptions.PlaguebearerOn > 0) ColorMapping.Add("Plaguebearer", ColorManager.Plaguebearer);
+            if (CustomGameOptions.GlitchOn > 0) ColorMapping.Add("Glitch", ColorManager.Glitch);
+            if (CustomGameOptions.VampireOn > 0) ColorMapping.Add("Vampire", ColorManager.Vampire);
+            if (CustomGameOptions.SerialKillerOn > 0) ColorMapping.Add("Serial Killer", ColorManager.SerialKiller);
 
             if (CustomGameOptions.VigilanteGuessNeutralBenign)
             {
-                if (CustomGameOptions.GuardianAngelOn > 0) ColorMapping.Add("Guardian Angel", Colors.GuardianAngel);
-                if (CustomGameOptions.RomanticOn > 0) ColorMapping.Add("Romantic", Colors.Romantic);
-                if (CustomGameOptions.AmnesiacOn > 0 || (CustomGameOptions.ExecutionerOn > 0 && CustomGameOptions.OnTargetDead == OnTargetDead.Amnesiac) || (CustomGameOptions.GuardianAngelOn > 0 && CustomGameOptions.GaOnTargetDeath == BecomeOptions.Amnesiac) || (CustomGameOptions.RomanticOn > 0 && CustomGameOptions.RomanticOnBelovedDeath == RomanticBecomeOptions.Amnesiac)) ColorMapping.Add("Amnesiac", Colors.Amnesiac);
+                if (CustomGameOptions.GuardianAngelOn > 0) ColorMapping.Add("Guardian Angel", ColorManager.GuardianAngel);
+                if (CustomGameOptions.RomanticOn > 0) ColorMapping.Add("Romantic", ColorManager.Romantic);
+                if (CustomGameOptions.AmnesiacOn > 0 || (CustomGameOptions.ExecutionerOn > 0 && CustomGameOptions.OnTargetDead == OnTargetDead.Amnesiac) || (CustomGameOptions.GuardianAngelOn > 0 && CustomGameOptions.GaOnTargetDeath == BecomeOptions.Amnesiac) || (CustomGameOptions.RomanticOn > 0 && CustomGameOptions.RomanticOnBelovedDeath == RomanticBecomeOptions.Amnesiac)) ColorMapping.Add("Amnesiac", ColorManager.Amnesiac);
             }
             if (CustomGameOptions.VigilanteGuessNeutralEvil)
             {
-                if (CustomGameOptions.DoomsayerOn > 0) ColorMapping.Add("Doomsayer", Colors.Doomsayer);
-                if (CustomGameOptions.VultureOn > 0) ColorMapping.Add("Vulture", Colors.Vulture);
-                if (CustomGameOptions.ExecutionerOn > 0) ColorMapping.Add("Executioner", Colors.Executioner);
-                if (CustomGameOptions.JesterOn > 0 || (CustomGameOptions.ExecutionerOn > 0 && CustomGameOptions.OnTargetDead == OnTargetDead.Jester) || (CustomGameOptions.GuardianAngelOn > 0 && CustomGameOptions.GaOnTargetDeath == BecomeOptions.Jester)) ColorMapping.Add("Jester", Colors.Jester);
+                if (CustomGameOptions.DoomsayerOn > 0) ColorMapping.Add("Doomsayer", ColorManager.Doomsayer);
+                if (CustomGameOptions.VultureOn > 0) ColorMapping.Add("Vulture", ColorManager.Vulture);
+                if (CustomGameOptions.ExecutionerOn > 0) ColorMapping.Add("Executioner", ColorManager.Executioner);
+                if (CustomGameOptions.JesterOn > 0 || (CustomGameOptions.ExecutionerOn > 0 && CustomGameOptions.OnTargetDead == OnTargetDead.Jester) || (CustomGameOptions.GuardianAngelOn > 0 && CustomGameOptions.GaOnTargetDeath == BecomeOptions.Jester)) ColorMapping.Add("Jester", ColorManager.Jester);
             }
 
             // Sorts the list
@@ -144,7 +144,7 @@ namespace TownOfSushi.Roles
             vigilanteUIExitButton.OnClick.AddListener((System.Action)(() => {
                 __instance.playerStates.ToList().ForEach(x => {
                     x.gameObject.SetActive(true);
-                    if (PlayerControl.LocalPlayer.Data.IsDead && x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("ShootButton").gameObject);
+                    if (IsDead() && x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("ShootButton").gameObject);
                 });
                 Object.Destroy(container.gameObject);
             }));
@@ -159,7 +159,7 @@ namespace TownOfSushi.Roles
                 Transform button = Object.Instantiate(buttonTemplate, buttonParent);
                 Transform buttonMask = Object.Instantiate(maskTemplate, buttonParent);
                 TMPro.TextMeshPro label = Object.Instantiate(textTemplate, button);
-                button.GetComponent<SpriteRenderer>().sprite = ShipStatus.Instance.CosmeticsCache.GetNameplate("nameplate_NoPlate").Image;
+                button.GetComponent<SpriteRenderer>().sprite = Ship().CosmeticsCache.GetNameplate("nameplate_NoPlate").Image;
                 buttons.Add(button);
                 int row = i/5, col = i%5;
                 buttonParent.localPosition = new Vector3(-3.47f + 1.75f * col, 1.5f - 0.45f * row, -5);
@@ -171,7 +171,7 @@ namespace TownOfSushi.Roles
                 int copiedIndex = i;
 
                 button.GetComponent<PassiveButton>().OnClick.RemoveAllListeners();
-                if (!PlayerControl.LocalPlayer.Data.IsDead && !PlayerById((byte)__instance.playerStates[buttonTarget].TargetPlayerId).Data.IsDead) button.GetComponent<PassiveButton>().OnClick.AddListener((System.Action)(() => {
+                if (!IsDead() && !PlayerById((byte)__instance.playerStates[buttonTarget].TargetPlayerId).Data.IsDead) button.GetComponent<PassiveButton>().OnClick.AddListener((System.Action)(() => {
                     if (selectedButton != button) 
                     {
                         selectedButton = button;
@@ -203,7 +203,7 @@ namespace TownOfSushi.Roles
                         if (dyingTarget.IsFortified()) 
                         {
                             dyingTarget = null;
-                            Flash(Colors.Crusader, 1.5f);
+                            Flash(ColorManager.Crusader, 1.5f);
                             __instance.playerStates.ToList().ForEach(x => { if (x.TargetPlayerId == focusedTarget.PlayerId && x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
                         }
 
@@ -220,7 +220,7 @@ namespace TownOfSushi.Roles
     {
         public static void RpcMurderPlayer(Vigilante vigilanteP, PlayerControl player, PlayerControl vigilante)
         {
-            PlayerVoteArea voteArea = MeetingHud.Instance.playerStates.First(
+            PlayerVoteArea voteArea = Meeting().playerStates.First(
                 x => x.TargetPlayerId == player.PlayerId
             );
             RpcMurderPlayer(vigilanteP, voteArea, player, vigilante);
@@ -234,7 +234,7 @@ namespace TownOfSushi.Roles
 
         public static void MurderPlayer(Vigilante vigilanteP, PlayerControl player)
         {
-            PlayerVoteArea voteArea = MeetingHud.Instance.playerStates.First(
+            PlayerVoteArea voteArea = Meeting().playerStates.First(
                 x => x.TargetPlayerId == player.PlayerId
             );
             MurderPlayer(vigilanteP, voteArea, player);
@@ -242,20 +242,19 @@ namespace TownOfSushi.Roles
         public static void VigiKillCount(PlayerControl player, PlayerControl vigilante)
         {
             var vigi = GetRole<Vigilante>(vigilante);
-            if (player == vigilante) vigi.IncorrectAssassinKills += 1;
-            else vigi.CorrectVigilanteShot += 1;
+            if (player != vigilante) vigi.CorrectVigilanteShot += 1;
         }
         public static void MurderPlayer(
             Vigilante vigilanteP,
             PlayerVoteArea voteArea,
             PlayerControl player)
         {
-            var hudManager = DestroyableSingleton<HudManager>.Instance;
+            var hudManager = HUDManager();
             var vigilantePlayer = vigilanteP.Player;
 
                 try
                 {
-                    SoundManager.Instance.PlaySound(PlayerControl.LocalPlayer.KillSfx, false, 1f);
+                    Sound().PlaySound(PlayerControl.LocalPlayer.KillSfx, false, 1f);
                 } catch {}
                 if (PlayerControl.LocalPlayer == player) {
                     hudManager.KillOverlay.ShowKillAnimation(vigilantePlayer.Data, player.Data);
@@ -272,7 +271,7 @@ namespace TownOfSushi.Roles
                 player.RpcSetScanner(false);
                 ImportantTextTask importantTextTask = new GameObject("_Player").AddComponent<ImportantTextTask>();
                 importantTextTask.transform.SetParent(AmongUsClient.Instance.transform, false);
-                if (!GameOptionsManager.Instance.currentNormalGameOptions.GhostsDoTasks)
+                if (!VanillaOptions().currentNormalGameOptions.GhostsDoTasks)
                 {
                     for (int i = 0;i < player.myTasks.Count;i++)
                     {
@@ -317,7 +316,7 @@ namespace TownOfSushi.Roles
             voteArea.XMark.gameObject.SetActive(true);
             voteArea.XMark.transform.localScale = Vector3.one;
 
-            var meetingHud = MeetingHud.Instance;
+            var meetingHud = Meeting();
             if (amOwner)
             {
                 meetingHud.SetForegroundForDead();
@@ -414,7 +413,7 @@ namespace TownOfSushi.Roles
 
             var data = __instance.Data;
             var stuff = Physics2D.OverlapCircleAll(truePosition, __instance.MaxReportDistance, Constants.Usables);
-            var flag = (GameOptionsManager.Instance.currentNormalGameOptions.GhostsDoTasks || !data.IsDead) &&
+            var flag = (VanillaOptions().currentNormalGameOptions.GhostsDoTasks || !data.IsDead) &&
                        (!AmongUsClient.Instance || !AmongUsClient.Instance.IsGameOver) && __instance.CanMove;
             var flag2 = false;
 
@@ -432,7 +431,7 @@ namespace TownOfSushi.Roles
                     }
                 }
 
-            DestroyableSingleton<HudManager>.Instance.ReportButton.SetActive(flag2);
+            HUDManager().ReportButton.SetActive(flag2);
         }
     }
 
@@ -445,7 +444,7 @@ namespace TownOfSushi.Roles
             if (CustomGameOptions.VigilanteBodyReport) return true;
 
             if (AmongUsClient.Instance.IsGameOver) return false;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return false;
+            if (IsDead()) return false;
             foreach (var collider2D in Physics2D.OverlapCircleAll(__instance.GetTruePosition(),
                 __instance.MaxReportDistance, Constants.PlayersOnlyMask))
                 if (!(collider2D.tag != "DeadBody"))
@@ -482,7 +481,7 @@ namespace TownOfSushi.Roles
             {
                 var role = GetRole<Vigilante>(PlayerControl.LocalPlayer);
                 KillButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
                 KillButton.SetCoolDown(role.VigilanteKillTimer(), CustomGameOptions.VigilanteKillCd);
 
@@ -495,10 +494,10 @@ namespace TownOfSushi.Roles
                 if (!isImpostor) return;
 
                 __instance.KillButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
 
-                if (GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek) return;
+                if (IsHideNSeek()) return;
                 ImpKillTarget(KillButton);
             }
         }
@@ -520,12 +519,12 @@ namespace TownOfSushi.Roles
         [HarmonyPriority(Priority.First)]
         private static bool Prefix(KillButton __instance)
         {
-            if (__instance != DestroyableSingleton<HudManager>.Instance.KillButton) return true;
+            if (__instance != HUDManager().KillButton) return true;
             var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Vigilante);
             if (!flag) return true;
             var role = GetRole<Vigilante>(PlayerControl.LocalPlayer);
             if (!PlayerControl.LocalPlayer.CanMove) return false;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return false;
+            if (IsDead()) return false;
             var flag2 = role.VigilanteKillTimer() == 0f;
             if (!flag2) return false;
             if (!__instance.enabled || role.ClosestPlayer == null) return false;

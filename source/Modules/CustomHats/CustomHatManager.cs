@@ -279,7 +279,7 @@ public static class CustomHatManager
 
     public static List<CustomHat> loadHorseHats() {
         List<CustomHat> hatdatas = new();
-        Assembly assembly = Assembly.GetExecutingAssembly();
+        Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
         string[] resourceNames = assembly.GetManifestResourceNames();
         List<string> hatFiles = new();
         Dictionary<string, List<string>> hatFilesSorted = new Dictionary<string, List<string>>();

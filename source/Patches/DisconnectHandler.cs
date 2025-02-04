@@ -9,9 +9,14 @@ namespace TownOfSushi.Patches
         [HarmonyPatch(nameof(GameData.HandleDisconnect), typeof(PlayerControl), typeof(DisconnectReasons))]
         public static void Prefix([HarmonyArgument(0)] PlayerControl player)
         {
-            if (MeetingHud.Instance)
+            if (PlayerControl.LocalPlayer.Is(RoleEnum.BountyHunter))
             {
-                PlayerVoteArea voteArea = MeetingHud.Instance.playerStates.First(x => x.TargetPlayerId == player.PlayerId);
+                var bountyHunter = GetRole<BountyHunter>(PlayerControl.LocalPlayer);
+                if (bountyHunter.Bounty == player) bountyHunter.Bounty = bountyHunter.AddBounty(player);
+            }
+            if (Meeting())
+            {
+                PlayerVoteArea voteArea = Meeting().playerStates.First(x => x.TargetPlayerId == player.PlayerId);
 
                 if (!player.Data.IsDead)
                 {
@@ -41,7 +46,7 @@ namespace TownOfSushi.Patches
                     }
                 }
 
-                if (PlayerControl.LocalPlayer.Is(RoleEnum.Swapper) && !PlayerControl.LocalPlayer.Data.IsDead)
+                if (PlayerControl.LocalPlayer.Is(RoleEnum.Swapper) && !IsDead())
                 {
                     var swapper = GetRole<Swapper>(PlayerControl.LocalPlayer);
                     var button = swapper.Buttons[voteArea.TargetPlayerId];
@@ -62,26 +67,20 @@ namespace TownOfSushi.Patches
                 if (AssassinAddButton.assassinUI != null) AssassinAddButton.assassinUIExitButton.OnClick.Invoke();
                 if (AddButtonDoomsayer.doomsayerUI != null) AddButtonDoomsayer.doomsayerUIExitButton.OnClick.Invoke();
 
-                if (PlayerControl.LocalPlayer.Is(RoleEnum.Jailor) && !PlayerControl.LocalPlayer.Data.IsDead)
+                if (PlayerControl.LocalPlayer.Is(RoleEnum.Jailor) && !IsDead())
                 {
                     var jailor = GetRole<Jailor>(PlayerControl.LocalPlayer);
                     jailor.ExecuteButton.Destroy();
                     jailor.UsesText.Destroy();
                 }
 
-                if (PlayerControl.LocalPlayer.Is(RoleEnum.Deputy) && !PlayerControl.LocalPlayer.Data.IsDead)
+                if (PlayerControl.LocalPlayer.Is(RoleEnum.Deputy) && !IsDead())
                 {
                     var Deputy = GetRole<Deputy>(PlayerControl.LocalPlayer);
                     Deputy.ExecuteButton.Destroy();
                 }
 
-                if (PlayerControl.LocalPlayer.Is(RoleEnum.BountyHunter))
-                {
-                    var bountyHunter = GetRole<BountyHunter>(PlayerControl.LocalPlayer);
-                    if (bountyHunter.Bounty == player) bountyHunter.Bounty = bountyHunter.AddBounty(player);
-                }
-
-                if (PlayerControl.LocalPlayer.Is(RoleEnum.Imitator) && !PlayerControl.LocalPlayer.Data.IsDead)
+                if (PlayerControl.LocalPlayer.Is(RoleEnum.Imitator) && !IsDead())
                 {
                     var imitatorRole = GetRole<Imitator>(PlayerControl.LocalPlayer);
                     var button = imitatorRole.Buttons[voteArea.TargetPlayerId];

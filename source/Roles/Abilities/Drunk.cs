@@ -6,7 +6,7 @@ namespace TownOfSushi.Roles.Abilities
         {
             Name = "Drunk";
             TaskText = () => "Your controls are inverted";
-            Color = Colors.Drunk;
+            Color = ColorManager.Drunk;
             AbilityType = AbilityEnum.Drunk;
         }
     }

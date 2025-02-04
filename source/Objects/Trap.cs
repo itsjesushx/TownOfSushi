@@ -20,7 +20,7 @@ namespace TownOfSushi.Objects
             foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
                 if (player.Data.IsDead) continue;
-                if (Vector2.Distance(transform.position, player.GetTruePosition()) < (CustomGameOptions.TrapSize + 0.01f) * ShipStatus.Instance.MaxLightRadius)
+                if (Vector2.Distance(transform.position, player.GetTruePosition()) < (CustomGameOptions.TrapSize + 0.01f) * Ship().MaxLightRadius)
                 {
                     if (!players.ContainsKey(player.PlayerId)) players.Add(player.PlayerId, 0f);
                 } else
@@ -62,8 +62,8 @@ namespace TownOfSushi.Objects
         {
             var TrapPref = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             TrapPref.name = "Trap";
-            TrapPref.transform.localScale = new Vector3(CustomGameOptions.TrapSize * ShipStatus.Instance.MaxLightRadius * 2f, 
-                CustomGameOptions.TrapSize * ShipStatus.Instance.MaxLightRadius * 2f, CustomGameOptions.TrapSize * ShipStatus.Instance.MaxLightRadius * 2f);
+            TrapPref.transform.localScale = new Vector3(CustomGameOptions.TrapSize * Ship().MaxLightRadius * 2f, 
+                CustomGameOptions.TrapSize * Ship().MaxLightRadius * 2f, CustomGameOptions.TrapSize * Ship().MaxLightRadius * 2f);
             GameObject.Destroy(TrapPref.GetComponent<SphereCollider>());
             TrapPref.GetComponent<MeshRenderer>().material = Trapper.trapMaterial;
             TrapPref.transform.position = location;

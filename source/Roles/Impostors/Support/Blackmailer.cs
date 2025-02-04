@@ -1,5 +1,4 @@
 using System.Collections;
-using AmongUs.QuickChat;
 
 namespace TownOfSushi.Roles
 {
@@ -16,7 +15,7 @@ namespace TownOfSushi.Roles
             TaskText = () => "Silence a player for the next meeting";
             RoleInfo = $"The Blackmailer can silence a Crewmate during meetings, preventing them from speaking and casting doubt on their credibility. The target will be unable to speak during the next meeting, allowing the Blackmailer to control the flow of information and sow confusion among the Crewmates.";
             LoreText = "A cunning manipulator, you thrive on controlling information. As the Blackmailer, you can silence a Crewmate during meetings, preventing them from speaking and casting doubt on their credibility. With your ability to shut down key voices, you can turn the tide of discussions and ensure that your allies remain undetected while others are left defenseless.";
-            Color = Colors.Impostor;
+            Color = ColorManager.Impostor;
             LastBlackmailed = DateTime.UtcNow;
             RoleType = RoleEnum.Blackmailer;
             Faction = Faction.Impostors;
@@ -91,19 +90,19 @@ namespace TownOfSushi.Roles
 
             public static IEnumerator BlackmailShhh()
             {
-                yield return HudManager.Instance.CoFadeFullScreen(Color.clear, new Color(0f, 0f, 0f, 0.98f));
-                var TempPosition = HudManager.Instance.shhhEmblem.transform.localPosition;
-                var TempDuration = HudManager.Instance.shhhEmblem.HoldDuration;
-                HudManager.Instance.shhhEmblem.transform.localPosition = new Vector3(
-                    HudManager.Instance.shhhEmblem.transform.localPosition.x,
-                    HudManager.Instance.shhhEmblem.transform.localPosition.y,
-                    HudManager.Instance.FullScreen.transform.position.z + 1f);
-                HudManager.Instance.shhhEmblem.TextImage.text = "YOU ARE BLACKMAILED";
-                HudManager.Instance.shhhEmblem.HoldDuration = 2.5f;
-                yield return HudManager.Instance.ShowEmblem(true);
-                HudManager.Instance.shhhEmblem.transform.localPosition = TempPosition;
-                HudManager.Instance.shhhEmblem.HoldDuration = TempDuration;
-                yield return HudManager.Instance.CoFadeFullScreen(new Color(0f, 0f, 0f, 0.98f), Color.clear);
+                yield return HUDManager().CoFadeFullScreen(Color.clear, new Color(0f, 0f, 0f, 0.98f));
+                var TempPosition = HUDManager().shhhEmblem.transform.localPosition;
+                var TempDuration = HUDManager().shhhEmblem.HoldDuration;
+                HUDManager().shhhEmblem.transform.localPosition = new Vector3(
+                HUDManager().shhhEmblem.transform.localPosition.x,
+                HUDManager().shhhEmblem.transform.localPosition.y,
+                HUDManager().FullScreen.transform.position.z + 1f);
+                HUDManager().shhhEmblem.TextImage.text = "YOU ARE BLACKMAILED";
+                HUDManager().shhhEmblem.HoldDuration = 2.5f;
+                yield return HUDManager().ShowEmblem(true);
+                HUDManager().shhhEmblem.transform.localPosition = TempPosition;
+                HUDManager().shhhEmblem.HoldDuration = TempDuration;
+                yield return HUDManager().CoFadeFullScreen(new Color(0f, 0f, 0f, 0.98f), Color.clear);
                 yield return null;
             }
         }
@@ -143,24 +142,7 @@ namespace TownOfSushi.Roles
                 var blackmailers = AllRoles.Where(x => x.RoleType == RoleEnum.Blackmailer && x.Player != null).Cast<Blackmailer>();
                 foreach (var role in blackmailers)
                 {
-                    if (MeetingHud.Instance && role.Blackmailed != null && !role.Blackmailed.Data.IsDead && role.Blackmailed.PlayerId == PlayerControl.LocalPlayer.PlayerId)
-                    {
-                        return false;
-                    }
-                }
-                return true;
-            }
-        }
-
-        [HarmonyPatch(typeof(QuickChatMenu), nameof(QuickChatMenu.Open))]
-        public class DisableQuickChat
-        {
-            public static bool Prefix(QuickChatMenu __instance)
-            {
-                var blackmailers = AllRoles.Where(x => x.RoleType == RoleEnum.Blackmailer && x.Player != null).Cast<Blackmailer>();
-                foreach (var role in blackmailers)
-                {
-                    if (MeetingHud.Instance && role.Blackmailed != null && !role.Blackmailed.Data.IsDead && role.Blackmailed.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+                    if (Meeting() && role.Blackmailed != null && !role.Blackmailed.Data.IsDead && role.Blackmailed.PlayerId == PlayerControl.LocalPlayer.PlayerId)
                     {
                         return false;
                     }
@@ -189,11 +171,11 @@ namespace TownOfSushi.Roles
                 role.BlackmailButton.gameObject.SetActive(false);
             }
 
-            if (PlayerControl.LocalPlayer.Data.IsDead) role.BlackmailButton.SetTarget(null);
+            if (IsDead()) role.BlackmailButton.SetTarget(null);
 
             role.BlackmailButton.graphic.sprite = Blackmail;
             role.BlackmailButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
 
             var notBlackmailed = PlayerControl.AllPlayerControls.ToArray().Where(
@@ -218,7 +200,7 @@ namespace TownOfSushi.Roles
                     if (imp.GetCustomOutfitType() == CustomPlayerOutfitType.Camouflage ||
                         imp.GetCustomOutfitType() == CustomPlayerOutfitType.Swooper) imp.nameText().color = Color.clear;
                     else if (imp.nameText().color == Color.clear ||
-                        imp.nameText().color == new Color(0.3f, 0.0f, 0.0f)) imp.nameText().color = Colors.Impostor;
+                        imp.nameText().color == new Color(0.3f, 0.0f, 0.0f)) imp.nameText().color = ColorManager.Impostor;
                 }
         }
     }
@@ -230,7 +212,7 @@ namespace TownOfSushi.Roles
         {
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Blackmailer)) return true;
             if (!PlayerControl.LocalPlayer.CanMove) return false;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return false;
+            if (IsDead()) return false;
             var role = GetRole<Blackmailer>(PlayerControl.LocalPlayer);
             var target = role.ClosestPlayer;
             if (__instance == role.BlackmailButton)
@@ -249,7 +231,7 @@ namespace TownOfSushi.Roles
                     {
                         if (role.Blackmailed.GetCustomOutfitType() != CustomPlayerOutfitType.Camouflage &&
                             role.Blackmailed.GetCustomOutfitType() != CustomPlayerOutfitType.Swooper)
-                            role.Blackmailed.nameText().color = Colors.Impostor;
+                            role.Blackmailed.nameText().color = ColorManager.Impostor;
                         else role.Blackmailed.nameText().color = Color.clear;
                     }
                     role.Blackmailed = target;

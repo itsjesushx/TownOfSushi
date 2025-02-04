@@ -9,7 +9,7 @@ namespace TownOfSushi.Roles
             TaskText = () => "Convert players and kill everyone to win";
             RoleInfo = "The Vampire is a Neutral role with its own win condition. The Vampire can convert or kill other players by biting them. If the bitten player was a Crewmate they will turn into a Vampire (unless there are 2 Vampires alive). Else they will kill the bitten player.";
             LoreText = "As a Vampire, you walk the fine line between life and death. With your hypnotic charm, you can turn crewmates into your devoted followers, turning the tide of the game in your favor. Yet, your thirst for blood is unquenchable, and those who refuse to join you must be eliminated. Your power grows with every converted soul, and soon, you will be the one pulling the strings. Only those who embrace your dark gift will survive—everyone else must perish in the night.";
-            Color = Colors.Vampire;
+            Color = ColorManager.Vampire;
             LastBit = DateTime.UtcNow;
             RoleType = RoleEnum.Vampire;
             Faction = Faction.Neutral;
@@ -34,7 +34,7 @@ namespace TownOfSushi.Roles
     {
         public static bool Prefix(KillButton __instance)
         {
-            if (__instance != DestroyableSingleton<HudManager>.Instance.KillButton) return true;
+            if (__instance != HUDManager().KillButton) return true;
             var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Vampire);
             if (!flag) return true;
             var role = GetRole<Vampire>(PlayerControl.LocalPlayer);
@@ -42,7 +42,7 @@ namespace TownOfSushi.Roles
             var flag2 = role.BiteTimer() == 0f;
             if (!flag2) return false;
             if (!__instance.enabled) return false;
-            var maxDistance = GameOptionsData.KillDistances[GameOptionsManager.Instance.currentNormalGameOptions.KillDistance];
+            var maxDistance = GameOptionsData.KillDistances[VanillaOptions().currentNormalGameOptions.KillDistance];
             if (Vector2.Distance(role.ClosestPlayer.GetTruePosition(),
                 PlayerControl.LocalPlayer.GetTruePosition()) > maxDistance) return false;
             if (role.ClosestPlayer == null) return false;
@@ -102,7 +102,7 @@ namespace TownOfSushi.Roles
         public static void Convert(PlayerControl target)
         {
             var role = GetPlayerRole(target);
-            var killsList = (role.Kills, role.CorrectKills,  role.CorrectDeputyShot, role.CorrectShot, role.IncorrectShots, role.CorrectVigilanteShot, role.CorrectAssassinKills, role.IncorrectAssassinKills);
+            var killsList = (role.Kills, role.CorrectKills,  role.CorrectDeputyShot, role.CorrectShot, role.IncorrectShots, role.CorrectVigilanteShot, role.CorrectAssassinKills);
 
             if (target == StartImitate.ImitatingPlayer) StartImitate.ImitatingPlayer = null;
 
@@ -123,14 +123,14 @@ namespace TownOfSushi.Roles
             {
                 if (PlayerControl.LocalPlayer.Is(RoleEnum.Investigator)) GetRole<Investigator>(PlayerControl.LocalPlayer).ExamineButton.SetTarget(null);
                 else if (PlayerControl.LocalPlayer.Is(RoleEnum.Hunter)) GetRole<Hunter>(PlayerControl.LocalPlayer).StalkButton.SetTarget(null);
-                else if (PlayerControl.LocalPlayer.Is(RoleEnum.Vulture)) VultureKillButtonTarget.SetTarget(HudManager.Instance.KillButton, null, GetRole<Vulture>(PlayerControl.LocalPlayer));
+                else if (PlayerControl.LocalPlayer.Is(RoleEnum.Vulture)) VultureKillButtonTarget.SetTarget(HUDManager().KillButton, null, GetRole<Vulture>(PlayerControl.LocalPlayer));
 
                 if (PlayerControl.LocalPlayer.Is(RoleEnum.Investigator)) Footprint.DestroyAll(GetRole<Investigator>(PlayerControl.LocalPlayer));
-                if (PlayerControl.LocalPlayer.Is(RoleEnum.Crusader)) DestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(false);
+                if (PlayerControl.LocalPlayer.Is(RoleEnum.Crusader)) HUDManager().KillButton.gameObject.SetActive(false);
 
                 if (PlayerControl.LocalPlayer.Is(RoleEnum.Vigilante)) 
                 {
-                    HudManager.Instance.KillButton.buttonLabelText.gameObject.SetActive(false);
+                    HUDManager().KillButton.buttonLabelText.gameObject.SetActive(false);
                 }
 
                 if (PlayerControl.LocalPlayer.Is(RoleEnum.Hunter))
@@ -139,7 +139,7 @@ namespace TownOfSushi.Roles
                     Object.Destroy(hunterRole.UsesText);
                     hunterRole.StalkButton.SetTarget(null);
                     hunterRole.StalkButton.gameObject.SetActive(false);
-                    HudManager.Instance.KillButton.buttonLabelText.gameObject.SetActive(false);
+                    HUDManager().KillButton.buttonLabelText.gameObject.SetActive(false);
                 }
 
                 if (PlayerControl.LocalPlayer.Is(RoleEnum.Engineer))
@@ -206,11 +206,10 @@ namespace TownOfSushi.Roles
                 role2.CorrectShot = killsList.CorrectShot;
                 role2.CorrectDeputyShot = killsList.CorrectDeputyShot;
                 role2.CorrectAssassinKills = killsList.CorrectAssassinKills;
-                role2.IncorrectAssassinKills = killsList.IncorrectAssassinKills;
                 role2.ReDoTaskText();
                 ShowTextToast("You are now a Vampire!", 3.5f);
-                SoundManager.Instance.PlaySound(ShipStatus.Instance.SabotageSound, false, 1f, null);
-                Flash(Colors.Vampire);
+                Sound().PlaySound(Ship().SabotageSound, false, 1f, null);
+                Flash(ColorManager.Vampire);
             }
             else
             {
@@ -222,7 +221,6 @@ namespace TownOfSushi.Roles
                 role3.CorrectShot = killsList.CorrectShot;
                 role3.CorrectDeputyShot = killsList.CorrectDeputyShot;
                 role3.CorrectAssassinKills = killsList.CorrectAssassinKills;
-                role3.IncorrectAssassinKills = killsList.IncorrectAssassinKills;
             }
 
             //only add Assassin if the target does not have an ability already
@@ -247,7 +245,7 @@ namespace TownOfSushi.Roles
             var role = GetRole<Vampire>(PlayerControl.LocalPlayer);
 
             biteButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
             biteButton.SetCoolDown(role.BiteTimer(), CustomGameOptions.BiteCd);
 

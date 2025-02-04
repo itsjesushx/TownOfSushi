@@ -19,7 +19,7 @@ namespace TownOfSushi.Roles
             RoleInfo = "The Lookout is a Crewmate that can watch other players during rounds. During meetings they will see all roles who interact with each watched player.";
             LoreText = "With an unwavering gaze and a sharp eye for detail, the Lookout stands vigilant among the stars. As danger lurks in the shadows, their observations become the lifeline for the Crew. Though silent and unseen, their presence is felt in every corner of the ship, uncovering the truth one watchful moment at a time.";
             RoleAlignment = RoleAlignment.CrewInvest;
-            Color = Colors.Lookout;
+            Color = ColorManager.Lookout;
             LastWatched = DateTime.UtcNow;
             RoleType = RoleEnum.Lookout;
             AddToRoleHistory(RoleType);
@@ -42,14 +42,14 @@ namespace TownOfSushi.Roles
         public static Sprite Sprite => TownOfSushi.Arrow;
         public static bool Prefix(KillButton __instance)
         {
-            if (__instance != DestroyableSingleton<HudManager>.Instance.KillButton) return true;
+            if (__instance != HUDManager().KillButton) return true;
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Lookout)) return true;
             var role = Role.GetRole<Lookout>(PlayerControl.LocalPlayer);
             if (!PlayerControl.LocalPlayer.CanMove || role.ClosestPlayer == null) return false;
             var flag2 = role.WatchTimer() == 0f;
             if (!flag2) return false;
             if (!__instance.enabled) return false;
-            var maxDistance = GameOptionsData.KillDistances[GameOptionsManager.Instance.currentNormalGameOptions.KillDistance];
+            var maxDistance = GameOptionsData.KillDistances[VanillaOptions().currentNormalGameOptions.KillDistance];
             if (Vector2.Distance(role.ClosestPlayer.GetTruePosition(),
                 PlayerControl.LocalPlayer.GetTruePosition()) > maxDistance) return false;
             if (role.ClosestPlayer == null) return false;
@@ -83,7 +83,7 @@ namespace TownOfSushi.Roles
     {
         public static void Postfix(MeetingHud __instance)
         {
-            if (PlayerControl.LocalPlayer.Data.IsDead) return;
+            if (IsDead()) return;
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Lookout)) return;
             var loRole = GetRole<Lookout>(PlayerControl.LocalPlayer);
             foreach (var (key, value) in loRole.Watching)
@@ -91,8 +91,8 @@ namespace TownOfSushi.Roles
                 var name = Utils.PlayerById(key).Data.PlayerName;
                 if (value.Count == 0)
                 {
-                    if (DestroyableSingleton<HudManager>.Instance)
-                        DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, $"No players interacted with {name}");
+                    if (HUDManager())
+                        HUDManager().Chat.AddChat(PlayerControl.LocalPlayer, $"No players interacted with {name}");
                 }
                 else
                 {
@@ -102,8 +102,8 @@ namespace TownOfSushi.Roles
                         message += $" {role},";
                     }
                     message = message.Remove(message.Length - 1, 1);
-                    if (DestroyableSingleton<HudManager>.Instance)
-                        DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, message);
+                    if (HUDManager())
+                        HUDManager().Chat.AddChat(PlayerControl.LocalPlayer, message);
                 }
             }
         }
@@ -141,10 +141,10 @@ namespace TownOfSushi.Roles
                 role.UsesText.text = role.UsesLeft + "";
             }
             watchButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
             role.UsesText.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
             if (role.ButtonUsable) watchButton.SetCoolDown(role.WatchTimer(), CustomGameOptions.WatchCooldown);
             else watchButton.SetCoolDown(0f, CustomGameOptions.WatchCooldown);

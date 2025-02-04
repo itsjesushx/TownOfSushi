@@ -15,7 +15,7 @@ namespace TownOfSushi.Roles
             TaskText = () => "Kill players to unlock ability perks";
             RoleInfo = $"The Venerer has multiple abilities during the game, once they reach their first kill, they can camouflage everyone for {CustomGameOptions.AbilityDuration} seconds. After their second kill, they can sprint while camouflaged. After their third kill, they can freeze players in place while sprinting.";
             LoreText = "A relentless force, you grow stronger with every life you take. As the Venerer, each kill you make unlocks new, powerful abilities that enhance your deception and manipulation. The more you strike, the more dangerous you become, allowing you to further deceive, confuse, and overpower the crew. Your power only grows, making you an increasingly deadly threat as time goes on.";
-            Color = Colors.Impostor;
+            Color = ColorManager.Impostor;
             LastCamouflaged = DateTime.UtcNow;
             RoleType = RoleEnum.Venerer;
             Faction = Faction.Impostors;
@@ -76,7 +76,7 @@ namespace TownOfSushi.Roles
             if (!flag) return true;
             if (!PlayerControl.LocalPlayer.CanMove) return false;
             if (MushroomSabotageActive()) return false;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return false;
+            if (IsDead()) return false;
             var role = GetRole<Venerer>(PlayerControl.LocalPlayer);
             if (__instance == role.AbilityButton)
             {
@@ -122,7 +122,7 @@ namespace TownOfSushi.Roles
             else if (role.Kills == 2) role.AbilityButton.graphic.sprite = CamoSprintSprite;
             else role.AbilityButton.graphic.sprite = CamoSprintFreezeSprite;
             role.AbilityButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
 
             if (role.IsCamouflaged)

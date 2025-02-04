@@ -13,7 +13,7 @@ namespace TownOfSushi.Roles
             TaskText = () => "Find the killers with your abilities";
             RoleInfo = $"The mystic works similar to the Investigator, but with a twist. The Mystic can examine a player to see if they have killed someone recently. If the player has killed someone, the Mystic will be able to see the role/Faction of the killer. The Mystic can also examine a dead body to see who killed them and what role the killer is. The Mystic also gets a list of the possible roles that the examined player can be in meetings. Finally, the Mystic gets a flash and an Arrow pointing to dead bodies for {CustomGameOptions.MysticArrowDuration} seconds.";
             LoreText = "Gifted with an otherworldly sense, you can detect the echoes of violence and betrayal aboard the ship. As the Mystic, you unravel the mysteries behind the deaths of your crewmates, piecing together the truth to uncover the Impostors. Your intuition and insight are vital to the survival of the crew.";
-            Color = Colors.Mystic;
+            Color = ColorManager.Mystic;
             RoleType = RoleEnum.Mystic;
             Faction = Faction.Crewmates;
             AddToRoleHistory(RoleType);
@@ -44,7 +44,7 @@ namespace TownOfSushi.Roles
     {
         public static bool Prefix(KillButton __instance)
         {
-            if (__instance != DestroyableSingleton<HudManager>.Instance.KillButton) return true;
+            if (__instance != HUDManager().KillButton) return true;
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Mystic)) return true;
             var role = GetRole<Mystic>(PlayerControl.LocalPlayer);
             if (!PlayerControl.LocalPlayer.CanMove || role.ClosestPlayer == null) return false;
@@ -92,7 +92,7 @@ namespace TownOfSushi.Roles
     {
         public static void Postfix(MeetingHud __instance)
         {
-            if (PlayerControl.LocalPlayer.Data.IsDead) return;
+            if (IsDead()) return;
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Mystic)) return;
             if (!CustomGameOptions.ExamineReportOn) return;
             var MysticRole = GetRole<Mystic>(PlayerControl.LocalPlayer);
@@ -101,8 +101,8 @@ namespace TownOfSushi.Roles
                 var playerResults = MysticBodyReport.PlayerReportFeedback(MysticRole.LastExaminedPlayer);
                 var roleResults = MysticBodyReport.RoleReportFeedback(MysticRole.LastExaminedPlayer);
 
-                if (!string.IsNullOrWhiteSpace(playerResults)) DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, playerResults);
-                if (!string.IsNullOrWhiteSpace(roleResults)) DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, roleResults);
+                if (!string.IsNullOrWhiteSpace(playerResults)) HUDManager().Chat.AddChat(PlayerControl.LocalPlayer, playerResults);
+                if (!string.IsNullOrWhiteSpace(roleResults)) HUDManager().Chat.AddChat(PlayerControl.LocalPlayer, roleResults);
             }
         }
     }
@@ -122,7 +122,7 @@ namespace TownOfSushi.Roles
             var isDead = data.IsDead;
             var truePosition = PlayerControl.LocalPlayer.GetTruePosition();
 
-            if (!PlayerControl.LocalPlayer.Data.IsDead)
+            if (!IsDead())
             {
                 var validBodies = Object.FindObjectsOfType<DeadBody>().Where(x =>
                     Murder.KilledPlayers.Any(y => y.PlayerId == x.ParentId && y.KillTime.AddSeconds(CustomGameOptions.MysticArrowDuration) > System.DateTime.UtcNow));
@@ -182,7 +182,7 @@ namespace TownOfSushi.Roles
             var role = GetRole<Mystic>(PlayerControl.LocalPlayer);
 
             examineButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
             examineButton.SetCoolDown(role.ExamineTimer(), CustomGameOptions.MysticExamineCd);
             SetTarget(ref role.ClosestPlayer, examineButton, float.NaN);
@@ -293,7 +293,7 @@ namespace TownOfSushi.Roles
                 return "(Engineer, Escapist, Grenadier, Guardian Angel, Medic or Romantic)";
             else if (player.Is(RoleEnum.Executioner) || player.Is(RoleEnum.Jester)
                  || player.Is(RoleEnum.Hunter) || player.Is(RoleEnum.Swapper) || player.Is(RoleEnum.Veteran))
-                return "(Executioner, Jester, Hunter, Swapper, Traitor or Veteran)";
+                return "(Executioner, Jester, Hunter, Swapper or Veteran)";
             else if (player.Is(RoleEnum.Bomber) || player.Is(RoleEnum.Jailor) || player.Is(RoleEnum.Juggernaut) || player.Is(RoleEnum.Pestilence)
                  || player.Is(RoleEnum.Vigilante) || player.Is(RoleEnum.BountyHunter) || player.Is(RoleEnum.Warlock))
                 return "(Bomber, Juggernaut, Pestilence, Bounty Hunter, Vigilante, Jailor or Warlock)";
@@ -340,8 +340,8 @@ namespace TownOfSushi.Roles
             if (string.IsNullOrWhiteSpace(reportMsg))
                 return;
 
-            if (DestroyableSingleton<HudManager>.Instance)
-                DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, reportMsg);
+            if (HUDManager())
+                HUDManager().Chat.AddChat(PlayerControl.LocalPlayer, reportMsg);
         }
     }
 }

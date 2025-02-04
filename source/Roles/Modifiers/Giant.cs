@@ -7,7 +7,7 @@ namespace TownOfSushi.Roles.Modifiers
             var slowText = CustomGameOptions.GiantSlow != 1? " and slow!" : "!";
             Name = "Giant";
             TaskText = () => "You are ginormous" + slowText;
-            Color = Colors.Giant;
+            Color = ColorManager.Giant;
             ModifierType = ModifierEnum.Giant;
         }
 

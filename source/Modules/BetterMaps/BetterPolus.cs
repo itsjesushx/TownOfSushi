@@ -1,4 +1,4 @@
-namespace TownOfSushi.Modules
+namespace TownOfSushi.Modules.BetterMaps.BetterPolus
 {
     [HarmonyPatch(typeof(ShipStatus))]
     public static class BetterPolus

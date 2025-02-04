@@ -48,7 +48,7 @@ namespace TownOfSushi.Roles
         {
             Enabled = true;
             TimeRemaining -= Time.deltaTime;
-            if (MeetingHud.Instance) Detonated = true;
+            if (Meeting()) Detonated = true;
             if (TimeRemaining <= 0 && !Detonated)
             {
                 var bomber = GetRole<Bomber>(PlayerControl.LocalPlayer);
@@ -115,7 +115,7 @@ namespace TownOfSushi.Roles
             }
 
             role.PlantButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
 
             if (role.Detonating)
@@ -139,13 +139,13 @@ namespace TownOfSushi.Roles
                     role.PlantButton.graphic.material.SetFloat("_Desat", 0f);
                 }
                 role.PlantButton.SetCoolDown(PlayerControl.LocalPlayer.killTimer,
-                    GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown);
+                    VanillaOptions().currentNormalGameOptions.KillCooldown);
             }
 
             role.PlantButton.graphic.color = Palette.EnabledColor;
             role.PlantButton.graphic.material.SetFloat("_Desat", 0f);
             if (role.PlantButton.graphic.sprite == PlantSprite) role.PlantButton.SetCoolDown(PlayerControl.LocalPlayer.killTimer, 
-                GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown);
+                VanillaOptions().currentNormalGameOptions.KillCooldown);
             else role.PlantButton.SetCoolDown(role.TimeRemaining, CustomGameOptions.DetonateDelay);
         }
     }
@@ -160,7 +160,7 @@ namespace TownOfSushi.Roles
             var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Bomber);
             if (!flag) return true;
             if (!PlayerControl.LocalPlayer.CanMove) return false;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return false;
+            if (IsDead()) return false;
             var role = GetRole<Bomber>(PlayerControl.LocalPlayer);
             if (role.StartTimer() > 0) return false;
 
@@ -183,13 +183,13 @@ namespace TownOfSushi.Roles
                     role.PlantButton.SetCoolDown(role.TimeRemaining, CustomGameOptions.DetonateDelay);
                     if (PlayerControl.LocalPlayer.Is(ModifierEnum.Underdog))
                     {
-                        var lowerKC = GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown - CustomGameOptions.UnderdogKillBonus + CustomGameOptions.DetonateDelay;
-                        var normalKC = GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown + CustomGameOptions.DetonateDelay;
-                        var upperKC = GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown + CustomGameOptions.UnderdogKillBonus + CustomGameOptions.DetonateDelay;
+                        var lowerKC = VanillaOptions().currentNormalGameOptions.KillCooldown - CustomGameOptions.UnderdogKillBonus + CustomGameOptions.DetonateDelay;
+                        var normalKC = VanillaOptions().currentNormalGameOptions.KillCooldown + CustomGameOptions.DetonateDelay;
+                        var upperKC = VanillaOptions().currentNormalGameOptions.KillCooldown + CustomGameOptions.UnderdogKillBonus + CustomGameOptions.DetonateDelay;
                         PlayerControl.LocalPlayer.SetKillTimer(UnderdogPerformKill.LastImp() ? lowerKC : (UnderdogPerformKill.IncreasedKC() ? normalKC : upperKC));
                     }
-                    else PlayerControl.LocalPlayer.SetKillTimer(GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown + CustomGameOptions.DetonateDelay);
-                    DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(null);
+                    else PlayerControl.LocalPlayer.SetKillTimer(VanillaOptions().currentNormalGameOptions.KillCooldown + CustomGameOptions.DetonateDelay);
+                    HUDManager().KillButton.SetTarget(null);
                     role.Bomb = BombExtentions.CreateBomb(pos);
                     StartRPC(CustomRPC.Plant, pos.x, pos.y, pos.z);
                     return false;

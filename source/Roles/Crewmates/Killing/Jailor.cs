@@ -20,7 +20,7 @@ namespace TownOfSushi.Roles
             TaskText = () => "Execute and speak to the <color=#FF0000FF>Killers</color>";
             RoleInfo = "The Jailor is able to jail a player during meetings, jailing a player automatically makes them unable to chat with anyone but the Jailor in meetings. The jailor can talk to their jailee by typing /jail in the chat. The Jailor may execute their jailee if they believe they are an Impostor. If the Jailor executes an innocent player, they lose the ability to jail and execute for the rest of the game.";
             LoreText = "A stern enforcer of justice, you specialize in imprisoning and executing the Impostors that threaten the crew. As the Jailor, you have the power to confine suspected killers and interrogate them before making the final, irreversible decision. Your sense of duty and unwavering resolve make you a vital figure in maintaining order and eliminating the threat of the Impostors.";            
-            Color = Colors.Jailor;
+            Color = ColorManager.Jailor;
             LastJailed = DateTime.UtcNow;
             RoleAlignment = RoleAlignment.CrewKilling;
             RoleType = RoleEnum.Jailor;
@@ -67,7 +67,7 @@ namespace TownOfSushi.Roles
 
         public static void GenButton(Jailor role, int index)
         {
-            var voteArea = MeetingHud.Instance.playerStates[index];
+            var voteArea = Meeting().playerStates[index];
             var confirmButton = voteArea.Buttons.transform.GetChild(0).gameObject;
 
             var newButton = Object.Instantiate(confirmButton, voteArea.transform);
@@ -122,15 +122,15 @@ namespace TownOfSushi.Roles
 
         public static void ExecuteKill(Jailor jailor, PlayerControl player)
         {
-            PlayerVoteArea voteArea = MeetingHud.Instance.playerStates.First(
+            PlayerVoteArea voteArea = Meeting().playerStates.First(
                 x => x.TargetPlayerId == player.PlayerId
             );
 
-            var hudManager = DestroyableSingleton<HudManager>.Instance;
+            var hudManager = HUDManager();
 
                try
                 {
-                    SoundManager.Instance.PlaySound(PlayerControl.LocalPlayer.KillSfx, false, 1f);
+                    Sound().PlaySound(PlayerControl.LocalPlayer.KillSfx, false, 1f);
                 } catch {}
                 if (PlayerControl.LocalPlayer == player) {
                     hudManager.KillOverlay.ShowKillAnimation(player.Data, player.Data);
@@ -147,7 +147,7 @@ namespace TownOfSushi.Roles
                 player.RpcSetScanner(false);
                 ImportantTextTask importantTextTask = new GameObject("_Player").AddComponent<ImportantTextTask>();
                 importantTextTask.transform.SetParent(AmongUsClient.Instance.transform, false);
-                if (!GameOptionsManager.Instance.currentNormalGameOptions.GhostsDoTasks)
+                if (!VanillaOptions().currentNormalGameOptions.GhostsDoTasks)
                 {
                     for (int i = 0; i < player.myTasks.Count; i++)
                     {
@@ -241,7 +241,7 @@ namespace TownOfSushi.Roles
             voteArea.XMark.gameObject.SetActive(true);
             voteArea.XMark.transform.localScale = Vector3.one;
 
-            var meetingHud = MeetingHud.Instance;
+            var meetingHud = Meeting();
             if (amOwner)
             {
                 meetingHud.SetForegroundForDead();
@@ -264,7 +264,7 @@ namespace TownOfSushi.Roles
                 }
             }
 
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Imitator) && !PlayerControl.LocalPlayer.Data.IsDead)
+            if (PlayerControl.LocalPlayer.Is(RoleEnum.Imitator) && !IsDead())
             {
                 var imitatorRole = GetRole<Imitator>(PlayerControl.LocalPlayer);
                 if (!meetingHud.playerStates[PlayerControl.LocalPlayer.PlayerId].DidVote)
@@ -298,7 +298,7 @@ namespace TownOfSushi.Roles
                     }
             }
 
-            if (PlayerControl.LocalPlayer.Data.IsDead) return;
+            if (IsDead()) return;
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Jailor)) return;
             var jailorRole = GetRole<Jailor>(PlayerControl.LocalPlayer);
             if (jailorRole.Executes <= 0 || jailorRole.Jailed.Data.IsDead || jailorRole.Jailed.Data.Disconnected) return;
@@ -325,7 +325,7 @@ namespace TownOfSushi.Roles
             var role = GetRole<Jailor>(PlayerControl.LocalPlayer);
 
             jailButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
 
             if (role.CanJail)
@@ -346,23 +346,23 @@ namespace TownOfSushi.Roles
     {
         public static void Postfix(MeetingHud __instance)
         {
-            if (PlayerControl.LocalPlayer.Data.IsDead) return;
+            if (IsDead()) return;
             if (PlayerControl.LocalPlayer.IsJailed())
             {
                 if (PlayerControl.LocalPlayer.Is(Faction.Crewmates))
                 {
-                    DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, "You are jailed, provide relevant information to the Jailor to prove you are Crew");
+                    HUDManager().Chat.AddChat(PlayerControl.LocalPlayer, "You are jailed, provide relevant information to the Jailor to prove you are Crew");
                 }
                 else
                 {
-                    DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, "You are jailed, convince the Jailor that you are Crew to avoid being executed");
+                    HUDManager().Chat.AddChat(PlayerControl.LocalPlayer, "You are jailed, convince the Jailor that you are Crew to avoid being executed");
                 }
             }
             else if (PlayerControl.LocalPlayer.Is(RoleEnum.Jailor))
             {
                 var jailor = GetRole<Jailor>(PlayerControl.LocalPlayer);
                 if (jailor.Jailed.Data.IsDead || jailor.Jailed.Data.Disconnected) return;
-                DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, "Use /jail to communicate with your jailee");
+                HUDManager().Chat.AddChat(PlayerControl.LocalPlayer, "Use /jail to communicate with your jailee");
             }
         }
     }
@@ -372,7 +372,7 @@ namespace TownOfSushi.Roles
     {
         public static bool Prefix(KillButton __instance)
         {
-            if (__instance != DestroyableSingleton<HudManager>.Instance.KillButton) return true;
+            if (__instance != HUDManager().KillButton) return true;
             var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Jailor);
             if (!flag) return true;
             var role = GetRole<Jailor>(PlayerControl.LocalPlayer);

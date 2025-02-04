@@ -6,7 +6,7 @@ namespace TownOfSushi.Roles.Modifiers
         {
             Name = "Diseased";
             TaskText = () => "Killing you gives Impostors a high cooldown";
-            Color = Colors.Diseased;
+            Color = ColorManager.Diseased;
             ModifierType = ModifierEnum.Diseased;
         }
     }
@@ -19,7 +19,7 @@ namespace TownOfSushi.Roles.Modifiers
             public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
             {
                 if (target.Is(ModifierEnum.Diseased))
-                    __instance.SetKillTimer(GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown * CustomGameOptions.DiseasedMultiplier);
+                    __instance.SetKillTimer(VanillaOptions().currentNormalGameOptions.KillCooldown * CustomGameOptions.DiseasedMultiplier);
             }
         }
     }

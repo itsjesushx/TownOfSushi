@@ -9,8 +9,8 @@ namespace TownOfSushi.Patches
         {
             if (CustomGameOptions.ColourblindComms)
             {
-                if (ShipStatus.Instance != null)
-                    switch (GameOptionsManager.Instance.currentNormalGameOptions.MapId)
+                if (Ship() != null)
+                    switch (VanillaOptions().currentNormalGameOptions.MapId)
                     {
                         default:
                         case 0:
@@ -18,7 +18,7 @@ namespace TownOfSushi.Patches
                         case 3:
                         case 4:
                         case 6:
-                            var comms1 = ShipStatus.Instance.Systems[SystemTypes.Comms].Cast<HudOverrideSystemType>();
+                            var comms1 = Ship().Systems[SystemTypes.Comms].Cast<HudOverrideSystemType>();
                             if (comms1.IsActive)
                             {
                                 CommsEnabled = true;
@@ -29,7 +29,7 @@ namespace TownOfSushi.Patches
                             break;
                         case 1:
                         case 5:
-                            var comms2 = ShipStatus.Instance.Systems[SystemTypes.Comms].Cast<HqHudSystemType>();
+                            var comms2 = Ship().Systems[SystemTypes.Comms].Cast<HqHudSystemType>();
                             if (comms2.IsActive)
                             {
                                 CommsEnabled = true;

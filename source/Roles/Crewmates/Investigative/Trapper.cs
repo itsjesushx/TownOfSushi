@@ -19,7 +19,7 @@ namespace TownOfSushi.Roles
             TaskText = () => "Place traps to find roles";
             RoleInfo = $"The Trapper is able to place traps around the map, when a player walks over the trap  for {CustomGameOptions.MinAmountOfTimeInTrap} seconds they will be caught in it. The Trapper can then see what roles were caught in their trap during the meeting if the players that walked over the trap were min {CustomGameOptions.MinAmountOfPlayersInTrap} {playerOrPlayers}.";
             LoreText = "A stealthy and strategic expert, you specialize in setting traps to catch the killers in the act. As the Trapper, you can place traps around the map to catch unsuspecting players. Your keen sense of timing and knowledge of the environment make you a crucial asset in hunting down the Impostors hiding among the crew.";
-            Color = Colors.Trapper;
+            Color = ColorManager.Trapper;
             RoleType = RoleEnum.Trapper;
             AddToRoleHistory(RoleType);
             LastTrapped = DateTime.UtcNow;
@@ -77,10 +77,10 @@ namespace TownOfSushi.Roles
             }
 
             trapButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
             role.UsesText.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
             if (role.ButtonUsable) trapButton.SetCoolDown(role.TrapTimer(), CustomGameOptions.TrapCooldown);
             else trapButton.SetCoolDown(0f, CustomGameOptions.TrapCooldown);
@@ -105,16 +105,16 @@ namespace TownOfSushi.Roles
     {
         public static void Postfix(MeetingHud __instance)
         {
-            if (PlayerControl.LocalPlayer.Data.IsDead) return;
+            if (IsDead()) return;
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Trapper)) return;
             var trapperRole = GetRole<Trapper>(PlayerControl.LocalPlayer);
             if (trapperRole.trappedPlayers.Count == 0)
                 {
-                    DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, ColorString(Color.red, "No players entered any of your traps"));
+                    HUDManager().Chat.AddChat(PlayerControl.LocalPlayer, ColorString(Color.red, "No players entered any of your traps"));
                 }
                 else if (trapperRole.trappedPlayers.Count < CustomGameOptions.MinAmountOfPlayersInTrap)
                 {
-                    DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, ColorString(Color.red, "Not enough players triggered your traps"));
+                    HUDManager().Chat.AddChat(PlayerControl.LocalPlayer, ColorString(Color.red, "Not enough players triggered your traps"));
                 }
             else
             {
@@ -124,8 +124,8 @@ namespace TownOfSushi.Roles
                     message += $" {role},";
                 }
                 message.Remove(message.Length - 1, 1);
-                if (DestroyableSingleton<HudManager>.Instance)
-                    DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, message);
+                if (HUDManager())
+                    HUDManager().Chat.AddChat(PlayerControl.LocalPlayer, message);
             }
         }
     }
@@ -135,10 +135,10 @@ namespace TownOfSushi.Roles
     {
         public static bool Prefix(KillButton __instance)
         {
-            if (__instance != DestroyableSingleton<HudManager>.Instance.KillButton) return true;
+            if (__instance != HUDManager().KillButton) return true;
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Trapper)) return true;
             if (!PlayerControl.LocalPlayer.CanMove) return false;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return false;
+            if (IsDead()) return false;
             var role = GetRole<Trapper>(PlayerControl.LocalPlayer);
             if (!(role.TrapTimer() == 0f)) return false;
             if (!__instance.enabled) return false;

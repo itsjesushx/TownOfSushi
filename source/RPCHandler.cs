@@ -798,8 +798,8 @@ namespace TownOfSushi
                                 var crusaderRole2 = GetRole<Crusader>(crusaderPlayer);
                                 if (PlayerControl.LocalPlayer == crusaderPlayer) 
                                 {
-                                    Flash(Colors.Crusader, 0.7f);
-                                    SoundManager.Instance.PlaySound(ShipStatus.Instance.SabotageSound, false, 1f, null);
+                                    Flash(ColorManager.Crusader, 0.7f);
+                                    Sound().PlaySound(Ship().SabotageSound, false, 1f, null);
                                 }
                                 break;
                         }
@@ -826,9 +826,9 @@ namespace TownOfSushi
                         break;
                     case CustomRPC.SetSwaps:
                         readSByte = reader.ReadSByte();
-                        SwapVotes.Swap1 = MeetingHud.Instance.playerStates.FirstOrDefault(x => x.TargetPlayerId == readSByte);
+                        SwapVotes.Swap1 = Meeting().playerStates.FirstOrDefault(x => x.TargetPlayerId == readSByte);
                         readSByte2 = reader.ReadSByte();
-                        SwapVotes.Swap2 = MeetingHud.Instance.playerStates.FirstOrDefault(x => x.TargetPlayerId == readSByte2);
+                        SwapVotes.Swap2 = Meeting().playerStates.FirstOrDefault(x => x.TargetPlayerId == readSByte2);
                         PluginSingleton<TownOfSushi>.Instance.Log.LogMessage("Bytes received - " + readSByte + " - " + readSByte2);
                         break;
                     case CustomRPC.EngineerFix:
@@ -836,7 +836,7 @@ namespace TownOfSushi
                         GetRole<Engineer>(engineer).MaxUses -= 1;
                         break;
                     case CustomRPC.FixLights:
-                        var lights = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
+                        var lights = Ship().Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
                         lights.ActualSwitches = lights.ExpectedSwitches;
                         break;
                     case CustomRPC.Bite:
@@ -1141,7 +1141,7 @@ namespace TownOfSushi
                                 .Cast<IDisconnectHandler>());
                             if (GameManager.Instance.CheckTaskCompletion()) return;
 
-                            DestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(buttonBarry);
+                            HUDManager().OpenMeetingRoom(buttonBarry);
                             buttonBarry.RpcStartMeeting(null);
                         }
                         break;
@@ -1313,7 +1313,7 @@ namespace TownOfSushi
                             body.gameObject.Destroy();
                         break;
                     case CustomRPC.SubmergedFixOxygen:
-                        SubmergedCompatibility.RepairOxygen();
+                        RepairOxygen();
                         break;
                     case CustomRPC.SetPos:
                         var setplayer = PlayerById(reader.ReadByte());
@@ -1324,14 +1324,14 @@ namespace TownOfSushi
                         break;
                     case CustomRPC.SetSettings:
                         readByte = reader.ReadByte();
-                        GameOptionsManager.Instance.currentNormalGameOptions.MapId = readByte == byte.MaxValue ? (byte)0 : readByte;
-                        GameOptionsManager.Instance.currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Scientist, 0, 0);
-                        GameOptionsManager.Instance.currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Engineer, 0, 0);
-                        GameOptionsManager.Instance.currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.GuardianAngel, 0, 0);
-                        GameOptionsManager.Instance.currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Tracker, 0, 0);
-                        GameOptionsManager.Instance.currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Noisemaker, 0, 0);
-                        GameOptionsManager.Instance.currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Shapeshifter, 0, 0);
-                        GameOptionsManager.Instance.currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Phantom, 0, 0);
+                        VanillaOptions().currentNormalGameOptions.MapId = readByte == byte.MaxValue ? (byte)0 : readByte;
+                        VanillaOptions().currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Scientist, 0, 0);
+                        VanillaOptions().currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Engineer, 0, 0);
+                        VanillaOptions().currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.GuardianAngel, 0, 0);
+                        VanillaOptions().currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Tracker, 0, 0);
+                        VanillaOptions().currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Noisemaker, 0, 0);
+                        VanillaOptions().currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Shapeshifter, 0, 0);
+                        VanillaOptions().currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Phantom, 0, 0);
                         break;
                 }
             }
@@ -1395,7 +1395,7 @@ namespace TownOfSushi
                     StartRPC(CustomRPC.Start, byte.MaxValue);
                 }
 
-                if (GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek) return;
+                if (IsHideNSeek()) return;
                 
                 #region Crewmate Roles
                     
@@ -1528,7 +1528,7 @@ namespace TownOfSushi
                 if (CustomGameOptions.SwooperOn > 0 && !FungleMap())
                     ImpostorConcealingRoles.Add((typeof(Swooper), CustomGameOptions.SwooperOn, false || CustomGameOptions.UniqueRoles));
 
-                if (CustomGameOptions.JanitorOn > 0)
+                if (GetAdjustedImposters.CanSpawn && CustomGameOptions.JanitorOn > 0)
                     ImpostorSupportRoles.Add((typeof(Janitor), CustomGameOptions.JanitorOn, false || CustomGameOptions.UniqueRoles));
 
                 if (CustomGameOptions.GrenadierOn > 0)
@@ -1543,7 +1543,7 @@ namespace TownOfSushi
                 if (CustomGameOptions.BomberOn > 0)
                     ImpostorKillingRoles.Add((typeof(Bomber), CustomGameOptions.BomberOn, true));
                 
-                if (CustomGameOptions.BountyHunterOn > 0)
+                if (GetAdjustedImposters.CanSpawn && CustomGameOptions.BountyHunterOn > 0)
                     ImpostorKillingRoles.Add((typeof(BountyHunter), CustomGameOptions.BountyHunterOn, true));
 
                 if (CustomGameOptions.WarlockOn > 0)
@@ -1614,7 +1614,7 @@ namespace TownOfSushi
                 if (Check(CustomGameOptions.SaboteurOn))
                     ImpostorModifiers.Add((typeof(Saboteur), CustomGameOptions.SaboteurOn));
 
-                if (Check(CustomGameOptions.UnderdogOn))
+                if (GetAdjustedImposters.CanSpawn &&  Check(CustomGameOptions.UnderdogOn))
                     ImpostorModifiers.Add((typeof(Underdog), CustomGameOptions.UnderdogOn));
                 #endregion
 

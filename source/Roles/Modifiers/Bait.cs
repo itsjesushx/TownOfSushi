@@ -6,7 +6,7 @@ namespace TownOfSushi.Roles.Modifiers
         {
             Name = "Bait";
             TaskText = () => "Killing you causes an instant self-report";
-            Color = Colors.Bait;
+            Color = ColorManager.Bait;
             ModifierType = ModifierEnum.Bait;
         }
     }

@@ -5,7 +5,7 @@
         public Juggernaut(PlayerControl owner) : base(owner)
         {
             Name = "Juggernaut";
-            Color = Colors.Juggernaut;
+            Color = ColorManager.Juggernaut;
             LastKill = DateTime.UtcNow;
             RoleType = RoleEnum.Juggernaut;
             StartText = () => "Your Power Grows With Every Kill";
@@ -37,7 +37,7 @@
         {
             var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Juggernaut);
             if (!flag) return true;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return false;
+            if (IsDead()) return false;
             if (!PlayerControl.LocalPlayer.CanMove) return false;
             var role = GetRole<Juggernaut>(PlayerControl.LocalPlayer);
             if (role.Player.inVent) return false;
@@ -78,7 +78,7 @@
             var role = GetRole<Juggernaut>(PlayerControl.LocalPlayer);
 
             __instance.KillButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
 
             if (CustomGameOptions.JuggKCd - CustomGameOptions.ReducedKCdPerKill * role.JuggKills <= 0) __instance.KillButton.SetCoolDown(role.KillTimer(), 0.01f);

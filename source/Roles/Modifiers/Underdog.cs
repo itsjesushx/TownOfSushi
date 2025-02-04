@@ -8,11 +8,11 @@
             TaskText = () => LastImp()
                 ? "You have a shortened kill cooldown!"
                 : "You have a long kill cooldown until you're alone";
-            Color = Colors.Impostor;
+            Color = ColorManager.Impostor;
             ModifierType = ModifierEnum.Underdog;
         }
 
-        public float MaxTimer() => UnderdogPerformKill.LastImp() ? GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown - CustomGameOptions.UnderdogKillBonus : (UnderdogPerformKill.IncreasedKC() ? GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown : GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown + CustomGameOptions.UnderdogKillBonus);
+        public float MaxTimer() => UnderdogPerformKill.LastImp() ? VanillaOptions().currentNormalGameOptions.KillCooldown - CustomGameOptions.UnderdogKillBonus : (UnderdogPerformKill.IncreasedKC() ? VanillaOptions().currentNormalGameOptions.KillCooldown : VanillaOptions().currentNormalGameOptions.KillCooldown + CustomGameOptions.UnderdogKillBonus);
         public void SetKillTimer()
         {
             Player.SetKillTimer(MaxTimer());

@@ -5,7 +5,7 @@ namespace TownOfSushi.Patches
     {
         public static bool Prefix(VitalsMinigame __instance)
         {
-            if (PlayerControl.LocalPlayer.Data.IsDead) return true;
+            if (IsDead()) return true;
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Medium) && !CustomGameOptions.MediumVitals)
             {
                 Object.Destroy(__instance.gameObject);

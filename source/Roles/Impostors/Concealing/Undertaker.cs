@@ -11,7 +11,7 @@ namespace TownOfSushi.Roles
             TaskText = () => "Drag bodies";
             RoleInfo = $"The Undertaker can drag bodies around to hide them from being reported. The Undertaker can drag a body to a location and then drop it to hide it from being reported. The Undertaker can only drag a body every {CustomGameOptions.DragCd} seconds. They {canVent}. Their speed is {CustomGameOptions.UndertakerDragSpeed}x.";
             LoreText = "A shadowy figure, you specialize in concealing the aftermath of your deeds. As the Undertaker, you can drag the bodies of the fallen and hide them from view, preventing others from uncovering your dark work. Your ability to erase evidence makes you a dangerous Impostor, leaving no trace of your actions and casting doubt on those who might suspect you.";
-            Color = Colors.Impostor;
+            Color = ColorManager.Impostor;
             LastDragged = DateTime.UtcNow;
             RoleType = RoleEnum.Undertaker;
             Faction = Faction.Impostors;
@@ -70,7 +70,7 @@ namespace TownOfSushi.Roles
                 role.DragDropButton.graphic.sprite = TownOfSushi.DragSprite;
 
             role.DragDropButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
 
 
@@ -80,7 +80,7 @@ namespace TownOfSushi.Roles
                 var isDead = data.IsDead;
                 var truePosition = PlayerControl.LocalPlayer.GetTruePosition();
                 var maxDistance = KillDistance();
-                var flag = (GameOptionsManager.Instance.currentNormalGameOptions.GhostsDoTasks || !data.IsDead) &&
+                var flag = (VanillaOptions().currentNormalGameOptions.GhostsDoTasks || !data.IsDead) &&
                            (!AmongUsClient.Instance || !AmongUsClient.Instance.IsGameOver) &&
                            PlayerControl.LocalPlayer.CanMove;
                 var allocs = Physics2D.OverlapCircleAll(truePosition, maxDistance,
@@ -127,7 +127,7 @@ namespace TownOfSushi.Roles
             var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Undertaker);
             if (!flag) return true;
             if (!PlayerControl.LocalPlayer.CanMove) return false;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return false;
+            if (IsDead()) return false;
             var role = GetRole<Undertaker>(PlayerControl.LocalPlayer);
 
             if (__instance == role.DragDropButton)
@@ -163,7 +163,7 @@ namespace TownOfSushi.Roles
                     if (!abilityUsed) return false;
                     Vector3 position = PlayerControl.LocalPlayer.transform.position;
 
-                    if (SubmergedCompatibility.isSubmerged())
+                    if (IsSubmerged())
                     {
                         if (position.y > -7f)
                         {
@@ -201,7 +201,7 @@ namespace TownOfSushi.Roles
         public static bool Prefix(KillButton __instance)
         {
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Undertaker)) return true;
-            return __instance == DestroyableSingleton<HudManager>.Instance.KillButton;
+            return __instance == HUDManager().KillButton;
         }
 
         public static void SetTarget(KillButton __instance, DeadBody target, Undertaker role)
@@ -249,7 +249,7 @@ namespace TownOfSushi.Roles
             newPos.z = currentPosition.z;
 
             //WHY ARE THERE DIFFERENT LOCAL Z INDEXS FOR DIFFERENT DECALS ON DIFFERENT LEVELS?!?!?!
-            if (SubmergedCompatibility.isSubmerged())
+            if (IsSubmerged())
             {
                 if (newPos.y > -7f)
                 {

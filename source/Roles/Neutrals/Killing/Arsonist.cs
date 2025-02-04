@@ -16,7 +16,7 @@
             TaskText = () => "Douse players and ignite to kill all douses";
             RoleInfo = "The Arsonist is a Neutral role with its own win condition. They have two abilities, one is to douse other players with gasoline. The other is to ignite all doused players. The Arsonist needs to be the last killer alive to win the game.";
             LoreText = "A pyromaniac at heart, you play with fire in the dead of night. As the Arsonist, your mission is to douse players with your deadly fuel and wait for the perfect moment to strike. Once enough victims are soaked in your fire, you ignite the flames, causing an inferno that wipes out all those who are marked. But beware—if you ignite too early, you risk exposing yourself before you’re ready. Patience and precision are your greatest tools.";
-            Color = Colors.Arsonist;
+            Color = ColorManager.Arsonist;
             LastDoused = DateTime.UtcNow;
             RoleType = RoleEnum.Arsonist;
             Faction = Faction.Neutral;
@@ -96,7 +96,7 @@
         [HarmonyPatch(typeof(Object), nameof(Object.Destroy), new Type[] { typeof(GameObject) })]
         public static void Prefix(GameObject obj)
         {
-            if (!SubmergedCompatibility.Loaded || GameOptionsManager.Instance?.currentNormalGameOptions?.MapId != 6) return;
+            if (!Loaded || VanillaOptions()?.currentNormalGameOptions?.MapId != 6) return;
             if (obj.name?.Contains("ExileCutscene") == true) ExileControllerPostfix(ExileControllerPatch.lastExiled);
         }
     }
@@ -125,7 +125,7 @@
             {
                 var player = PlayerById(player1);
                 var data = player?.Data;
-                if (data == null || data.Disconnected || data.IsDead || PlayerControl.LocalPlayer.Data.IsDead)
+                if (data == null || data.Disconnected || data.IsDead || IsDead())
                     continue;
                 var nameText = player.nameText();
                 if (nameText != null)
@@ -138,10 +138,10 @@
             role.IgniteButton.transform.localPosition = new Vector3(-2f, 0f, 0f);
 
             __instance.KillButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
             role.IgniteButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
             if (!role.LastKiller || !CustomGameOptions.IgniteCdRemoved) role.IgniteButton.SetCoolDown(role.DouseTimer(), CustomGameOptions.DouseCd);
             else role.IgniteButton.SetCoolDown(0f, CustomGameOptions.DouseCd);
@@ -206,7 +206,7 @@
         {
             var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Arsonist);
             if (!flag) return true;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return false;
+            if (IsDead()) return false;
             if (!PlayerControl.LocalPlayer.CanMove) return false;
             var role = GetRole<Arsonist>(PlayerControl.LocalPlayer);
             if (!__instance.isActiveAndEnabled || __instance.isCoolingDown) return false;
@@ -244,7 +244,7 @@
                 else return false;
             }
 
-            if (__instance != DestroyableSingleton<HudManager>.Instance.KillButton) return true;
+            if (__instance != HUDManager().KillButton) return true;
             if (role.DousedAlive == CustomGameOptions.MaxDoused) return false;
             if (role.ClosestPlayerDouse == null) return false;
             var distBetweenPlayers = GetDistBetweenPlayers(PlayerControl.LocalPlayer, role.ClosestPlayerDouse);

@@ -7,7 +7,7 @@ namespace TownOfSushi.Roles.Modifiers
         {
             Name = "Double Shot";
             TaskText = () => "You have an extra life when assassinating";
-            Color = Colors.Impostor;
+            Color = ColorManager.Impostor;
             ModifierType = ModifierEnum.DoubleShot;
             LifeUsed = false;
         }

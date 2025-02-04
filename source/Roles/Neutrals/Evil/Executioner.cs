@@ -16,7 +16,7 @@ namespace TownOfSushi.Roles
                     : $"Vote {target.name} out!";
             RoleInfo = "The Executioner is a Neutral role with its own win condition. Their goal is to vote out a player, specified in the beginning of a game. If that player gets voted out, they win the game.";
             LoreText = "A relentless pursuer of chaos, you are tasked with ensuring that a specific player is voted out, no matter the cost. As the Executioner, you must manipulate the votes of others, turning the tide in your favor to eliminate your target. However, your victory is tied to the downfall of your chosen victim, and if they survive, your mission fails. Use your influence wisely, for the fate of your target—and your own—depends on the vote.";            
-            Color = Colors.Executioner;
+            Color = ColorManager.Executioner;
             RoleType = RoleEnum.Executioner;
             Faction = Faction.Neutral;
             AddToRoleHistory(RoleType);
@@ -29,8 +29,8 @@ namespace TownOfSushi.Roles
     {
         public static void Postfix()
         {
-            if (!AmongUsClient.Instance.AmHost || GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek || AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
-            Coroutines.Start(CheckExecutionerWin(ExileController.Instance));
+            if (!AmongUsClient.Instance.AmHost || IsHideNSeek() || AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
+            Coroutines.Start(CheckExecutionerWin(ExiledInstance()));
         }
         private static IEnumerator CheckExecutionerWin(ExileController __instance)
         {
@@ -69,11 +69,11 @@ namespace TownOfSushi.Roles
             if (PlayerControl.LocalPlayer == null) return;
             if (PlayerControl.LocalPlayer.Data == null) return;
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Executioner)) return;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return;
+            if (IsDead()) return;
 
             var role = GetRole<Executioner>(PlayerControl.LocalPlayer);
 
-            if (MeetingHud.Instance != null) UpdateMeeting(MeetingHud.Instance, role);
+            if (Meeting() != null) UpdateMeeting(Meeting(), role);
 
             if (role.target && role.target.nameText() && !CamouflageUnCamouflagePatch.IsCamouflaged) role.target.nameText().text += "<color=#CCCCCCFF> [⦿]</color>";
 

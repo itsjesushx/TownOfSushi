@@ -3,9 +3,10 @@ namespace TownOfSushi.Patches
     [HarmonyPatch(typeof(IGameOptionsExtensions), nameof(IGameOptionsExtensions.GetAdjustedNumImpostors))]
     public class GetAdjustedImposters
     {
+        public static bool CanSpawn = false;
         public static bool Prefix(IGameOptions __instance, ref int __result)
         {
-            if (GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek) return true;
+            if (IsHideNSeek()) return true;
 
             var players = GameData.Instance.PlayerCount;
             var impostors = 0;
@@ -45,6 +46,7 @@ namespace TownOfSushi.Patches
             else if (players < 19 && impostors > 4) impostors = 4;
             else if (impostors > 5) impostors = 5;
             __result = impostors;
+            if (__result > 1) CanSpawn = true;
             return false;
         }
     }

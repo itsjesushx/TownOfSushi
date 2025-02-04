@@ -8,7 +8,7 @@ namespace TownOfSushi.Patches
         [HarmonyPatch(typeof(HauntMenuMinigame), nameof(HauntMenuMinigame.SetFilterText))]
         public static bool Prefix(HauntMenuMinigame __instance)
         {
-            if (GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek) return true;
+            if (IsHideNSeek()) return true;
             var role = GetPlayerRole(__instance.HauntTarget);
             var modifier = GetModifier(__instance.HauntTarget);
             var roleName = role == null ? "" : $"{role.Name}";
@@ -26,7 +26,7 @@ namespace TownOfSushi.Patches
         [HarmonyPatch(typeof(HauntMenuMinigame), nameof(HauntMenuMinigame.MatchesFilter))]
         public static void MatchesFilterPostfix(HauntMenuMinigame __instance, PlayerControl pc, ref bool __result) 
         {
-            if (GameOptionsManager.Instance.currentGameOptions.GameMode != GameModes.Normal) return;
+            if (!IsClassic()) return;
             if (__instance.filterMode == HauntMenuMinigame.HauntFilters.Impostor) 
             {
                 __result = (pc.Data.Role.IsImpostor || pc.Is(RoleAlignment.NeutralEvil) || pc.Is(RoleAlignment.NeutralKilling)) && !pc.Data.IsDead;
@@ -39,7 +39,7 @@ namespace TownOfSushi.Patches
         [HarmonyPatch(typeof(HauntMenuMinigame), nameof(HauntMenuMinigame.Start))]
         public static bool StartPrefix(HauntMenuMinigame __instance) 
         {
-            if (GameOptionsManager.Instance.currentGameOptions.GameMode != GameModes.Normal || !TownOfSushi.DeadSeeRoles.Value) return true;
+            if (!IsClassic() || !TownOfSushi.DeadSeeRoles.Value) return true;
             __instance.FilterButtons[0].gameObject.SetActive(true);
             int numActive = 0;
             int numButtons = __instance.FilterButtons.Count((PassiveButton s) => s.isActiveAndEnabled);

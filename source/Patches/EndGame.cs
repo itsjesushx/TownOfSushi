@@ -16,11 +16,6 @@ namespace TownOfSushi.Patches
             public string PlayerName { get; set; }
             public string GameSummaryText { get; set; }
         }
-        internal class Winners
-        {
-            public string PlayerName { get; set; }
-            public RoleEnum Role { get; set; }
-        }
     }
 
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnGameEnd))]
@@ -42,7 +37,7 @@ namespace TownOfSushi.Patches
                 var ability = info[2] as Ability;
                 var player = GetPlayerRole(playerControl);
 
-                if (info[0] != null)
+                if (role != null)
                 {
                     SummaryText += $"{role.ColorString}{role.Name}</color>";
                 }
@@ -55,31 +50,31 @@ namespace TownOfSushi.Patches
                     
                 if (playerControl.IsShielded())
                 {
-                    SummaryText += $" | {ColorString(Colors.Medic, $"[<b>+</b>]")}";
+                    SummaryText += $" | {ColorString(ColorManager.Medic, $"[<b>+</b>]")}";
                 }
                 if (playerControl.IsFortified())
                 {
-                    SummaryText += $" | {ColorString(Colors.Crusader, $"[<b>+</b>]")}";
+                    SummaryText += $" | {ColorString(ColorManager.Crusader, $"[<b>+</b>]")}";
                 }
                 if (playerControl.IsBeloved())
                 {
-                    SummaryText += $" | {ColorString(Colors.Romantic, $"[♥]")}";
+                    SummaryText += $" | {ColorString(ColorManager.Romantic, $"[♥]")}";
                 }
                 if (playerControl.IsGATarget())
                 {
-                    SummaryText += $" | {ColorString(Colors.GuardianAngel, $"[★]")}";
+                    SummaryText += $" | {ColorString(ColorManager.GuardianAngel, $"[★]")}";
                 }
                 if (playerControl.IsExeTarget())
                 {
-                    SummaryText += $" | {ColorString(Colors.Executioner, $"[⦿]")}";
+                    SummaryText += $" | {ColorString(ColorManager.Executioner, $"[⦿]")}";
                 }
                 if (playerControl.IsSpelled())
                 {
-                    SummaryText += $" | {ColorString(Colors.Impostor, $"[†]")}";
+                    SummaryText += $" | {ColorString(ColorManager.Impostor, $"[†]")}";
                 }
                 if (playerControl.Is(RoleEnum.Vulture) && !VultureWin)
                 {
-                    SummaryText += ColorString(Colors.Vulture, $" | ({GetRole<Vulture>(playerControl).BodiesRemainingToWin()} to eat left)");
+                    SummaryText += $" | {ColorString(ColorManager.Vulture, $" {GetRole<Vulture>(playerControl).BodiesRemainingToWin()}")}";
                 }
                 if (playerControl.HasTasks())
                 {
@@ -102,17 +97,13 @@ namespace TownOfSushi.Patches
                 {
                     SummaryText  += $" | {ColorString(Color.green, $"Guesses: {player.CorrectAssassinKills}")}";
                 }
-                if (player.IncorrectAssassinKills > 0)
-                {
-                    SummaryText  += $" | {ColorString(Color.red, $"Failed Guess")}";
-                }
                 if (player.CorrectVigilanteShot > 0)
                 {
-                    SummaryText  += $" | {ColorString(Colors.Vigilante, $"Correct Shots: {player.CorrectVigilanteShot}")}";
+                    SummaryText  += $" | {ColorString(ColorManager.Vigilante, $"Correct Shots: {player.CorrectVigilanteShot}")}";
                 }
                 if (player.CorrectDeputyShot > 0)
                 {
-                    SummaryText  += $" | {ColorString(Colors.Deputy, $"Correct Shots: {player.CorrectDeputyShot}")}";
+                    SummaryText  += $" | {ColorString(ColorManager.Deputy, $"Correct Shots: {player.CorrectDeputyShot}")}";
                 }
                 if (player.Misfired)
                 {
@@ -153,7 +144,7 @@ namespace TownOfSushi.Patches
             var winnerCount = 0;
             var loserCount = 0;
 
-            roleSummaryText.AppendLine("<size=125%><u><b>Game Summary</b></u>:</size>");
+            roleSummaryText.AppendLine("<size=125%><u><b>Game Stats</b></u>:</size>");
             roleSummaryText.AppendLine();
             winnersText.AppendLine("<size=105%><color=#00FF00FF><b>★ - Winners - ★</b></color></size>");
             losersText.AppendLine("<size=105%><color=#FF0000FF><b>◆ - Losers - ◆</b></color></size>");
@@ -206,7 +197,7 @@ namespace TownOfSushi.Patches
     {
         public static void Postfix()
         {
-            if (!AmongUsClient.Instance.AmHost || GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek || AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
+            if (!AmongUsClient.Instance.AmHost || IsHideNSeek() || AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
             Coroutines.Start(CheckForEndGame());
         }
 
@@ -220,7 +211,6 @@ namespace TownOfSushi.Patches
                 {
                     yield break;
                 }
-
                 var ImpostorsAlive = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(Faction.Impostors) && !x.Data.IsDead && !x.Data.Disconnected && !AssassinExileControllerPatch.AssassinatedPlayers.Contains(x)).ToList();
                 var AliveKillers = PlayerControl.AllPlayerControls.ToArray().Where(x => x.IsKillingRole() && !x.Data.IsDead && !x.Data.Disconnected && !AssassinExileControllerPatch.AssassinatedPlayers.Contains(x)).ToList();
                 var PassiveAlive = PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected && !AssassinExileControllerPatch.AssassinatedPlayers.Contains(x)).ToList();

@@ -16,78 +16,78 @@ namespace TownOfSushi.Roles
             TaskText = () => "Win by guessing player's roles";
             RoleInfo = "The Doomsayer is a Neutral role with its own win condition. Their goal is to assassinate a certain number of players. Once done so they win the game. They have an additional observe ability that hints towards certain player's roles.";
             LoreText = "A harbinger of fate, you see the truth in the chaos around you. As the Doomsayer, your task is to deduce the roles of others, using your sharp intuition and keen observation. Guessing correctly will lead to your victory, but each mistake brings you closer to defeat. Trust no one and use your knowledge wisely, for the game's outcome depends on your ability to uncover the truth behind every player’s role.";
-            Color = Colors.Doomsayer;
+            Color = ColorManager.Doomsayer;
             RoleType = RoleEnum.Doomsayer;
             LastObserved = DateTime.UtcNow;
             Faction = Faction.Neutral;
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.NeutralEvil;
             
-            ColorMapping.Add("Crewmate", Colors.Crewmate);
-            if (CustomGameOptions.EngineerOn > 0) ColorMapping.Add("Engineer", Colors.Engineer);
-            if (CustomGameOptions.ImitatorOn > 0) ColorMapping.Add("Imitator", Colors.Imitator);
-            if (CustomGameOptions.InvestigatorOn > 0) ColorMapping.Add("Investigator", Colors.Investigator);
-            if (CustomGameOptions.HunterOn > 0) ColorMapping.Add("Hunter", Colors.Hunter);
-            if (CustomGameOptions.MedicOn > 0) ColorMapping.Add("Medic", Colors.Medic);
-            if (CustomGameOptions.CrusaderOn > 0) ColorMapping.Add("Crusader", Colors.Crusader);
-            if (CustomGameOptions.MediumOn > 0) ColorMapping.Add("Medium", Colors.Medium);
-            if (CustomGameOptions.LookoutOn > 0) ColorMapping.Add("Lookout", Colors.Lookout);
-            if (CustomGameOptions.DeputyOn > 0) ColorMapping.Add("Deputy", Colors.Deputy);
-            if (CustomGameOptions.SwapperOn > 0) ColorMapping.Add("Swapper", Colors.Swapper);
+            ColorMapping.Add("Crewmate", ColorManager.Crewmate);
+            if (CustomGameOptions.EngineerOn > 0) ColorMapping.Add("Engineer", ColorManager.Engineer);
+            if (CustomGameOptions.ImitatorOn > 0) ColorMapping.Add("Imitator", ColorManager.Imitator);
+            if (CustomGameOptions.InvestigatorOn > 0) ColorMapping.Add("Investigator", ColorManager.Investigator);
+            if (CustomGameOptions.HunterOn > 0) ColorMapping.Add("Hunter", ColorManager.Hunter);
+            if (CustomGameOptions.MedicOn > 0) ColorMapping.Add("Medic", ColorManager.Medic);
+            if (CustomGameOptions.CrusaderOn > 0) ColorMapping.Add("Crusader", ColorManager.Crusader);
+            if (CustomGameOptions.MediumOn > 0) ColorMapping.Add("Medium", ColorManager.Medium);
+            if (CustomGameOptions.LookoutOn > 0) ColorMapping.Add("Lookout", ColorManager.Lookout);
+            if (CustomGameOptions.DeputyOn > 0) ColorMapping.Add("Deputy", ColorManager.Deputy);
+            if (CustomGameOptions.SwapperOn > 0) ColorMapping.Add("Swapper", ColorManager.Swapper);
             // this will be gone for now 
-            //if (CustomGameOptions.JailorOn > 0) ColorMapping.Add("Jailor", Colors.Jailor);
-            if (CustomGameOptions.SeerOn > 0) ColorMapping.Add("Seer", Colors.Seer);
-            if (CustomGameOptions.MysticOn > 0) ColorMapping.Add("Mystic", Colors.Mystic);
-            if (CustomGameOptions.OracleOn > 0) ColorMapping.Add("Oracle", Colors.Oracle);
-            if (CustomGameOptions.DetectiveOn > 0) ColorMapping.Add("Detective", Colors.Detective);
-            if (CustomGameOptions.TrackerOn > 0) ColorMapping.Add("Tracker", Colors.Tracker);
-            if (CustomGameOptions.TrapperOn > 0) ColorMapping.Add("Trapper", Colors.Trapper);
-            if (CustomGameOptions.VeteranOn > 0) ColorMapping.Add("Veteran", Colors.Veteran);
-            if (CustomGameOptions.VigilanteOn > 0) ColorMapping.Add("Vigilante", Colors.Vigilante);
+            //if (CustomGameOptions.JailorOn > 0) ColorMapping.Add("Jailor", ColorManager.Jailor);
+            if (CustomGameOptions.SeerOn > 0) ColorMapping.Add("Seer", ColorManager.Seer);
+            if (CustomGameOptions.MysticOn > 0) ColorMapping.Add("Mystic", ColorManager.Mystic);
+            if (CustomGameOptions.OracleOn > 0) ColorMapping.Add("Oracle", ColorManager.Oracle);
+            if (CustomGameOptions.DetectiveOn > 0) ColorMapping.Add("Detective", ColorManager.Detective);
+            if (CustomGameOptions.TrackerOn > 0) ColorMapping.Add("Tracker", ColorManager.Tracker);
+            if (CustomGameOptions.TrapperOn > 0) ColorMapping.Add("Trapper", ColorManager.Trapper);
+            if (CustomGameOptions.VeteranOn > 0) ColorMapping.Add("Veteran", ColorManager.Veteran);
+            if (CustomGameOptions.VigilanteOn > 0) ColorMapping.Add("Vigilante", ColorManager.Vigilante);
 
             if (CustomGameOptions.DoomsayerGuessNeutralBenign)
             {
-                if (CustomGameOptions.GuardianAngelOn > 0) ColorMapping.Add("Guardian Angel", Colors.GuardianAngel);
-                if (CustomGameOptions.RomanticOn > 0) ColorMapping.Add("Romantic", Colors.Romantic);
-                if (CustomGameOptions.AmnesiacOn > 0 || (CustomGameOptions.ExecutionerOn > 0 && CustomGameOptions.OnTargetDead == OnTargetDead.Amnesiac) || (CustomGameOptions.GuardianAngelOn > 0 && CustomGameOptions.GaOnTargetDeath == BecomeOptions.Amnesiac) || (CustomGameOptions.RomanticOn > 0 && CustomGameOptions.RomanticOnBelovedDeath == RomanticBecomeOptions.Amnesiac)) ColorMapping.Add("Amnesiac", Colors.Amnesiac);
+                if (CustomGameOptions.GuardianAngelOn > 0) ColorMapping.Add("Guardian Angel", ColorManager.GuardianAngel);
+                if (CustomGameOptions.RomanticOn > 0) ColorMapping.Add("Romantic", ColorManager.Romantic);
+                if (CustomGameOptions.AmnesiacOn > 0 || (CustomGameOptions.ExecutionerOn > 0 && CustomGameOptions.OnTargetDead == OnTargetDead.Amnesiac) || (CustomGameOptions.GuardianAngelOn > 0 && CustomGameOptions.GaOnTargetDeath == BecomeOptions.Amnesiac) || (CustomGameOptions.RomanticOn > 0 && CustomGameOptions.RomanticOnBelovedDeath == RomanticBecomeOptions.Amnesiac)) ColorMapping.Add("Amnesiac", ColorManager.Amnesiac);
             }
             if (CustomGameOptions.DoomsayerGuessNeutralEvil)
             {
-                if (!CustomGameOptions.UniqueRoles) ColorMapping.Add("Doomsayer", Colors.Doomsayer);
-                if (CustomGameOptions.ExecutionerOn > 0) ColorMapping.Add("Executioner", Colors.Executioner);
-                if (CustomGameOptions.VultureOn > 0) ColorMapping.Add("Vulture", Colors.Vulture);
-                if (CustomGameOptions.JesterOn > 0 || (CustomGameOptions.ExecutionerOn > 0 && CustomGameOptions.OnTargetDead == OnTargetDead.Jester) || (CustomGameOptions.GuardianAngelOn > 0 && CustomGameOptions.GaOnTargetDeath == BecomeOptions.Jester)) ColorMapping.Add("Jester", Colors.Jester);
+                if (!CustomGameOptions.UniqueRoles) ColorMapping.Add("Doomsayer", ColorManager.Doomsayer);
+                if (CustomGameOptions.ExecutionerOn > 0) ColorMapping.Add("Executioner", ColorManager.Executioner);
+                if (CustomGameOptions.VultureOn > 0) ColorMapping.Add("Vulture", ColorManager.Vulture);
+                if (CustomGameOptions.JesterOn > 0 || (CustomGameOptions.ExecutionerOn > 0 && CustomGameOptions.OnTargetDead == OnTargetDead.Jester) || (CustomGameOptions.GuardianAngelOn > 0 && CustomGameOptions.GaOnTargetDeath == BecomeOptions.Jester)) ColorMapping.Add("Jester", ColorManager.Jester);
             }
             if (CustomGameOptions.DoomsayerGuessNeutralKilling)
             {
-                if (CustomGameOptions.AgentOn > 0 && !PlayerControl.LocalPlayer.Is(RoleEnum.Hitman)) ColorMapping.Add("Hitman", Colors.Hitman);
-                if (CustomGameOptions.AgentOn > 0 && !PlayerControl.LocalPlayer.Is(RoleEnum.Agent)) ColorMapping.Add("Agent", Colors.Agent);
-                if (CustomGameOptions.ArsonistOn > 0) ColorMapping.Add("Arsonist", Colors.Arsonist);
-                if (CustomGameOptions.JuggernautOn > 0) ColorMapping.Add("Juggernaut", Colors.Juggernaut);
-                if (CustomGameOptions.PlaguebearerOn > 0) ColorMapping.Add("Plaguebearer", Colors.Plaguebearer);
-                if (CustomGameOptions.GlitchOn > 0) ColorMapping.Add("Glitch", Colors.Glitch);
-                if (CustomGameOptions.WerewolfOn > 0) ColorMapping.Add("Werewolf", Colors.Werewolf);
-                if (CustomGameOptions.VampireOn > 0) ColorMapping.Add("Vampire", Colors.Vampire);
-                if (CustomGameOptions.SerialKillerOn > 0) ColorMapping.Add("Serial Killer", Colors.SerialKiller);      
+                if (CustomGameOptions.AgentOn > 0 && !PlayerControl.LocalPlayer.Is(RoleEnum.Hitman)) ColorMapping.Add("Hitman", ColorManager.Hitman);
+                if (CustomGameOptions.AgentOn > 0 && !PlayerControl.LocalPlayer.Is(RoleEnum.Agent)) ColorMapping.Add("Agent", ColorManager.Agent);
+                if (CustomGameOptions.ArsonistOn > 0) ColorMapping.Add("Arsonist", ColorManager.Arsonist);
+                if (CustomGameOptions.JuggernautOn > 0) ColorMapping.Add("Juggernaut", ColorManager.Juggernaut);
+                if (CustomGameOptions.PlaguebearerOn > 0) ColorMapping.Add("Plaguebearer", ColorManager.Plaguebearer);
+                if (CustomGameOptions.GlitchOn > 0) ColorMapping.Add("Glitch", ColorManager.Glitch);
+                if (CustomGameOptions.WerewolfOn > 0) ColorMapping.Add("Werewolf", ColorManager.Werewolf);
+                if (CustomGameOptions.VampireOn > 0) ColorMapping.Add("Vampire", ColorManager.Vampire);
+                if (CustomGameOptions.SerialKillerOn > 0) ColorMapping.Add("Serial Killer", ColorManager.SerialKiller);      
             }
 
             if (CustomGameOptions.DoomsayerGuessImpostors && !PlayerControl.LocalPlayer.Is(Faction.Impostors))
             {
-                ColorMapping.Add("Impostor", Colors.Impostor);
-                if (CustomGameOptions.BomberOn > 0) ColorMapping.Add("Bomber", Colors.Impostor);
-                if (CustomGameOptions.BlackmailerOn > 0) ColorMapping.Add("Blackmailer", Colors.Impostor);
-                if (CustomGameOptions.EscapistOn > 0) ColorMapping.Add("Escapist", Colors.Impostor);
-                if (CustomGameOptions.GrenadierOn > 0) ColorMapping.Add("Grenadier", Colors.Impostor);
-                if (CustomGameOptions.JanitorOn > 0) ColorMapping.Add("Janitor", Colors.Impostor);
-                if (CustomGameOptions.WitchOn > 0) ColorMapping.Add("Witch", Colors.Impostor);
-                if (CustomGameOptions.MorphlingOn > 0) ColorMapping.Add("Morphling", Colors.Impostor);
-                if (CustomGameOptions.BountyHunterOn > 0) ColorMapping.Add("Bounty Hunter", Colors.Impostor);
-                if (CustomGameOptions.MinerOn > 0) ColorMapping.Add("Miner", Colors.Impostor);
-                if (CustomGameOptions.SwooperOn > 0) ColorMapping.Add("Swooper", Colors.Impostor);
-                if (CustomGameOptions.VenererOn > 0) ColorMapping.Add("Venerer", Colors.Impostor);
-                if (CustomGameOptions.PoisonerOn > 0) ColorMapping.Add("Poisoner", Colors.Impostor);
-                if (CustomGameOptions.UndertakerOn > 0) ColorMapping.Add("Undertaker", Colors.Impostor);
-                if (CustomGameOptions.WarlockOn > 0) ColorMapping.Add("Warlock", Colors.Impostor);
+                ColorMapping.Add("Impostor", ColorManager.Impostor);
+                if (CustomGameOptions.BomberOn > 0) ColorMapping.Add("Bomber", ColorManager.Impostor);
+                if (CustomGameOptions.BlackmailerOn > 0) ColorMapping.Add("Blackmailer", ColorManager.Impostor);
+                if (CustomGameOptions.EscapistOn > 0) ColorMapping.Add("Escapist", ColorManager.Impostor);
+                if (CustomGameOptions.GrenadierOn > 0) ColorMapping.Add("Grenadier", ColorManager.Impostor);
+                if (CustomGameOptions.JanitorOn > 0) ColorMapping.Add("Janitor", ColorManager.Impostor);
+                if (CustomGameOptions.WitchOn > 0) ColorMapping.Add("Witch", ColorManager.Impostor);
+                if (CustomGameOptions.MorphlingOn > 0) ColorMapping.Add("Morphling", ColorManager.Impostor);
+                if (CustomGameOptions.BountyHunterOn > 0) ColorMapping.Add("Bounty Hunter", ColorManager.Impostor);
+                if (CustomGameOptions.MinerOn > 0) ColorMapping.Add("Miner", ColorManager.Impostor);
+                if (CustomGameOptions.SwooperOn > 0) ColorMapping.Add("Swooper", ColorManager.Impostor);
+                if (CustomGameOptions.VenererOn > 0) ColorMapping.Add("Venerer", ColorManager.Impostor);
+                if (CustomGameOptions.PoisonerOn > 0) ColorMapping.Add("Poisoner", ColorManager.Impostor);
+                if (CustomGameOptions.UndertakerOn > 0) ColorMapping.Add("Undertaker", ColorManager.Impostor);
+                if (CustomGameOptions.WarlockOn > 0) ColorMapping.Add("Warlock", ColorManager.Impostor);
             }
 
             SortedColorMapping = ColorMapping.ToDictionary(x => x.Key, x => x.Value);
@@ -155,7 +155,7 @@ namespace TownOfSushi.Roles
             doomsayerUIExitButton.OnClick.AddListener((System.Action)(() => {
                 __instance.playerStates.ToList().ForEach(x => {
                     x.gameObject.SetActive(true);
-                    if (PlayerControl.LocalPlayer.Data.IsDead && x.transform.FindChild("ShootButton") != null) Object.Destroy(x.transform.FindChild("ShootButton").gameObject);
+                    if (IsDead() && x.transform.FindChild("ShootButton") != null) Object.Destroy(x.transform.FindChild("ShootButton").gameObject);
                 });
                 Object.Destroy(container.gameObject);
             }));
@@ -169,7 +169,7 @@ namespace TownOfSushi.Roles
                 Transform button = Object.Instantiate(buttonTemplate, buttonParent);
                 Transform buttonMask = Object.Instantiate(maskTemplate, buttonParent);
                 TMPro.TextMeshPro label = Object.Instantiate(textTemplate, button);
-                button.GetComponent<SpriteRenderer>().sprite = ShipStatus.Instance.CosmeticsCache.GetNameplate("nameplate_NoPlate").Image;
+                button.GetComponent<SpriteRenderer>().sprite = Ship().CosmeticsCache.GetNameplate("nameplate_NoPlate").Image;
                 buttons.Add(button);
                 int row = i/5, col = i%5;
                 buttonParent.localPosition = new Vector3(-3.47f + 1.75f * col, 1.5f - 0.45f * row, -5);
@@ -181,7 +181,7 @@ namespace TownOfSushi.Roles
                 int copiedIndex = i;
 
                 button.GetComponent<PassiveButton>().OnClick.RemoveAllListeners();
-                if (!PlayerControl.LocalPlayer.Data.IsDead && !PlayerById((byte)__instance.playerStates[buttonTarget].TargetPlayerId).Data.IsDead) button.GetComponent<PassiveButton>().OnClick.AddListener((System.Action)(() => {
+                if (!IsDead() && !PlayerById((byte)__instance.playerStates[buttonTarget].TargetPlayerId).Data.IsDead) button.GetComponent<PassiveButton>().OnClick.AddListener((System.Action)(() => {
                     if (selectedButton != button) {
                         selectedButton = button;
                         buttons.ForEach(x => x.GetComponent<SpriteRenderer>().color = x == selectedButton ? Color.red : Color.white);
@@ -223,7 +223,7 @@ namespace TownOfSushi.Roles
     {
         public static void RpcMurderPlayer(Doomsayer doomsayerP, PlayerControl player, PlayerControl doomsayer)
         {
-            PlayerVoteArea voteArea = MeetingHud.Instance.playerStates.First(
+            PlayerVoteArea voteArea = Meeting().playerStates.First(
                 x => x.TargetPlayerId == player.PlayerId
             );
             RpcMurderPlayer(doomsayerP, voteArea, player, doomsayer);
@@ -237,7 +237,7 @@ namespace TownOfSushi.Roles
 
         public static void MurderPlayer(Doomsayer doomsayerP, PlayerControl player)
         {
-            PlayerVoteArea voteArea = MeetingHud.Instance.playerStates.First(
+            PlayerVoteArea voteArea = Meeting().playerStates.First(
                 x => x.TargetPlayerId == player.PlayerId
             );
             MurderPlayer(doomsayerP, voteArea, player);
@@ -260,12 +260,12 @@ namespace TownOfSushi.Roles
             PlayerControl player
         )
         {
-            var hudManager = DestroyableSingleton<HudManager>.Instance;
+            var hudManager = HUDManager();
             var doomsayerPlayer = doomsayerP.Player;
 
                 try
                 {
-                    SoundManager.Instance.PlaySound(PlayerControl.LocalPlayer.KillSfx, false, 1f);
+                    Sound().PlaySound(PlayerControl.LocalPlayer.KillSfx, false, 1f);
                 } catch {}
                 if (PlayerControl.LocalPlayer == player) {
                     hudManager.KillOverlay.ShowKillAnimation(doomsayerPlayer.Data, player.Data);
@@ -282,13 +282,13 @@ namespace TownOfSushi.Roles
                 player.RpcSetScanner(false);
                 ImportantTextTask importantTextTask = new GameObject("_Player").AddComponent<ImportantTextTask>();
                 importantTextTask.transform.SetParent(AmongUsClient.Instance.transform, false);
-                if (!GameOptionsManager.Instance.currentNormalGameOptions.GhostsDoTasks)
+                if (!VanillaOptions().currentNormalGameOptions.GhostsDoTasks)
                 {
                     for (int i = 0;i < player.myTasks.Count;i++)
                     {
                         PlayerTask playerTask = player.myTasks.ToArray()[i];
                         playerTask.OnRemove();
-                        UnityEngine.Object.Destroy(playerTask.gameObject);
+                        Object.Destroy(playerTask.gameObject);
                     }
 
                     player.myTasks.Clear();
@@ -361,7 +361,7 @@ namespace TownOfSushi.Roles
             voteArea.XMark.gameObject.SetActive(true);
             voteArea.XMark.transform.localScale = Vector3.one;
 
-            var meetingHud = MeetingHud.Instance;
+            var meetingHud = Meeting();
             if (amOwner)
             {
                 meetingHud.SetForegroundForDead();
@@ -437,7 +437,7 @@ namespace TownOfSushi.Roles
             var role = GetRole<Doomsayer>(PlayerControl.LocalPlayer);
 
             __instance.KillButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
 
             __instance.KillButton.SetCoolDown(role.ObserveTimer(), CustomGameOptions.ObserveCooldown);
@@ -450,7 +450,7 @@ namespace TownOfSushi.Roles
     {
         public static void Postfix(MeetingHud __instance)
         {
-            if (PlayerControl.LocalPlayer.Data.IsDead) return;
+            if (IsDead()) return;
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Doomsayer)) return;
             var doomsayerRole = GetRole<Doomsayer>(PlayerControl.LocalPlayer);
             if (doomsayerRole.LastObservedPlayer != null)
@@ -458,8 +458,8 @@ namespace TownOfSushi.Roles
                 var playerResults = PlayerReportFeedback(doomsayerRole.LastObservedPlayer);
                 var roleResults = RoleReportFeedback(doomsayerRole.LastObservedPlayer);
 
-                if (!string.IsNullOrWhiteSpace(playerResults)) DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, playerResults);
-                if (!string.IsNullOrWhiteSpace(roleResults)) DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, roleResults);
+                if (!string.IsNullOrWhiteSpace(playerResults)) HUDManager().Chat.AddChat(PlayerControl.LocalPlayer, playerResults);
+                if (!string.IsNullOrWhiteSpace(roleResults)) HUDManager().Chat.AddChat(PlayerControl.LocalPlayer, roleResults);
             }
         }
 
@@ -493,7 +493,7 @@ namespace TownOfSushi.Roles
             else if (player.Is(RoleEnum.Crewmate) || player.Is(RoleEnum.Impostor))
                 return $"You observe that {player.GetDefaultOutfit().PlayerName} appears to be roleless!";
             else
-                return ColorString(Colors.Impostor,"Error");
+                return ColorString(ColorManager.Impostor,"Error");
         }
 
         public static string RoleReportFeedback(PlayerControl player)
@@ -501,40 +501,40 @@ namespace TownOfSushi.Roles
             if (player.Is(RoleEnum.Imitator) || StartImitate.ImitatingPlayer == player
                 || player.Is(RoleEnum.Morphling) || player.Is(RoleEnum.Mystic)
                 || player.Is(RoleEnum.Glitch))
-                return "(" + ColorString(Colors.Imitator,"Imitator") + ", " + ColorString(Colors.Impostor,"Morphling") +", "+ ColorString(Colors.Mystic,"Mystic") + " or " + ColorString(Colors.Glitch,"Glitch") + ")";
+                return "(" + ColorString(ColorManager.Imitator,"Imitator") + ", " + ColorString(ColorManager.Impostor,"Morphling") +", "+ ColorString(ColorManager.Mystic,"Mystic") + " or " + ColorString(ColorManager.Glitch,"Glitch") + ")";
             
             else if (player.Is(RoleEnum.Blackmailer)|| player.Is(RoleEnum.Doomsayer)
                  || player.Is(RoleEnum.Oracle) || player.Is(RoleEnum.Witch)|| player.Is(RoleEnum.Trapper) || player.Is(RoleEnum.Seer) || player.Is(RoleEnum.Agent))
-                return "(" + ColorString(Colors.Impostor,"Blackmailer") + ", " + ColorString(Colors.Agent,"Agent") + ", " + ColorString(Colors.Seer,"Seer") + ", " + ColorString(Colors.Doomsayer,"Doomsayer") +", "+ ColorString(Colors.Oracle,"Oracle") + ", "+ ColorString(Colors.Impostor,"Witch ") + " or " + ColorString(Colors.Trapper, "Trapper") + ")";
+                return "(" + ColorString(ColorManager.Impostor,"Blackmailer") + ", " + ColorString(ColorManager.Agent,"Agent") + ", " + ColorString(ColorManager.Seer,"Seer") + ", " + ColorString(ColorManager.Doomsayer,"Doomsayer") +", "+ ColorString(ColorManager.Oracle,"Oracle") + ", "+ ColorString(ColorManager.Impostor,"Witch ") + " or " + ColorString(ColorManager.Trapper, "Trapper") + ")";
             
             else if (player.Is(RoleEnum.Amnesiac) || player.Is(RoleEnum.Janitor)
                  || player.Is(RoleEnum.Medium) || player.Is(RoleEnum.Undertaker) || player.Is(RoleEnum.Hitman) ||player.Is(RoleEnum.Vampire)|| player.Is(RoleEnum.Vulture) )
-                return "("+ ColorString(Colors.Amnesiac,"Amnesiac") + ", " + ColorString(Colors.Vulture,"Vulture") + ", " + ColorString(Colors.Impostor,"Janitor") +", "+ ColorString(Colors.Medium,"Medium") + ", "+ ColorString(Colors.Impostor,"Undertaker ")+ ", "+ ColorString(Colors.Hitman,"Hitman ") + " or " + ColorString(Colors.Vampire,"Vampire") + ")";
+                return "("+ ColorString(ColorManager.Amnesiac,"Amnesiac") + ", " + ColorString(ColorManager.Vulture,"Vulture") + ", " + ColorString(ColorManager.Impostor,"Janitor") +", "+ ColorString(ColorManager.Medium,"Medium") + ", "+ ColorString(ColorManager.Impostor,"Undertaker ")+ ", "+ ColorString(ColorManager.Hitman,"Hitman ") + " or " + ColorString(ColorManager.Vampire,"Vampire") + ")";
             
             else if (player.Is(RoleEnum.Investigator) || player.Is(RoleEnum.Swooper) || player.Is(RoleEnum.Lookout) || player.Is(RoleEnum.Tracker)
                  || player.Is(RoleEnum.Venerer) || player.Is(RoleEnum.SerialKiller))
-                return "(" + ColorString(Colors.Investigator,"Investigator") + ", " + ColorString(Colors.Impostor,"Swooper") + ", " + ColorString(Colors.Lookout,"Lookout") + ", " + ColorString(Colors.Tracker,"Tracker") + ", "+ ColorString(Colors.Impostor,"Venerer ") + " or " + ColorString(Colors.SerialKiller,"Serial Killer") + ")";
+                return "(" + ColorString(ColorManager.Investigator,"Investigator") + ", " + ColorString(ColorManager.Impostor,"Swooper") + ", " + ColorString(ColorManager.Lookout,"Lookout") + ", " + ColorString(ColorManager.Tracker,"Tracker") + ", "+ ColorString(ColorManager.Impostor,"Venerer ") + " or " + ColorString(ColorManager.SerialKiller,"Serial Killer") + ")";
             
             else if (player.Is(RoleEnum.Arsonist) || player.Is(RoleEnum.Miner) || player.Is(RoleEnum.Plaguebearer)
                   ||player.Is(RoleEnum.Detective))
-                return "(" + ColorString(Colors.Arsonist,"Arsonist") + ", " + ColorString(Colors.Impostor,"Miner") + ", " + ColorString(Colors.Plaguebearer,"Plaguebearer") + " or "+ ColorString(Colors.Detective,"Detective ")+ ")";
+                return "(" + ColorString(ColorManager.Arsonist,"Arsonist") + ", " + ColorString(ColorManager.Impostor,"Miner") + ", " + ColorString(ColorManager.Plaguebearer,"Plaguebearer") + " or "+ ColorString(ColorManager.Detective,"Detective ")+ ")";
             
             else if (player.Is(RoleEnum.Engineer) || player.Is(RoleEnum.Escapist) || player.Is(RoleEnum.Grenadier)
                 || player.Is(RoleEnum.GuardianAngel) || player.Is(RoleEnum.Medic) || player.Is(RoleEnum.Romantic))
-                return "(" + ColorString(Colors.Engineer,"Engineer") + ", " + ColorString(Colors.Impostor,"Escapist") + ", " + ColorString(Colors.Impostor,"Grenadier") +", " + ColorString(Colors.GuardianAngel,"Guardian Angel") + ", "+ ColorString(Colors.Medic,"Medic ") + " or " + ColorString(Colors.Romantic,"Romantic")+ ")";
+                return "(" + ColorString(ColorManager.Engineer,"Engineer") + ", " + ColorString(ColorManager.Impostor,"Escapist") + ", " + ColorString(ColorManager.Impostor,"Grenadier") +", " + ColorString(ColorManager.GuardianAngel,"Guardian Angel") + ", "+ ColorString(ColorManager.Medic,"Medic ") + " or " + ColorString(ColorManager.Romantic,"Romantic")+ ")";
             
             else if (player.Is(RoleEnum.Executioner) || player.Is(RoleEnum.Jester)
                  ||player.Is(RoleEnum.Hunter) || player.Is(RoleEnum.Swapper) || player.Is(RoleEnum.Veteran))
-                return "(" + ColorString(Colors.Doomsayer,"Doomsayer") + ", " + ColorString(Colors.Jester,"Jester") + ", " + ColorString(Colors.Swapper,"Swapper") + ", " + ColorString(Colors.Hunter,"Hunter") + " or " + ColorString(Colors.Veteran,"Veteran")+ ")";
+                return "(" + ColorString(ColorManager.Doomsayer,"Doomsayer") + ", " + ColorString(ColorManager.Jester,"Jester") + ", " + ColorString(ColorManager.Swapper,"Swapper") + ", " + ColorString(ColorManager.Hunter,"Hunter") + " or " + ColorString(ColorManager.Veteran,"Veteran")+ ")";
             
             else if (player.Is(RoleEnum.Bomber) || player.Is(RoleEnum.Juggernaut) || player.Is(RoleEnum.Pestilence)
                  || player.Is(RoleEnum.Vigilante) || player.Is(RoleEnum.Vigilante) || player.Is(RoleEnum.BountyHunter) || player.Is(RoleEnum.Warlock))
-                return "(" + ColorString(Colors.Impostor,"Bomber") + ", " + ColorString(Colors.Juggernaut,"Juggernaut") + ", " + ColorString(Colors.Impostor,"Bounty Hunter") + ", " + ColorString(Colors.Pestilence,"Pestilence") +", "+ ColorString(Colors.Vigilante,"Vigilante") + ", "+ ColorString(Colors.Vigilante,"Vigilante ") + " or " + ColorString(Colors.Impostor,"Warlock")+ ")";
+                return "(" + ColorString(ColorManager.Impostor,"Bomber") + ", " + ColorString(ColorManager.Juggernaut,"Juggernaut") + ", " + ColorString(ColorManager.Impostor,"Bounty Hunter") + ", " + ColorString(ColorManager.Pestilence,"Pestilence") +", "+ ColorString(ColorManager.Vigilante,"Vigilante") + ", "+ ColorString(ColorManager.Vigilante,"Vigilante ") + " or " + ColorString(ColorManager.Impostor,"Warlock")+ ")";
             
             else if (player.Is(RoleEnum.Crewmate) || player.Is(RoleEnum.Impostor))
-                return "(" + ColorString(Colors.Impostor,"Impostor") + ", " + ColorString(Colors.Crewmate,"Crewmate") + ")";
+                return "(" + ColorString(ColorManager.Impostor,"Impostor") + ", " + ColorString(ColorManager.Crewmate,"Crewmate") + ")";
             
-            else return ColorString(Colors.Impostor,"Error");
+            else return ColorString(ColorManager.Impostor,"Error");
         }
     }
 
@@ -545,7 +545,7 @@ namespace TownOfSushi.Roles
         {
             var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Doomsayer);
             if (!flag) return true;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return false;
+            if (IsDead()) return false;
             if (!PlayerControl.LocalPlayer.CanMove) return false;
             if (!__instance.isActiveAndEnabled || __instance.isCoolingDown) return false;
             var role = GetRole<Doomsayer>(PlayerControl.LocalPlayer);
@@ -554,7 +554,7 @@ namespace TownOfSushi.Roles
             if (role.ClosestPlayer == null) return false;
             var distBetweenPlayers = Utils.GetDistBetweenPlayers(PlayerControl.LocalPlayer, role.ClosestPlayer);
             var flag3 = distBetweenPlayers <
-                        GameOptionsData.KillDistances[GameOptionsManager.Instance.currentNormalGameOptions.KillDistance];
+                        GameOptionsData.KillDistances[VanillaOptions().currentNormalGameOptions.KillDistance];
             if (!flag3) return false;
             var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer);
             if (interact[3] == true)

@@ -6,7 +6,7 @@ namespace TownOfSushi.Roles.Abilities
         {
             Name = "Multitasker";
             TaskText = () => "Your task windows are transparent";
-            Color = Colors.Multitasker;
+            Color = ColorManager.Multitasker;
             AbilityType = AbilityEnum.Multitasker;
         }
     }
@@ -17,9 +17,9 @@ namespace TownOfSushi.Roles.Abilities
         public static void Postfix(HudManager __instance)
         {
             if (!PlayerControl.LocalPlayer.Is(AbilityEnum.Multitasker)) return;
-            if (PlayerControl.LocalPlayer.Data.IsDead || PlayerControl.LocalPlayer.Data.Disconnected) return;
-            if (!Minigame.Instance) return;
-            var Base = Minigame.Instance as MonoBehaviour;
+            if (IsDead() || PlayerControl.LocalPlayer.Data.Disconnected) return;
+            if (!TaskPanel()) return;
+            var Base = TaskPanel() as MonoBehaviour;
             SpriteRenderer[] rends = Base.GetComponentsInChildren<SpriteRenderer>();
             for (int i = 0; i < rends.Length; i++)
             {

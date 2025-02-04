@@ -11,8 +11,8 @@ namespace TownOfSushi
                 && Math.Abs(__instance.killTimer - time) > 2 * Time.deltaTime
                 && GameStarted == false)
             {
-                if (GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek)
-                    time = GameOptionsManager.Instance.currentHideNSeekGameOptions.KillCooldown - 0.25f;
+                if (IsHideNSeek())
+                    time = VanillaOptions().currentHideNSeekGameOptions.KillCooldown - 0.25f;
                 else time = CustomGameOptions.InitialCooldowns - 0.25f;
                 GameStarted = true;
             }
@@ -25,14 +25,14 @@ namespace TownOfSushi
         {
             if (__instance.Data.Role.CanUseKillButton)
             {
-                if (GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown <= 0f)
+                if (VanillaOptions().currentNormalGameOptions.KillCooldown <= 0f)
                 {
                     return false;
                 }
 
-                var maxvalue = time > GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown ? time + 1f : GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown;
+                var maxvalue = time > VanillaOptions().currentNormalGameOptions.KillCooldown ? time + 1f : VanillaOptions().currentNormalGameOptions.KillCooldown;
                 __instance.killTimer = Mathf.Clamp(time, 0, maxvalue);
-                DestroyableSingleton<HudManager>.Instance.KillButton.SetCoolDown(__instance.killTimer, maxvalue);
+                HUDManager().KillButton.SetCoolDown(__instance.killTimer, maxvalue);
             }
 
             return false;

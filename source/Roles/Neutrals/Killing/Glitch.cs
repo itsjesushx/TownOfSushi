@@ -12,7 +12,7 @@ namespace TownOfSushi.Roles
         public Glitch(PlayerControl owner) : base(owner)
         {
             Name = "Glitch";
-            Color = Colors.Glitch;
+            Color = ColorManager.Glitch;
             LastHack = DateTime.UtcNow;
             LastMimic = DateTime.UtcNow;
             LastKill = DateTime.UtcNow;
@@ -43,9 +43,9 @@ namespace TownOfSushi.Roles
         public PlayerControl MimicTarget { get; set; }
         public void Update(HudManager __instance)
         {
-            if (HudManager.Instance?.Chat != null)
+            if (HUDManager()?.Chat != null)
             {
-                foreach (var bubble in HudManager.Instance.Chat.chatBubblePool.activeChildren)
+                foreach (var bubble in HUDManager().Chat.chatBubblePool.activeChildren)
                 {
                     if (bubble.Cast<ChatBubble>().NameText != null &&
                         Player.Data.PlayerName == bubble.Cast<ChatBubble>().NameText.text)
@@ -147,7 +147,7 @@ namespace TownOfSushi.Roles
                 hackText = new GameObject("_Player").AddComponent<ImportantTextTask>();
                 hackText.transform.SetParent(PlayerControl.LocalPlayer.transform, false);
                 hackText.Text =
-                    $"{"<color=#" + Colors.Glitch.ToHtmlStringRGBA() + ">"}Hacked {hackPlayer.Data.PlayerName} ({CustomGameOptions.HackDuration}s)</color>";
+                    $"{"<color=#" + ColorManager.Glitch.ToHtmlStringRGBA() + ">"}Hacked {hackPlayer.Data.PlayerName} ({CustomGameOptions.HackDuration}s)</color>";
                 hackText.Index = hackPlayer.PlayerId;
                 tickDictionary.Add(hackPlayer.PlayerId, DateTime.UtcNow);
                 PlayerControl.LocalPlayer.myTasks.Insert(0, hackText);
@@ -158,7 +158,7 @@ namespace TownOfSushi.Roles
                 {
                     if (PlayerControl.LocalPlayer == hackPlayer)
                     {
-                        if (HudManager.Instance.KillButton != null)
+                        if (HUDManager().KillButton != null)
                         {
                             if (lockImg[0] == null)
                             {
@@ -169,8 +169,8 @@ namespace TownOfSushi.Roles
 
                             lockImg[0].layer = 5;
                             lockImg[0].transform.position =
-                                new Vector3(HudManager.Instance.KillButton.transform.position.x,
-                                    HudManager.Instance.KillButton.transform.position.y, -50f);
+                                new Vector3(HUDManager().KillButton.transform.position.x,
+                                    HUDManager().KillButton.transform.position.y, -50f);
                         }
 
                         var role = GetPlayerRole(PlayerControl.LocalPlayer);
@@ -189,7 +189,7 @@ namespace TownOfSushi.Roles
                             lockImg[1].layer = 5;
                         }
 
-                        if (HudManager.Instance.ReportButton != null)
+                        if (HUDManager().ReportButton != null)
                         {
                             if (lockImg[2] == null)
                             {
@@ -199,19 +199,19 @@ namespace TownOfSushi.Roles
                             }
 
                             lockImg[2].transform.position =
-                                new Vector3(HudManager.Instance.ReportButton.transform.position.x,
-                                    HudManager.Instance.ReportButton.transform.position.y, -50f);
+                                new Vector3(HUDManager().ReportButton.transform.position.x,
+                                    HUDManager().ReportButton.transform.position.y, -50f);
                             lockImg[2].layer = 5;
-                            HudManager.Instance.ReportButton.enabled = false;
-                            HudManager.Instance.ReportButton.SetActive(false);
+                            HUDManager().ReportButton.enabled = false;
+                            HUDManager().ReportButton.SetActive(false);
                         }
                     }
 
                     var totalHacktime = (DateTime.UtcNow - tickDictionary[hackPlayer.PlayerId]).TotalMilliseconds /
                                         1000;
                     hackText.Text =
-                        $"{"<color=#" + Colors.Glitch.ToHtmlStringRGBA() + ">"}Hacked {hackPlayer.Data.PlayerName} ({CustomGameOptions.HackDuration - Math.Round(totalHacktime)}s)</color>";
-                    if (MeetingHud.Instance || totalHacktime > CustomGameOptions.HackDuration || hackPlayer?.Data.IsDead != false || AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started)
+                        $"{"<color=#" + ColorManager.Glitch.ToHtmlStringRGBA() + ">"}Hacked {hackPlayer.Data.PlayerName} ({CustomGameOptions.HackDuration - Math.Round(totalHacktime)}s)</color>";
+                    if (Meeting() || totalHacktime > CustomGameOptions.HackDuration || hackPlayer?.Data.IsDead != false || AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started)
                     {
                         foreach (var obj in lockImg)
                         {
@@ -220,7 +220,7 @@ namespace TownOfSushi.Roles
 
                         if (PlayerControl.LocalPlayer == hackPlayer)
                         {
-                            HudManager.Instance.ReportButton.enabled = true;
+                            HUDManager().ReportButton.enabled = true;
                         }
 
                         tickDictionary.Remove(hackPlayer.PlayerId);
@@ -260,7 +260,7 @@ namespace TownOfSushi.Roles
                     mimicText.Text =
                         $"{__instance.ColorString}Mimicking {mimicPlayer.Data.PlayerName} ({CustomGameOptions.MimicDuration - Math.Round(totalMimickTime)}s)</color>";
                     if (totalMimickTime > CustomGameOptions.MimicDuration ||
-                        PlayerControl.LocalPlayer.Data.IsDead ||
+                        IsDead() ||
                         AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Ended)
                     {
                         PlayerControl.LocalPlayer.myTasks.Remove(mimicText);
@@ -291,7 +291,7 @@ namespace TownOfSushi.Roles
                     __instance.KillButton.DoClick();
 
                 __instance.KillButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !__gInstance.Player.Data.IsDead
+                    && !Meeting() && !__gInstance.Player.Data.IsDead
                     && AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started);
                 __instance.KillButton.SetCoolDown(
                     CustomGameOptions.GlitchKillCooldown -
@@ -354,7 +354,7 @@ namespace TownOfSushi.Roles
                 __gInstance.HackButton.graphic.sprite = HackSprite;
 
                 __gInstance.HackButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !__gInstance.Player.Data.IsDead
+                    && !Meeting() && !__gInstance.Player.Data.IsDead
                     && AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started);
                 __gInstance.HackButton.transform.position = new Vector3(__gInstance.MimicButton.transform.position.x,
                     __gInstance.HackButton.transform.position.y, __instance.ReportButton.transform.position.z);
@@ -429,7 +429,7 @@ namespace TownOfSushi.Roles
                 __gInstance.MimicButton.graphic.sprite = MimicSprite;
 
                 __gInstance.MimicButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !__gInstance.Player.Data.IsDead
+                    && !Meeting() && !__gInstance.Player.Data.IsDead
                     && AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started);
                 if (__instance.UseButton != null)
                 {

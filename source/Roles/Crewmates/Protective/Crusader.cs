@@ -12,7 +12,7 @@ namespace TownOfSushi.Roles
             TaskText = () => "Fortify a player to protect them";
             RoleInfo = "As the Crusader, you can Fortify a crewmate with a spell to prevent them from being killed or interacted with by anyone. The spell lasts until next meeting. When the player has a kill attempt, the fortified player will murder the killer.";
             LoreText = "A devout guardian of the crew, the Crusader wields their protective spell to shield others from harm. Steadfast and unwavering, they stand ready to strike down any who dare threaten those under their protection.";
-            Color = Colors.Crusader;
+            Color = ColorManager.Crusader;
             RoleType = RoleEnum.Crusader;
             Faction = Faction.Crewmates;
             StartingCooldown = DateTime.UtcNow;
@@ -45,7 +45,7 @@ namespace TownOfSushi.Roles
             var role = GetRole<Crusader>(PlayerControl.LocalPlayer);
 
             fortifyButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
             fortifyButton.SetCoolDown(role.StartTimer(), 10f);
 
@@ -76,7 +76,7 @@ namespace TownOfSushi.Roles
     {
         public static bool Prefix(KillButton __instance)
         {
-            if (__instance != DestroyableSingleton<HudManager>.Instance.KillButton) return true;
+            if (__instance != HUDManager().KillButton) return true;
             var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Crusader);
             if (!flag) return true;
             var role = GetRole<Crusader>(PlayerControl.LocalPlayer);

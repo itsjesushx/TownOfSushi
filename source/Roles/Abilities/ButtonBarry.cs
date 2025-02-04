@@ -11,7 +11,7 @@ namespace TownOfSushi.Roles.Abilities
         {
             Name = "Button Barry";
             TaskText = () => "Call a button from anywhere at any time";
-            Color = Colors.ButtonBarry;
+            Color = ColorManager.ButtonBarry;
             StartingCooldown = DateTime.UtcNow;
             AbilityType = AbilityEnum.ButtonBarry;
         }
@@ -39,7 +39,7 @@ namespace TownOfSushi.Roles.Abilities
             var role = GetAbility<ButtonBarry>(PlayerControl.LocalPlayer);
             if (__instance != role.ButtonButton) return true;
             if (!PlayerControl.LocalPlayer.CanMove) return false;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return false;
+            if (IsDead()) return false;
             if (role.ButtonUsed) return false;
             if (role.StartTimer() > 0) return false;
             if (PlayerControl.LocalPlayer.RemainingEmergencies <= 0) return false;
@@ -56,7 +56,7 @@ namespace TownOfSushi.Roles.Abilities
                 AmongUsClient.Instance.DisconnectHandlers.AddUnique(
                     MeetingRoomManager.Instance.Cast<IDisconnectHandler>());
                 if (GameManager.Instance.CheckTaskCompletion()) return false;
-                DestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(PlayerControl.LocalPlayer);
+                HUDManager().OpenMeetingRoom(PlayerControl.LocalPlayer);
                 PlayerControl.LocalPlayer.RpcStartMeeting(null);
             }
 
@@ -97,7 +97,7 @@ namespace TownOfSushi.Roles.Abilities
             role.ButtonButton.graphic.sprite = Button;
 
             role.ButtonButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
 
             role.ButtonButton.SetCoolDown(role.StartTimer(), 10f);

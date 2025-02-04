@@ -32,7 +32,7 @@ namespace TownOfSushi.Patches
             TMPro.TMP_Text textGithub = buttonGithub.transform.GetComponentInChildren<TMPro.TMP_Text>();
             __instance.StartCoroutine(Effects.Lerp(0.5f, new Action<float>((p) =>
             {
-                textGithub.SetText("            TOS Github");
+                textGithub.SetText("            Mod Github");
             })));
             PassiveButton passiveButtonGithub = buttonGithub.GetComponent<PassiveButton>();
             passiveButtonGithub.OnClick = new ButtonClickedEvent();

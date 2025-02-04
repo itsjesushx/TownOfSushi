@@ -17,7 +17,7 @@ namespace TownOfSushi.Roles
             RoleInfo = "As the Investigator, you are able to examine dead bodies to find information about the killer. You can also see footprints of other players. After examinating a body, you may examine an alive player in order to see if they have killed or not, if they did, you will get a red flash, otherwise will give you a green flash.";
             LoreText = "An experienced detective aboard the ship, you have honed your skills in tracking and deduction. By examining footprints, you piece together the movements of your crewmates, uncovering lies and identifying those who threaten the crew’s safety. It’s your mission to bring the truth to light and expose the Impostors hiding among you.";
             LastExamined = DateTime.UtcNow;
-            Color = Colors.Investigator;
+            Color = ColorManager.Investigator;
             RoleType = RoleEnum.Investigator;
             Faction = Faction.Crewmates;
             AddToRoleHistory(RoleType);
@@ -82,8 +82,8 @@ namespace TownOfSushi.Roles
             if (string.IsNullOrWhiteSpace(reportMsg))
                 return;
 
-            if (DestroyableSingleton<HudManager>.Instance)
-                DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, reportMsg);
+            if (HUDManager())
+                HUDManager().Chat.AddChat(PlayerControl.LocalPlayer, reportMsg);
         }
     }
 
@@ -105,11 +105,11 @@ namespace TownOfSushi.Roles
         public static void Postfix(HudManager __instance)
         {
             if ((GameManager.Instance && !GameManager.Instance.GameHasStarted) || !PlayerControl.LocalPlayer.Is(RoleEnum.Investigator)) return;
-            if (MeetingHud.Instance) return;
+            if (Meeting()) return;
             // New Footprint
             var investigator = GetRole<Investigator>(PlayerControl.LocalPlayer);
 
-            if (PlayerControl.LocalPlayer.Data.IsDead)
+            if (IsDead())
             {
                 Footprint.DestroyAll(investigator);
                 return;
@@ -129,8 +129,8 @@ namespace TownOfSushi.Roles
                         print.Color.a > 0.5 &&
                         print.Player.PlayerId == player.PlayerId);
 
-                    if (Vent && ShipStatus.Instance != null)
-                        if (ShipStatus.Instance.AllVents.Any(vent =>
+                    if (Vent && Ship() != null)
+                        if (Ship().AllVents.Any(vent =>
                             Vector2.Distance(vent.gameObject.transform.position, Position(player)) < 1f))
                             canPlace = false;
 
@@ -252,7 +252,7 @@ namespace TownOfSushi.Roles
         {
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Investigator)) return true;
             var role = GetRole<Investigator>(PlayerControl.LocalPlayer);
-            if (PlayerControl.LocalPlayer.Data.IsDead) return false;
+            if (IsDead()) return false;
             if (!PlayerControl.LocalPlayer.CanMove) return false;
             if (!__instance.enabled) return false;
             var maxDistance = KillDistance();
@@ -342,11 +342,11 @@ namespace TownOfSushi.Roles
             role.ExamineButton.transform.localPosition = new Vector3(-2f, 0f, 0f);
 
             __instance.KillButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
 
             role.ExamineButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
 
             if (role.ExamineMode)
@@ -377,7 +377,7 @@ namespace TownOfSushi.Roles
             var isDead = data.IsDead;
             var truePosition = PlayerControl.LocalPlayer.GetTruePosition();
             var maxDistance = KillDistance();
-            var flag = (GameOptionsManager.Instance.currentNormalGameOptions.GhostsDoTasks || !data.IsDead) &&
+            var flag = (VanillaOptions().currentNormalGameOptions.GhostsDoTasks || !data.IsDead) &&
                        (!AmongUsClient.Instance || !AmongUsClient.Instance.IsGameOver) &&
                        PlayerControl.LocalPlayer.CanMove;
             var allocs = Physics2D.OverlapCircleAll(truePosition, KillDistance(),

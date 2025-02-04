@@ -25,6 +25,8 @@ namespace TownOfSushi.Patches
             {
                 role2.HasInvested1 = false;
                 role2.HasInvested2 = false;
+                role2.Investigated = null;
+                role2.Investigated2 = null;
             }
 
             var deputy = AllRoles.Where(x => x.RoleType == RoleEnum.Deputy && !x.Player.Data.IsDead && x.Player != null).Cast<Deputy>();
@@ -67,7 +69,7 @@ namespace TownOfSushi.Patches
     {
         public static void Postfix(Object obj)
         {
-            if (ExileController.Instance == null || obj != ExileController.Instance.gameObject) return;
+            if (ExiledInstance() == null || obj != ExiledInstance().gameObject) return;
                 ResetCustomTimers();
         }
     }

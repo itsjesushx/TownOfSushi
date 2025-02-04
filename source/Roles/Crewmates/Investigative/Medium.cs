@@ -12,7 +12,7 @@ namespace TownOfSushi.Roles
             TaskText = () => "Follow ghosts to get clues from them";
             RoleInfo = "The Medium is able to see ghosts during rounds, and can follow them to get clues from them. Every ghost will be revealed to you once you hit Mediate and if the ghosts were already dead when you hit your button. Ghosts dissapear after the next meeting.";
             LoreText = "A spiritual guide aboard the ship, you possess the rare ability to sense and interact with the spectral presences of fallen crewmates. By following these lingering spirits, you can uncover hidden truths and gather vital clues to expose the Impostors. Trust in the voices of the beyond to aid your mission.";
-            Color = Colors.Medium;
+            Color = ColorManager.Medium;
             LastMediated = DateTime.UtcNow;
             RoleType = RoleEnum.Medium;
             Faction = Faction.Crewmates;
@@ -73,7 +73,7 @@ namespace TownOfSushi.Roles
 
                 var role = GetRole<Medium>(PlayerControl.LocalPlayer);
                 mediateButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
                 if (data.IsDead) return;
 
@@ -127,7 +127,7 @@ namespace TownOfSushi.Roles
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Medium)) return true;
             var role = GetRole<Medium>(PlayerControl.LocalPlayer);
             if (!PlayerControl.LocalPlayer.CanMove) return false;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return false;
+            if (IsDead()) return false;
             if (!__instance.enabled) return false;
             if (role.MediateTimer() != 0f) return false;
             var abilityUsed = AbilityUsed(PlayerControl.LocalPlayer);

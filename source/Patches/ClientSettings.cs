@@ -8,8 +8,8 @@ namespace TownOfSushi.Patches
         public static void HideGhosts()
         {
             if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
-            if (!PlayerControl.LocalPlayer.Data.IsDead) return;
-            if (MeetingHud.Instance) return;
+            if (!IsDead()) return;
+            if (Meeting()) return;
 
             foreach (var player in PlayerControl.AllPlayerControls)
             {
@@ -40,16 +40,16 @@ namespace TownOfSushi.Patches
             public static void Update_Postfix(LobbyBehaviour __instance)    
             {
                 Func<ISoundPlayer, bool> uglyMusic = x => x.Name.Equals("MapTheme");
-                ISoundPlayer LobbyUglyMusic = SoundManager.Instance.soundPlayers.Find(uglyMusic);
+                ISoundPlayer LobbyUglyMusic = Sound().soundPlayers.Find(uglyMusic);
                 if (TownOfSushi.DisableLobbyMusic.Value)
                 {
                     if (LobbyUglyMusic == null) return;
-                    SoundManager.Instance.StopNamedSound("MapTheme");
+                    Sound().StopNamedSound("MapTheme");
                 }
                 else
                 {
                     if (LobbyUglyMusic != null) return;
-                    SoundManager.Instance.CrossFadeSound("MapTheme", __instance.MapTheme, 0.5f);
+                    Sound().CrossFadeSound("MapTheme", __instance.MapTheme, 0.5f);
                 }
             }
         }

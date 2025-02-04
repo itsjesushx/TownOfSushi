@@ -25,7 +25,7 @@ namespace TownOfSushi.Modules.ScreenEffects
 
         private static AssetBundle loadBundle(string bundlename)
         {
-            var assembly = Assembly.GetExecutingAssembly();
+            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
             var stream = assembly.GetManifestResourceStream($"TownOfSushi.Resources.{bundlename}");
             var assets = stream.ReadFully();
             return AssetBundle.LoadFromMemory(assets);

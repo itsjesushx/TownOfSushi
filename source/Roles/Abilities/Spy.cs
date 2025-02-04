@@ -6,7 +6,7 @@ namespace TownOfSushi.Roles.Abilities
         {
             Name = "Spy";
             TaskText = () => "Gain extra information from all the devices";
-            Color = Colors.Spy;
+            Color = ColorManager.Spy;
             AbilityType = AbilityEnum.Spy;
         }
     }
@@ -85,7 +85,7 @@ namespace TownOfSushi.Roles.Abilities
             {
                 var icon = icons[i];
                 var sprite = icon.GetComponent<SpriteRenderer>();
-                if (SubmergedCompatibility.Loaded) sprite.color = new Color(1, 1, 1, 1);
+                if (Loaded) sprite.color = new Color(1, 1, 1, 1);
                 if (sprite != null)
                 {
                     if (isSpy) PlayerMaterial.SetColors(colorMapping[i], sprite);
@@ -96,7 +96,7 @@ namespace TownOfSushi.Roles.Abilities
 
         public static void UpdateBlips(MapCountOverlay __instance, bool isSpy)
         {
-            var rooms = ShipStatus.Instance.FastRooms;
+            var rooms = Ship().FastRooms;
             var colorMapDuplicate = new List<int>();
             foreach (var area in __instance.CountAreas)
             {
@@ -139,7 +139,7 @@ namespace TownOfSushi.Roles.Abilities
 
         public static bool Prefix(MapCountOverlay __instance)
         {
-            if (GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek) return true;
+            if (IsHideNSeek()) return true;
             var localPlayer = PlayerControl.LocalPlayer;
             var isSpy = localPlayer.Is(AbilityEnum.Spy);
             __instance.timer += Time.deltaTime;

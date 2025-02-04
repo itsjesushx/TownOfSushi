@@ -14,6 +14,8 @@ namespace TownOfSushi.Objects
         public Vector3 Position;
         public Investigator Role;
         public bool IsRainbow = false;
+        public bool IsWater = false;
+        public bool IsFire = false;
         public bool IsGalaxy = false;
         public bool IsMonochrome = false;
         public Footprint(PlayerControl player, Investigator role)
@@ -28,11 +30,15 @@ namespace TownOfSushi.Objects
             if (ColorUtils.IsRainbow(player.GetDefaultOutfit().ColorId)) IsRainbow = true;
             if (ColorUtils.IsMonochrome(player.GetDefaultOutfit().ColorId)) IsMonochrome = true;
             if (ColorUtils.IsGalaxy(player.GetDefaultOutfit().ColorId)) IsGalaxy = true;
+            if (ColorUtils.IsFire(player.GetDefaultOutfit().ColorId)) IsFire = true;
+            if (ColorUtils.IsWater(player.GetDefaultOutfit().ColorId)) IsWater = true;
             if (Grey || (player.Is(RoleEnum.Venerer) && GetRole<Venerer>(player).IsCamouflaged))
             {
                 Color = new Color(0.2f, 0.2f, 0.2f, 1f);
                 IsRainbow = false;
                 IsGalaxy = false;
+                IsFire = false;
+                IsWater = false;
                 IsMonochrome = false;
             }
             if (player.Is(RoleEnum.Morphling))
@@ -41,28 +47,11 @@ namespace TownOfSushi.Objects
                 if (morphling.Morphed)
                 {
                     Color = Palette.PlayerColors[morphling.MorphedPlayer.GetDefaultOutfit().ColorId];
-                    if (ColorUtils.IsRainbow(morphling.MorphedPlayer.GetDefaultOutfit().ColorId)) IsRainbow = true;
-                    else IsRainbow = false;
-                }
-            }
-            if (player.Is(RoleEnum.Morphling))
-            {
-                var morphling = GetRole<Morphling>(player);
-                if (morphling.Morphed)
-                {
-                    Color = Palette.PlayerColors[morphling.MorphedPlayer.GetDefaultOutfit().ColorId];
-                    if (ColorUtils.IsMonochrome(morphling.MorphedPlayer.GetDefaultOutfit().ColorId)) IsMonochrome = true;
-                    else IsMonochrome = false;
-                }
-            }
-            if (player.Is(RoleEnum.Morphling))
-            {
-                var morphling = GetRole<Morphling>(player);
-                if (morphling.Morphed)
-                {
-                    Color = Palette.PlayerColors[morphling.MorphedPlayer.GetDefaultOutfit().ColorId];
-                    if (ColorUtils.IsGalaxy(morphling.MorphedPlayer.GetDefaultOutfit().ColorId)) IsGalaxy = true;
-                    else IsGalaxy = false;
+                    IsRainbow = ColorUtils.IsRainbow(morphling.MorphedPlayer.GetDefaultOutfit().ColorId);
+                    IsFire = ColorUtils.IsFire(morphling.MorphedPlayer.GetDefaultOutfit().ColorId);
+                    IsWater = ColorUtils.IsWater(morphling.MorphedPlayer.GetDefaultOutfit().ColorId);
+                    IsMonochrome = ColorUtils.IsMonochrome(morphling.MorphedPlayer.GetDefaultOutfit().ColorId);
+                    IsGalaxy = ColorUtils.IsGalaxy(morphling.MorphedPlayer.GetDefaultOutfit().ColorId);
                 }
             }
             if (player.Is(RoleEnum.Glitch))
@@ -71,39 +60,11 @@ namespace TownOfSushi.Objects
                 if (glitch.IsUsingMimic)
                 {
                     Color = Palette.PlayerColors[glitch.MimicTarget.GetDefaultOutfit().ColorId];
-                    if (ColorUtils.IsRainbow(glitch.MimicTarget.GetDefaultOutfit().ColorId)) IsRainbow = true;
-                    else IsRainbow = false;
-                }
-            }
-            if (player.Is(RoleEnum.Glitch))
-            {
-                var glitch = GetRole<Glitch>(player);
-                if (glitch.IsUsingMimic)
-                {
-                    Color = Palette.PlayerColors[glitch.MimicTarget.GetDefaultOutfit().ColorId];
-                    if (ColorUtils.IsGalaxy(glitch.MimicTarget.GetDefaultOutfit().ColorId)) IsGalaxy = true;
-                    else IsGalaxy = false;
-                }
-            }
-            if (player.Is(RoleEnum.Glitch))
-            {
-                var glitch = GetRole<Glitch>(player);
-                if (glitch.IsUsingMimic)
-                {
-                    Color = Palette.PlayerColors[glitch.MimicTarget.GetDefaultOutfit().ColorId];
-                    if (ColorUtils.IsMonochrome(glitch.MimicTarget.GetDefaultOutfit().ColorId)) IsMonochrome = true;
-                    else IsMonochrome = false;
-                }
-            }
-
-            if (player.Is(RoleEnum.Hitman))
-            {
-                var hitman = GetRole<Hitman>(player);
-                if (hitman.IsUsingMorph)
-                {
-                    Color = Palette.PlayerColors[hitman.MorphTarget.GetDefaultOutfit().ColorId];
-                    if (ColorUtils.IsRainbow(hitman.MorphTarget.GetDefaultOutfit().ColorId)) IsRainbow = true;
-                    else IsRainbow = false;
+                    IsRainbow = ColorUtils.IsRainbow(glitch.MimicTarget.GetDefaultOutfit().ColorId);
+                    IsFire = ColorUtils.IsFire(glitch.MimicTarget.GetDefaultOutfit().ColorId);
+                    IsWater = ColorUtils.IsWater(glitch.MimicTarget.GetDefaultOutfit().ColorId);
+                    IsMonochrome = ColorUtils.IsMonochrome(glitch.MimicTarget.GetDefaultOutfit().ColorId);
+                    IsGalaxy = ColorUtils.IsGalaxy(glitch.MimicTarget.GetDefaultOutfit().ColorId);
                 }
             }
             if (player.Is(RoleEnum.Hitman))
@@ -112,18 +73,11 @@ namespace TownOfSushi.Objects
                 if (hitman.IsUsingMorph)
                 {
                     Color = Palette.PlayerColors[hitman.MorphTarget.GetDefaultOutfit().ColorId];
-                    if (ColorUtils.IsGalaxy(hitman.MorphTarget.GetDefaultOutfit().ColorId)) IsGalaxy = true;
-                    else IsGalaxy = false;
-                }
-            }
-            if (player.Is(RoleEnum.Hitman))
-            {
-                var hitman = GetRole<Hitman>(player);
-                if (hitman.IsUsingMorph)
-                {
-                    Color = Palette.PlayerColors[hitman.MorphTarget.GetDefaultOutfit().ColorId];
-                    if (ColorUtils.IsMonochrome(hitman.MorphTarget.GetDefaultOutfit().ColorId)) IsMonochrome = true;
-                    else IsMonochrome = false;
+                    IsRainbow = ColorUtils.IsRainbow(hitman.MorphTarget.GetDefaultOutfit().ColorId);
+                    IsWater = ColorUtils.IsWater(hitman.MorphTarget.GetDefaultOutfit().ColorId);
+                    IsFire = ColorUtils.IsFire(hitman.MorphTarget.GetDefaultOutfit().ColorId);
+                    IsMonochrome = ColorUtils.IsMonochrome(hitman.MorphTarget.GetDefaultOutfit().ColorId);
+                    IsGalaxy = ColorUtils.IsGalaxy(hitman.MorphTarget.GetDefaultOutfit().ColorId);
                 }
             }
 
@@ -145,7 +99,7 @@ namespace TownOfSushi.Objects
         private void Start()
         {
             _gameObject = new GameObject("Footprint");
-            _gameObject.AddSubmergedComponent(SubmergedCompatibility.Classes.ElevatorMover);
+            _gameObject.AddSubmergedComponent(Classes.ElevatorMover);
             _gameObject.transform.position = Position;
             _gameObject.transform.Rotate(Vector3.forward * Vector2.SignedAngle(Vector2.up, _velocity));
             _gameObject.transform.SetParent(Player.transform.parent);
@@ -173,7 +127,9 @@ namespace TownOfSushi.Objects
                 alpha = 0;
 
             if (IsRainbow) Color = ColorUtils.Rainbow;
+            if (IsWater) Color = ColorUtils.Water;
             if (IsGalaxy) Color = ColorUtils.Galaxy;
+            if (IsFire) Color = ColorUtils.Fire;
             if (IsMonochrome) Color = ColorUtils.Monochrome;
 
             Color = new Color(Color.r, Color.g, Color.b, alpha);

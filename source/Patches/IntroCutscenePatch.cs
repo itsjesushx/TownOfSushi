@@ -8,7 +8,7 @@ namespace TownOfSushi.Patches
         public static void Prefix(IntroCutscene __instance) 
         {
             // Generate and initialize player icons
-            if (PlayerControl.LocalPlayer != null && DestroyableSingleton<HudManager>.Instance != null) 
+            if (PlayerControl.LocalPlayer != null && HUDManager() != null) 
             {
                 float aspect = Camera.main.aspect;
                 float safeOrthographicSize = CameraSafeArea.GetSafeOrthographicSize(Camera.main);
@@ -19,7 +19,7 @@ namespace TownOfSushi.Patches
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls) 
                 {
                     NetworkedPlayerInfo data = p.Data;
-                    PoolablePlayer player = Object.Instantiate<PoolablePlayer>(__instance.PlayerPrefab, DestroyableSingleton<HudManager>.Instance.transform);
+                    PoolablePlayer player = Object.Instantiate<PoolablePlayer>(__instance.PlayerPrefab, HUDManager().transform);
                     playerPrefab = __instance.PlayerPrefab;
                     p.SetPlayerMaterialColors(player.cosmetics.currentBodySprite.BodySprite);
                     player.SetSkin(data.DefaultOutfit.SkinId, data.DefaultOutfit.ColorId);
@@ -32,21 +32,21 @@ namespace TownOfSushi.Patches
                     player.transform.localScale = Vector3.one * 0.4f;
                     player.gameObject.SetActive(false);
                 }
-                if (GameOptionsManager.Instance.currentNormalGameOptions.MapId == 2 && CustomGameOptions.VentImprovements) 
+                if (VanillaOptions().currentNormalGameOptions.MapId == 2 && CustomGameOptions.VentImprovements) 
                 {
                     var list = GameObject.FindObjectsOfType<Vent>().ToList();
                     var adminVent = list.FirstOrDefault(x => x.gameObject.name == "AdminVent");
                     var bathroomVent = list.FirstOrDefault(x => x.gameObject.name == "BathroomVent");
                     BetterPolus.SpecimenVent = Object.Instantiate<Vent>(adminVent);
-                    BetterPolus.SpecimenVent.gameObject.AddSubmergedComponent(SubmergedCompatibility.Classes.ElevatorMover);
+                    BetterPolus.SpecimenVent.gameObject.AddSubmergedComponent(Classes.ElevatorMover);
                     BetterPolus.SpecimenVent.transform.position = new Vector3(36.55068f, -21.5168f, -0.0215168f);
                     BetterPolus.SpecimenVent.Left = adminVent;
                     BetterPolus.SpecimenVent.Right = bathroomVent;
                     BetterPolus.SpecimenVent.Center = null;
-                    BetterPolus.SpecimenVent.Id = ShipStatus.Instance.AllVents.Select(x => x.Id).Max() + 1;
-                    var allVentsList = ShipStatus.Instance.AllVents.ToList();
+                    BetterPolus.SpecimenVent.Id = Ship().AllVents.Select(x => x.Id).Max() + 1;
+                    var allVentsList = Ship().AllVents.ToList();
                     allVentsList.Add(BetterPolus.SpecimenVent);
-                    ShipStatus.Instance.AllVents = allVentsList.ToArray();
+                    Ship().AllVents = allVentsList.ToArray();
                     BetterPolus.SpecimenVent.gameObject.SetActive(true);
                     BetterPolus.SpecimenVent.name = "newVent_" + BetterPolus.SpecimenVent.Id;
 
@@ -66,7 +66,7 @@ namespace TownOfSushi.Patches
         }
         public static void SetupIntroTeamIcons(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam) 
         {    
-            if (GameOptionsManager.Instance.currentGameMode == GameModes.Normal) 
+            if (VanillaOptions().currentGameMode == GameModes.Normal) 
             {
                 if (PlayerControl.LocalPlayer.Is(Faction.Neutral)) 
                 {
@@ -108,7 +108,7 @@ namespace TownOfSushi.Patches
 
         public static void SetupIntroTeam(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam) 
         {
-            if (GameOptionsManager.Instance.currentGameMode == GameModes.Normal) 
+            if (VanillaOptions().currentGameMode == GameModes.Normal) 
             {
                 if (PlayerControl.LocalPlayer.Is(Faction.Neutral) && !PlayerControl.LocalPlayer.Is(RoleEnum.GuardianAngel))
                 {

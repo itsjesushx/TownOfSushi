@@ -26,7 +26,7 @@ namespace TownOfSushi.Patches
         public IEnumerator Open(float delay, bool includeDead = false)
         {
             yield return new WaitForSecondsRealtime(delay);
-            while (ExileController.Instance != null) { yield return 0; }
+            while (ExiledInstance() != null) { yield return 0; }
             Targets = PlayerControl.AllPlayerControls.ToArray().Where(x => Inclusion(x) && (!x.Data.IsDead || includeDead) && !x.Data.Disconnected).ToList();
             if (Menu == null)
             {

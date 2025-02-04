@@ -14,10 +14,10 @@ namespace TownOfSushi.Roles
         {
             Name = "Vulture";
             StartText = () => "Eat dead bodies to win";
-            TaskText = () => $"Eat {CustomGameOptions.VultureBodyCount} bodies to win";
+            TaskText = () => $"Eat {BodiesRemainingToWin()} bodies to win";
             RoleInfo = $"The Vulture is a Neutral role with its own win condition. Their goal is to eat an amount of {CustomGameOptions.VultureBodyCount} dead bodies to win. The body dissapears when the Vulture eats it, similar to how Janitor cleans bodies. If they eat the amount of bodies the setting is set to, they win.";
             LoreText = "A scavenger of the dead, you thrive on the bodies left behind by others. As the Vulture, your goal is to feast on the remains of the fallen, growing stronger with each victim consumed. The more bodies you consume, the closer you get to victory. However, your hunger is insatiable, and you must be careful not to reveal your true nature, for if the crew realizes your intentions, your feast may be cut short.";
-            Color = Colors.Vulture;
+            Color = ColorManager.Vulture;
             RoleType = RoleEnum.Vulture;
             Faction = Faction.Neutral;
             AddToRoleHistory(RoleType);
@@ -67,13 +67,13 @@ namespace TownOfSushi.Roles
             var isDead = data.IsDead;
             var truePosition = PlayerControl.LocalPlayer.GetTruePosition();
             var maxDistance = KillDistance();
-            var flag = (GameOptionsManager.Instance.currentNormalGameOptions.GhostsDoTasks || !data.IsDead) &&
+            var flag = (VanillaOptions().currentNormalGameOptions.GhostsDoTasks || !data.IsDead) &&
                        (!AmongUsClient.Instance || !AmongUsClient.Instance.IsGameOver) &&
                        PlayerControl.LocalPlayer.CanMove;
             var allocs = Physics2D.OverlapCircleAll(truePosition, maxDistance,
                 LayerMask.GetMask(new[] { "Players", "Ghost" }));
 
-            var eatButton = DestroyableSingleton<HudManager>.Instance.KillButton;
+            var eatButton = HUDManager().KillButton;
             DeadBody closestBody = null;
             var closestDistance = float.MaxValue;
 
@@ -91,7 +91,7 @@ namespace TownOfSushi.Roles
             }
 
             eatButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
 
             VultureKillButtonTarget.SetTarget(eatButton, closestBody, role);
@@ -107,7 +107,7 @@ namespace TownOfSushi.Roles
             var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Vulture);
             if (!flag) return true;
             if (!PlayerControl.LocalPlayer.CanMove) return false;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return false;
+            if (IsDead()) return false;
             var role = GetRole<Vulture>(PlayerControl.LocalPlayer);
             if (role.EatTimer() != 0f) return false;
             var flag2 = __instance.isCoolingDown;
@@ -187,9 +187,9 @@ namespace TownOfSushi.Roles
             var isDead = data.IsDead;
             var truePosition = PlayerControl.LocalPlayer.GetTruePosition();
 
-            if (MeetingHud.Instance != null) UpdateMeeting(MeetingHud.Instance, role);
+            if (Meeting() != null) UpdateMeeting(Meeting(), role);
 
-            if (CustomGameOptions.EatArrows && !PlayerControl.LocalPlayer.Data.IsDead)
+            if (CustomGameOptions.EatArrows && !IsDead())
             {
                 var validBodies = Object.FindObjectsOfType<DeadBody>().Where(x =>
                     Murder.KilledPlayers.Any(y => y.PlayerId == x.ParentId && y.KillTime.AddSeconds(CustomGameOptions.EatArrowDelay) < DateTime.UtcNow));
@@ -236,7 +236,7 @@ namespace TownOfSushi.Roles
 
         public static IEnumerator EatCoroutine(DeadBody body, Vulture role)
         {
-            VultureKillButtonTarget.SetTarget(DestroyableSingleton<HudManager>.Instance.KillButton, null, role);
+            VultureKillButtonTarget.SetTarget(HUDManager().KillButton, null, role);
             role.Player.SetKillTimer(CustomGameOptions.VultureCd);
             SpriteRenderer renderer = null;
             foreach (var body2 in body.bodyRenderers) renderer = body2;

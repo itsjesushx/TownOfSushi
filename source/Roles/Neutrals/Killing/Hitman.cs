@@ -14,7 +14,7 @@ namespace TownOfSushi.Roles
             RoleInfo = "The Hitman is a Neutral role that depending on settings, may spawn naturally or is the become option for the Agent. The Hitman can Morph into players to disguise itself from others. They can additionally drag bodies like the Undertaker. This role cannot spawn on Fungle.";
             LoreText = "A cold-blooded professional, you live for the thrill of the kill. As the Hitman, you are not only a deadly assassin but also a master of deception. You can eliminate targets with ruthless precision, drag their bodies away to hide the evidence, and even morph into other players to evade suspicion. Your objective is simple: eliminate everyone, and use your abilities to stay one step ahead of the crew. Every move you make is calculated, and your reign of terror will continue until you’ve achieved total victory.";
             RoleType = RoleEnum.Hitman;
-            Color = Colors.Hitman;
+            Color = ColorManager.Hitman;
             LastDrag = DateTime.UtcNow;
             KillTarget = null;
             IsUsingMorph = false;
@@ -65,9 +65,9 @@ namespace TownOfSushi.Roles
         public PlayerControl MorphTarget { get; set; }
         public void Update(HudManager __instance)
         {
-            if (HudManager.Instance?.Chat != null)
+            if (HUDManager()?.Chat != null)
             {
-                foreach (var bubble in HudManager.Instance.Chat.chatBubblePool.activeChildren)
+                foreach (var bubble in HUDManager().Chat.chatBubblePool.activeChildren)
                 {
                     if (bubble.Cast<ChatBubble>().NameText != null &&
                         Player.Data.PlayerName == bubble.Cast<ChatBubble>().NameText.text)
@@ -158,7 +158,7 @@ namespace TownOfSushi.Roles
                     mimicText.Text =
                         $"{__instance.ColorString}Morphing as {morphPlayer.Data.PlayerName} ({CustomGameOptions.HitmanMorphDuration - Math.Round(totalMorphkTime)}s)</color>";
                     if (totalMorphkTime > CustomGameOptions.HitmanMorphDuration ||
-                        PlayerControl.LocalPlayer.Data.IsDead ||
+                        IsDead() ||
                         AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Ended)
                     {
                         PlayerControl.LocalPlayer.myTasks.Remove(mimicText);
@@ -188,7 +188,7 @@ namespace TownOfSushi.Roles
                     __instance.KillButton.DoClick();
 
                 __instance.KillButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !__hInstance.Player.Data.IsDead
+                    && !Meeting() && !__hInstance.Player.Data.IsDead
                     && AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started);
                 __instance.KillButton.SetCoolDown(
                     CustomGameOptions.HitmanKCd -
@@ -251,7 +251,7 @@ namespace TownOfSushi.Roles
                 __hInstance.MorphButton.graphic.sprite = MorphSprite;
 
                 __hInstance.MorphButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !__hInstance.Player.Data.IsDead
+                    && !Meeting() && !__hInstance.Player.Data.IsDead
                     && AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started);
                 if (__instance.UseButton != null)
                 {
@@ -343,7 +343,7 @@ namespace TownOfSushi.Roles
             var velocity = __instance.gameObject.GetComponent<Rigidbody2D>().velocity.normalized;
             Vector3 newPos = ((Vector2)__instance.transform.position) - (velocity / 3) + body.myCollider.offset;
             newPos.z = currentPosition.z;
-            if (SubmergedCompatibility.isSubmerged())
+            if (IsSubmerged())
             {
                 if (newPos.y > -7f)
                 {
@@ -404,7 +404,7 @@ namespace TownOfSushi.Roles
         public static bool Prefix(KillButton __instance)
         {
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Hitman)) return true;
-            return __instance == DestroyableSingleton<HudManager>.Instance.KillButton;
+            return __instance == HUDManager().KillButton;
         }
 
         public static void SetTarget(KillButton __instance, DeadBody target, Hitman role)
@@ -439,7 +439,7 @@ namespace TownOfSushi.Roles
             var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Hitman);
             if (!flag) return true;
             if (!PlayerControl.LocalPlayer.CanMove) return false;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return false;
+            if (IsDead()) return false;
             var role = GetRole<Hitman>(PlayerControl.LocalPlayer);
 
             if (__instance == role.DragDropButtonHitman)
@@ -475,7 +475,7 @@ namespace TownOfSushi.Roles
                     if (!abilityUsed) return false;
                     Vector3 position = PlayerControl.LocalPlayer.transform.position;
 
-                    if (SubmergedCompatibility.isSubmerged())
+                    if (IsSubmerged())
                     {
                         if (position.y > -7f)
                         {
@@ -533,7 +533,7 @@ namespace TownOfSushi.Roles
                 role.DragDropButtonHitman.graphic.sprite = TownOfSushi.DragSprite;
 
             role.DragDropButtonHitman.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
             
             role.DragDropButtonHitman.transform.localPosition = new Vector3(-1f, 1f, 0f);
@@ -545,7 +545,7 @@ namespace TownOfSushi.Roles
                 var isDead = data.IsDead;
                 var truePosition = PlayerControl.LocalPlayer.GetTruePosition();
                 var maxDistance = KillDistance();
-                var flag = (GameOptionsManager.Instance.currentNormalGameOptions.GhostsDoTasks || !data.IsDead) &&
+                var flag = (VanillaOptions().currentNormalGameOptions.GhostsDoTasks || !data.IsDead) &&
                            (!AmongUsClient.Instance || !AmongUsClient.Instance.IsGameOver) &&
                            PlayerControl.LocalPlayer.CanMove;
                 var allocs = Physics2D.OverlapCircleAll(truePosition, maxDistance,

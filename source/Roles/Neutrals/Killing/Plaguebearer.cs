@@ -15,7 +15,7 @@ namespace TownOfSushi.Roles
             TaskText = () => "Infect everyone to become Pestilence";
             RoleInfo = "The Plaguebearer is a Neutral role with its own win condition, as well as an ability to transform into another role. The Plaguebearer has one ability, which allows them to infect other players. Once infected, the infected player can go and infect other players via interacting with them. Once all players are infected, the Plaguebearer becomes Pestilence.";
             LoreText ="You are the Plaguebearer, the origin of all sickness and decay. Your task is to infect the crew with your deadly plague, spreading misery wherever you go. Each infected person brings you closer to becoming Pestilence itself, unlocking the full power of your devastating abilities. Be strategic, for every player you infect moves you one step closer to your ultimate transformation. Your mission is to make the crew fall, one by one, until you are the last one standing as the unstoppable force of death.";
-            Color = Colors.Plaguebearer;
+            Color = ColorManager.Plaguebearer;
             RoleType = RoleEnum.Plaguebearer;
             Faction = Faction.Neutral;
             AddToRoleHistory(RoleType);
@@ -47,7 +47,7 @@ namespace TownOfSushi.Roles
         public void TurnPestilence()
         {
             var oldRole = GetPlayerRole(Player);
-            var killsList = (oldRole.Kills, oldRole.CorrectKills,  oldRole.CorrectDeputyShot, oldRole.CorrectShot, oldRole.IncorrectShots, oldRole.CorrectVigilanteShot, oldRole.CorrectAssassinKills, oldRole.IncorrectAssassinKills);
+            var killsList = (oldRole.Kills, oldRole.CorrectKills,  oldRole.CorrectDeputyShot, oldRole.CorrectShot, oldRole.IncorrectShots, oldRole.CorrectVigilanteShot, oldRole.CorrectAssassinKills);
             RoleDictionary.Remove(Player.PlayerId);
             var role = new Pestilence(Player);
             role.Kills = killsList.Kills;
@@ -57,11 +57,10 @@ namespace TownOfSushi.Roles
             role.CorrectShot = killsList.CorrectShot;
             role.CorrectDeputyShot = killsList.CorrectDeputyShot;
             role.CorrectAssassinKills = killsList.CorrectAssassinKills;
-            role.IncorrectAssassinKills = killsList.IncorrectAssassinKills;
             if (Player == PlayerControl.LocalPlayer)
             {
-                Flash(Colors.Pestilence, 2.5f);
-                SoundManager.Instance.PlaySound(ShipStatus.Instance.SabotageSound, false, 1f, null);
+                Flash(ColorManager.Pestilence, 2.5f);
+                Sound().PlaySound(Ship().SabotageSound, false, 1f, null);
                 role.ReDoTaskText();
             }
         }
@@ -97,7 +96,7 @@ namespace TownOfSushi.Roles
         {
             var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Plaguebearer);
             if (!flag) return true;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return false;
+            if (IsDead()) return false;
             if (!PlayerControl.LocalPlayer.CanMove) return false;
             if (!__instance.isActiveAndEnabled || __instance.isCoolingDown) return false;
             var role = GetRole<Plaguebearer>(PlayerControl.LocalPlayer);
@@ -106,7 +105,7 @@ namespace TownOfSushi.Roles
             if (role.InfectedPlayers.Contains(role.ClosestPlayer.PlayerId)) return false;
             var distBetweenPlayers = Utils.GetDistBetweenPlayers(PlayerControl.LocalPlayer, role.ClosestPlayer);
             var flag3 = distBetweenPlayers <
-                        GameOptionsData.KillDistances[GameOptionsManager.Instance.currentNormalGameOptions.KillDistance];
+                        GameOptionsData.KillDistances[VanillaOptions().currentNormalGameOptions.KillDistance];
             if (!flag3) return false;
             var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer);
             if (interact[0] == true)
@@ -159,7 +158,7 @@ namespace TownOfSushi.Roles
             if (PlayerControl.LocalPlayer == null) return;
             if (PlayerControl.LocalPlayer.Data == null) return;
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Plaguebearer)) return;
-            var isDead = PlayerControl.LocalPlayer.Data.IsDead;
+            var isDead = IsDead();
             var infectButton = __instance.KillButton;
             var role = GetRole<Plaguebearer>(PlayerControl.LocalPlayer);
 
@@ -167,16 +166,16 @@ namespace TownOfSushi.Roles
             {
                 var player = Utils.PlayerById(playerId);
                 var data = player?.Data;
-                if (data == null || data.Disconnected || data.IsDead || PlayerControl.LocalPlayer.Data.IsDead || playerId == PlayerControl.LocalPlayer.PlayerId)
+                if (data == null || data.Disconnected || data.IsDead || IsDead() || playerId == PlayerControl.LocalPlayer.PlayerId)
                     continue;
 
                 player.myRend().material.SetColor("_VisorColor", role.Color);
 
-                player.nameText().color = Colors.Plaguebearer;
+                player.nameText().color = ColorManager.Plaguebearer;
             }
 
             infectButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
             infectButton.SetCoolDown(role.InfectTimer(), CustomGameOptions.InfectCd);
 

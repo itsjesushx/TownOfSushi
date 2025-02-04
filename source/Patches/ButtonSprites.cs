@@ -138,7 +138,7 @@
                     PlayerControl.LocalPlayer.Is(RoleEnum.SerialKiller) || PlayerControl.LocalPlayer.Is(RoleEnum.Juggernaut);
             }
             if (!PlayerControl.LocalPlayer.Is(Faction.Impostors) &&
-                GameOptionsManager.Instance.CurrentGameOptions.GameMode != GameModes.HideNSeek)
+                !IsHideNSeek())
             {
                 __instance.KillButton.transform.localPosition = new Vector3(0f, 1f, 0f);
             }
@@ -155,23 +155,23 @@
 
             var keyInt = Input.GetKeyInt(KeyCode.Q);
             var controller = ConsoleJoystick.player.GetButtonDown(8);
-            if (keyInt | controller && __instance.KillButton != null && flag && !PlayerControl.LocalPlayer.Data.IsDead)
+            if (keyInt | controller && __instance.KillButton != null && flag && !IsDead())
                 __instance.KillButton.DoClick();
             
             var role = GetPlayerRole(PlayerControl.LocalPlayer);
             bool AbilityKey = Rewired.ReInput.players.GetPlayer(0).GetButtonDown("ToS imp/nk");
-            if (role?.ExtraButtons != null && AbilityKey && !PlayerControl.LocalPlayer.Data.IsDead)
+            if (role?.ExtraButtons != null && AbilityKey && !IsDead())
                 role?.ExtraButtons[0]?.DoClick();
 
             if (GetAbility<ButtonBarry>(PlayerControl.LocalPlayer)?.ButtonUsed == false &&
                 Rewired.ReInput.players.GetPlayer(0).GetButtonDown("ToS bb/disperse/mimic") &&
-                !PlayerControl.LocalPlayer.Data.IsDead)
+                !IsDead())
             {
                 GetAbility<ButtonBarry>(PlayerControl.LocalPlayer).ButtonButton.DoClick();
             }
             else if (GetModifier<Disperser>(PlayerControl.LocalPlayer)?.MaxUses > 0 &&
                      Rewired.ReInput.players.GetPlayer(0).GetButtonDown("ToS bb/disperse/mimic/hitman") &&
-                     !PlayerControl.LocalPlayer.Data.IsDead)
+                     !IsDead())
             {
                 GetModifier<Disperser>(PlayerControl.LocalPlayer).DisperseButton.DoClick();
             }
@@ -184,15 +184,15 @@
             {
                 if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
                 {
-                    HudManager.Instance.AbilityButton.gameObject.SetActive(false);
+                    HUDManager().AbilityButton.gameObject.SetActive(false);
                     return;
                 }
-                else if (GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek)
+                else if (IsHideNSeek())
                 {
-                    HudManager.Instance.AbilityButton.gameObject.SetActive(!PlayerControl.LocalPlayer.Data.IsImpostor());
+                    HUDManager().AbilityButton.gameObject.SetActive(!PlayerControl.LocalPlayer.Data.IsImpostor());
                     return;
                 }
-                HudManager.Instance.AbilityButton.gameObject.SetActive(!MeetingHud.Instance);
+                HUDManager().AbilityButton.gameObject.SetActive(!Meeting());
             }
         }
     }

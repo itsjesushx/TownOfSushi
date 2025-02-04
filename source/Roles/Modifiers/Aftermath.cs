@@ -8,7 +8,7 @@ namespace TownOfSushi.Roles.Modifiers
         {
             Name = "Aftermath";
             TaskText = () => "Force your killer to use their ability";
-            Color = Colors.Aftermath;
+            Color = ColorManager.Aftermath;
             ModifierType = ModifierEnum.Aftermath;
         }
 
@@ -42,7 +42,7 @@ namespace TownOfSushi.Roles.Modifiers
                 {
                     if (blackmailer.Blackmailed.GetCustomOutfitType() != CustomPlayerOutfitType.Camouflage &&
                         blackmailer.Blackmailed.GetCustomOutfitType() != CustomPlayerOutfitType.Swooper)
-                        blackmailer.Blackmailed.nameText().color = Colors.Impostor;
+                        blackmailer.Blackmailed.nameText().color = ColorManager.Impostor;
                     else blackmailer.Blackmailed.nameText().color = Color.clear;
                 }
                 blackmailer.Blackmailed = player;
@@ -126,7 +126,7 @@ namespace TownOfSushi.Roles.Modifiers
                 {
                     Vector3 position = PlayerControl.LocalPlayer.transform.position;
 
-                    if (SubmergedCompatibility.isSubmerged())
+                    if (IsSubmerged())
                     {
                         if (position.y > -7f)
                         {
@@ -159,7 +159,7 @@ namespace TownOfSushi.Roles.Modifiers
                 {
                     Vector3 position = PlayerControl.LocalPlayer.transform.position;
 
-                    if (SubmergedCompatibility.isSubmerged())
+                    if (IsSubmerged())
                     {
                         if (position.y > -7f)
                         {
@@ -209,13 +209,13 @@ namespace TownOfSushi.Roles.Modifiers
                 bomber.PlantButton.SetCoolDown(bomber.TimeRemaining, CustomGameOptions.DetonateDelay);
                 if (PlayerControl.LocalPlayer.Is(ModifierEnum.Underdog))
                 {
-                    var lowerKC = GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown - CustomGameOptions.UnderdogKillBonus + CustomGameOptions.DetonateDelay;
-                    var normalKC = GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown + CustomGameOptions.DetonateDelay;
-                    var upperKC = GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown + CustomGameOptions.UnderdogKillBonus + CustomGameOptions.DetonateDelay;
+                    var lowerKC = VanillaOptions().currentNormalGameOptions.KillCooldown - CustomGameOptions.UnderdogKillBonus + CustomGameOptions.DetonateDelay;
+                    var normalKC = VanillaOptions().currentNormalGameOptions.KillCooldown + CustomGameOptions.DetonateDelay;
+                    var upperKC = VanillaOptions().currentNormalGameOptions.KillCooldown + CustomGameOptions.UnderdogKillBonus + CustomGameOptions.DetonateDelay;
                     PlayerControl.LocalPlayer.SetKillTimer(UnderdogPerformKill.LastImp() ? lowerKC : (UnderdogPerformKill.IncreasedKC() ? normalKC : upperKC));
                 }
-                else PlayerControl.LocalPlayer.SetKillTimer(GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown + CustomGameOptions.DetonateDelay);
-                DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(null);
+                else PlayerControl.LocalPlayer.SetKillTimer(VanillaOptions().currentNormalGameOptions.KillCooldown + CustomGameOptions.DetonateDelay);
+                HUDManager().KillButton.SetTarget(null);
                 bomber.Bomb = BombExtentions.CreateBomb(pos);
                 StartRPC(CustomRPC.Plant, pos.x, pos.y, pos.z);
             }

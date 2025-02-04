@@ -17,7 +17,7 @@ namespace TownOfSushi.Roles
             RoleEnum.Agent, RoleEnum.Hitman, RoleEnum.Miner, RoleEnum.Morphling, RoleEnum.Glitch, RoleEnum.Blackmailer, RoleEnum.Juggernaut,
             RoleEnum.Swapper, RoleEnum.Amnesiac, RoleEnum.GuardianAngel, RoleEnum.Undertaker, RoleEnum.Werewolf, RoleEnum.SerialKiller, RoleEnum.Arsonist,
             RoleEnum.Grenadier, RoleEnum.Crewmate, RoleEnum.Impostor, RoleEnum.Vampire, RoleEnum.Bomber, RoleEnum.Plaguebearer, RoleEnum.Pestilence, RoleEnum.Romantic, RoleEnum.Swooper,
-            RoleEnum.Venerer, RoleEnum.Janitor, RoleEnum.Poisoner, RoleEnum.Lookout, RoleEnum.Crusader, RoleEnum.Deputy, RoleEnum.Escapist, RoleEnum.Doomsayer, RoleEnum.Seer
+            RoleEnum.Venerer, RoleEnum.Janitor, RoleEnum.Poisoner, RoleEnum.BountyHunter, RoleEnum.Lookout, RoleEnum.Crusader, RoleEnum.Deputy, RoleEnum.Escapist, RoleEnum.Doomsayer, RoleEnum.Seer
         };
         public Amnesiac(PlayerControl player) : base(player)
         {
@@ -26,7 +26,7 @@ namespace TownOfSushi.Roles
             TaskText = () => SpawnedAs ? "Wait for a meeting to remember a role" : "Your target died. Now remember a new role";
             RoleInfo = "The Amnesiac is a Neutral role that can remember the role of a deceased player. During meetings, the Amnesiac will have a list of players who have died and can remember the role of one of them. The Amnesiac can remember any role. If the Amnesiac remembers a role, they will become that role and will have the same abilities as that role. The Amnesiac can only remember one role. If the Amnesiac remembers a role, they will no longer be able to remember a role. If the Amnesiac does not remember a role, they will still be able to remember a role in the next meeting.";
             LoreText = "A lost soul, you are haunted by the roles of those who have passed. As the Amnesiac, you have the unique ability to remember the role of a deceased player, adopting their powers and abilities. With each life lost, you gain the chance to assume a new identity, allowing you to shift allegiances and goals in a bid to survive and thrive in the chaos.";
-            Color = Colors.Amnesiac;
+            Color = ColorManager.Amnesiac;
             RoleType = RoleEnum.Amnesiac;
             Faction = Faction.Neutral;
             AddToRoleHistory(RoleType);
@@ -52,7 +52,7 @@ namespace TownOfSushi.Roles
                 return;
             }
 
-            var confirmButton = MeetingHud.Instance.playerStates[index].Buttons.transform.GetChild(0).gameObject;
+            var confirmButton = Meeting().playerStates[index].Buttons.transform.GetChild(0).gameObject;
 
             GameObject newButton;
             if (buttonPool.Count > 0)
@@ -63,7 +63,7 @@ namespace TownOfSushi.Roles
             }
             else
             {
-                newButton = Object.Instantiate(confirmButton, MeetingHud.Instance.playerStates[index].transform);
+                newButton = Object.Instantiate(confirmButton, Meeting().playerStates[index].transform);
             }
 
             var renderer = newButton.GetComponent<SpriteRenderer>();
@@ -113,7 +113,7 @@ namespace TownOfSushi.Roles
                 for (var i = 0; i < role.ListOfActives.Count; i++)
                 {
                     if (!role.ListOfActives[i]) continue;
-                    SetRemember.Remember = MeetingHud.Instance.playerStates[i];
+                    SetRemember.Remember = Meeting().playerStates[i];
                 }
             }
 
@@ -129,7 +129,7 @@ namespace TownOfSushi.Roles
                 Amnesiac.Buttons.Clear();
             }
 
-            if (PlayerControl.LocalPlayer.Data.IsDead) return;
+            if (IsDead()) return;
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Amnesiac)) return;
             if (PlayerControl.LocalPlayer.IsJailed()) return;
             var AmnesiacRole = GetRole<Amnesiac>(PlayerControl.LocalPlayer);
@@ -303,7 +303,7 @@ namespace TownOfSushi.Roles
             || role == RoleEnum.Pestilence || role == RoleEnum.Agent || role == RoleEnum.Werewolf ||
                 role == RoleEnum.SerialKiller) && PlayerControl.LocalPlayer == other)
             {
-                HudManager.Instance.KillButton.buttonLabelText.gameObject.SetActive(false);
+                HUDManager().KillButton.buttonLabelText.gameObject.SetActive(false);
             }
 
             RoleDictionary.Remove(amnesiac.PlayerId);
@@ -318,7 +318,7 @@ namespace TownOfSushi.Roles
             if (PlayerControl.LocalPlayer == amnesiac)
             {
                 ShowTextToast($"You remembered you were {article} {newRole.Name}!", 3.5f);
-                SoundManager.Instance.PlaySound(ShipStatus.Instance.SabotageSound, false, 1f, null);
+                Sound().PlaySound(Ship().SabotageSound, false, 1f, null);
                 Flash(newRole.Color);
             }
 
@@ -364,18 +364,19 @@ namespace TownOfSushi.Roles
                 new Impostor(other);
                 amnesiac.Data.Role.TeamType = RoleTeamTypes.Impostor;
                 RoleManager.Instance.SetRole(amnesiac, RoleTypes.Impostor);
-                amnesiac.SetKillTimer(GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown);
+                amnesiac.SetKillTimer(VanillaOptions().currentNormalGameOptions.KillCooldown);
                 foreach (var player in PlayerControl.AllPlayerControls)
                 {
                     if (player.Data.IsImpostor() && PlayerControl.LocalPlayer.Data.IsImpostor())
                     {
-                        player.nameText().color = Colors.Impostor;
+                        player.nameText().color = ColorManager.Impostor;
                     }
                 }
                 //only add Assassin if the amnesiac does not have an ability already
                 if (CustomGameOptions.AmneTurnImpAssassin && !AbilityDictionary.ContainsKey(amnesiac.PlayerId))
                 {
-                    _ = new Assassin(amnesiac);
+                    var assassin = new Assassin(amnesiac);
+                    assassin.ReDoTaskText();
                 }
                 if (amnesiac.Is(RoleEnum.Poisoner))
                 {
@@ -383,12 +384,12 @@ namespace TownOfSushi.Roles
                     {
                         var poisonerRole = GetRole<Poisoner>(amnesiac);
                         poisonerRole.LastPoisoned = DateTime.UtcNow;
-                        DestroyableSingleton<HudManager>.Instance.KillButton.graphic.enabled = false;
+                        HUDManager().KillButton.graphic.enabled = false;
                     }
                     else if (PlayerControl.LocalPlayer == other)
                     {
-                        DestroyableSingleton<HudManager>.Instance.KillButton.enabled = true;
-                        DestroyableSingleton<HudManager>.Instance.KillButton.graphic.enabled = true;
+                        HUDManager().KillButton.enabled = true;
+                        HUDManager().KillButton.graphic.enabled = true;
                     }
                 }
             }
@@ -441,7 +442,7 @@ namespace TownOfSushi.Roles
                 var vigiRole = GetRole<Vigilante>(amnesiac);
                 vigiRole.RemainingKills = CustomGameOptions.VigilanteKills;
                 vigiRole.LastKilled = DateTime.UtcNow;
-                DestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(false);
+                HUDManager().KillButton.gameObject.SetActive(false);
             }
 
             else if (role == RoleEnum.Veteran)
@@ -452,7 +453,7 @@ namespace TownOfSushi.Roles
             }
             else if (role == RoleEnum.Hunter)
             {
-                var hunterRole = Role.GetRole<Hunter>(amnesiac);
+                var hunterRole = GetRole<Hunter>(amnesiac);
                 hunterRole.MaxUses = CustomGameOptions.HunterStalkUses;
                 hunterRole.LastStalked = DateTime.UtcNow;
                 hunterRole.LastKilled = DateTime.UtcNow;
@@ -482,7 +483,7 @@ namespace TownOfSushi.Roles
                 mysticRole.BodyArrows.Values.DestroyAll();
                 mysticRole.BodyArrows.Clear();
                 mysticRole.LastExamined = DateTime.UtcNow;
-                DestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(false);
+                HUDManager().KillButton.gameObject.SetActive(false);
             }
 
             else if (role == RoleEnum.Medium)
@@ -520,7 +521,7 @@ namespace TownOfSushi.Roles
                 var Crusader = GetRole<Crusader>(amnesiac);
                 Crusader.StartingCooldown = Crusader.StartingCooldown.AddSeconds(-10f);
                 Crusader.Fortified = null;
-                DestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(false);
+                HUDManager().KillButton.gameObject.SetActive(false);
             }
 
             else if (role == RoleEnum.Arsonist)
@@ -685,10 +686,10 @@ namespace TownOfSushi.Roles
 
             else if (!(amnesiac.Is(RoleEnum.Amnesiac) || amnesiac.Is(Faction.Impostors)))
             {
-                DestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(false);
+                HUDManager().KillButton.gameObject.SetActive(false);
             }
 
-            var killsList = (newRole.Kills, newRole.CorrectKills,  newRole.CorrectDeputyShot, newRole.CorrectShot, newRole.IncorrectShots, newRole.CorrectVigilanteShot, newRole.CorrectAssassinKills, newRole.IncorrectAssassinKills);
+            var killsList = (newRole.Kills, newRole.CorrectKills,  newRole.CorrectDeputyShot, newRole.CorrectShot, newRole.IncorrectShots, newRole.CorrectVigilanteShot, newRole.CorrectAssassinKills);
             var otherRole = GetPlayerRole(other);
             otherRole.Kills = killsList.Kills;
             otherRole.CorrectVigilanteShot = killsList.CorrectVigilanteShot;
@@ -697,7 +698,6 @@ namespace TownOfSushi.Roles
             otherRole.CorrectShot = killsList.CorrectShot;
             otherRole.CorrectDeputyShot = killsList.CorrectDeputyShot;
             otherRole.CorrectAssassinKills = killsList.CorrectAssassinKills;
-            otherRole.IncorrectAssassinKills = killsList.IncorrectAssassinKills;
         }
     }
 
@@ -714,7 +714,7 @@ namespace TownOfSushi.Roles
         {
             var exiled = __instance.initData.networkedPlayer?.Object;
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Amnesiac)) return;
-            if (PlayerControl.LocalPlayer.Data.IsDead || PlayerControl.LocalPlayer.Data.Disconnected) return;
+            if (IsDead() || PlayerControl.LocalPlayer.Data.Disconnected) return;
             if (exiled == PlayerControl.LocalPlayer) return;
             var amnesiac = GetRole<Amnesiac>(PlayerControl.LocalPlayer);
             if (amnesiac.ToRemember == null) return;
@@ -733,7 +733,7 @@ namespace TownOfSushi.Roles
         [HarmonyPatch(typeof(Object), nameof(Object.Destroy), new Type[] { typeof(GameObject) })]
         public static void Prefix(GameObject obj)
         {    
-            if (!SubmergedCompatibility.Loaded || GameOptionsManager.Instance?.currentNormalGameOptions?.MapId != 6) return;
+            if (!Loaded || VanillaOptions()?.currentNormalGameOptions?.MapId != 6) return;
             if (obj.name?.Contains("ExileCutscene") == true && ExileControllerPatch.lastExiled != null)    
             {
                 AmnesiacExileControllerPostfix(ExileControllerPatch.lastExiled);    

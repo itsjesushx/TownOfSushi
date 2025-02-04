@@ -6,8 +6,8 @@ namespace TownOfSushi.Patches
     {
         static void UpdateReportButton(HudManager __instance) 
         {
-            if (GameOptionsManager.Instance.currentGameOptions.GameMode == GameModes.HideNSeek) return;
-            if (MeetingHud.Instance  || PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 2)
+            if (IsHideNSeek()) return;
+            if (Meeting()  || PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 2)
             {
                 __instance.ReportButton.ToggleVisible(false);
             }
@@ -24,7 +24,7 @@ namespace TownOfSushi.Patches
     {
         public static bool Prefix(DeadBody __instance) 
         {
-            if (GameOptionsManager.Instance.currentGameOptions.GameMode == GameModes.HideNSeek) return false;
+            if (IsHideNSeek()) return false;
             if (PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 2)  return false;
             return true;
         }
@@ -36,7 +36,7 @@ namespace TownOfSushi.Patches
     {
         public static bool Prefix(MapBehaviour __instance) 
         {
-            if (PlayerControl.LocalPlayer.Data.IsDead || PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 2)
+            if (IsDead() || PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 2)
             {
                 __instance.ShowNormalMap();
                 return false;
@@ -49,9 +49,9 @@ namespace TownOfSushi.Patches
     {
         static void Postfix() 
         {
-            if (PlayerControl.LocalPlayer.Data.IsDead || PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 2) 
+            if (IsDead() || PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 2) 
             {
-                DestroyableSingleton<HudManager>.Instance.SabotageButton.SetDisabled();
+                HUDManager().SabotageButton.Hide();
             }
         }
     }

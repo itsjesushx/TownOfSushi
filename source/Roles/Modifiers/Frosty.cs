@@ -9,7 +9,7 @@ namespace TownOfSushi.Roles.Modifiers
         {
             Name = "Frosty";
             TaskText = () => "Leave behind an icy surprise";
-            Color = Colors.Frosty;
+            Color = ColorManager.Frosty;
             ModifierType = ModifierEnum.Frosty;
         }
     }

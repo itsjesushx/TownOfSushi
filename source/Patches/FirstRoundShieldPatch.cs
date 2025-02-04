@@ -92,9 +92,10 @@ namespace TownOfSushi.Patches
 
         public static void Postfix(PlayerControl __instance) 
         {
-            if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started || GameOptionsManager.Instance.currentGameOptions.GameMode == GameModes.HideNSeek) return;
+            if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started || IsHideNSeek()) return;
             
-            if (PlayerControl.LocalPlayer == __instance) {
+            if (PlayerControl.LocalPlayer == __instance) 
+            {
                 // Update player outlines
                 SetBasePlayerOutlines();
             }

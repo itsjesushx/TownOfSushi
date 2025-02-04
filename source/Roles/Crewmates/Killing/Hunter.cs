@@ -10,7 +10,7 @@ namespace TownOfSushi.Roles
             TaskText = () => "Stalk and kill <color=#FF0000FF>Killers</color>";
             RoleInfo = $"As the Hunter, you can stalk players during rounds every {CustomGameOptions.HunterStalkCd} seconds. You can stalk a player for {CustomGameOptions.HunterStalkDuration} seconds. When the stalked players does something suspecious, you will get a flash indicating they did, after that you can aim to kill them, but careful, you can also murder innocent players.{CanRetribute}";
             LoreText = "A relentless predator, you specialize in tracking and eliminating the Impostors hiding among the crew. As the Hunter, your keen instincts guide you as you stalk your prey, ensuring no traitor escapes your sight. Your objective is clear: hunt down and eliminate the Impostors, but you can also harm the Crewmates.";
-            Color = Colors.Hunter;
+            Color = ColorManager.Hunter;
             LastStalked = DateTime.UtcNow;
             LastKilled = DateTime.UtcNow;
             RoleAlignment = RoleAlignment.CrewKilling;
@@ -78,9 +78,9 @@ namespace TownOfSushi.Roles
 
         public void RpcCatchPlayer(PlayerControl stalked)
         {
-            if (PlayerControl.LocalPlayer.PlayerId == Player.PlayerId && !PlayerControl.LocalPlayer.Data.IsDead)
+            if (PlayerControl.LocalPlayer.PlayerId == Player.PlayerId && !IsDead())
             {
-                Flash(Colors.Hunter, 0.8f);
+                Flash(ColorManager.Hunter, 0.8f);
             }
             CaughtPlayers.Add(stalked);
             StalkDuration = 0;
@@ -119,7 +119,7 @@ namespace TownOfSushi.Roles
         {
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Hunter)) return true;
             if (!PlayerControl.LocalPlayer.CanMove) return false;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return false;
+            if (IsDead()) return false;
             if (__instance.isCoolingDown) return false;
             if (!__instance.isActiveAndEnabled) return false;
             var role = GetRole<Hunter>(PlayerControl.LocalPlayer);
@@ -154,7 +154,7 @@ namespace TownOfSushi.Roles
             if (role.HunterKillTimer() != 0) return false;
             var distBetweenPlayers = GetDistBetweenPlayers(PlayerControl.LocalPlayer, role.ClosestPlayer);
             var flag3 = distBetweenPlayers <
-                        GameOptionsData.KillDistances[GameOptionsManager.Instance.currentNormalGameOptions.KillDistance];
+                        GameOptionsData.KillDistances[VanillaOptions().currentNormalGameOptions.KillDistance];
             if (!flag3) return false;
             var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer, true);
             if (interact[0] == true)
@@ -225,9 +225,9 @@ namespace TownOfSushi.Roles
             PlayerControl player
         )
         {
-            var hudManager = DestroyableSingleton<HudManager>.Instance;
+            var hudManager = HUDManager();
 
-            SoundManager.Instance.PlaySound(player.KillSfx, false, 0.8f);
+            Sound().PlaySound(player.KillSfx, false, 0.8f);
             hudManager.KillOverlay.ShowKillAnimation(player.Data, player.Data);
             
             var amOwner = player.AmOwner;
@@ -238,7 +238,7 @@ namespace TownOfSushi.Roles
                 player.RpcSetScanner(false);
                 ImportantTextTask importantTextTask = new GameObject("_Player").AddComponent<ImportantTextTask>();
                 importantTextTask.transform.SetParent(AmongUsClient.Instance.transform, false);
-                if (!GameOptionsManager.Instance.currentNormalGameOptions.GhostsDoTasks)
+                if (!VanillaOptions().currentNormalGameOptions.GhostsDoTasks)
                 {
                     for (int i = 0; i < player.myTasks.Count; i++)
                     {
@@ -307,7 +307,7 @@ namespace TownOfSushi.Roles
 
             var data = __instance.Data;
             var stuff = Physics2D.OverlapCircleAll(truePosition, __instance.MaxReportDistance, Constants.Usables);
-            var flag = (GameOptionsManager.Instance.currentNormalGameOptions.GhostsDoTasks || !data.IsDead) &&
+            var flag = (VanillaOptions().currentNormalGameOptions.GhostsDoTasks || !data.IsDead) &&
                        (!AmongUsClient.Instance || !AmongUsClient.Instance.IsGameOver) && __instance.CanMove;
             var flag2 = false;
 
@@ -325,7 +325,7 @@ namespace TownOfSushi.Roles
                     }
                 }
 
-            DestroyableSingleton<HudManager>.Instance.ReportButton.SetActive(flag2);
+            HUDManager().ReportButton.SetActive(flag2);
         }
     }
 
@@ -338,7 +338,7 @@ namespace TownOfSushi.Roles
             if (CustomGameOptions.HunterBodyReport) return true;
 
             if (AmongUsClient.Instance.IsGameOver) return false;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return false;
+            if (IsDead()) return false;
             foreach (var collider2D in Physics2D.OverlapCircleAll(__instance.GetTruePosition(),
                 __instance.MaxReportDistance, Constants.PlayersOnlyMask))
                 if (!(collider2D.tag != "DeadBody"))
@@ -366,7 +366,7 @@ namespace TownOfSushi.Roles
             if (CustomGameOptions.HunterBodyReport) return true;
 
             if (AmongUsClient.Instance.IsGameOver) return false;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return false;
+            if (IsDead()) return false;
 
             var matches = Murder.KilledPlayers.FirstOrDefault(x => x.PlayerId == __instance.ParentId);
             if (matches != null && matches.KillerId != PlayerControl.LocalPlayer.PlayerId) return true;
@@ -391,7 +391,7 @@ namespace TownOfSushi.Roles
                 foreach (var player in role.CaughtPlayers)
                 {
                     var data = player.Data;
-                    if (data == null || data.Disconnected || data.IsDead || PlayerControl.LocalPlayer.Data.IsDead)
+                    if (data == null || data.Disconnected || data.IsDead || IsDead())
                         continue;
 
                     var colour = Color.black;
@@ -426,13 +426,13 @@ namespace TownOfSushi.Roles
                 role.UsesText.text = role.MaxUses + "";
             }
 
-            if (PlayerControl.LocalPlayer.Data.IsDead) role.StalkButton.SetTarget(null);
+            if (IsDead()) role.StalkButton.SetTarget(null);
 
             role.StalkButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
             role.UsesText.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
 
             if (role.Stalking) role.StalkButton.SetCoolDown(role.StalkDuration, CustomGameOptions.HunterStalkDuration);
@@ -463,7 +463,7 @@ namespace TownOfSushi.Roles
             }
 
             __instance.KillButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
             __instance.KillButton.SetCoolDown(role.HunterKillTimer(), CustomGameOptions.HunterKillCd);
             if (CamouflageUnCamouflagePatch.IsCamouflaged && CustomGameOptions.CamoCommsKillAnyone) SetTarget(ref role.ClosestPlayer, __instance.KillButton, float.NaN, role.CaughtPlayers);

@@ -9,10 +9,10 @@ namespace TownOfSushi.Roles
             Name = "Seer";
             StartText = () => "Investigate the faction of other players";
             TaskText = () => "Investigate factions to find the Killers";
-            RoleInfo = "The Seer is able to choose two targets, upon a meeting starts, the Seer will be notified wether the targets are on the same team or not, in the voting screen the Seer will see a green Y if they are, else they will have a red X next to their names.";
+            RoleInfo = "The Seer is able to choose two targets, upon a meeting starts, the Seer will be notified wether the targets are on the same faction or not, in the voting screen the Seer will see a green Y if they are, else they will have a red X next to their names.";
             LoreText = "Gifted with an extraordinary insight, the Seer can peer into the factions of their crewmates. Tasked with revealing the truth hidden in the shadows, they aim to bring light to deception and uncover the impostors among the crew. Beware, for the Seer's knowledge can make them a prime target for evildoers.";
             RoleAlignment = RoleAlignment.CrewInvest;
-            Color = Colors.Seer;
+            Color = ColorManager.Seer;
             AddToRoleHistory(RoleType);
             LastInvestigated = DateTime.UtcNow;
             RoleType = RoleEnum.Seer; 
@@ -49,7 +49,7 @@ namespace TownOfSushi.Roles
     {
         public static bool Prefix(KillButton __instance)
         {
-            if (__instance != DestroyableSingleton<HudManager>.Instance.KillButton) return true;
+            if (__instance != HUDManager().KillButton) return true;
             var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Seer);
             if (!flag) return true;
             var role = GetRole<Seer>(PlayerControl.LocalPlayer);
@@ -132,7 +132,7 @@ namespace TownOfSushi.Roles
             if (role.HasInvested2) return;
 
             investigateButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
             investigateButton.SetCoolDown(role.SeerTimer1(), CustomGameOptions.SeerCd);
 
@@ -165,15 +165,15 @@ namespace TownOfSushi.Roles
         {
             var seer = GetRole<Seer>(PlayerControl.LocalPlayer);
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Seer)) return;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return;
+            if (IsDead()) return;
             if (seer.Investigated.Data.IsDead || seer.Investigated.Data.Disconnected 
             || seer.Investigated2.Data.Disconnected || seer.Investigated2.Data.IsDead) return;
 
             var playerResults = SeerResults();
             if (seer.Investigated != null && seer.Investigated2 != null)
             {
-                if (!string.IsNullOrWhiteSpace(playerResults)) DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, playerResults);
-                SoundManager.Instance.PlaySound(ShipStatus.Instance.SabotageSound, false, 1f, null);            
+                if (!string.IsNullOrWhiteSpace(playerResults)) HUDManager().Chat.AddChat(PlayerControl.LocalPlayer, playerResults);
+                Sound().PlaySound(Ship().SabotageSound, false, 1f, null);            
                 Flash(seer.Color);
             }
         }
@@ -194,7 +194,7 @@ namespace TownOfSushi.Roles
             }
 
             if (differentFaction == true) return ColorString(Color.red, $"{seer.Investigated.GetDefaultOutfit().PlayerName} and {seer.Investigated2.GetDefaultOutfit().PlayerName} have a different faction!");
-            else return ColorString(Color.green, $"{seer.Investigated.GetDefaultOutfit().PlayerName} and {seer.Investigated2.GetDefaultOutfit().PlayerName} are on the same team!");
+            else return ColorString(Color.green, $"{seer.Investigated.GetDefaultOutfit().PlayerName} and {seer.Investigated2.GetDefaultOutfit().PlayerName} are the same faction!");
         }
     }
 

@@ -22,7 +22,7 @@ namespace TownOfSushi.Roles
                     : $"Protect {target.name}!";
             RoleInfo = $"The Guardian Angel can protect a player from death. They have a limited number of uses. Protecting a player makes them be unable to die for a {CustomGameOptions.ProtectDuration} seconds. If the target gets a murder attempt, the killer will have a {CustomGameOptions.ProtectKCReset} seconds cooldown reset.";
             LoreText = "A celestial protector, you watch over the alive with unwavering devotion. As the Guardian Angel, you are tasked with protecting a specific player, shielding them from harm. Your divine abilities allow you to intervene in their time of need, using your powers to prevent death and ensure their survival. but your protection is limited, and once it is used up and the game ends, your mission ends.";
-            Color = Colors.GuardianAngel;
+            Color = ColorManager.GuardianAngel;
             LastProtected = DateTime.UtcNow;
             RoleType = RoleEnum.GuardianAngel;
             Faction = Faction.Neutral;
@@ -95,10 +95,10 @@ namespace TownOfSushi.Roles
             }
 
             protectButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
             role.UsesText.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
             if (role.Protecting) protectButton.SetCoolDown(role.TimeRemaining, CustomGameOptions.ProtectDuration);
             else if (role.ButtonUsable) protectButton.SetCoolDown(role.ProtectTimer(), CustomGameOptions.ProtectCd);
@@ -130,10 +130,10 @@ namespace TownOfSushi.Roles
             var flag = PlayerControl.LocalPlayer.Is(RoleEnum.GuardianAngel);
             if (!flag) return true;
             if (!PlayerControl.LocalPlayer.CanMove) return false;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return false;
+            if (IsDead()) return false;
             var role = GetRole<GuardianAngel>(PlayerControl.LocalPlayer);
             if (!role.ButtonUsable) return false;
-            var protectButton = DestroyableSingleton<HudManager>.Instance.KillButton;
+            var protectButton = HUDManager().KillButton;
             if (__instance == protectButton)
             {
                 if (__instance.isCoolingDown) return false;
@@ -209,11 +209,11 @@ namespace TownOfSushi.Roles
             if (PlayerControl.LocalPlayer == null) return;
             if (PlayerControl.LocalPlayer.Data == null) return;
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.GuardianAngel)) return;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return;
+            if (IsDead()) return;
 
             var role = GetRole<GuardianAngel>(PlayerControl.LocalPlayer);
 
-            if (MeetingHud.Instance != null) UpdateMeeting(MeetingHud.Instance, role);
+            if (Meeting() != null) UpdateMeeting(Meeting(), role);
 
             if (!CustomGameOptions.GAKnowsTargetRole && !CamouflageUnCamouflagePatch.IsCamouflaged) role.target.nameText().text += "<color=#FFFFFFFF> ★</color>";
 
@@ -222,7 +222,7 @@ namespace TownOfSushi.Roles
             StartRPC(CustomRPC.GuardianAngelChangeRole, PlayerControl.LocalPlayer.PlayerId);
 
             Object.Destroy(role.UsesText);
-            DestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(false);
+            HUDManager().KillButton.gameObject.SetActive(false);
 
             GuardianAngelChangeRole(PlayerControl.LocalPlayer);
         }

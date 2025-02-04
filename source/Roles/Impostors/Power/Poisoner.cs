@@ -38,7 +38,7 @@ namespace TownOfSushi.Roles
         {
             Enabled = true;
             TimeRemaining -= Time.deltaTime;
-            if (MeetingHud.Instance)
+            if (Meeting())
             {
                 TimeRemaining = 0;
             }
@@ -58,7 +58,7 @@ namespace TownOfSushi.Roles
             if (!PoisonedPlayer.IsShielded() && !PoisonedPlayer.IsFortified() && !PoisonedPlayer.Is(RoleEnum.Pestilence) && !PoisonedPlayer.IsProtected() && PoisonedPlayer != ShowRoundOneShield.FirstRoundShielded)
             {
                 RpcMurderPlayerNoJump(Player, PoisonedPlayer);
-                if (!PoisonedPlayer.Data.IsDead) SoundManager.Instance.PlaySound(PlayerControl.LocalPlayer.KillSfx, false, 0.5f);
+                if (!PoisonedPlayer.Data.IsDead) Sound().PlaySound(PlayerControl.LocalPlayer.KillSfx, false, 0.5f);
                 GameHistory.CreateDeathReason(PoisonedPlayer, CustomDeathReason.Poisoned, Player);
             }
             else if (PoisonedPlayer.IsShielded())
@@ -92,7 +92,7 @@ namespace TownOfSushi.Roles
     {
         public static void Postfix(Object obj)
         {
-            if (ExileController.Instance == null || obj != ExileController.Instance.gameObject) return;
+            if (ExiledInstance() == null || obj != ExiledInstance().gameObject) return;
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Poisoner))
             {
                 var role = GetRole<Poisoner>(PlayerControl.LocalPlayer);
@@ -123,7 +123,7 @@ namespace TownOfSushi.Roles
                 role.PoisonButton.graphic.sprite = PoisonSprite;
             }
 
-            role.PoisonButton.gameObject.SetActive(!PlayerControl.LocalPlayer.Data.IsDead && !MeetingHud.Instance);
+            role.PoisonButton.gameObject.SetActive(!IsDead() && !Meeting());
             __instance.KillButton.Hide();
 
             var position = __instance.KillButton.transform.localPosition;
@@ -188,7 +188,7 @@ namespace TownOfSushi.Roles
             var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Poisoner);
             if (!flag) return true;
             if (!PlayerControl.LocalPlayer.CanMove) return false;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return false;
+            if (IsDead()) return false;
             var role = GetRole<Poisoner>(PlayerControl.LocalPlayer);
             var target = role.ClosestPlayer;
             if (target == null) return false;
@@ -209,7 +209,7 @@ namespace TownOfSushi.Roles
             {
                 role.PoisonedPlayer = target;
                 role.PoisonButton.SetTarget(null);
-                DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(null);
+                HUDManager().KillButton.SetTarget(null);
                 role.TimeRemaining = CustomGameOptions.PoisonDelay;
                 role.PoisonButton.SetCoolDown(role.TimeRemaining, CustomGameOptions.PoisonDelay);
                 StartRPC(CustomRPC.Poison, PlayerControl.LocalPlayer.PlayerId, target.PlayerId);
@@ -261,7 +261,7 @@ namespace TownOfSushi.Roles
             if (PlayerControl.LocalPlayer.Data == null) return;
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Poisoner)) return;
             var role = Role.GetRole<Poisoner>(PlayerControl.LocalPlayer);
-            if (target != null && __instance == DestroyableSingleton<HudManager>.Instance.KillButton)
+            if (target != null && __instance == HUDManager().KillButton)
                 if (target.Data.IsImpostor())
                 {
                     __instance.graphic.color = Palette.DisabledClear;

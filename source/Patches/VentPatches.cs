@@ -9,7 +9,7 @@ namespace TownOfSushi.Patches
             if(__instance.ImpostorVentButton == null || __instance.ImpostorVentButton.gameObject == null || __instance.ImpostorVentButton.IsNullOrDestroyed())
                 return;
 
-            bool active = PlayerControl.LocalPlayer != null && VentPatches.CanUseVents(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.CachedPlayerData) && !MeetingHud.Instance;
+            bool active = PlayerControl.LocalPlayer != null && VentPatches.CanUseVents(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.CachedPlayerData) && !Meeting();
             if (active != __instance.ImpostorVentButton.gameObject.active)
             __instance.ImpostorVentButton.gameObject.SetActive(active);
         }
@@ -21,7 +21,7 @@ namespace TownOfSushi.Patches
         public static bool IsVenter => CanUseVents(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.CachedPlayerData);
         public static bool CanUseVents(PlayerControl player, NetworkedPlayerInfo playerInfo)
         {
-            if (GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek) return false;
+            if (IsHideNSeek()) return false;
 
             if (player.inVent)
             {
@@ -75,11 +75,11 @@ namespace TownOfSushi.Patches
             float num = float.MaxValue;
             PlayerControl playerControl = playerInfo.Object;
 
-            if (GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.Normal) couldUse = CanUseVents(playerControl, playerInfo) && (!playerInfo.IsDead || playerControl.inVent) && (playerControl.CanMove || playerControl.inVent);
-            else if (GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek && playerControl.Data.IsImpostor()) couldUse = false;
+            if (IsClassic()) couldUse = CanUseVents(playerControl, playerInfo) && (!playerInfo.IsDead || playerControl.inVent) && (playerControl.CanMove || playerControl.inVent);
+            else if (IsHideNSeek() && playerControl.Data.IsImpostor()) couldUse = false;
             else couldUse = canUse;
 
-            var ventitaltionSystem = ShipStatus.Instance.Systems[SystemTypes.Ventilation].Cast<VentilationSystem>();
+            var ventitaltionSystem = Ship().Systems[SystemTypes.Ventilation].Cast<VentilationSystem>();
 
             if (ventitaltionSystem != null && ventitaltionSystem.IsVentCurrentlyBeingCleaned(__instance.Id))
             {
@@ -94,7 +94,7 @@ namespace TownOfSushi.Patches
                 Vector3 position = __instance.transform.position;
                 num = Vector2.Distance((Vector2)center, (Vector2)position);
 
-                if (__instance.Id == 14 && SubmergedCompatibility.isSubmerged())
+                if (__instance.Id == 14 && IsSubmerged())
                     canUse &= (double)num <= (double)__instance.UsableDistance;
                 else
                     canUse = ((canUse ? 1 : 0) & ((double)num > (double)__instance.UsableDistance ? 0 : (!PhysicsHelpers.AnythingBetween(playerControl.Collider, (Vector2)center, (Vector2)position, Constants.ShipOnlyMask, false) ? 1 : 0))) != 0;

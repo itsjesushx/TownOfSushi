@@ -9,13 +9,13 @@ namespace TownOfSushi.Roles
         public readonly List<bool> ListOfActives = new List<bool>();
         public Swapper(PlayerControl player) : base(player)
         {
-            var CanButton = CustomGameOptions.SwapperButton ? "can call an emergency meeting." : "can't call an emergency meeting.";
+            var CanButton = CustomGameOptions.SwapperButton ? "" : " The Swapper can't call an emergency meeting.";
             Name = "Swapper";
             StartText = () => "Swap the votes of two people";
             TaskText = () => "Swap votes";
-            RoleInfo = $"You can swap the votes of two players, turning the tide of a vote to save the Crew lives or expose the killers. Your influence in the voting process is invaluable to the crew’s survival, but it requires careful strategy and timing. The Swapper {CanButton}";
+            RoleInfo = $"You can swap the votes of two players, turning the tide of a vote to save the Crew lives or expose the killers. Your influence in the voting process is invaluable to the crew’s survival, but it requires careful strategy and timing. {CanButton}";
             LoreText = "A master of subtle manipulation, you have the power to change the course of votes and sway the outcome of critical decisions. As the Swapper, you can swap the votes of two players, turning the tide of a vote to save innocent lives or expose the killers. Your influence in the voting process is invaluable to the crew’s survival, but it requires careful strategy and timing.";
-            Color = Colors.Swapper;
+            Color = ColorManager.Swapper;
             RoleType = RoleEnum.Swapper;
             RoleAlignment = RoleAlignment.CrewSupport;
             AddToRoleHistory(RoleType);
@@ -292,9 +292,9 @@ namespace TownOfSushi.Roles
                 return;
             }
 
-            var confirmButton = MeetingHud.Instance.playerStates[index].Buttons.transform.GetChild(0).gameObject;
+            var confirmButton = Meeting().playerStates[index].Buttons.transform.GetChild(0).gameObject;
 
-            var newButton = Object.Instantiate(confirmButton, MeetingHud.Instance.playerStates[index].transform);
+            var newButton = Object.Instantiate(confirmButton, Meeting().playerStates[index].transform);
             var renderer = newButton.GetComponent<SpriteRenderer>();
             var passive = newButton.GetComponent<PassiveButton>();
 
@@ -334,12 +334,12 @@ namespace TownOfSushi.Roles
 
                     if (toSet1)
                     {
-                        SwapVotes.Swap1 = MeetingHud.Instance.playerStates[i];
+                        SwapVotes.Swap1 = Meeting().playerStates[i];
                         toSet1 = false;
                     }
                     else
                     {
-                        SwapVotes.Swap2 = MeetingHud.Instance.playerStates[i];
+                        SwapVotes.Swap2 = Meeting().playerStates[i];
                     }
                 }
 
@@ -364,7 +364,7 @@ namespace TownOfSushi.Roles
                 swapper.Buttons.Clear();
             }
 
-            if (PlayerControl.LocalPlayer.Data.IsDead) return;
+            if (IsDead()) return;
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Swapper)) return;
             if (PlayerControl.LocalPlayer.IsJailed()) return;
             var swapperrole = GetRole<Swapper>(PlayerControl.LocalPlayer);

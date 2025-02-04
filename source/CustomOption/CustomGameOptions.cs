@@ -133,6 +133,8 @@ namespace TownOfSushi.CustomOption
         public static bool ParallelMedScans => CustomOptionHolder.ParallelMedScans.GetBool();
         public static bool CamoCommsKillAnyone => CustomOptionHolder.CamoCommsKillAnyone.GetBool();
         public static int MaxFixes => Mathf.RoundToInt(CustomOptionHolder.MaxFixes.GetFloat());
+        public static float EngiVentCooldown => CustomOptionHolder.EngiVentCooldown.GetFloat();
+        public static float EngiVentDuration => CustomOptionHolder.EngiVentDuration.GetFloat();
         public static bool VigilanteBodyReport => CustomOptionHolder.VigilanteBodyReport.GetBool();
         public static bool VeteranBodyReport => CustomOptionHolder.VeteranBodyReport.GetBool();
         public static float DragCd => CustomOptionHolder.DragCooldown.GetFloat();
@@ -277,6 +279,7 @@ namespace TownOfSushi.CustomOption
         public static float ChillStartSpeed => CustomOptionHolder.ChillStartSpeed.GetFloat();
         public static AdminDeadPlayers WhoSeesDead => (AdminDeadPlayers)CustomOptionHolder.WhoSeesDead.GetSelection();
         public static bool VentImprovements => CustomOptionHolder.VentImprovements.GetBool();
+        public static bool SkeldVentImprovements => CustomOptionHolder.SkeldVentImprovements.GetBool();
         public static bool VitalsLab => CustomOptionHolder.VitalsLab.GetBool();
         public static bool ColdTempDeathValley => CustomOptionHolder.ColdTempDeathValley.GetBool();
         public static bool WifiChartCourseSwap => CustomOptionHolder.WifiChartCourseSwap.GetBool();
@@ -287,8 +290,9 @@ namespace TownOfSushi.CustomOption
         public static float RandomMapAirship => CustomOptionHolder.RandomMapAirship.GetFloat();
         public static float RandomMapFungle => CustomOptionHolder.RandomMapFungle.GetFloat();
         public static float ReducedSaboCd => CustomOptionHolder.ReducedSaboCd.GetFloat();
-        public static float RandomMapSubmerged => SubmergedCompatibility.Loaded ? CustomOptionHolder.RandomMapSubmerged.GetFloat() : 0f;
-        public static float RandomMapLevelImpostor => RandomMap.LevelImpLoaded ? CustomOptionHolder.RandomMapLevelImpostor.GetFloat() : 0f;
+        public static bool RandomSpawns => CustomOptionHolder.RandomSpawns.GetBool();
+        public static float RandomMapSubmerged => Loaded ? CustomOptionHolder.RandomMapSubmerged.GetFloat() : 0f;
+        public static float RandomMapLevelImpostor => TownOfSushi.LevelImpLoaded ? CustomOptionHolder.RandomMapLevelImpostor.GetFloat() : 0f;
         public static DisableSkipButtonMeetings SkipButtonDisable =>
             (DisableSkipButtonMeetings)CustomOptionHolder.SkipButtonDisable.GetSelection();
         public static bool UniqueRoles => CustomOptionHolder.UniqueRoles.GetBool();

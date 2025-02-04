@@ -131,16 +131,16 @@
             public static bool Prefix(PlayerControl __instance, ref bool __result)
             {
                 __result = __instance.moveable
-                        && !Minigame.Instance
+                        && !TaskPanel()
                         && !__instance.shapeshifting
-                        && (!DestroyableSingleton<HudManager>.InstanceExists 
-                        || !DestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening
-                        && !DestroyableSingleton<HudManager>.Instance.KillOverlay.IsOpen
-                        && !DestroyableSingleton<HudManager>.Instance.GameMenu.IsOpen)
-                        && (!MapBehaviour.Instance || !MapBehaviour.Instance.IsOpenStopped)
-                        && !MeetingHud.Instance
+                        && (!HudManager.InstanceExists
+                        || !HUDManager().Chat.IsOpenOrOpening
+                        && !HUDManager().KillOverlay.IsOpen
+                        && !HUDManager().GameMenu.IsOpen)
+                        && (!MapInstance() || !MapInstance().IsOpenStopped)
+                        && !Meeting()
                         && !PlayerCustomizationMenu.Instance 
-                        && !ExileController.Instance
+                        && !ExiledInstance()
                         && !IntroCutscene.Instance;
 
                 return false;

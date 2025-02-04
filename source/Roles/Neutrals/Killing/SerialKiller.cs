@@ -15,7 +15,7 @@
             TaskText = () => "Kill everyone in stabbing mode";
             RoleInfo = "The Serial Killer is a Neutral role with its own win condition. Although the Serial Killer has a kill button, they can't use it unless they are stabbing. Once the Serial Killer rampages they gain Impostor vision and the ability to kill. However, unlike most killers their kill cooldown is really short. The Serial Killer needs to be the last killer alive to win the game.";
             LoreText = "You are the Serial Killer, a cold-blooded predator with a single goal—eliminate everyone in your path. Armed with your trusty knife, you move through the shadows, striking at your victims without hesitation. Your mind is focused, your mission clear: kill them all. As the last remaining survivor, you'll be free from the chaos that surrounds you. Trust no one, for every crewmate is a potential target, and every moment could be your next deadly strike.";
-            Color = Colors.SerialKiller;
+            Color = ColorManager.SerialKiller;
             LastStabbed = DateTime.UtcNow;
             LastKilled = DateTime.UtcNow;
             RoleType = RoleEnum.SerialKiller;
@@ -96,7 +96,7 @@
         {
             var flag = PlayerControl.LocalPlayer.Is(RoleEnum.SerialKiller);
             if (!flag) return true;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return false;
+            if (IsDead()) return false;
             if (!PlayerControl.LocalPlayer.CanMove) return false;
             var role = GetRole<SerialKiller>(PlayerControl.LocalPlayer);
             if (role.Player.inVent) return false;
@@ -115,7 +115,7 @@
 
             if (role.KillTimer() != 0) return false;
             if (!role.Stabbing) return false;
-            if (__instance != DestroyableSingleton<HudManager>.Instance.KillButton) return true;
+            if (__instance != HUDManager().KillButton) return true;
             if (!__instance.isActiveAndEnabled || __instance.isCoolingDown) return false;
             if (role.ClosestPlayer == null) return false;
             var distBetweenPlayers = GetDistBetweenPlayers(PlayerControl.LocalPlayer, role.ClosestPlayer);
@@ -154,7 +154,7 @@
             var role = GetRole<SerialKiller>(PlayerControl.LocalPlayer);
 
             __instance.KillButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
             __instance.KillButton.SetCoolDown(role.KillTimer(), CustomGameOptions.StabKillCd);
 
@@ -171,7 +171,7 @@
             role.StabButton.buttonLabelText.text = "STAB";
 
             role.StabButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
 
             if (role.Stabbing)

@@ -6,7 +6,7 @@ namespace TownOfSushi.Roles.Abilities
         {
             Name = "Tiebreaker";
             TaskText = () => "Your vote breaks ties";
-            Color = Colors.Tiebreaker;
+            Color = ColorManager.Tiebreaker;
             AbilityType = AbilityEnum.Tiebreaker;
         }
     }

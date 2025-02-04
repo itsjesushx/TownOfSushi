@@ -27,8 +27,12 @@
                     __instance.ColorChips[i].Inner.SpriteColor = ColorUtils.Rainbow;
                 else if (ColorUtils.IsMonochrome(i))
                     __instance.ColorChips[i].Inner.SpriteColor = ColorUtils.Monochrome;
+                else if (ColorUtils.IsFire(i))
+                    __instance.ColorChips[i].Inner.SpriteColor = ColorUtils.Fire;
                 else if (ColorUtils.IsGalaxy(i))
                     __instance.ColorChips[i].Inner.SpriteColor = ColorUtils.Galaxy;
+                else if (ColorUtils.IsWater(i))
+                    __instance.ColorChips[i].Inner.SpriteColor = ColorUtils.Water;
             }
 
         }
@@ -123,6 +127,8 @@
                 120000 => "Ice",
                 130000 => "Sunrise",
                 140000 => "Peach",
+                150000 => "Fire",
+                151000 => "Water",
                 _ => null
             };
             if (newResult != null)
@@ -181,6 +187,8 @@
                 (StringNames)120000, //"Ice",
                 (StringNames)130000, //"Sunrise",
                 (StringNames)140000, //"Peach",
+                (StringNames)150000, //"Fire",
+                (StringNames)151000, //"Water",
             };
             Palette.PlayerColors = new[]
             {
@@ -225,6 +233,8 @@
                 new Color32(0xA8, 0xDF, 0xFF, byte.MaxValue),
                 new Color32(0xFF, 0xCA, 0x19, byte.MaxValue),
                 new Color32(255, 164, 119, byte.MaxValue), 
+                new Color32(0, 0, 0, byte.MaxValue),
+                new Color32(0, 0, 0, byte.MaxValue),
             };
             Palette.ShadowColors = new[]
             {
@@ -269,6 +279,8 @@
                 new Color32(0x59, 0x9F, 0xC8, byte.MaxValue),
                 new Color32(0xDB, 0x44, 0x42, byte.MaxValue),
                 new Color32(238, 128, 100, byte.MaxValue),
+                new Color32(0, 0, 0, byte.MaxValue),
+                new Color32(0, 0, 0, byte.MaxValue),
             };
         }
     }
@@ -478,89 +490,123 @@
 
     public class ColorUtils
     {
-    private static readonly int BackColor = Shader.PropertyToID("_BackColor");
-    private static readonly int BodyColor = Shader.PropertyToID("_BodyColor");
-    private static readonly int VisorColor = Shader.PropertyToID("_VisorColor");
-    public static Color Rainbow => new HSBColor(PP(0, 1, 0.3f), 1, 1).ToColor();
-    public static Color RainbowShadow => Shadow(Rainbow);
+        private static readonly int BackColor = Shader.PropertyToID("_BackColor");
+        private static readonly int BodyColor = Shader.PropertyToID("_BodyColor");
+        private static readonly int VisorColor = Shader.PropertyToID("_VisorColor");
 
-    public static Color Monochrome => new HSBColor(1f, 0f, PP(0f, 1f, 0.8f)).ToColor();
-    public static Color MonochromeShadow => Shadow(Monochrome);
+        public static Color Rainbow => new HSBColor(PP(0, 1, 0.3f), 1, 1).ToColor();
+        public static Color RainbowShadow => Shadow(Rainbow);
 
-    public static Color Galaxy => new HSBColor(PP(0.5f, 0.87f, 0.4f), 1, 1).ToColor();
-    public static Color GalaxyShadow => Shadow(Galaxy);
+        public static Color Water => new HSBColor(PP(0.55f, 0.65f, 0.3f), 1, 1).ToColor();
+        public static Color WaterShadow => Shadow(Water);
 
-    public static Color Fire => new HSBColor(PP(0f, 0.17f, 0.4f), 1, 1).ToColor();
-    public static Color FireShadow => Shadow(Fire);
+        public static Color Monochrome => new HSBColor(1f, 0f, PP(0f, 1f, 0.8f)).ToColor();
+        public static Color MonochromeShadow => Shadow(Monochrome);
 
+        public static Color Galaxy => new HSBColor(PP(0.5f, 0.87f, 0.4f), 1, 1).ToColor();
+        public static Color GalaxyShadow => Shadow(Galaxy);
 
-    public static float PP(float min, float max, float mul)
-    {
-        return min + Mathf.PingPong(Time.time * mul, max - min);
-    }
+        public static Color Fire => new HSBColor(PP(0.01f, 0.17f, 0.4f), 1, 1).ToColor();
+        public static Color FireShadow => Shadow(Fire);
 
-    public static Color Shadow(Color color)
-    {
-        return new Color(color.r - 0.3f, color.g - 0.3f, color.b - 0.3f);
-    }
+    
+        public static float PP(float min, float max, float mul)
+        {
+            return min + Mathf.PingPong(Time.time * mul, max - min);
+        }
 
-    public static void SetRainbow(Renderer rend)
-    {
-        rend.material.SetColor(BackColor, RainbowShadow);
-        rend.material.SetColor(BodyColor, Rainbow);
-        rend.material.SetColor(VisorColor, Palette.VisorColor);
-    }
-    public static void SetMonochrome(Renderer rend)
-    {
+        public static Color Shadow(Color color)
+        {
+            return new Color(color.r - 0.3f, color.g - 0.3f, color.b - 0.3f);
+        }
+
+        public static void SetRainbow(Renderer rend)
+        {
+            rend.material.SetColor(BackColor, RainbowShadow);
+            rend.material.SetColor(BodyColor, Rainbow);
+            rend.material.SetColor(VisorColor, Palette.VisorColor);
+        }
+        public static void SetMonochrome(Renderer rend)
+        {
             rend.material.SetColor(BackColor, MonochromeShadow);
             rend.material.SetColor(BodyColor, Monochrome);
             rend.material.SetColor(VisorColor, Palette.VisorColor);
-    }
-    public static void SetGalaxy(Renderer rend)
-    {
+        }
+        public static void SetWater(Renderer rend)
+        {
+            rend.material.SetColor(BackColor, WaterShadow);
+            rend.material.SetColor(BodyColor, Water);
+            rend.material.SetColor(VisorColor, Palette.VisorColor);
+        }
+        public static void SetGalaxy(Renderer rend)
+        {
             rend.material.SetColor(BackColor, GalaxyShadow);
             rend.material.SetColor(BodyColor, Galaxy);
             rend.material.SetColor(VisorColor, Palette.VisorColor);
-    }
-    public static bool IsMonochrome(int id)
-    {
-        if (id < 0 || id >= Palette.ColorNames.Count)
-            return false;
-
-        return (int)Palette.ColorNames[id] == 100000;
-    }
-    public static bool IsGalaxy(int id)
-    {
-        if (id < 0 || id >= Palette.ColorNames.Count)
-            return false;
-
-        return (int)Palette.ColorNames[id] == 110000;
-    }
-
-    public static bool IsRainbow(int id)
-    {
-        try
-        {
-            return (int)Palette.ColorNames[id] == 999999;
-        } catch
-        {
-            return false;
         }
-    }
-    public static bool IsChanging(int id) => IsRainbow(id) || IsGalaxy(id) ||  IsMonochrome(id);
-    }
-
-    public class ColorBehaviour : MonoBehaviour
-    {
-        public Renderer Renderer;
-        public int Id;
-
-        public void AddRend(Renderer rend, int id)
+        public static void SetFire(Renderer rend)
         {
-            Renderer = rend;
-            Id = id;
+            rend.material.SetColor(BackColor, FireShadow);
+            rend.material.SetColor(BodyColor, Fire);
+            rend.material.SetColor(VisorColor, Palette.VisorColor);
         }
-
+        public static bool IsMonochrome(int id)
+        {
+            if (id < 0 || id >= Palette.ColorNames.Count)
+                return false;
+    
+            return (int)Palette.ColorNames[id] == 100000;
+        }
+        public static bool IsWater(int id)
+        {
+            if (id < 0 || id >= Palette.ColorNames.Count)
+                return false;
+    
+            return (int)Palette.ColorNames[id] == 151000;
+        }
+        public static bool IsFire(int id)
+        {
+            if (id < 0 || id >= Palette.ColorNames.Count)
+                return false;
+    
+            return (int)Palette.ColorNames[id] == 150000;
+        }
+        public static bool IsGalaxy(int id)
+        {
+            if (id < 0 || id >= Palette.ColorNames.Count)
+                return false;
+    
+            return (int)Palette.ColorNames[id] == 110000;
+        }
+    
+        public static bool IsRainbow(int id)
+        {
+            try
+            {
+                return (int)Palette.ColorNames[id] == 999999;
+            } catch
+            {
+                return false;
+            }
+        }
+        public static bool IsChanging(int id) => IsRainbow(id) 
+        || IsGalaxy(id) 
+        ||  IsMonochrome(id) 
+        || IsFire(id) 
+        || IsWater(id);
+        }
+    
+        public class ColorBehaviour : MonoBehaviour
+        {
+            public Renderer Renderer;
+            public int Id;
+    
+            public void AddRend(Renderer rend, int id)
+            {
+                Renderer = rend;
+                Id = id;
+            }
+    
         public void Update()
         {
             if (Renderer == null) return;
@@ -573,8 +619,13 @@
                 
             else if (ColorUtils.IsGalaxy(Id))
                 ColorUtils.SetGalaxy(Renderer);
+            
+            else if (ColorUtils.IsFire(Id))
+                ColorUtils.SetFire(Renderer);
+            
+            else if (ColorUtils.IsWater(Id))
+                ColorUtils.SetWater(Renderer);
         }
-
         public ColorBehaviour(IntPtr ptr) : base(ptr) { }
     }
 }

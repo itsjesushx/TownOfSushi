@@ -1,11 +1,11 @@
 ﻿namespace TownOfSushi.Modules
 {
-    class Colors 
+    class ColorManager 
     {
 
         #region Crewmate Colors
 
-        public readonly static Color32  Engineer = new Color32(255, 165, 10, byte.MaxValue);
+        public readonly static Color32  Engineer = new Color32(145, 145, 145, byte.MaxValue);
         public readonly static Color32  Tracker = new Color32(100, 58, 220, byte.MaxValue);
         public readonly static Color32  Investigator = new Color32(0, 179, 179, byte.MaxValue);
         public readonly static Color32  Jailor = new Color32(166, 166, 166, byte.MaxValue);

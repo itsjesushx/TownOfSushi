@@ -433,13 +433,15 @@ If the Fortified person gets a kill attempt, they will kill the attemper.
 ## Engineer
 ### **Team: Crewmates**
 The Engineer is a Crewmate that can fix sabotages from anywhere on the map.\
-They can use vents to get across the map easily.
+They can also use vents like the vanilla Engineer does.
 
 ### Game Options
 | Name | Description | Type | Default |
 |----------|:-------------:|:------:|:------:|
 | Engineer | The percentage probability of the Engineer appearing | Percentage | 0% |
 | Maximum Fixes | The number of times the Engineer can fix a sabotage | Number | 5 |
+| Maximum Time In Vent | The seconds the Engineer can stay in vents | Number | 10 |
+| Vent Cooldown | The seconds the Engineer has to wait until they can vent again | Number | 25 |
 
 -----------------------
 

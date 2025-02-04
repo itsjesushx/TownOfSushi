@@ -35,7 +35,7 @@ namespace TownOfSushi.Modules
             },
             new()
             {
-                Title = "Show Tasks",
+                Title = "Show Tasks In Meetings",
                 OnClick = () => { return TownOfSushi.ShowTasks.Value = !TownOfSushi.ShowTasks.Value; },
                 DefaultValue = TownOfSushi.ShowTasks.Value
             },
@@ -44,6 +44,18 @@ namespace TownOfSushi.Modules
                 Title = "Dead See Votes",
                 OnClick = () => { return TownOfSushi.DeadSeeVotes.Value = !TownOfSushi.DeadSeeVotes.Value; },
                 DefaultValue = TownOfSushi.DeadSeeVotes.Value
+            },
+            new()
+            {
+                Title = "Disable Player's nameplates",
+                OnClick = () => { return TownOfSushi.DisableNameplates.Value = !TownOfSushi.DisableNameplates.Value; },
+                DefaultValue = TownOfSushi.DisableNameplates.Value
+            },
+            new()
+            {
+                Title = "Disable Player's level icons",
+                OnClick = () => { return TownOfSushi.DisableLevels.Value = !TownOfSushi.DisableLevels.Value; },
+                DefaultValue = TownOfSushi.DisableLevels.Value
             }
         };
 
@@ -133,9 +145,9 @@ namespace TownOfSushi.Modules
                 bool closeUnderlying = false;
                 if (!popUp) return;
 
-                if (__instance.transform.parent && __instance.transform.parent == HudManager.Instance.transform)
+                if (__instance.transform.parent && __instance.transform.parent == HUDManager().transform)
                 {
-                    popUp.transform.SetParent(HudManager.Instance.transform);
+                    popUp.transform.SetParent(HUDManager().transform);
                     popUp.transform.localPosition = new Vector3(0, 0, -800f);
                     closeUnderlying = true;
                 }
@@ -166,7 +178,7 @@ namespace TownOfSushi.Modules
             var title = Object.Instantiate(titleText, popUp.transform);
             title.GetComponent<RectTransform>().localPosition = Vector3.up * 2.3f;
             title.gameObject.SetActive(true);
-            title.text = "TOS options";
+            title.text = "TownOfSushi Client Options";
             title.name = "TitleText";
         }
 

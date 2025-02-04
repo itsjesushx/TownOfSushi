@@ -98,20 +98,20 @@ namespace TownOfSushi.CustomOption
 
         public static void SaveVanillaOptions() 
         {
-            vanillaSettings.Value = Convert.ToBase64String(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(GameManager.Instance.LogicOptions.currentGameOptions, false));
+            vanillaSettings.Value = Convert.ToBase64String(VanillaOptions().gameOptionsFactory.ToBytes(GameManager.Instance.LogicOptions.currentGameOptions, false));
         }
 
         public static bool LoadVanillaOptions() {
             string optionsString = vanillaSettings.Value;
             if (optionsString == "") return false;
-            IGameOptions gameOptions = GameOptionsManager.Instance.gameOptionsFactory.FromBytes(Convert.FromBase64String(optionsString));
+            IGameOptions gameOptions = VanillaOptions().gameOptionsFactory.FromBytes(Convert.FromBase64String(optionsString));
             if (gameOptions.Version < 8) {
                 TownOfSushi.Logger.LogMessage("tried to paste old settings, not doing this!");
                 return false;
             } 
-            GameOptionsManager.Instance.GameHostOptions = gameOptions;
-            GameOptionsManager.Instance.CurrentGameOptions = GameOptionsManager.Instance.GameHostOptions;
-            GameManager.Instance.LogicOptions.SetGameOptions(GameOptionsManager.Instance.CurrentGameOptions);
+            VanillaOptions().GameHostOptions = gameOptions;
+            VanillaOptions().CurrentGameOptions = VanillaOptions().GameHostOptions;
+            GameManager.Instance.LogicOptions.SetGameOptions(VanillaOptions().CurrentGameOptions);
             GameManager.Instance.LogicOptions.SyncOptions();
             return true;
         }
@@ -173,7 +173,7 @@ namespace TownOfSushi.CustomOption
         public void UpdateSelection(int newSelection, bool notifyUsers = true) {
             newSelection = Mathf.Clamp((newSelection + selections.Length) % selections.Length, 0, selections.Length - 1);
             if (AmongUsClient.Instance?.AmClient == true && notifyUsers && selection != newSelection) {
-                DestroyableSingleton<HudManager>.Instance.Notifier.AddSettingsChangeMessage((StringNames)(this.id + 6000), $"{selections[newSelection].ToString()}{format}", false);
+                HUDManager().Notifier.AddSettingsChangeMessage((StringNames)(this.id + 6000), $"{selections[newSelection].ToString()}{format}", false);
                 try {
                     if (GameStartManager.Instance != null && GameStartManager.Instance.LobbyInfoPane != null && GameStartManager.Instance.LobbyInfoPane.LobbyViewSettingsPane != null && GameStartManager.Instance.LobbyInfoPane.LobbyViewSettingsPane.gameObject.activeSelf) {
                         LobbyViewSettingsPaneChangeTabPatch.Postfix(GameStartManager.Instance.LobbyInfoPane.LobbyViewSettingsPane, GameStartManager.Instance.LobbyInfoPane.LobbyViewSettingsPane.currentTab);
@@ -276,7 +276,7 @@ namespace TownOfSushi.CustomOption
                 if (TownOfSushi.Version > versionInfo && versionInfo < System.Version.Parse("1.0.0")) 
                 {
                     vanillaOptionsFine = false;
-                    DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, "Host Info: Pasting vanilla settings failed, TOS Options applied!");
+                    HUDManager().Chat.AddChat(PlayerControl.LocalPlayer, "Host Info: Pasting vanilla settings failed, TOS Options applied!");
                 }
                 else 
                 {
@@ -287,7 +287,7 @@ namespace TownOfSushi.CustomOption
             {
                 TownOfSushi.Logger.LogWarning($"{e}: tried to paste invalid settings!\n{allSettings}");
                 string errorStr = allSettings.Length > 2 ? allSettings.Substring(0, 3) : "(empty clipboard) ";
-                DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, $"Host Info: You tried to paste invalid settings: \"{errorStr}...\"");
+                HUDManager().Chat.AddChat(PlayerControl.LocalPlayer, $"Host Info: You tried to paste invalid settings: \"{errorStr}...\"");
             }
             return Convert.ToInt32(vanillaOptionsFine) + torOptionsFine;
         }
@@ -573,7 +573,7 @@ namespace TownOfSushi.CustomOption
             currentTabs = new();
             currentButtons = new();
 
-            if (GameOptionsManager.Instance.currentGameOptions.GameMode == GameModes.HideNSeek) return;
+            if (IsHideNSeek()) return;
 
             RemoveVanillaTabs(__instance);
 
@@ -893,7 +893,7 @@ namespace TownOfSushi.CustomOption
         public static string BuildAllOptions(string vanillaSettings = "", bool hideExtras = false) 
         {
             if (vanillaSettings == "")
-                vanillaSettings = GameOptionsManager.Instance.CurrentGameOptions.ToHudString(PlayerControl.AllPlayerControls.Count);
+                vanillaSettings = VanillaOptions().CurrentGameOptions.ToHudString(PlayerControl.AllPlayerControls.Count);
             int counter = TownOfSushi.optionsPage;
             string hudString = counter != 0 && !hideExtras ? ColorString(DateTime.Now.Second % 2 == 0 ? Color.white : Color.red, "(Use scroll wheel if necessary)\n\n") : "";
             
@@ -933,7 +933,7 @@ namespace TownOfSushi.CustomOption
         [HarmonyPatch(typeof(IGameOptionsExtensions), nameof(IGameOptionsExtensions.ToHudString))]
         private static void Postfix(ref string __result)
         {
-            if (GameOptionsManager.Instance.currentGameOptions.GameMode == GameModes.HideNSeek) return; // Allow Vanilla Hide N Seek
+            if (IsHideNSeek()) return; // Allow Vanilla Hide N Seek
             __result = BuildAllOptions(vanillaSettings:__result);
         }
     }
@@ -979,8 +979,8 @@ namespace TownOfSushi.CustomOption
             {
                 TownOfSushi.optionsPage = 7;
             }
-            if (Input.GetKeyDown(KeyCode.F2) && !LobbyBehaviour.Instance)
-                HudManagerUpdate.ToggleSettings(HudManager.Instance);
+            if (Input.GetKeyDown(KeyCode.F2) && !Lobby())
+                HudManagerUpdate.ToggleSettings(HUDManager());
             if (TownOfSushi.optionsPage >= GameOptionsDataPatch.maxPage) TownOfSushi.optionsPage = 0;
         }
     }
@@ -1103,7 +1103,7 @@ namespace TownOfSushi.CustomOption
         private static GameObject settingsBackground;
         public static void OpenSettings(HudManager __instance) 
         {
-            if (__instance.FullScreen == null || MapBehaviour.Instance && MapBehaviour.Instance.IsOpen) return;
+            if (__instance.FullScreen == null || MapInstance() && MapInstance().IsOpen) return;
             settingsBackground = GameObject.Instantiate(__instance.FullScreen.gameObject, __instance.transform);
             settingsBackground.SetActive(true);
             var renderer = settingsBackground.GetComponent<SpriteRenderer>();
@@ -1158,7 +1158,7 @@ namespace TownOfSushi.CustomOption
                 toggleSettingsButton.OnClick.RemoveAllListeners();
                 toggleSettingsButton.OnClick.AddListener((Action)(() => ToggleSettings(__instance)));
             }
-            toggleSettingsButtonObject.SetActive(__instance.MapButton.gameObject.active && !(MapBehaviour.Instance && MapBehaviour.Instance.IsOpen) && GameOptionsManager.Instance.currentGameOptions.GameMode != GameModes.HideNSeek);
+            toggleSettingsButtonObject.SetActive(__instance.MapButton.gameObject.active && !(MapInstance() && MapInstance().IsOpen) && !IsHideNSeek());
             toggleSettingsButtonObject.transform.localPosition = __instance.MapButton.transform.localPosition + new Vector3(0, -0.8f, -500f);
 
 
@@ -1178,10 +1178,10 @@ namespace TownOfSushi.CustomOption
                 toggleZoomButton.OnClick.AddListener((Action)(() => ToggleZoom()));
             }
 
-        bool zoomButtonActive =  PlayerControl.LocalPlayer.Data.IsDead  && !MeetingHud.Instance && !ExileController.Instance;
+        bool zoomButtonActive =  IsDead()  && !Meeting() && !ExiledInstance();
         toggleZoomButtonObject.SetActive(zoomButtonActive);
         var posOffset = zoomOutStatus ? new Vector3(-1.27f, -7.92f, -52f) : new Vector3(0, -1.6f, -52f);
-        toggleZoomButtonObject.transform.localPosition = HudManager.Instance.MapButton.transform.localPosition + posOffset;
+        toggleZoomButtonObject.transform.localPosition = HUDManager().MapButton.transform.localPosition + posOffset;
         }
     }
 }

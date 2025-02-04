@@ -22,7 +22,7 @@ namespace TownOfSushi.Roles
             TaskText = () => "Use dead roles to benefit the crew";
             RoleInfo = "The Imitator is able to copy the abilities of dead crewmates to help the crew. The Imitator can not Imitate roles that work during meetings. This is the list of the roles that the imitator can Copy: Investigator, Mystic, Seer, Tracker, Vigilante, Veteran, Engineer, Medium, Trapper, Medic, Oracle, Hunter.";
             LoreText = "A master of adaptation, you possess the rare ability to channel the powers of the fallen. As the Imitator, you can use the abilities of the dead to aid the living, turning their sacrifices into a boon for the crew. Your unique talent allows you to adapt to any situation, bringing the strength of the departed back to the crew's side in the fight against the Impostors.";
-            Color = Colors.Imitator;
+            Color = ColorManager.Imitator;
             RoleType = RoleEnum.Imitator;
             Faction = Faction.Crewmates;
 
@@ -48,9 +48,9 @@ namespace TownOfSushi.Roles
                 return;
             }
 
-            var confirmButton = MeetingHud.Instance.playerStates[index].Buttons.transform.GetChild(0).gameObject;
+            var confirmButton = Meeting().playerStates[index].Buttons.transform.GetChild(0).gameObject;
 
-            var newButton = Object.Instantiate(confirmButton, MeetingHud.Instance.playerStates[index].transform);
+            var newButton = Object.Instantiate(confirmButton, Meeting().playerStates[index].transform);
             var renderer = newButton.GetComponent<SpriteRenderer>();
             var passive = newButton.GetComponent<PassiveButton>();
 
@@ -98,7 +98,7 @@ namespace TownOfSushi.Roles
                 for (var i = 0; i < role.ListOfActives.Count; i++)
                 {
                     if (!role.ListOfActives[i]) continue;
-                    SetImitate.Imitate = MeetingHud.Instance.playerStates[i];
+                    SetImitate.Imitate = Meeting().playerStates[i];
                 }
             }
 
@@ -114,7 +114,7 @@ namespace TownOfSushi.Roles
                 imitator.Buttons.Clear();
             }
 
-            if (PlayerControl.LocalPlayer.Data.IsDead) return;
+            if (IsDead()) return;
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Imitator)) return;
             if (PlayerControl.LocalPlayer.IsJailed()) return;
             var imitatorRole = Role.GetRole<Imitator>(PlayerControl.LocalPlayer);
@@ -139,7 +139,7 @@ namespace TownOfSushi.Roles
     {
         public static void Postfix(MeetingHud __instance)
         {
-            if (PlayerControl.LocalPlayer.Data.IsDead) return;
+            if (IsDead()) return;
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Imitator)) return;
             var imitatorRole = GetRole<Imitator>(PlayerControl.LocalPlayer);
             if (imitatorRole.LastExaminedPlayer != null)
@@ -149,8 +149,8 @@ namespace TownOfSushi.Roles
                     var playerResults = MysticBodyReport.PlayerReportFeedback(imitatorRole.LastExaminedPlayer);
                     var roleResults = MysticBodyReport.RoleReportFeedback(imitatorRole.LastExaminedPlayer);
 
-                    if (!string.IsNullOrWhiteSpace(playerResults)) DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, playerResults);
-                    if (!string.IsNullOrWhiteSpace(roleResults)) DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, roleResults);
+                    if (!string.IsNullOrWhiteSpace(playerResults)) HUDManager().Chat.AddChat(PlayerControl.LocalPlayer, playerResults);
+                    if (!string.IsNullOrWhiteSpace(roleResults)) HUDManager().Chat.AddChat(PlayerControl.LocalPlayer, roleResults);
                 }
 
                 imitatorRole.LastExaminedPlayer = null;
@@ -159,11 +159,11 @@ namespace TownOfSushi.Roles
             {
                 if (imitatorRole.trappedPlayers.Count == 0)
                 {
-                    DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, "No players entered any of your traps");
+                    HUDManager().Chat.AddChat(PlayerControl.LocalPlayer, "No players entered any of your traps");
                 }
                 else if (imitatorRole.trappedPlayers.Count < CustomGameOptions.MinAmountOfPlayersInTrap)
                 {
-                    DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, "Not enough players triggered your traps");
+                    HUDManager().Chat.AddChat(PlayerControl.LocalPlayer, "Not enough players triggered your traps");
                 }
                 else
                 {
@@ -173,8 +173,8 @@ namespace TownOfSushi.Roles
                         message += $" {role},";
                     }
                     message.Remove(message.Length - 1, 1);
-                    if (DestroyableSingleton<HudManager>.Instance)
-                        DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, message);
+                    if (HUDManager())
+                        HUDManager().Chat.AddChat(PlayerControl.LocalPlayer, message);
                 }
                 imitatorRole.trappedPlayers.Clear();
             }
@@ -182,7 +182,7 @@ namespace TownOfSushi.Roles
             {
                 var playerResults = MeetingStartOracle.PlayerReportFeedback(imitatorRole.confessingPlayer);
 
-                if (!string.IsNullOrWhiteSpace(playerResults)) DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, playerResults);
+                if (!string.IsNullOrWhiteSpace(playerResults)) HUDManager().Chat.AddChat(PlayerControl.LocalPlayer, playerResults);
             }
             else if (imitatorRole.watchedPlayers != null)
             {
@@ -191,8 +191,8 @@ namespace TownOfSushi.Roles
                     var name = PlayerById(key).Data.PlayerName;
                     if (value.Count == 0)
                     {
-                        if (DestroyableSingleton<HudManager>.Instance)
-                            DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, $"No players interacted with {name}");
+                        if (HUDManager())
+                            HUDManager().Chat.AddChat(PlayerControl.LocalPlayer, $"No players interacted with {name}");
                     }
                     else
                     {
@@ -202,8 +202,8 @@ namespace TownOfSushi.Roles
                             message += $" {role},";
                         }
                         message = message.Remove(message.Length - 1, 1);
-                        if (DestroyableSingleton<HudManager>.Instance)
-                            DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, message);
+                        if (HUDManager())
+                            HUDManager().Chat.AddChat(PlayerControl.LocalPlayer, message);
                     }
                 }
             }
@@ -224,7 +224,7 @@ namespace TownOfSushi.Roles
         {
             var exiled = __instance.initData.networkedPlayer?.Object;
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Imitator)) return;
-            if (PlayerControl.LocalPlayer.Data.IsDead || PlayerControl.LocalPlayer.Data.Disconnected) return;
+            if (IsDead() || PlayerControl.LocalPlayer.Data.Disconnected) return;
             if (exiled == PlayerControl.LocalPlayer) return;
 
             var imitator = GetRole<Imitator>(PlayerControl.LocalPlayer);
@@ -240,7 +240,7 @@ namespace TownOfSushi.Roles
         [HarmonyPatch(typeof(Object), nameof(Object.Destroy), new Type[] { typeof(GameObject) })]
         public static void Prefix(GameObject obj)
         {
-            if (!SubmergedCompatibility.Loaded || GameOptionsManager.Instance?.currentNormalGameOptions?.MapId != 6) return;
+            if (!Loaded || VanillaOptions()?.currentNormalGameOptions?.MapId != 6) return;
             if (obj.name?.Contains("ExileCutscene") == true) ImitatorExileControllerPostfix(ExileControllerPatch.lastExiled);
         }
 
@@ -256,7 +256,7 @@ namespace TownOfSushi.Roles
             }
             if (imitatorRole == RoleEnum.Crewmate) return;
             var role = GetPlayerRole(ImitatingPlayer);
-            var killsList = (role.Kills, role.CorrectKills,  role.CorrectDeputyShot, role.CorrectShot, role.IncorrectShots, role.CorrectVigilanteShot, role.CorrectAssassinKills, role.IncorrectAssassinKills);
+            var killsList = (role.Kills, role.CorrectKills,  role.CorrectDeputyShot, role.CorrectShot, role.IncorrectShots, role.CorrectVigilanteShot, role.CorrectAssassinKills);
             RoleDictionary.Remove(ImitatingPlayer.PlayerId);
             if (imitatorRole == RoleEnum.Investigator) new Investigator(ImitatingPlayer);
             if (imitatorRole == RoleEnum.Lookout) new Lookout(ImitatingPlayer);
@@ -285,7 +285,6 @@ namespace TownOfSushi.Roles
             newRole.CorrectShot = killsList.CorrectShot;
             newRole.CorrectDeputyShot = killsList.CorrectDeputyShot;
             newRole.CorrectAssassinKills = killsList.CorrectAssassinKills;
-            newRole.IncorrectAssassinKills = killsList.IncorrectAssassinKills;
         }
     }
 
@@ -382,7 +381,7 @@ namespace TownOfSushi.Roles
                     }
 
                     if (!PlayerControl.LocalPlayer.Is(RoleEnum.Investigator) && !PlayerControl.LocalPlayer.Is(RoleEnum.Mystic)
-                        ) DestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(false);
+                        ) HUDManager().KillButton.gameObject.SetActive(false);
                 }
 
                 if (StartImitate.ImitatingPlayer.Is(RoleEnum.Medium))
@@ -393,7 +392,7 @@ namespace TownOfSushi.Roles
                 }
 
                 var role = GetPlayerRole(StartImitate.ImitatingPlayer);
-                var killsList = (role.Kills, role.CorrectKills, role.IncorrectShots, role.CorrectShot, role.CorrectVigilanteShot, role.CorrectAssassinKills, role.IncorrectAssassinKills);
+                var killsList = (role.Kills, role.CorrectKills, role.IncorrectShots, role.CorrectShot, role.CorrectVigilanteShot, role.CorrectAssassinKills);
                 RoleDictionary.Remove(StartImitate.ImitatingPlayer.PlayerId);
                 var imitator = new Imitator(StartImitate.ImitatingPlayer);
                 imitator.trappedPlayers = trappedPlayers;
@@ -407,7 +406,6 @@ namespace TownOfSushi.Roles
                 newRole.CorrectShot = killsList.CorrectShot;
                 newRole.CorrectVigilanteShot = killsList.CorrectVigilanteShot;
                 newRole.CorrectAssassinKills = killsList.CorrectAssassinKills;
-                newRole.IncorrectAssassinKills = killsList.IncorrectAssassinKills;
                 GetRole<Imitator>(StartImitate.ImitatingPlayer).ImitatePlayer = null;
                 StartImitate.ImitatingPlayer = null;
             }
@@ -501,7 +499,7 @@ namespace TownOfSushi.Roles
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
             if (PlayerControl.LocalPlayer == null) return;
             if (PlayerControl.LocalPlayer.Data == null) return;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return;
+            if (IsDead()) return;
             if (StartImitate.ImitatingPlayer == null) return;
             if (PlayerControl.LocalPlayer != StartImitate.ImitatingPlayer) return;
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Vigilante) && !PlayerControl.LocalPlayer.Is(RoleEnum.Hunter)) __instance.KillButton.OverrideText("");

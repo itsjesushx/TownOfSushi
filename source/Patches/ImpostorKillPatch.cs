@@ -6,12 +6,12 @@ namespace TownOfSushi
         [HarmonyPriority(Priority.First)]
         public static bool Prefix(KillButton __instance)
         {
-            if (__instance != DestroyableSingleton<HudManager>.Instance.KillButton) return true;
+            if (__instance != HUDManager().KillButton) return true;
             if (!PlayerControl.LocalPlayer.Data.IsImpostor()) return true;
             var target = __instance.currentTarget;
             if (target == null) return true;
             if (!__instance.isActiveAndEnabled || __instance.isCoolingDown) return true;
-            if (GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek)
+            if (IsHideNSeek())
             {
                 if (!target.inVent) RpcMurderPlayer(PlayerControl.LocalPlayer, target);
                 return false;
@@ -35,16 +35,16 @@ namespace TownOfSushi
                 {
                     var bh = GetRole<BountyHunter>(PlayerControl.LocalPlayer);
                     if (bh.Bounty == target) PlayerControl.LocalPlayer.SetKillTimer(CustomGameOptions.BountyHunterCorrectCd);
-                    else PlayerControl.LocalPlayer.SetKillTimer(GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown * CustomGameOptions.BountyHunterIncorrectCd);
+                    else PlayerControl.LocalPlayer.SetKillTimer(VanillaOptions().currentNormalGameOptions.KillCooldown * CustomGameOptions.BountyHunterIncorrectCd);
                 }
                 else if (PlayerControl.LocalPlayer.Is(ModifierEnum.Underdog))
                 {
-                    var lowerKC = GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown - CustomGameOptions.UnderdogKillBonus;
-                    var normalKC = GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown;
-                    var upperKC = GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown + CustomGameOptions.UnderdogKillBonus;
+                    var lowerKC = VanillaOptions().currentNormalGameOptions.KillCooldown - CustomGameOptions.UnderdogKillBonus;
+                    var normalKC = VanillaOptions().currentNormalGameOptions.KillCooldown;
+                    var upperKC = VanillaOptions().currentNormalGameOptions.KillCooldown + CustomGameOptions.UnderdogKillBonus;
                     PlayerControl.LocalPlayer.SetKillTimer(UnderdogPerformKill.LastImp() ? lowerKC : (UnderdogPerformKill.IncreasedKC() ? normalKC : upperKC));
                 }
-                else PlayerControl.LocalPlayer.SetKillTimer(GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown);
+                else PlayerControl.LocalPlayer.SetKillTimer(VanillaOptions().currentNormalGameOptions.KillCooldown);
                 return false;
             }
             else if (interact[1] == true)

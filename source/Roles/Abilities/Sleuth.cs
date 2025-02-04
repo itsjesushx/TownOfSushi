@@ -7,7 +7,7 @@ namespace TownOfSushi.Roles.Abilities
         {
             Name = "Sleuth";
             TaskText = () => "Know the roles of bodies you report";
-            Color = Colors.Sleuth;
+            Color = ColorManager.Sleuth;
             AbilityType = AbilityEnum.Sleuth;
         }
     }

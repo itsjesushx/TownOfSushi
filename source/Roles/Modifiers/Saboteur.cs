@@ -7,7 +7,7 @@ namespace TownOfSushi.Roles.Modifiers
         {
             Name = "Saboteur";
             TaskText = () => "You have reduced sabotage cooldowns";
-            Color = Colors.Impostor;
+            Color = ColorManager.Impostor;
             ModifierType = ModifierEnum.Saboteur;
         }
     }
@@ -20,7 +20,7 @@ namespace TownOfSushi.Roles.Modifiers
             if (PlayerControl.LocalPlayer == null) return;
             if (PlayerControl.LocalPlayer.Data == null) return;
             if (!PlayerControl.LocalPlayer.Is(ModifierEnum.Saboteur)) return;
-            var system = ShipStatus.Instance.Systems[SystemTypes.Sabotage].Cast<SabotageSystemType>();
+            var system = Ship().Systems[SystemTypes.Sabotage].Cast<SabotageSystemType>();
             if (system.AnyActive) system.Timer = 30f;
             else if (system.Timer > 30f - CustomGameOptions.ReducedSaboCd) system.Timer = 30f - CustomGameOptions.ReducedSaboCd;
         }

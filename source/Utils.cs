@@ -164,11 +164,11 @@ namespace TownOfSushi
 
         public static void ShowTextToast(string text, float delay = 1.25f)
         {
-            HudManager.Instance.StartCoroutine(CoTextToast(text, delay));
+            HUDManager().StartCoroutine(CoTextToast(text, delay));
         }
         public static IEnumerator CoTextToast(string text, float delay)
         {
-            GameObject taskOverlay = Object.Instantiate(HudManager.Instance.TaskCompleteOverlay.gameObject, HudManager.Instance.transform);
+            GameObject taskOverlay = Object.Instantiate(HUDManager().TaskCompleteOverlay.gameObject, HUDManager().transform);
             taskOverlay.SetActive(true);
             taskOverlay.GetComponentInChildren<TextTranslatorTMP>().DestroyImmediate();
             taskOverlay.GetComponentInChildren<TMPro.TextMeshPro>().text = text;
@@ -233,7 +233,7 @@ namespace TownOfSushi
         }
         public static float KillDistance()
         {
-            return GameOptionsData.KillDistances[GameOptionsManager.Instance.currentNormalGameOptions.KillDistance];
+            return GameOptionsData.KillDistances[VanillaOptions().currentNormalGameOptions.KillDistance];
         }
 
         public static List<PlayerControl> GetCrewmates(List<PlayerControl> impostors)
@@ -266,9 +266,7 @@ namespace TownOfSushi
         public static PlayerControl PlayerById(byte id)
         {
             foreach (var player in PlayerControl.AllPlayerControls)
-                if (player.PlayerId == id)
-                    return player;
-
+            if (player.PlayerId == id) return player;
             return null;
         }
 
@@ -323,6 +321,16 @@ namespace TownOfSushi
                 var shieldedPlayer = ((Medic)role).ShieldedPlayer;
                 return shieldedPlayer != null && player.PlayerId == shieldedPlayer.PlayerId;
             });
+        }
+
+        //disable quick chat button
+        [HarmonyPatch(typeof(ChatController), nameof(ChatController.Awake))]
+        private static class DisableQuickChatButtonPatch
+        {
+            private static void Postfix(ChatController __instance)
+            {
+                __instance.quickChatButton.gameObject.SetActive(false);
+            }
         }
         public static Crusader GetCrusader(this PlayerControl player)
         {
@@ -406,16 +414,16 @@ namespace TownOfSushi
 
             else if (target.IsFortified() && !IsBeingKilled)
             {
-                Flash(Colors.Crusader, 0.7f);
-                SoundManager.Instance.PlaySound(ShipStatus.Instance.SabotageSound, false, 1f, null);
+                Flash(ColorManager.Crusader, 0.7f);
+                Sound().PlaySound(Ship().SabotageSound, false, 1f, null);
                 StartRPC(CustomRPC.Fortify, (byte)1, target.GetCrusader().Player.PlayerId);
             }
 
             else if (target.IsFortified() && IsBeingKilled)
             {
                 RpcMurderPlayer(target, player);
-                Flash(Colors.Crusader, 0.7f);
-                SoundManager.Instance.PlaySound(ShipStatus.Instance.SabotageSound, false, 1f, null);
+                Flash(ColorManager.Crusader, 0.7f);
+                Sound().PlaySound(Ship().SabotageSound, false, 1f, null);
                 StartRPC(CustomRPC.Fortify, (byte)1, target.GetCrusader().Player.PlayerId);
             }
             
@@ -568,7 +576,7 @@ namespace TownOfSushi
         {
             var playerControlList = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
             var allPlayers = GameData.Instance.AllPlayers;
-            var lightRadius = radius * ShipStatus.Instance.MaxLightRadius;
+            var lightRadius = radius * Ship().MaxLightRadius;
 
             for (var index = 0; index < allPlayers.Count; ++index)
             {
@@ -689,7 +697,7 @@ namespace TownOfSushi
         {
             static void Prefix()
             {
-                var hudManager = HudManager.Instance;
+                var hudManager = HUDManager();
                 if (hudManager.FullScreen == null)
                     return;
                 var renderer = hudManager.FullScreen;
@@ -697,7 +705,7 @@ namespace TownOfSushi
                 renderer.enabled = true;
                 var color = Color.black;
 
-                HudManager.Instance.StartCoroutine(Effects.Lerp(0.8f, new Action<float>((p) =>
+                HUDManager().StartCoroutine(Effects.Lerp(0.8f, new Action<float>((p) =>
                 {
                     var alpha = Mathf.Clamp01(p < 0.25f ? 1 : (1 - p));
                     renderer.color = new Color(color.r, color.g, color.b, Mathf.Clamp01(1 - p));
@@ -771,8 +779,8 @@ namespace TownOfSushi
         public static bool SetActive(PlayerControl target, HudManager hud)
         {
             var buttonFlag = hud.UseButton.isActiveAndEnabled || hud.PetButton.isActiveAndEnabled;
-            var meetingFlag = !MeetingHud.Instance;
-            return !target.Data.IsDead && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started && !LobbyBehaviour.Instance && meetingFlag && buttonFlag;
+            var meetingFlag = !Meeting();
+            return !target.Data.IsDead && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started && !Lobby() && meetingFlag && buttonFlag;
         }
         public static void MurderPlayer(PlayerControl killer, PlayerControl target, bool jumpToBody)
         {
@@ -802,10 +810,10 @@ namespace TownOfSushi
                 GameHistory.CreateDeathReason(target, CustomDeathReason.Kill, killer);
 
                 if (killer == PlayerControl.LocalPlayer)
-                    SoundManager.Instance.PlaySound(PlayerControl.LocalPlayer.KillSfx, false, 0.8f);
+                    Sound().PlaySound(PlayerControl.LocalPlayer.KillSfx, false, 0.8f);
 
                 if (!killer.Is(Faction.Crewmates) && killer != target
-                    && GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.Normal) GetPlayerRole(killer).Kills += 1;
+                    && IsClassic()) GetPlayerRole(killer).Kills += 1;
 
                 if (killer.Is(RoleEnum.Vigilante))
                 {
@@ -826,38 +834,38 @@ namespace TownOfSushi
                 target.gameObject.layer = LayerMask.NameToLayer("Ghost");
                 target.Visible = false;
 
-                if (PlayerControl.LocalPlayer.Is(RoleEnum.Mystic) && !PlayerControl.LocalPlayer.Data.IsDead)
+                if (PlayerControl.LocalPlayer.Is(RoleEnum.Mystic) && !IsDead())
                 {
-                    Flash(Colors.Mystic, 3.5f);
+                    Flash(ColorManager.Mystic, 3.5f);
                 }
 
                 if (target.AmOwner)
                 {
                     try
                     {
-                        if (Minigame.Instance)
+                        if (TaskPanel())
                         {
-                            Minigame.Instance.Close();
-                            Minigame.Instance.Close();
+                            TaskPanel().Close();
+                            TaskPanel().Close();
                         }
 
-                        if (MapBehaviour.Instance)
+                        if (MapInstance())
                         {
-                            MapBehaviour.Instance.Close();
-                            MapBehaviour.Instance.Close();
+                            MapInstance().Close();
+                            MapInstance().Close();
                         }
                     }
                     catch
                     {
                     }
 
-                    DestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(killer.Data, data);
-                    DestroyableSingleton<HudManager>.Instance.ShadowQuad.gameObject.SetActive(false);
+                    HUDManager().KillOverlay.ShowKillAnimation(killer.Data, data);
+                    HUDManager().ShadowQuad.gameObject.SetActive(false);
                     target.nameText().GetComponent<MeshRenderer>().material.SetInt("_Mask", 0);
                     target.RpcSetScanner(false);
                     var importantTextTask = new GameObject("_Player").AddComponent<ImportantTextTask>();
                     importantTextTask.transform.SetParent(AmongUsClient.Instance.transform, false);
-                    if (!GameOptionsManager.Instance.currentNormalGameOptions.GhostsDoTasks)
+                    if (!VanillaOptions().currentNormalGameOptions.GhostsDoTasks)
                     {
                         for (var i = 0; i < target.myTasks.Count; i++)
                         {
@@ -910,7 +918,7 @@ namespace TownOfSushi
                     if (bh.Bounty == target) bh.Bounty = bh.AddBounty();
                 }
 
-                if (MeetingHud.Instance) target.Exiled();
+                if (Meeting()) target.Exiled();
 
                 if (!killer.AmOwner) return;
 
@@ -926,9 +934,9 @@ namespace TownOfSushi
 
                 if (!jumpToBody) return;
 
-                if (killer.Data.IsImpostor() && GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek)
+                if (killer.Data.IsImpostor() && IsHideNSeek())
                 {
-                    killer.SetKillTimer(GameOptionsManager.Instance.currentHideNSeekGameOptions.KillCooldown);
+                    killer.SetKillTimer(VanillaOptions().currentHideNSeekGameOptions.KillCooldown);
                     return;
                 }
 
@@ -995,9 +1003,9 @@ namespace TownOfSushi
 
                 if (target.Is(ModifierEnum.Diseased) && killer.Is(ModifierEnum.Underdog))
                 {
-                    var lowerKC = (GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown - CustomGameOptions.UnderdogKillBonus) * CustomGameOptions.DiseasedMultiplier;
-                    var normalKC = GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown * CustomGameOptions.DiseasedMultiplier;
-                    var upperKC = (GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown + CustomGameOptions.UnderdogKillBonus) * CustomGameOptions.DiseasedMultiplier;
+                    var lowerKC = (VanillaOptions().currentNormalGameOptions.KillCooldown - CustomGameOptions.UnderdogKillBonus) * CustomGameOptions.DiseasedMultiplier;
+                    var normalKC = VanillaOptions().currentNormalGameOptions.KillCooldown * CustomGameOptions.DiseasedMultiplier;
+                    var upperKC = (VanillaOptions().currentNormalGameOptions.KillCooldown + CustomGameOptions.UnderdogKillBonus) * CustomGameOptions.DiseasedMultiplier;
                     killer.SetKillTimer(UnderdogPerformKill.LastImp() ? lowerKC : (UnderdogPerformKill.IncreasedKC() ? normalKC : upperKC));
                     return;
                 }
@@ -1022,23 +1030,23 @@ namespace TownOfSushi
                     {
                         if (target.Is(ModifierEnum.Diseased) && killer.Is(ModifierEnum.Underdog))
                         {
-                            var lowerKC = (GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown - CustomGameOptions.UnderdogKillBonus) * CustomGameOptions.DiseasedMultiplier * CustomGameOptions.BountyHunterIncorrectCd;
-                            var normalKC = GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown * CustomGameOptions.DiseasedMultiplier * CustomGameOptions.BountyHunterIncorrectCd;
-                            var upperKC = (GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown + CustomGameOptions.UnderdogKillBonus) * CustomGameOptions.DiseasedMultiplier * CustomGameOptions.BountyHunterIncorrectCd;
+                            var lowerKC = (VanillaOptions().currentNormalGameOptions.KillCooldown - CustomGameOptions.UnderdogKillBonus) * CustomGameOptions.DiseasedMultiplier * CustomGameOptions.BountyHunterIncorrectCd;
+                            var normalKC = VanillaOptions().currentNormalGameOptions.KillCooldown * CustomGameOptions.DiseasedMultiplier * CustomGameOptions.BountyHunterIncorrectCd;
+                            var upperKC = (VanillaOptions().currentNormalGameOptions.KillCooldown + CustomGameOptions.UnderdogKillBonus) * CustomGameOptions.DiseasedMultiplier * CustomGameOptions.BountyHunterIncorrectCd;
                             killer.SetKillTimer(UnderdogPerformKill.LastImp() ? lowerKC : (UnderdogPerformKill.IncreasedKC() ? normalKC : upperKC));
                         }
                         else if (target.Is(ModifierEnum.Diseased))
                         {
-                            killer.SetKillTimer(GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown * CustomGameOptions.DiseasedMultiplier * CustomGameOptions.BountyHunterIncorrectCd);
+                            killer.SetKillTimer(VanillaOptions().currentNormalGameOptions.KillCooldown * CustomGameOptions.DiseasedMultiplier * CustomGameOptions.BountyHunterIncorrectCd);
                         }
                         else if (killer.Is(ModifierEnum.Underdog))
                         {
-                            var lowerKC = (GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown - CustomGameOptions.UnderdogKillBonus) * CustomGameOptions.BountyHunterIncorrectCd;
-                            var normalKC = GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown * CustomGameOptions.BountyHunterIncorrectCd;
-                            var upperKC = (GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown + CustomGameOptions.UnderdogKillBonus) * CustomGameOptions.BountyHunterIncorrectCd;
+                            var lowerKC = (VanillaOptions().currentNormalGameOptions.KillCooldown - CustomGameOptions.UnderdogKillBonus) * CustomGameOptions.BountyHunterIncorrectCd;
+                            var normalKC = VanillaOptions().currentNormalGameOptions.KillCooldown * CustomGameOptions.BountyHunterIncorrectCd;
+                            var upperKC = (VanillaOptions().currentNormalGameOptions.KillCooldown + CustomGameOptions.UnderdogKillBonus) * CustomGameOptions.BountyHunterIncorrectCd;
                             killer.SetKillTimer(UnderdogPerformKill.LastImp() ? lowerKC : (UnderdogPerformKill.IncreasedKC() ? normalKC : upperKC));
                         }
-                        else killer.SetKillTimer(GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown * CustomGameOptions.BountyHunterIncorrectCd);
+                        else killer.SetKillTimer(VanillaOptions().currentNormalGameOptions.KillCooldown * CustomGameOptions.BountyHunterIncorrectCd);
                         bountyHunter.StopHunt();
                         bountyHunter.HuntEnd = bountyHunter.HuntEnd.AddSeconds(-3000f);
                     }
@@ -1048,22 +1056,22 @@ namespace TownOfSushi
 
                 if (target.Is(ModifierEnum.Diseased) && killer.Data.IsImpostor())
                 {
-                    killer.SetKillTimer(GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown * CustomGameOptions.DiseasedMultiplier);
+                    killer.SetKillTimer(VanillaOptions().currentNormalGameOptions.KillCooldown * CustomGameOptions.DiseasedMultiplier);
                     return;
                 }
 
                 if (killer.Is(ModifierEnum.Underdog))
                 {
-                    var lowerKC = GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown - CustomGameOptions.UnderdogKillBonus;
-                    var normalKC = GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown;
-                    var upperKC = GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown + CustomGameOptions.UnderdogKillBonus;
+                    var lowerKC = VanillaOptions().currentNormalGameOptions.KillCooldown - CustomGameOptions.UnderdogKillBonus;
+                    var normalKC = VanillaOptions().currentNormalGameOptions.KillCooldown;
+                    var upperKC = VanillaOptions().currentNormalGameOptions.KillCooldown + CustomGameOptions.UnderdogKillBonus;
                     killer.SetKillTimer(UnderdogPerformKill.LastImp() ? lowerKC : (UnderdogPerformKill.IncreasedKC() ? normalKC : upperKC));
                     return;
                 }
 
                 if (killer.Data.IsImpostor())
                 {
-                    killer.SetKillTimer(GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown);
+                    killer.SetKillTimer(VanillaOptions().currentNormalGameOptions.KillCooldown);
                     return;
                 }
             }
@@ -1113,28 +1121,6 @@ namespace TownOfSushi
                 }
             }
         }
-        public static bool MiraHQMap() 
-        {
-            return GameOptionsManager.Instance.CurrentGameOptions.MapId == 1;
-        }
-
-        public static bool AirshipMap() 
-        {
-            return GameOptionsManager.Instance.CurrentGameOptions.MapId == 4;
-        }
-        public static bool SkeldMap() 
-        {
-            return GameOptionsManager.Instance.CurrentGameOptions.MapId == 0;
-        }
-        public static bool PolusMap() 
-        {
-            return GameOptionsManager.Instance.CurrentGameOptions.MapId == 2;
-        }
-
-        public static bool FungleMap() 
-        {           
-            return GameOptionsManager.Instance.CurrentGameOptions.MapId == 5;
-        }
         public static bool MushroomSabotageActive() 
         {
             return PlayerControl.LocalPlayer.myTasks.ToArray().Any((x) => x.TaskType == TaskTypes.MushroomMixupSabotage);
@@ -1171,11 +1157,11 @@ namespace TownOfSushi
 
         public static void Flash(Color color, float duration = 1f) 
         {
-            if (DestroyableSingleton<HudManager>.Instance == null || DestroyableSingleton<HudManager>.Instance.FullScreen == null) return;
-            DestroyableSingleton<HudManager>.Instance.FullScreen.gameObject.SetActive(true);
-            DestroyableSingleton<HudManager>.Instance.FullScreen.enabled = true;
-            DestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(duration, new Action<float>((p) => {
-                var renderer = DestroyableSingleton<HudManager>.Instance.FullScreen;
+            if (HUDManager() == null || HUDManager().FullScreen == null) return;
+            HUDManager().FullScreen.gameObject.SetActive(true);
+            HUDManager().FullScreen.enabled = true;
+            HUDManager().StartCoroutine(Effects.Lerp(duration, new Action<float>((p) => {
+                var renderer = HUDManager().FullScreen;
 
                 if (p < 0.5)
                 {
@@ -1351,6 +1337,9 @@ namespace TownOfSushi
                         break;
                             
                     case CustomDeathReason.Guess:
+                    if (player.GetKiller.Data.PlayerName == playerControl.Data.PlayerName)
+                        text = ColorString(ColorManager.Impostor, "Failed guess");
+                    else 
                         text = $"Guessed by {ColorString(KillerColor, player.GetKiller.Data.PlayerName)}";
                         break;
                             
@@ -1430,7 +1419,7 @@ namespace TownOfSushi
             else if (player.Is(RoleEnum.Deputy))
             {
                 var Deputy = GetRole<Deputy>(player);
-                if (Deputy.RemainingKills > 0 && MeetingHud.Instance) return true;
+                if (Deputy.RemainingKills > 0 && Meeting()) return true;
             }
             else if (player.Is(RoleEnum.Veteran))
             {
@@ -1477,9 +1466,9 @@ namespace TownOfSushi
             writer.Write(AmongUsClient.Instance.AmHost ? GameStartManagerPatch.timer : -1f);
             writer.WritePacked(AmongUsClient.Instance.ClientId);
             writer.Write((byte)(TownOfSushi.Version.Revision < 0 ? 0xFF : TownOfSushi.Version.Revision));
-            writer.Write(Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.ToByteArray());
+            writer.Write(System.Reflection.Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.ToByteArray());
             AmongUsClient.Instance.FinishRpcImmediately(writer);
-            VersionHandshake(TownOfSushi.Version.Major, TownOfSushi.Version.Minor, TownOfSushi.Version.Build, TownOfSushi.Version.Revision, Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId, AmongUsClient.Instance.ClientId);
+            VersionHandshake(TownOfSushi.Version.Major, TownOfSushi.Version.Minor, TownOfSushi.Version.Build, TownOfSushi.Version.Revision, System.Reflection.Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId, AmongUsClient.Instance.ClientId);
         }
 
         public static void VersionHandshake(int major, int minor, int build, int revision, Guid guid, int clientId) 
@@ -1788,7 +1777,7 @@ namespace TownOfSushi
             public static void Postfix()         
             {            
                 // Fix Grenadier blind in lobby            
-                ((Renderer)DestroyableSingleton<HudManager>.Instance.FullScreen).gameObject.active = false;        
+                ((Renderer)HUDManager().FullScreen).gameObject.active = false;        
             }    
         }
 
@@ -1818,7 +1807,7 @@ namespace TownOfSushi
         {
             try {
                 Texture2D texture = new Texture2D(2, 2, TextureFormat.ARGB32, true);
-                Assembly assembly = Assembly.GetExecutingAssembly();
+                Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
                 Stream stream = assembly.GetManifestResourceStream(path);
                 var length = stream.Length;
                 var byteTexture = new Il2CppStructArray<byte>(length);

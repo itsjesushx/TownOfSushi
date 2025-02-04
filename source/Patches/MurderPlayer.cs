@@ -20,7 +20,7 @@ namespace TownOfSushi.Patches
             public static bool Prefix(KillButton __instance, ref bool __runOriginal)
             {
                 if (!__runOriginal) return false;
-                if (__instance.isActiveAndEnabled && __instance.currentTarget && !__instance.isCoolingDown && !PlayerControl.LocalPlayer.Data.IsDead && PlayerControl.LocalPlayer.CanMove)
+                if (__instance.isActiveAndEnabled && __instance.currentTarget && !__instance.isCoolingDown && !IsDead() && PlayerControl.LocalPlayer.CanMove)
                 {
                     if (AmongUsClient.Instance.AmHost)
                     {

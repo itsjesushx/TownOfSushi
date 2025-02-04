@@ -15,7 +15,7 @@ namespace TownOfSushi.Roles
             TaskText = () => SpawnedAs ? "Protect your beloved" : "Your beloved died. Pick a new one!";
             RoleInfo = "As the Romantic, you must pick a player to love, working together to ensure both of your survival. " + ChooseOrNew + ".";
             LoreText =$"A heart bound by love, you are driven by a deep connection to your chosen beloved. As the Romantic, you must pick a Crewmate to ally with, working together to ensure both of your survival. Your loyalty gives you strength, and you’ll do whatever it takes to protect and support your beloved. If they fall, you will {ChooseOrNew}.";
-            Color = Colors.Romantic;
+            Color = ColorManager.Romantic;
             RoleType = RoleEnum.Romantic;
             Faction = Faction.Neutral;
             LastPick = DateTime.UtcNow;
@@ -39,7 +39,7 @@ namespace TownOfSushi.Roles
     {
         public static bool Prefix(KillButton __instance)
         {
-            if (__instance != DestroyableSingleton<HudManager>.Instance.KillButton) return true;
+            if (__instance != HUDManager().KillButton) return true;
             var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Romantic);
             if (!flag) return true;
             var role = GetRole<Romantic>(PlayerControl.LocalPlayer);
@@ -91,7 +91,7 @@ namespace TownOfSushi.Roles
             
             var pickButton = __instance.KillButton;
             pickButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
             pickButton.SetCoolDown(role.PickTimer(), CustomGameOptions.PickStartTimer);
             SetTarget(ref role.ClosestPlayer, pickButton, float.NaN);
@@ -126,7 +126,7 @@ namespace TownOfSushi.Roles
         {
             public static bool Prefix(ChatController __instance, [HarmonyArgument(0)] PlayerControl sourcePlayer)
             {
-                if (__instance != HudManager.Instance.Chat) return true;
+                if (__instance != HUDManager().Chat) return true;
 
                 var localPlayer = PlayerControl.LocalPlayer;
                 if (localPlayer == null) return true;
@@ -136,7 +136,7 @@ namespace TownOfSushi.Roles
                 {
                     return shouldSeeMessage;
                 }
-                return MeetingHud.Instance != null || LobbyBehaviour.Instance != null || shouldSeeMessage;
+                return Meeting() != null || Lobby() != null || shouldSeeMessage;
             }
         }
 
@@ -169,11 +169,11 @@ namespace TownOfSushi.Roles
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Romantic)) return;
             if (PlayerControl.LocalPlayer == null) return;
             if (PlayerControl.LocalPlayer.Data == null) return;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return;
+            if (IsDead()) return;
 
             var role = GetRole<Romantic>(PlayerControl.LocalPlayer);
 
-            if (MeetingHud.Instance != null) UpdateMeeting(MeetingHud.Instance, role);
+            if (Meeting() != null) UpdateMeeting(Meeting(), role);
 
             if (!CustomGameOptions.RomanticKnowsBelovedRole && !CamouflageUnCamouflagePatch.IsCamouflaged) role.Beloved.nameText().text += "<color=#FF66CCFF> ♥</color>";
 

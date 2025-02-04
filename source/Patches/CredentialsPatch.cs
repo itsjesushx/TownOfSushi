@@ -86,13 +86,15 @@ $@"<size=60%> <color=#B2FEFE>Formerly: Slushiegoose & Polus.gg</color></size>";
             public static void UpdateSprite() 
             {
                 LoadSprites();
-                if (renderer != null) {
+                if (renderer != null) 
+                {
                     float fadeDuration = 1f;
                     instance.StartCoroutine(Effects.Lerp(fadeDuration, new Action<float>((p) => {
                         renderer.color = new Color(1, 1, 1, 1 - p);
                         if (p == 1) {
                             renderer.sprite = bannerSprite;
-                            instance.StartCoroutine(Effects.Lerp(fadeDuration, new Action<float>((p) => {
+                            instance.StartCoroutine(Effects.Lerp(fadeDuration, new Action<float>((p) => 
+                            {
                                 renderer.color = new Color(1, 1, 1, p);
                             })));
                         }

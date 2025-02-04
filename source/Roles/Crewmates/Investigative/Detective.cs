@@ -14,7 +14,7 @@ namespace TownOfSushi.Roles
             RoleInfo = $"The Detective is able to investigate the alignment of other players. If the player is a Crewmate, their name will be green, if they are an Impostor, their name will be red. If the player is a Neutral Evil role, their name will be {RedOrGreen}, and {RedOrGreen2} if they are a Neutral Benign Role. Neutral Killing Roles Will appear {RedOrGreen3} The Detective can only investigate one player every {CustomGameOptions.DetectiveCd} seconds.";
             LoreText = "Endowed with the power of insight, you possess the ability to unveil the true alliances of those around you. As the Detective, your gift allows you to discern the loyalties of your crewmates, shining a light on potential Impostors. Use your abilities wisely to protect the crew and expose deception.";
             RoleAlignment = RoleAlignment.CrewInvest;
-            Color = Colors.Detective;
+            Color = ColorManager.Detective;
             LastInvestigated = DateTime.UtcNow;
             AddToRoleHistory(RoleType);
             RoleType = RoleEnum.Detective; 
@@ -71,11 +71,11 @@ namespace TownOfSushi.Roles
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
             if (PlayerControl.LocalPlayer == null) return;
             if (PlayerControl.LocalPlayer.Data == null) return;
-            if (PlayerControl.LocalPlayer.Data.IsDead) return;
+            if (IsDead()) return;
 
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Detective)) return;
             var detective = GetRole<Detective>(PlayerControl.LocalPlayer);
-            if (MeetingHud.Instance != null) UpdateMeeting(MeetingHud.Instance, detective);
+            if (Meeting() != null) UpdateMeeting(Meeting(), detective);
             foreach (var player in PlayerControl.AllPlayerControls)
             {
                 if (!detective.Investigated.Contains(player.PlayerId)) continue;
@@ -104,7 +104,7 @@ namespace TownOfSushi.Roles
     {
         public static bool Prefix(KillButton __instance)
         {
-            if (__instance != DestroyableSingleton<HudManager>.Instance.KillButton) return true;
+            if (__instance != HUDManager().KillButton) return true;
             var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Detective);
             if (!flag) return true;
             var role = GetRole<Detective>(PlayerControl.LocalPlayer);
@@ -159,7 +159,7 @@ namespace TownOfSushi.Roles
             var role = GetRole<Detective>(PlayerControl.LocalPlayer);
 
             investigateButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
-                    && !MeetingHud.Instance && !PlayerControl.LocalPlayer.Data.IsDead
+                    && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
             investigateButton.SetCoolDown(role.DetectiveTimer(), CustomGameOptions.DetectiveCd);
 

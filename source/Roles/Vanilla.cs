@@ -25,7 +25,7 @@ namespace TownOfSushi.Roles
             RoleAlignment = RoleAlignment.CrewSpecial;
             RoleType = RoleEnum.Crewmate;
             AddToRoleHistory(RoleType);
-            Color = Colors.Crewmate;
+            Color = ColorManager.Crewmate;
         }
     }
 }
