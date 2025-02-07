@@ -14,7 +14,7 @@ namespace TownOfSushi.Patches
         public class AmongUsClientOnPlayerJoinedPatch {
             public static void Postfix(AmongUsClient __instance) 
             {
-                if (PlayerControl.LocalPlayer != null) 
+                if (LocalPlayer()!= null) 
                 {
                     ShareGameVersion();
                 }
@@ -57,8 +57,8 @@ namespace TownOfSushi.Patches
             {
                 if (TownOfSushi.MCILoaded) return;
 
-                // Send version as soon as PlayerControl.LocalPlayer exists
-                if (PlayerControl.LocalPlayer != null && !versionSent) 
+                // Send version as soon as LocalPlayer()exists
+                if (LocalPlayer()!= null && !versionSent) 
                 {
                     versionSent = true;
                     ShareGameVersion();
@@ -123,7 +123,7 @@ namespace TownOfSushi.Patches
                     // Make starting info available to clients:
                     if (startingTimer <= 0 && __instance.startState == GameStartManager.StartingStates.Countdown) 
                     {
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetGameStarting, Hazel.SendOption.Reliable, -1);
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(LocalPlayer().NetId, (byte)CustomRPC.SetGameStarting, Hazel.SendOption.Reliable, -1);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
                         SetGameStarting();
                         // Activate Stop-Button
@@ -203,8 +203,8 @@ namespace TownOfSushi.Patches
 
                         void StopStartFunc() 
                         {
-                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.StopStart, Hazel.SendOption.Reliable, AmongUsClient.Instance.HostId);
-                            writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(LocalPlayer().NetId, (byte)CustomRPC.StopStart, Hazel.SendOption.Reliable, AmongUsClient.Instance.HostId);
+                            writer.Write(LocalPlayer().PlayerId);
                             AmongUsClient.Instance.FinishRpcImmediately(writer);
                             copiedStartButton.Destroy();
                             __instance.GameStartText.text = String.Empty;

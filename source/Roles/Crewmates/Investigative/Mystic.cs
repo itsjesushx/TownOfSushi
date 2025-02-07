@@ -45,18 +45,18 @@ namespace TownOfSushi.Roles
         public static bool Prefix(KillButton __instance)
         {
             if (__instance != HUDManager().KillButton) return true;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Mystic)) return true;
-            var role = GetRole<Mystic>(PlayerControl.LocalPlayer);
-            if (!PlayerControl.LocalPlayer.CanMove || role.ClosestPlayer == null) return false;
+            if (!LocalPlayer().Is(RoleEnum.Mystic)) return true;
+            var role = GetRole<Mystic>(LocalPlayer());
+            if (!LocalPlayer().CanMove || role.ClosestPlayer == null) return false;
             var flag2 = role.ExamineTimer() == 0f;
             if (!flag2) return false;
             if (!__instance.enabled) return false;
             var maxDistance = KillDistance();
             if (Vector2.Distance(role.ClosestPlayer.GetTruePosition(),
-                PlayerControl.LocalPlayer.GetTruePosition()) > maxDistance) return false;
+                LocalPlayer().GetTruePosition()) > maxDistance) return false;
             if (role.ClosestPlayer == null) return false;
 
-            var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer, false);
+            var interact = Interact(LocalPlayer(), role.ClosestPlayer, false);
             if (interact[3] == true)
             {
                 var hasKilled = false;
@@ -93,16 +93,16 @@ namespace TownOfSushi.Roles
         public static void Postfix(MeetingHud __instance)
         {
             if (IsDead()) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Mystic)) return;
+            if (!LocalPlayer().Is(RoleEnum.Mystic)) return;
             if (!CustomGameOptions.ExamineReportOn) return;
-            var MysticRole = GetRole<Mystic>(PlayerControl.LocalPlayer);
+            var MysticRole = GetRole<Mystic>(LocalPlayer());
             if (MysticRole.LastExaminedPlayer != null)
             {
                 var playerResults = MysticBodyReport.PlayerReportFeedback(MysticRole.LastExaminedPlayer);
                 var roleResults = MysticBodyReport.RoleReportFeedback(MysticRole.LastExaminedPlayer);
 
-                if (!string.IsNullOrWhiteSpace(playerResults)) HUDManager().Chat.AddChat(PlayerControl.LocalPlayer, playerResults);
-                if (!string.IsNullOrWhiteSpace(roleResults)) HUDManager().Chat.AddChat(PlayerControl.LocalPlayer, roleResults);
+                if (!string.IsNullOrWhiteSpace(playerResults)) Chat().AddChat(LocalPlayer(), playerResults);
+                if (!string.IsNullOrWhiteSpace(roleResults)) Chat().AddChat(LocalPlayer(), roleResults);
             }
         }
     }
@@ -114,13 +114,13 @@ namespace TownOfSushi.Roles
         public static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Mystic)) return;
-            var role = GetRole<Mystic>(PlayerControl.LocalPlayer);
-            var data = PlayerControl.LocalPlayer.Data;
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(RoleEnum.Mystic)) return;
+            var role = GetRole<Mystic>(LocalPlayer());
+            var data = LocalPlayer().Data;
             var isDead = data.IsDead;
-            var truePosition = PlayerControl.LocalPlayer.GetTruePosition();
+            var truePosition = LocalPlayer().GetTruePosition();
 
             if (!IsDead())
             {
@@ -141,7 +141,7 @@ namespace TownOfSushi.Roles
                     {
                         var gameObj = new GameObject();
                         var arrow = gameObj.AddComponent<ArrowBehaviour>();
-                        gameObj.transform.parent = PlayerControl.LocalPlayer.gameObject.transform;
+                        gameObj.transform.parent = LocalPlayer().gameObject.transform;
                         var renderer = gameObj.AddComponent<SpriteRenderer>();
                         renderer.sprite = Arrow;
                         arrow.image = renderer;
@@ -174,12 +174,12 @@ namespace TownOfSushi.Roles
         public static void UpdateMysticExamineButton(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Mystic)) return;
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(RoleEnum.Mystic)) return;
 
             var examineButton = __instance.KillButton;
-            var role = GetRole<Mystic>(PlayerControl.LocalPlayer);
+            var role = GetRole<Mystic>(LocalPlayer());
 
             examineButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
                     && !Meeting() && !IsDead()
@@ -324,7 +324,7 @@ namespace TownOfSushi.Roles
             if (!isMysticAlive || !areReportsEnabled)
                 return;
 
-            var isUserMystic = PlayerControl.LocalPlayer.Is(RoleEnum.Mystic);
+            var isUserMystic = LocalPlayer().Is(RoleEnum.Mystic);
             if (!isUserMystic)
                 return;
             var br = new MysticBodyReport
@@ -341,7 +341,7 @@ namespace TownOfSushi.Roles
                 return;
 
             if (HUDManager())
-                HUDManager().Chat.AddChat(PlayerControl.LocalPlayer, reportMsg);
+                Chat().AddChat(LocalPlayer(), reportMsg);
         }
     }
 }

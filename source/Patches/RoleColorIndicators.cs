@@ -7,7 +7,7 @@
         {
             public static void Postfix(Vent __instance, [HarmonyArgument(1)] ref bool mainTarget)
             {
-                var player = PlayerControl.LocalPlayer;
+                var player = LocalPlayer();
                 var role = GetPlayerRole(player);
                 Color color = role.Color;
                 __instance.myRend.material.SetColor("_OutlineColor", color);
@@ -19,7 +19,7 @@
         {
             public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] bool active, [HarmonyArgument(1)] RoleTeamTypes team)
             {
-                var player = PlayerControl.LocalPlayer;
+                var player = LocalPlayer();
                 var role = GetPlayerRole(player);
                 {
                     __instance.cosmetics.currentBodySprite.BodySprite.material.SetColor("_OutlineColor", role.Color);

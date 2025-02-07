@@ -17,7 +17,7 @@ namespace TownOfSushi.Roles
             AddToRoleHistory(RoleType);
             RemainingKills = CustomGameOptions.DeputyKills;
         }
-        public bool HasExectutedAlready;
+        public bool HasExectutedAlready { get; set; } = false;
         public int RemainingKills { get; set; }
         public GameObject ExecuteButton = new GameObject();
     }
@@ -47,31 +47,31 @@ namespace TownOfSushi.Roles
         {
             void Listener()
             {
-            var executeTarget = PlayerById(targetPlayerId);
+               var executeTarget = PlayerById(targetPlayerId);
 
-            if (executeTarget == null) return;
-            if (executeTarget.Data.IsDead) return;
-            if (role.RemainingKills <= 0) return;
-            if (role.HasExectutedAlready) return;
+               if (executeTarget == null) return;
+               if (executeTarget.Data.IsDead) return;
+               if (role.RemainingKills <= 0) return;
+               if (role.HasExectutedAlready) return;
 
-            role.RemainingKills -= 1;
-            if (executeTarget.Is(Faction.Crewmates))        
-            {            
-                role.IncorrectShots += 1;
-                role.RemainingKills = 0;
-                Flash(Color.red);
-                Sound().PlaySound(Ship().SabotageSound, false, 1f, null);
-            }
-            else
-            {            
-                role.CorrectDeputyShot += 1;            
-                Flash(Color.green);        
-            }
-           ExecuteKill(role, executeTarget);
+               role.RemainingKills -= 1;
+               if (executeTarget.Is(Faction.Crewmates))        
+               {
+                   role.IncorrectShots += 1;
+                   role.RemainingKills = 0;
+                   Flash(Color.red);
+                   Sound().PlaySound(Ship().SabotageSound, false, 1f, null);
+               }
+               else
+               {            
+                   role.CorrectDeputyShot += 1;            
+                   Flash(Color.green);        
+               }
+              ExecuteKill(role, executeTarget);
            StartRPC(CustomRPC.ExecuteDeputyKill, role.Player.PlayerId, targetPlayerId);
+            }
+            return Listener;
         }
-        return Listener;
-    }
 
         public static void ExecuteKill (Deputy deputy, PlayerControl player)
         {
@@ -83,11 +83,11 @@ namespace TownOfSushi.Roles
 
                try
                 {
-                    Sound().PlaySound(PlayerControl.LocalPlayer.KillSfx, false, 1f);
+                    Sound().PlaySound(LocalPlayer().KillSfx, false, 1f);
                 } 
                 catch {}
 
-                if (PlayerControl.LocalPlayer == player) 
+                if (LocalPlayer()== player) 
                 {
                     hudManager.KillOverlay.ShowKillAnimation(player.Data, player.Data);
                     if (AddButtonVigilante.vigilanteUI != null) AddButtonVigilante.vigilanteUIExitButton.OnClick.Invoke();
@@ -103,7 +103,7 @@ namespace TownOfSushi.Roles
                 player.RpcSetScanner(false);
                 ImportantTextTask importantTextTask = new GameObject("_Player").AddComponent<ImportantTextTask>();
                 importantTextTask.transform.SetParent(AmongUsClient.Instance.transform, false);
-                if (!VanillaOptions().currentNormalGameOptions.GhostsDoTasks)
+                if (!OptionsManager().currentNormalGameOptions.GhostsDoTasks)
                 {
                     for (int i = 0; i < player.myTasks.Count; i++)
                     {
@@ -129,7 +129,7 @@ namespace TownOfSushi.Roles
                 
                     if (player.Is(RoleEnum.Imitator))
                     {
-                        var imitator = GetRole<Imitator>(PlayerControl.LocalPlayer);
+                        var imitator = GetRole<Imitator>(LocalPlayer());
                         var buttons = GetRole<Imitator>(player).Buttons;
                         foreach (var button in buttons)
                         {
@@ -146,7 +146,7 @@ namespace TownOfSushi.Roles
 
                     if (player.Is(RoleEnum.Swapper))
                     {
-                        var swapper = GetRole<Swapper>(PlayerControl.LocalPlayer);
+                        var swapper = GetRole<Swapper>(LocalPlayer());
                         var buttons = GetRole<Swapper>(player).Buttons;
                         foreach (var button in buttons)
                         {
@@ -165,14 +165,14 @@ namespace TownOfSushi.Roles
 
                     if (player.Is(RoleEnum.Jailor))
                     {
-                        var jailor = GetRole<Jailor>(PlayerControl.LocalPlayer);
+                        var jailor = GetRole<Jailor>(LocalPlayer());
                         jailor.ExecuteButton.Destroy();
                         jailor.UsesText.Destroy();
                     }
 
                     if (player.Is(RoleEnum.Deputy))
                     {
-                        var Deputy = GetRole<Deputy>(PlayerControl.LocalPlayer);
+                        var Deputy = GetRole<Deputy>(LocalPlayer());
                         Deputy.ExecuteButton.Destroy();
                     }
                 
@@ -222,14 +222,12 @@ namespace TownOfSushi.Roles
                 }
             }
 
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Imitator) && !IsDead())
+            if (player.Is(RoleEnum.Imitator) && !player.Data.IsDead)
             {
-                var imitatorRole = GetRole<Imitator>(PlayerControl.LocalPlayer);
-                if (!meetingHud.playerStates[PlayerControl.LocalPlayer.PlayerId].DidVote)
+                var imitatorRole = GetRole<Imitator>(player);
+                if (MeetingHud.Instance.state != MeetingHud.VoteStates.Results && MeetingHud.Instance.state != MeetingHud.VoteStates.Proceeding)
                 {
-                    RoleEnum imitatedRole = GetPlayerRole(player).RoleType;
-                    var imitatable = imitatorRole.ImitatableRoles.Contains(imitatedRole);
-                    AddButtonImitator.GenButton(imitatorRole, player.PlayerId, imitatable, true);
+                    AddButtonImitator.GenButton(imitatorRole, voteArea, true);
                 }
             }
 
@@ -241,14 +239,14 @@ namespace TownOfSushi.Roles
 
         public static void Postfix(MeetingHud __instance)
         {
-            if (IsDead() || !PlayerControl.LocalPlayer.Is(RoleEnum.Deputy)) return;    
-            var depRole = GetRole<Deputy>(PlayerControl.LocalPlayer);
+            if (IsDead() || !LocalPlayer().Is(RoleEnum.Deputy)) return;    
+            var depRole = GetRole<Deputy>(LocalPlayer());
             if (depRole.RemainingKills <= 0) return;
             
             for (int i = 0; i < __instance.playerStates.Length; i++)    
             {
                 var playerState = __instance.playerStates[i];
-                if (playerState.TargetPlayerId == PlayerControl.LocalPlayer.PlayerId) continue;
+                if (playerState.TargetPlayerId == LocalPlayer().PlayerId) continue;
                 if (PlayerById(playerState.TargetPlayerId).Data.IsDead) continue;
 
                 GenButton(depRole, i);
@@ -261,9 +259,9 @@ namespace TownOfSushi.Roles
     {
         public static void Postfix(MeetingHud __instance)
         {
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Deputy))
+            if (LocalPlayer().Is(RoleEnum.Deputy))
             {
-                var jailor = GetRole<Deputy>(PlayerControl.LocalPlayer);
+                var jailor = GetRole<Deputy>(LocalPlayer());
                 jailor.ExecuteButton.Destroy();
             }
         }

@@ -52,12 +52,12 @@ namespace TownOfSushi.Roles
         public static void UpdateTrapButton(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Trapper)) return;
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(RoleEnum.Trapper)) return;
             var trapButton = __instance.KillButton;
 
-            var role = GetRole<Trapper>(PlayerControl.LocalPlayer);
+            var role = GetRole<Trapper>(LocalPlayer());
 
             if (role.UsesText == null && role.MaxUses > 0)
             {
@@ -106,15 +106,15 @@ namespace TownOfSushi.Roles
         public static void Postfix(MeetingHud __instance)
         {
             if (IsDead()) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Trapper)) return;
-            var trapperRole = GetRole<Trapper>(PlayerControl.LocalPlayer);
+            if (!LocalPlayer().Is(RoleEnum.Trapper)) return;
+            var trapperRole = GetRole<Trapper>(LocalPlayer());
             if (trapperRole.trappedPlayers.Count == 0)
                 {
-                    HUDManager().Chat.AddChat(PlayerControl.LocalPlayer, ColorString(Color.red, "No players entered any of your traps"));
+                    Chat().AddChat(LocalPlayer(), ColorString(Color.red, "No players entered any of your traps"));
                 }
                 else if (trapperRole.trappedPlayers.Count < CustomGameOptions.MinAmountOfPlayersInTrap)
                 {
-                    HUDManager().Chat.AddChat(PlayerControl.LocalPlayer, ColorString(Color.red, "Not enough players triggered your traps"));
+                    Chat().AddChat(LocalPlayer(), ColorString(Color.red, "Not enough players triggered your traps"));
                 }
             else
             {
@@ -125,7 +125,7 @@ namespace TownOfSushi.Roles
                 }
                 message.Remove(message.Length - 1, 1);
                 if (HUDManager())
-                    HUDManager().Chat.AddChat(PlayerControl.LocalPlayer, message);
+                    Chat().AddChat(LocalPlayer(), message);
             }
         }
     }
@@ -136,18 +136,18 @@ namespace TownOfSushi.Roles
         public static bool Prefix(KillButton __instance)
         {
             if (__instance != HUDManager().KillButton) return true;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Trapper)) return true;
-            if (!PlayerControl.LocalPlayer.CanMove) return false;
+            if (!LocalPlayer().Is(RoleEnum.Trapper)) return true;
+            if (!LocalPlayer().CanMove) return false;
             if (IsDead()) return false;
-            var role = GetRole<Trapper>(PlayerControl.LocalPlayer);
+            var role = GetRole<Trapper>(LocalPlayer());
             if (!(role.TrapTimer() == 0f)) return false;
             if (!__instance.enabled) return false;
             if (!role.ButtonUsable) return false;
-            var abilityUsed = AbilityUsed(PlayerControl.LocalPlayer);
+            var abilityUsed = AbilityUsed(LocalPlayer());
             if (!abilityUsed) return false;
             role.MaxUses--;
             role.LastTrapped = DateTime.UtcNow;
-            var pos = PlayerControl.LocalPlayer.transform.position;
+            var pos = LocalPlayer().transform.position;
             pos.z += 0.001f;
             role.traps.Add(TrapExtentions.CreateTrap(pos));
 

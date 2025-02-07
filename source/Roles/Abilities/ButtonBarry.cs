@@ -31,33 +31,33 @@ namespace TownOfSushi.Roles.Abilities
     {
         public static bool Prefix(KillButton __instance)
         {
-            if (!PlayerControl.LocalPlayer.Is(AbilityEnum.ButtonBarry)) return true;
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Glitch)) return true;
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Agent)) return true;
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Hitman)) return true;
+            if (!LocalPlayer().Is(AbilityEnum.ButtonBarry)) return true;
+            if (LocalPlayer().Is(RoleEnum.Glitch)) return true;
+            if (LocalPlayer().Is(RoleEnum.Agent)) return true;
+            if (LocalPlayer().Is(RoleEnum.Hitman)) return true;
 
-            var role = GetAbility<ButtonBarry>(PlayerControl.LocalPlayer);
+            var role = GetAbility<ButtonBarry>(LocalPlayer());
             if (__instance != role.ButtonButton) return true;
-            if (!PlayerControl.LocalPlayer.CanMove) return false;
+            if (!LocalPlayer().CanMove) return false;
             if (IsDead()) return false;
             if (role.ButtonUsed) return false;
             if (role.StartTimer() > 0) return false;
-            if (PlayerControl.LocalPlayer.RemainingEmergencies <= 0) return false;
+            if (LocalPlayer().RemainingEmergencies <= 0) return false;
             if (!__instance.enabled) return false;
 
             role.ButtonUsed = true;
 
-            StartRPC(CustomRPC.BarryButton, PlayerControl.LocalPlayer.PlayerId);
+            StartRPC(CustomRPC.BarryButton, LocalPlayer().PlayerId);
 
             if (AmongUsClient.Instance.AmHost)
             {
-                MeetingRoomManager.Instance.reporter = PlayerControl.LocalPlayer;
+                MeetingRoomManager.Instance.reporter = LocalPlayer();
                 MeetingRoomManager.Instance.target = null;
                 AmongUsClient.Instance.DisconnectHandlers.AddUnique(
                     MeetingRoomManager.Instance.Cast<IDisconnectHandler>());
                 if (GameManager.Instance.CheckTaskCompletion()) return false;
-                HUDManager().OpenMeetingRoom(PlayerControl.LocalPlayer);
-                PlayerControl.LocalPlayer.RpcStartMeeting(null);
+                HUDManager().OpenMeetingRoom(LocalPlayer());
+                LocalPlayer().RpcStartMeeting(null);
             }
 
             return false;
@@ -77,14 +77,14 @@ namespace TownOfSushi.Roles.Abilities
         private static void UpdateButtonBarry(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(AbilityEnum.ButtonBarry)) return;
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Glitch)) return;
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Agent)) return;
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(AbilityEnum.ButtonBarry)) return;
+            if (LocalPlayer().Is(RoleEnum.Glitch)) return;
+            if (LocalPlayer().Is(RoleEnum.Agent)) return;
 
 
-            var role = GetAbility<ButtonBarry>(PlayerControl.LocalPlayer);
+            var role = GetAbility<ButtonBarry>(LocalPlayer());
 
             if (role.ButtonButton == null)
             {
@@ -118,7 +118,7 @@ namespace TownOfSushi.Roles.Abilities
                     position1.z);
             }
 
-            if (!role.ButtonUsed && PlayerControl.LocalPlayer.RemainingEmergencies > 0)
+            if (!role.ButtonUsed && LocalPlayer().RemainingEmergencies > 0)
             {
                 renderer.color = Palette.EnabledColor;
                 renderer.material.SetFloat("_Desat", 0f);

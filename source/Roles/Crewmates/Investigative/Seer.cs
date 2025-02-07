@@ -50,19 +50,19 @@ namespace TownOfSushi.Roles
         public static bool Prefix(KillButton __instance)
         {
             if (__instance != HUDManager().KillButton) return true;
-            var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Seer);
+            var flag = LocalPlayer().Is(RoleEnum.Seer);
             if (!flag) return true;
-            var role = GetRole<Seer>(PlayerControl.LocalPlayer);
-            if (!PlayerControl.LocalPlayer.CanMove || role.ClosestPlayer == null) return false;
+            var role = GetRole<Seer>(LocalPlayer());
+            if (!LocalPlayer().CanMove || role.ClosestPlayer == null) return false;
             var flag2 = role.SeerTimer1() == 0f;
             if (!flag2) return false;
             if (!__instance.enabled) return false;
             var maxDistance = KillDistance();
             if (Vector2.Distance(role.ClosestPlayer.GetTruePosition(),
-                PlayerControl.LocalPlayer.GetTruePosition()) > maxDistance) return false;
+                LocalPlayer().GetTruePosition()) > maxDistance) return false;
             if (role.ClosestPlayer == null) return false;
 
-            var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer, false);
+            var interact = Interact(LocalPlayer(), role.ClosestPlayer, false);
             if (!role.HasInvested1)
             {
                 if (interact[3] == true)
@@ -123,12 +123,12 @@ namespace TownOfSushi.Roles
         public static void UpdateInvButton(HudManager __instance)
         {
             var investigateButton = __instance.KillButton;
-            var role = GetRole<Seer>(PlayerControl.LocalPlayer);
+            var role = GetRole<Seer>(LocalPlayer());
 
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Seer)) return;
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(RoleEnum.Seer)) return;
             if (role.HasInvested2) return;
 
             investigateButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
@@ -163,8 +163,8 @@ namespace TownOfSushi.Roles
     {
         public static void Postfix(MeetingHud __instance)
         {
-            var seer = GetRole<Seer>(PlayerControl.LocalPlayer);
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Seer)) return;
+            var seer = GetRole<Seer>(LocalPlayer());
+            if (!LocalPlayer().Is(RoleEnum.Seer)) return;
             if (IsDead()) return;
             if (seer.Investigated.Data.IsDead || seer.Investigated.Data.Disconnected 
             || seer.Investigated2.Data.Disconnected || seer.Investigated2.Data.IsDead) return;
@@ -172,7 +172,7 @@ namespace TownOfSushi.Roles
             var playerResults = SeerResults();
             if (seer.Investigated != null && seer.Investigated2 != null)
             {
-                if (!string.IsNullOrWhiteSpace(playerResults)) HUDManager().Chat.AddChat(PlayerControl.LocalPlayer, playerResults);
+                if (!string.IsNullOrWhiteSpace(playerResults)) Chat().AddChat(LocalPlayer(), playerResults);
                 Sound().PlaySound(Ship().SabotageSound, false, 1f, null);            
                 Flash(seer.Color);
             }
@@ -180,7 +180,7 @@ namespace TownOfSushi.Roles
         public static string SeerResults()
         {
             //theres probably a better way for this but this works for now
-            var seer = GetRole<Seer>(PlayerControl.LocalPlayer);
+            var seer = GetRole<Seer>(LocalPlayer());
             var differentFaction = false;
 
             if ((seer.Investigated.Is(Faction.Crewmates) && !seer.Investigated2.Is(Faction.Crewmates)) ||

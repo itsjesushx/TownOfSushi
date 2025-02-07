@@ -13,7 +13,7 @@ namespace TownOfSushi.Roles
             TaskText = () => "Cast a spell on players";
             RoleInfo = $"The witch can cast a spell on players, doing so adds a cross next to the player name, visible to everyone announcing they've been cursed. The spelled player can not be saved, and will be die after meeting.";
             LoreText = "A master of the arcane, you wield dark magic to curse your foes. As the Witch, you can cast a spell on players that ensures their demise after the meeting ends. Your powerful enchantments allow you to strike from afar, waiting for the perfect moment to unleash your lethal magic and eliminate your targets with a deadly curse.";
-            Color = ColorManager.Impostor;
+            Color = ColorManager.ImpostorRed;
             LastSpelled = DateTime.UtcNow;
             RoleType = RoleEnum.Witch;
             Faction = Faction.Impostors;
@@ -50,10 +50,10 @@ namespace TownOfSushi.Roles
         public static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Witch)) return;
-            var role = GetRole<Witch>(PlayerControl.LocalPlayer);            
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(RoleEnum.Witch)) return;
+            var role = GetRole<Witch>(LocalPlayer());            
             if (role.SpellButton == null)
             {
                 role.SpellButton = Object.Instantiate(__instance.KillButton, __instance.KillButton.transform.parent);
@@ -65,7 +65,7 @@ namespace TownOfSushi.Roles
             {
                 var player = PlayerById(playerId);
                 var data = player?.Data;
-                if (data == null || data.Disconnected || data.IsDead || IsDead() || playerId == PlayerControl.LocalPlayer.PlayerId)
+                if (data == null || data.Disconnected || data.IsDead || IsDead() || playerId == LocalPlayer().PlayerId)
                     continue;
                 player.nameText().text += " <color=#FF0000FF> [†]</color>";
             }
@@ -91,19 +91,19 @@ namespace TownOfSushi.Roles
     {
         public static bool Prefix(KillButton __instance)
         {
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Witch)) return true;
-            if (!PlayerControl.LocalPlayer.CanMove) return false;
+            if (!LocalPlayer().Is(RoleEnum.Witch)) return true;
+            if (!LocalPlayer().CanMove) return false;
             if (IsDead()) return false;
-            var role = GetRole<Witch>(PlayerControl.LocalPlayer);
+            var role = GetRole<Witch>(LocalPlayer());
             if (role.SpellTimer() != 0f) return false;
             
             if (__instance == role.SpellButton)
             {
-                var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer);
+                var interact = Interact(LocalPlayer(), role.ClosestPlayer);
                 if (interact[3] == true)
                 {
                     role.SpelledPlayers.Add(role.ClosestPlayer.PlayerId);
-                    StartRPC(CustomRPC.Spell, PlayerControl.LocalPlayer.PlayerId, role.ClosestPlayer.PlayerId);
+                    StartRPC(CustomRPC.Spell, LocalPlayer().PlayerId, role.ClosestPlayer.PlayerId);
                 }
                 if (interact[0] == true)
                 {

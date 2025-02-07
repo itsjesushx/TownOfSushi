@@ -72,11 +72,11 @@ namespace TownOfSushi.Roles
     {
         public static bool Prefix(KillButton __instance)
         {
-            var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Veteran);
+            var flag = LocalPlayer().Is(RoleEnum.Veteran);
             if (!flag) return true;
-            if (!PlayerControl.LocalPlayer.CanMove) return false;
+            if (!LocalPlayer().CanMove) return false;
             if (IsDead()) return false;
-            var role = GetRole<Veteran>(PlayerControl.LocalPlayer);
+            var role = GetRole<Veteran>(LocalPlayer());
             if (!role.ButtonUsable) return false;
             var alertButton = HUDManager().KillButton;
             if (__instance == alertButton)
@@ -84,12 +84,12 @@ namespace TownOfSushi.Roles
                 if (__instance.isCoolingDown) return false;
                 if (!__instance.isActiveAndEnabled) return false;
                 if (role.AlertTimer() != 0) return false;
-                var abilityUsed = AbilityUsed(PlayerControl.LocalPlayer);
+                var abilityUsed = AbilityUsed(LocalPlayer());
                 if (!abilityUsed) return false;
                 role.TimeRemaining = CustomGameOptions.AlertDuration;
                 role.UsesLeft--;
                 role.Alert();
-                StartRPC(CustomRPC.Alert, PlayerControl.LocalPlayer.PlayerId);
+                StartRPC(CustomRPC.Alert, LocalPlayer().PlayerId);
                 return false;
             }
 
@@ -109,12 +109,12 @@ namespace TownOfSushi.Roles
         public static void UpdateAlertButton(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Veteran)) return;
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(RoleEnum.Veteran)) return;
             var alertButton = __instance.KillButton;
 
-            var role = GetRole<Veteran>(PlayerControl.LocalPlayer);
+            var role = GetRole<Veteran>(LocalPlayer());
 
             if (role.UsesText == null && role.UsesLeft > 0)
             {
@@ -174,7 +174,7 @@ namespace TownOfSushi.Roles
 
             var data = __instance.Data;
             var stuff = Physics2D.OverlapCircleAll(truePosition, __instance.MaxReportDistance, Constants.Usables);
-            var flag = (VanillaOptions().currentNormalGameOptions.GhostsDoTasks || !data.IsDead) &&
+            var flag = (OptionsManager().currentNormalGameOptions.GhostsDoTasks || !data.IsDead) &&
                        (!AmongUsClient.Instance || !AmongUsClient.Instance.IsGameOver) && __instance.CanMove;
             var flag2 = false;
 
@@ -186,7 +186,7 @@ namespace TownOfSushi.Roles
                     if (Vector2.Distance(truePosition, component.TruePosition) <= __instance.MaxReportDistance)
                     {
                         var matches = Murder.KilledPlayers.FirstOrDefault(x => x.PlayerId == component.ParentId);
-                        if (matches != null && matches.KillerId != PlayerControl.LocalPlayer.PlayerId) { 
+                        if (matches != null && matches.KillerId != LocalPlayer().PlayerId) { 
                             if (!PhysicsHelpers.AnythingBetween(__instance.Collider, truePosition, component.TruePosition, Constants.ShipOnlyMask, false)) flag2 = true; 
                         }
                     }
@@ -214,7 +214,7 @@ namespace TownOfSushi.Roles
                     if (component && !component.Reported)
                     {
                         var matches = Murder.KilledPlayers.FirstOrDefault(x => x.PlayerId == component.ParentId);
-                        if (matches != null && matches.KillerId != PlayerControl.LocalPlayer.PlayerId)
+                        if (matches != null && matches.KillerId != LocalPlayer().PlayerId)
                             component.OnClick();
                         if (component.Reported) break;
                     }

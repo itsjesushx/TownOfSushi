@@ -217,7 +217,7 @@ namespace TownOfSushi.Patches
                     if (player.Data.Disconnected || player.Data.IsDead)
                         continue;
                         
-                    var map = VanillaOptions().currentNormalGameOptions.MapId;
+                    var map = OptionsManager().currentNormalGameOptions.MapId;
 
                     switch (map)
                     {
@@ -485,7 +485,7 @@ namespace TownOfSushi.Patches
                     if (player.Data.Disconnected || player.Data.IsDead)
                         continue;
 
-                    var map = VanillaOptions().currentNormalGameOptions.MapId;
+                    var map = OptionsManager().currentNormalGameOptions.MapId;
 
                     switch (map)
                     {

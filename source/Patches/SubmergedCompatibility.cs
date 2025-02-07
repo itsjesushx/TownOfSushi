@@ -208,7 +208,7 @@ namespace TownOfSushi.Patches
 
         public static IEnumerator WaitMeeting(Action next)
         {
-            while (!PlayerControl.LocalPlayer.moveable)
+            while (!LocalPlayer().moveable)
             {
                 yield return null;
             }
@@ -241,7 +241,7 @@ namespace TownOfSushi.Patches
         public static void ChangeFloor(bool toUpper)
         {
             if (!SubmergedLoaded) return;
-            MonoBehaviour _floorHandler = ((Component)GetFloorHandlerMethod.Invoke(null, new object[] { PlayerControl.LocalPlayer })).TryCast(FloorHandlerType) as MonoBehaviour;
+            MonoBehaviour _floorHandler = ((Component)GetFloorHandlerMethod.Invoke(null, new object[] { LocalPlayer()})).TryCast(FloorHandlerType) as MonoBehaviour;
             RpcRequestChangeFloorMethod.Invoke(_floorHandler, new object[] { toUpper });
         }
 
@@ -258,7 +258,7 @@ namespace TownOfSushi.Patches
             try
             {
                 Ship().RpcUpdateSystem((SystemTypes)130, 64);
-                RepairDamageMethod.Invoke(SubmarineOxygenSystemInstanceField.GetValue(null), new object[] { PlayerControl.LocalPlayer, 64 });
+                RepairDamageMethod.Invoke(SubmarineOxygenSystemInstanceField.GetValue(null), new object[] { LocalPlayer(), 64 });
             }
             catch (System.NullReferenceException)
             {

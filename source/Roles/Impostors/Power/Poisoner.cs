@@ -43,14 +43,14 @@ namespace TownOfSushi.Roles
                 TimeRemaining = 0;
             }
             // directly kill when the players alive are 4 or less
-            if (PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 4 && !Player.Data.IsDead)
+            if (AllPlayers().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 4 && !Player.Data.IsDead)
             {
                 TimeRemaining = 0;
             }
             if (TimeRemaining <= 0)
             {
                 PoisonKill();
-                StartRPC(CustomRPC.PoisonKill, PlayerControl.LocalPlayer.PlayerId);
+                StartRPC(CustomRPC.PoisonKill, LocalPlayer().PlayerId);
             }
         }
         public void PoisonKill()
@@ -58,7 +58,7 @@ namespace TownOfSushi.Roles
             if (!PoisonedPlayer.IsShielded() && !PoisonedPlayer.IsFortified() && !PoisonedPlayer.Is(RoleEnum.Pestilence) && !PoisonedPlayer.IsProtected() && PoisonedPlayer != ShowRoundOneShield.FirstRoundShielded)
             {
                 RpcMurderPlayerNoJump(Player, PoisonedPlayer);
-                if (!PoisonedPlayer.Data.IsDead) Sound().PlaySound(PlayerControl.LocalPlayer.KillSfx, false, 0.5f);
+                if (!PoisonedPlayer.Data.IsDead) Sound().PlaySound(LocalPlayer().KillSfx, false, 0.5f);
                 GameHistory.CreateDeathReason(PoisonedPlayer, CustomDeathReason.Poisoned, Player);
             }
             else if (PoisonedPlayer.IsShielded())
@@ -93,9 +93,9 @@ namespace TownOfSushi.Roles
         public static void Postfix(Object obj)
         {
             if (ExiledInstance() == null || obj != ExiledInstance().gameObject) return;
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Poisoner))
+            if (LocalPlayer().Is(RoleEnum.Poisoner))
             {
-                var role = GetRole<Poisoner>(PlayerControl.LocalPlayer);
+                var role = GetRole<Poisoner>(LocalPlayer());
                 role.PoisonButton.graphic.sprite = TownOfSushi.PoisonSprite;
                 role.LastPoisoned = DateTime.UtcNow;
             }
@@ -111,11 +111,11 @@ namespace TownOfSushi.Roles
         [HarmonyPriority(Priority.Last)]
         public static void Postfix(HudManager __instance)
         {
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Poisoner)) return;
+            if (!LocalPlayer().Is(RoleEnum.Poisoner)) return;
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            var role = GetRole<Poisoner>(PlayerControl.LocalPlayer);
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            var role = GetRole<Poisoner>(LocalPlayer());
             if (role.PoisonButton == null)
             {
                 role.PoisonButton = Object.Instantiate(__instance.KillButton, __instance.KillButton.transform.parent);
@@ -153,7 +153,7 @@ namespace TownOfSushi.Roles
                 else
                 {
                     role.PoisonButton.graphic.sprite = PoisonSprite;
-                    if (role.PoisonedPlayer && role.PoisonedPlayer != PlayerControl.LocalPlayer)
+                    if (role.PoisonedPlayer && role.PoisonedPlayer != LocalPlayer())
                     {
                         role.PoisonKill();
                     }
@@ -168,7 +168,7 @@ namespace TownOfSushi.Roles
                         role.PoisonButton.graphic.material.SetFloat("_Desat", 1f);
                     }
                     role.PoisonButton.SetCoolDown(role.PoisonTimer(), CustomGameOptions.PoisonCd);
-                    role.PoisonedPlayer = PlayerControl.LocalPlayer; //Only do this to stop repeatedly trying to re-kill poisoned player. null didn't work for some reason
+                    role.PoisonedPlayer = LocalPlayer(); //Only do this to stop repeatedly trying to re-kill poisoned player. null didn't work for some reason
                 }
             }
             catch
@@ -185,11 +185,11 @@ namespace TownOfSushi.Roles
         public static Sprite PoisonedSprite => TownOfSushi.PoisonedSprite;
         public static bool Prefix(KillButton __instance)
         {
-            var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Poisoner);
+            var flag = LocalPlayer().Is(RoleEnum.Poisoner);
             if (!flag) return true;
-            if (!PlayerControl.LocalPlayer.CanMove) return false;
+            if (!LocalPlayer().CanMove) return false;
             if (IsDead()) return false;
-            var role = GetRole<Poisoner>(PlayerControl.LocalPlayer);
+            var role = GetRole<Poisoner>(LocalPlayer());
             var target = role.ClosestPlayer;
             if (target == null) return false;
             if (!__instance.isActiveAndEnabled) return false;
@@ -200,11 +200,11 @@ namespace TownOfSushi.Roles
                 role.PoisonButton.SetCoolDown(0.01f, 1f);
                 return false;
             }
-            if (PlayerControl.LocalPlayer.IsJailed()) return false;
+            if (LocalPlayer().IsJailed()) return false;
             
-            var abilityUsed = AbilityUsed(PlayerControl.LocalPlayer);
+            var abilityUsed = AbilityUsed(LocalPlayer());
             if (!abilityUsed) return false;
-            var interact = Interact(PlayerControl.LocalPlayer, target);
+            var interact = Interact(LocalPlayer(), target);
             if (interact[3] == true)
             {
                 role.PoisonedPlayer = target;
@@ -212,7 +212,7 @@ namespace TownOfSushi.Roles
                 HUDManager().KillButton.SetTarget(null);
                 role.TimeRemaining = CustomGameOptions.PoisonDelay;
                 role.PoisonButton.SetCoolDown(role.TimeRemaining, CustomGameOptions.PoisonDelay);
-                StartRPC(CustomRPC.Poison, PlayerControl.LocalPlayer.PlayerId, target.PlayerId);
+                StartRPC(CustomRPC.Poison, LocalPlayer().PlayerId, target.PlayerId);
             }
             if (interact[0] == true)
             {
@@ -238,7 +238,7 @@ namespace TownOfSushi.Roles
             {
                 return;
             }
-            var poisoners = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(RoleEnum.Poisoner)).ToList();
+            var poisoners = AllPlayers().Where(x => x.Is(RoleEnum.Poisoner)).ToList();
             foreach (var poisoner in poisoners)
             {
                 var role = GetRole<Poisoner>(poisoner);
@@ -257,10 +257,10 @@ namespace TownOfSushi.Roles
         public static void Postfix(KillButton __instance, [HarmonyArgument(0)] PlayerControl target)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Poisoner)) return;
-            var role = Role.GetRole<Poisoner>(PlayerControl.LocalPlayer);
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(RoleEnum.Poisoner)) return;
+            var role = Role.GetRole<Poisoner>(LocalPlayer());
             if (target != null && __instance == HUDManager().KillButton)
                 if (target.Data.IsImpostor())
                 {

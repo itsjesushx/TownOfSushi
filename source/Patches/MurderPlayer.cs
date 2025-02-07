@@ -20,15 +20,15 @@ namespace TownOfSushi.Patches
             public static bool Prefix(KillButton __instance, ref bool __runOriginal)
             {
                 if (!__runOriginal) return false;
-                if (__instance.isActiveAndEnabled && __instance.currentTarget && !__instance.isCoolingDown && !IsDead() && PlayerControl.LocalPlayer.CanMove)
+                if (__instance.isActiveAndEnabled && __instance.currentTarget && !__instance.isCoolingDown && !IsDead() && LocalPlayer().CanMove)
                 {
                     if (AmongUsClient.Instance.AmHost)
                     {
-                        PlayerControl.LocalPlayer.CheckMurder(__instance.currentTarget);
+                        LocalPlayer().CheckMurder(__instance.currentTarget);
                     }
                     else
                     {
-                        StartRPC(CustomRPC.CheckMurder, PlayerControl.LocalPlayer.PlayerId, __instance.currentTarget.PlayerId);
+                        StartRPC(CustomRPC.CheckMurder, LocalPlayer().PlayerId, __instance.currentTarget.PlayerId);
                     }
                     __instance.SetTarget(null);
                 }

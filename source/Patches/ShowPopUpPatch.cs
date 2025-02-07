@@ -7,7 +7,7 @@ namespace TownOfSushi.Patches
     {
         public static void Postfix()
         {
-            var role = GetPlayerRole(PlayerControl.LocalPlayer);
+            var role = GetPlayerRole(LocalPlayer());
             if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
             if (role == null) return;
 

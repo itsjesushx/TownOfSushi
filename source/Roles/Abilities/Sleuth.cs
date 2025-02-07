@@ -18,11 +18,11 @@ namespace TownOfSushi.Roles.Abilities
         private static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] NetworkedPlayerInfo info)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(AbilityEnum.Sleuth)) return;
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(AbilityEnum.Sleuth)) return;
 
-            GetAbility<Sleuth>(PlayerControl.LocalPlayer).Reported.Add(info.PlayerId);
+            GetAbility<Sleuth>(LocalPlayer()).Reported.Add(info.PlayerId);
         }
     }
 }

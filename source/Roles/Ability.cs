@@ -83,7 +83,7 @@ namespace TownOfSushi.Roles
 
         public static Ability GetAbility(PlayerVoteArea area)
         {
-            var player = PlayerControl.AllPlayerControls.ToArray()
+            var player = AllPlayers()
                 .FirstOrDefault(x => x.PlayerId == area.TargetPlayerId);
             return player == null ? null : GetAbility(player);
         }

@@ -69,12 +69,12 @@ namespace TownOfSushi.Roles
         private static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
             if (IsDead()) return;
 
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Detective)) return;
-            var detective = GetRole<Detective>(PlayerControl.LocalPlayer);
+            if (!LocalPlayer().Is(RoleEnum.Detective)) return;
+            var detective = GetRole<Detective>(LocalPlayer());
             if (Meeting() != null) UpdateMeeting(Meeting(), detective);
             foreach (var player in PlayerControl.AllPlayerControls)
             {
@@ -105,19 +105,19 @@ namespace TownOfSushi.Roles
         public static bool Prefix(KillButton __instance)
         {
             if (__instance != HUDManager().KillButton) return true;
-            var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Detective);
+            var flag = LocalPlayer().Is(RoleEnum.Detective);
             if (!flag) return true;
-            var role = GetRole<Detective>(PlayerControl.LocalPlayer);
-            if (!PlayerControl.LocalPlayer.CanMove || role.ClosestPlayer == null) return false;
+            var role = GetRole<Detective>(LocalPlayer());
+            if (!LocalPlayer().CanMove || role.ClosestPlayer == null) return false;
             var flag2 = role.DetectiveTimer() == 0f;
             if (!flag2) return false;
             if (!__instance.enabled) return false;
             var maxDistance = KillDistance();
             if (Vector2.Distance(role.ClosestPlayer.GetTruePosition(),
-                PlayerControl.LocalPlayer.GetTruePosition()) > maxDistance) return false;
+                LocalPlayer().GetTruePosition()) > maxDistance) return false;
             if (role.ClosestPlayer == null) return false;
 
-            var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer, false);
+            var interact = Interact(LocalPlayer(), role.ClosestPlayer, false);
             if (interact[3] == true)
             {
                 role.Investigated.Add(role.ClosestPlayer.PlayerId);
@@ -151,12 +151,12 @@ namespace TownOfSushi.Roles
         public static void UpdateInvButton(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Detective)) return;
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(RoleEnum.Detective)) return;
             var investigateButton = __instance.KillButton;
 
-            var role = GetRole<Detective>(PlayerControl.LocalPlayer);
+            var role = GetRole<Detective>(LocalPlayer());
 
             investigateButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
                     && !Meeting() && !IsDead()

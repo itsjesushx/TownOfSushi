@@ -20,7 +20,7 @@ namespace TownOfSushi.Roles
             TaskText = () => "Blind the crewmates";
             RoleInfo = $"The Grenadier can make other players go blind for {CustomGameOptions.GrenadeDuration} seconds. blinding players make their screen go gray, but they can still use all of their abilities. The Grenadier can use this ability every {CustomGameOptions.GrenadeCd} seconds and this will not affect other Impostors or dead players.";
             LoreText = "A specialist in disruption, you excel at blinding the Crewmates and throwing them into confusion. As the Grenadier, you can use blinding grenades to obscure vision, making it easier to move unnoticed and take out your targets. Your ability to create chaos in critical moments gives the Impostors a tactical advantage, allowing you to strike while the crew is disoriented and vulnerable.";
-            Color = ColorManager.Impostor;
+            Color = ColorManager.ImpostorRed;
             LastFlashed = DateTime.UtcNow;
             RoleType = RoleEnum.Grenadier;
             Faction = Faction.Impostors;
@@ -64,25 +64,25 @@ namespace TownOfSushi.Roles
             var system = Ship().Systems[SystemTypes.Sabotage].Cast<SabotageSystemType>();
             var sabActive = system.AnyActive;
 
-            if (flashedPlayers.Contains(PlayerControl.LocalPlayer))
+            if (flashedPlayers.Contains(LocalPlayer()))
             {
                 if (TimeRemaining > CustomGameOptions.GrenadeDuration - 0.5f && (!sabActive))
                 {
                     float fade = (TimeRemaining - CustomGameOptions.GrenadeDuration) * -2.0f;
-                    if (ShouldPlayerBeBlinded(PlayerControl.LocalPlayer))
+                    if (ShouldPlayerBeBlinded(LocalPlayer()))
                     {
                         ((Renderer)HUDManager().FullScreen).enabled = true;
                         ((Renderer)HUDManager().FullScreen).gameObject.active = true;
                         HUDManager().FullScreen.color = Color.Lerp(normalVision, blindVision, fade);
                     }
-                    else if (ShouldPlayerBeDimmed(PlayerControl.LocalPlayer))
+                    else if (ShouldPlayerBeDimmed(LocalPlayer()))
                     {
                         ((Renderer)HUDManager().FullScreen).enabled = true;
                         ((Renderer)HUDManager().FullScreen).gameObject.active = true;
                         HUDManager().FullScreen.color = Color.Lerp(normalVision, dimVision, fade);
                         try
                         {
-                            if (PlayerControl.LocalPlayer.Data.IsImpostor() && MapInstance().infectedOverlay.sabSystem.Timer < 0.5f)
+                            if (LocalPlayer().Data.IsImpostor() && MapInstance().infectedOverlay.sabSystem.Timer < 0.5f)
                             {
                                 MapInstance().infectedOverlay.sabSystem.Timer = 0.5f;
                             }
@@ -98,20 +98,20 @@ namespace TownOfSushi.Roles
                 }
                 else if (TimeRemaining <= (CustomGameOptions.GrenadeDuration - 0.5f) && TimeRemaining >= 0.5f && (!sabActive))
                 {
-                    if (ShouldPlayerBeBlinded(PlayerControl.LocalPlayer))
+                    if (ShouldPlayerBeBlinded(LocalPlayer()))
                     {
                         ((Renderer)HUDManager().FullScreen).enabled = true;
                         ((Renderer)HUDManager().FullScreen).gameObject.active = true;
                         HUDManager().FullScreen.color = blindVision;
                     }
-                    else if (ShouldPlayerBeDimmed(PlayerControl.LocalPlayer))
+                    else if (ShouldPlayerBeDimmed(LocalPlayer()))
                     {
                         ((Renderer)HUDManager().FullScreen).enabled = true;
                         ((Renderer)HUDManager().FullScreen).gameObject.active = true;
                         HUDManager().FullScreen.color = dimVision;
                         try
                         {
-                            if (PlayerControl.LocalPlayer.Data.IsImpostor() && MapInstance().infectedOverlay.sabSystem.Timer < 0.5f)
+                            if (LocalPlayer().Data.IsImpostor() && MapInstance().infectedOverlay.sabSystem.Timer < 0.5f)
                             {
                                 MapInstance().infectedOverlay.sabSystem.Timer = 0.5f;
                             }
@@ -128,13 +128,13 @@ namespace TownOfSushi.Roles
                 else if (TimeRemaining < 0.5f && (!sabActive))
                 {
                     float fade2 = (TimeRemaining * -2.0f) + 1.0f;
-                    if (ShouldPlayerBeBlinded(PlayerControl.LocalPlayer))
+                    if (ShouldPlayerBeBlinded(LocalPlayer()))
                     {
                         ((Renderer)HUDManager().FullScreen).enabled = true;
                         ((Renderer)HUDManager().FullScreen).gameObject.active = true;
                         HUDManager().FullScreen.color = Color.Lerp(blindVision, normalVision, fade2);
                     }
-                    else if (ShouldPlayerBeDimmed(PlayerControl.LocalPlayer))
+                    else if (ShouldPlayerBeDimmed(LocalPlayer()))
                     {
                         ((Renderer)HUDManager().FullScreen).enabled = true;
                         ((Renderer)HUDManager().FullScreen).gameObject.active = true;
@@ -160,7 +160,7 @@ namespace TownOfSushi.Roles
             {
                 try
                 {
-                    if (PlayerControl.LocalPlayer.Data.IsImpostor() && MapInstance().infectedOverlay.sabSystem.Timer < 0.5f)
+                    if (LocalPlayer().Data.IsImpostor() && MapInstance().infectedOverlay.sabSystem.Timer < 0.5f)
                     {
                         MapInstance().infectedOverlay.sabSystem.Timer = 0.5f;
                     }
@@ -212,10 +212,10 @@ namespace TownOfSushi.Roles
         public static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Grenadier)) return;
-            var role = GetRole<Grenadier>(PlayerControl.LocalPlayer);
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(RoleEnum.Grenadier)) return;
+            var role = GetRole<Grenadier>(LocalPlayer());
             if (role.FlashButton == null)
             {
                 role.FlashButton = Object.Instantiate(__instance.KillButton, __instance.KillButton.transform.parent);
@@ -227,7 +227,7 @@ namespace TownOfSushi.Roles
             {
                 foreach (var player in PlayerControl.AllPlayerControls)
                 {
-                    if (player != PlayerControl.LocalPlayer && !player.Data.IsImpostor()) {
+                    if (player != LocalPlayer()&& !player.Data.IsImpostor()) {
                         var tempColour = player.nameText().color;
                         var data = player?.Data;
                         if (data == null || data.Disconnected || data.IsDead || IsDead())
@@ -278,11 +278,11 @@ namespace TownOfSushi.Roles
     {
         public static bool Prefix(KillButton __instance)
         {
-            var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Grenadier);
+            var flag = LocalPlayer().Is(RoleEnum.Grenadier);
             if (!flag) return true;
-            if (!PlayerControl.LocalPlayer.CanMove) return false;
+            if (!LocalPlayer().CanMove) return false;
             if (IsDead()) return false;
-            var role = GetRole<Grenadier>(PlayerControl.LocalPlayer);
+            var role = GetRole<Grenadier>(LocalPlayer());
             if (__instance == role.FlashButton)
             {
                 if (__instance.isCoolingDown) return false;
@@ -292,13 +292,13 @@ namespace TownOfSushi.Roles
                 var sabActive = system.AnyActive;
                 if (sabActive) return false;
                 if (role.FlashTimer() != 0) return false;
-                var abilityUsed = Utils.AbilityUsed(PlayerControl.LocalPlayer);
+                var abilityUsed = Utils.AbilityUsed(LocalPlayer());
                 if (!abilityUsed) return false;
 
                 role.TimeRemaining = CustomGameOptions.GrenadeDuration;
                 role.StartFlash();
                 
-                var writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId,
+                var writer = AmongUsClient.Instance.StartRpcImmediately(LocalPlayer().NetId,
                 (byte)CustomRPC.FlashGrenade, SendOption.Reliable, -1);
                 writer.Write((byte)role.Player.PlayerId);
                 writer.Write((byte)role.flashedPlayers.Count);

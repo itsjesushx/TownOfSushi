@@ -70,12 +70,12 @@ namespace TownOfSushi.Roles
         public static void UpdateProtectButton(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.GuardianAngel)) return;
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(RoleEnum.GuardianAngel)) return;
             var protectButton = __instance.KillButton;
 
-            var role = GetRole<GuardianAngel>(PlayerControl.LocalPlayer);
+            var role = GetRole<GuardianAngel>(LocalPlayer());
 
             if (role.UsesText == null && role.MaxUses > 0)
             {
@@ -127,11 +127,11 @@ namespace TownOfSushi.Roles
     {
         public static bool Prefix(KillButton __instance)
         {
-            var flag = PlayerControl.LocalPlayer.Is(RoleEnum.GuardianAngel);
+            var flag = LocalPlayer().Is(RoleEnum.GuardianAngel);
             if (!flag) return true;
-            if (!PlayerControl.LocalPlayer.CanMove) return false;
+            if (!LocalPlayer().CanMove) return false;
             if (IsDead()) return false;
-            var role = GetRole<GuardianAngel>(PlayerControl.LocalPlayer);
+            var role = GetRole<GuardianAngel>(LocalPlayer());
             if (!role.ButtonUsable) return false;
             var protectButton = HUDManager().KillButton;
             if (__instance == protectButton)
@@ -139,12 +139,12 @@ namespace TownOfSushi.Roles
                 if (__instance.isCoolingDown) return false;
                 if (!__instance.isActiveAndEnabled) return false;
                 if (role.ProtectTimer() != 0) return false;
-                var abilityUsed = AbilityUsed(PlayerControl.LocalPlayer);
+                var abilityUsed = AbilityUsed(LocalPlayer());
                 if (!abilityUsed) return false;
                 role.TimeRemaining = CustomGameOptions.ProtectDuration;
                 role.MaxUses--;
                 role.Protect();
-                StartRPC(CustomRPC.GAProtect, PlayerControl.LocalPlayer.PlayerId);
+                StartRPC(CustomRPC.GAProtect, LocalPlayer().PlayerId);
                 return false;
             }
             return true;
@@ -206,12 +206,12 @@ namespace TownOfSushi.Roles
         private static void Postfix()
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.GuardianAngel)) return;
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(RoleEnum.GuardianAngel)) return;
             if (IsDead()) return;
 
-            var role = GetRole<GuardianAngel>(PlayerControl.LocalPlayer);
+            var role = GetRole<GuardianAngel>(LocalPlayer());
 
             if (Meeting() != null) UpdateMeeting(Meeting(), role);
 
@@ -219,12 +219,12 @@ namespace TownOfSushi.Roles
 
             if (role.target == null || (!role.target.Data.IsDead && !role.target.Data.Disconnected)) return;
 
-            StartRPC(CustomRPC.GuardianAngelChangeRole, PlayerControl.LocalPlayer.PlayerId);
+            StartRPC(CustomRPC.GuardianAngelChangeRole, LocalPlayer().PlayerId);
 
             Object.Destroy(role.UsesText);
             HUDManager().KillButton.gameObject.SetActive(false);
 
-            GuardianAngelChangeRole(PlayerControl.LocalPlayer);
+            GuardianAngelChangeRole(LocalPlayer());
         }
 
         public static void GuardianAngelChangeRole(PlayerControl player)
@@ -248,6 +248,28 @@ namespace TownOfSushi.Roles
             else
             {
                 new Crewmate(player);
+            }
+        }
+    }
+    [HarmonyPatch(typeof(ExileController), nameof(ExileController.Begin))]
+    internal class GuardianAngelMeetingExiledEnd
+    {
+        private static void Postfix(ExileController __instance)
+        {
+            var exiled = __instance.initData.networkedPlayer;
+            if (exiled == null) return;
+            var player = exiled.Object;
+
+            foreach (var role in GetRoles(RoleEnum.GuardianAngel))
+            {
+                var GARole = (GuardianAngel)role;
+                if (player.PlayerId == GARole.target.PlayerId && CustomGameOptions.GADiesWithClient)
+                {
+                    if (!GARole.Player.Data.IsDead)
+                    {
+                        role.Player.Exiled();
+                    }
+                }
             }
         }
     }

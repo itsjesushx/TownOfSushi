@@ -59,17 +59,17 @@ namespace TownOfSushi.Roles
         public static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Vulture)) return;
-            var role = GetRole<Vulture>(PlayerControl.LocalPlayer);
-            var data = PlayerControl.LocalPlayer.Data;
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(RoleEnum.Vulture)) return;
+            var role = GetRole<Vulture>(LocalPlayer());
+            var data = LocalPlayer().Data;
             var isDead = data.IsDead;
-            var truePosition = PlayerControl.LocalPlayer.GetTruePosition();
+            var truePosition = LocalPlayer().GetTruePosition();
             var maxDistance = KillDistance();
-            var flag = (VanillaOptions().currentNormalGameOptions.GhostsDoTasks || !data.IsDead) &&
+            var flag = (OptionsManager().currentNormalGameOptions.GhostsDoTasks || !data.IsDead) &&
                        (!AmongUsClient.Instance || !AmongUsClient.Instance.IsGameOver) &&
-                       PlayerControl.LocalPlayer.CanMove;
+                       LocalPlayer().CanMove;
             var allocs = Physics2D.OverlapCircleAll(truePosition, maxDistance,
                 LayerMask.GetMask(new[] { "Players", "Ghost" }));
 
@@ -104,11 +104,11 @@ namespace TownOfSushi.Roles
     {
         public static bool Prefix(KillButton __instance)
         {
-            var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Vulture);
+            var flag = LocalPlayer().Is(RoleEnum.Vulture);
             if (!flag) return true;
-            if (!PlayerControl.LocalPlayer.CanMove) return false;
+            if (!LocalPlayer().CanMove) return false;
             if (IsDead()) return false;
-            var role = GetRole<Vulture>(PlayerControl.LocalPlayer);
+            var role = GetRole<Vulture>(LocalPlayer());
             if (role.EatTimer() != 0f) return false;
             var flag2 = __instance.isCoolingDown;
             
@@ -120,14 +120,14 @@ namespace TownOfSushi.Roles
             if (role.CurrentTarget == null)
                 return false;
             if (Vector2.Distance(role.CurrentTarget.TruePosition,
-                PlayerControl.LocalPlayer.GetTruePosition()) > maxDistance) return false;
+                LocalPlayer().GetTruePosition()) > maxDistance) return false;
             var playerId = role.CurrentTarget.ParentId;
             var player = PlayerById(playerId);
             if ((player.IsInfected() || role.Player.IsInfected()) && !player.Is(RoleEnum.Plaguebearer))
             {
                 foreach (var pb in GetRoles(RoleEnum.Plaguebearer)) ((Plaguebearer)pb).RpcSpreadInfection(player, role.Player);
             }
-            StartRPC(CustomRPC.VultureEat, PlayerControl.LocalPlayer.PlayerId, playerId);
+            StartRPC(CustomRPC.VultureEat, LocalPlayer().PlayerId, playerId);
             role.LastEaten = DateTime.UtcNow;
             Coroutines.Start(VultureCoroutine.EatCoroutine(role.CurrentTarget, role));
             return false;
@@ -139,7 +139,7 @@ namespace TownOfSushi.Roles
     {
         public static bool Prefix(KillButton __instance)
         {
-            return !PlayerControl.LocalPlayer.Is(RoleEnum.Vulture);
+            return !LocalPlayer().Is(RoleEnum.Vulture);
         }
         public static void SetTarget(KillButton __instance, DeadBody target, Vulture role)
         {
@@ -179,13 +179,13 @@ namespace TownOfSushi.Roles
         public static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Vulture)) return;
-            var role = GetRole<Vulture>(PlayerControl.LocalPlayer);
-            var data = PlayerControl.LocalPlayer.Data;
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(RoleEnum.Vulture)) return;
+            var role = GetRole<Vulture>(LocalPlayer());
+            var data = LocalPlayer().Data;
             var isDead = data.IsDead;
-            var truePosition = PlayerControl.LocalPlayer.GetTruePosition();
+            var truePosition = LocalPlayer().GetTruePosition();
 
             if (Meeting() != null) UpdateMeeting(Meeting(), role);
 
@@ -208,7 +208,7 @@ namespace TownOfSushi.Roles
                     {
                         var gameObj = new GameObject();
                         var arrow = gameObj.AddComponent<ArrowBehaviour>();
-                        gameObj.transform.parent = PlayerControl.LocalPlayer.gameObject.transform;
+                        gameObj.transform.parent = LocalPlayer().gameObject.transform;
                         var renderer = gameObj.AddComponent<SpriteRenderer>();
                         renderer.sprite = Arrow;
                         arrow.image = renderer;

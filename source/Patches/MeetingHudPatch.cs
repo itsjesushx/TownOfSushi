@@ -24,15 +24,15 @@ namespace TownOfSushi.Patches
         {
             static bool Prefix(MeetingHud __instance) 
             {
-                return !(PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.Is(RoleEnum.Vigilante) && AddButtonVigilante.vigilanteUI != null) ||
-                     !(PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.Is(RoleEnum.Doomsayer) && AddButtonDoomsayer.doomsayerUI != null) ||
-                     !(PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.Is(AbilityEnum.Assassin) && AssassinAddButton.assassinUI != null);
+                return !(LocalPlayer()!= null && LocalPlayer().Is(RoleEnum.Vigilante) && AddButtonVigilante.vigilanteUI != null) ||
+                     !(LocalPlayer()!= null && LocalPlayer().Is(RoleEnum.Doomsayer) && AddButtonDoomsayer.doomsayerUI != null) ||
+                     !(LocalPlayer()!= null && LocalPlayer().Is(AbilityEnum.Assassin) && AssassinAddButton.assassinUI != null);
             }
         }
 
         static void PopulateButtonsPostfix(MeetingHud __instance) 
         {
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Vigilante) && !PlayerControl.LocalPlayer.IsJailed() && !IsDead()  && PlayerControl.LocalPlayer != StartImitate.ImitatingPlayer && GetRole<Vigilante>(PlayerControl.LocalPlayer).RemainingKills > 0)
+            if (LocalPlayer().Is(RoleEnum.Vigilante) && !LocalPlayer().IsJailed() && !IsDead()  && LocalPlayer()!= StartImitate.ImitatingPlayer && GetRole<Vigilante>(LocalPlayer()).RemainingKills > 0)
             {
                 for (int i = 0; i < __instance.playerStates.Length; i++)
                 {
@@ -52,7 +52,7 @@ namespace TownOfSushi.Patches
                 }
             }
 
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Doomsayer) && !PlayerControl.LocalPlayer.IsJailed() && !IsDead())
+            if (LocalPlayer().Is(RoleEnum.Doomsayer) && !LocalPlayer().IsJailed() && !IsDead())
             {
                 for (int i = 0; i < __instance.playerStates.Length; i++)
                 {
@@ -68,11 +68,11 @@ namespace TownOfSushi.Patches
                     PassiveButton button = targetBox.GetComponent<PassiveButton>();
                     button.OnClick.RemoveAllListeners();
                     int copiedIndex = i;
-                    button.OnClick.AddListener((System.Action)(() => AddButtonDoomsayer.doomsayerOnClick(copiedIndex, __instance)));
+                    button.OnClick.AddListener((System.Action)(() => AddButtonDoomsayer.DoomsayerOnClick(copiedIndex, __instance)));
                 }
             }
 
-            if (PlayerControl.LocalPlayer.Is(AbilityEnum.Assassin) && !PlayerControl.LocalPlayer.IsJailed() && !IsDead() && GetAbility<Assassin>(PlayerControl.LocalPlayer).RemainingKills > 0)
+            if (LocalPlayer().Is(AbilityEnum.Assassin) && !LocalPlayer().IsJailed() && !IsDead() && GetAbility<Assassin>(LocalPlayer()).RemainingKills > 0)
             {
                 for (int i = 0; i < __instance.playerStates.Length; i++)
                 {
@@ -122,7 +122,7 @@ namespace TownOfSushi.Patches
 
         public static void Postfix(MeetingHud __instance)
         {
-            if (AmongUsClient.Instance.NetworkMode != NetworkModes.OnlineGame) return;
+            if (!IsOnlineGame()) return;
 
             var host = GameData.Instance.GetHost();
 
@@ -138,7 +138,7 @@ namespace TownOfSushi.Patches
 
         public static void Setup(MeetingHud __instance)
         {
-            if (AmongUsClient.Instance.NetworkMode != NetworkModes.OnlineGame) return;
+            if (!IsOnlineGame()) return;
 
             __instance.ProceedButton.gameObject.transform.localPosition = new(-2.5f, 2.2f, 0);
             __instance.ProceedButton.gameObject.GetComponent<SpriteRenderer>().enabled = false;

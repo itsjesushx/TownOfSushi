@@ -80,10 +80,10 @@ namespace TownOfSushi.CustomOption
 
         public static void SwitchPreset(int newPreset) 
         {
-            SaveVanillaOptions();
+            SaveOptionsManager();
             preset = newPreset;
             vanillaSettings = TownOfSushi.Instance.Config.Bind($"Preset{preset}", "GameOptions", "");
-            LoadVanillaOptions();
+            LoadOptionsManager();
             foreach (CustomOption option in CustomOption.Options) {
                 if (option.id == 0) continue;
 
@@ -96,22 +96,22 @@ namespace TownOfSushi.CustomOption
             }
         }
 
-        public static void SaveVanillaOptions() 
+        public static void SaveOptionsManager() 
         {
-            vanillaSettings.Value = Convert.ToBase64String(VanillaOptions().gameOptionsFactory.ToBytes(GameManager.Instance.LogicOptions.currentGameOptions, false));
+            vanillaSettings.Value = Convert.ToBase64String(OptionsManager().gameOptionsFactory.ToBytes(GameManager.Instance.LogicOptions.currentGameOptions, false));
         }
 
-        public static bool LoadVanillaOptions() {
+        public static bool LoadOptionsManager() {
             string optionsString = vanillaSettings.Value;
             if (optionsString == "") return false;
-            IGameOptions gameOptions = VanillaOptions().gameOptionsFactory.FromBytes(Convert.FromBase64String(optionsString));
+            IGameOptions gameOptions = OptionsManager().gameOptionsFactory.FromBytes(Convert.FromBase64String(optionsString));
             if (gameOptions.Version < 8) {
                 TownOfSushi.Logger.LogMessage("tried to paste old settings, not doing this!");
                 return false;
             } 
-            VanillaOptions().GameHostOptions = gameOptions;
-            VanillaOptions().CurrentGameOptions = VanillaOptions().GameHostOptions;
-            GameManager.Instance.LogicOptions.SetGameOptions(VanillaOptions().CurrentGameOptions);
+            OptionsManager().GameHostOptions = gameOptions;
+            OptionsManager().CurrentGameOptions = OptionsManager().GameHostOptions;
+            GameManager.Instance.LogicOptions.SetGameOptions(OptionsManager().CurrentGameOptions);
             GameManager.Instance.LogicOptions.SyncOptions();
             return true;
         }
@@ -120,7 +120,7 @@ namespace TownOfSushi.CustomOption
         {
             var option = Options.FirstOrDefault(x => x.id == optionId);
             if (option == null) return;
-            var writer = AmongUsClient.Instance!.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareOptions, SendOption.Reliable, -1);
+            var writer = AmongUsClient.Instance!.StartRpcImmediately(LocalPlayer().NetId, (byte)CustomRPC.ShareOptions, SendOption.Reliable, -1);
             writer.Write((byte)1);
             writer.WritePacked((uint)option.id);
             writer.WritePacked(Convert.ToInt32(option.selection));
@@ -129,12 +129,12 @@ namespace TownOfSushi.CustomOption
 
         public static void ShareOptionSelections() 
         {
-            if (PlayerControl.AllPlayerControls.Count <= 1 || AmongUsClient.Instance!.AmHost == false && PlayerControl.LocalPlayer == null) return;
+            if (PlayerControl.AllPlayerControls.Count <= 1 || AmongUsClient.Instance!.AmHost == false && LocalPlayer()== null) return;
             var optionsList = new List<CustomOption>(CustomOption.Options);
             while (optionsList.Any())
             {
                 byte amount = (byte) Math.Min(optionsList.Count, 200); // takes less than 3 bytes per option on average
-                var writer = AmongUsClient.Instance!.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareOptions, SendOption.Reliable, -1);
+                var writer = AmongUsClient.Instance!.StartRpcImmediately(LocalPlayer().NetId, (byte)CustomRPC.ShareOptions, SendOption.Reliable, -1);
                 writer.Write(amount);
                 for (int i = 0; i < amount; i++)
                 {
@@ -187,7 +187,7 @@ namespace TownOfSushi.CustomOption
             if (optionBehaviour != null && optionBehaviour is StringOption stringOption) {
                 stringOption.oldValue = stringOption.Value = selection;
                 stringOption.ValueText.text = $"{selections[selection].ToString()}{format}";
-                if (AmongUsClient.Instance?.AmHost == true && PlayerControl.LocalPlayer) {
+                if (AmongUsClient.Instance?.AmHost == true && LocalPlayer()) {
                     if (id == 0 && selection != preset) {
                         SwitchPreset(selection); // Switch presets
                         ShareOptionSelections();
@@ -196,7 +196,7 @@ namespace TownOfSushi.CustomOption
                         ShareOptionChange((uint)id);// Share single selection
                     }
                 }
-            } else if (id == 0 && AmongUsClient.Instance?.AmHost == true && PlayerControl.LocalPlayer) {  // Share the preset switch for random maps, even if the menu isnt open!
+            } else if (id == 0 && AmongUsClient.Instance?.AmHost == true && LocalPlayer()) {  // Share the preset switch for random maps, even if the menu isnt open!
                 SwitchPreset(selection);
                 ShareOptionSelections();// Share all selections
             }
@@ -276,18 +276,18 @@ namespace TownOfSushi.CustomOption
                 if (TownOfSushi.Version > versionInfo && versionInfo < System.Version.Parse("1.0.0")) 
                 {
                     vanillaOptionsFine = false;
-                    HUDManager().Chat.AddChat(PlayerControl.LocalPlayer, "Host Info: Pasting vanilla settings failed, TOS Options applied!");
+                    Chat().AddChat(LocalPlayer(), "Host Info: Pasting vanilla settings failed, TOS Options applied!");
                 }
                 else 
                 {
                     vanillaSettings.Value = vanillaSettingsSub;
-                    vanillaOptionsFine = LoadVanillaOptions();
+                    vanillaOptionsFine = LoadOptionsManager();
                 }
             } catch (Exception e) 
             {
                 TownOfSushi.Logger.LogWarning($"{e}: tried to paste invalid settings!\n{allSettings}");
                 string errorStr = allSettings.Length > 2 ? allSettings.Substring(0, 3) : "(empty clipboard) ";
-                HUDManager().Chat.AddChat(PlayerControl.LocalPlayer, $"Host Info: You tried to paste invalid settings: \"{errorStr}...\"");
+                Chat().AddChat(LocalPlayer(), $"Host Info: You tried to paste invalid settings: \"{errorStr}...\"");
             }
             return Convert.ToInt32(vanillaOptionsFine) + torOptionsFine;
         }
@@ -816,7 +816,7 @@ namespace TownOfSushi.CustomOption
         public static void Postfix()
         {
             //ShareOptionSelections();
-            SaveVanillaOptions();
+            SaveOptionsManager();
         }
     }
 
@@ -825,7 +825,7 @@ namespace TownOfSushi.CustomOption
     {
         public static void Postfix() 
         {
-            if (PlayerControl.LocalPlayer != null && AmongUsClient.Instance.AmHost) 
+            if (LocalPlayer()!= null && AmongUsClient.Instance.AmHost) 
             {
                 GameManager.Instance.LogicOptions.SyncOptions();
                 ShareOptionSelections();
@@ -893,7 +893,7 @@ namespace TownOfSushi.CustomOption
         public static string BuildAllOptions(string vanillaSettings = "", bool hideExtras = false) 
         {
             if (vanillaSettings == "")
-                vanillaSettings = VanillaOptions().CurrentGameOptions.ToHudString(PlayerControl.AllPlayerControls.Count);
+                vanillaSettings = OptionsManager().CurrentGameOptions.ToHudString(PlayerControl.AllPlayerControls.Count);
             int counter = TownOfSushi.optionsPage;
             string hudString = counter != 0 && !hideExtras ? ColorString(DateTime.Now.Second % 2 == 0 ? Color.white : Color.red, "(Use scroll wheel if necessary)\n\n") : "";
             
@@ -979,7 +979,7 @@ namespace TownOfSushi.CustomOption
             {
                 TownOfSushi.optionsPage = 7;
             }
-            if (Input.GetKeyDown(KeyCode.F2) && !Lobby())
+            if (Input.GetKeyDown(KeyCode.F2) && !IsLobby())
                 HudManagerUpdate.ToggleSettings(HUDManager());
             if (TownOfSushi.optionsPage >= GameOptionsDataPatch.maxPage) TownOfSushi.optionsPage = 0;
         }
@@ -1028,7 +1028,7 @@ namespace TownOfSushi.CustomOption
             Scroller.ContentYBounds = new FloatRange(MinY, maxY);
 
             // Prevent scrolling when the player is interacting with a menu
-            if (PlayerControl.LocalPlayer?.CanMove != true) 
+            if (LocalPlayer()?.CanMove != true) 
             {
                 GameSettings.transform.localPosition = LastPosition;
 

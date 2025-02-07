@@ -7,7 +7,7 @@ namespace TownOfSushi.Patches
         static void UpdateReportButton(HudManager __instance) 
         {
             if (IsHideNSeek()) return;
-            if (Meeting()  || PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 2)
+            if (Meeting()  || TwoPlayersAlive())
             {
                 __instance.ReportButton.ToggleVisible(false);
             }
@@ -25,7 +25,7 @@ namespace TownOfSushi.Patches
         public static bool Prefix(DeadBody __instance) 
         {
             if (IsHideNSeek()) return false;
-            if (PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 2)  return false;
+            if (TwoPlayersAlive())  return false;
             return true;
         }
     }
@@ -36,7 +36,7 @@ namespace TownOfSushi.Patches
     {
         public static bool Prefix(MapBehaviour __instance) 
         {
-            if (IsDead() || PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 2)
+            if (IsDead() || TwoPlayersAlive())
             {
                 __instance.ShowNormalMap();
                 return false;
@@ -49,7 +49,7 @@ namespace TownOfSushi.Patches
     {
         static void Postfix() 
         {
-            if (IsDead() || PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 2) 
+            if (IsDead() || TwoPlayersAlive()) 
             {
                 HUDManager().SabotageButton.Hide();
             }

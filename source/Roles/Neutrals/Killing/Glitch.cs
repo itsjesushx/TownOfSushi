@@ -45,7 +45,7 @@ namespace TownOfSushi.Roles
         {
             if (HUDManager()?.Chat != null)
             {
-                foreach (var bubble in HUDManager().Chat.chatBubblePool.activeChildren)
+                foreach (var bubble in Chat().chatBubblePool.activeChildren)
                 {
                     if (bubble.Cast<ChatBubble>().NameText != null &&
                         Player.Data.PlayerName == bubble.Cast<ChatBubble>().NameText.text)
@@ -145,18 +145,18 @@ namespace TownOfSushi.Roles
                 }
 
                 hackText = new GameObject("_Player").AddComponent<ImportantTextTask>();
-                hackText.transform.SetParent(PlayerControl.LocalPlayer.transform, false);
+                hackText.transform.SetParent(LocalPlayer().transform, false);
                 hackText.Text =
                     $"{"<color=#" + ColorManager.Glitch.ToHtmlStringRGBA() + ">"}Hacked {hackPlayer.Data.PlayerName} ({CustomGameOptions.HackDuration}s)</color>";
                 hackText.Index = hackPlayer.PlayerId;
                 tickDictionary.Add(hackPlayer.PlayerId, DateTime.UtcNow);
-                PlayerControl.LocalPlayer.myTasks.Insert(0, hackText);
+                LocalPlayer().myTasks.Insert(0, hackText);
 
                 Coroutines.Start(DisableAbility.StopAbility(CustomGameOptions.HackDuration));
 
                 while (true)
                 {
-                    if (PlayerControl.LocalPlayer == hackPlayer)
+                    if (LocalPlayer()== hackPlayer)
                     {
                         if (HUDManager().KillButton != null)
                         {
@@ -173,7 +173,7 @@ namespace TownOfSushi.Roles
                                     HUDManager().KillButton.transform.position.y, -50f);
                         }
 
-                        var role = GetPlayerRole(PlayerControl.LocalPlayer);
+                        var role = GetPlayerRole(LocalPlayer());
                         if (role?.ExtraButtons.Count > 0)
                         {
                             if (lockImg[1] == null)
@@ -218,13 +218,13 @@ namespace TownOfSushi.Roles
                             obj?.SetActive(false);
                         }
 
-                        if (PlayerControl.LocalPlayer == hackPlayer)
+                        if (LocalPlayer()== hackPlayer)
                         {
                             HUDManager().ReportButton.enabled = true;
                         }
 
                         tickDictionary.Remove(hackPlayer.PlayerId);
-                        PlayerControl.LocalPlayer.myTasks.Remove(hackText);
+                        LocalPlayer().myTasks.Remove(hackText);
                         yield break;
                     }
 
@@ -234,19 +234,19 @@ namespace TownOfSushi.Roles
 
             public static IEnumerator Mimic(Glitch __instance, PlayerControl mimicPlayer)
             {
-                StartRPC(CustomRPC.SetMimic, PlayerControl.LocalPlayer.PlayerId, mimicPlayer.PlayerId);
+                StartRPC(CustomRPC.SetMimic, LocalPlayer().PlayerId, mimicPlayer.PlayerId);
 
-                var abilityUsed = AbilityUsed(PlayerControl.LocalPlayer);
+                var abilityUsed = AbilityUsed(LocalPlayer());
                 if (!abilityUsed) yield break;
 
                 Morph(__instance.Player, mimicPlayer);
 
                 var mimicActivation = DateTime.UtcNow;
                 var mimicText = new GameObject("_Player").AddComponent<ImportantTextTask>();
-                mimicText.transform.SetParent(PlayerControl.LocalPlayer.transform, false);
+                mimicText.transform.SetParent(LocalPlayer().transform, false);
                 mimicText.Text =
                     $"{__instance.ColorString}Mimicking {mimicPlayer.Data.PlayerName} ({CustomGameOptions.MimicDuration}s)</color>";
-                PlayerControl.LocalPlayer.myTasks.Insert(0, mimicText);
+                LocalPlayer().myTasks.Insert(0, mimicText);
 
                 while (true)
                 {
@@ -263,14 +263,14 @@ namespace TownOfSushi.Roles
                         IsDead() ||
                         AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Ended)
                     {
-                        PlayerControl.LocalPlayer.myTasks.Remove(mimicText);
+                        LocalPlayer().myTasks.Remove(mimicText);
                         //System.Console.WriteLine("Unsetting mimic");
                         __instance.LastMimic = DateTime.UtcNow;
                         __instance.IsUsingMimic = false;
                         __instance.MimicTarget = null;
                         Unmorph(__instance.Player);
 
-                        StartRPC(CustomRPC.RpcResetAnim, PlayerControl.LocalPlayer.PlayerId, mimicPlayer.PlayerId);
+                        StartRPC(CustomRPC.RpcResetAnim, LocalPlayer().PlayerId, mimicPlayer.PlayerId);
                         yield break;
                     }
 
@@ -508,9 +508,9 @@ namespace TownOfSushi.Roles
         [HarmonyPriority(Priority.First)]
         public static bool Prefix(ReportButton __instance)
         {
-            if (PlayerControl.LocalPlayer.IsHacked())
+            if (LocalPlayer().IsHacked())
             {
-                Coroutines.Start(Glitch.AbilityCoroutine.Hack(PlayerControl.LocalPlayer));
+                Coroutines.Start(Glitch.AbilityCoroutine.Hack(LocalPlayer()));
                 return false;
             }
             return true;
@@ -537,9 +537,9 @@ namespace TownOfSushi.Roles
     {
         public static bool Prefix(KillButton __instance)
         {
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Glitch) && __instance.isActiveAndEnabled &&
-                !__instance.isCoolingDown && PlayerControl.LocalPlayer.CanMove && !PlayerControl.LocalPlayer.inVent)
-                return GetRole<Glitch>(PlayerControl.LocalPlayer).UseAbility(__instance);
+            if (LocalPlayer().Is(RoleEnum.Glitch) && __instance.isActiveAndEnabled &&
+                !__instance.isCoolingDown && LocalPlayer().CanMove && !LocalPlayer().inVent)
+                return GetRole<Glitch>(LocalPlayer()).UseAbility(__instance);
 
             return true;
         }
@@ -550,7 +550,7 @@ namespace TownOfSushi.Roles
     {
         private static bool Prefix(MapBehaviour __instance)
         {
-            return !PlayerControl.LocalPlayer.Is(RoleEnum.Glitch);
+            return !LocalPlayer().Is(RoleEnum.Glitch);
         }
     }
 
@@ -562,8 +562,8 @@ namespace TownOfSushi.Roles
             var glitch = AllRoles.FirstOrDefault(x => x.RoleType == RoleEnum.Glitch);
             if (AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started)
                 if (glitch != null)
-                    if (PlayerControl.LocalPlayer.Is(RoleEnum.Glitch))
-                        GetRole<Glitch>(PlayerControl.LocalPlayer).Update(__instance);
+                    if (LocalPlayer().Is(RoleEnum.Glitch))
+                        GetRole<Glitch>(LocalPlayer()).Update(__instance);
         }
     }
 }

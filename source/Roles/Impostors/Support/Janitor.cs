@@ -12,7 +12,7 @@ namespace TownOfSushi.Roles
             TaskText = () => "Clean bodies";
             RoleInfo = "The Janitor is an Impostor that can clean up bodies. Both their Kill and Clean ability have a shared cooldown, meaning they have to choose which one they want to use.";
             LoreText = "A stealthy cleaner, you specialize in erasing the signs of death. As the Janitor, you can clean up bodies, preventing Crewmates from discovering the remains and uncovering the truth. Your ability to hide the evidence of your kills allows you to maintain secrecy and further sow confusion, making it harder for the crew to piece together the mystery of who’s behind the attacks.";
-            Color = ColorManager.Impostor;
+            Color = ColorManager.ImpostorRed;
             RoleType = RoleEnum.Janitor;
             Faction = Faction.Impostors;
             AddToRoleHistory(RoleType);
@@ -39,7 +39,7 @@ namespace TownOfSushi.Roles
         public static IEnumerator CleanCoroutine(DeadBody body, Janitor role)
         {
             JanitorKillButtonTarget.SetTarget(HUDManager().KillButton, null, role);
-            role.Player.SetKillTimer(VanillaOptions().currentNormalGameOptions.KillCooldown);
+            role.Player.SetKillTimer(OptionsManager().currentNormalGameOptions.KillCooldown);
             SpriteRenderer renderer = null;
             foreach (var body2 in body.bodyRenderers) renderer = body2;
             var backColor = renderer.material.GetColor(BackColor);
@@ -62,7 +62,7 @@ namespace TownOfSushi.Roles
     {
         public static bool Prefix(KillButton __instance)
         {
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Janitor)) return true;
+            if (!LocalPlayer().Is(RoleEnum.Janitor)) return true;
             return __instance == HUDManager().KillButton;
         }
 
@@ -95,11 +95,11 @@ namespace TownOfSushi.Roles
     {
         public static bool Prefix(KillButton __instance)
         {
-            var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Janitor);
+            var flag = LocalPlayer().Is(RoleEnum.Janitor);
             if (!flag) return true;
-            if (!PlayerControl.LocalPlayer.CanMove) return false;
+            if (!LocalPlayer().CanMove) return false;
             if (IsDead()) return false;
-            var role = GetRole<Janitor>(PlayerControl.LocalPlayer);
+            var role = GetRole<Janitor>(LocalPlayer());
 
             if (__instance == role.CleanButton)
             {
@@ -108,17 +108,17 @@ namespace TownOfSushi.Roles
                 if (!__instance.enabled) return false;
                 var maxDistance = KillDistance();
                 if (Vector2.Distance(role.CurrentTarget.TruePosition,
-                    PlayerControl.LocalPlayer.GetTruePosition()) > maxDistance) return false;
+                    LocalPlayer().GetTruePosition()) > maxDistance) return false;
                 var playerId = role.CurrentTarget.ParentId;
                 var player = PlayerById(playerId);
-                var abilityUsed = AbilityUsed(PlayerControl.LocalPlayer);
+                var abilityUsed = AbilityUsed(LocalPlayer());
                 if (!abilityUsed) return false;
                 if (player.IsInfected() || role.Player.IsInfected())
                 {
                     foreach (var pb in GetRoles(RoleEnum.Plaguebearer)) ((Plaguebearer)pb).RpcSpreadInfection(player, role.Player);
                 }
 
-                StartRPC(CustomRPC.JanitorClean, PlayerControl.LocalPlayer.PlayerId, playerId);
+                StartRPC(CustomRPC.JanitorClean, LocalPlayer().PlayerId, playerId);
                 Coroutines.Start(JanitorCoroutine.CleanCoroutine(role.CurrentTarget, role));
                 return false;
             }
@@ -133,11 +133,11 @@ namespace TownOfSushi.Roles
         public static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Janitor)) return;
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(RoleEnum.Janitor)) return;
 
-            var role = GetRole<Janitor>(PlayerControl.LocalPlayer);
+            var role = GetRole<Janitor>(LocalPlayer());
             if (role.CleanButton == null)
             {
                 role.CleanButton = Object.Instantiate(__instance.KillButton, __instance.KillButton.transform.parent);
@@ -151,13 +151,13 @@ namespace TownOfSushi.Roles
             role.CleanButton.graphic.sprite = TownOfSushi.JanitorClean;
 
 
-            var data = PlayerControl.LocalPlayer.Data;
+            var data = LocalPlayer().Data;
             var isDead = data.IsDead;
-            var truePosition = PlayerControl.LocalPlayer.GetTruePosition();
+            var truePosition = LocalPlayer().GetTruePosition();
             var maxDistance = KillDistance();
-            var flag = (VanillaOptions().currentNormalGameOptions.GhostsDoTasks || !data.IsDead) &&
+            var flag = (OptionsManager().currentNormalGameOptions.GhostsDoTasks || !data.IsDead) &&
                        (!AmongUsClient.Instance || !AmongUsClient.Instance.IsGameOver) &&
-                       PlayerControl.LocalPlayer.CanMove;
+                       LocalPlayer().CanMove;
             var allocs = Physics2D.OverlapCircleAll(truePosition, maxDistance,
                 LayerMask.GetMask(new[] { "Players", "Ghost" }));
             var killButton = role.CleanButton;
@@ -178,7 +178,7 @@ namespace TownOfSushi.Roles
             }
 
             JanitorKillButtonTarget.SetTarget(killButton, closestBody, role);
-            role.CleanButton.SetCoolDown(PlayerControl.LocalPlayer.killTimer, VanillaOptions().currentNormalGameOptions.KillCooldown);
+            role.CleanButton.SetCoolDown(LocalPlayer().killTimer, OptionsManager().currentNormalGameOptions.KillCooldown);
         }
     }
 }

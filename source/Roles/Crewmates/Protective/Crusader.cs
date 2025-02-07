@@ -37,12 +37,12 @@ namespace TownOfSushi.Roles
         public static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Crusader)) return;
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(RoleEnum.Crusader)) return;
             var fortifyButton = __instance.KillButton;
 
-            var role = GetRole<Crusader>(PlayerControl.LocalPlayer);
+            var role = GetRole<Crusader>(LocalPlayer());
 
             fortifyButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
                     && !Meeting() && !IsDead()
@@ -77,22 +77,22 @@ namespace TownOfSushi.Roles
         public static bool Prefix(KillButton __instance)
         {
             if (__instance != HUDManager().KillButton) return true;
-            var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Crusader);
+            var flag = LocalPlayer().Is(RoleEnum.Crusader);
             if (!flag) return true;
-            var role = GetRole<Crusader>(PlayerControl.LocalPlayer);
-            if (!PlayerControl.LocalPlayer.CanMove || role.ClosestPlayer == null) return false;
+            var role = GetRole<Crusader>(LocalPlayer());
+            if (!LocalPlayer().CanMove || role.ClosestPlayer == null) return false;
             if (role.StartTimer() != 0f) return false;
             if (!__instance.enabled) return false;
             var maxDistance = KillDistance();
             if (Vector2.Distance(role.ClosestPlayer.GetTruePosition(),
-                PlayerControl.LocalPlayer.GetTruePosition()) > maxDistance) return false;
+                LocalPlayer().GetTruePosition()) > maxDistance) return false;
             if (role.ClosestPlayer == null) return false;
 
-            var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer);
+            var interact = Interact(LocalPlayer(), role.ClosestPlayer);
             if (interact[3] == true)
             {
                 role.Fortified = role.ClosestPlayer;
-                StartRPC(CustomRPC.Fortify, (byte)0, PlayerControl.LocalPlayer.PlayerId, role.Fortified.PlayerId);
+                StartRPC(CustomRPC.Fortify, (byte)0, LocalPlayer().PlayerId, role.Fortified.PlayerId);
             }
             return false;
         }

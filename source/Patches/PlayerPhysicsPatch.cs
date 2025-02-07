@@ -15,14 +15,14 @@
                     var venerer = (Venerer)role;
                     if (venerer.Enabled)
                     {
-                        if (venerer.KillsAtStartAbility >= 2 && venerer.Player == PlayerControl.LocalPlayer) __instance.body.velocity *= CustomGameOptions.SprintSpeed;
+                        if (venerer.KillsAtStartAbility >= 2 && venerer.Player == LocalPlayer()) __instance.body.velocity *= CustomGameOptions.SprintSpeed;
                         else if (venerer.KillsAtStartAbility >= 3) __instance.body.velocity *= CustomGameOptions.FreezeSpeed;
                     }
                 }
                 foreach (var modifier in GetModifiers(ModifierEnum.Frosty))
                 {
                     var frosty = (Frosty)modifier;
-                    if (frosty.IsChilled && frosty.Chilled == PlayerControl.LocalPlayer)
+                    if (frosty.IsChilled && frosty.Chilled == LocalPlayer())
                     {
                         var utcNow = DateTime.UtcNow;
                         var timeSpan = utcNow - frosty.LastChilled;
@@ -86,7 +86,7 @@
         [HarmonyPostfix]
         public static void Postfix(HudManager __instance)
         {
-            foreach (var player in PlayerControl.AllPlayerControls.ToArray())
+            foreach (var player in AllPlayers())
             {
                 CircleCollider2D collider = player.Collider.Caster<CircleCollider2D>();
                 if (player.Data != null && !(player.Data.IsDead || player.Data.Disconnected))
@@ -111,7 +111,7 @@
                 }
             }
 
-            var playerBindings = PlayerControl.AllPlayerControls.ToArray().ToDictionary(player => player.PlayerId);
+            var playerBindings = AllPlayers().ToDictionary(player => player.PlayerId);
             var bodies = Object.FindObjectsOfType<DeadBody>();
             foreach (var body in bodies)
             {
@@ -134,7 +134,7 @@
                         && !TaskPanel()
                         && !__instance.shapeshifting
                         && (!HudManager.InstanceExists
-                        || !HUDManager().Chat.IsOpenOrOpening
+                        || !Chat().IsOpenOrOpening
                         && !HUDManager().KillOverlay.IsOpen
                         && !HUDManager().GameMenu.IsOpen)
                         && (!MapInstance() || !MapInstance().IsOpenStopped)

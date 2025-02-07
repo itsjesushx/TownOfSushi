@@ -94,17 +94,17 @@
     {
         public static bool Prefix(KillButton __instance)
         {
-            var flag = PlayerControl.LocalPlayer.Is(RoleEnum.SerialKiller);
+            var flag = LocalPlayer().Is(RoleEnum.SerialKiller);
             if (!flag) return true;
             if (IsDead()) return false;
-            if (!PlayerControl.LocalPlayer.CanMove) return false;
-            var role = GetRole<SerialKiller>(PlayerControl.LocalPlayer);
+            if (!LocalPlayer().CanMove) return false;
+            var role = GetRole<SerialKiller>(LocalPlayer());
             if (role.Player.inVent) return false;
 
             if (__instance == role.StabButton)
             {
                 if (role.StabTimer() != 0) return false;
-                var abilityUsed = AbilityUsed(PlayerControl.LocalPlayer);
+                var abilityUsed = AbilityUsed(LocalPlayer());
                 if (!abilityUsed) return false;
                 if (!__instance.isActiveAndEnabled || __instance.isCoolingDown) return false;
 
@@ -118,12 +118,12 @@
             if (__instance != HUDManager().KillButton) return true;
             if (!__instance.isActiveAndEnabled || __instance.isCoolingDown) return false;
             if (role.ClosestPlayer == null) return false;
-            var distBetweenPlayers = GetDistBetweenPlayers(PlayerControl.LocalPlayer, role.ClosestPlayer);
+            var distBetweenPlayers = GetDistBetweenPlayers(LocalPlayer(), role.ClosestPlayer);
             var flag3 = distBetweenPlayers <
                         KillDistance();
             if (!flag3) return false;
 
-            var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer, true);
+            var interact = Interact(LocalPlayer(), role.ClosestPlayer, true);
             if (interact[3] == true) return false;
             else if (interact[0] == true)
             {
@@ -148,10 +148,10 @@
         public static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.SerialKiller)) return;
-            var role = GetRole<SerialKiller>(PlayerControl.LocalPlayer);
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(RoleEnum.SerialKiller)) return;
+            var role = GetRole<SerialKiller>(LocalPlayer());
 
             __instance.KillButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
                     && !Meeting() && !IsDead()
@@ -188,7 +188,7 @@
             {
                 role.StabButton.SetCoolDown(role.StabTimer(), CustomGameOptions.StabCd);
 
-                if (role.StabTimer() > 0f || !PlayerControl.LocalPlayer.moveable)
+                if (role.StabTimer() > 0f || !LocalPlayer().moveable)
                 {
                     role.StabButton.graphic.color = Palette.DisabledClear;
                     role.StabButton.graphic.material.SetFloat("_Desat", 1f);

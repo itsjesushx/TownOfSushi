@@ -13,7 +13,7 @@ namespace TownOfSushi.Patches
 
             foreach (var player in PlayerControl.AllPlayerControls)
             {
-                if (player == PlayerControl.LocalPlayer) continue;
+                if (player == LocalPlayer()) continue;
                 if (!player.Data.IsDead) continue;
                 bool show = TownOfSushi.DeadSeeGhosts.Value;
                 var bodyforms = player.gameObject.transform.GetChild(1).gameObject;

@@ -7,7 +7,7 @@ namespace TownOfSushi.Roles.Modifiers
         {
             Name = "Saboteur";
             TaskText = () => "You have reduced sabotage cooldowns";
-            Color = ColorManager.Impostor;
+            Color = ColorManager.ImpostorRed;
             ModifierType = ModifierEnum.Saboteur;
         }
     }
@@ -17,9 +17,9 @@ namespace TownOfSushi.Roles.Modifiers
         public static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(ModifierEnum.Saboteur)) return;
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(ModifierEnum.Saboteur)) return;
             var system = Ship().Systems[SystemTypes.Sabotage].Cast<SabotageSystemType>();
             if (system.AnyActive) system.Timer = 30f;
             else if (system.Timer > 30f - CustomGameOptions.ReducedSaboCd) system.Timer = 30f - CustomGameOptions.ReducedSaboCd;
@@ -32,8 +32,8 @@ namespace TownOfSushi.Roles.Modifiers
         public static void Prefix(SabotageSystemType __instance, ref PlayerControl player)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
             if (!player.Is(ModifierEnum.Saboteur)) return;
 
             if (__instance.Timer <= CustomGameOptions.ReducedSaboCd) __instance.Timer = 0f;
@@ -46,8 +46,8 @@ namespace TownOfSushi.Roles.Modifiers
         public static void Prefix(SabotageSystemType __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
             if (__instance.AnyActive) return;
             if (__instance.initialCooldown) return;
 
@@ -60,8 +60,8 @@ namespace TownOfSushi.Roles.Modifiers
         public static void Postfix(SabotageSystemType __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
             if (__instance.AnyActive) return;
             if (__instance.initialCooldown) return;
 

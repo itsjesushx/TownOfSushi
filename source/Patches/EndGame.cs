@@ -70,7 +70,7 @@ namespace TownOfSushi.Patches
                 }
                 if (playerControl.IsSpelled())
                 {
-                    SummaryText += $" | {ColorString(ColorManager.Impostor, $"[†]")}";
+                    SummaryText += $" | {ColorString(ColorManager.ImpostorRed, $"[†]")}";
                 }
                 if (playerControl.Is(RoleEnum.Vulture) && !VultureWin)
                 {
@@ -211,20 +211,20 @@ namespace TownOfSushi.Patches
                 {
                     yield break;
                 }
-                var ImpostorsAlive = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(Faction.Impostors) && !x.Data.IsDead && !x.Data.Disconnected && !AssassinExileControllerPatch.AssassinatedPlayers.Contains(x)).ToList();
-                var AliveKillers = PlayerControl.AllPlayerControls.ToArray().Where(x => x.IsKillingRole() && !x.Data.IsDead && !x.Data.Disconnected && !AssassinExileControllerPatch.AssassinatedPlayers.Contains(x)).ToList();
-                var PassiveAlive = PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected && !AssassinExileControllerPatch.AssassinatedPlayers.Contains(x)).ToList();
-                var CrewKillerAlive = PlayerControl.AllPlayerControls.ToArray().Where(x => x.IsCrewKiller() && !x.Data.IsDead && !x.Data.Disconnected && !AssassinExileControllerPatch.AssassinatedPlayers.Contains(x)).ToList();
-                var GlitchAlive = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(RoleEnum.Glitch) && !x.Data.IsDead && !x.Data.Disconnected && !AssassinExileControllerPatch.AssassinatedPlayers.Contains(x)).ToList();
-                var HitmanAlive = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(RoleEnum.Hitman) && !x.Data.IsDead && !x.Data.Disconnected && !AssassinExileControllerPatch.AssassinatedPlayers.Contains(x)).ToList();
-                var AgentAlive = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(RoleEnum.Agent) && !x.Data.IsDead && !x.Data.Disconnected && !AssassinExileControllerPatch.AssassinatedPlayers.Contains(x)).ToList();
-                var ArsoAlive = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(RoleEnum.Arsonist) && !x.Data.IsDead && !x.Data.Disconnected && !AssassinExileControllerPatch.AssassinatedPlayers.Contains(x)).ToList();
-                var PlaguebearerAlive = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(RoleEnum.Plaguebearer) && !x.Data.IsDead && !x.Data.Disconnected && !AssassinExileControllerPatch.AssassinatedPlayers.Contains(x)).ToList();
-                var JuggernautAlive = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(RoleEnum.Juggernaut) && !x.Data.IsDead && !x.Data.Disconnected && !AssassinExileControllerPatch.AssassinatedPlayers.Contains(x)).ToList();
-                var PestilenceAlive = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(RoleEnum.Pestilence) && !x.Data.IsDead && !x.Data.Disconnected && !AssassinExileControllerPatch.AssassinatedPlayers.Contains(x)).ToList();
-                var WerewolfAlive = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(RoleEnum.Werewolf) && !x.Data.IsDead && !x.Data.Disconnected && !AssassinExileControllerPatch.AssassinatedPlayers.Contains(x)).ToList();
-                var VampiresAlive = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(RoleEnum.Vampire) && !x.Data.IsDead && !x.Data.Disconnected && !AssassinExileControllerPatch.AssassinatedPlayers.Contains(x)).ToList();
-                var AliveSerialKiller = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(RoleEnum.SerialKiller) && !x.Data.IsDead && !x.Data.Disconnected && !AssassinExileControllerPatch.AssassinatedPlayers.Contains(x)).ToList();
+                var ImpostorsAlive = AllPlayers().Where(x => x.Is(Faction.Impostors) && !x.Data.IsDead && !x.Data.Disconnected && !AssassinExileControllerPatch.AssassinatedPlayers.Contains(x)).ToList();
+                var AliveKillers = AllPlayers().Where(x => x.IsKillingRole() && !x.Data.IsDead && !x.Data.Disconnected && !AssassinExileControllerPatch.AssassinatedPlayers.Contains(x)).ToList();
+                var PassiveAlive = AllPlayers().Where(x => !x.Data.IsDead && !x.Data.Disconnected && !AssassinExileControllerPatch.AssassinatedPlayers.Contains(x)).ToList();
+                var CrewKillerAlive = AllPlayers().Where(x => x.IsCrewKiller() && !x.Data.IsDead && !x.Data.Disconnected && !AssassinExileControllerPatch.AssassinatedPlayers.Contains(x)).ToList();
+                var GlitchAlive = AllPlayers().Where(x => x.Is(RoleEnum.Glitch) && !x.Data.IsDead && !x.Data.Disconnected && !AssassinExileControllerPatch.AssassinatedPlayers.Contains(x)).ToList();
+                var HitmanAlive = AllPlayers().Where(x => x.Is(RoleEnum.Hitman) && !x.Data.IsDead && !x.Data.Disconnected && !AssassinExileControllerPatch.AssassinatedPlayers.Contains(x)).ToList();
+                var AgentAlive = AllPlayers().Where(x => x.Is(RoleEnum.Agent) && !x.Data.IsDead && !x.Data.Disconnected && !AssassinExileControllerPatch.AssassinatedPlayers.Contains(x)).ToList();
+                var ArsoAlive = AllPlayers().Where(x => x.Is(RoleEnum.Arsonist) && !x.Data.IsDead && !x.Data.Disconnected && !AssassinExileControllerPatch.AssassinatedPlayers.Contains(x)).ToList();
+                var PlaguebearerAlive = AllPlayers().Where(x => x.Is(RoleEnum.Plaguebearer) && !x.Data.IsDead && !x.Data.Disconnected && !AssassinExileControllerPatch.AssassinatedPlayers.Contains(x)).ToList();
+                var JuggernautAlive = AllPlayers().Where(x => x.Is(RoleEnum.Juggernaut) && !x.Data.IsDead && !x.Data.Disconnected && !AssassinExileControllerPatch.AssassinatedPlayers.Contains(x)).ToList();
+                var PestilenceAlive = AllPlayers().Where(x => x.Is(RoleEnum.Pestilence) && !x.Data.IsDead && !x.Data.Disconnected && !AssassinExileControllerPatch.AssassinatedPlayers.Contains(x)).ToList();
+                var WerewolfAlive = AllPlayers().Where(x => x.Is(RoleEnum.Werewolf) && !x.Data.IsDead && !x.Data.Disconnected && !AssassinExileControllerPatch.AssassinatedPlayers.Contains(x)).ToList();
+                var VampiresAlive = AllPlayers().Where(x => x.Is(RoleEnum.Vampire) && !x.Data.IsDead && !x.Data.Disconnected && !AssassinExileControllerPatch.AssassinatedPlayers.Contains(x)).ToList();
+                var AliveSerialKiller = AllPlayers().Where(x => x.Is(RoleEnum.SerialKiller) && !x.Data.IsDead && !x.Data.Disconnected && !AssassinExileControllerPatch.AssassinatedPlayers.Contains(x)).ToList();
 
                 if (ImpostorsAlive.Count >= PassiveAlive.Count - ImpostorsAlive.Count &&
                     PlaguebearerAlive.Count == 0 &&

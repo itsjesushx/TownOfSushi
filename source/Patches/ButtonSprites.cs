@@ -20,111 +20,111 @@
             if (!Kill) Kill = __instance.KillButton.graphic.sprite;
 
             var flag = false;
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Detective))
+            if (LocalPlayer().Is(RoleEnum.Detective))
             {
                 __instance.KillButton.graphic.sprite = TownOfSushi.SeerSprite;
                 flag = true;
             }
-            else if (PlayerControl.LocalPlayer.Is(RoleEnum.Seer))
+            else if (LocalPlayer().Is(RoleEnum.Seer))
             {
                 __instance.KillButton.graphic.sprite = TownOfSushi.SeerSprite;
                 flag = true;
             }
-            else if (PlayerControl.LocalPlayer.Is(RoleEnum.Medic))
+            else if (LocalPlayer().Is(RoleEnum.Medic))
             {
                 __instance.KillButton.graphic.sprite = TownOfSushi.MedicSprite;
                 flag = true;
             }
-            else if (PlayerControl.LocalPlayer.Is(RoleEnum.Arsonist))
+            else if (LocalPlayer().Is(RoleEnum.Arsonist))
             {
                 __instance.KillButton.graphic.sprite = TownOfSushi.DouseSprite;
                 flag = true;
             }
-            else if (PlayerControl.LocalPlayer.Is(RoleEnum.Veteran))
+            else if (LocalPlayer().Is(RoleEnum.Veteran))
             {
                 __instance.KillButton.graphic.sprite = TownOfSushi.AlertSprite;
                 flag = true;
             }
-            else if (PlayerControl.LocalPlayer.Is(RoleEnum.Tracker))
+            else if (LocalPlayer().Is(RoleEnum.Tracker))
             {
                 __instance.KillButton.graphic.sprite = TownOfSushi.TrackSprite;
                 flag = true;
             }
-            else if (PlayerControl.LocalPlayer.Is(RoleEnum.Medium))
+            else if (LocalPlayer().Is(RoleEnum.Medium))
             {
                 __instance.KillButton.graphic.sprite = TownOfSushi.MediateSprite;
                 flag = true;
             }
-            else if (PlayerControl.LocalPlayer.Is(RoleEnum.Vulture))
+            else if (LocalPlayer().Is(RoleEnum.Vulture))
             {
                 __instance.KillButton.graphic.sprite = TownOfSushi.VultureEat;
                 flag = true;
             }
-            else if (PlayerControl.LocalPlayer.Is(RoleEnum.Romantic))
+            else if (LocalPlayer().Is(RoleEnum.Romantic))
             {
                 __instance.KillButton.graphic.sprite = TownOfSushi.RomanticPick;
                 __instance.KillButton.buttonLabelText.gameObject.SetActive(true);
                 __instance.KillButton.buttonLabelText.text = "PICK LOVER";
                 flag = true;
             }
-            else if (PlayerControl.LocalPlayer.Is(RoleEnum.Crusader))
+            else if (LocalPlayer().Is(RoleEnum.Crusader))
             {
                 __instance.KillButton.graphic.sprite = TownOfSushi.FortifySprite;
                 __instance.KillButton.buttonLabelText.gameObject.SetActive(true);
                 __instance.KillButton.buttonLabelText.text = "FORTIFY";
                 flag = true;
             }
-            else if (PlayerControl.LocalPlayer.Is(RoleEnum.GuardianAngel))
+            else if (LocalPlayer().Is(RoleEnum.GuardianAngel))
             {
                 __instance.KillButton.graphic.sprite = TownOfSushi.ProtectSprite;
                 flag = true;
             }
-            else if (PlayerControl.LocalPlayer.Is(RoleEnum.Plaguebearer))
+            else if (LocalPlayer().Is(RoleEnum.Plaguebearer))
             {
                 __instance.KillButton.graphic.sprite = TownOfSushi.InfectSprite;
                 flag = true;
             }
-            else if (PlayerControl.LocalPlayer.Is(RoleEnum.Engineer))
+            else if (LocalPlayer().Is(RoleEnum.Engineer))
             {
                 __instance.KillButton.graphic.sprite = TownOfSushi.EngineerFix;
                 flag = true;
             }
-            else if (PlayerControl.LocalPlayer.Is(RoleEnum.Lookout))
+            else if (LocalPlayer().Is(RoleEnum.Lookout))
             {
                 __instance.KillButton.graphic.sprite = TownOfSushi.WatchSprite;
                 flag = true;
             }
-            else if (PlayerControl.LocalPlayer.Is(RoleEnum.Trapper))
+            else if (LocalPlayer().Is(RoleEnum.Trapper))
             {
                 __instance.KillButton.graphic.sprite = TownOfSushi.TrapSprite;
                 flag = true;
             }
-            else if (PlayerControl.LocalPlayer.Is(RoleEnum.Mystic))
+            else if (LocalPlayer().Is(RoleEnum.Mystic))
             {
                 __instance.KillButton.graphic.sprite = TownOfSushi.ExamineSprite;
                 flag = true;
             }
-            else if (PlayerControl.LocalPlayer.Is(RoleEnum.Investigator))
+            else if (LocalPlayer().Is(RoleEnum.Investigator))
             {
                 __instance.KillButton.graphic.sprite = TownOfSushi.InspectSprite;
                 flag = true;
             }
-            else if (PlayerControl.LocalPlayer.Is(RoleEnum.Doomsayer))
+            else if (LocalPlayer().Is(RoleEnum.Doomsayer))
             {
                 __instance.KillButton.graphic.sprite = TownOfSushi.ObserveSprite;
                 flag = true;
             }
-            else if (PlayerControl.LocalPlayer.Is(RoleEnum.Jailor))
+            else if (LocalPlayer().Is(RoleEnum.Jailor))
             {
                 __instance.KillButton.graphic.sprite = TownOfSushi.JailSprite;
                 flag = true;
             }
-            else if (PlayerControl.LocalPlayer.Is(RoleEnum.Vampire))
+            else if (LocalPlayer().Is(RoleEnum.Vampire))
             {
                 __instance.KillButton.graphic.sprite = TownOfSushi.BiteSprite;
                 flag = true;
             }
-            else if (PlayerControl.LocalPlayer.Is(RoleEnum.Oracle))
+            else if (LocalPlayer().Is(RoleEnum.Oracle))
             {
                 __instance.KillButton.graphic.sprite = TownOfSushi.ConfessSprite;
                 flag = true;
@@ -134,21 +134,21 @@
                 __instance.KillButton.graphic.sprite = Kill;
                 __instance.KillButton.buttonLabelText.gameObject.SetActive(true);
                 __instance.KillButton.buttonLabelText.text = "KILL";
-                flag = PlayerControl.LocalPlayer.Is(RoleEnum.Pestilence) || PlayerControl.LocalPlayer.Is(RoleEnum.Vigilante) ||
-                    PlayerControl.LocalPlayer.Is(RoleEnum.SerialKiller) || PlayerControl.LocalPlayer.Is(RoleEnum.Juggernaut);
+                flag = LocalPlayer().Is(RoleEnum.Pestilence) || LocalPlayer().Is(RoleEnum.Vigilante) ||
+                    LocalPlayer().Is(RoleEnum.SerialKiller) || LocalPlayer().Is(RoleEnum.Juggernaut);
             }
-            if (!PlayerControl.LocalPlayer.Is(Faction.Impostors) &&
+            if (!LocalPlayer().Is(Faction.Impostors) &&
                 !IsHideNSeek())
             {
                 __instance.KillButton.transform.localPosition = new Vector3(0f, 1f, 0f);
             }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Engineer) || PlayerControl.LocalPlayer.Is(RoleEnum.Glitch)
-                 || PlayerControl.LocalPlayer.Is(RoleEnum.Pestilence)|| PlayerControl.LocalPlayer.Is(RoleEnum.Hitman) || PlayerControl.LocalPlayer.Is(RoleEnum.Vulture) ||PlayerControl.LocalPlayer.Is(RoleEnum.Werewolf) || PlayerControl.LocalPlayer.Is(RoleEnum.Juggernaut)
-                 || PlayerControl.LocalPlayer.Is(RoleEnum.Vampire))
+            if (LocalPlayer().Is(RoleEnum.Engineer) || LocalPlayer().Is(RoleEnum.Glitch)
+                 || LocalPlayer().Is(RoleEnum.Pestilence)|| LocalPlayer().Is(RoleEnum.Hitman) || LocalPlayer().Is(RoleEnum.Vulture) ||LocalPlayer().Is(RoleEnum.Werewolf) || LocalPlayer().Is(RoleEnum.Juggernaut)
+                 || LocalPlayer().Is(RoleEnum.Vampire))
             {
                 __instance.ImpostorVentButton.transform.localPosition = new Vector3(-2f, 0f, 0f);
             }
-            else if (PlayerControl.LocalPlayer.Is(RoleEnum.SerialKiller)  || PlayerControl.LocalPlayer.Is(RoleEnum.Poisoner) || PlayerControl.LocalPlayer.Is(RoleEnum.Arsonist))
+            else if (LocalPlayer().Is(RoleEnum.SerialKiller)  || LocalPlayer().Is(RoleEnum.Poisoner) || LocalPlayer().Is(RoleEnum.Arsonist))
             {
                 __instance.ImpostorVentButton.transform.localPosition = new Vector3(-1f, 1f, 0f);
             }
@@ -158,22 +158,22 @@
             if (keyInt | controller && __instance.KillButton != null && flag && !IsDead())
                 __instance.KillButton.DoClick();
             
-            var role = GetPlayerRole(PlayerControl.LocalPlayer);
+            var role = GetPlayerRole(LocalPlayer());
             bool AbilityKey = Rewired.ReInput.players.GetPlayer(0).GetButtonDown("ToS imp/nk");
             if (role?.ExtraButtons != null && AbilityKey && !IsDead())
                 role?.ExtraButtons[0]?.DoClick();
 
-            if (GetAbility<ButtonBarry>(PlayerControl.LocalPlayer)?.ButtonUsed == false &&
+            if (GetAbility<ButtonBarry>(LocalPlayer())?.ButtonUsed == false &&
                 Rewired.ReInput.players.GetPlayer(0).GetButtonDown("ToS bb/disperse/mimic") &&
                 !IsDead())
             {
-                GetAbility<ButtonBarry>(PlayerControl.LocalPlayer).ButtonButton.DoClick();
+                GetAbility<ButtonBarry>(LocalPlayer()).ButtonButton.DoClick();
             }
-            else if (GetModifier<Disperser>(PlayerControl.LocalPlayer)?.MaxUses > 0 &&
+            else if (GetModifier<Disperser>(LocalPlayer())?.MaxUses > 0 &&
                      Rewired.ReInput.players.GetPlayer(0).GetButtonDown("ToS bb/disperse/mimic/hitman") &&
                      !IsDead())
             {
-                GetModifier<Disperser>(PlayerControl.LocalPlayer).DisperseButton.DoClick();
+                GetModifier<Disperser>(LocalPlayer()).DisperseButton.DoClick();
             }
         }
 
@@ -189,7 +189,7 @@
                 }
                 else if (IsHideNSeek())
                 {
-                    HUDManager().AbilityButton.gameObject.SetActive(!PlayerControl.LocalPlayer.Data.IsImpostor());
+                    HUDManager().AbilityButton.gameObject.SetActive(!LocalPlayer().Data.IsImpostor());
                     return;
                 }
                 HUDManager().AbilityButton.gameObject.SetActive(!Meeting());

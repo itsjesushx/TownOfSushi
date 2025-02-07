@@ -67,7 +67,7 @@ namespace TownOfSushi.Roles
         {
             if (HUDManager()?.Chat != null)
             {
-                foreach (var bubble in HUDManager().Chat.chatBubblePool.activeChildren)
+                foreach (var bubble in Chat().chatBubblePool.activeChildren)
                 {
                     if (bubble.Cast<ChatBubble>().NameText != null &&
                         Player.Data.PlayerName == bubble.Cast<ChatBubble>().NameText.text)
@@ -132,19 +132,19 @@ namespace TownOfSushi.Roles
             public static Dictionary<byte, DateTime> tickDictionary = new();
             public static IEnumerator Morph(Hitman __instance, PlayerControl morphPlayer)
             {
-                StartRPC(CustomRPC.SetHitmanMorph, PlayerControl.LocalPlayer.PlayerId, morphPlayer.PlayerId);
+                StartRPC(CustomRPC.SetHitmanMorph, LocalPlayer().PlayerId, morphPlayer.PlayerId);
 
-                var abilityUsed = AbilityUsed(PlayerControl.LocalPlayer);
+                var abilityUsed = AbilityUsed(LocalPlayer());
                 if (!abilityUsed) yield break;
 
                 Utils.Morph(__instance.Player, morphPlayer);
 
                 var mimicActivation = DateTime.UtcNow;
                 var mimicText = new GameObject("_Player").AddComponent<ImportantTextTask>();
-                mimicText.transform.SetParent(PlayerControl.LocalPlayer.transform, false);
+                mimicText.transform.SetParent(LocalPlayer().transform, false);
                 mimicText.Text =
                     $"{__instance.ColorString}Morphing as {morphPlayer.Data.PlayerName} ({CustomGameOptions.HitmanMorphDuration}s)</color>";
-                PlayerControl.LocalPlayer.myTasks.Insert(0, mimicText);
+                LocalPlayer().myTasks.Insert(0, mimicText);
 
                 while (true)
                 {
@@ -161,13 +161,13 @@ namespace TownOfSushi.Roles
                         IsDead() ||
                         AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Ended)
                     {
-                        PlayerControl.LocalPlayer.myTasks.Remove(mimicText);
+                        LocalPlayer().myTasks.Remove(mimicText);
                         __instance.LastMorph = DateTime.UtcNow;
                         __instance.IsUsingMorph = false;
                         __instance.MorphTarget = null;
                         Unmorph(__instance.Player);
 
-                        StartRPC(CustomRPC.RpcResetAnim2, PlayerControl.LocalPlayer.PlayerId, morphPlayer.PlayerId);
+                        StartRPC(CustomRPC.RpcResetAnim2, LocalPlayer().PlayerId, morphPlayer.PlayerId);
                         yield break;
                     }
 
@@ -389,11 +389,11 @@ namespace TownOfSushi.Roles
     {
         public static bool Prefix(KillButton __instance)
         {
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Hitman)) return false;
-            if (__instance == GetRole<Hitman>(PlayerControl.LocalPlayer).DragDropButtonHitman) return false; //fix for the player killing by clicking the drag button
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Hitman) && __instance.isActiveAndEnabled &&
-                !__instance.isCoolingDown && PlayerControl.LocalPlayer.CanMove && !PlayerControl.LocalPlayer.inVent)
-                return GetRole<Hitman>(PlayerControl.LocalPlayer).UseAbility(__instance);
+            if (!LocalPlayer().Is(RoleEnum.Hitman)) return false;
+            if (__instance == GetRole<Hitman>(LocalPlayer()).DragDropButtonHitman) return false; //fix for the player killing by clicking the drag button
+            if (LocalPlayer().Is(RoleEnum.Hitman) && __instance.isActiveAndEnabled &&
+                !__instance.isCoolingDown && LocalPlayer().CanMove && !LocalPlayer().inVent)
+                return GetRole<Hitman>(LocalPlayer()).UseAbility(__instance);
             return true;
         }
     }
@@ -403,7 +403,7 @@ namespace TownOfSushi.Roles
     {
         public static bool Prefix(KillButton __instance)
         {
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Hitman)) return true;
+            if (!LocalPlayer().Is(RoleEnum.Hitman)) return true;
             return __instance == HUDManager().KillButton;
         }
 
@@ -436,11 +436,11 @@ namespace TownOfSushi.Roles
     {
         public static bool Prefix(KillButton __instance)
         {
-            var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Hitman);
+            var flag = LocalPlayer().Is(RoleEnum.Hitman);
             if (!flag) return true;
-            if (!PlayerControl.LocalPlayer.CanMove) return false;
+            if (!LocalPlayer().CanMove) return false;
             if (IsDead()) return false;
-            var role = GetRole<Hitman>(PlayerControl.LocalPlayer);
+            var role = GetRole<Hitman>(LocalPlayer());
 
             if (__instance == role.DragDropButtonHitman)
             {
@@ -450,17 +450,17 @@ namespace TownOfSushi.Roles
                     if (!__instance.enabled) return false;
                     var maxDistance = KillDistance();
                     if (Vector2.Distance(role.CurrentTarget.TruePosition,
-                        PlayerControl.LocalPlayer.GetTruePosition()) > maxDistance) return false;
+                        LocalPlayer().GetTruePosition()) > maxDistance) return false;
                     var playerId = role.CurrentTarget.ParentId;
                     var player = PlayerById(playerId);
-                    var abilityUsed = AbilityUsed(PlayerControl.LocalPlayer);
+                    var abilityUsed = AbilityUsed(LocalPlayer());
                     if (!abilityUsed) return false;
                     if ((player.IsInfected() || role.Player.IsInfected()) && !player.Is(RoleEnum.Plaguebearer))
                     {
                         foreach (var pb in GetRoles(RoleEnum.Plaguebearer)) ((Plaguebearer)pb).RpcSpreadInfection(player, role.Player);
                     }
 
-                    StartRPC(CustomRPC.HitmanDrag, PlayerControl.LocalPlayer.PlayerId, playerId);
+                    StartRPC(CustomRPC.HitmanDrag, LocalPlayer().PlayerId, playerId);
 
                     role.CurrentlyDragging = role.CurrentTarget;
 
@@ -471,9 +471,9 @@ namespace TownOfSushi.Roles
                 else
                 {
                     if (!__instance.enabled) return false;
-                    var abilityUsed = AbilityUsed(PlayerControl.LocalPlayer);
+                    var abilityUsed = AbilityUsed(LocalPlayer());
                     if (!abilityUsed) return false;
-                    Vector3 position = PlayerControl.LocalPlayer.transform.position;
+                    Vector3 position = LocalPlayer().transform.position;
 
                     if (IsSubmerged())
                     {
@@ -489,7 +489,7 @@ namespace TownOfSushi.Roles
 
                     position.y -= 0.3636f;
 
-                    StartRPC(CustomRPC.HitmanDrop, PlayerControl.LocalPlayer.PlayerId, position, position.z);
+                    StartRPC(CustomRPC.HitmanDrop, LocalPlayer().PlayerId, position, position.z);
 
                     var body = role.CurrentlyDragging;
                     foreach (var body2 in role.CurrentlyDragging.bodyRenderers) body2.material.SetFloat("_Outline", 0f);
@@ -513,11 +513,11 @@ namespace TownOfSushi.Roles
         public static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Hitman)) return;
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(RoleEnum.Hitman)) return;
 
-            var role = GetRole<Hitman>(PlayerControl.LocalPlayer);
+            var role = GetRole<Hitman>(LocalPlayer());
             if (role.DragDropButtonHitman == null)
             {
                 role.DragDropButtonHitman = Object.Instantiate(__instance.KillButton, __instance.KillButton.transform.parent);
@@ -541,13 +541,13 @@ namespace TownOfSushi.Roles
 
             if (role.DragDropButtonHitman.graphic.sprite == TownOfSushi.DragSprite)
             {
-                var data = PlayerControl.LocalPlayer.Data;
+                var data = LocalPlayer().Data;
                 var isDead = data.IsDead;
-                var truePosition = PlayerControl.LocalPlayer.GetTruePosition();
+                var truePosition = LocalPlayer().GetTruePosition();
                 var maxDistance = KillDistance();
-                var flag = (VanillaOptions().currentNormalGameOptions.GhostsDoTasks || !data.IsDead) &&
+                var flag = (OptionsManager().currentNormalGameOptions.GhostsDoTasks || !data.IsDead) &&
                            (!AmongUsClient.Instance || !AmongUsClient.Instance.IsGameOver) &&
-                           PlayerControl.LocalPlayer.CanMove;
+                           LocalPlayer().CanMove;
                 var allocs = Physics2D.OverlapCircleAll(truePosition, maxDistance,
                     LayerMask.GetMask(new[] {"Players", "Ghost"}));
                 var killButton = role.DragDropButtonHitman;
@@ -592,8 +592,8 @@ namespace TownOfSushi.Roles
             var Hitman = AllRoles.FirstOrDefault(x => x.RoleType == RoleEnum.Hitman);
             if (AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started)
                 if (Hitman != null)
-                if (PlayerControl.LocalPlayer.Is(RoleEnum.Hitman))
-                    GetRole<Hitman>(PlayerControl.LocalPlayer).Update(__instance);
+                if (LocalPlayer().Is(RoleEnum.Hitman))
+                    GetRole<Hitman>(LocalPlayer()).Update(__instance);
         }
     }
 

@@ -78,7 +78,7 @@ namespace TownOfSushi.Roles
 
         public void RpcCatchPlayer(PlayerControl stalked)
         {
-            if (PlayerControl.LocalPlayer.PlayerId == Player.PlayerId && !IsDead())
+            if (LocalPlayer().PlayerId == Player.PlayerId && !IsDead())
             {
                 Flash(ColorManager.Hunter, 0.8f);
             }
@@ -93,10 +93,9 @@ namespace TownOfSushi.Roles
     {
         public static void Postfix(MeetingHud __instance)
         {
-            var localPlayer = PlayerControl.LocalPlayer;
-            var _role = GetPlayerRole(localPlayer);
+            var _role = GetPlayerRole(LocalPlayer());
             if (_role?.RoleType != RoleEnum.Hunter) return;
-            if (localPlayer.Data.IsDead) return;
+            if (LocalPlayer().Data.IsDead) return;
             var role = (Hunter)_role;
             foreach (var state in __instance.playerStates)
             {
@@ -117,25 +116,25 @@ namespace TownOfSushi.Roles
     {
         public static bool Prefix(KillButton __instance)
         {
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Hunter)) return true;
-            if (!PlayerControl.LocalPlayer.CanMove) return false;
+            if (!LocalPlayer().Is(RoleEnum.Hunter)) return true;
+            if (!LocalPlayer().CanMove) return false;
             if (IsDead()) return false;
             if (__instance.isCoolingDown) return false;
             if (!__instance.isActiveAndEnabled) return false;
-            var role = GetRole<Hunter>(PlayerControl.LocalPlayer);
+            var role = GetRole<Hunter>(LocalPlayer());
             if (__instance == role.StalkButton)
             {
                 if (role.ClosestStalkPlayer == null) return false;
                 if (!role.StalkUsable) return false;
                 if (role.StalkTimer() != 0) return false;
-                var stalkInteract = Interact(PlayerControl.LocalPlayer, role.ClosestStalkPlayer, false);
+                var stalkInteract = Interact(LocalPlayer(), role.ClosestStalkPlayer, false);
                 if (stalkInteract[3] == true)
                 {
                     role.StalkDuration = CustomGameOptions.HunterStalkDuration;
                     role.StalkedPlayer = role.ClosestStalkPlayer;
                     role.MaxUses--;
                     role.Stalk();
-                    StartRPC(CustomRPC.HunterStalk, PlayerControl.LocalPlayer.PlayerId, role.ClosestStalkPlayer.PlayerId);
+                    StartRPC(CustomRPC.HunterStalk, LocalPlayer().PlayerId, role.ClosestStalkPlayer.PlayerId);
                 }
                 if (stalkInteract[0] == true)
                 {
@@ -152,11 +151,11 @@ namespace TownOfSushi.Roles
             if (role.ClosestPlayer == null) return false;
             if (!role.CaughtPlayers.Contains(role.ClosestPlayer)) return false;
             if (role.HunterKillTimer() != 0) return false;
-            var distBetweenPlayers = GetDistBetweenPlayers(PlayerControl.LocalPlayer, role.ClosestPlayer);
+            var distBetweenPlayers = GetDistBetweenPlayers(LocalPlayer(), role.ClosestPlayer);
             var flag3 = distBetweenPlayers <
-                        GameOptionsData.KillDistances[VanillaOptions().currentNormalGameOptions.KillDistance];
+                        GameOptionsData.KillDistances[OptionsManager().currentNormalGameOptions.KillDistance];
             if (!flag3) return false;
-            var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer, true);
+            var interact = Interact(LocalPlayer(), role.ClosestPlayer, true);
             if (interact[0] == true)
             {
                 role.LastKilled = DateTime.UtcNow;
@@ -238,7 +237,7 @@ namespace TownOfSushi.Roles
                 player.RpcSetScanner(false);
                 ImportantTextTask importantTextTask = new GameObject("_Player").AddComponent<ImportantTextTask>();
                 importantTextTask.transform.SetParent(AmongUsClient.Instance.transform, false);
-                if (!VanillaOptions().currentNormalGameOptions.GhostsDoTasks)
+                if (!OptionsManager().currentNormalGameOptions.GhostsDoTasks)
                 {
                     for (int i = 0; i < player.myTasks.Count; i++)
                     {
@@ -307,7 +306,7 @@ namespace TownOfSushi.Roles
 
             var data = __instance.Data;
             var stuff = Physics2D.OverlapCircleAll(truePosition, __instance.MaxReportDistance, Constants.Usables);
-            var flag = (VanillaOptions().currentNormalGameOptions.GhostsDoTasks || !data.IsDead) &&
+            var flag = (OptionsManager().currentNormalGameOptions.GhostsDoTasks || !data.IsDead) &&
                        (!AmongUsClient.Instance || !AmongUsClient.Instance.IsGameOver) && __instance.CanMove;
             var flag2 = false;
 
@@ -319,7 +318,7 @@ namespace TownOfSushi.Roles
                     if (Vector2.Distance(truePosition, component.TruePosition) <= __instance.MaxReportDistance)
                     {
                         var matches = Murder.KilledPlayers.FirstOrDefault(x => x.PlayerId == component.ParentId);
-                        if (matches != null && matches.KillerId != PlayerControl.LocalPlayer.PlayerId) { 
+                        if (matches != null && matches.KillerId != LocalPlayer().PlayerId) { 
                             if (!PhysicsHelpers.AnythingBetween(__instance.Collider, truePosition, component.TruePosition, Constants.ShipOnlyMask, false)) flag2 = true; 
                         }
                     }
@@ -347,7 +346,7 @@ namespace TownOfSushi.Roles
                     if (component && !component.Reported)
                     {
                         var matches = Murder.KilledPlayers.FirstOrDefault(x => x.PlayerId == component.ParentId);
-                        if (matches != null && matches.KillerId != PlayerControl.LocalPlayer.PlayerId)
+                        if (matches != null && matches.KillerId != LocalPlayer().PlayerId)
                             component.OnClick();
                         if (component.Reported) break;
                     }
@@ -362,14 +361,14 @@ namespace TownOfSushi.Roles
     {
         public static bool Prefix(DeadBody __instance)
         {
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Hunter)) return true;
+            if (!LocalPlayer().Is(RoleEnum.Hunter)) return true;
             if (CustomGameOptions.HunterBodyReport) return true;
 
             if (AmongUsClient.Instance.IsGameOver) return false;
             if (IsDead()) return false;
 
             var matches = Murder.KilledPlayers.FirstOrDefault(x => x.PlayerId == __instance.ParentId);
-            if (matches != null && matches.KillerId != PlayerControl.LocalPlayer.PlayerId) return true;
+            if (matches != null && matches.KillerId != LocalPlayer().PlayerId) return true;
             return false;
         }
     }
@@ -382,11 +381,11 @@ namespace TownOfSushi.Roles
         public static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Hunter)) return;
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(RoleEnum.Hunter)) return;
 
-            var role = GetRole<Hunter>(PlayerControl.LocalPlayer);
+            var role = GetRole<Hunter>(LocalPlayer());
 
                 foreach (var player in role.CaughtPlayers)
                 {
@@ -440,14 +439,14 @@ namespace TownOfSushi.Roles
             else role.StalkButton.SetCoolDown(0f, CustomGameOptions.HunterStalkCd);
 
             var renderer = role.StalkButton.graphic;
-            if (role.Stalking || role.MaxUses == 0 || !PlayerControl.LocalPlayer.moveable) role.StalkButton.SetTarget(null);
+            if (role.Stalking || role.MaxUses == 0 || !LocalPlayer().moveable) role.StalkButton.SetTarget(null);
             else
             {
                 if (CamouflageUnCamouflagePatch.IsCamouflaged && CustomGameOptions.CamoCommsKillAnyone) Utils.SetTarget(ref role.ClosestStalkPlayer, role.StalkButton, float.NaN);
                 else Utils.SetTarget(ref role.ClosestStalkPlayer, role.StalkButton, float.NaN);
             }
 
-            if (role.Stalking || (role.StalkUsable && role.ClosestStalkPlayer != null && PlayerControl.LocalPlayer.moveable))
+            if (role.Stalking || (role.StalkUsable && role.ClosestStalkPlayer != null && LocalPlayer().moveable))
             {
                 renderer.color = Palette.EnabledColor;
                 renderer.material.SetFloat("_Desat", 0f);

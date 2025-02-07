@@ -67,14 +67,14 @@ namespace TownOfSushi.Roles
         public static void UpdateTrackButton(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Tracker)) return;
-            var data = PlayerControl.LocalPlayer.Data;
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(RoleEnum.Tracker)) return;
+            var data = LocalPlayer().Data;
             var isDead = data.IsDead;
             var trackButton = __instance.KillButton;
 
-            var role = GetRole<Tracker>(PlayerControl.LocalPlayer);
+            var role = GetRole<Tracker>(LocalPlayer());
 
             if (role.UsesText == null && role.MaxUses > 0)
             {
@@ -134,25 +134,25 @@ namespace TownOfSushi.Roles
         public static bool Prefix(KillButton __instance)
         {
             if (__instance != HUDManager().KillButton) return true;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Tracker)) return true;
-            var role = GetRole<Tracker>(PlayerControl.LocalPlayer);
-            if (!PlayerControl.LocalPlayer.CanMove || role.ClosestPlayer == null) return false;
+            if (!LocalPlayer().Is(RoleEnum.Tracker)) return true;
+            var role = GetRole<Tracker>(LocalPlayer());
+            if (!LocalPlayer().CanMove || role.ClosestPlayer == null) return false;
             var flag2 = role.TrackerTimer() == 0f;
             if (!flag2) return false;
             if (!__instance.enabled) return false;
             var maxDistance = KillDistance();
             if (Vector2.Distance(role.ClosestPlayer.GetTruePosition(),
-                PlayerControl.LocalPlayer.GetTruePosition()) > maxDistance) return false;
+                LocalPlayer().GetTruePosition()) > maxDistance) return false;
             if (role.ClosestPlayer == null) return false;
             var target = role.ClosestPlayer;
             if (!role.ButtonUsable) return false;
 
-            var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer);
+            var interact = Interact(LocalPlayer(), role.ClosestPlayer);
             if (interact[3] == true)
             {
                 var gameObj = new GameObject();
                 var arrow = gameObj.AddComponent<ArrowBehaviour>();
-                gameObj.transform.parent = PlayerControl.LocalPlayer.gameObject.transform;
+                gameObj.transform.parent = LocalPlayer().gameObject.transform;
                 var renderer = gameObj.AddComponent<SpriteRenderer>();
                 renderer.sprite = Sprite;
                 if (!CamouflageUnCamouflagePatch.IsCamouflaged)
@@ -211,11 +211,11 @@ namespace TownOfSushi.Roles
         public static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Tracker)) return;
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(RoleEnum.Tracker)) return;
 
-            var role = GetRole<Tracker>(PlayerControl.LocalPlayer);
+            var role = GetRole<Tracker>(LocalPlayer());
 
             if (IsDead())
             {

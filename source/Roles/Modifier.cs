@@ -90,7 +90,7 @@ namespace TownOfSushi.Roles
 
         public static Modifier GetModifier(PlayerVoteArea area)
         {
-            var player = PlayerControl.AllPlayerControls.ToArray()
+            var player = AllPlayers()
                 .FirstOrDefault(x => x.PlayerId == area.TargetPlayerId);
             return player == null ? null : GetModifier(player);
         }

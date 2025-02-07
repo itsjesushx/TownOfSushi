@@ -8,7 +8,7 @@ namespace TownOfSushi.Patches
         public static void Prefix(IntroCutscene __instance) 
         {
             // Generate and initialize player icons
-            if (PlayerControl.LocalPlayer != null && HUDManager() != null) 
+            if (LocalPlayer()!= null && HUDManager() != null) 
             {
                 float aspect = Camera.main.aspect;
                 float safeOrthographicSize = CameraSafeArea.GetSafeOrthographicSize(Camera.main);
@@ -32,7 +32,7 @@ namespace TownOfSushi.Patches
                     player.transform.localScale = Vector3.one * 0.4f;
                     player.gameObject.SetActive(false);
                 }
-                if (VanillaOptions().currentNormalGameOptions.MapId == 2 && CustomGameOptions.VentImprovements) 
+                if (OptionsManager().currentNormalGameOptions.MapId == 2 && CustomGameOptions.VentImprovements) 
                 {
                     var list = GameObject.FindObjectsOfType<Vent>().ToList();
                     var adminVent = list.FirstOrDefault(x => x.gameObject.name == "AdminVent");
@@ -66,9 +66,9 @@ namespace TownOfSushi.Patches
         }
         public static void SetupIntroTeamIcons(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam) 
         {    
-            if (VanillaOptions().currentGameMode == GameModes.Normal) 
+            if (IsClassic()) 
             {
-                if (PlayerControl.LocalPlayer.Is(Faction.Neutral)) 
+                if (LocalPlayer().Is(Faction.Neutral)) 
                 {
                     foreach (var role in GetRoles(RoleEnum.GuardianAngel))
                     {
@@ -76,7 +76,7 @@ namespace TownOfSushi.Patches
                         if (guardianAngel.target != null)
                         {
                             var target = guardianAngel.target;
-                            var player = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(x => x.PlayerId == target.PlayerId);
+                            var player = AllPlayers().FirstOrDefault(x => x.PlayerId == target.PlayerId);
                             var soloTeam2 = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
                             soloTeam2.Add(player);
                             if (player != null)
@@ -87,20 +87,20 @@ namespace TownOfSushi.Patches
                     }
                     // Intro solo teams
                     var soloTeam = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
-                    soloTeam.Add(PlayerControl.LocalPlayer);
+                    soloTeam.Add(LocalPlayer());
                     yourTeam = soloTeam;
 
-                    if (PlayerControl.LocalPlayer.Is(RoleAlignment.NeutralKilling))
+                    if (LocalPlayer().Is(RoleAlignment.NeutralKilling))
                     {
-                        PlayerControl.LocalPlayer.Data.Role.IntroSound = GetIntroSound(RoleTypes.Shapeshifter);
+                        LocalPlayer().Data.Role.IntroSound = GetIntroSound(RoleTypes.Shapeshifter);
                     }
-                    if (PlayerControl.LocalPlayer.Is(RoleAlignment.NeutralEvil))
+                    if (LocalPlayer().Is(RoleAlignment.NeutralEvil))
                     {
-                        PlayerControl.LocalPlayer.Data.Role.IntroSound = GetIntroSound(RoleTypes.Phantom);
+                        LocalPlayer().Data.Role.IntroSound = GetIntroSound(RoleTypes.Phantom);
                     }
-                    if (PlayerControl.LocalPlayer.Is(RoleAlignment.NeutralBenign))
+                    if (LocalPlayer().Is(RoleAlignment.NeutralBenign))
                     {
-                        PlayerControl.LocalPlayer.Data.Role.IntroSound = GetIntroSound(RoleTypes.Noisemaker);
+                        LocalPlayer().Data.Role.IntroSound = GetIntroSound(RoleTypes.Noisemaker);
                     }
                 }
             }
@@ -108,9 +108,9 @@ namespace TownOfSushi.Patches
 
         public static void SetupIntroTeam(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam) 
         {
-            if (VanillaOptions().currentGameMode == GameModes.Normal) 
+            if (IsClassic()) 
             {
-                if (PlayerControl.LocalPlayer.Is(Faction.Neutral) && !PlayerControl.LocalPlayer.Is(RoleEnum.GuardianAngel))
+                if (LocalPlayer().Is(Faction.Neutral) && !LocalPlayer().Is(RoleEnum.GuardianAngel))
                 {
                     var neutralColor = new Color32(76, 84, 78, 255);
                     __instance.ImpostorText.text = "Work alone to achieve your goal";
@@ -118,15 +118,15 @@ namespace TownOfSushi.Patches
                     __instance.TeamTitle.text = "Neutral";
                     __instance.TeamTitle.color = neutralColor;
                 }
-                if (PlayerControl.LocalPlayer.Is(Faction.Neutral) && PlayerControl.LocalPlayer.Is(RoleEnum.GuardianAngel))
+                if (LocalPlayer().Is(Faction.Neutral) && LocalPlayer().Is(RoleEnum.GuardianAngel))
                 {
                     var neutralColor = new Color32(76, 84, 78, 255);
-                    __instance.ImpostorText.text = $"Protect {GetRole<GuardianAngel>(PlayerControl.LocalPlayer).target.name} with your life";
+                    __instance.ImpostorText.text = $"Protect {GetRole<GuardianAngel>(LocalPlayer()).target.name} with your life";
                     __instance.BackgroundBar.material.color = neutralColor;
                     __instance.TeamTitle.text = "Neutral";
                     __instance.TeamTitle.color = neutralColor;
                 }
-                else if (PlayerControl.LocalPlayer.Is(Faction.Crewmates))
+                else if (LocalPlayer().Is(Faction.Crewmates))
                 {
                     __instance.ImpostorText.text = "Find and vote out the <color=#FF0000>Killers</color>";
                     __instance.TeamTitle.color = Palette.CrewmateBlue;
@@ -140,9 +140,9 @@ namespace TownOfSushi.Patches
             public static void Postfix(IntroCutscene __instance) 
             {
                 // Don't override the intro of the vanilla roles
-                Role roleInfo = GetPlayerRole(PlayerControl.LocalPlayer);
-                Modifier modifierInfo = GetModifier(PlayerControl.LocalPlayer);
-                Ability abilityInfo = GetAbility(PlayerControl.LocalPlayer);               
+                Role roleInfo = GetPlayerRole(LocalPlayer());
+                Modifier modifierInfo = GetModifier(LocalPlayer());
+                Ability abilityInfo = GetAbility(LocalPlayer());               
 
                 Color color = new Color(__instance.YouAreText.color.r, __instance.YouAreText.color.g, __instance.YouAreText.color.b, 0f);
                 __instance.StartCoroutine(Effects.Lerp(0.5f, new Action<float>((t) => 

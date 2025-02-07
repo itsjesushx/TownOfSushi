@@ -66,12 +66,12 @@ namespace TownOfSushi.Roles
         private static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Executioner)) return;
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(RoleEnum.Executioner)) return;
             if (IsDead()) return;
 
-            var role = GetRole<Executioner>(PlayerControl.LocalPlayer);
+            var role = GetRole<Executioner>(LocalPlayer());
 
             if (Meeting() != null) UpdateMeeting(Meeting(), role);
 
@@ -80,9 +80,9 @@ namespace TownOfSushi.Roles
             if (!role.target.Data.IsDead && !role.target.Data.Disconnected && !role.target.Is(RoleEnum.Vampire)) return;
             if (ExecutionerWin) return;
 
-            StartRPC(CustomRPC.ExecutionerToJester, PlayerControl.LocalPlayer.PlayerId);
+            StartRPC(CustomRPC.ExecutionerToJester, LocalPlayer().PlayerId);
 
-            ExecutionerChangeRole(PlayerControl.LocalPlayer);
+            ExecutionerChangeRole(LocalPlayer());
         }
 
         public static void ExecutionerChangeRole(PlayerControl player)

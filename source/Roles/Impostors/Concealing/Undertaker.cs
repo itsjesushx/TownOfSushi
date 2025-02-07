@@ -11,7 +11,7 @@ namespace TownOfSushi.Roles
             TaskText = () => "Drag bodies";
             RoleInfo = $"The Undertaker can drag bodies around to hide them from being reported. The Undertaker can drag a body to a location and then drop it to hide it from being reported. The Undertaker can only drag a body every {CustomGameOptions.DragCd} seconds. They {canVent}. Their speed is {CustomGameOptions.UndertakerDragSpeed}x.";
             LoreText = "A shadowy figure, you specialize in concealing the aftermath of your deeds. As the Undertaker, you can drag the bodies of the fallen and hide them from view, preventing others from uncovering your dark work. Your ability to erase evidence makes you a dangerous Impostor, leaving no trace of your actions and casting doubt on those who might suspect you.";
-            Color = ColorManager.Impostor;
+            Color = ColorManager.ImpostorRed;
             LastDragged = DateTime.UtcNow;
             RoleType = RoleEnum.Undertaker;
             Faction = Faction.Impostors;
@@ -50,11 +50,11 @@ namespace TownOfSushi.Roles
         public static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Undertaker)) return;
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(RoleEnum.Undertaker)) return;
 
-            var role = GetRole<Undertaker>(PlayerControl.LocalPlayer);
+            var role = GetRole<Undertaker>(LocalPlayer());
             if (role.DragDropButton == null)
             {
                 role.DragDropButton = Object.Instantiate(__instance.KillButton, __instance.KillButton.transform.parent);
@@ -76,13 +76,13 @@ namespace TownOfSushi.Roles
 
             if (role.DragDropButton.graphic.sprite == TownOfSushi.DragSprite)
             {
-                var data = PlayerControl.LocalPlayer.Data;
+                var data = LocalPlayer().Data;
                 var isDead = data.IsDead;
-                var truePosition = PlayerControl.LocalPlayer.GetTruePosition();
+                var truePosition = LocalPlayer().GetTruePosition();
                 var maxDistance = KillDistance();
-                var flag = (VanillaOptions().currentNormalGameOptions.GhostsDoTasks || !data.IsDead) &&
+                var flag = (OptionsManager().currentNormalGameOptions.GhostsDoTasks || !data.IsDead) &&
                            (!AmongUsClient.Instance || !AmongUsClient.Instance.IsGameOver) &&
-                           PlayerControl.LocalPlayer.CanMove;
+                           LocalPlayer().CanMove;
                 var allocs = Physics2D.OverlapCircleAll(truePosition, maxDistance,
                     LayerMask.GetMask(new[] {"Players", "Ghost"}));
                 var killButton = role.DragDropButton;
@@ -124,11 +124,11 @@ namespace TownOfSushi.Roles
     {
         public static bool Prefix(KillButton __instance)
         {
-            var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Undertaker);
+            var flag = LocalPlayer().Is(RoleEnum.Undertaker);
             if (!flag) return true;
-            if (!PlayerControl.LocalPlayer.CanMove) return false;
+            if (!LocalPlayer().CanMove) return false;
             if (IsDead()) return false;
-            var role = GetRole<Undertaker>(PlayerControl.LocalPlayer);
+            var role = GetRole<Undertaker>(LocalPlayer());
 
             if (__instance == role.DragDropButton)
             {
@@ -138,17 +138,17 @@ namespace TownOfSushi.Roles
                     if (!__instance.enabled) return false;
                     var maxDistance = KillDistance();
                     if (Vector2.Distance(role.CurrentTarget.TruePosition,
-                        PlayerControl.LocalPlayer.GetTruePosition()) > maxDistance) return false;
+                        LocalPlayer().GetTruePosition()) > maxDistance) return false;
                     var playerId = role.CurrentTarget.ParentId;
                     var player = Utils.PlayerById(playerId);
-                    var abilityUsed = Utils.AbilityUsed(PlayerControl.LocalPlayer);
+                    var abilityUsed = Utils.AbilityUsed(LocalPlayer());
                     if (!abilityUsed) return false;
                     if ((player.IsInfected() || role.Player.IsInfected()) && !player.Is(RoleEnum.Plaguebearer))
                     {
                         foreach (var pb in GetRoles(RoleEnum.Plaguebearer)) ((Plaguebearer)pb).RpcSpreadInfection(player, role.Player);
                     }
 
-                    Utils.StartRPC(CustomRPC.Drag, PlayerControl.LocalPlayer.PlayerId, playerId);
+                    Utils.StartRPC(CustomRPC.Drag, LocalPlayer().PlayerId, playerId);
 
                     role.CurrentlyDragging = role.CurrentTarget;
 
@@ -159,9 +159,9 @@ namespace TownOfSushi.Roles
                 else
                 {
                     if (!__instance.enabled) return false;
-                    var abilityUsed = Utils.AbilityUsed(PlayerControl.LocalPlayer);
+                    var abilityUsed = Utils.AbilityUsed(LocalPlayer());
                     if (!abilityUsed) return false;
-                    Vector3 position = PlayerControl.LocalPlayer.transform.position;
+                    Vector3 position = LocalPlayer().transform.position;
 
                     if (IsSubmerged())
                     {
@@ -177,7 +177,7 @@ namespace TownOfSushi.Roles
 
                     position.y -= 0.3636f;
 
-                    Utils.StartRPC(CustomRPC.Drop, PlayerControl.LocalPlayer.PlayerId, position, position.z);
+                    Utils.StartRPC(CustomRPC.Drop, LocalPlayer().PlayerId, position, position.z);
 
                     var body = role.CurrentlyDragging;
                     foreach (var body2 in role.CurrentlyDragging.bodyRenderers) body2.material.SetFloat("_Outline", 0f);
@@ -200,7 +200,7 @@ namespace TownOfSushi.Roles
     {
         public static bool Prefix(KillButton __instance)
         {
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Undertaker)) return true;
+            if (!LocalPlayer().Is(RoleEnum.Undertaker)) return true;
             return __instance == HUDManager().KillButton;
         }
 

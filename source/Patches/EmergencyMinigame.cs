@@ -9,28 +9,28 @@ namespace TownOfSushi.Patches
             var StatusText = "";
 
             // Potentially deactivate emergency button for Jester
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Jester) && !CustomGameOptions.JesterButton) 
+            if (LocalPlayer().Is(RoleEnum.Jester) && !CustomGameOptions.JesterButton) 
             {
                 CanCallEmergency = false;
                 StatusText = "The Jester can't start an emergency meeting";
             }
 
             // Potentially deactivate emergency button for Executioner
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Executioner) && !CustomGameOptions.ExecutionerButton) 
+            if (LocalPlayer().Is(RoleEnum.Executioner) && !CustomGameOptions.ExecutionerButton) 
             {
                 CanCallEmergency = false;
                 StatusText = "The Executioner can't start an emergency meeting";
             }
 
             // Potentially deactivate emergency button for Swapper
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Swapper) && !CustomGameOptions.SwapperButton) 
+            if (LocalPlayer().Is(RoleEnum.Swapper) && !CustomGameOptions.SwapperButton) 
             {
                 CanCallEmergency = false;
                 StatusText = "The Swapper can't start an emergency meeting";
             }
 
             // Potentially deactivate emergency button when 2 players are left
-            if (PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 2)
+            if (TwoPlayersAlive())
             {
                 CanCallEmergency = false;
                 StatusText = "2 Players alive only. Impossible to start a meeting!";

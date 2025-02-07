@@ -38,22 +38,22 @@ namespace TownOfSushi.Roles
         public static bool Prefix(KillButton __instance)
         {
             if (__instance != HUDManager().KillButton) return true;
-            var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Engineer);
+            var flag = LocalPlayer().Is(RoleEnum.Engineer);
             if (!flag) return true;
-            if (!PlayerControl.LocalPlayer.CanMove) return false;
+            if (!LocalPlayer().CanMove) return false;
             if (IsDead()) return false;
             if (!__instance.enabled) return false;
-            var role = Role.GetRole<Engineer>(PlayerControl.LocalPlayer);
+            var role = Role.GetRole<Engineer>(LocalPlayer());
             if (!role.ButtonUsable) return false;
             var system = Ship().Systems[SystemTypes.Sabotage].Cast<SabotageSystemType>();
             if (system == null) return false;
             var sabActive = system.AnyActive;
             if (!sabActive) return false;
-            var abilityUsed = AbilityUsed(PlayerControl.LocalPlayer);
+            var abilityUsed = AbilityUsed(LocalPlayer());
             if (!abilityUsed) return false;
             role.MaxUses -= 1;
-            StartRPC(CustomRPC.EngineerFix, PlayerControl.LocalPlayer.NetId);
-            switch (VanillaOptions().currentNormalGameOptions.MapId)
+            StartRPC(CustomRPC.EngineerFix, LocalPlayer().NetId);
+            switch (OptionsManager().currentNormalGameOptions.MapId)
             {
                 case 0:
                 case 3:
@@ -113,7 +113,7 @@ namespace TownOfSushi.Roles
                     if (lights5.IsActive) return FixLights(lights5);
                     var comms5 = Ship().Systems[SystemTypes.Comms].Cast<HudOverrideSystemType>();
                     if (comms5.IsActive) return FixComms();
-                    foreach (PlayerTask i in PlayerControl.LocalPlayer.myTasks)
+                    foreach (PlayerTask i in LocalPlayer().myTasks)
                     {
                         if (i.TaskType == RetrieveOxygenMask)
                         {
@@ -174,7 +174,7 @@ namespace TownOfSushi.Roles
         {
             RepairOxygen();
 
-            StartRPC(CustomRPC.SubmergedFixOxygen, PlayerControl.LocalPlayer.NetId);
+            StartRPC(CustomRPC.SubmergedFixOxygen, LocalPlayer().NetId);
 
             return false;
         }
@@ -193,11 +193,11 @@ namespace TownOfSushi.Roles
     {
         public static bool Prefix(VentButton __instance)
         {
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Engineer)) return true;
+            if (!LocalPlayer().Is(RoleEnum.Engineer)) return true;
             if (IsDead()) return true;
             if (!__instance.enabled) return true;
-            if (__instance.isCoolingDown && !PlayerControl.LocalPlayer.inVent) return false;
-            var role = GetRole<Engineer>(PlayerControl.LocalPlayer);
+            if (__instance.isCoolingDown && !LocalPlayer().inVent) return false;
+            var role = GetRole<Engineer>(LocalPlayer());
             role.TimeRemaining = CustomGameOptions.EngiVentDuration;
             role.LastVent = DateTime.UtcNow;
             return true;
@@ -211,7 +211,7 @@ namespace TownOfSushi.Roles
         {
             var ventButton = __instance.ImpostorVentButton;
             if (ventButton.cooldownTimerText == null) ventButton.cooldownTimerText = Object.Instantiate(__instance.KillButton.cooldownTimerText, ventButton.transform);
-            if (PlayerControl.LocalPlayer.inVent)
+            if (LocalPlayer().inVent)
             {
                 if (role.TimeRemaining <= 0)
                 {
@@ -230,11 +230,11 @@ namespace TownOfSushi.Roles
         public static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Engineer)) return;
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(RoleEnum.Engineer)) return;
 
-            var role = GetRole<Engineer>(PlayerControl.LocalPlayer);
+            var role = GetRole<Engineer>(LocalPlayer());
 
             UpdtateVentTimer(__instance, role);
 
@@ -268,7 +268,7 @@ namespace TownOfSushi.Roles
             if (system == null) return;
             var sabActive = system.AnyActive;
             var renderer = __instance.KillButton.graphic;
-            if (sabActive & role.ButtonUsable & __instance.KillButton.enabled && PlayerControl.LocalPlayer.moveable)
+            if (sabActive & role.ButtonUsable & __instance.KillButton.enabled && LocalPlayer().moveable)
             {
                 renderer.color = Palette.EnabledColor;
                 renderer.material.SetFloat("_Desat", 0f);

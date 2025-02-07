@@ -10,7 +10,7 @@ namespace TownOfSushi.Roles.Modifiers
         {
             Name = "Disperser";
             TaskText = () => "Separate the Crew";
-            Color = ColorManager.Impostor;
+            Color = ColorManager.ImpostorRed;
             LastDispersed = DateTime.UtcNow;
             MaxUses = CustomGameOptions.MaxDisperses;
             ModifierType = ModifierEnum.Disperser;
@@ -29,7 +29,7 @@ namespace TownOfSushi.Roles.Modifiers
         {
             Dictionary<byte, Vector2> coordinates = GenerateDisperseCoordinates();
 
-            var writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId,
+            var writer = AmongUsClient.Instance.StartRpcImmediately(LocalPlayer().NetId,
                 (byte)CustomRPC.Disperse,
                 SendOption.Reliable,
                 -1);
@@ -46,9 +46,9 @@ namespace TownOfSushi.Roles.Modifiers
 
         public static void DispersePlayersToCoordinates(Dictionary<byte, Vector2> coordinates)
         {
-            if (coordinates.ContainsKey(PlayerControl.LocalPlayer.PlayerId))
+            if (coordinates.ContainsKey(LocalPlayer().PlayerId))
             {
-                Flash(ColorManager.Impostor, 2.5f);
+                Flash(ColorManager.ImpostorRed, 2.5f);
                 if (TaskPanel())
                 {
                     try
@@ -61,10 +61,10 @@ namespace TownOfSushi.Roles.Modifiers
                     }
                 }
 
-                if (PlayerControl.LocalPlayer.inVent)
+                if (LocalPlayer().inVent)
                 {
-                    PlayerControl.LocalPlayer.MyPhysics.RpcExitVent(Vent.currentVent.Id);
-                    PlayerControl.LocalPlayer.MyPhysics.ExitAllVents();
+                    LocalPlayer().MyPhysics.RpcExitVent(Vent.currentVent.Id);
+                    LocalPlayer().MyPhysics.ExitAllVents();
                 }
             }
 
@@ -73,23 +73,23 @@ namespace TownOfSushi.Roles.Modifiers
             {
                 PlayerControl player = PlayerById(key);
                 player.transform.position = value;
-                if (PlayerControl.LocalPlayer == player) PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(value);
+                if (LocalPlayer()== player) LocalPlayer().NetTransform.RpcSnapTo(value);
             }
 
-            if (PlayerControl.LocalPlayer.walkingToVent)
+            if (LocalPlayer().walkingToVent)
             {
-                PlayerControl.LocalPlayer.inVent = false;
+                LocalPlayer().inVent = false;
                 Vent.currentVent = null;
-                PlayerControl.LocalPlayer.moveable = true;
-                PlayerControl.LocalPlayer.MyPhysics.StopAllCoroutines();
+                LocalPlayer().moveable = true;
+                LocalPlayer().MyPhysics.StopAllCoroutines();
             }
 
-            if (IsSubmerged()) ChangeFloor(PlayerControl.LocalPlayer.transform.position.y > -7f);
+            if (IsSubmerged()) ChangeFloor(LocalPlayer().transform.position.y > -7f);
         }
 
         private Dictionary<byte, Vector2> GenerateDisperseCoordinates()
         {
-            List<PlayerControl> targets = PlayerControl.AllPlayerControls.ToArray().Where(player => !player.Data.IsDead && !player.Data.Disconnected).ToList();
+            List<PlayerControl> targets = AllPlayers().Where(player => !player.Data.IsDead && !player.Data.Disconnected).ToList();
 
             HashSet<Vent> vents = Object.FindObjectsOfType<Vent>().ToHashSet();
 
@@ -118,11 +118,11 @@ namespace TownOfSushi.Roles.Modifiers
     {
         public static bool Prefix(KillButton __instance)
         {
-            if (!PlayerControl.LocalPlayer.Is(ModifierEnum.Disperser)) return true;
+            if (!LocalPlayer().Is(ModifierEnum.Disperser)) return true;
 
-            var role = GetModifier<Disperser>(PlayerControl.LocalPlayer);
+            var role = GetModifier<Disperser>(LocalPlayer());
             if (__instance != role.DisperseButton) return true;
-            if (!PlayerControl.LocalPlayer.CanMove) return false;
+            if (!LocalPlayer().CanMove) return false;
             if (IsDead()) return false;
             if (role.MaxUses <= 0) return false;
             if (!(role.DisperseTimer() == 0f)) return false;
@@ -149,11 +149,11 @@ namespace TownOfSushi.Roles.Modifiers
         private static void UpdateButtonButton(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(ModifierEnum.Disperser)) return;
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(ModifierEnum.Disperser)) return;
 
-            var role = GetModifier<Disperser>(PlayerControl.LocalPlayer);
+            var role = GetModifier<Disperser>(LocalPlayer());
 
             if (role.DisperseButton == null)
             {

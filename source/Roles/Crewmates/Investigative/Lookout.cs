@@ -43,20 +43,20 @@ namespace TownOfSushi.Roles
         public static bool Prefix(KillButton __instance)
         {
             if (__instance != HUDManager().KillButton) return true;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Lookout)) return true;
-            var role = Role.GetRole<Lookout>(PlayerControl.LocalPlayer);
-            if (!PlayerControl.LocalPlayer.CanMove || role.ClosestPlayer == null) return false;
+            if (!LocalPlayer().Is(RoleEnum.Lookout)) return true;
+            var role = Role.GetRole<Lookout>(LocalPlayer());
+            if (!LocalPlayer().CanMove || role.ClosestPlayer == null) return false;
             var flag2 = role.WatchTimer() == 0f;
             if (!flag2) return false;
             if (!__instance.enabled) return false;
-            var maxDistance = GameOptionsData.KillDistances[VanillaOptions().currentNormalGameOptions.KillDistance];
+            var maxDistance = GameOptionsData.KillDistances[OptionsManager().currentNormalGameOptions.KillDistance];
             if (Vector2.Distance(role.ClosestPlayer.GetTruePosition(),
-                PlayerControl.LocalPlayer.GetTruePosition()) > maxDistance) return false;
+                LocalPlayer().GetTruePosition()) > maxDistance) return false;
             if (role.ClosestPlayer == null) return false;
             var target = role.ClosestPlayer;
             if (!role.ButtonUsable) return false;
 
-            var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer);
+            var interact = Interact(LocalPlayer(), role.ClosestPlayer);
             if (interact[3] == true)
             {
                 role.Watching.Add(role.ClosestPlayer.PlayerId, new List<RoleEnum>());
@@ -84,15 +84,15 @@ namespace TownOfSushi.Roles
         public static void Postfix(MeetingHud __instance)
         {
             if (IsDead()) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Lookout)) return;
-            var loRole = GetRole<Lookout>(PlayerControl.LocalPlayer);
+            if (!LocalPlayer().Is(RoleEnum.Lookout)) return;
+            var loRole = GetRole<Lookout>(LocalPlayer());
             foreach (var (key, value) in loRole.Watching)
             {
                 var name = Utils.PlayerById(key).Data.PlayerName;
                 if (value.Count == 0)
                 {
                     if (HUDManager())
-                        HUDManager().Chat.AddChat(PlayerControl.LocalPlayer, $"No players interacted with {name}");
+                        Chat().AddChat(LocalPlayer(), $"No players interacted with {name}");
                 }
                 else
                 {
@@ -103,7 +103,7 @@ namespace TownOfSushi.Roles
                     }
                     message = message.Remove(message.Length - 1, 1);
                     if (HUDManager())
-                        HUDManager().Chat.AddChat(PlayerControl.LocalPlayer, message);
+                        Chat().AddChat(LocalPlayer(), message);
                 }
             }
         }
@@ -115,14 +115,14 @@ namespace TownOfSushi.Roles
         public static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Lookout)) return;
-            var data = PlayerControl.LocalPlayer.Data;
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(RoleEnum.Lookout)) return;
+            var data = LocalPlayer().Data;
             var isDead = data.IsDead;
             var watchButton = __instance.KillButton;
 
-            var role = GetRole<Lookout>(PlayerControl.LocalPlayer);
+            var role = GetRole<Lookout>(LocalPlayer());
 
             if (role.UsesText == null && role.UsesLeft > 0)
             {
@@ -158,7 +158,7 @@ namespace TownOfSushi.Roles
             SetTarget(ref role.ClosestPlayer, watchButton, float.NaN, notWatching);
 
             var renderer = watchButton.graphic;
-            if (role.ClosestPlayer != null && role.ButtonUsable && PlayerControl.LocalPlayer.moveable)
+            if (role.ClosestPlayer != null && role.ButtonUsable && LocalPlayer().moveable)
             {
                 renderer.color = Palette.EnabledColor;
                 renderer.material.SetFloat("_Desat", 0f);

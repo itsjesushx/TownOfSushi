@@ -9,7 +9,7 @@ namespace TownOfSushi.Patches
             if(__instance.ImpostorVentButton == null || __instance.ImpostorVentButton.gameObject == null || __instance.ImpostorVentButton.IsNullOrDestroyed())
                 return;
 
-            bool active = PlayerControl.LocalPlayer != null && VentPatches.CanUseVents(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.CachedPlayerData) && !Meeting();
+            bool active = LocalPlayer()!= null && VentPatches.CanUseVents(LocalPlayer(), LocalPlayer().CachedPlayerData) && !Meeting();
             if (active != __instance.ImpostorVentButton.gameObject.active)
             __instance.ImpostorVentButton.gameObject.SetActive(active);
         }
@@ -18,14 +18,14 @@ namespace TownOfSushi.Patches
     [HarmonyPatch(typeof(Vent), nameof(Vent.CanUse))]
     public static class VentPatches
     {
-        public static bool IsVenter => CanUseVents(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.CachedPlayerData);
+        public static bool IsVenter => CanUseVents(LocalPlayer(), LocalPlayer().CachedPlayerData);
         public static bool CanUseVents(PlayerControl player, NetworkedPlayerInfo playerInfo)
         {
             if (IsHideNSeek()) return false;
 
             if (player.inVent)
             {
-                if (PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 2)
+                if (TwoPlayersAlive())
                 {
                     player.MyPhysics.RpcExitVent(Vent.currentVent.Id);
                     player.MyPhysics.ExitAllVents();
@@ -36,7 +36,7 @@ namespace TownOfSushi.Patches
             if (playerInfo.IsDead)
                 return false;
             
-            if (PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 2) return false;
+            if (TwoPlayersAlive()) return false;
 
             if (
                 player.Is(RoleEnum.Engineer)
@@ -57,7 +57,7 @@ namespace TownOfSushi.Patches
 
             if (player.Is(RoleEnum.SerialKiller) && CustomGameOptions.SerialKillerVent)
             {
-                var role = GetRole<SerialKiller>(PlayerControl.LocalPlayer);
+                var role = GetRole<SerialKiller>(LocalPlayer());
                 if (role.Stabbing) return true;
             }
 
@@ -109,7 +109,7 @@ namespace TownOfSushi.Patches
     {
         public static bool Prefix(Vent __instance)
         {
-            var player = PlayerControl.LocalPlayer;
+            var player = LocalPlayer();
 
             if (player.Is(RoleEnum.Jester) && CustomGameOptions.JesterVent)
                 return CustomGameOptions.JesterVentSwitch;

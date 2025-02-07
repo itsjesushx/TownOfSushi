@@ -42,7 +42,7 @@ namespace TownOfSushi.Roles.Modifiers
                 {
                     if (blackmailer.Blackmailed.GetCustomOutfitType() != CustomPlayerOutfitType.Camouflage &&
                         blackmailer.Blackmailed.GetCustomOutfitType() != CustomPlayerOutfitType.Swooper)
-                        blackmailer.Blackmailed.nameText().color = ColorManager.Impostor;
+                        blackmailer.Blackmailed.nameText().color = ColorManager.ImpostorRed;
                     else blackmailer.Blackmailed.nameText().color = Color.clear;
                 }
                 blackmailer.Blackmailed = player;
@@ -57,7 +57,7 @@ namespace TownOfSushi.Roles.Modifiers
             {
                 if (escapist.EscapePoint != new Vector3(0f, 0f, 0f))
                 {
-                    StartRPC(CustomRPC.Escape, PlayerControl.LocalPlayer.PlayerId, escapist.EscapePoint);
+                    StartRPC(CustomRPC.Escape, LocalPlayer().PlayerId, escapist.EscapePoint);
                     escapist.LastEscape = DateTime.UtcNow;
                     Escapist.Escape(escapist.Player);
                 }
@@ -68,11 +68,11 @@ namespace TownOfSushi.Roles.Modifiers
                 {
                     poisoner.PoisonedPlayer = poisoner.Player;
                     poisoner.PoisonButton.graphic.sprite = TownOfSushi.PoisonSprite;
-                    if (poisoner.PoisonedPlayer != null && poisoner.PoisonedPlayer == PlayerControl.LocalPlayer)
+                    if (poisoner.PoisonedPlayer != null && poisoner.PoisonedPlayer == LocalPlayer())
                     {
                         poisoner.Poison();
                     }
-                    poisoner.PoisonedPlayer = PlayerControl.LocalPlayer; //Only do this to stop repeatedly trying to re-kill poisoned player. null didn't work for some reason
+                    poisoner.PoisonedPlayer = LocalPlayer(); //Only do this to stop repeatedly trying to re-kill poisoned player. null didn't work for some reason
                 }
                 catch{}
             }
@@ -80,22 +80,22 @@ namespace TownOfSushi.Roles.Modifiers
             {
                 if (!grenadier.Enabled)
                 {
-                    StartRPC(CustomRPC.FlashGrenade, PlayerControl.LocalPlayer.PlayerId);
+                    StartRPC(CustomRPC.FlashGrenade, LocalPlayer().PlayerId);
                     grenadier.TimeRemaining = CustomGameOptions.GrenadeDuration;
                     grenadier.Flash();
                 }
             }
             else if (role is Janitor janitor)
             {
-                StartRPC(CustomRPC.JanitorClean, PlayerControl.LocalPlayer.PlayerId, db.ParentId);
+                StartRPC(CustomRPC.JanitorClean, LocalPlayer().PlayerId, db.ParentId);
 
                 Coroutines.Start(JanitorCoroutine.CleanCoroutine(db, janitor));
             }
             else if (role is Miner miner)
             {
-                var position = PlayerControl.LocalPlayer.transform.position;
+                var position = LocalPlayer().transform.position;
                 var id = PlaceVent.GetAvailableId();
-                StartRPC(CustomRPC.Mine, id, PlayerControl.LocalPlayer.PlayerId, position, position.z + 0.001f);
+                StartRPC(CustomRPC.Mine, id, LocalPlayer().PlayerId, position, position.z + 0.001f);
                 PlaceVent.SpawnVent(id, miner, position, position.z + 0.001f);
                 miner.LastMined = DateTime.UtcNow;
             }
@@ -103,7 +103,7 @@ namespace TownOfSushi.Roles.Modifiers
             {
                 if (morphling.Player.GetCustomOutfitType() != CustomPlayerOutfitType.Morph)
                 {
-                    StartRPC(CustomRPC.Morph, PlayerControl.LocalPlayer.PlayerId, corpse.PlayerId);
+                    StartRPC(CustomRPC.Morph, LocalPlayer().PlayerId, corpse.PlayerId);
                     morphling.TimeRemaining = CustomGameOptions.MorphlingDuration;
                     if (morphling.SampledPlayer == null) morphling._morphButton.graphic.sprite = TownOfSushi.MorphSprite;
                     morphling.SampledPlayer = corpse;
@@ -115,7 +115,7 @@ namespace TownOfSushi.Roles.Modifiers
             {
                 if (swooper.Player.GetCustomOutfitType() != CustomPlayerOutfitType.Swooper)
                 {
-                    StartRPC(CustomRPC.Swoop, PlayerControl.LocalPlayer.PlayerId);
+                    StartRPC(CustomRPC.Swoop, LocalPlayer().PlayerId);
                     swooper.TimeRemaining = CustomGameOptions.SwoopDuration;
                     swooper.Swoop();
                 }
@@ -124,7 +124,7 @@ namespace TownOfSushi.Roles.Modifiers
             {
                 if (undertaker.CurrentlyDragging)
                 {
-                    Vector3 position = PlayerControl.LocalPlayer.transform.position;
+                    Vector3 position = LocalPlayer().transform.position;
 
                     if (IsSubmerged())
                     {
@@ -140,14 +140,14 @@ namespace TownOfSushi.Roles.Modifiers
 
                     position.y -= 0.3636f;
 
-                    StartRPC(CustomRPC.Drop, PlayerControl.LocalPlayer.PlayerId, position, position.z);
+                    StartRPC(CustomRPC.Drop, LocalPlayer().PlayerId, position, position.z);
 
                     var body = undertaker.CurrentlyDragging;
                     undertaker.CurrentlyDragging = null;
                     body.transform.position = position;
                 }
 
-                StartRPC(CustomRPC.Drag, PlayerControl.LocalPlayer.PlayerId, db.ParentId);
+                StartRPC(CustomRPC.Drag, LocalPlayer().PlayerId, db.ParentId);
                 undertaker.CurrentlyDragging = db;
                 UndertakerKillButtonTarget.SetTarget(undertaker._dragDropButton, null, undertaker);
                 undertaker._dragDropButton.graphic.sprite = TownOfSushi.DropSprite;
@@ -157,7 +157,7 @@ namespace TownOfSushi.Roles.Modifiers
             {
                 if (hitman.CurrentlyDragging)
                 {
-                    Vector3 position = PlayerControl.LocalPlayer.transform.position;
+                    Vector3 position = LocalPlayer().transform.position;
 
                     if (IsSubmerged())
                     {
@@ -173,14 +173,14 @@ namespace TownOfSushi.Roles.Modifiers
 
                     position.y -= 0.3636f;
 
-                    StartRPC(CustomRPC.HitmanDrop, PlayerControl.LocalPlayer.PlayerId, position, position.z);
+                    StartRPC(CustomRPC.HitmanDrop, LocalPlayer().PlayerId, position, position.z);
 
                     var body = hitman.CurrentlyDragging;
                     hitman.CurrentlyDragging = null;
                     body.transform.position = position;
                 }
 
-                StartRPC(CustomRPC.HitmanDrag, PlayerControl.LocalPlayer.PlayerId, db.ParentId);
+                StartRPC(CustomRPC.HitmanDrag, LocalPlayer().PlayerId, db.ParentId);
                 hitman.CurrentlyDragging = db;
                 HitmanKillButtonTarget.SetTarget(hitman._dragDropButtonHitman, null, hitman);
                 hitman._dragDropButtonHitman.graphic.sprite = TownOfSushi.DropSprite;
@@ -192,7 +192,7 @@ namespace TownOfSushi.Roles.Modifiers
             {
                 if (!venerer.Enabled)
                 {
-                    StartRPC(CustomRPC.Camouflage, PlayerControl.LocalPlayer.PlayerId, venerer.Kills);
+                    StartRPC(CustomRPC.Camouflage, LocalPlayer().PlayerId, venerer.Kills);
                     venerer.TimeRemaining = CustomGameOptions.AbilityDuration;
                     venerer.KillsAtStartAbility = venerer.Kills;
                     venerer.Ability();
@@ -201,20 +201,20 @@ namespace TownOfSushi.Roles.Modifiers
             else if (role is Bomber bomber)
             {
                 bomber.Detonated = false;
-                var pos = PlayerControl.LocalPlayer.transform.position;
+                var pos = LocalPlayer().transform.position;
                 pos.z += 0.001f;
                 bomber.DetonatePoint = pos;
                 bomber.PlantButton.graphic.sprite = TownOfSushi.DetonateSprite;
                 bomber.TimeRemaining = CustomGameOptions.DetonateDelay;
                 bomber.PlantButton.SetCoolDown(bomber.TimeRemaining, CustomGameOptions.DetonateDelay);
-                if (PlayerControl.LocalPlayer.Is(ModifierEnum.Underdog))
+                if (LocalPlayer().Is(ModifierEnum.Underdog))
                 {
-                    var lowerKC = VanillaOptions().currentNormalGameOptions.KillCooldown - CustomGameOptions.UnderdogKillBonus + CustomGameOptions.DetonateDelay;
-                    var normalKC = VanillaOptions().currentNormalGameOptions.KillCooldown + CustomGameOptions.DetonateDelay;
-                    var upperKC = VanillaOptions().currentNormalGameOptions.KillCooldown + CustomGameOptions.UnderdogKillBonus + CustomGameOptions.DetonateDelay;
-                    PlayerControl.LocalPlayer.SetKillTimer(UnderdogPerformKill.LastImp() ? lowerKC : (UnderdogPerformKill.IncreasedKC() ? normalKC : upperKC));
+                    var lowerKC = OptionsManager().currentNormalGameOptions.KillCooldown - CustomGameOptions.UnderdogKillBonus + CustomGameOptions.DetonateDelay;
+                    var normalKC = OptionsManager().currentNormalGameOptions.KillCooldown + CustomGameOptions.DetonateDelay;
+                    var upperKC = OptionsManager().currentNormalGameOptions.KillCooldown + CustomGameOptions.UnderdogKillBonus + CustomGameOptions.DetonateDelay;
+                    LocalPlayer().SetKillTimer(UnderdogPerformKill.LastImp() ? lowerKC : (UnderdogPerformKill.IncreasedKC() ? normalKC : upperKC));
                 }
-                else PlayerControl.LocalPlayer.SetKillTimer(VanillaOptions().currentNormalGameOptions.KillCooldown + CustomGameOptions.DetonateDelay);
+                else LocalPlayer().SetKillTimer(OptionsManager().currentNormalGameOptions.KillCooldown + CustomGameOptions.DetonateDelay);
                 HUDManager().KillButton.SetTarget(null);
                 bomber.Bomb = BombExtentions.CreateBomb(pos);
                 StartRPC(CustomRPC.Plant, pos.x, pos.y, pos.z);

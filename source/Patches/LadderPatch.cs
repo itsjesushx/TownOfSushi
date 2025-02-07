@@ -7,7 +7,7 @@ namespace TownOfSushi.Patches
         [HarmonyPatch(typeof(PlayerControl), "SetKinematic")]
         static bool Prefix(PlayerControl __instance, bool b)
         {
-            if (__instance != PlayerControl.LocalPlayer) return true;
+            if (__instance != LocalPlayer()) return true;
             if (!__instance.onLadder) return true;
             if (b) return true;
             var AllLadders = GameObject.FindObjectsOfType<Ladder>();

@@ -27,7 +27,7 @@ namespace TownOfSushi.Patches
         {
             yield return new WaitForSecondsRealtime(delay);
             while (ExiledInstance() != null) { yield return 0; }
-            Targets = PlayerControl.AllPlayerControls.ToArray().Where(x => Inclusion(x) && (!x.Data.IsDead || includeDead) && !x.Data.Disconnected).ToList();
+            Targets = AllPlayers().Where(x => Inclusion(x) && (!x.Data.IsDead || includeDead) && !x.Data.Disconnected).ToList();
             if (Menu == null)
             {
                 if (Camera.main == null)

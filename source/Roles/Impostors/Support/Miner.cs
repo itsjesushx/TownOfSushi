@@ -15,7 +15,7 @@ namespace TownOfSushi.Roles
             TaskText = () => "Place vents";
             RoleInfo = "The Miner is an Impostor that can create new vents. These vents only connect to each other, forming a new passway.";
             LoreText = "A skilled worker underground, you have the power to shape the map itself. As the Miner, you can place vents around the map, giving you and your allies new pathways for movement. Your ability to alter the landscape allows you to sneak around unnoticed, setting traps or escaping danger while the Crewmates remain unaware of the new routes you've created beneath their feet.";
-            Color = ColorManager.Impostor;
+            Color = ColorManager.ImpostorRed;
             LastMined = DateTime.UtcNow;
             RoleType = RoleEnum.Miner;  
             Faction = Faction.Impostors;
@@ -57,10 +57,10 @@ namespace TownOfSushi.Roles
         public static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Miner)) return;
-            var role = GetRole<Miner>(PlayerControl.LocalPlayer);
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(RoleEnum.Miner)) return;
+            var role = GetRole<Miner>(LocalPlayer());
             if (role.MineButton == null)
             {
                 role.MineButton = Object.Instantiate(__instance.KillButton, __instance.KillButton.transform.parent);
@@ -74,11 +74,11 @@ namespace TownOfSushi.Roles
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
 
             role.MineButton.SetCoolDown(role.MineTimer(), CustomGameOptions.MineCd);
-            var hits = Physics2D.OverlapBoxAll(PlayerControl.LocalPlayer.transform.position, role.VentSize, 0);
+            var hits = Physics2D.OverlapBoxAll(LocalPlayer().transform.position, role.VentSize, 0);
             hits = hits.ToArray().Where(c =>
                     (c.name.Contains("Vent") || !c.isTrigger) && c.gameObject.layer != 8 && c.gameObject.layer != 5)
                 .ToArray();
-            if (hits.Count == 0 && PlayerControl.LocalPlayer.moveable == true)
+            if (hits.Count == 0 && LocalPlayer().moveable == true)
             {
                 role.MineButton.graphic.color = Palette.EnabledColor;
                 role.MineButton.graphic.material.SetFloat("_Desat", 0f);
@@ -98,23 +98,23 @@ namespace TownOfSushi.Roles
     {
         public static bool Prefix(KillButton __instance)
         {
-            var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Miner);
+            var flag = LocalPlayer().Is(RoleEnum.Miner);
             if (!flag) return true;
-            if (!PlayerControl.LocalPlayer.CanMove) return false;
+            if (!LocalPlayer().CanMove) return false;
             if (IsDead()) return false;
-            var role = GetRole<Miner>(PlayerControl.LocalPlayer);
+            var role = GetRole<Miner>(LocalPlayer());
             if (__instance == role.MineButton)
             {
                 if (__instance.isCoolingDown) return false;
                 if (!__instance.isActiveAndEnabled) return false;
                 if (!role.CanPlace) return false;
                 if (role.MineTimer() != 0) return false;
-                if (GetPlayerElevator(PlayerControl.LocalPlayer).Item1) return false;
-                var abilityUsed = AbilityUsed(PlayerControl.LocalPlayer);
+                if (GetPlayerElevator(LocalPlayer()).Item1) return false;
+                var abilityUsed = AbilityUsed(LocalPlayer());
                 if (!abilityUsed) return false;
-                var position = PlayerControl.LocalPlayer.transform.position;
+                var position = LocalPlayer().transform.position;
                 var id = GetAvailableId();
-                StartRPC(CustomRPC.Mine, id, PlayerControl.LocalPlayer.PlayerId, position, position.z + 0.001f);
+                StartRPC(CustomRPC.Mine, id, LocalPlayer().PlayerId, position, position.z + 0.001f);
                 SpawnVent(id, role, position, position.z + 0.001f);
                 return false;
             }

@@ -19,7 +19,7 @@ namespace TownOfSushi.Roles.Abilities
         [HarmonyPatch(typeof(VitalsMinigame), nameof(VitalsMinigame.Begin))]
         class VitalsMinigameStartPatch {
             static void Postfix(VitalsMinigame __instance) {
-                if (PlayerControl.LocalPlayer.Is(AbilityEnum.Spy)) {
+                if (LocalPlayer().Is(AbilityEnum.Spy)) {
                     spyTexts = new List<TMPro.TextMeshPro>();
                     foreach (VitalsPanel panel in __instance.vitals) {
                         TMPro.TextMeshPro text = UnityEngine.Object.Instantiate(__instance.SabText, panel.transform);
@@ -39,7 +39,7 @@ namespace TownOfSushi.Roles.Abilities
 
             static void Postfix(VitalsMinigame __instance) {
                 // Spy show time since death
-                if (PlayerControl.LocalPlayer.Is(AbilityEnum.Spy)) {
+                if (LocalPlayer().Is(AbilityEnum.Spy)) {
                     for (int k = 0; k < __instance.vitals.Length; k++) {
                         VitalsPanel vitalsPanel = __instance.vitals[k];
                         NetworkedPlayerInfo player = vitalsPanel.PlayerInfo;
@@ -140,14 +140,13 @@ namespace TownOfSushi.Roles.Abilities
         public static bool Prefix(MapCountOverlay __instance)
         {
             if (IsHideNSeek()) return true;
-            var localPlayer = PlayerControl.LocalPlayer;
-            var isSpy = localPlayer.Is(AbilityEnum.Spy);
+            var isSpy = LocalPlayer().Is(AbilityEnum.Spy);
             __instance.timer += Time.deltaTime;
             if (__instance.timer < 0.1f) return false;
 
             __instance.timer = 0f;
 
-            var sabotaged = PlayerTask.PlayerHasTaskOfType<IHudOverrideTask>(localPlayer);
+            var sabotaged = PlayerTask.PlayerHasTaskOfType<IHudOverrideTask>(LocalPlayer());
 
             if (sabotaged != __instance.isSab)
                 SetSabotaged(__instance, sabotaged);

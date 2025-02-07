@@ -11,7 +11,7 @@ namespace TownOfSushi.Roles
             AddToRoleHistory(RoleType);
             RoleType = RoleEnum.Impostor;
             RoleAlignment = RoleAlignment.ImpSpecial;
-            Color = Palette.ImpostorRed;
+            Color = ColorManager.ImpostorRed;
         }
     }
     public class Crewmate : Role
@@ -25,7 +25,7 @@ namespace TownOfSushi.Roles
             RoleAlignment = RoleAlignment.CrewSpecial;
             RoleType = RoleEnum.Crewmate;
             AddToRoleHistory(RoleType);
-            Color = ColorManager.Crewmate;
+            Color = ColorManager.CrewmateBlue;
         }
     }
 }

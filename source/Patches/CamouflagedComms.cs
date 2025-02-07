@@ -10,7 +10,7 @@ namespace TownOfSushi.Patches
             if (CustomGameOptions.ColourblindComms)
             {
                 if (Ship() != null)
-                    switch (VanillaOptions().currentNormalGameOptions.MapId)
+                    switch (OptionsManager().currentNormalGameOptions.MapId)
                     {
                         default:
                         case 0:

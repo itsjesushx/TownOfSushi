@@ -42,7 +42,7 @@ namespace TownOfSushi.Roles
         protected internal int IncorrectShots { get; set; } = 0;
         protected internal int CorrectShot { get; set; } = 0;
         protected internal int CorrectAssassinKills { get; set; } = 0;
-        public bool Local => PlayerControl.LocalPlayer.PlayerId == Player.PlayerId;
+        public bool Local => LocalPlayer().PlayerId == Player.PlayerId;
         protected internal Faction Faction { get; set; } = Faction.Crewmates;
         public string PlayerName { get; set; }
         public string ColorString => "<color=#" + Color.ToHtmlStringRGBA() + ">";
@@ -84,7 +84,7 @@ namespace TownOfSushi.Roles
         }
         internal virtual bool VampireCriteria()
         {
-            if (RoleType == RoleEnum.Vampire && PlayerControl.LocalPlayer.Is(RoleEnum.Vampire)) return true;
+            if (RoleType == RoleEnum.Vampire && LocalPlayer().Is(RoleEnum.Vampire)) return true;
             return false;
         }
 
@@ -95,32 +95,32 @@ namespace TownOfSushi.Roles
         }
         internal virtual bool ColourImpostorCriteria()
         {
-            if (Faction == Faction.Impostors && PlayerControl.LocalPlayer.Data.IsImpostor()) return true;
+            if (Faction == Faction.Impostors && LocalPlayer().Data.IsImpostor()) return true;
             return false;
         }
 
         internal virtual bool ImpostorCriteria()
         {
-            if (Faction == Faction.Impostors && PlayerControl.LocalPlayer.Data.IsImpostor() &&
+            if (Faction == Faction.Impostors && LocalPlayer().Data.IsImpostor() &&
                 CustomGameOptions.ImpostorSeeRoles) return true;
             return false;
         }
         public List<KillButton> ExtraButtons = new List<KillButton>();
         internal virtual bool SelfCriteria()
         {
-            return GetPlayerRole(PlayerControl.LocalPlayer) == this;
+            return GetPlayerRole(LocalPlayer()) == this;
         }
         internal virtual bool RoleCriteria()
         {
-            return PlayerControl.LocalPlayer.Is(AbilityEnum.Sleuth) && GetAbility<Sleuth>(PlayerControl.LocalPlayer).Reported.Contains(Player.PlayerId);
+            return LocalPlayer().Is(AbilityEnum.Sleuth) && GetAbility<Sleuth>(LocalPlayer()).Reported.Contains(Player.PlayerId);
         }
         internal virtual bool GuardianAngelCriteria()
         {
-            return PlayerControl.LocalPlayer.Is(RoleEnum.GuardianAngel) && CustomGameOptions.GAKnowsTargetRole && Player == GetRole<GuardianAngel>(PlayerControl.LocalPlayer).target;
+            return LocalPlayer().Is(RoleEnum.GuardianAngel) && CustomGameOptions.GAKnowsTargetRole && Player == GetRole<GuardianAngel>(LocalPlayer()).target;
         }
         internal virtual bool RomanticCriteria()
         {
-            return PlayerControl.LocalPlayer.Is(RoleEnum.Romantic) && CustomGameOptions.RomanticKnowsBelovedRole && Player == GetRole<Romantic>(PlayerControl.LocalPlayer).Beloved;
+            return LocalPlayer().Is(RoleEnum.Romantic) && CustomGameOptions.RomanticKnowsBelovedRole && Player == GetRole<Romantic>(LocalPlayer()).Beloved;
         }
         protected virtual string NameText(bool revealTasks, bool revealRole, bool revealModifier, PlayerVoteArea player = null)
         {
@@ -131,7 +131,7 @@ namespace TownOfSushi.Roles
             foreach (var role in GetRoles(RoleEnum.GuardianAngel))
             {
                 var ga = (GuardianAngel) role;
-                if (Player == ga.target && ((Player == PlayerControl.LocalPlayer && CustomGameOptions.GATargetKnows)
+                if (Player == ga.target && ((Player == LocalPlayer()&& CustomGameOptions.GATargetKnows)
                     || (IsDead() && !ga.Player.Data.IsDead)))
                 {
                     PlayerName += "<color=#FFFFFFFF> [★]</color>";
@@ -140,8 +140,8 @@ namespace TownOfSushi.Roles
             foreach (var role in GetRoles(RoleEnum.Romantic))
             {
                 var rom = (Romantic) role;
-                if (Player == rom.Beloved && ((Player == PlayerControl.LocalPlayer && CustomGameOptions.RomanticBelovedKnows)
-                    || (IsDead() && !rom.Player.Data.IsDead) || Player == rom.Player && rom.AlreadyPicked && Player == PlayerControl.LocalPlayer))
+                if (Player == rom.Beloved && ((Player == LocalPlayer()&& CustomGameOptions.RomanticBelovedKnows)
+                    || (IsDead() && !rom.Player.Data.IsDead) || Player == rom.Player && rom.AlreadyPicked && Player == LocalPlayer()))
                 {
                     PlayerName += "<color=#FF66CCFF>  [♥]</color>";
                 }
@@ -182,7 +182,7 @@ namespace TownOfSushi.Roles
 
            if (Player.HasTasks())
            {
-                if (IsDead() && TownOfSushi.DeadSeeTasks.Value || Player == PlayerControl.LocalPlayer && Meeting() && TownOfSushi.ShowTasks.Value)
+                if (IsDead() && TownOfSushi.DeadSeeTasks.Value || Player == LocalPlayer()&& Meeting() && TownOfSushi.ShowTasks.Value)
                 {
                     PlayerName += $" ({TotalTasks - TasksLeft}/{TotalTasks})";
                 }
@@ -212,8 +212,7 @@ namespace TownOfSushi.Roles
 
             if (!revealRole) return PlayerName;
 
-            if (Meeting()) return $"{PlayerName}\n<size=75%>{Name}</size>";
-            else return $"<size=75%>{Name}</size>\n{PlayerName}</color>";
+            return $"{PlayerName}\n<size=75%>{Name}</size>";
         }
 
         public static bool operator ==(Role a, Role b)
@@ -292,8 +291,7 @@ namespace TownOfSushi.Roles
         }
         public static Role GetRole(PlayerVoteArea area)
         {
-            var player = PlayerControl.AllPlayerControls.ToArray()
-                .FirstOrDefault(x => x.PlayerId == area.TargetPlayerId);
+            var player = AllPlayers().FirstOrDefault(x => x.PlayerId == area.TargetPlayerId);
             return player == null ? null : GetPlayerRole(player);
         }
         public static IEnumerable<Role> GetRoles(RoleEnum roletype)
@@ -340,7 +338,7 @@ namespace TownOfSushi.Roles
                 }
 
                 if (role == null) return;
-                if (role.RoleType == RoleEnum.Amnesiac && role.Player != PlayerControl.LocalPlayer) return;
+                if (role.RoleType == RoleEnum.Amnesiac && role.Player != LocalPlayer()) return;
                 var task = new GameObject(role.Name + "Task").AddComponent<ImportantTextTask>();
                 task.transform.SetParent(player.transform, false);
                 task.Text = $"{role.ColorString}Role: {role.Name} \n{role.TaskText()}\nAlignment: {player.AlignmentText()}</color>";
@@ -435,7 +433,7 @@ namespace TownOfSushi.Roles
         {
             bool CheckNoImpsNoCrews()
             {
-                var alives = PlayerControl.AllPlayerControls.ToArray()
+                var alives = AllPlayers()
                     .Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList();
                 if (alives.Count == 0) return false;
                 var flag = alives.All(x =>
@@ -468,7 +466,7 @@ namespace TownOfSushi.Roles
             {
                 if (IsHideNSeek()) return true;
                 if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return false;
-                if (PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 2) return false;
+                if (TwoPlayersAlive()) return false;
                 if (!AmongUsClient.Instance.AmHost) return false;
                 if (Ship().Systems != null)
                 {
@@ -511,7 +509,7 @@ namespace TownOfSushi.Roles
 
                 if (GameData.Instance.TotalTasks <= GameData.Instance.CompletedTasks)
                 {
-                    var crews = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(Faction.Crewmates) && !x.Data.Disconnected).ToList();
+                    var crews = AllPlayers().Where(x => x.Is(Faction.Crewmates) && !x.Data.Disconnected).ToList();
                     if (crews.Count != 0)
                     {
                         CrewmatesWin = true;
@@ -574,12 +572,12 @@ namespace TownOfSushi.Roles
                 if (Meeting() != null) UpdateMeeting(Meeting());
 
                 if (PlayerControl.AllPlayerControls.Count <= 1) return;
-                if (PlayerControl.LocalPlayer == null) return;
-                if (PlayerControl.LocalPlayer.Data == null) return;
+                if (LocalPlayer()== null) return;
+                if (LocalPlayer().Data == null) return;
 
                 foreach (var player in PlayerControl.AllPlayerControls)
                 {
-                    if (!(player.Data != null && player.Data.IsImpostor() && PlayerControl.LocalPlayer.Data.IsImpostor()))
+                    if (!(player.Data != null && player.Data.IsImpostor() && LocalPlayer().Data.IsImpostor()))
                     {
                         player.nameText().text = player.name;
                         player.nameText().color = Color.white;

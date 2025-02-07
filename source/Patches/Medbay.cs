@@ -10,11 +10,11 @@ namespace TownOfSushi
 			private static void BeginPostfix(MedScanMinigame __instance)
 			{
 				// Update medical details for Giant and mini
-				if (PlayerControl.LocalPlayer.Is(ModifierEnum.Giant))
+				if (LocalPlayer().Is(ModifierEnum.Giant))
 				{
 					__instance.completeString = __instance.completeString.Replace("3' 6\"", "5' 3\"").Replace("92lb", "184lb");
 				}
-				if (PlayerControl.LocalPlayer.Is(ModifierEnum.Mini))
+				if (LocalPlayer().Is(ModifierEnum.Mini))
 				{
 					__instance.completeString = __instance.completeString.Replace("3' 6\"", "2' 4\"").Replace("92lb", "45lb");
 				}
@@ -29,7 +29,7 @@ namespace TownOfSushi
                 if (CustomGameOptions.ParallelMedScans)
                 {
                     //Allows multiple medbay scans at once
-                    __instance.medscan.CurrentUser = PlayerControl.LocalPlayer.PlayerId;
+                    __instance.medscan.CurrentUser = LocalPlayer().PlayerId;
                     __instance.medscan.UsersList.Clear();
                 }
             }

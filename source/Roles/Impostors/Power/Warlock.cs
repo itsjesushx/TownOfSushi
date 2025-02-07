@@ -9,7 +9,7 @@ namespace TownOfSushi.Roles
             TaskText = () => "Kill people in small bursts";
             RoleInfo = "As the warlock, you have to wait until your charger gets to 100% to kill, you can kill anyone that does not have protection with your kill button, just like a serial killer on bloodlust. The difference is that warlock kills faster.";
             LoreText = "A dark sorcerer, you harness the power of dark magic to strike fear into the hearts of the crew. As the Warlock, you can charge up your kill ability, allowing you to unleash a devastating multi-kill in short bursts. The more you charge, the deadlier your strikes become, giving you the power to eliminate multiple targets at once and wreak havoc on the crew.";
-            Color = ColorManager.Impostor;
+            Color = ColorManager.ImpostorRed;
             RoleType = RoleEnum.Warlock;
             Faction = Faction.Impostors;
             AddToRoleHistory(RoleType);
@@ -50,10 +50,10 @@ namespace TownOfSushi.Roles
         public static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Warlock)) return;
-            var role = GetRole<Warlock>(PlayerControl.LocalPlayer);
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(RoleEnum.Warlock)) return;
+            var role = GetRole<Warlock>(LocalPlayer());
 
             if (role.ChargeText == null)
             {
@@ -84,7 +84,7 @@ namespace TownOfSushi.Roles
                     role.Charging = false;
                 }
             }
-            else if (PlayerControl.LocalPlayer.killTimer == 0f)
+            else if (LocalPlayer().killTimer == 0f)
             {
                 if (!role.Charging)
                 {
@@ -109,7 +109,7 @@ namespace TownOfSushi.Roles
         [HarmonyPriority(Priority.Last)]
         public static void Postfix(HudManager __instance)
         {
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Warlock)) return;
+            if (!LocalPlayer().Is(RoleEnum.Warlock)) return;
             foreach (var role in GetRoles(RoleEnum.Warlock))
             {
                 var warlock = (Warlock) role;
@@ -123,12 +123,12 @@ namespace TownOfSushi.Roles
                         warlock.UsingCharge = false;
                         if (warlock.Player.Is(ModifierEnum.Underdog))
                         {
-                            var lowerKC = VanillaOptions().currentNormalGameOptions.KillCooldown - CustomGameOptions.UnderdogKillBonus;
-                            var normalKC = VanillaOptions().currentNormalGameOptions.KillCooldown;
-                            var upperKC = VanillaOptions().currentNormalGameOptions.KillCooldown + CustomGameOptions.UnderdogKillBonus;
+                            var lowerKC = OptionsManager().currentNormalGameOptions.KillCooldown - CustomGameOptions.UnderdogKillBonus;
+                            var normalKC = OptionsManager().currentNormalGameOptions.KillCooldown;
+                            var upperKC = OptionsManager().currentNormalGameOptions.KillCooldown + CustomGameOptions.UnderdogKillBonus;
                             warlock.Player.SetKillTimer(UnderdogPerformKill.LastImp() ? lowerKC : (UnderdogPerformKill.IncreasedKC() ? normalKC : upperKC));
                         }
-                        else warlock.Player.SetKillTimer(VanillaOptions().currentNormalGameOptions.KillCooldown);
+                        else warlock.Player.SetKillTimer(OptionsManager().currentNormalGameOptions.KillCooldown);
                     }
                 }
             }

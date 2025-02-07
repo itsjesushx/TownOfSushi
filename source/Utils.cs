@@ -26,7 +26,7 @@ namespace TownOfSushi
         }
         public class VisualAppearance    
         {        
-            public float SpeedFactor { get; set; } = 1.0f;        
+            public float SpeedFactor { get; set; } = 1.0f;
             public Vector3 SizeFactor { get; set; } = new Vector3(0.7f, 0.7f, 1.0f);
         }
 
@@ -54,9 +54,9 @@ namespace TownOfSushi
                 Hunter hunter = (Hunter)hunterRole;
                 if (hunter.StalkedPlayer == player) hunter.RpcCatchPlayer(player);
             }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Lookout) && target != null)
+            if (LocalPlayer().Is(RoleEnum.Lookout) && target != null)
             {
-                var lookout = GetRole<Lookout>(PlayerControl.LocalPlayer);
+                var lookout = GetRole<Lookout>(LocalPlayer());
                 if (lookout.Watching.ContainsKey(targetId))
                 {
                     RoleEnum playerRole = GetPlayerRole(PlayerById(player.PlayerId)).RoleType;
@@ -196,7 +196,7 @@ namespace TownOfSushi
 
         public static bool LastImp()
         {
-            return PlayerControl.AllPlayerControls.ToArray().Count(x => x.Is(Faction.Impostors) && !(x.Data.IsDead || x.Data.Disconnected)) == 1;
+            return AllPlayers().Count(x => x.Is(Faction.Impostors) && !(x.Data.IsDead || x.Data.Disconnected)) == 1;
         }
 
         //Code from TOUReworked
@@ -233,12 +233,12 @@ namespace TownOfSushi
         }
         public static float KillDistance()
         {
-            return GameOptionsData.KillDistances[VanillaOptions().currentNormalGameOptions.KillDistance];
+            return GameOptionsData.KillDistances[OptionsManager().currentNormalGameOptions.KillDistance];
         }
 
         public static List<PlayerControl> GetCrewmates(List<PlayerControl> impostors)
         {
-            return PlayerControl.AllPlayerControls.ToArray().Where(
+            return AllPlayers().Where(
                 player => !impostors.Any(imp => imp.PlayerId == player.PlayerId)
             ).ToList();
         }
@@ -408,7 +408,7 @@ namespace TownOfSushi
                 }
                 else if (player.IsProtected()) gaReset = true;
                 else if (player == ShowRoundOneShield.FirstRoundShielded) zeroSecReset = true;
-                else if (PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count <= 2) RpcMurderPlayer(player, target);
+                else if (TwoPlayersAlive()) RpcMurderPlayer(player, target);
                 else RpcMurderPlayer(target, player);
             }
 
@@ -643,11 +643,11 @@ namespace TownOfSushi
             if (float.IsNaN(maxDistance))
                 maxDistance = KillDistance();
             var player = GetClosestPlayer(
-                PlayerControl.LocalPlayer,
-                targets ?? PlayerControl.AllPlayerControls.ToArray().ToList()
+                LocalPlayer(),
+                targets ?? AllPlayers().ToList()
             );
             var closeEnough = player == null || (
-                GetDistBetweenPlayers(PlayerControl.LocalPlayer, player) < maxDistance
+                GetDistBetweenPlayers(LocalPlayer(), player) < maxDistance
             );
             return closestPlayer = closeEnough ? player : null;
         }
@@ -722,7 +722,7 @@ namespace TownOfSushi
         {
             public static void Postfix(MapBehaviour __instance)    
             {      
-                Role role = GetPlayerRole(PlayerControl.LocalPlayer);      
+                Role role = GetPlayerRole(LocalPlayer());      
                 __instance.ColorControl.baseColor = role.Color;      
                 __instance.ColorControl.SetColor(role.Color);
             }
@@ -756,7 +756,8 @@ namespace TownOfSushi
 
         public static void HandleShareOptions(byte numberOfOptions, MessageReader reader) 
         {
-            try {
+            try 
+            {
                 for (int i = 0; i < numberOfOptions; i++) {
                     uint optionId = reader.ReadPackedUInt32();
                     uint selection = reader.ReadPackedUInt32();
@@ -780,7 +781,7 @@ namespace TownOfSushi
         {
             var buttonFlag = hud.UseButton.isActiveAndEnabled || hud.PetButton.isActiveAndEnabled;
             var meetingFlag = !Meeting();
-            return !target.Data.IsDead && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started && !Lobby() && meetingFlag && buttonFlag;
+            return !target.Data.IsDead && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started && !IsLobby() && meetingFlag && buttonFlag;
         }
         public static void MurderPlayer(PlayerControl killer, PlayerControl target, bool jumpToBody)
         {
@@ -797,7 +798,7 @@ namespace TownOfSushi
                     jailor.Jailed = null;
                 }
 
-                if (PlayerControl.LocalPlayer == target)
+                if (LocalPlayer()== target)
                 {
                     try
                     {
@@ -809,8 +810,8 @@ namespace TownOfSushi
 
                 GameHistory.CreateDeathReason(target, CustomDeathReason.Kill, killer);
 
-                if (killer == PlayerControl.LocalPlayer)
-                    Sound().PlaySound(PlayerControl.LocalPlayer.KillSfx, false, 0.8f);
+                if (killer == LocalPlayer())
+                    Sound().PlaySound(LocalPlayer().KillSfx, false, 0.8f);
 
                 if (!killer.Is(Faction.Crewmates) && killer != target
                     && IsClassic()) GetPlayerRole(killer).Kills += 1;
@@ -834,7 +835,7 @@ namespace TownOfSushi
                 target.gameObject.layer = LayerMask.NameToLayer("Ghost");
                 target.Visible = false;
 
-                if (PlayerControl.LocalPlayer.Is(RoleEnum.Mystic) && !IsDead())
+                if (LocalPlayer().Is(RoleEnum.Mystic) && !IsDead())
                 {
                     Flash(ColorManager.Mystic, 3.5f);
                 }
@@ -865,7 +866,7 @@ namespace TownOfSushi
                     target.RpcSetScanner(false);
                     var importantTextTask = new GameObject("_Player").AddComponent<ImportantTextTask>();
                     importantTextTask.transform.SetParent(AmongUsClient.Instance.transform, false);
-                    if (!VanillaOptions().currentNormalGameOptions.GhostsDoTasks)
+                    if (!OptionsManager().currentNormalGameOptions.GhostsDoTasks)
                     {
                         for (var i = 0; i < target.myTasks.Count; i++)
                         {
@@ -912,9 +913,9 @@ namespace TownOfSushi
 
                 Murder.KilledPlayers.Add(deadBody);
 
-                if (PlayerControl.LocalPlayer.Is(RoleEnum.BountyHunter) && killer != PlayerControl.LocalPlayer)
+                if (LocalPlayer().Is(RoleEnum.BountyHunter) && killer != LocalPlayer())
                 {
-                    var bh = GetRole<BountyHunter>(PlayerControl.LocalPlayer);
+                    var bh = GetRole<BountyHunter>(LocalPlayer());
                     if (bh.Bounty == target) bh.Bounty = bh.AddBounty();
                 }
 
@@ -936,11 +937,11 @@ namespace TownOfSushi
 
                 if (killer.Data.IsImpostor() && IsHideNSeek())
                 {
-                    killer.SetKillTimer(VanillaOptions().currentHideNSeekGameOptions.KillCooldown);
+                    killer.SetKillTimer(OptionsManager().currentHideNSeekGameOptions.KillCooldown);
                     return;
                 }
 
-                if (killer == PlayerControl.LocalPlayer && killer.Is(RoleEnum.Warlock))
+                if (killer == LocalPlayer()&& killer.Is(RoleEnum.Warlock))
                 {
                     var warlock = GetRole<Warlock>(killer);
                     if (warlock.Charging)
@@ -1003,9 +1004,9 @@ namespace TownOfSushi
 
                 if (target.Is(ModifierEnum.Diseased) && killer.Is(ModifierEnum.Underdog))
                 {
-                    var lowerKC = (VanillaOptions().currentNormalGameOptions.KillCooldown - CustomGameOptions.UnderdogKillBonus) * CustomGameOptions.DiseasedMultiplier;
-                    var normalKC = VanillaOptions().currentNormalGameOptions.KillCooldown * CustomGameOptions.DiseasedMultiplier;
-                    var upperKC = (VanillaOptions().currentNormalGameOptions.KillCooldown + CustomGameOptions.UnderdogKillBonus) * CustomGameOptions.DiseasedMultiplier;
+                    var lowerKC = (OptionsManager().currentNormalGameOptions.KillCooldown - CustomGameOptions.UnderdogKillBonus) * CustomGameOptions.DiseasedMultiplier;
+                    var normalKC = OptionsManager().currentNormalGameOptions.KillCooldown * CustomGameOptions.DiseasedMultiplier;
+                    var upperKC = (OptionsManager().currentNormalGameOptions.KillCooldown + CustomGameOptions.UnderdogKillBonus) * CustomGameOptions.DiseasedMultiplier;
                     killer.SetKillTimer(UnderdogPerformKill.LastImp() ? lowerKC : (UnderdogPerformKill.IncreasedKC() ? normalKC : upperKC));
                     return;
                 }
@@ -1030,23 +1031,23 @@ namespace TownOfSushi
                     {
                         if (target.Is(ModifierEnum.Diseased) && killer.Is(ModifierEnum.Underdog))
                         {
-                            var lowerKC = (VanillaOptions().currentNormalGameOptions.KillCooldown - CustomGameOptions.UnderdogKillBonus) * CustomGameOptions.DiseasedMultiplier * CustomGameOptions.BountyHunterIncorrectCd;
-                            var normalKC = VanillaOptions().currentNormalGameOptions.KillCooldown * CustomGameOptions.DiseasedMultiplier * CustomGameOptions.BountyHunterIncorrectCd;
-                            var upperKC = (VanillaOptions().currentNormalGameOptions.KillCooldown + CustomGameOptions.UnderdogKillBonus) * CustomGameOptions.DiseasedMultiplier * CustomGameOptions.BountyHunterIncorrectCd;
+                            var lowerKC = (OptionsManager().currentNormalGameOptions.KillCooldown - CustomGameOptions.UnderdogKillBonus) * CustomGameOptions.DiseasedMultiplier * CustomGameOptions.BountyHunterIncorrectCd;
+                            var normalKC = OptionsManager().currentNormalGameOptions.KillCooldown * CustomGameOptions.DiseasedMultiplier * CustomGameOptions.BountyHunterIncorrectCd;
+                            var upperKC = (OptionsManager().currentNormalGameOptions.KillCooldown + CustomGameOptions.UnderdogKillBonus) * CustomGameOptions.DiseasedMultiplier * CustomGameOptions.BountyHunterIncorrectCd;
                             killer.SetKillTimer(UnderdogPerformKill.LastImp() ? lowerKC : (UnderdogPerformKill.IncreasedKC() ? normalKC : upperKC));
                         }
                         else if (target.Is(ModifierEnum.Diseased))
                         {
-                            killer.SetKillTimer(VanillaOptions().currentNormalGameOptions.KillCooldown * CustomGameOptions.DiseasedMultiplier * CustomGameOptions.BountyHunterIncorrectCd);
+                            killer.SetKillTimer(OptionsManager().currentNormalGameOptions.KillCooldown * CustomGameOptions.DiseasedMultiplier * CustomGameOptions.BountyHunterIncorrectCd);
                         }
                         else if (killer.Is(ModifierEnum.Underdog))
                         {
-                            var lowerKC = (VanillaOptions().currentNormalGameOptions.KillCooldown - CustomGameOptions.UnderdogKillBonus) * CustomGameOptions.BountyHunterIncorrectCd;
-                            var normalKC = VanillaOptions().currentNormalGameOptions.KillCooldown * CustomGameOptions.BountyHunterIncorrectCd;
-                            var upperKC = (VanillaOptions().currentNormalGameOptions.KillCooldown + CustomGameOptions.UnderdogKillBonus) * CustomGameOptions.BountyHunterIncorrectCd;
+                            var lowerKC = (OptionsManager().currentNormalGameOptions.KillCooldown - CustomGameOptions.UnderdogKillBonus) * CustomGameOptions.BountyHunterIncorrectCd;
+                            var normalKC = OptionsManager().currentNormalGameOptions.KillCooldown * CustomGameOptions.BountyHunterIncorrectCd;
+                            var upperKC = (OptionsManager().currentNormalGameOptions.KillCooldown + CustomGameOptions.UnderdogKillBonus) * CustomGameOptions.BountyHunterIncorrectCd;
                             killer.SetKillTimer(UnderdogPerformKill.LastImp() ? lowerKC : (UnderdogPerformKill.IncreasedKC() ? normalKC : upperKC));
                         }
-                        else killer.SetKillTimer(VanillaOptions().currentNormalGameOptions.KillCooldown * CustomGameOptions.BountyHunterIncorrectCd);
+                        else killer.SetKillTimer(OptionsManager().currentNormalGameOptions.KillCooldown * CustomGameOptions.BountyHunterIncorrectCd);
                         bountyHunter.StopHunt();
                         bountyHunter.HuntEnd = bountyHunter.HuntEnd.AddSeconds(-3000f);
                     }
@@ -1056,22 +1057,22 @@ namespace TownOfSushi
 
                 if (target.Is(ModifierEnum.Diseased) && killer.Data.IsImpostor())
                 {
-                    killer.SetKillTimer(VanillaOptions().currentNormalGameOptions.KillCooldown * CustomGameOptions.DiseasedMultiplier);
+                    killer.SetKillTimer(OptionsManager().currentNormalGameOptions.KillCooldown * CustomGameOptions.DiseasedMultiplier);
                     return;
                 }
 
                 if (killer.Is(ModifierEnum.Underdog))
                 {
-                    var lowerKC = VanillaOptions().currentNormalGameOptions.KillCooldown - CustomGameOptions.UnderdogKillBonus;
-                    var normalKC = VanillaOptions().currentNormalGameOptions.KillCooldown;
-                    var upperKC = VanillaOptions().currentNormalGameOptions.KillCooldown + CustomGameOptions.UnderdogKillBonus;
+                    var lowerKC = OptionsManager().currentNormalGameOptions.KillCooldown - CustomGameOptions.UnderdogKillBonus;
+                    var normalKC = OptionsManager().currentNormalGameOptions.KillCooldown;
+                    var upperKC = OptionsManager().currentNormalGameOptions.KillCooldown + CustomGameOptions.UnderdogKillBonus;
                     killer.SetKillTimer(UnderdogPerformKill.LastImp() ? lowerKC : (UnderdogPerformKill.IncreasedKC() ? normalKC : upperKC));
                     return;
                 }
 
                 if (killer.Data.IsImpostor())
                 {
-                    killer.SetKillTimer(VanillaOptions().currentNormalGameOptions.KillCooldown);
+                    killer.SetKillTimer(OptionsManager().currentNormalGameOptions.KillCooldown);
                     return;
                 }
             }
@@ -1123,7 +1124,7 @@ namespace TownOfSushi
         }
         public static bool MushroomSabotageActive() 
         {
-            return PlayerControl.LocalPlayer.myTasks.ToArray().Any((x) => x.TaskType == TaskTypes.MushroomMixupSabotage);
+            return LocalPlayer().myTasks.ToArray().Any((x) => x.TaskType == TaskTypes.MushroomMixupSabotage);
         }
 
         public static void ResetWinners()
@@ -1160,7 +1161,8 @@ namespace TownOfSushi
             if (HUDManager() == null || HUDManager().FullScreen == null) return;
             HUDManager().FullScreen.gameObject.SetActive(true);
             HUDManager().FullScreen.enabled = true;
-            HUDManager().StartCoroutine(Effects.Lerp(duration, new Action<float>((p) => {
+            HUDManager().StartCoroutine(Effects.Lerp(duration, new Action<float>((p) => 
+            {
                 var renderer = HUDManager().FullScreen;
 
                 if (p < 0.5)
@@ -1199,7 +1201,7 @@ namespace TownOfSushi
         {
             if (data[0] is not CustomRPC) throw new ArgumentException($"first parameter must be a {typeof(CustomRPC).FullName}");
 
-            var writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId,
+            var writer = AmongUsClient.Instance.StartRpcImmediately(LocalPlayer().NetId,
                         (byte)(CustomRPC)data[0], SendOption.Reliable, -1);
 
             if (data.Length == 1)
@@ -1338,7 +1340,7 @@ namespace TownOfSushi
                             
                     case CustomDeathReason.Guess:
                     if (player.GetKiller.Data.PlayerName == playerControl.Data.PlayerName)
-                        text = ColorString(ColorManager.Impostor, "Failed guess");
+                        text = ColorString(ColorManager.ImpostorRed, "Failed guess");
                     else 
                         text = $"Guessed by {ColorString(KillerColor, player.GetKiller.Data.PlayerName)}";
                         break;
@@ -1413,7 +1415,7 @@ namespace TownOfSushi
             }
             else if (player.Is(RoleEnum.Imitator))
             {
-                if (PlayerControl.AllPlayerControls.ToArray().Count(x => x.Data.IsDead && !x.Data.Disconnected &&
+                if (AllPlayers().Count(x => x.Data.IsDead && !x.Data.Disconnected &&
                 (x.Is(RoleEnum.Hunter) || x.Is(RoleEnum.Vigilante) || x.Is(RoleEnum.Veteran))) > 0) return true;
             }
             else if (player.Is(RoleEnum.Deputy))
@@ -1454,12 +1456,12 @@ namespace TownOfSushi
             if (AmongUsClient.Instance.AmHost && CustomGameOptions.AnyoneStopStart) 
             {
                 GameStartManager.Instance.ResetStartState();
-                PlayerControl.LocalPlayer.RpcSendChat($"{PlayerById(playerId).Data.PlayerName} stopped the game start!");
+                LocalPlayer().RpcSendChat($"{PlayerById(playerId).Data.PlayerName} stopped the game start!");
             }
         }
         public static void ShareGameVersion()
         {
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.VersionHandshake, Hazel.SendOption.Reliable, -1);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(LocalPlayer().NetId, (byte)CustomRPC.VersionHandshake, Hazel.SendOption.Reliable, -1);
             writer.Write((byte)TownOfSushi.Version.Major);
             writer.Write((byte)TownOfSushi.Version.Minor);
             writer.Write((byte)TownOfSushi.Version.Build);
@@ -1496,9 +1498,9 @@ namespace TownOfSushi
         public static void ResetCustomTimers()
         {
             #region CrewmateRoles
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Medium))
+            if (LocalPlayer().Is(RoleEnum.Medium))
             {
-                var medium = GetRole<Medium>(PlayerControl.LocalPlayer);
+                var medium = GetRole<Medium>(LocalPlayer());
                 medium.LastMediated = DateTime.UtcNow;
             }
             foreach (var role in GetRoles(RoleEnum.Medium))
@@ -1507,29 +1509,29 @@ namespace TownOfSushi
                 medium.MediatedPlayers.Values.DestroyAll();
                 medium.MediatedPlayers.Clear();
             }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Detective))
+            if (LocalPlayer().Is(RoleEnum.Detective))
             {
-                var detective = GetRole<Detective>(PlayerControl.LocalPlayer);
+                var detective = GetRole<Detective>(LocalPlayer());
                 detective.LastInvestigated = DateTime.UtcNow;
             }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Oracle))
+            if (LocalPlayer().Is(RoleEnum.Oracle))
             {
-                var oracle = GetRole<Oracle>(PlayerControl.LocalPlayer);
+                var oracle = GetRole<Oracle>(LocalPlayer());
                 oracle.LastConfessed = DateTime.UtcNow;
             }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Hunter))
+            if (LocalPlayer().Is(RoleEnum.Hunter))
             {
-                var hunter = Role.GetRole<Hunter>(PlayerControl.LocalPlayer);
+                var hunter = Role.GetRole<Hunter>(LocalPlayer());
                 hunter.LastKilled = DateTime.UtcNow;
             }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Vigilante))
+            if (LocalPlayer().Is(RoleEnum.Vigilante))
             {
-                var vigilante = GetRole<Vigilante>(PlayerControl.LocalPlayer);
+                var vigilante = GetRole<Vigilante>(LocalPlayer());
                 vigilante.LastKilled = DateTime.UtcNow;
             }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Tracker))
+            if (LocalPlayer().Is(RoleEnum.Tracker))
             {
-                var tracker = GetRole<Tracker>(PlayerControl.LocalPlayer);
+                var tracker = GetRole<Tracker>(LocalPlayer());
                 tracker.LastTracked = DateTime.UtcNow;
                 tracker.MaxUses = CustomGameOptions.MaxTracks;
                 if (CustomGameOptions.ResetOnNewRound)
@@ -1538,9 +1540,9 @@ namespace TownOfSushi
                     tracker.TrackerArrows.Clear();
                 }
             }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Lookout))
+            if (LocalPlayer().Is(RoleEnum.Lookout))
             {
-                var lo = GetRole<Lookout>(PlayerControl.LocalPlayer);
+                var lo = GetRole<Lookout>(LocalPlayer());
                 lo.LastWatched = DateTime.UtcNow;
                 if (CustomGameOptions.LoResetOnNewRound)
                 {
@@ -1561,19 +1563,19 @@ namespace TownOfSushi
                     }
                 }
             }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Veteran))
+            if (LocalPlayer().Is(RoleEnum.Veteran))
             {
-                var veteran = GetRole<Veteran>(PlayerControl.LocalPlayer);
+                var veteran = GetRole<Veteran>(LocalPlayer());
                 veteran.LastAlerted = DateTime.UtcNow;
             }
-            if (PlayerControl.LocalPlayer.Is(ModifierEnum.Disperser))
+            if (LocalPlayer().Is(ModifierEnum.Disperser))
             {
-                var veteran = GetModifier<Disperser>(PlayerControl.LocalPlayer);
+                var veteran = GetModifier<Disperser>(LocalPlayer());
                 veteran.LastDispersed = DateTime.UtcNow;
             }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Jailor))
+            if (LocalPlayer().Is(RoleEnum.Jailor))
             {
-                var jailor = GetRole<Jailor>(PlayerControl.LocalPlayer);
+                var jailor = GetRole<Jailor>(LocalPlayer());
                 jailor.LastJailed = DateTime.UtcNow;
             }
             foreach (var role in GetRoles(RoleEnum.Jailor))
@@ -1581,21 +1583,21 @@ namespace TownOfSushi
                 var jailor = (Jailor)role;
                 jailor.Jailed = null;
             }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Trapper))
+            if (LocalPlayer().Is(RoleEnum.Trapper))
             {
-                var trapper = GetRole<Trapper>(PlayerControl.LocalPlayer);
+                var trapper = GetRole<Trapper>(LocalPlayer());
                 trapper.LastTrapped = DateTime.UtcNow;
                 trapper.trappedPlayers.Clear();
                 if (CustomGameOptions.TrapsRemoveOnNewRound) trapper.traps.ClearTraps();
             }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Seer))
+            if (LocalPlayer().Is(RoleEnum.Seer))
             {
-                var Seer = GetRole<Seer>(PlayerControl.LocalPlayer);
+                var Seer = GetRole<Seer>(LocalPlayer());
                 Seer.LastInvestigated = DateTime.UtcNow;
             }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Investigator))
+            if (LocalPlayer().Is(RoleEnum.Investigator))
             {
-                var detective = GetRole<Investigator>(PlayerControl.LocalPlayer);
+                var detective = GetRole<Investigator>(LocalPlayer());
                 detective.LastExamined = DateTime.UtcNow;
                 if (detective.DetectedKiller != null && (detective.DetectedKiller.Data.IsDead || detective.DetectedKiller.Data.Disconnected))
                 {
@@ -1605,66 +1607,66 @@ namespace TownOfSushi
                 }
                 detective.CurrentTarget = null;
             }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Mystic))
+            if (LocalPlayer().Is(RoleEnum.Mystic))
             {
-                var Mystic = GetRole<Mystic>(PlayerControl.LocalPlayer);
+                var Mystic = GetRole<Mystic>(LocalPlayer());
                 Mystic.LastExamined = DateTime.UtcNow;
                 Mystic.LastExamined = Mystic.LastExamined.AddSeconds(CustomGameOptions.InitialExamineCd - CustomGameOptions.MysticExamineCd);
                 Mystic.LastExaminedPlayer = null;
             }
             #endregion
             #region NeutralRoles
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Romantic))
+            if (LocalPlayer().Is(RoleEnum.Romantic))
             {
-                var surv = GetRole<Romantic>(PlayerControl.LocalPlayer);
+                var surv = GetRole<Romantic>(LocalPlayer());
                 surv.LastPick = DateTime.UtcNow;
             }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.GuardianAngel))
+            if (LocalPlayer().Is(RoleEnum.GuardianAngel))
             {
-                var ga = GetRole<GuardianAngel>(PlayerControl.LocalPlayer);
+                var ga = GetRole<GuardianAngel>(LocalPlayer());
                 ga.LastProtected = DateTime.UtcNow;
             }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Arsonist))
+            if (LocalPlayer().Is(RoleEnum.Arsonist))
             {
-                var arsonist = GetRole<Arsonist>(PlayerControl.LocalPlayer);
+                var arsonist = GetRole<Arsonist>(LocalPlayer());
                 arsonist.LastDoused = DateTime.UtcNow;
             }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Vulture))
+            if (LocalPlayer().Is(RoleEnum.Vulture))
             {
-                var vulture = GetRole<Vulture>(PlayerControl.LocalPlayer);
+                var vulture = GetRole<Vulture>(LocalPlayer());
                 vulture.LastEaten = DateTime.UtcNow;
             }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Glitch))
+            if (LocalPlayer().Is(RoleEnum.Glitch))
             {
-                var glitch = GetRole<Glitch>(PlayerControl.LocalPlayer);
+                var glitch = GetRole<Glitch>(LocalPlayer());
                 glitch.LastKill = DateTime.UtcNow;
                 glitch.LastHack = DateTime.UtcNow;
                 glitch.LastMimic = DateTime.UtcNow;
             }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Juggernaut))
+            if (LocalPlayer().Is(RoleEnum.Juggernaut))
             {
-                var juggernaut = GetRole<Juggernaut>(PlayerControl.LocalPlayer);
+                var juggernaut = GetRole<Juggernaut>(LocalPlayer());
                 juggernaut.LastKill = DateTime.UtcNow;
             }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.SerialKiller))
+            if (LocalPlayer().Is(RoleEnum.SerialKiller))
             {
-                var werewolf = GetRole<SerialKiller>(PlayerControl.LocalPlayer);
+                var werewolf = GetRole<SerialKiller>(LocalPlayer());
                 werewolf.LastStabbed = DateTime.UtcNow;
                 werewolf.LastKilled = DateTime.UtcNow;
             }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Werewolf))
+            if (LocalPlayer().Is(RoleEnum.Werewolf))
             {
-                var werewolf = GetRole<Werewolf>(PlayerControl.LocalPlayer);
+                var werewolf = GetRole<Werewolf>(LocalPlayer());
                 werewolf.LastMauled = DateTime.UtcNow;
             }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Vampire))
+            if (LocalPlayer().Is(RoleEnum.Vampire))
             {
-                var Vampire = GetRole<Vampire>(PlayerControl.LocalPlayer);
+                var Vampire = GetRole<Vampire>(LocalPlayer());
                 Vampire.LastBit = DateTime.UtcNow;
             }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Hitman))
+            if (LocalPlayer().Is(RoleEnum.Hitman))
             {
-                var hitman = GetRole<Hitman>(PlayerControl.LocalPlayer);
+                var hitman = GetRole<Hitman>(LocalPlayer());
                 hitman.LastDrag = DateTime.UtcNow;
                 hitman.LastMorph = DateTime.UtcNow;
                 hitman.LastKill = DateTime.UtcNow;
@@ -1672,40 +1674,40 @@ namespace TownOfSushi
                 hitman.MorphButton.graphic.sprite = TownOfSushi.SampleSprite;
                 hitman.CurrentlyDragging = null;
             }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Plaguebearer))
+            if (LocalPlayer().Is(RoleEnum.Plaguebearer))
             {
-                var plaguebearer = GetRole<Plaguebearer>(PlayerControl.LocalPlayer);
+                var plaguebearer = GetRole<Plaguebearer>(LocalPlayer());
                 plaguebearer.LastInfected = DateTime.UtcNow;
             }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Pestilence))
+            if (LocalPlayer().Is(RoleEnum.Pestilence))
             {
-                var pest = GetRole<Pestilence>(PlayerControl.LocalPlayer);
+                var pest = GetRole<Pestilence>(LocalPlayer());
                 pest.LastKill = DateTime.UtcNow;
             }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Doomsayer))
+            if (LocalPlayer().Is(RoleEnum.Doomsayer))
             {
-                var doom = GetRole<Doomsayer>(PlayerControl.LocalPlayer);
+                var doom = GetRole<Doomsayer>(LocalPlayer());
                 doom.LastObserved = DateTime.UtcNow;
                 doom.LastObservedPlayer = null;
             }
             #endregion
             #region ImposterRoles
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Escapist))
+            if (LocalPlayer().Is(RoleEnum.Escapist))
             {
-                var escapist = GetRole<Escapist>(PlayerControl.LocalPlayer);
+                var escapist = GetRole<Escapist>(LocalPlayer());
                 escapist.LastEscape = DateTime.UtcNow;
                 escapist.EscapeButton.graphic.sprite = TownOfSushi.MarkSprite;
             }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Poisoner))
+            if (LocalPlayer().Is(RoleEnum.Poisoner))
             {
-                var Poisoner = GetRole<Poisoner>(PlayerControl.LocalPlayer);
+                var Poisoner = GetRole<Poisoner>(LocalPlayer());
                 Poisoner.LastPoisoned = DateTime.UtcNow;
             }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Blackmailer))
+            if (LocalPlayer().Is(RoleEnum.Blackmailer))
             {
-                var blackmailer = GetRole<Blackmailer>(PlayerControl.LocalPlayer);
+                var blackmailer = GetRole<Blackmailer>(LocalPlayer());
                 blackmailer.LastBlackmailed = DateTime.UtcNow;
-                if (blackmailer.Player.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+                if (blackmailer.Player.PlayerId == LocalPlayer().PlayerId)
                 {
                     blackmailer.Blackmailed?.myRend().material.SetFloat("_Outline", 0f);
                 }
@@ -1715,47 +1717,47 @@ namespace TownOfSushi
                 var blackmailer = (Blackmailer)role;
                 blackmailer.Blackmailed = null;
             }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Bomber))
+            if (LocalPlayer().Is(RoleEnum.Bomber))
             {
-                var bomber = GetRole<Bomber>(PlayerControl.LocalPlayer);
+                var bomber = GetRole<Bomber>(LocalPlayer());
                 bomber.PlantButton.graphic.sprite = TownOfSushi.PlantSprite;
                 bomber.Bomb.ClearBomb();
             }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Grenadier))
+            if (LocalPlayer().Is(RoleEnum.Grenadier))
             {
-                var grenadier = GetRole<Grenadier>(PlayerControl.LocalPlayer);
+                var grenadier = GetRole<Grenadier>(LocalPlayer());
                 grenadier.LastFlashed = DateTime.UtcNow;
             }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Miner))
+            if (LocalPlayer().Is(RoleEnum.Miner))
             {
-                var miner = GetRole<Miner>(PlayerControl.LocalPlayer);
+                var miner = GetRole<Miner>(LocalPlayer());
                 miner.LastMined = DateTime.UtcNow;
             }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Witch))
+            if (LocalPlayer().Is(RoleEnum.Witch))
             {
-                var Witch = GetRole<Witch>(PlayerControl.LocalPlayer);
+                var Witch = GetRole<Witch>(LocalPlayer());
                 Witch.LastSpelled = DateTime.UtcNow;
             }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Morphling))
+            if (LocalPlayer().Is(RoleEnum.Morphling))
             {
-                var morphling = GetRole<Morphling>(PlayerControl.LocalPlayer);
+                var morphling = GetRole<Morphling>(LocalPlayer());
                 morphling.LastMorphed = DateTime.UtcNow;
                 morphling.MorphButton.graphic.sprite = TownOfSushi.SampleSprite;
                 morphling.SampledPlayer = null;
             }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Swooper))
+            if (LocalPlayer().Is(RoleEnum.Swooper))
             {
-                var swooper = GetRole<Swooper>(PlayerControl.LocalPlayer);
+                var swooper = GetRole<Swooper>(LocalPlayer());
                 swooper.LastSwooped = DateTime.UtcNow;
             }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Venerer))
+            if (LocalPlayer().Is(RoleEnum.Venerer))
             {
-                var venerer = GetRole<Venerer>(PlayerControl.LocalPlayer);
+                var venerer = GetRole<Venerer>(LocalPlayer());
                 venerer.LastCamouflaged = DateTime.UtcNow;
             }
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Undertaker))
+            if (LocalPlayer().Is(RoleEnum.Undertaker))
             {
-                var undertaker = GetRole<Undertaker>(PlayerControl.LocalPlayer);
+                var undertaker = GetRole<Undertaker>(LocalPlayer());
                 undertaker.LastDragged = DateTime.UtcNow;
                 undertaker.DragDropButton.graphic.sprite = TownOfSushi.DragSprite;
                 undertaker.CurrentlyDragging = null;

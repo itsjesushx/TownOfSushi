@@ -19,11 +19,11 @@ namespace TownOfSushi.Roles.Abilities
         public static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(AbilityEnum.Paranoiac)) return;
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(AbilityEnum.Paranoiac)) return;
 
-            var paranoiac = GetAbility<Paranoiac>(PlayerControl.LocalPlayer);
+            var paranoiac = GetAbility<Paranoiac>(LocalPlayer());
             if (paranoiac.Player.Data.IsDead)
             {
                 paranoiac.ParanoiacArrow.DestroyAll();
@@ -32,7 +32,7 @@ namespace TownOfSushi.Roles.Abilities
 
             foreach (var arrow in paranoiac.ParanoiacArrow)
             {
-                paranoiac.ClosestPlayer = GetClosestPlayer(PlayerControl.LocalPlayer, PlayerControl.AllPlayerControls.ToArray().ToList());
+                paranoiac.ClosestPlayer = GetClosestPlayer(LocalPlayer(), AllPlayers().ToList());
                 arrow.target = paranoiac.ClosestPlayer.transform.position;
             }
         }

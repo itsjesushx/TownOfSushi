@@ -30,7 +30,7 @@ namespace TownOfSushi.Roles
             role2.CorrectDeputyShot = killsList.CorrectDeputyShot;
             role2.CorrectAssassinKills = killsList.CorrectAssassinKills;
             role2.LastMorph = DateTime.UtcNow;
-            if (Player == PlayerControl.LocalPlayer)
+            if (Player == LocalPlayer())
             {
                 Flash(ColorManager.Hitman);
                 Sound().PlaySound(Ship().SabotageSound, false, 1f, null);

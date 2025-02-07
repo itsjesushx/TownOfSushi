@@ -12,7 +12,7 @@ namespace TownOfSushi.Roles
             TaskText = () => "Teleport to get away";
             RoleInfo = "The Escapist can mark a location for them to teleport back to, and can teleport back to that location at any time. They can only teleport back to that location once. After that they must mark a new location.";
             LoreText = "A master of escape, you can slip away from danger in the blink of an eye. As the Escapist, you harness the power of teleportation to evade death and slip past the eyes of those who might catch you in the act. Your ability to vanish at will makes you a dangerous foe, capable of leaving behind confusion and chaos as you retreat to safety.";
-            Color = ColorManager.Impostor;
+            Color = ColorManager.ImpostorRed;
             RoleType = RoleEnum.Escapist;
             Faction = Faction.Impostors;
             AddToRoleHistory(RoleType);
@@ -47,14 +47,14 @@ namespace TownOfSushi.Roles
 
             if (IsSubmerged())
             {
-                if (PlayerControl.LocalPlayer.PlayerId == escapist.PlayerId)
+                if (LocalPlayer().PlayerId == escapist.PlayerId)
                 {
                     ChangeFloor(escapist.GetTruePosition().y > -7);
-                    CheckOutOfBoundsElevator(PlayerControl.LocalPlayer);
+                    CheckOutOfBoundsElevator(LocalPlayer());
                 }
             }
 
-            if (PlayerControl.LocalPlayer.PlayerId == escapist.PlayerId)
+            if (LocalPlayer().PlayerId == escapist.PlayerId)
             {
                 Flash(new Color(0.6f, 0.1f, 0.2f, 1f), 2.5f);
                 if (TaskPanel()) TaskPanel().Close();
@@ -73,10 +73,10 @@ namespace TownOfSushi.Roles
         public static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Escapist)) return;
-            var role = GetRole<Escapist>(PlayerControl.LocalPlayer);
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(RoleEnum.Escapist)) return;
+            var role = GetRole<Escapist>(LocalPlayer());
             if (role.EscapeButton == null)
             {
                 role.EscapeButton = Object.Instantiate(__instance.KillButton, __instance.KillButton.transform.parent);
@@ -106,20 +106,20 @@ namespace TownOfSushi.Roles
         public static Sprite EscapeSprite => TownOfSushi.EscapeSprite;
         public static bool Prefix(KillButton __instance)
         {
-            var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Escapist);
+            var flag = LocalPlayer().Is(RoleEnum.Escapist);
             if (!flag) return true;
-            if (!PlayerControl.LocalPlayer.CanMove) return false;
+            if (!LocalPlayer().CanMove) return false;
             if (IsDead()) return false;
-            var role = GetRole<Escapist>(PlayerControl.LocalPlayer);
+            var role = GetRole<Escapist>(LocalPlayer());
             if (__instance == role.EscapeButton)
             {
                 if (role.Player.inVent) return false;
                 if (!__instance.isActiveAndEnabled) return false;
                 if (role.EscapeButton.graphic.sprite == MarkSprite)
                 {
-                    var abilityUsed = AbilityUsed(PlayerControl.LocalPlayer);
+                    var abilityUsed = AbilityUsed(LocalPlayer());
                     if (!abilityUsed) return false;
-                    role.EscapePoint = PlayerControl.LocalPlayer.transform.position;
+                    role.EscapePoint = LocalPlayer().transform.position;
                     role.EscapeButton.graphic.sprite = EscapeSprite;
                     HUDManager().KillButton.SetTarget(null);
                     if (role.EscapeTimer() < 5f)
@@ -129,9 +129,9 @@ namespace TownOfSushi.Roles
                 {
                     if (__instance.isCoolingDown) return false;
                     if (role.EscapeTimer() != 0) return false;
-                    var abilityUsed = AbilityUsed(PlayerControl.LocalPlayer);
+                    var abilityUsed = AbilityUsed(LocalPlayer());
                     if (!abilityUsed) return false;
-                    StartRPC(CustomRPC.Escape, PlayerControl.LocalPlayer.PlayerId, role.EscapePoint);
+                    StartRPC(CustomRPC.Escape, LocalPlayer().PlayerId, role.EscapePoint);
                     role.LastEscape = DateTime.UtcNow;
                     Escapist.Escape(role.Player);
                 }

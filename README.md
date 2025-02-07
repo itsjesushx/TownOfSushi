@@ -1,13 +1,12 @@
-### An Among Us mod that adds a bunch of roles, modifiers, abilities and game settings.
+### An [Among Us](https://store.steampowered.com/app/945360/Among_Us/) mod that adds a bunch of roles, modifiers, abilities, game settings, quality of life changes and many improvements to the base game.
 
 ![LOGO](./Images/TownOfSushiBanner.png)
 
 ### ***Notes:***
-### ***- This repo uses [Town of Us Reactivated](https://github.com/eDonnes124/Town-Of-Us-R) as Codebase and is currently under development.***
 ### ***- This mod is just a hobby so updates may not be so fast.***
 ### ***- This mod is NOT for mobile and console versions.***
 ### ***- This README page is currently under editing, most things here are either missing or subject to change.***
-### ***- Join my [Discord Server](https://discord.gg/CBhjFw6Wqb) for suggestions or any problems!***
+### ***- Join the [Discord Server](https://discord.gg/CBhjFw6Wqb) for suggestions or any problems!***
 
 [**Installation**](#installation)
 - [Requirements](#requirements)
@@ -40,6 +39,7 @@
 # Releases
 | Among Us - Version| Mod Version | Link |
 |----------|-------------|-----------------|
+| V2024.10.29s & V2024.10.29e | v2.2.0 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/v2.2.0/TOS.v2.2.0.zip) |
 | V2024.10.29s & V2024.10.29e | v2.0.0 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/v2.0.0/TOS.v2.0.0.zip) |
 | V2024.10.29s & V2024.10.29e | v1.6.0 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/v1.6.0/TOS.v1.6.0.zip) |
 | V2024.10.29s & V2024.10.29e | v1.2.1 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/v1.2.1/TOS.v1.2.1.zip) |
@@ -366,43 +366,6 @@ The Medic is a Crewmate that can give any player a shield that will make them im
 A Shielded player cannot be killed by anyone, unless by suicide.\
 If the Medic reports a dead body, they can get a report containing clues to the Killer's identity.\
 A report can contain the name of the killer or the color type (Darker/Lighter)
-### Colors
-- Red - Darker
-- Blue - Darker
-- Green - Darker
-- Pink - Lighter
-- Orange - Lighter
-- Yellow - Lighter
-- Black - Darker
-- White - Lighter
-- Purple - Darker
-- Brown - Darker
-- Cyan - Lighter
-- Lime - Lighter
-- Maroon - Darker
-- Rose - Lighter
-- Banana - Lighter
-- Gray - Darker
-- Tan - Darker
-- Coral - Lighter
-- Watermelon - Darker
-- Chocolate - Darker
-- Sky Blue - Lighter
-- Beige - Lighter
-- Magenta - Darker
-- Turquoise - Lighter
-- Lilac - Lighter
-- Olive - Darker
-- Azure - Lighter
-- Plum - Darker
-- Jungle - Darker
-- Mint - Lighter
-- Chartreuse - Lighter
-- Macau - Darker
-- Tawny - Darker
-- Gold - Lighter
-- Rainbow - Lighter
-
 ### Game Options
 | Name | Description | Type | Default |
 |----------|:-------------:|:------:|:------:|
@@ -1280,6 +1243,12 @@ Custom hats based off anything!
 If you have any bugs or any need to contact me, join the [Discord Server](https://discord.gg/CBhjFw6Wqb) or create a ticket on GitHub.
 
 -----------------------
+
+# Codebase
+<p align="center">Thanks to Town of Us Reactivated for the mod Codebase.</p>
+
+-----------------------
+
 # Credits & Resources
 [TownOfUs-R](https://github.com/eDonnes124/Town-Of-Us) - Original Codebase.\
 [Lifeboat](https://github.com/SubmergedAmongUs/Lifeboat) - ShowTextToast class.\

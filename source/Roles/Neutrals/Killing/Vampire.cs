@@ -35,28 +35,28 @@ namespace TownOfSushi.Roles
         public static bool Prefix(KillButton __instance)
         {
             if (__instance != HUDManager().KillButton) return true;
-            var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Vampire);
+            var flag = LocalPlayer().Is(RoleEnum.Vampire);
             if (!flag) return true;
-            var role = GetRole<Vampire>(PlayerControl.LocalPlayer);
-            if (!PlayerControl.LocalPlayer.CanMove || role.ClosestPlayer == null) return false;
+            var role = GetRole<Vampire>(LocalPlayer());
+            if (!LocalPlayer().CanMove || role.ClosestPlayer == null) return false;
             var flag2 = role.BiteTimer() == 0f;
             if (!flag2) return false;
             if (!__instance.enabled) return false;
-            var maxDistance = GameOptionsData.KillDistances[VanillaOptions().currentNormalGameOptions.KillDistance];
+            var maxDistance = GameOptionsData.KillDistances[OptionsManager().currentNormalGameOptions.KillDistance];
             if (Vector2.Distance(role.ClosestPlayer.GetTruePosition(),
-                PlayerControl.LocalPlayer.GetTruePosition()) > maxDistance) return false;
+                LocalPlayer().GetTruePosition()) > maxDistance) return false;
             if (role.ClosestPlayer == null) return false;
 
-            var vamps = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(RoleEnum.Vampire)).ToList();
-            var aliveVamps = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(RoleEnum.Vampire) && !x.Data.IsDead && !x.Data.Disconnected).ToList();
+            var vamps = AllPlayers().Where(x => x.Is(RoleEnum.Vampire)).ToList();
+            var aliveVamps = AllPlayers().Where(x => x.Is(RoleEnum.Vampire) && !x.Data.IsDead && !x.Data.Disconnected).ToList();
             if ((role.ClosestPlayer.Is(Faction.Crewmates) || (role.ClosestPlayer.Is(RoleAlignment.NeutralBenign)
                 && CustomGameOptions.CanBiteNeutralBenign) || (role.ClosestPlayer.Is(RoleAlignment.NeutralEvil)
                 && CustomGameOptions.CanBiteNeutralEvil)) &&
                 aliveVamps.Count == 1 && vamps.Count < CustomGameOptions.MaxVampiresPerGame && !ShowRoundOneShield.FirstRoundShielded 
                 //(can't bite with less than 6 players)
-                && PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count > 5)
+                && AllPlayers().Where(x => !x.Data.IsDead && !x.Data.Disconnected).ToList().Count > 5)
             {
-                var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer);
+                var interact = Interact(LocalPlayer(), role.ClosestPlayer);
                 if (interact[3] == true)
                 {
                     VampirePerformConvert.Convert(role.ClosestPlayer);
@@ -78,7 +78,7 @@ namespace TownOfSushi.Roles
             }
             else
             {
-                var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer, true);
+                var interact = Interact(LocalPlayer(), role.ClosestPlayer, true);
                 if (interact[3] == true) return false;
                 if (interact[0] == true)
                 {
@@ -119,86 +119,86 @@ namespace TownOfSushi.Roles
                 medRole.MediatedPlayers.Clear();
             }
 
-            if (PlayerControl.LocalPlayer == target)
+            if (LocalPlayer()== target)
             {
-                if (PlayerControl.LocalPlayer.Is(RoleEnum.Investigator)) GetRole<Investigator>(PlayerControl.LocalPlayer).ExamineButton.SetTarget(null);
-                else if (PlayerControl.LocalPlayer.Is(RoleEnum.Hunter)) GetRole<Hunter>(PlayerControl.LocalPlayer).StalkButton.SetTarget(null);
-                else if (PlayerControl.LocalPlayer.Is(RoleEnum.Vulture)) VultureKillButtonTarget.SetTarget(HUDManager().KillButton, null, GetRole<Vulture>(PlayerControl.LocalPlayer));
+                if (LocalPlayer().Is(RoleEnum.Investigator)) GetRole<Investigator>(LocalPlayer()).ExamineButton.SetTarget(null);
+                else if (LocalPlayer().Is(RoleEnum.Hunter)) GetRole<Hunter>(LocalPlayer()).StalkButton.SetTarget(null);
+                else if (LocalPlayer().Is(RoleEnum.Vulture)) VultureKillButtonTarget.SetTarget(HUDManager().KillButton, null, GetRole<Vulture>(LocalPlayer()));
 
-                if (PlayerControl.LocalPlayer.Is(RoleEnum.Investigator)) Footprint.DestroyAll(GetRole<Investigator>(PlayerControl.LocalPlayer));
-                if (PlayerControl.LocalPlayer.Is(RoleEnum.Crusader)) HUDManager().KillButton.gameObject.SetActive(false);
+                if (LocalPlayer().Is(RoleEnum.Investigator)) Footprint.DestroyAll(GetRole<Investigator>(LocalPlayer()));
+                if (LocalPlayer().Is(RoleEnum.Crusader)) HUDManager().KillButton.gameObject.SetActive(false);
 
-                if (PlayerControl.LocalPlayer.Is(RoleEnum.Vigilante)) 
+                if (LocalPlayer().Is(RoleEnum.Vigilante)) 
                 {
                     HUDManager().KillButton.buttonLabelText.gameObject.SetActive(false);
                 }
 
-                if (PlayerControl.LocalPlayer.Is(RoleEnum.Hunter))
+                if (LocalPlayer().Is(RoleEnum.Hunter))
                 {
-                    var hunterRole = GetRole<Hunter>(PlayerControl.LocalPlayer);
+                    var hunterRole = GetRole<Hunter>(LocalPlayer());
                     Object.Destroy(hunterRole.UsesText);
                     hunterRole.StalkButton.SetTarget(null);
                     hunterRole.StalkButton.gameObject.SetActive(false);
                     HUDManager().KillButton.buttonLabelText.gameObject.SetActive(false);
                 }
 
-                if (PlayerControl.LocalPlayer.Is(RoleEnum.Engineer))
+                if (LocalPlayer().Is(RoleEnum.Engineer))
                 {
-                    var engineerRole = GetRole<Engineer>(PlayerControl.LocalPlayer);
+                    var engineerRole = GetRole<Engineer>(LocalPlayer());
                     Object.Destroy(engineerRole.UsesText);
                 }
 
-                if (PlayerControl.LocalPlayer.Is(RoleEnum.Tracker))
+                if (LocalPlayer().Is(RoleEnum.Tracker))
                 {
-                    var trackerRole = GetRole<Tracker>(PlayerControl.LocalPlayer);
+                    var trackerRole = GetRole<Tracker>(LocalPlayer());
                     trackerRole.TrackerArrows.Values.DestroyAll();
                     trackerRole.TrackerArrows.Clear();
                     Object.Destroy(trackerRole.UsesText);
                 }
 
-                if (PlayerControl.LocalPlayer.Is(RoleEnum.Mystic))
+                if (LocalPlayer().Is(RoleEnum.Mystic))
                 {
-                    var mysticRole = GetRole<Mystic>(PlayerControl.LocalPlayer);
+                    var mysticRole = GetRole<Mystic>(LocalPlayer());
                     mysticRole.BodyArrows.Values.DestroyAll();
                     mysticRole.BodyArrows.Clear();
                 }
 
-                if (PlayerControl.LocalPlayer.Is(RoleEnum.Lookout))
+                if (LocalPlayer().Is(RoleEnum.Lookout))
                 {
-                    var loRole = GetRole<Lookout>(PlayerControl.LocalPlayer);
+                    var loRole = GetRole<Lookout>(LocalPlayer());
                     Object.Destroy(loRole.UsesText);
                 }
 
-                if (PlayerControl.LocalPlayer.Is(RoleEnum.Veteran))
+                if (LocalPlayer().Is(RoleEnum.Veteran))
                 {
-                    var veteranRole = GetRole<Veteran>(PlayerControl.LocalPlayer);
+                    var veteranRole = GetRole<Veteran>(LocalPlayer());
                     Object.Destroy(veteranRole.UsesText);
                 }
 
-                if (PlayerControl.LocalPlayer.Is(RoleEnum.Trapper))
+                if (LocalPlayer().Is(RoleEnum.Trapper))
                 {
-                    var trapperRole = GetRole<Trapper>(PlayerControl.LocalPlayer);
+                    var trapperRole = GetRole<Trapper>(LocalPlayer());
                     Object.Destroy(trapperRole.UsesText);
                     trapperRole.traps.ClearTraps();
                 }
 
-                if (PlayerControl.LocalPlayer.Is(RoleEnum.Investigator))
+                if (LocalPlayer().Is(RoleEnum.Investigator))
                 {
-                    var InvestigatorRole = GetRole<Investigator>(PlayerControl.LocalPlayer);
+                    var InvestigatorRole = GetRole<Investigator>(LocalPlayer());
                     InvestigatorRole.ExamineButton.gameObject.SetActive(false);
                 }
 
-                if (PlayerControl.LocalPlayer.Is(RoleEnum.GuardianAngel))
+                if (LocalPlayer().Is(RoleEnum.GuardianAngel))
                 {
-                    var gaRole = GetRole<GuardianAngel>(PlayerControl.LocalPlayer);
+                    var gaRole = GetRole<GuardianAngel>(LocalPlayer());
                     Object.Destroy(gaRole.UsesText);
                 }
             }
 
             RoleDictionary.Remove(target.PlayerId);
-            if (PlayerControl.LocalPlayer == target)
+            if (LocalPlayer()== target)
             {
-                var role2 = new Vampire(PlayerControl.LocalPlayer);
+                var role2 = new Vampire(LocalPlayer());
                 role2.Kills = killsList.Kills;
                 role2.CorrectVigilanteShot = killsList.CorrectVigilanteShot;
                 role2.CorrectKills = killsList.CorrectKills;
@@ -237,12 +237,12 @@ namespace TownOfSushi.Roles
         public static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Vampire)) return;
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(RoleEnum.Vampire)) return;
             var biteButton = __instance.KillButton;
 
-            var role = GetRole<Vampire>(PlayerControl.LocalPlayer);
+            var role = GetRole<Vampire>(LocalPlayer());
 
             biteButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
                     && !Meeting() && !IsDead()

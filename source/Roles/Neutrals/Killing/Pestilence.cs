@@ -34,20 +34,20 @@ namespace TownOfSushi.Roles
     {
         public static bool Prefix(KillButton __instance)
         {
-            var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Pestilence);
+            var flag = LocalPlayer().Is(RoleEnum.Pestilence);
             if (!flag) return true;
             if (IsDead()) return false;
-            if (!PlayerControl.LocalPlayer.CanMove) return false;
-            var role = GetRole<Pestilence>(PlayerControl.LocalPlayer);
+            if (!LocalPlayer().CanMove) return false;
+            var role = GetRole<Pestilence>(LocalPlayer());
             if (role.Player.inVent) return false;
             if (role.KillTimer() != 0) return false;
 
             if (role.ClosestPlayer == null) return false;
-            var distBetweenPlayers = GetDistBetweenPlayers(PlayerControl.LocalPlayer, role.ClosestPlayer);
+            var distBetweenPlayers = GetDistBetweenPlayers(LocalPlayer(), role.ClosestPlayer);
             var flag3 = distBetweenPlayers <
                         KillDistance();
             if (!flag3) return false;
-            var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer, true);
+            var interact = Interact(LocalPlayer(), role.ClosestPlayer, true);
             if (interact[3] == true) return false;
             else if (interact[0] == true)
             {
@@ -71,10 +71,10 @@ namespace TownOfSushi.Roles
         public static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Pestilence)) return;
-            var role = GetRole<Pestilence>(PlayerControl.LocalPlayer);
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(RoleEnum.Pestilence)) return;
+            var role = GetRole<Pestilence>(LocalPlayer());
 
             __instance.KillButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
                     && !Meeting() && !IsDead()

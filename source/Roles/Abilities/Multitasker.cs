@@ -16,8 +16,8 @@ namespace TownOfSushi.Roles.Abilities
     {
         public static void Postfix(HudManager __instance)
         {
-            if (!PlayerControl.LocalPlayer.Is(AbilityEnum.Multitasker)) return;
-            if (IsDead() || PlayerControl.LocalPlayer.Data.Disconnected) return;
+            if (!LocalPlayer().Is(AbilityEnum.Multitasker)) return;
+            if (IsDead() || LocalPlayer().Data.Disconnected) return;
             if (!TaskPanel()) return;
             var Base = TaskPanel() as MonoBehaviour;
             SpriteRenderer[] rends = Base.GetComponentsInChildren<SpriteRenderer>();

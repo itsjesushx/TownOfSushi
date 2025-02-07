@@ -6,7 +6,7 @@ namespace TownOfSushi.Roles
     public class Swapper : Role
     {
         public readonly List<GameObject> Buttons = new List<GameObject>();
-        public readonly List<bool> ListOfActives = new List<bool>();
+        public readonly List<(byte, bool)> ListOfActives = new List<(byte, bool)>();
         public Swapper(PlayerControl player) : base(player)
         {
             var CanButton = CustomGameOptions.SwapperButton ? "" : " The Swapper can't call an emergency meeting.";
@@ -54,9 +54,9 @@ namespace TownOfSushi.Roles
                 PluginSingleton<TownOfSushi>.Instance.Log.LogMessage(Swap1 == null ? "null" : Swap1.ToString());
                 PluginSingleton<TownOfSushi>.Instance.Log.LogMessage(Swap2 == null ? "null" : Swap2.ToString());
 
-                if (PlayerControl.LocalPlayer.Is(RoleEnum.Swapper))
+                if (LocalPlayer().Is(RoleEnum.Swapper))
                 {
-                    var swapper = GetRole<Swapper>(PlayerControl.LocalPlayer);
+                    var swapper = GetRole<Swapper>(LocalPlayer());
                     foreach (var button in swapper.Buttons.Where(button => button != null)) button.SetActive(false);
                 }
                 
@@ -190,7 +190,7 @@ namespace TownOfSushi.Roles
             public static bool Prefix(MeetingHud __instance)
             {
                 if (!PlayerControl.LocalPlayer.Is(RoleEnum.Swapper)) return true;
-                var swapper = GetRole<Swapper>(PlayerControl.LocalPlayer);
+                var swapper = Role.GetRole<Swapper>(PlayerControl.LocalPlayer);
                 foreach (var button in swapper.Buttons.Where(button => button != null))
                 {
                     if (button.GetComponent<SpriteRenderer>().sprite == AddButtonSwapper.DisabledSprite)
@@ -199,12 +199,12 @@ namespace TownOfSushi.Roles
                     button.GetComponent<PassiveButton>().OnClick = new Button.ButtonClickedEvent();
                 }
 
-                if (swapper.ListOfActives.Count(x => x) == 2)
+                if (swapper.ListOfActives.Count(x => x.Item2) == 2)
                 {
                     var toSet1 = true;
                     for (var i = 0; i < swapper.ListOfActives.Count; i++)
                     {
-                        if (!swapper.ListOfActives[i]) continue;
+                        if (!swapper.ListOfActives[i].Item2) continue;
 
                         if (toSet1)
                         {
@@ -220,7 +220,7 @@ namespace TownOfSushi.Roles
 
                 if (SwapVotes.Swap1 == null || SwapVotes.Swap2 == null) return true;
 
-                Utils.StartRPC(CustomRPC.SetSwaps, SwapVotes.Swap1.TargetPlayerId, SwapVotes.Swap2.TargetPlayerId);
+                StartRPC(CustomRPC.SetSwaps, SwapVotes.Swap1.TargetPlayerId, SwapVotes.Swap2.TargetPlayerId);
                 return true;
             }
         }
@@ -283,18 +283,33 @@ namespace TownOfSushi.Roles
         private static int _mostRecentId;
         private static Sprite ActiveSprite => TownOfSushi.SwapperSwitch;
         public static Sprite DisabledSprite => TownOfSushi.SwapperSwitchDisabled;
-        public static void GenButton(Swapper role, int index, bool isDead)
+
+        private static bool IsExempt(PlayerVoteArea voteArea)
         {
-            if (isDead)
+            if (voteArea.AmDead) return true;
+            var player = Utils.PlayerById(voteArea.TargetPlayerId);
+            if (player.IsJailed()) return true;
+            if (
+                    player == null ||
+                    player.Data.IsDead ||
+                    player.Data.Disconnected
+                ) return true;
+            return false;
+        }
+
+        public static void GenButton(Swapper role, PlayerVoteArea voteArea)
+        {
+            var targetId = voteArea.TargetPlayerId;
+            if (IsExempt(voteArea))
             {
                 role.Buttons.Add(null);
-                role.ListOfActives.Add(false);
+                role.ListOfActives.Add((targetId, false));
                 return;
             }
 
-            var confirmButton = Meeting().playerStates[index].Buttons.transform.GetChild(0).gameObject;
+            var confirmButton = voteArea.Buttons.transform.GetChild(0).gameObject;
 
-            var newButton = Object.Instantiate(confirmButton, Meeting().playerStates[index].transform);
+            var newButton = Object.Instantiate(confirmButton, voteArea.transform);
             var renderer = newButton.GetComponent<SpriteRenderer>();
             var passive = newButton.GetComponent<PassiveButton>();
 
@@ -304,24 +319,35 @@ namespace TownOfSushi.Roles
             newButton.layer = 5;
             newButton.transform.parent = confirmButton.transform.parent.parent;
 
-            passive.OnClick = new UnityEngine.UI.Button.ButtonClickedEvent();
-            passive.OnClick.AddListener(SetActive(role, index));
+            passive.OnClick = new Button.ButtonClickedEvent();
+            passive.OnClick.AddListener(SetActive(role, targetId));
             role.Buttons.Add(newButton);
-            role.ListOfActives.Add(false);
+            role.ListOfActives.Add((targetId, false));
         }
 
 
-        private static Action SetActive(Swapper role, int index)
+        private static Action SetActive(Swapper role, int targetId)
         {
             void Listener()
             {
-                if (role.ListOfActives.Count(x => x) == 2 &&
+
+                int index = int.MaxValue;
+                for (var i = 0; i < role.ListOfActives.Count; i++)
+                {
+                    if (role.ListOfActives[i].Item1 == targetId)
+                    {
+                        index = i;
+                        break;
+                    }
+                }
+                if (index == int.MaxValue) return;
+                if (role.ListOfActives.Count(x => x.Item2) == 2 &&
                     role.Buttons[index].GetComponent<SpriteRenderer>().sprite == DisabledSprite) return;
 
                 role.Buttons[index].GetComponent<SpriteRenderer>().sprite =
-                    role.ListOfActives[index] ? DisabledSprite : ActiveSprite;
+                    role.ListOfActives[index].Item2 ? DisabledSprite : ActiveSprite;
 
-                role.ListOfActives[index] = !role.ListOfActives[index];
+                role.ListOfActives[index] = (role.ListOfActives[index].Item1, !role.ListOfActives[index].Item2);
 
                 _mostRecentId = index;
 
@@ -330,26 +356,26 @@ namespace TownOfSushi.Roles
                 var toSet1 = true;
                 for (var i = 0; i < role.ListOfActives.Count; i++)
                 {
-                    if (!role.ListOfActives[i]) continue;
+                    if (!role.ListOfActives[i].Item2) continue;
 
                     if (toSet1)
                     {
-                        SwapVotes.Swap1 = Meeting().playerStates[i];
+                        SwapVotes.Swap1 = MeetingHud.Instance.playerStates[i];
                         toSet1 = false;
                     }
                     else
                     {
-                        SwapVotes.Swap2 = Meeting().playerStates[i];
+                        SwapVotes.Swap2 = MeetingHud.Instance.playerStates[i];
                     }
                 }
 
                 if (SwapVotes.Swap1 == null || SwapVotes.Swap2 == null)
                 {
-                    Utils.StartRPC(CustomRPC.SetSwaps, sbyte.MaxValue, sbyte.MaxValue);
+                    StartRPC(CustomRPC.SetSwaps, sbyte.MaxValue, sbyte.MaxValue);
                     return;
                 }
 
-                Utils.StartRPC(CustomRPC.SetSwaps, SwapVotes.Swap1.TargetPlayerId, SwapVotes.Swap2.TargetPlayerId);
+                StartRPC(CustomRPC.SetSwaps, SwapVotes.Swap1.TargetPlayerId, SwapVotes.Swap2.TargetPlayerId);
             }
 
             return Listener;
@@ -365,11 +391,13 @@ namespace TownOfSushi.Roles
             }
 
             if (IsDead()) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Swapper)) return;
-            if (PlayerControl.LocalPlayer.IsJailed()) return;
-            var swapperrole = GetRole<Swapper>(PlayerControl.LocalPlayer);
-            for (var i = 0; i < __instance.playerStates.Length; i++)
-                GenButton(swapperrole, i, __instance.playerStates[i].AmDead || Utils.PlayerById(__instance.playerStates[i].TargetPlayerId).IsJailed());
+            if (!LocalPlayer().Is(RoleEnum.Swapper)) return;
+            if (LocalPlayer().IsJailed()) return;
+            var swapperrole = GetRole<Swapper>(LocalPlayer());
+            foreach (var voteArea in __instance.playerStates)
+            {
+                GenButton(swapperrole, voteArea);
+            }
         }
     }
 }

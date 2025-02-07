@@ -102,7 +102,7 @@ namespace TownOfSushi
             roles.Shuffle();
         }
 
-       private static void GenEachRole(List<NetworkedPlayerInfo> infected)
+        private static void GenEachRole(List<NetworkedPlayerInfo> infected)
         {
             var impostors = GetImpostors(infected);
             var crewmates = GetCrewmates(impostors);
@@ -555,9 +555,9 @@ namespace TownOfSushi
                 GenRole<Role>(typeof(Impostor), impostor);
 
             // Hand out assassin ability to killers according to the settings.
-            var canHaveAbility = PlayerControl.AllPlayerControls.ToArray().Where(player => player.Is(Faction.Impostors)).ToList();
+            var canHaveAbility = AllPlayers().Where(player => player.Is(Faction.Impostors)).ToList();
             canHaveAbility.Shuffle();
-            var canHaveAbility2 = PlayerControl.AllPlayerControls.ToArray().Where(player => player.Is(RoleAlignment.NeutralKilling)).ToList();
+            var canHaveAbility2 = AllPlayers().Where(player => player.Is(RoleAlignment.NeutralKilling)).ToList();
             canHaveAbility2.Shuffle();
 
             var assassinConfig = new (List<PlayerControl>, int)[]
@@ -577,7 +577,7 @@ namespace TownOfSushi
             }
 
             // Hand out assassin modifiers, if enabled, to impostor assassins.
-            var canHaveAssassinAbilityifier = PlayerControl.AllPlayerControls.ToArray().Where(player => player.Is(Faction.Impostors) && player.Is(AbilityEnum.Assassin)).ToList();
+            var canHaveAssassinAbilityifier = AllPlayers().Where(player => player.Is(Faction.Impostors) && player.Is(AbilityEnum.Assassin)).ToList();
             canHaveAssassinAbilityifier.Shuffle();
             AssassinAbilityModifiers.SortModifiers(canHaveAssassinAbilityifier.Count);
             AssassinAbilityModifiers.Shuffle();
@@ -589,7 +589,7 @@ namespace TownOfSushi
             }
 
             // Hand out impostor modifiers.
-            var canHaveImpModifier = PlayerControl.AllPlayerControls.ToArray().Where(player => player.Is(Faction.Impostors) && !player.Is(ModifierEnum.DoubleShot)).ToList();
+            var canHaveImpModifier = AllPlayers().Where(player => player.Is(Faction.Impostors) && !player.Is(ModifierEnum.DoubleShot)).ToList();
             canHaveImpModifier.Shuffle();
             ImpostorModifiers.SortModifiers(canHaveImpModifier.Count);
             ImpostorModifiers.Shuffle();
@@ -601,7 +601,7 @@ namespace TownOfSushi
             }
 
             // Hand out global modifiers.
-            var canHaveModifier = PlayerControl.AllPlayerControls.ToArray().Where(player => !player.Is(ModifierEnum.Disperser) && !player.Is(ModifierEnum.DoubleShot) && !player.Is(ModifierEnum.Underdog) && !player.Is(ModifierEnum.Saboteur)).ToList();
+            var canHaveModifier = AllPlayers().Where(player => !player.Is(ModifierEnum.Disperser) && !player.Is(ModifierEnum.DoubleShot) && !player.Is(ModifierEnum.Underdog) && !player.Is(ModifierEnum.Saboteur)).ToList();
             canHaveModifier.Shuffle();
             Modifiers.SortModifiers(canHaveModifier.Count);
             Modifiers.Shuffle();
@@ -612,7 +612,7 @@ namespace TownOfSushi
                 GenModifier<Modifier>(type, canHaveModifier);
             }
 
-            var canHaveAbility3 = PlayerControl.AllPlayerControls.ToArray().Where(player => !player.Is(AbilityEnum.Assassin)).ToList();
+            var canHaveAbility3 = AllPlayers().Where(player => !player.Is(AbilityEnum.Assassin)).ToList();
             // Now hand out Abilities to all remaining eligible players.
             Abilities.SortAbilities(canHaveAbility3.Count);
             Abilities.Shuffle();
@@ -651,7 +651,7 @@ namespace TownOfSushi
             canHaveAbility3.RemoveAll(player => !player.HasTasks());
             NonTaskerAbilities.SortAbilities(canHaveAbility3.Count);
 
-            var exeTargets = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(Faction.Crewmates) && !x.Is(RoleEnum.Swapper) && !x.Is(RoleEnum.Vigilante) && !x.Is(RoleEnum.Jailor)).ToList();
+            var exeTargets = AllPlayers().Where(x => x.Is(Faction.Crewmates) && !x.Is(RoleEnum.Swapper) && !x.Is(RoleEnum.Vigilante) && !x.Is(RoleEnum.Jailor)).ToList();
             foreach (var role in GetRoles(RoleEnum.Executioner))
             {
                 var exe = (Executioner)role;
@@ -664,8 +664,8 @@ namespace TownOfSushi
                 }
             }
 
-            var goodGATargets = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(Faction.Crewmates)).ToList();
-            var evilGATargets = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(Faction.Impostors) || x.Is(RoleAlignment.NeutralKilling)).ToList();
+            var goodGATargets = AllPlayers().Where(x => x.Is(Faction.Crewmates)).ToList();
+            var evilGATargets = AllPlayers().Where(x => x.Is(Faction.Impostors) || x.Is(RoleAlignment.NeutralKilling)).ToList();
             foreach (var role in GetRoles(RoleEnum.GuardianAngel))
             {
                 var ga = (GuardianAngel)role;
@@ -796,7 +796,7 @@ namespace TownOfSushi
                             case 1: //fortify alert
                                 var crusaderPlayer = PlayerById(reader.ReadByte());
                                 var crusaderRole2 = GetRole<Crusader>(crusaderPlayer);
-                                if (PlayerControl.LocalPlayer == crusaderPlayer) 
+                                if (LocalPlayer()== crusaderPlayer) 
                                 {
                                     Flash(ColorManager.Crusader, 0.7f);
                                     Sound().PlaySound(Ship().SabotageSound, false, 1f, null);
@@ -1091,7 +1091,7 @@ namespace TownOfSushi
                         veteranRole.Alert();
                         break;
                     case CustomRPC.Plant:
-                        if (PlayerControl.LocalPlayer.Data.IsImpostor()) Coroutines.Start(BombTeammate.BombShowTeammate(new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle())));
+                        if (LocalPlayer().Data.IsImpostor()) Coroutines.Start(BombTeammate.BombShowTeammate(new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle())));
                         break;
                     case CustomRPC.GAProtect:
                         var ga2 = PlayerById(reader.ReadByte());
@@ -1102,7 +1102,7 @@ namespace TownOfSushi
                     case CustomRPC.Mediate:
                         var mediatedPlayer = PlayerById(reader.ReadByte());
                         var medium = GetRole<Medium>(PlayerById(reader.ReadByte()));
-                        if (PlayerControl.LocalPlayer.PlayerId != mediatedPlayer.PlayerId) break;
+                        if (LocalPlayer().PlayerId != mediatedPlayer.PlayerId) break;
                         medium.AddMediatePlayer(mediatedPlayer.PlayerId);
                         break;
                     case CustomRPC.FlashGrenade:
@@ -1178,9 +1178,9 @@ namespace TownOfSushi
                             {
                                 dienerRole.CurrentlyDragging = body;
 
-                                if (PlayerControl.LocalPlayer.Is(RoleEnum.Lookout))
+                                if (LocalPlayer().Is(RoleEnum.Lookout))
                                 {
-                                    var lookout = Role.GetRole<Lookout>(PlayerControl.LocalPlayer);
+                                    var lookout = GetRole<Lookout>(LocalPlayer());
                                     if (lookout.Watching.ContainsKey(body.ParentId))
                                     {
                                         if (!lookout.Watching[body.ParentId].Contains(RoleEnum.Undertaker)) lookout.Watching[body.ParentId].Add(RoleEnum.Undertaker);
@@ -1202,9 +1202,9 @@ namespace TownOfSushi
                             {
                                 dienerRole2.CurrentlyDragging = body;
 
-                                if (PlayerControl.LocalPlayer.Is(RoleEnum.Lookout))
+                                if (LocalPlayer().Is(RoleEnum.Lookout))
                                 {
-                                    var lookout = GetRole<Lookout>(PlayerControl.LocalPlayer);
+                                    var lookout = GetRole<Lookout>(LocalPlayer());
                                     if (lookout.Watching.ContainsKey(body.ParentId))
                                     {
                                         if (!lookout.Watching[body.ParentId].Contains(RoleEnum.Hitman)) lookout.Watching[body.ParentId].Add(RoleEnum.Hitman);
@@ -1248,9 +1248,9 @@ namespace TownOfSushi
                             Hunter hunter = (Hunter)hunterRole2;
                             if (hunter.StalkedPlayer == abilityUser) hunter.RpcCatchPlayer(abilityUser);
                         }
-                        if (PlayerControl.LocalPlayer.Is(RoleEnum.Lookout) && abilitytarget != null)
+                        if (LocalPlayer().Is(RoleEnum.Lookout) && abilitytarget != null)
                         {
-                            var lookout = GetRole<Lookout>(PlayerControl.LocalPlayer);
+                            var lookout = GetRole<Lookout>(LocalPlayer());
                             if (lookout.Watching.ContainsKey(abilitytargetId))
                             {
                                 RoleEnum playerRole = GetPlayerRole(PlayerById(abilityUser.PlayerId)).RoleType;
@@ -1324,14 +1324,14 @@ namespace TownOfSushi
                         break;
                     case CustomRPC.SetSettings:
                         readByte = reader.ReadByte();
-                        VanillaOptions().currentNormalGameOptions.MapId = readByte == byte.MaxValue ? (byte)0 : readByte;
-                        VanillaOptions().currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Scientist, 0, 0);
-                        VanillaOptions().currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Engineer, 0, 0);
-                        VanillaOptions().currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.GuardianAngel, 0, 0);
-                        VanillaOptions().currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Tracker, 0, 0);
-                        VanillaOptions().currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Noisemaker, 0, 0);
-                        VanillaOptions().currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Shapeshifter, 0, 0);
-                        VanillaOptions().currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Phantom, 0, 0);
+                        OptionsManager().currentNormalGameOptions.MapId = readByte == byte.MaxValue ? (byte)0 : readByte;
+                        OptionsManager().currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Scientist, 0, 0);
+                        OptionsManager().currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Engineer, 0, 0);
+                        OptionsManager().currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.GuardianAngel, 0, 0);
+                        OptionsManager().currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Tracker, 0, 0);
+                        OptionsManager().currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Noisemaker, 0, 0);
+                        OptionsManager().currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Shapeshifter, 0, 0);
+                        OptionsManager().currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Phantom, 0, 0);
                         break;
                 }
             }
@@ -1479,7 +1479,8 @@ namespace TownOfSushi
                         
                 if (CustomGameOptions.GuardianAngelOn > 0)
                     NeutralBenignRoles.Add((typeof(GuardianAngel), CustomGameOptions.GuardianAngelOn, false || CustomGameOptions.UniqueRoles));
-
+                
+                // Block Glitch if it's Fungle
                 if (CustomGameOptions.GlitchOn > 0 && !FungleMap())
                     NeutralKillingRoles.Add((typeof(Glitch), CustomGameOptions.GlitchOn, false || CustomGameOptions.UniqueRoles));
 
@@ -1491,10 +1492,12 @@ namespace TownOfSushi
 
                 if (CustomGameOptions.SerialKillerOn > 0)
                     NeutralKillingRoles.Add((typeof(SerialKiller), CustomGameOptions.SerialKillerOn, false || CustomGameOptions.UniqueRoles));
-                    
+                
+                // Block Agent if it's Fungle
                 if (CustomGameOptions.AgentOn > 0 && !CustomGameOptions.SkipAgent && !FungleMap())
                     NeutralKillingRoles.Add((typeof(Agent), CustomGameOptions.AgentOn, true));
-                    
+                
+                // Block Hitman if it's Fungle
                 if (CustomGameOptions.AgentOn > 0 && CustomGameOptions.SkipAgent && !FungleMap())
                     NeutralKillingRoles.Add((typeof(Hitman), CustomGameOptions.AgentOn, true));
                     
@@ -1513,6 +1516,7 @@ namespace TownOfSushi
                 if (CustomGameOptions.UndertakerOn > 0)
                     ImpostorConcealingRoles.Add((typeof(Undertaker), CustomGameOptions.UndertakerOn, true));
 
+                //Block Morphling if it's Fungle
                 if (CustomGameOptions.MorphlingOn > 0 && !FungleMap())
                     ImpostorConcealingRoles.Add((typeof(Morphling), CustomGameOptions.MorphlingOn, false || CustomGameOptions.UniqueRoles));
 
@@ -1524,10 +1528,12 @@ namespace TownOfSushi
                     
                 if (CustomGameOptions.PoisonerOn > 0)
                     ImpostorKillingRoles.Add((typeof(Poisoner), CustomGameOptions.PoisonerOn, false || CustomGameOptions.UniqueRoles));
-
+                
+                // Block Swooper if it's Fungle
                 if (CustomGameOptions.SwooperOn > 0 && !FungleMap())
                     ImpostorConcealingRoles.Add((typeof(Swooper), CustomGameOptions.SwooperOn, false || CustomGameOptions.UniqueRoles));
 
+                // Only add Janitor if there's at least 2 impostors
                 if (GetAdjustedImposters.CanSpawn && CustomGameOptions.JanitorOn > 0)
                     ImpostorSupportRoles.Add((typeof(Janitor), CustomGameOptions.JanitorOn, false || CustomGameOptions.UniqueRoles));
 
@@ -1539,16 +1545,20 @@ namespace TownOfSushi
 
                 if (CustomGameOptions.EscapistOn > 0)
                     ImpostorConcealingRoles.Add((typeof(Escapist), CustomGameOptions.EscapistOn, false || CustomGameOptions.UniqueRoles));
-
-                if (CustomGameOptions.BomberOn > 0)
+                
+                // Only add Bomber if there's at least 2 impostors
+                if (GetAdjustedImposters.CanSpawn && CustomGameOptions.BomberOn > 0)
                     ImpostorKillingRoles.Add((typeof(Bomber), CustomGameOptions.BomberOn, true));
                 
+                // Only add Bounty Hunter if there's at least 2 impostors
                 if (GetAdjustedImposters.CanSpawn && CustomGameOptions.BountyHunterOn > 0)
                     ImpostorKillingRoles.Add((typeof(BountyHunter), CustomGameOptions.BountyHunterOn, true));
 
-                if (CustomGameOptions.WarlockOn > 0)
+                // Only add Warlock if there's at least 2 impostors
+                if (GetAdjustedImposters.CanSpawn && CustomGameOptions.WarlockOn > 0)
                     ImpostorKillingRoles.Add((typeof(Warlock), CustomGameOptions.WarlockOn, false || CustomGameOptions.UniqueRoles));
 
+                // Block Venerer on Fungle and if Colourblind Comms is enabled
                 if (CustomGameOptions.VenererOn > 0 && !FungleMap() && !CustomGameOptions.ColourblindComms)
                     ImpostorConcealingRoles.Add((typeof(Venerer), CustomGameOptions.VenererOn, true));
 
@@ -1604,7 +1614,7 @@ namespace TownOfSushi
                     Abilities.Add((typeof(Paranoiac), CustomGameOptions.ParanoiacOn));
 
                 #endregion
-                #region Impostor Modifiers/Abilities
+                #region Impostor Mods/Abs
                 if (Check(CustomGameOptions.DisperserOn))
                     ImpostorModifiers.Add((typeof(Disperser), CustomGameOptions.DisperserOn));
 
@@ -1613,7 +1623,8 @@ namespace TownOfSushi
                 
                 if (Check(CustomGameOptions.SaboteurOn))
                     ImpostorModifiers.Add((typeof(Saboteur), CustomGameOptions.SaboteurOn));
-
+                
+                //Only add Underdog if there's at least 2 impostors
                 if (GetAdjustedImposters.CanSpawn &&  Check(CustomGameOptions.UnderdogOn))
                     ImpostorModifiers.Add((typeof(Underdog), CustomGameOptions.UnderdogOn));
                 #endregion

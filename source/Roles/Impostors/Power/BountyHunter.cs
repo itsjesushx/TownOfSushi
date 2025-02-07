@@ -25,10 +25,10 @@ namespace TownOfSushi.Roles
         }
         public PlayerControl AddBounty(PlayerControl toRemove = null)
         {
-            var targets = PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected && !x.Is(Faction.Impostors) && x != toRemove && x != ShowRoundOneShield.FirstRoundShielded).ToList();
+            var targets = AllPlayers().Where(x => !x.Data.IsDead && !x.Data.Disconnected && !x.Is(Faction.Impostors) && x != toRemove && x != ShowRoundOneShield.FirstRoundShielded).ToList();
             //exclude romantic if bounty hunter is beloved
-            if (Player.IsBeloved())targets = PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected && !x.Is(Faction.Impostors) && !x.Is(RoleEnum.Romantic) && x != PlayerControl.LocalPlayer && x != ShowRoundOneShield.FirstRoundShielded && x != toRemove).ToList();
-            if (targets.Count == 0) targets = PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected && !x.Is(Faction.Impostors) && x != PlayerControl.LocalPlayer && x != ShowRoundOneShield.FirstRoundShielded && x != toRemove).ToList();
+            if (Player.IsBeloved())targets = AllPlayers().Where(x => !x.Data.IsDead && !x.Data.Disconnected && !x.Is(Faction.Impostors) && !x.Is(RoleEnum.Romantic) && x != LocalPlayer()&& x != ShowRoundOneShield.FirstRoundShielded && x != toRemove).ToList();
+            if (targets.Count == 0) targets = AllPlayers().Where(x => !x.Data.IsDead && !x.Data.Disconnected && !x.Is(Faction.Impostors) && x != LocalPlayer()&& x != ShowRoundOneShield.FirstRoundShielded && x != toRemove).ToList();
 
             PlayerControl result = null;
             foreach (var player in targets)
@@ -72,10 +72,10 @@ namespace TownOfSushi.Roles
         public static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.BountyHunter)) return;
-            var role = GetRole<BountyHunter>(PlayerControl.LocalPlayer);
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(RoleEnum.BountyHunter)) return;
+            var role = GetRole<BountyHunter>(LocalPlayer());
 
             if (role.BountyCooldown == null)
             {
@@ -98,7 +98,7 @@ namespace TownOfSushi.Roles
                     && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started && role.Hunting);
 
-            if (role.Hunting && PlayerControl.LocalPlayer.moveable && __instance.KillButton.currentTarget != null)
+            if (role.Hunting && LocalPlayer().moveable && __instance.KillButton.currentTarget != null)
             {
                 role.BountyCooldown.color = Palette.EnabledColor;
                 role.BountyCooldown.material.SetFloat("_Desat", 0f);
@@ -115,17 +115,17 @@ namespace TownOfSushi.Roles
 
                 if (role.Player.Is(ModifierEnum.Underdog))
                 {
-                    var lowerKC = VanillaOptions().currentNormalGameOptions.KillCooldown - CustomGameOptions.UnderdogKillBonus;
-                    var normalKC = VanillaOptions().currentNormalGameOptions.KillCooldown;
-                    var upperKC = VanillaOptions().currentNormalGameOptions.KillCooldown + CustomGameOptions.UnderdogKillBonus;
+                    var lowerKC = OptionsManager().currentNormalGameOptions.KillCooldown - CustomGameOptions.UnderdogKillBonus;
+                    var normalKC = OptionsManager().currentNormalGameOptions.KillCooldown;
+                    var upperKC = OptionsManager().currentNormalGameOptions.KillCooldown + CustomGameOptions.UnderdogKillBonus;
                     role.Player.SetKillTimer(UnderdogPerformKill.LastImp() ? lowerKC : (UnderdogPerformKill.IncreasedKC() ? normalKC : upperKC));
                 }
-                else role.Player.SetKillTimer(VanillaOptions().currentNormalGameOptions.KillCooldown);
+                else role.Player.SetKillTimer(OptionsManager().currentNormalGameOptions.KillCooldown);
             }
 
-            if (!role.GameStarted && PlayerControl.LocalPlayer.killTimer > 0f) role.GameStarted = true;
+            if (!role.GameStarted && LocalPlayer().killTimer > 0f) role.GameStarted = true;
 
-            if (PlayerControl.LocalPlayer.killTimer == 0f && !role.Hunting && role.GameStarted && !IsDead())
+            if (LocalPlayer().killTimer == 0f && !role.Hunting && role.GameStarted && !IsDead())
             {
                 role.Hunting = true;
                 role.HuntEnd = DateTime.UtcNow.AddSeconds(CustomGameOptions.HuntDuration);
@@ -138,10 +138,10 @@ namespace TownOfSushi.Roles
                 {
                     var gameObj = new GameObject();
                     var arrow = gameObj.AddComponent<ArrowBehaviour>();
-                    gameObj.transform.parent = PlayerControl.LocalPlayer.gameObject.transform;
+                    gameObj.transform.parent = LocalPlayer().gameObject.transform;
                     var renderer = gameObj.AddComponent<SpriteRenderer>();
                     renderer.sprite = Sprite;
-                    renderer.color = ColorManager.Impostor;
+                    renderer.color = ColorManager.ImpostorRed;
                     arrow.image = renderer;
                     gameObj.layer = 5;
                     arrow.target = role.Bounty.transform.position;

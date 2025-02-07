@@ -88,7 +88,7 @@ namespace TownOfSushi.Patches
             foreach (var role in GetRoles(roleEnum) ?? new System.Collections.Generic.List<Role>())
             {
                 var roleData = new CachedPlayerData(role.Player.Data);
-                if (PlayerControl.LocalPlayer != role.Player) roleData.IsYou = false;
+                if (LocalPlayer()!= role.Player) roleData.IsYou = false;
                 EndGameResult.CachedWinners.Add(roleData);
             }
         }
@@ -99,7 +99,7 @@ namespace TownOfSushi.Patches
             foreach (var player in GetFactions(faction) ?? new System.Collections.Generic.List<Role>())
             {
                 var roleData = new CachedPlayerData(player.Player.Data);
-                if (PlayerControl.LocalPlayer != player.Player) roleData.IsYou = false;
+                if (LocalPlayer()!= player.Player) roleData.IsYou = false;
                 EndGameResult.CachedWinners.Add(roleData);
             }
         }
@@ -112,7 +112,7 @@ namespace TownOfSushi.Patches
                 {
                     var isImp = EndGameResult.CachedWinners.Count > 0 && EndGameResult.CachedWinners[0].IsImpostor;
                     var roleData = new CachedPlayerData(role.Player.Data) { IsImpostor = isImp };
-                    if (PlayerControl.LocalPlayer != role.Player) roleData.IsYou = false;
+                    if (LocalPlayer()!= role.Player) roleData.IsYou = false;
                     EndGameResult.CachedWinners.Add(roleData);
                 }
             }
@@ -130,7 +130,7 @@ namespace TownOfSushi.Patches
                     {
                         var isImp = EndGameResult.CachedWinners[0].IsImpostor;
                         var gaWinData = new CachedPlayerData(ga.Player.Data) { IsImpostor = isImp };
-                        if (PlayerControl.LocalPlayer != ga.Player) gaWinData.IsYou = false;
+                        if (LocalPlayer()!= ga.Player) gaWinData.IsYou = false;
                         EndGameResult.CachedWinners.Add(gaWinData);
                     }
                 }
@@ -153,7 +153,7 @@ namespace TownOfSushi.Patches
                     {
                         var isImp = EndGameResult.CachedWinners.Count > 0 && EndGameResult.CachedWinners[0].IsImpostor;
                         var romanticWinData = new CachedPlayerData(romantic.Player.Data) { IsImpostor = isImp };
-                        if (PlayerControl.LocalPlayer != romantic.Player) romanticWinData.IsYou = false;
+                        if (LocalPlayer()!= romantic.Player) romanticWinData.IsYou = false;
                         EndGameResult.CachedWinners.Add(romanticWinData);
                     }
                 }

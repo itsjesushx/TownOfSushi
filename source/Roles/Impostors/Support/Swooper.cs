@@ -16,7 +16,7 @@ namespace TownOfSushi.Roles
             TaskText = () => "Turn invisible";
             RoleInfo = $"The Swooper is an Impostor that can turn invisible for {CustomGameOptions.SwoopDuration} seconds.";
             LoreText = "A shadow in the night, you can disappear from sight and strike without warning. As the Swooper, you can turn invisible for a brief moment, allowing you to sneak up on Crewmates and eliminate them undetected. Your ability to vanish makes you a terrifying presence, capable of taking down your targets without a trace before fading back into the shadows.";
-            Color = ColorManager.Impostor;
+            Color = ColorManager.ImpostorRed;
             LastSwooped = DateTime.UtcNow;
             RoleType = RoleEnum.Swooper;
             Faction = Faction.Impostors;
@@ -57,7 +57,7 @@ namespace TownOfSushi.Roles
                 TimeRemaining = 0f;
             }
             var color = Color.clear;
-            if (PlayerControl.LocalPlayer.Data.IsImpostor() || IsDead()) color.a = 0.1f;
+            if (LocalPlayer().Data.IsImpostor() || IsDead()) color.a = 0.1f;
 
             if (Player.GetCustomOutfitType() != CustomPlayerOutfitType.Swooper)
             {
@@ -109,21 +109,21 @@ namespace TownOfSushi.Roles
     {
         public static bool Prefix(KillButton __instance)
         {
-            var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Swooper);
+            var flag = LocalPlayer().Is(RoleEnum.Swooper);
             if (!flag) return true;
-            if (!PlayerControl.LocalPlayer.CanMove) return false;
+            if (!LocalPlayer().CanMove) return false;
             if (IsDead()) return false;
             if (MushroomSabotageActive()) return false;
-            var role = GetRole<Swooper>(PlayerControl.LocalPlayer);
+            var role = GetRole<Swooper>(LocalPlayer());
             if (__instance == role.SwoopButton)
             {
                 if (__instance.isCoolingDown) return false;
                 if (!__instance.isActiveAndEnabled) return false;
                 if (role.SwoopTimer() != 0) return false;
-                var abilityUsed = AbilityUsed(PlayerControl.LocalPlayer);
+                var abilityUsed = AbilityUsed(LocalPlayer());
                 if (!abilityUsed) return false;
 
-                StartRPC(CustomRPC.Swoop, PlayerControl.LocalPlayer.PlayerId);
+                StartRPC(CustomRPC.Swoop, LocalPlayer().PlayerId);
                 role.TimeRemaining = CustomGameOptions.SwoopDuration;
                 role.Swoop();
                 return false;
@@ -141,10 +141,10 @@ namespace TownOfSushi.Roles
         public static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Swooper)) return;
-            var role = GetRole<Swooper>(PlayerControl.LocalPlayer);
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(RoleEnum.Swooper)) return;
+            var role = GetRole<Swooper>(LocalPlayer());
             if (role.SwoopButton == null)
             {
                 role.SwoopButton = Object.Instantiate(__instance.KillButton, __instance.KillButton.transform.parent);

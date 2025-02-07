@@ -12,7 +12,7 @@ namespace TownOfSushi
             {
                 PlayerMaterial.SetColors(voterPlayer.DefaultOutfit.ColorId, spriteRenderer);
             }
-            else if (VanillaOptions().currentNormalGameOptions.AnonymousVotes)
+            else if (OptionsManager().currentNormalGameOptions.AnonymousVotes)
             {
                 PlayerMaterial.SetColors(Palette.DisabledGrey, spriteRenderer);
             }

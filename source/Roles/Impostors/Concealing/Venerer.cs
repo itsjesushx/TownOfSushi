@@ -15,7 +15,7 @@ namespace TownOfSushi.Roles
             TaskText = () => "Kill players to unlock ability perks";
             RoleInfo = $"The Venerer has multiple abilities during the game, once they reach their first kill, they can camouflage everyone for {CustomGameOptions.AbilityDuration} seconds. After their second kill, they can sprint while camouflaged. After their third kill, they can freeze players in place while sprinting.";
             LoreText = "A relentless force, you grow stronger with every life you take. As the Venerer, each kill you make unlocks new, powerful abilities that enhance your deception and manipulation. The more you strike, the more dangerous you become, allowing you to further deceive, confuse, and overpower the crew. Your power only grows, making you an increasingly deadly threat as time goes on.";
-            Color = ColorManager.Impostor;
+            Color = ColorManager.ImpostorRed;
             LastCamouflaged = DateTime.UtcNow;
             RoleType = RoleEnum.Venerer;
             Faction = Faction.Impostors;
@@ -72,20 +72,20 @@ namespace TownOfSushi.Roles
     {
         public static bool Prefix(KillButton __instance)
         {
-            var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Venerer);
+            var flag = LocalPlayer().Is(RoleEnum.Venerer);
             if (!flag) return true;
-            if (!PlayerControl.LocalPlayer.CanMove) return false;
+            if (!LocalPlayer().CanMove) return false;
             if (MushroomSabotageActive()) return false;
             if (IsDead()) return false;
-            var role = GetRole<Venerer>(PlayerControl.LocalPlayer);
+            var role = GetRole<Venerer>(LocalPlayer());
             if (__instance == role.AbilityButton)
             {
                 if (__instance.isCoolingDown) return false;
                 if (!__instance.isActiveAndEnabled) return false;
                 if (role.AbilityTimer() != 0 || role.Kills < 1) return false;
-                var abilityUsed = AbilityUsed(PlayerControl.LocalPlayer);
+                var abilityUsed = AbilityUsed(LocalPlayer());
                 if (!abilityUsed) return false;
-                StartRPC(CustomRPC.Camouflage, PlayerControl.LocalPlayer.PlayerId, role.Kills);
+                StartRPC(CustomRPC.Camouflage, LocalPlayer().PlayerId, role.Kills);
                 role.TimeRemaining = CustomGameOptions.AbilityDuration;
                 role.KillsAtStartAbility = role.Kills;
                 role.Ability();
@@ -107,10 +107,10 @@ namespace TownOfSushi.Roles
         public static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Venerer)) return;
-            var role = GetRole<Venerer>(PlayerControl.LocalPlayer);
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(RoleEnum.Venerer)) return;
+            var role = GetRole<Venerer>(LocalPlayer());
             if (role.AbilityButton == null)
             {
                 role.AbilityButton = Object.Instantiate(__instance.KillButton, __instance.KillButton.transform.parent);

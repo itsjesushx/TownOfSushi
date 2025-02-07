@@ -9,9 +9,9 @@ namespace TownOfSushi.Patches
         [HarmonyPatch(nameof(GameData.HandleDisconnect), typeof(PlayerControl), typeof(DisconnectReasons))]
         public static void Prefix([HarmonyArgument(0)] PlayerControl player)
         {
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.BountyHunter))
+            if (LocalPlayer().Is(RoleEnum.BountyHunter))
             {
-                var bountyHunter = GetRole<BountyHunter>(PlayerControl.LocalPlayer);
+                var bountyHunter = GetRole<BountyHunter>(LocalPlayer());
                 if (bountyHunter.Bounty == player) bountyHunter.Bounty = bountyHunter.AddBounty(player);
             }
             if (Meeting())
@@ -46,20 +46,35 @@ namespace TownOfSushi.Patches
                     }
                 }
 
-                if (PlayerControl.LocalPlayer.Is(RoleEnum.Swapper) && !IsDead())
+                if (LocalPlayer().Is(RoleEnum.Swapper) && !IsDead())
                 {
                     var swapper = GetRole<Swapper>(PlayerControl.LocalPlayer);
-                    var button = swapper.Buttons[voteArea.TargetPlayerId];
-                    if (button.GetComponent<SpriteRenderer>().sprite == TownOfSushi.SwapperSwitch)
+                    var index = int.MaxValue;
+                    for (var i = 0; i < swapper.ListOfActives.Count; i++)
                     {
-                        swapper.ListOfActives[voteArea.TargetPlayerId] = false;
-                        if (SwapVotes.Swap1 == voteArea) SwapVotes.Swap1 = null;
-                        if (SwapVotes.Swap2 == voteArea) SwapVotes.Swap2 = null;
-                        StartRPC(CustomRPC.SetSwaps, sbyte.MaxValue, sbyte.MaxValue);
+                        if (swapper.ListOfActives[i].Item1 == voteArea.TargetPlayerId)
+                        {
+                            index = i;
+                            break;
+                        }
                     }
-                    button.SetActive(false);
-                    button.GetComponent<PassiveButton>().OnClick = new Button.ButtonClickedEvent();
-                    swapper.Buttons[voteArea.TargetPlayerId] = null;
+                    if (index != int.MaxValue)
+                    {
+                        var button = swapper.Buttons[index];
+                        if (button != null)
+                        {
+                            if (button.GetComponent<SpriteRenderer>().sprite == TownOfSushi.SwapperSwitch)
+                            {
+                                swapper.ListOfActives[index] = (swapper.ListOfActives[index].Item1, false);
+                                if (SwapVotes.Swap1 == voteArea) SwapVotes.Swap1 = null;
+                                if (SwapVotes.Swap2 == voteArea) SwapVotes.Swap2 = null;
+                                StartRPC(CustomRPC.SetSwaps, sbyte.MaxValue, sbyte.MaxValue);
+                            }
+                            button.SetActive(false);
+                            button.GetComponent<PassiveButton>().OnClick = new Button.ButtonClickedEvent();
+                            swapper.Buttons[index] = null;
+                        }
+                    }
                 }
                 
 
@@ -67,31 +82,46 @@ namespace TownOfSushi.Patches
                 if (AssassinAddButton.assassinUI != null) AssassinAddButton.assassinUIExitButton.OnClick.Invoke();
                 if (AddButtonDoomsayer.doomsayerUI != null) AddButtonDoomsayer.doomsayerUIExitButton.OnClick.Invoke();
 
-                if (PlayerControl.LocalPlayer.Is(RoleEnum.Jailor) && !IsDead())
+                if (LocalPlayer().Is(RoleEnum.Jailor) && !IsDead())
                 {
-                    var jailor = GetRole<Jailor>(PlayerControl.LocalPlayer);
+                    var jailor = GetRole<Jailor>(LocalPlayer());
                     jailor.ExecuteButton.Destroy();
                     jailor.UsesText.Destroy();
                 }
 
-                if (PlayerControl.LocalPlayer.Is(RoleEnum.Deputy) && !IsDead())
+                if (LocalPlayer().Is(RoleEnum.Deputy) && !IsDead())
                 {
-                    var Deputy = GetRole<Deputy>(PlayerControl.LocalPlayer);
+                    var Deputy = GetRole<Deputy>(LocalPlayer());
                     Deputy.ExecuteButton.Destroy();
                 }
 
-                if (PlayerControl.LocalPlayer.Is(RoleEnum.Imitator) && !IsDead())
+                if (LocalPlayer().Is(RoleEnum.Imitator) && !IsDead())
                 {
-                    var imitatorRole = GetRole<Imitator>(PlayerControl.LocalPlayer);
-                    var button = imitatorRole.Buttons[voteArea.TargetPlayerId];
-                    if (button.GetComponent<SpriteRenderer>().sprite == TownOfSushi.ImitateSelectSprite)
+                    var imitatorRole = GetRole<Imitator>(LocalPlayer());
+                    var index = int.MaxValue;
+                    for (var i = 0; i < imitatorRole.ListOfActives.Count; i++)
                     {
-                        imitatorRole.ListOfActives[voteArea.TargetPlayerId] = false;
-                        if (SetImitate.Imitate == voteArea) SetImitate.Imitate = null;
+                        if (imitatorRole.ListOfActives[i].Item1 == voteArea.TargetPlayerId)
+                        {
+                            index = i;
+                            break;
+                        }
                     }
-                    button.SetActive(false);
-                    button.GetComponent<PassiveButton>().OnClick = new Button.ButtonClickedEvent();
-                    imitatorRole.Buttons[voteArea.TargetPlayerId] = null;
+                    if (index != int.MaxValue)
+                    {
+                        var button = imitatorRole.Buttons[index];
+                        if (button != null)
+                        {
+                            if (button.GetComponent<SpriteRenderer>().sprite == TownOfSushi.ImitateSelectSprite)
+                            {
+                                imitatorRole.ListOfActives[index] = (imitatorRole.ListOfActives[index].Item1, false);
+                                if (SetImitate.Imitate == voteArea) SetImitate.Imitate = null;
+                            }
+                            button.SetActive(false);
+                            button.GetComponent<PassiveButton>().OnClick = new Button.ButtonClickedEvent();
+                            imitatorRole.Buttons[index] = null;
+                        }
+                    }
                 }
             }
         }

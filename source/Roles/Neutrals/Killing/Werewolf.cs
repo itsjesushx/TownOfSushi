@@ -66,10 +66,10 @@ namespace TownOfSushi.Roles
     {
         public static bool Prefix(KillButton __instance)
         {
-            if (NoButton(PlayerControl.LocalPlayer, RoleEnum.Werewolf))
+            if (NoButton(LocalPlayer(), RoleEnum.Werewolf))
                 return false;
 
-            var role = GetRole<Werewolf>(PlayerControl.LocalPlayer);
+            var role = GetRole<Werewolf>(LocalPlayer());
 
             if (__instance == role.MaulButton)
             {
@@ -82,12 +82,12 @@ namespace TownOfSushi.Roles
                 if (IsTooFar(role.Player, role.ClosestPlayer))
                     return false;
                 
-                var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer, true);
+                var interact = Interact(LocalPlayer(), role.ClosestPlayer, true);
 
                 if (interact[3] == true)
                 {
                     role.Maul();
-                    StartRPC(CustomRPC.Maul, PlayerControl.LocalPlayer.PlayerId);
+                    StartRPC(CustomRPC.Maul, LocalPlayer().PlayerId);
                 }
                 
                 if (interact[0] == true)
@@ -109,10 +109,10 @@ namespace TownOfSushi.Roles
 
         public static void Postfix(HudManager __instance)
         {
-            if (NoButton(PlayerControl.LocalPlayer, RoleEnum.Werewolf))
+            if (NoButton(LocalPlayer(), RoleEnum.Werewolf))
                 return;
 
-            var role = GetRole<Werewolf>(PlayerControl.LocalPlayer);
+            var role = GetRole<Werewolf>(LocalPlayer());
 
             if (role.MaulButton == null)
             {

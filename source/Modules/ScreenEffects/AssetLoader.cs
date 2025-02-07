@@ -15,7 +15,7 @@ namespace TownOfSushi.Modules.ScreenEffects
         public void Initialize()
         {
             Array.ForEach(AssetBundles, x => {
-                var b = loadBundle(x);
+                var b = LoadBundle(x);
                 bundles.Add(b.name, b);
                 b.GetAllAssetNames().ToList().ForEach(y => {
                     objectname_to_bundle.Add(ConvertToBaseName(y), x);
@@ -23,7 +23,7 @@ namespace TownOfSushi.Modules.ScreenEffects
             });
         }
 
-        private static AssetBundle loadBundle(string bundlename)
+        private static AssetBundle LoadBundle(string bundlename)
         {
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
             var stream = assembly.GetManifestResourceStream($"TownOfSushi.Resources.{bundlename}");

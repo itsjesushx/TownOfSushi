@@ -10,76 +10,76 @@ namespace TownOfSushi.Patches
             public static Dictionary<byte, DateTime> tickDictionary = new();
             public static IEnumerator StopAbility(float duration)
             {
-                if (tickDictionary.ContainsKey(PlayerControl.LocalPlayer.PlayerId))
+                if (tickDictionary.ContainsKey(LocalPlayer().PlayerId))
                 {
-                    if (CustomGameOptions.HackDuration - (DateTime.UtcNow - tickDictionary[PlayerControl.LocalPlayer.PlayerId]).TotalMilliseconds / 1000 < duration)
+                    if (CustomGameOptions.HackDuration - (DateTime.UtcNow - tickDictionary[LocalPlayer().PlayerId]).TotalMilliseconds / 1000 < duration)
                     {
-                        tickDictionary[PlayerControl.LocalPlayer.PlayerId] = DateTime.UtcNow.AddSeconds((tickDictionary[PlayerControl.LocalPlayer.PlayerId] - DateTime.UtcNow).TotalMilliseconds / 1000);
+                        tickDictionary[LocalPlayer().PlayerId] = DateTime.UtcNow.AddSeconds((tickDictionary[LocalPlayer().PlayerId] - DateTime.UtcNow).TotalMilliseconds / 1000);
                     }
                     yield break;
                 }
-                tickDictionary.Add(PlayerControl.LocalPlayer.PlayerId, DateTime.UtcNow);
+                tickDictionary.Add(LocalPlayer().PlayerId, DateTime.UtcNow);
 
                 while (true)
                 {
                     var disableKill = true;
                     var disableExtra = true;
                     
-                    if (PlayerControl.LocalPlayer.Is(RoleEnum.Hunter))
+                    if (LocalPlayer().Is(RoleEnum.Hunter))
                     {
-                        var hunter = GetRole<Hunter>(PlayerControl.LocalPlayer);
+                        var hunter = GetRole<Hunter>(LocalPlayer());
                         if (hunter.Stalking) disableExtra = false;
                     }
-                    else if (PlayerControl.LocalPlayer.Is(RoleEnum.Veteran))
+                    else if (LocalPlayer().Is(RoleEnum.Veteran))
                     {
-                        var veteran = GetRole<Veteran>(PlayerControl.LocalPlayer);
+                        var veteran = GetRole<Veteran>(LocalPlayer());
                         if (veteran.OnAlert) disableKill = false;
                     }
-                    else if (PlayerControl.LocalPlayer.Is(RoleEnum.GuardianAngel))
+                    else if (LocalPlayer().Is(RoleEnum.GuardianAngel))
                     {
-                        var ga = GetRole<GuardianAngel>(PlayerControl.LocalPlayer);
+                        var ga = GetRole<GuardianAngel>(LocalPlayer());
                         if (ga.Protecting) disableKill = false;
                     }
-                    else if (PlayerControl.LocalPlayer.Is(RoleEnum.Bomber))
+                    else if (LocalPlayer().Is(RoleEnum.Bomber))
                     {
-                        var bomber = GetRole<Bomber>(PlayerControl.LocalPlayer);
+                        var bomber = GetRole<Bomber>(LocalPlayer());
                         if (bomber.Detonating) disableExtra = false;
                     }
-                    else if (PlayerControl.LocalPlayer.Is(RoleEnum.Grenadier))
+                    else if (LocalPlayer().Is(RoleEnum.Grenadier))
                     {
-                        var gren = GetRole<Grenadier>(PlayerControl.LocalPlayer);
+                        var gren = GetRole<Grenadier>(LocalPlayer());
                         if (gren.Flashed) disableExtra = false;
                     }
-                    else if (PlayerControl.LocalPlayer.Is(RoleEnum.Venerer))
+                    else if (LocalPlayer().Is(RoleEnum.Venerer))
                     {
-                        var venerer = GetRole<Venerer>(PlayerControl.LocalPlayer);
+                        var venerer = GetRole<Venerer>(LocalPlayer());
                         if (venerer.IsCamouflaged) disableExtra = false;
                     }
-                    else if (PlayerControl.LocalPlayer.Is(RoleEnum.Swooper))
+                    else if (LocalPlayer().Is(RoleEnum.Swooper))
                     {
-                        var swooper = GetRole<Swooper>(PlayerControl.LocalPlayer);
+                        var swooper = GetRole<Swooper>(LocalPlayer());
                         if (swooper.IsSwooped) disableExtra = false;
                     }
-                    else if (PlayerControl.LocalPlayer.Is(RoleEnum.Morphling))
+                    else if (LocalPlayer().Is(RoleEnum.Morphling))
                     {
-                        var morph = GetRole<Morphling>(PlayerControl.LocalPlayer);
+                        var morph = GetRole<Morphling>(LocalPlayer());
                         if (morph.Morphed) disableExtra = false;
                     }
-                    else if (PlayerControl.LocalPlayer.Is(RoleEnum.Hitman))
+                    else if (LocalPlayer().Is(RoleEnum.Hitman))
                     {
-                        var morph = GetRole<Hitman>(PlayerControl.LocalPlayer);
+                        var morph = GetRole<Hitman>(LocalPlayer());
                         if (morph.IsUsingMorph) disableExtra = false;
                         if (!morph.CurrentlyDragging)
                             HitmanKillButtonTarget.SetTarget(HUDManager().KillButton, null, morph);
                     }
-                    else if (PlayerControl.LocalPlayer.Is(RoleEnum.Glitch))
+                    else if (LocalPlayer().Is(RoleEnum.Glitch))
                     {
-                        var glitch = GetRole<Glitch>(PlayerControl.LocalPlayer);
+                        var glitch = GetRole<Glitch>(LocalPlayer());
                         if (glitch.IsUsingMimic) disableExtra = false;
                     }
-                    else if (PlayerControl.LocalPlayer.Is(RoleEnum.SerialKiller))
+                    else if (LocalPlayer().Is(RoleEnum.SerialKiller))
                     {
-                        var ww = GetRole<SerialKiller>(PlayerControl.LocalPlayer);
+                        var ww = GetRole<SerialKiller>(LocalPlayer());
                         if (ww.Stabbing) disableExtra = false;
                     }
 
@@ -89,52 +89,52 @@ namespace TownOfSushi.Patches
                         HUDManager().KillButton.graphic.color = Palette.DisabledClear;
                         HUDManager().KillButton.graphic.material.SetFloat("_Desat", 1f);
                     }
-                    if (PlayerControl.LocalPlayer.Is(RoleEnum.Janitor)) JanitorKillButtonTarget.SetTarget(HUDManager().KillButton, null, GetRole<Janitor>(PlayerControl.LocalPlayer));
-                    else if (PlayerControl.LocalPlayer.Is(RoleEnum.Vulture)) VultureKillButtonTarget.SetTarget(HUDManager().KillButton, null, GetRole<Vulture>(PlayerControl.LocalPlayer));
-                    else if (PlayerControl.LocalPlayer.Is(RoleEnum.Undertaker))
+                    if (LocalPlayer().Is(RoleEnum.Janitor)) JanitorKillButtonTarget.SetTarget(HUDManager().KillButton, null, GetRole<Janitor>(LocalPlayer()));
+                    else if (LocalPlayer().Is(RoleEnum.Vulture)) VultureKillButtonTarget.SetTarget(HUDManager().KillButton, null, GetRole<Vulture>(LocalPlayer()));
+                    else if (LocalPlayer().Is(RoleEnum.Undertaker))
                     {
-                        var undertaker = GetRole<Undertaker>(PlayerControl.LocalPlayer);
+                        var undertaker = GetRole<Undertaker>(LocalPlayer());
                         if (!undertaker.CurrentlyDragging)
                             UndertakerKillButtonTarget.SetTarget(HUDManager().KillButton, null, undertaker);
                     }
-                    else if (PlayerControl.LocalPlayer.Is(RoleEnum.Engineer))
+                    else if (LocalPlayer().Is(RoleEnum.Engineer))
                     {
-                        var engi = GetRole<Engineer>(PlayerControl.LocalPlayer);
+                        var engi = GetRole<Engineer>(LocalPlayer());
                         engi.UsesText.color = Palette.DisabledClear;
                         engi.UsesText.material.SetFloat("_Desat", 1f);
                     }
-                    else if (PlayerControl.LocalPlayer.Is(RoleEnum.Lookout))
+                    else if (LocalPlayer().Is(RoleEnum.Lookout))
                     {
-                        var lo = GetRole<Lookout>(PlayerControl.LocalPlayer);
+                        var lo = GetRole<Lookout>(LocalPlayer());
                         lo.UsesText.color = Palette.DisabledClear;
                         lo.UsesText.material.SetFloat("_Desat", 1f);
                     }
-                    else if (PlayerControl.LocalPlayer.Is(RoleEnum.Tracker))
+                    else if (LocalPlayer().Is(RoleEnum.Tracker))
                     {
-                        var track = GetRole<Tracker>(PlayerControl.LocalPlayer);
+                        var track = GetRole<Tracker>(LocalPlayer());
                         track.UsesText.color = Palette.DisabledClear;
                         track.UsesText.material.SetFloat("_Desat", 1f);
                     }
-                    else if (PlayerControl.LocalPlayer.Is(RoleEnum.Trapper))
+                    else if (LocalPlayer().Is(RoleEnum.Trapper))
                     {
-                        var trap = GetRole<Trapper>(PlayerControl.LocalPlayer);
+                        var trap = GetRole<Trapper>(LocalPlayer());
                         trap.UsesText.color = Palette.DisabledClear;
                         trap.UsesText.material.SetFloat("_Desat", 1f);
                     }
-                    else if (PlayerControl.LocalPlayer.Is(RoleEnum.Veteran) && disableKill)
+                    else if (LocalPlayer().Is(RoleEnum.Veteran) && disableKill)
                     {
-                        var vet = GetRole<Veteran>(PlayerControl.LocalPlayer);
+                        var vet = GetRole<Veteran>(LocalPlayer());
                         vet.UsesText.color = Palette.DisabledClear;
                         vet.UsesText.material.SetFloat("_Desat", 1f);
                     }
-                    else if (PlayerControl.LocalPlayer.Is(RoleEnum.GuardianAngel) && disableKill)
+                    else if (LocalPlayer().Is(RoleEnum.GuardianAngel) && disableKill)
                     {
-                        var ga = GetRole<GuardianAngel>(PlayerControl.LocalPlayer);
+                        var ga = GetRole<GuardianAngel>(LocalPlayer());
                         ga.UsesText.color = Palette.DisabledClear;
                         ga.UsesText.material.SetFloat("_Desat", 1f);
                     }
 
-                    var role = GetPlayerRole(PlayerControl.LocalPlayer);
+                    var role = GetPlayerRole(LocalPlayer());
                     if (role?.ExtraButtons.Count > 0 && disableExtra)
                     {
                         role.ExtraButtons[0].enabled = false;
@@ -142,22 +142,22 @@ namespace TownOfSushi.Patches
                         role.ExtraButtons[0].graphic.material.SetFloat("_Desat", 1f);
                     }
 
-                    if (PlayerControl.LocalPlayer.Is(RoleEnum.Investigator)) GetRole<Investigator>(PlayerControl.LocalPlayer).ExamineButton.SetTarget(null);
-                    else if (PlayerControl.LocalPlayer.Is(RoleEnum.Hunter) && disableExtra)
+                    if (LocalPlayer().Is(RoleEnum.Investigator)) GetRole<Investigator>(LocalPlayer()).ExamineButton.SetTarget(null);
+                    else if (LocalPlayer().Is(RoleEnum.Hunter) && disableExtra)
                     {
-                        var hunter = GetRole<Hunter>(PlayerControl.LocalPlayer);
+                        var hunter = GetRole<Hunter>(LocalPlayer());
                         hunter.StalkButton.SetTarget(null);
                         hunter.UsesText.color = Palette.DisabledClear;
                         hunter.UsesText.material.SetFloat("_Desat", 1f);
                     }
-                    else if (PlayerControl.LocalPlayer.Is(RoleEnum.Arsonist)) GetRole<Arsonist>(PlayerControl.LocalPlayer).IgniteButton.SetTarget(null);
-                    else if (PlayerControl.LocalPlayer.Is(RoleEnum.Blackmailer)) GetRole<Blackmailer>(PlayerControl.LocalPlayer).BlackmailButton.SetTarget(null);
-                    else if (PlayerControl.LocalPlayer.Is(RoleEnum.Morphling)) GetRole<Morphling>(PlayerControl.LocalPlayer).MorphButton.SetTarget(null);
-                    else if (PlayerControl.LocalPlayer.Is(RoleEnum.Hitman)) GetRole<Hitman>(PlayerControl.LocalPlayer).MorphButton.SetTarget(null);
+                    else if (LocalPlayer().Is(RoleEnum.Arsonist)) GetRole<Arsonist>(LocalPlayer()).IgniteButton.SetTarget(null);
+                    else if (LocalPlayer().Is(RoleEnum.Blackmailer)) GetRole<Blackmailer>(LocalPlayer()).BlackmailButton.SetTarget(null);
+                    else if (LocalPlayer().Is(RoleEnum.Morphling)) GetRole<Morphling>(LocalPlayer()).MorphButton.SetTarget(null);
+                    else if (LocalPlayer().Is(RoleEnum.Hitman)) GetRole<Hitman>(LocalPlayer()).MorphButton.SetTarget(null);
 
-                    if (PlayerControl.LocalPlayer.Is(RoleEnum.Glitch))
+                    if (LocalPlayer().Is(RoleEnum.Glitch))
                     {
-                        var glitch = GetRole<Glitch>(PlayerControl.LocalPlayer);
+                        var glitch = GetRole<Glitch>(LocalPlayer());
                         if (disableExtra)
                         {
                             glitch.MimicButton.enabled = false;
@@ -169,9 +169,9 @@ namespace TownOfSushi.Patches
                         glitch.HackButton.graphic.material.SetFloat("_Desat", 1f);
                     }
 
-                    if (PlayerControl.LocalPlayer.Is(RoleEnum.Hitman))
+                    if (LocalPlayer().Is(RoleEnum.Hitman))
                     {
-                        var Hitman = GetRole<Hitman>(PlayerControl.LocalPlayer);
+                        var Hitman = GetRole<Hitman>(LocalPlayer());
                         if (disableExtra)
                         {
                             Hitman.MorphButton.enabled = false;
@@ -182,24 +182,24 @@ namespace TownOfSushi.Patches
                         }
                     }
 
-                    var disableTimer = (DateTime.UtcNow - tickDictionary[PlayerControl.LocalPlayer.PlayerId]).TotalMilliseconds/1000;
-                    if (Meeting() || disableTimer > duration || PlayerControl.LocalPlayer?.Data.IsDead != false || AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started)
+                    var disableTimer = (DateTime.UtcNow - tickDictionary[LocalPlayer().PlayerId]).TotalMilliseconds/1000;
+                    if (Meeting() || disableTimer > duration || LocalPlayer()?.Data.IsDead != false || AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started)
                     {
                         HUDManager().KillButton.enabled = true;
                         if (role?.ExtraButtons.Count > 0) role.ExtraButtons[0].enabled = true;
-                        if (PlayerControl.LocalPlayer.Is(RoleEnum.Glitch))
+                        if (LocalPlayer().Is(RoleEnum.Glitch))
                         {
-                            var glitch = GetRole<Glitch>(PlayerControl.LocalPlayer);
+                            var glitch = GetRole<Glitch>(LocalPlayer());
                             glitch.MimicButton.enabled = true;
                             glitch.HackButton.enabled = true;
                         }
-                        if (PlayerControl.LocalPlayer.Is(RoleEnum.Hitman))
+                        if (LocalPlayer().Is(RoleEnum.Hitman))
                         {
-                            var glitch = GetRole<Hitman>(PlayerControl.LocalPlayer);
+                            var glitch = GetRole<Hitman>(LocalPlayer());
                             glitch.MorphButton.enabled = true;
                         }
 
-                        tickDictionary.Remove(PlayerControl.LocalPlayer.PlayerId);
+                        tickDictionary.Remove(LocalPlayer().PlayerId);
                         yield break;
                     }
 
@@ -213,7 +213,7 @@ namespace TownOfSushi.Patches
         {
             public static void Prefix(PlayerPhysics __instance, [HarmonyArgument(0)] Ladder source, [HarmonyArgument(1)] byte climbLadderSid)
             {
-                if (PlayerControl.LocalPlayer.PlayerId == __instance.myPlayer.PlayerId) Coroutines.Start(DisableAbility.StopAbility(0.75f));
+                if (LocalPlayer().PlayerId == __instance.myPlayer.PlayerId) Coroutines.Start(DisableAbility.StopAbility(0.75f));
             }
         }
 

@@ -178,12 +178,12 @@ namespace TownOfSushi.Roles
     {
         public static void BreakShield(byte medicId, byte playerId, bool flag)
         {
-            if (PlayerControl.LocalPlayer.PlayerId == playerId && CustomGameOptions.NotificationShield == NotificationOptions.Shielded) 
+            if (LocalPlayer().PlayerId == playerId && CustomGameOptions.NotificationShield == NotificationOptions.Shielded) 
             {
                 Flash(Color.red, 0.5f);
             }
 
-            if (PlayerControl.LocalPlayer.PlayerId == medicId && CustomGameOptions.NotificationShield == NotificationOptions.Medic) 
+            if (LocalPlayer().PlayerId == medicId && CustomGameOptions.NotificationShield == NotificationOptions.Medic) 
             {
                 Flash(Color.red, 0.5f);
             }
@@ -251,12 +251,12 @@ namespace TownOfSushi.Roles
         public static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Medic)) return;
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(RoleEnum.Medic)) return;
 
             var protectButton = __instance.KillButton;
-            var role = GetRole<Medic>(PlayerControl.LocalPlayer);
+            var role = GetRole<Medic>(LocalPlayer());
 
             protectButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
                     && !Meeting() && !IsDead()
@@ -273,19 +273,19 @@ namespace TownOfSushi.Roles
         public static bool Prefix(KillButton __instance)
         {
             if (__instance != HUDManager().KillButton) return true;
-            var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Medic);
+            var flag = LocalPlayer().Is(RoleEnum.Medic);
             if (!flag) return true;
-            var role = GetRole<Medic>(PlayerControl.LocalPlayer);
-            if (!PlayerControl.LocalPlayer.CanMove) return false;
+            var role = GetRole<Medic>(LocalPlayer());
+            if (!LocalPlayer().CanMove) return false;
             if (IsDead()) return false;
             if (!__instance.enabled) return false;
             if (role.UsedAbility || role.ClosestPlayer == null) return false;
             if (role.StartTimer() > 0) return false;
 
-            var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer);
+            var interact = Interact(LocalPlayer(), role.ClosestPlayer);
             if (interact[3] == true)
             {
-                StartRPC(CustomRPC.Protect, PlayerControl.LocalPlayer.PlayerId, role.ClosestPlayer.PlayerId);
+                StartRPC(CustomRPC.Protect, LocalPlayer().PlayerId, role.ClosestPlayer.PlayerId);
 
                 role.ShieldedPlayer = role.ClosestPlayer;
                 role.UsedAbility = true;
@@ -316,7 +316,7 @@ namespace TownOfSushi.Roles
             if (!isMedicAlive || !areReportsEnabled)
                 return;
 
-            var isUserMedic = PlayerControl.LocalPlayer.Is(RoleEnum.Medic);
+            var isUserMedic = LocalPlayer().Is(RoleEnum.Medic);
             if (!isUserMedic)
                 return;
             //System.Console.WriteLine("RBTHREEF");
@@ -341,7 +341,7 @@ namespace TownOfSushi.Roles
 
             if (HUDManager())
                 // Send the message through chat only visible to the medic
-                HUDManager().Chat.AddChat(PlayerControl.LocalPlayer, reportMsg);
+                Chat().AddChat(LocalPlayer(), reportMsg);
         }
     }
 
@@ -373,7 +373,7 @@ namespace TownOfSushi.Roles
             var newButton = Object.Instantiate(colorButton, voteArea.transform);
             var renderer = newButton.GetComponent<SpriteRenderer>();
 
-            PlayerControl playerControl = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(p => p.PlayerId == voteArea.TargetPlayerId);
+            PlayerControl playerControl = AllPlayers().FirstOrDefault(p => p.PlayerId == voteArea.TargetPlayerId);
 
             if (role.LightDarkColors[playerControl.GetDefaultOutfit().ColorId] == "lighter") {
                 renderer.sprite = LighterSprite;
@@ -408,9 +408,9 @@ namespace TownOfSushi.Roles
                 medic.Buttons.Clear();
             }
             if (CustomGameOptions.MedicReportColorDuration == 0) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Medic)) return;
+            if (!LocalPlayer().Is(RoleEnum.Medic)) return;
             if (IsDead()) return;
-            var medicrole = GetRole<Medic>(PlayerControl.LocalPlayer);
+            var medicrole = GetRole<Medic>(LocalPlayer());
             foreach (var voteArea in __instance.playerStates)
             {
                 try {

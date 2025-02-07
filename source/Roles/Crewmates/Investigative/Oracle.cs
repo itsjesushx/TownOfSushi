@@ -74,19 +74,19 @@ namespace TownOfSushi.Roles
         public static bool Prefix(KillButton __instance)
         {
             if (__instance != HUDManager().KillButton) return true;
-            var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Oracle);
+            var flag = LocalPlayer().Is(RoleEnum.Oracle);
             if (!flag) return true;
-            var role = GetRole<Oracle>(PlayerControl.LocalPlayer);
-            if (!PlayerControl.LocalPlayer.CanMove || role.ClosestPlayer == null) return false;
+            var role = GetRole<Oracle>(LocalPlayer());
+            if (!LocalPlayer().CanMove || role.ClosestPlayer == null) return false;
             var flag2 = role.ConfessTimer() == 0f;
             if (!flag2) return false;
             if (!__instance.enabled) return false;
             var maxDistance = KillDistance();
             if (Vector2.Distance(role.ClosestPlayer.GetTruePosition(),
-                PlayerControl.LocalPlayer.GetTruePosition()) > maxDistance) return false;
+                LocalPlayer().GetTruePosition()) > maxDistance) return false;
             if (role.ClosestPlayer == null) return false;
 
-            var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer);
+            var interact = Interact(LocalPlayer(), role.ClosestPlayer);
             if (interact[3] == true)
             {
                 role.Confessor = role.ClosestPlayer;
@@ -114,7 +114,7 @@ namespace TownOfSushi.Roles
                 if (faction == 0) role.RevealedFaction = Faction.Crewmates;
                 else if (faction == 1) role.RevealedAlignment = RoleAlignment.NeutralEvil;
                 else role.RevealedFaction = Faction.Impostors;
-                StartRPC(CustomRPC.Confess, PlayerControl.LocalPlayer.PlayerId, role.Confessor.PlayerId, faction);
+                StartRPC(CustomRPC.Confess, LocalPlayer().PlayerId, role.Confessor.PlayerId, faction);
                 
             }
             if (interact[0] == true)
@@ -140,12 +140,12 @@ namespace TownOfSushi.Roles
         public static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Oracle)) return;
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(RoleEnum.Oracle)) return;
             var confessButton = __instance.KillButton;
 
-            var role = GetRole<Oracle>(PlayerControl.LocalPlayer);
+            var role = GetRole<Oracle>(LocalPlayer());
 
             confessButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
                     && !Meeting() && !IsDead()
@@ -180,25 +180,25 @@ namespace TownOfSushi.Roles
         public static void Postfix(MeetingHud __instance)
         {
             if (IsDead()) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Oracle)) return;
-            var oracleRole = GetRole<Oracle>(PlayerControl.LocalPlayer);
+            if (!LocalPlayer().Is(RoleEnum.Oracle)) return;
+            var oracleRole = GetRole<Oracle>(LocalPlayer());
             if (oracleRole.Confessor != null)
             {
                 var playerResults = PlayerReportFeedback(oracleRole.Confessor);
 
-                if (!string.IsNullOrWhiteSpace(playerResults)) HUDManager().Chat.AddChat(PlayerControl.LocalPlayer, playerResults);
+                if (!string.IsNullOrWhiteSpace(playerResults)) Chat().AddChat(LocalPlayer(), playerResults);
             }
         }
 
         public static string PlayerReportFeedback(PlayerControl player)
         {
-            if (player.Data.IsDead || player.Data.Disconnected) return ColorString(ColorManager.Impostor, "Your confessor failed to survive so you received no confession");
-            var allPlayers = PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected && x != PlayerControl.LocalPlayer && x != player).ToList();
+            if (player.Data.IsDead || player.Data.Disconnected) return ColorString(ColorManager.ImpostorRed, "Your confessor failed to survive so you received no confession");
+            var allPlayers = AllPlayers().Where(x => !x.Data.IsDead && !x.Data.Disconnected && x != LocalPlayer()&& x != player).ToList();
             if (allPlayers.Count < 2) return "Too few people alive to receive a confessional";
-            var evilPlayers = PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected &&
+            var evilPlayers = AllPlayers().Where(x => !x.Data.IsDead && !x.Data.Disconnected &&
             (x.Is(Faction.Impostors) || (x.Is(RoleAlignment.NeutralKilling) && CustomGameOptions.NeutralKillingShowsEvil) ||
             (x.Is(RoleAlignment.NeutralEvil) && CustomGameOptions.NeutralEvilShowsEvil) || (x.Is(RoleAlignment.NeutralBenign) && CustomGameOptions.NeutralBenignShowsEvil) || (x.Is(RoleAlignment.NeutralBenign) && CustomGameOptions.NeutralBenignShowsEvil))).ToList();
-            if (evilPlayers.Count == 0) return $"{player.GetDefaultOutfit().PlayerName} " + ColorString(ColorManager.Crewmate, "confesses to knowing that there are no more evil players!"); 
+            if (evilPlayers.Count == 0) return $"{player.GetDefaultOutfit().PlayerName} " + ColorString(ColorManager.CrewmateBlue, "confesses to knowing that there are no more evil players!"); 
             allPlayers.Shuffle();
             evilPlayers.Shuffle();
             var secondPlayer = allPlayers[0];

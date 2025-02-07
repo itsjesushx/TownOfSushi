@@ -9,11 +9,11 @@ namespace TownOfSushi.Roles
         public bool AlreadyPicked = false;
         public Romantic(PlayerControl player) : base(player)
         {
-            var ChooseOrNew = CustomGameOptions.RomanticOnBelovedDeath == RomanticBecomeOptions.Repick ? "have to choose a new partner" : $"become {CustomGameOptions.RomanticOnBelovedDeath.ToString()} on your partner's death";
+            var ChooseOrNew = CustomGameOptions.RomanticOnBelovedDeath == RomanticBecomeOptions.Repick ? "have to choose a new partner" : $"become {CustomGameOptions.RomanticOnBelovedDeath} on your partner's death";
             Name = "Romantic";
             StartText = () => "Pick a beloved to win with them";
             TaskText = () => SpawnedAs ? "Protect your beloved" : "Your beloved died. Pick a new one!";
-            RoleInfo = "As the Romantic, you must pick a player to love, working together to ensure both of your survival. " + ChooseOrNew + ".";
+            RoleInfo = "As the Romantic, you must pick a player to love, working together to ensure both of your survival. If your target dies, you will " + ChooseOrNew + ".";
             LoreText =$"A heart bound by love, you are driven by a deep connection to your chosen beloved. As the Romantic, you must pick a Crewmate to ally with, working together to ensure both of your survival. Your loyalty gives you strength, and you’ll do whatever it takes to protect and support your beloved. If they fall, you will {ChooseOrNew}.";
             Color = ColorManager.Romantic;
             RoleType = RoleEnum.Romantic;
@@ -40,25 +40,25 @@ namespace TownOfSushi.Roles
         public static bool Prefix(KillButton __instance)
         {
             if (__instance != HUDManager().KillButton) return true;
-            var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Romantic);
+            var flag = LocalPlayer().Is(RoleEnum.Romantic);
             if (!flag) return true;
-            var role = GetRole<Romantic>(PlayerControl.LocalPlayer);
-            if (!PlayerControl.LocalPlayer.CanMove || role.ClosestPlayer == null) return false;
+            var role = GetRole<Romantic>(LocalPlayer());
+            if (!LocalPlayer().CanMove || role.ClosestPlayer == null) return false;
             var flag2 = role.PickTimer() == 0f;
             if (!flag2) return false;
             if (!__instance.enabled) return false;
             var maxDistance = KillDistance();
             if (Vector2.Distance(role.ClosestPlayer.GetTruePosition(),
-                PlayerControl.LocalPlayer.GetTruePosition()) > maxDistance) return false;
+                LocalPlayer().GetTruePosition()) > maxDistance) return false;
             if (role.ClosestPlayer == null) return false;
             if (role.AlreadyPicked) return false;
 
-            var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer);
+            var interact = Interact(LocalPlayer(), role.ClosestPlayer);
             if (interact[3] == true)
             {
                 role.Beloved = role.ClosestPlayer;
                 role.AlreadyPicked = true;
-                StartRPC(CustomRPC.SetRomanticTarget, PlayerControl.LocalPlayer.PlayerId, role.ClosestPlayer.PlayerId);
+                StartRPC(CustomRPC.SetRomanticTarget, LocalPlayer().PlayerId, role.ClosestPlayer.PlayerId);
             }
             if (interact[0] == true)
             {
@@ -83,10 +83,10 @@ namespace TownOfSushi.Roles
         public static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Romantic)) return;
-            var role = GetRole<Romantic>(PlayerControl.LocalPlayer);
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(RoleEnum.Romantic)) return;
+            var role = GetRole<Romantic>(LocalPlayer());
             if (role.AlreadyPicked) return;
             
             var pickButton = __instance.KillButton;
@@ -126,17 +126,15 @@ namespace TownOfSushi.Roles
         {
             public static bool Prefix(ChatController __instance, [HarmonyArgument(0)] PlayerControl sourcePlayer)
             {
-                if (__instance != HUDManager().Chat) return true;
-
-                var localPlayer = PlayerControl.LocalPlayer;
-                if (localPlayer == null) return true;
-                Boolean shouldSeeMessage = localPlayer.Data.IsDead || localPlayer.RomanticCoupleChat(sourcePlayer) ||
-                    sourcePlayer.PlayerId == PlayerControl.LocalPlayer.PlayerId;
+                if (__instance != Chat()) return true;
+                if (LocalPlayer() == null) return true;
+                Boolean shouldSeeMessage = LocalPlayer().Data.IsDead || LocalPlayer().RomanticCoupleChat(sourcePlayer) ||
+                    sourcePlayer.PlayerId == LocalPlayer().PlayerId;
                 if (DateTime.UtcNow - MeetingStartTime < TimeSpan.FromSeconds(1))
                 {
                     return shouldSeeMessage;
                 }
-                return Meeting() != null || Lobby() != null || shouldSeeMessage;
+                return Meeting() != null || IsLobby() != null || shouldSeeMessage;
             }
         }
 
@@ -146,7 +144,7 @@ namespace TownOfSushi.Roles
             public static void Postfix(HudManager __instance)
             {
                 
-                if (PlayerControl.LocalPlayer.HasRomanticCouple() & !__instance.Chat.isActiveAndEnabled)
+                if (LocalPlayer().HasRomanticCouple() & !__instance.Chat.isActiveAndEnabled)
                     __instance.Chat.SetVisible(true);
             }
         }
@@ -166,12 +164,12 @@ namespace TownOfSushi.Roles
         private static void Postfix()
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Romantic)) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
+            if (!LocalPlayer().Is(RoleEnum.Romantic)) return;
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
             if (IsDead()) return;
 
-            var role = GetRole<Romantic>(PlayerControl.LocalPlayer);
+            var role = GetRole<Romantic>(LocalPlayer());
 
             if (Meeting() != null) UpdateMeeting(Meeting(), role);
 
@@ -179,9 +177,9 @@ namespace TownOfSushi.Roles
 
             if (role.Beloved == null || (!role.Beloved.Data.IsDead && !role.Beloved.Data.Disconnected)) return;
 
-            StartRPC(CustomRPC.RomanticChangeRole, PlayerControl.LocalPlayer.PlayerId);
+            StartRPC(CustomRPC.RomanticChangeRole, LocalPlayer().PlayerId);
 
-            RomanticChangeRole(PlayerControl.LocalPlayer);
+            RomanticChangeRole(LocalPlayer());
         }
 
         public static void RomanticChangeRole(PlayerControl player)

@@ -16,7 +16,7 @@ namespace TownOfSushi.Roles
             TaskText = () => "Morph into crewmates";
             RoleInfo = $"The Morphling can morph into the form of their fellow Crewmates, morphing changes the Morphling's look to make them not look sus. The morphling can only morph into a crewmate once every {CustomGameOptions.MorphlingCd} seconds and lasts for {CustomGameOptions.MorphlingDuration} seconds.";
             LoreText = "A master of disguise, you possess the ability to transform into any Crewmate. As the Morphling, you can morph into the form of your fellow Crewmates, blending in with the innocent and deceiving your enemies. Your power of transformation allows you to infiltrate and manipulate, making you an elusive and dangerous Impostor who can strike without warning.";
-            Color = ColorManager.Impostor;
+            Color = ColorManager.ImpostorRed;
             LastMorphed = DateTime.UtcNow;
             RoleType = RoleEnum.Morphling;
             Faction = Faction.Impostors;
@@ -94,10 +94,10 @@ namespace TownOfSushi.Roles
         public static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Morphling)) return;
-            var role = GetRole<Morphling>(PlayerControl.LocalPlayer);
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(RoleEnum.Morphling)) return;
+            var role = GetRole<Morphling>(LocalPlayer());
             if (role.MorphButton == null)
             {
                 role.MorphButton = Object.Instantiate(__instance.KillButton, __instance.KillButton.transform.parent);
@@ -156,12 +156,12 @@ namespace TownOfSushi.Roles
         public static Sprite MorphSprite => TownOfSushi.MorphSprite;
         public static bool Prefix(KillButton __instance)
         {
-            var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Morphling);
+            var flag = LocalPlayer().Is(RoleEnum.Morphling);
             if (!flag) return true;
-            if (!PlayerControl.LocalPlayer.CanMove) return false;
+            if (!LocalPlayer().CanMove) return false;
             if (MushroomSabotageActive()) return false;
             if (IsDead()) return false;
-            var role = GetRole<Morphling>(PlayerControl.LocalPlayer);
+            var role = GetRole<Morphling>(LocalPlayer());
             var target = role.ClosestPlayer;
             if (__instance == role.MorphButton)
             {
@@ -169,7 +169,7 @@ namespace TownOfSushi.Roles
                 if (role.MorphButton.graphic.sprite == SampleSprite)
                 {
                     if (target == null) return false;
-                    var abilityUsed = AbilityUsed(PlayerControl.LocalPlayer);
+                    var abilityUsed = AbilityUsed(LocalPlayer());
                     if (!abilityUsed) return false;
                     role.SampledPlayer = target;
                     role.MorphButton.graphic.sprite = MorphSprite;
@@ -182,9 +182,9 @@ namespace TownOfSushi.Roles
                 {
                     if (__instance.isCoolingDown) return false;
                     if (role.MorphTimer() != 0) return false;
-                    var abilityUsed = AbilityUsed(PlayerControl.LocalPlayer);
+                    var abilityUsed = AbilityUsed(LocalPlayer());
                     if (!abilityUsed) return false;
-                    StartRPC(CustomRPC.Morph, PlayerControl.LocalPlayer.PlayerId, role.SampledPlayer.PlayerId);
+                    StartRPC(CustomRPC.Morph, LocalPlayer().PlayerId, role.SampledPlayer.PlayerId);
                     role.TimeRemaining = CustomGameOptions.MorphlingDuration;
                     role.MorphedPlayer = role.SampledPlayer;
                     Morph(role.Player, role.SampledPlayer);
@@ -202,9 +202,9 @@ namespace TownOfSushi.Roles
         public static void Postfix(KillButton __instance, [HarmonyArgument(0)] PlayerControl target)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Morphling)) return;
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(RoleEnum.Morphling)) return;
             if (target != null && __instance == HUDManager().KillButton)
             if (target.Data.IsImpostor())
             {

@@ -21,7 +21,7 @@
         public readonly static Color32  Medium = new Color32(166, 128, 255, byte.MaxValue);
         public readonly static Color32  Mystic = new Color32(77, 154, 230, byte.MaxValue);
         public readonly static Color32  Trapper = new Color32(167, 209, 179, byte.MaxValue);
-        public readonly static Color32  Swapper = new Color32(102, 230, 102, byte.MaxValue);
+        public readonly static Color32  Swapper = new Color32(255, 112, 165, byte.MaxValue);
         public readonly static Color32  Guardian = new Color32(135, 148, 196, byte.MaxValue);
         public readonly static Color32  Imitator = new Color32(180, 217, 77, byte.MaxValue);
         public readonly static Color32  Oracle = new Color32(52, 79, 235, byte.MaxValue);
@@ -33,7 +33,7 @@
         public readonly static Color32  Romantic = new Color32(255, 102, 204, byte.MaxValue);
         public readonly static Color32  Jester = new Color32(255, 191, 204, byte.MaxValue);
         public readonly static Color32  Hitman = new Color32(0, 180, 235, byte.MaxValue);
-        public readonly static Color32  Executioner = new Color32(204, 204, 204, byte.MaxValue);
+        public readonly static Color32  Executioner = new Color32(162, 196, 135, byte.MaxValue);
         public readonly static Color32  Glitch = new Color32(0, 255, 0, byte.MaxValue);
         public readonly static Color32  SerialKiller = new Color32(51, 110, 255, byte.MaxValue);
         public readonly static Color32  Arsonist = new Color32(255, 77, 0, byte.MaxValue);
@@ -79,9 +79,9 @@
 
         #region Faction Colors
 
-        public readonly static Color32  Crewmate = Palette.CrewmateBlue;
+        public readonly static Color32  CrewmateBlue = Palette.CrewmateBlue;
         public readonly static Color32  Neutral = new Color32(179, 179, 179, byte.MaxValue);
-        public readonly static Color32  Impostor = Palette.ImpostorRed;
+        public readonly static Color32  ImpostorRed = Palette.ImpostorRed;
 
         #endregion
 

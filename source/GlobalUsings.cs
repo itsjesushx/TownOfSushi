@@ -11,7 +11,7 @@ global using TownOfSushi.Modules.BetterMaps.BetterPolus;
 global using static TownOfSushi.Patches.SubmergedCompatibility;
 
 global using static TownOfSushi.Utils;
-global using static TownOfSushi.References;
+global using static TownOfSushi.Modules.References;
 global using static TownOfSushi.Roles.Role;
 global using static TownOfSushi.Roles.Ability;
 global using static TownOfSushi.Roles.Modifier;

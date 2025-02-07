@@ -373,6 +373,7 @@ namespace TownOfSushi.CustomOption
 
         public static CustomOption GuardianAngelOn;
         public static CustomOption ProtectCd;
+        public static CustomOption GADiesWithClient;
         public static CustomOption ProtectDuration;
         public static CustomOption ProtectKCReset;
         public static CustomOption MaxProtects;
@@ -710,6 +711,7 @@ namespace TownOfSushi.CustomOption
             GATargetKnows = CustomOption.Create(175, Types.Neutral, "Target Knows GA Exists", false, GuardianAngelOn);
             GAKnowsTargetRole = CustomOption.Create(176, Types.Neutral, "GA Knows Targets Role", false, GuardianAngelOn);
             EvilTargetPercent = CustomOption.Create(177, Types.Neutral, "Evil Target Chance", 0f, 0f, 100f, 10f, GuardianAngelOn, format: "%");
+            GADiesWithClient = CustomOption.Create(17711, Types.Neutral, "GA Suicides When Target Is Voted", false, GuardianAngelOn);
 
             RomanticOn = CustomOption.Create(178, Types.Neutral, ColorString(ColorManager.Romantic, "Romantic"), 0f, 0f, 100f, 10f, null, true, format: "%");
             PickStartTimer = CustomOption.Create(179, Types.Neutral, "Pick Cooldown", 25f, 10f, 60f, 2.5f, RomanticOn, format: "s");
@@ -812,61 +814,61 @@ namespace TownOfSushi.CustomOption
 
             #region Impostor Roles
 
-            EscapistOn = CustomOption.Create(229, Types.Impostor, ColorString(ColorManager.Impostor, "Escapist"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            EscapistOn = CustomOption.Create(229, Types.Impostor, ColorString(ColorManager.ImpostorRed, "Escapist"), 0f, 0f, 100f, 10f, null, true, format: "%");
             EscapeCooldown = CustomOption.Create(230, Types.Impostor, "Recall Cooldown", 25f, 10f, 60f, 2.5f, EscapistOn, format: "s");
 
-            GrenadierOn = CustomOption.Create(231, Types.Impostor, ColorString(ColorManager.Impostor, "Grenadier"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            GrenadierOn = CustomOption.Create(231, Types.Impostor, ColorString(ColorManager.ImpostorRed, "Grenadier"), 0f, 0f, 100f, 10f, null, true, format: "%");
             GrenadeCooldown = CustomOption.Create(232, Types.Impostor, "Flash Grenade Cooldown", 25f, 10f, 60f, 2.5f, GrenadierOn, format: "s");
             GrenadeDuration = CustomOption.Create(233, Types.Impostor, "Flash Grenade Duration", 10f, 5f, 15f, 1f, GrenadierOn, format: "s");
             FlashRadius = CustomOption.Create(234, Types.Impostor, "Flash Radius", 1f, 0.25f, 5f, 0.25f, GrenadierOn, format: "x");
             GrenadierIndicators = CustomOption.Create(235, Types.Impostor, "Indicate Flashed Players", false, GrenadierOn);
 
-            MorphlingOn = CustomOption.Create(236, Types.Impostor, ColorString(ColorManager.Impostor, "Morphling"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            MorphlingOn = CustomOption.Create(236, Types.Impostor, ColorString(ColorManager.ImpostorRed, "Morphling"), 0f, 0f, 100f, 10f, null, true, format: "%");
             MorphlingCooldown = CustomOption.Create(237, Types.Impostor, "Morphling Cooldown", 25f, 10f, 60f, 2.5f, MorphlingOn, format: "s");
             MorphlingDuration = CustomOption.Create(238, Types.Impostor, "Morphling Duration", 10f, 5f, 15f, 1f, MorphlingOn, format: "s");
 
-            SwooperOn = CustomOption.Create(239, Types.Impostor, ColorString(ColorManager.Impostor, "Swooper"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            SwooperOn = CustomOption.Create(239, Types.Impostor, ColorString(ColorManager.ImpostorRed, "Swooper"), 0f, 0f, 100f, 10f, null, true, format: "%");
             SwoopCooldown = CustomOption.Create(241, Types.Impostor, "Swoop Cooldown", 25f, 10f, 60f, 2.5f, SwooperOn, format: "s");
             SwoopDuration = CustomOption.Create(242, Types.Impostor, "Swoop Duration", 10f, 5f, 15f, 1f, SwooperOn, format: "s");
 
-            VenererOn = CustomOption.Create(244, Types.Impostor, ColorString(ColorManager.Impostor, "Venerer"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            VenererOn = CustomOption.Create(244, Types.Impostor, ColorString(ColorManager.ImpostorRed, "Venerer"), 0f, 0f, 100f, 10f, null, true, format: "%");
             AbilityCooldown = CustomOption.Create(245, Types.Impostor, "Ability Cooldown", 25f, 10f, 60f, 2.5f, VenererOn, format: "s");
             AbilityDuration = CustomOption.Create(246, Types.Impostor, "Ability Duration", 10f, 5f, 15f, 1f, VenererOn, format: "s");
             SprintSpeed = CustomOption.Create(247, Types.Impostor, "Sprint Speed", 1.25f, 1.05f, 2.5f, 0.05f, VenererOn, format: "x");
             FreezeSpeed = CustomOption.Create(248, Types.Impostor, "Freeze Speed", 0.75f, 0.25f, 1f, 0.05f, VenererOn, format: "x");
 
-            PoisonerOn = CustomOption.Create(24422, Types.Impostor, ColorString(ColorManager.Impostor, "Poisoner"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            PoisonerOn = CustomOption.Create(24422, Types.Impostor, ColorString(ColorManager.ImpostorRed, "Poisoner"), 0f, 0f, 100f, 10f, null, true, format: "%");
             PoisonCooldown = CustomOption.Create(24522, Types.Impostor, "Cooldown", 25f, 10f, 60f, 2.5f, PoisonerOn, format: "s");
             PoisonDelay = CustomOption.Create(24622, Types.Impostor, "Delay", 5f, 1f, 15f, 1f, PoisonerOn, format: "s");
 
-            BountyHunterOn = CustomOption.Create(24441, Types.Impostor, ColorString(ColorManager.Impostor, "Bounty Hunter"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            BountyHunterOn = CustomOption.Create(24441, Types.Impostor, ColorString(ColorManager.ImpostorRed, "Bounty Hunter"), 0f, 0f, 100f, 10f, null, true, format: "%");
             BountyHunterCorrectCd = CustomOption.Create(24541, Types.Impostor, "Cooldown After Killing Bounty",2.5f, 0f, 30f, 2.5f, BountyHunterOn, format: "s");
             BountyHunterIncorrectCd = CustomOption.Create(24641, Types.Impostor, "No-Bounty Kill Penalty", 3f, 1.25f, 5f, 0.25f, BountyHunterOn, format: "x");
             HuntDuration = CustomOption.Create(24741, Types.Impostor, "Hunt Duration", 25f, 10f, 60f, 2.5f, BountyHunterOn, format: "s");
             HuntIncreaseDuration = CustomOption.Create(24841, Types.Impostor, "Hunt Duration Increase Per Kill", 10f, 5f, 15f, 0.5f, BountyHunterOn, format: "s");
 
-            BomberOn = CustomOption.Create(249, Types.Impostor, ColorString(ColorManager.Impostor, "Bomber"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            BomberOn = CustomOption.Create(249, Types.Impostor, ColorString(ColorManager.ImpostorRed, "Bomber"), 0f, 0f, 100f, 10f, null, true, format: "%");
             DetonateDelay = CustomOption.Create(250, Types.Impostor, "Detonate Delay", 5f, 1f, 15f, 1f, BomberOn, format: "s");
             MaxKillsInDetonation = CustomOption.Create(251, Types.Impostor, "Max Kills In Detonation", 5, 1, 15, 1, BomberOn);
             DetonateRadius = CustomOption.Create(252, Types.Impostor, "Detonate Radius", 0.25f, 0.05f, 1f, 0.05f, BomberOn, format: "x");
 
-            WarlockOn = CustomOption.Create(253, Types.Impostor, ColorString(ColorManager.Impostor, "Warlock"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            WarlockOn = CustomOption.Create(253, Types.Impostor, ColorString(ColorManager.ImpostorRed, "Warlock"), 0f, 0f, 100f, 10f, null, true, format: "%");
             ChargeUpDuration = CustomOption.Create(254, Types.Impostor, "Time It Takes To Fully Charge", 25f, 10f, 60f, 2.5f, WarlockOn, format: "s");
             ChargeUseDuration = CustomOption.Create(255, Types.Impostor, "Time It Takes To Use Full Charge", 1f, 0.05f, 5f, 0.05f, WarlockOn, format: "s");
 
-            WitchOn = CustomOption.Create(256, Types.Impostor, ColorString(ColorManager.Impostor, "Witch"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            WitchOn = CustomOption.Create(256, Types.Impostor, ColorString(ColorManager.ImpostorRed, "Witch"), 0f, 0f, 100f, 10f, null, true, format: "%");
             SpellCd = CustomOption.Create(257, Types.Impostor, "Spell Cooldown", 25f, 10f, 60f, 2.5f, WitchOn, format: "s");
             
-            BlackmailerOn = CustomOption.Create(258, Types.Impostor, ColorString(ColorManager.Impostor, "Blackmailer"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            BlackmailerOn = CustomOption.Create(258, Types.Impostor, ColorString(ColorManager.ImpostorRed, "Blackmailer"), 0f, 0f, 100f, 10f, null, true, format: "%");
             BlackmailCooldown = CustomOption.Create(259, Types.Impostor, "Initial Blackmail Cooldown", 10f, 1f, 15f, 1f, BlackmailerOn, format: "s");
             BlackmailInvisible = CustomOption.Create(260, Types.Impostor, "Only Target Sees Blackmail", true, BlackmailerOn);
 
-            JanitorOn = CustomOption.Create(261, Types.Impostor, ColorString(ColorManager.Impostor, "Janitor"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            JanitorOn = CustomOption.Create(261, Types.Impostor, ColorString(ColorManager.ImpostorRed, "Janitor"), 0f, 0f, 100f, 10f, null, true, format: "%");
 
-            MinerOn = CustomOption.Create(262, Types.Impostor, ColorString(ColorManager.Impostor, "Miner"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            MinerOn = CustomOption.Create(262, Types.Impostor, ColorString(ColorManager.ImpostorRed, "Miner"), 0f, 0f, 100f, 10f, null, true, format: "%");
             MineCooldown = CustomOption.Create(262, Types.Impostor, "Mine Cooldown", 25f, 10f, 60f, 2.5f, MinerOn, format: "s");
 
-            UndertakerOn = CustomOption.Create(263, Types.Impostor, ColorString(ColorManager.Impostor, "Undertaker"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            UndertakerOn = CustomOption.Create(263, Types.Impostor, ColorString(ColorManager.ImpostorRed, "Undertaker"), 0f, 0f, 100f, 10f, null, true, format: "%");
             DragCooldown = CustomOption.Create(264, Types.Impostor, "Cooldown", 25f, 10f, 60f, 2.5f, UndertakerOn, format: "s");
             UndertakerDragSpeed = CustomOption.Create(265, Types.Impostor, "Undertaker Drag Speed", 0.75f, 0.25f, 1f, 0.05f, UndertakerOn, format: "x");
             UndertakerVentWithBody = CustomOption.Create(266, Types.Impostor, "Undertaker Can Vent While Dragging", false, UndertakerOn);
@@ -891,9 +893,9 @@ namespace TownOfSushi.CustomOption
 
             #region Impostor Modifiers
 
-            DoubleShotOn = CustomOption.Create(305, Types.ModifierAbility, ColorString(ColorManager.Impostor, "Double Shot"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            DoubleShotOn = CustomOption.Create(305, Types.ModifierAbility, ColorString(ColorManager.ImpostorRed, "Double Shot"), 0f, 0f, 100f, 10f, null, true, format: "%");
             
-            UnderdogOn = CustomOption.Create(306, Types.ModifierAbility, ColorString(ColorManager.Impostor, "Underdog"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            UnderdogOn = CustomOption.Create(306, Types.ModifierAbility, ColorString(ColorManager.ImpostorRed, "Underdog"), 0f, 0f, 100f, 10f, null, true, format: "%");
             UnderdogKillBonus = CustomOption.Create(307, Types.ModifierAbility, "Kill Cooldown Bonus", 5f, 2.5f, 10f, 2.5f, UnderdogOn, format: "s");
             UnderdogIncreasedKC = CustomOption.Create(308, Types.ModifierAbility, "Increased Kill Cooldown When 2+ Imps", true, UnderdogOn);
 
@@ -901,7 +903,7 @@ namespace TownOfSushi.CustomOption
 
             #region Abilities
 
-            NumberOfImpostorAssassins = CustomOption.Create(276, Types.ModifierAbility, "Number Of Impostor Assassins", 1, 0, 5, 1, null, true, heading: ColorString(ColorManager.Impostor, "Assassin"));
+            NumberOfImpostorAssassins = CustomOption.Create(276, Types.ModifierAbility, "Number Of Impostor Assassins", 1, 0, 5, 1, null, true, heading: ColorString(ColorManager.ImpostorRed, "Assassin"));
             NumberOfNeutralAssassins = CustomOption.Create(277, Types.ModifierAbility, "Number Of Neutral Killer Assassins", 1, 0, 5, 1);
             AmneTurnImpAssassin = CustomOption.Create(278, Types.ModifierAbility, "Amnesiac Turned Impostor Gets Ability", false);
             AmneTurnNeutAssassin = CustomOption.Create(279, Types.ModifierAbility, "Amnesiac Turned Neutral Killer Gets Ability", false);
@@ -941,11 +943,11 @@ namespace TownOfSushi.CustomOption
 
             #region Impostor Abilities
 
-            DisperserOn = CustomOption.Create(302, Types.ModifierAbility, ColorString(ColorManager.Impostor, "Disperser"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            DisperserOn = CustomOption.Create(302, Types.ModifierAbility, ColorString(ColorManager.ImpostorRed, "Disperser"), 0f, 0f, 100f, 10f, null, true, format: "%");
             DisperseCooldown = CustomOption.Create(303, Types.ModifierAbility, "Cooldown", 25f, 10f, 40f, 2.5f, DisperserOn, format: "s");
             MaxDisperses = CustomOption.Create(304, Types.ModifierAbility, "Maximum Number Of Disperses Per Game", 5, 1, 15, 1, DisperserOn);
 
-            SaboteurOn = CustomOption.Create(30211, Types.ModifierAbility, ColorString(ColorManager.Impostor, "Saboteur"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            SaboteurOn = CustomOption.Create(30211, Types.ModifierAbility, ColorString(ColorManager.ImpostorRed, "Saboteur"), 0f, 0f, 100f, 10f, null, true, format: "%");
             ReducedSaboCd = CustomOption.Create(30311, Types.ModifierAbility, "Reduced Sabotage Cooldown", 10f, 5f, 15f, 1f, SaboteurOn, format: "s");
             
             #endregion

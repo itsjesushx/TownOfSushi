@@ -23,7 +23,7 @@ namespace TownOfSushi.Roles
 
         internal override bool RoleCriteria()
         {
-            return (MediatedPlayers.ContainsKey(PlayerControl.LocalPlayer.PlayerId) && CustomGameOptions.ShowMediumToDead) || base.RoleCriteria();
+            return (MediatedPlayers.ContainsKey(LocalPlayer().PlayerId) && CustomGameOptions.ShowMediumToDead) || base.RoleCriteria();
         }
         public float MediateTimer()
         {
@@ -38,9 +38,9 @@ namespace TownOfSushi.Roles
         {
             var gameObj = new GameObject();
             var arrow = gameObj.AddComponent<ArrowBehaviour>();
-            if (Player.PlayerId == PlayerControl.LocalPlayer.PlayerId || CustomGameOptions.ShowMediumToDead)
+            if (Player.PlayerId == LocalPlayer().PlayerId || CustomGameOptions.ShowMediumToDead)
             {
-                gameObj.transform.parent = PlayerControl.LocalPlayer.gameObject.transform;
+                gameObj.transform.parent = LocalPlayer().gameObject.transform;
                 var renderer = gameObj.AddComponent<SpriteRenderer>();
                 renderer.sprite = Arrow;
                 arrow.image = renderer;
@@ -63,15 +63,15 @@ namespace TownOfSushi.Roles
         public static void UpdateButton(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            var data = PlayerControl.LocalPlayer.Data;
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            var data = LocalPlayer().Data;
 
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Medium))
+            if (LocalPlayer().Is(RoleEnum.Medium))
             {
                 var mediateButton = __instance.KillButton;
 
-                var role = GetRole<Medium>(PlayerControl.LocalPlayer);
+                var role = GetRole<Medium>(LocalPlayer());
                 mediateButton.gameObject.SetActive((__instance.UseButton.isActiveAndEnabled || __instance.PetButton.isActiveAndEnabled)
                     && !Meeting() && !IsDead()
                     && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started);
@@ -101,7 +101,7 @@ namespace TownOfSushi.Roles
                 mediateButton.SetCoolDown(role.MediateTimer(), CustomGameOptions.MediateCooldown);
 
                 var renderer = mediateButton.graphic;
-                if (!mediateButton.isCoolingDown && PlayerControl.LocalPlayer.moveable)
+                if (!mediateButton.isCoolingDown && LocalPlayer().moveable)
                 {
                     renderer.color = Palette.EnabledColor;
                     renderer.material.SetFloat("_Desat", 0f);
@@ -111,10 +111,10 @@ namespace TownOfSushi.Roles
                 renderer.color = Palette.DisabledClear;
                 renderer.material.SetFloat("_Desat", 1f);
             }
-            else if (CustomGameOptions.ShowMediumToDead && AllRoles.Any(x => x.RoleType == RoleEnum.Medium && ((Medium) x).MediatedPlayers.Keys.Contains(PlayerControl.LocalPlayer.PlayerId)))
+            else if (CustomGameOptions.ShowMediumToDead && AllRoles.Any(x => x.RoleType == RoleEnum.Medium && ((Medium) x).MediatedPlayers.Keys.Contains(LocalPlayer().PlayerId)))
             {
-                var role = (Medium) AllRoles.FirstOrDefault(x => x.RoleType == RoleEnum.Medium && ((Medium) x).MediatedPlayers.Keys.Contains(PlayerControl.LocalPlayer.PlayerId));
-                role.MediatedPlayers.GetValueSafe(PlayerControl.LocalPlayer.PlayerId).target = role.Player.transform.position;
+                var role = (Medium) AllRoles.FirstOrDefault(x => x.RoleType == RoleEnum.Medium && ((Medium) x).MediatedPlayers.Keys.Contains(LocalPlayer().PlayerId));
+                role.MediatedPlayers.GetValueSafe(LocalPlayer().PlayerId).target = role.Player.transform.position;
             }
         }
     }
@@ -124,13 +124,13 @@ namespace TownOfSushi.Roles
     {
         public static bool Prefix(KillButton __instance)
         {
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Medium)) return true;
-            var role = GetRole<Medium>(PlayerControl.LocalPlayer);
-            if (!PlayerControl.LocalPlayer.CanMove) return false;
+            if (!LocalPlayer().Is(RoleEnum.Medium)) return true;
+            var role = GetRole<Medium>(LocalPlayer());
+            if (!LocalPlayer().CanMove) return false;
             if (IsDead()) return false;
             if (!__instance.enabled) return false;
             if (role.MediateTimer() != 0f) return false;
-            var abilityUsed = AbilityUsed(PlayerControl.LocalPlayer);
+            var abilityUsed = AbilityUsed(LocalPlayer());
             if (!abilityUsed) return false;
             role.LastMediated = DateTime.UtcNow;
 
@@ -141,7 +141,7 @@ namespace TownOfSushi.Roles
                 if (Object.FindObjectsOfType<DeadBody>().Any(x => x.ParentId == dead.PlayerId && !role.MediatedPlayers.Keys.Contains(x.ParentId)))
                 {
                     role.AddMediatePlayer(dead.PlayerId);
-                    StartRPC(CustomRPC.Mediate, dead.PlayerId, PlayerControl.LocalPlayer.PlayerId);
+                    StartRPC(CustomRPC.Mediate, dead.PlayerId, LocalPlayer().PlayerId);
                     if (CustomGameOptions.DeadRevealed != DeadRevealed.All) return false;
                 }
             }

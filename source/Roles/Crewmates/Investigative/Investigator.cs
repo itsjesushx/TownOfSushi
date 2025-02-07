@@ -66,7 +66,7 @@ namespace TownOfSushi.Roles
             if (!isInvestigatorAlive || !areReportsEnabled)
                 return;
 
-            var isUserInvestigator = PlayerControl.LocalPlayer.Is(RoleEnum.Investigator);
+            var isUserInvestigator = LocalPlayer().Is(RoleEnum.Investigator);
             if (!isUserInvestigator)
                 return;
             var br = new BodyReport
@@ -83,7 +83,7 @@ namespace TownOfSushi.Roles
                 return;
 
             if (HUDManager())
-                HUDManager().Chat.AddChat(PlayerControl.LocalPlayer, reportMsg);
+                Chat().AddChat(LocalPlayer(), reportMsg);
         }
     }
 
@@ -104,10 +104,10 @@ namespace TownOfSushi.Roles
 
         public static void Postfix(HudManager __instance)
         {
-            if ((GameManager.Instance && !GameManager.Instance.GameHasStarted) || !PlayerControl.LocalPlayer.Is(RoleEnum.Investigator)) return;
+            if ((GameManager.Instance && !GameManager.Instance.GameHasStarted) || !LocalPlayer().Is(RoleEnum.Investigator)) return;
             if (Meeting()) return;
             // New Footprint
-            var investigator = GetRole<Investigator>(PlayerControl.LocalPlayer);
+            var investigator = GetRole<Investigator>(LocalPlayer());
 
             if (IsDead())
             {
@@ -122,7 +122,7 @@ namespace TownOfSushi.Roles
                 foreach (var player in PlayerControl.AllPlayerControls)
                 {
                     if (player == null || player.Data.IsDead ||
-                        player.PlayerId == PlayerControl.LocalPlayer.PlayerId) continue;
+                        player.PlayerId == LocalPlayer().PlayerId) continue;
                         if (player.Is(RoleEnum.Swooper) && GetRole<Swooper>(player).IsSwooped) continue;
                     var canPlace = !investigator.AllPrints.Any(print =>
                         Vector3.Distance(print.Position, Position(player)) < 0.5f &&
@@ -197,10 +197,10 @@ namespace TownOfSushi.Roles
         public static byte DontRevive = byte.MaxValue;
         public static bool Prefix(KillButton __instance)
         {
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Investigator)) return true;
+            if (!LocalPlayer().Is(RoleEnum.Investigator)) return true;
             else
             {
-                var detective = GetRole<Investigator>(PlayerControl.LocalPlayer);
+                var detective = GetRole<Investigator>(LocalPlayer());
                 if (__instance == detective.ExamineButton) return true;
                 else return false;
             }
@@ -250,10 +250,10 @@ namespace TownOfSushi.Roles
     {
         public static bool Prefix(KillButton __instance)
         {
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Investigator)) return true;
-            var role = GetRole<Investigator>(PlayerControl.LocalPlayer);
+            if (!LocalPlayer().Is(RoleEnum.Investigator)) return true;
+            var role = GetRole<Investigator>(LocalPlayer());
             if (IsDead()) return false;
-            if (!PlayerControl.LocalPlayer.CanMove) return false;
+            if (!LocalPlayer().CanMove) return false;
             if (!__instance.enabled) return false;
             var maxDistance = KillDistance();
 
@@ -264,9 +264,9 @@ namespace TownOfSushi.Roles
                 if (!role.ExamineMode) return false;
                 if (role.ClosestPlayer == null) return false;
                 if (Vector2.Distance(role.ClosestPlayer.GetTruePosition(),
-                    PlayerControl.LocalPlayer.GetTruePosition()) > maxDistance) return false;
+                    LocalPlayer().GetTruePosition()) > maxDistance) return false;
                 if (role.ClosestPlayer == null) return false;
-                var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayer);
+                var interact = Interact(LocalPlayer(), role.ClosestPlayer);
                 if (interact[3] == true)
                 {
                     if (role.ClosestPlayer == role.DetectedKiller) Flash(Color.red);
@@ -291,7 +291,7 @@ namespace TownOfSushi.Roles
                 if (role.CurrentTarget == null)
                     return false;
                 if (Vector2.Distance(role.CurrentTarget.TruePosition,
-                    PlayerControl.LocalPlayer.GetTruePosition()) > maxDistance) return false;
+                    LocalPlayer().GetTruePosition()) > maxDistance) return false;
                 var playerId = role.CurrentTarget.ParentId;
                 var player = PlayerById(playerId);
                 if (player.IsInfected() || role.Player.IsInfected())
@@ -325,11 +325,11 @@ namespace TownOfSushi.Roles
         public static void UpdateExamineButton(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Investigator)) return;
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(RoleEnum.Investigator)) return;
 
-            var role = GetRole<Investigator>(PlayerControl.LocalPlayer);
+            var role = GetRole<Investigator>(LocalPlayer());
 
             if (role.ExamineButton == null)
             {
@@ -373,13 +373,13 @@ namespace TownOfSushi.Roles
                 renderer.color = Palette.DisabledClear;
                 renderer.material.SetFloat("_Desat", 1f);
             }
-            var data = PlayerControl.LocalPlayer.Data;
+            var data = LocalPlayer().Data;
             var isDead = data.IsDead;
-            var truePosition = PlayerControl.LocalPlayer.GetTruePosition();
+            var truePosition = LocalPlayer().GetTruePosition();
             var maxDistance = KillDistance();
-            var flag = (VanillaOptions().currentNormalGameOptions.GhostsDoTasks || !data.IsDead) &&
+            var flag = (OptionsManager().currentNormalGameOptions.GhostsDoTasks || !data.IsDead) &&
                        (!AmongUsClient.Instance || !AmongUsClient.Instance.IsGameOver) &&
-                       PlayerControl.LocalPlayer.CanMove;
+                       LocalPlayer().CanMove;
             var allocs = Physics2D.OverlapCircleAll(truePosition, KillDistance(),
                 LayerMask.GetMask(new[] { "Players", "Ghost" }));
 

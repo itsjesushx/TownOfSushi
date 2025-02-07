@@ -62,9 +62,9 @@ namespace TownOfSushi.Patches
 
                     if (!CamouflageUnCamouflagePatch.IsCamouflaged && medic.Player != null && medic.ShieldedPlayer != null && ((target == medic.ShieldedPlayer && !isMorphedMorphling && !isMorphedHitman && !isMorphedGlitch && !isMorphedVenerer && !isSwoopedSwooper) || (isMorphedMorphling && GetRole<Morphling>(target).MorphedPlayer == medic.ShieldedPlayer) || (isMorphedGlitch && GetRole<Glitch>(target).MimicTarget == medic.ShieldedPlayer)|| (isMorphedHitman && GetRole<Hitman>(target).MorphTarget == medic.ShieldedPlayer))) {
                         hasVisibleShield = CustomGameOptions.ShowShielded == ShieldOptions.Everyone // Everyone
-                            || CustomGameOptions.ShowShielded == ShieldOptions.Medic && PlayerControl.LocalPlayer == medic.Player // Medic Only
-                            || CustomGameOptions.ShowShielded == ShieldOptions.Self && PlayerControl.LocalPlayer == medic.ShieldedPlayer // Shield only
-                            || CustomGameOptions.ShowShielded == ShieldOptions.SelfAndMedic && (PlayerControl.LocalPlayer == medic.Player || PlayerControl.LocalPlayer == medic.ShieldedPlayer); // Medic + Shield
+                            || CustomGameOptions.ShowShielded == ShieldOptions.Medic && LocalPlayer()== medic.Player // Medic Only
+                            || CustomGameOptions.ShowShielded == ShieldOptions.Self && LocalPlayer()== medic.ShieldedPlayer // Shield only
+                            || CustomGameOptions.ShowShielded == ShieldOptions.SelfAndMedic && (LocalPlayer()== medic.Player || LocalPlayer()== medic.ShieldedPlayer); // Medic + Shield
                         color = Color.cyan;
                     }
                 }
@@ -75,9 +75,9 @@ namespace TownOfSushi.Patches
 
                     if (!CamouflageUnCamouflagePatch.IsCamouflaged && ga.Protecting && ga.Player != null && ga.target != null && ((target == ga.target && !isMorphedMorphling && !isMorphedGlitch && !isMorphedVenerer && !isSwoopedSwooper) || (isMorphedMorphling && GetRole<Morphling>(target).MorphedPlayer == ga.target) || (isMorphedGlitch && GetRole<Glitch>(target).MimicTarget == ga.target)|| (isMorphedHitman && GetRole<Hitman>(target).MorphTarget == ga.target))) {
                         hasVisibleShield = CustomGameOptions.ShowProtect == ProtectOptions.Everyone // Everyone
-                            || CustomGameOptions.ShowProtect == ProtectOptions.GA && PlayerControl.LocalPlayer == ga.Player // GA Only
-                            || CustomGameOptions.ShowProtect == ProtectOptions.Self && PlayerControl.LocalPlayer == ga.target // target only
-                            || CustomGameOptions.ShowProtect == ProtectOptions.SelfAndGA && (PlayerControl.LocalPlayer == ga.Player || PlayerControl.LocalPlayer == ga.target); // ga + target
+                            || CustomGameOptions.ShowProtect == ProtectOptions.GA && LocalPlayer()== ga.Player // GA Only
+                            || CustomGameOptions.ShowProtect == ProtectOptions.Self && LocalPlayer()== ga.target // target only
+                            || CustomGameOptions.ShowProtect == ProtectOptions.SelfAndGA && (LocalPlayer()== ga.Player || LocalPlayer()== ga.target); // ga + target
                         color = Color.yellow;
                     }
                 }
@@ -94,7 +94,7 @@ namespace TownOfSushi.Patches
         {
             if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started || IsHideNSeek()) return;
             
-            if (PlayerControl.LocalPlayer == __instance) 
+            if (LocalPlayer()== __instance) 
             {
                 // Update player outlines
                 SetBasePlayerOutlines();

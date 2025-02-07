@@ -190,6 +190,7 @@ namespace TownOfSushi.CustomOption
         public static DeadRevealed DeadRevealed => (DeadRevealed)CustomOptionHolder.DeadRevealed.GetSelection();
         public static float PickStartTimer => CustomOptionHolder.PickStartTimer.GetFloat();
         public static float ProtectKCReset => CustomOptionHolder.ProtectKCReset.GetFloat();
+        public static bool GADiesWithClient => CustomOptionHolder.GADiesWithClient.GetBool();
         public static bool WerewolfVent => CustomOptionHolder.WerewolfVent.GetBool();
         public static float MaulRadius => CustomOptionHolder.MaulRadius.GetFloat();
         public static float MaulCooldown => CustomOptionHolder.MaulCooldown.GetFloat();

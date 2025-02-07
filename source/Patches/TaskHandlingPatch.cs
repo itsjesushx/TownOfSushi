@@ -13,7 +13,7 @@ namespace TownOfSushi.Patches
                 {
                     var playerInfo = __instance.AllPlayers.ToArray()[i];
                     if (!playerInfo.Disconnected && playerInfo.Tasks != null && playerInfo.Object &&
-                        (VanillaOptions().currentNormalGameOptions.GhostsDoTasks || !playerInfo.IsDead) && !playerInfo.IsImpostor() &&
+                        (OptionsManager().currentNormalGameOptions.GhostsDoTasks || !playerInfo.IsDead) && !playerInfo.IsImpostor() &&
                         !(
                             playerInfo._object.Is(Faction.Neutral) 
                         ))
@@ -70,9 +70,9 @@ namespace TownOfSushi.Patches
                 var commonTask = __instance.CommonTasks.Count;
                 var normalTask = __instance.ShortTasks.Count;
                 var longTask = __instance.LongTasks.Count;
-                if (VanillaOptions().currentNormalGameOptions.NumCommonTasks > commonTask) VanillaOptions().currentNormalGameOptions.NumCommonTasks = commonTask;
-                if (VanillaOptions().currentNormalGameOptions.NumShortTasks > normalTask) VanillaOptions().currentNormalGameOptions.NumShortTasks = normalTask;
-                if (VanillaOptions().currentNormalGameOptions.NumLongTasks > longTask) VanillaOptions().currentNormalGameOptions.NumLongTasks = longTask;
+                if (OptionsManager().currentNormalGameOptions.NumCommonTasks > commonTask) OptionsManager().currentNormalGameOptions.NumCommonTasks = commonTask;
+                if (OptionsManager().currentNormalGameOptions.NumShortTasks > normalTask) OptionsManager().currentNormalGameOptions.NumShortTasks = normalTask;
+                if (OptionsManager().currentNormalGameOptions.NumLongTasks > longTask) OptionsManager().currentNormalGameOptions.NumLongTasks = longTask;
             
             return true;
         }

@@ -79,14 +79,14 @@
         public static void ExileControllerPostfix(ExileController __instance)
         {
             var exiled = __instance.initData.networkedPlayer?.Object;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Arsonist)) return;
-            var alives = PlayerControl.AllPlayerControls.ToArray()
-                    .Where(x => !x.Data.IsDead && !x.Data.Disconnected && x != PlayerControl.LocalPlayer).ToList();
+            if (!LocalPlayer().Is(RoleEnum.Arsonist)) return;
+            var alives = AllPlayers()
+                    .Where(x => !x.Data.IsDead && !x.Data.Disconnected && x != LocalPlayer()).ToList();
             foreach (var player in alives)
             {
                 if (player.Is(Faction.Impostors) || player.Is(RoleAlignment.NeutralKilling)) return;
             }
-            var role = GetRole<Arsonist>(PlayerControl.LocalPlayer);
+            var role = GetRole<Arsonist>(LocalPlayer());
             role.LastKiller = true;
             return;
         }
@@ -96,7 +96,7 @@
         [HarmonyPatch(typeof(Object), nameof(Object.Destroy), new Type[] { typeof(GameObject) })]
         public static void Prefix(GameObject obj)
         {
-            if (!SubmergedLoaded || VanillaOptions()?.currentNormalGameOptions?.MapId != 6) return;
+            if (!SubmergedLoaded || OptionsManager()?.currentNormalGameOptions?.MapId != 6) return;
             if (obj.name?.Contains("ExileCutscene") == true) ExileControllerPostfix(ExileControllerPatch.lastExiled);
         }
     }
@@ -109,10 +109,10 @@
         public static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (PlayerControl.LocalPlayer == null) return;
-            if (PlayerControl.LocalPlayer.Data == null) return;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Arsonist)) return;
-            var role = GetRole<Arsonist>(PlayerControl.LocalPlayer);
+            if (LocalPlayer()== null) return;
+            if (LocalPlayer().Data == null) return;
+            if (!LocalPlayer().Is(RoleEnum.Arsonist)) return;
+            var role = GetRole<Arsonist>(LocalPlayer());
 
             if (role.IgniteButton == null)
             {
@@ -150,10 +150,10 @@
                 __instance.KillButton.SetCoolDown(role.DouseTimer(), CustomGameOptions.DouseCd);
             }
 
-            var notDoused = PlayerControl.AllPlayerControls.ToArray().Where(
+            var notDoused = AllPlayers().Where(
                 player => !role.DousedPlayers.Contains(player.PlayerId)
             ).ToList();
-            var doused = PlayerControl.AllPlayerControls.ToArray().Where(
+            var doused = AllPlayers().Where(
                 player => role.DousedPlayers.Contains(player.PlayerId)
             ).ToList();
 
@@ -180,10 +180,9 @@
     {
         public static void Postfix(MeetingHud __instance)
         {
-            var localPlayer = PlayerControl.LocalPlayer;
-            var _role = GetPlayerRole(localPlayer);
+            var _role = GetPlayerRole(LocalPlayer());
             if (_role?.RoleType != RoleEnum.Arsonist) return;
-            if (localPlayer.Data.IsDead) return;
+            if (LocalPlayer().Data.IsDead) return;
             var role = (Arsonist)_role;
             foreach (var state in __instance.playerStates)
             {
@@ -204,11 +203,11 @@
     {
         public static bool Prefix(KillButton __instance)
         {
-            var flag = PlayerControl.LocalPlayer.Is(RoleEnum.Arsonist);
+            var flag = LocalPlayer().Is(RoleEnum.Arsonist);
             if (!flag) return true;
             if (IsDead()) return false;
-            if (!PlayerControl.LocalPlayer.CanMove) return false;
-            var role = GetRole<Arsonist>(PlayerControl.LocalPlayer);
+            if (!LocalPlayer().CanMove) return false;
+            var role = GetRole<Arsonist>(LocalPlayer());
             if (!__instance.isActiveAndEnabled || __instance.isCoolingDown) return false;
 
             if (__instance == role.IgniteButton && role.DousedAlive > 0)
@@ -216,13 +215,13 @@
                 if (role.DouseTimer() == 0 || (role.LastKiller && CustomGameOptions.IgniteCdRemoved))
                 {
                     if (role.ClosestPlayerIgnite == null) return false;
-                    var distBetweenPlayers2 = GetDistBetweenPlayers(PlayerControl.LocalPlayer, role.ClosestPlayerIgnite);
+                    var distBetweenPlayers2 = GetDistBetweenPlayers(LocalPlayer(), role.ClosestPlayerIgnite);
                     var flag3 = distBetweenPlayers2 <
                                 KillDistance();
                     if (!flag3) return false;
                     if (!role.DousedPlayers.Contains(role.ClosestPlayerIgnite.PlayerId)) return false;
 
-                    var interact2 = Interact(PlayerControl.LocalPlayer, role.ClosestPlayerIgnite);
+                    var interact2 = Interact(LocalPlayer(), role.ClosestPlayerIgnite);
                     if (interact2[3] == true) 
                     {
                         role.Ignite();
@@ -247,12 +246,12 @@
             if (__instance != HUDManager().KillButton) return true;
             if (role.DousedAlive == CustomGameOptions.MaxDoused) return false;
             if (role.ClosestPlayerDouse == null) return false;
-            var distBetweenPlayers = GetDistBetweenPlayers(PlayerControl.LocalPlayer, role.ClosestPlayerDouse);
+            var distBetweenPlayers = GetDistBetweenPlayers(LocalPlayer(), role.ClosestPlayerDouse);
             var flag2 = distBetweenPlayers <
                         KillDistance();
             if (!flag2) return false;
             if (role.DousedPlayers.Contains(role.ClosestPlayerDouse.PlayerId)) return false;
-            var interact = Interact(PlayerControl.LocalPlayer, role.ClosestPlayerDouse);
+            var interact = Interact(LocalPlayer(), role.ClosestPlayerDouse);
             if (interact[3] == true) 
             {
                 role.DousedPlayers.Add(role.ClosestPlayerDouse.PlayerId);
