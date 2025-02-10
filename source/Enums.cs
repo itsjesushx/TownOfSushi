@@ -21,6 +21,7 @@ namespace TownOfSushi
         Werewolf,
         Veteran,
         Amnesiac,
+        Aurial,
         Juggernaut,
         Poisoner,
         Tracker,
@@ -68,7 +69,9 @@ namespace TownOfSushi
         Saboteur,
         DoubleShot,
         Bait,
+        Celebrity,
         Underdog,
+        Lazy,        
         Frosty,
         None
     }
@@ -83,7 +86,7 @@ namespace TownOfSushi
         Sleuth,
         Tiebreaker,
         Multitasker,
-        Flash,                
+        Flash,
         ButtonBarry,
         None
     }

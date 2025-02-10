@@ -15,7 +15,6 @@ namespace TownOfSushi.Roles
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.NeutralKilling;
         }
-
         public void ChangeRole()
         {
             var role = GetPlayerRole(Player);

@@ -63,6 +63,11 @@ namespace TownOfSushi
                     if (!lookout.Watching[targetId].Contains(playerRole)) lookout.Watching[targetId].Add(playerRole);
                 }
             }
+            if (LocalPlayer().Is(RoleEnum.Aurial) && !IsDead())
+            {
+                var aurial = GetRole<Aurial>(LocalPlayer());
+                Coroutines.Start(aurial.Sense(player));
+            }
             return true;
         }
 
@@ -689,6 +694,12 @@ namespace TownOfSushi
 
                 // Reset zoomed out ghosts
                 ToggleZoom(reset: true);
+
+                if (LocalPlayer().MyPhysics.enabled && (LocalPlayer().moveable || LocalPlayer().inVent)) 
+                    {
+                    if (!LocalPlayer().inMovingPlat)
+                        Lazy.Position = LocalPlayer().transform.position;
+                }
             }
         }
 
@@ -810,6 +821,20 @@ namespace TownOfSushi
 
                 GameHistory.CreateDeathReason(target, CustomDeathReason.Kill, killer);
 
+                var celebrity = GetModifier<Celebrity>(target);
+                if (celebrity.Player == target)
+                {
+                    Color color = Color.yellow;
+                    if (celebrity.ShowFactions)
+                    {
+                        color = Color.white;
+                        if (target.Data.Role.IsImpostor) color = Color.red;
+                        else if (target.Is(Faction.Neutral)) color = Color.blue;
+                    }
+                    Flash(color, 1.5f);
+                    Sound().PlaySound(Ship().SabotageSound, false, 1f, null);
+                }
+
                 if (killer == LocalPlayer())
                     Sound().PlaySound(LocalPlayer().KillSfx, false, 0.8f);
 
@@ -838,6 +863,13 @@ namespace TownOfSushi
                 if (LocalPlayer().Is(RoleEnum.Mystic) && !IsDead())
                 {
                     Flash(ColorManager.Mystic, 3.5f);
+                }
+
+                if (LocalPlayer() == target && LocalPlayer().Is(RoleEnum.Aurial))
+                {
+                    var aurial = GetRole<Aurial>(LocalPlayer());
+                    aurial.SenseArrows.Values.DestroyAll();
+                    aurial.SenseArrows.Clear();
                 }
 
                 if (target.AmOwner)

@@ -20,6 +20,7 @@ namespace TownOfSushi.Roles.Modifiers
             if (CustomGameOptions.EngineerOn > 0) ColorMapping.Add("Engineer", ColorManager.Engineer);
             if (CustomGameOptions.ImitatorOn > 0) ColorMapping.Add("Imitator", ColorManager.Imitator);
             if (CustomGameOptions.SwapperOn > 0) ColorMapping.Add("Swapper", ColorManager.Swapper);
+            if (CustomGameOptions.AurialOn > 0) ColorMapping.Add("Aurial", ColorManager.Aurial);
             if (CustomGameOptions.SeerOn > 0) ColorMapping.Add("Seer", ColorManager.Seer);
             if (CustomGameOptions.HunterOn > 0) ColorMapping.Add("Hunter", ColorManager.Hunter);
             if (CustomGameOptions.InvestigatorOn > 0) ColorMapping.Add("Investigator", ColorManager.Investigator);
@@ -28,11 +29,8 @@ namespace TownOfSushi.Roles.Modifiers
             if (CustomGameOptions.MediumOn > 0) ColorMapping.Add("Medium", ColorManager.Medium);
             if (CustomGameOptions.LookoutOn > 0) ColorMapping.Add("Lookout", ColorManager.Lookout);
             if (CustomGameOptions.MysticOn > 0) ColorMapping.Add("Mystic", ColorManager.Mystic);
-
-            // this will be gone for now 
-            //if (CustomGameOptions.JailorOn > 0) ColorMapping.Add("Jailor", ColorManager.Jailor);
-            //if (CustomGameOptions.DeputyOn > 0) ColorMapping.Add("Deputy", ColorManager.Deputy);
-
+            if (CustomGameOptions.JailorOn > 0) ColorMapping.Add("Jailor", ColorManager.Jailor);
+            if (CustomGameOptions.DeputyOn > 0) ColorMapping.Add("Deputy", ColorManager.Deputy);
             if (CustomGameOptions.OracleOn > 0) ColorMapping.Add("Oracle", ColorManager.Oracle);
             if (CustomGameOptions.DetectiveOn > 0) ColorMapping.Add("Detective", ColorManager.Detective);
             if (CustomGameOptions.TrackerOn > 0) ColorMapping.Add("Tracker", ColorManager.Tracker);
@@ -59,7 +57,8 @@ namespace TownOfSushi.Roles.Modifiers
             if (CustomGameOptions.GrenadierOn > 0 && !LocalPlayer().Is(Faction.Impostors)) ColorMapping.Add("Grenadier", ColorManager.ImpostorRed);
             if (CustomGameOptions.JanitorOn > 0 && !LocalPlayer().Is(Faction.Impostors)) ColorMapping.Add("Janitor", ColorManager.ImpostorRed);
             if (CustomGameOptions.MorphlingOn > 0 && !LocalPlayer().Is(Faction.Impostors)) ColorMapping.Add("Morphling", ColorManager.ImpostorRed);
-            if (CustomGameOptions.MinerOn > 0 && !LocalPlayer().Is(Faction.Impostors)) ColorMapping.Add("Miner", ColorManager.ImpostorRed);
+            if (CustomGameOptions.MinerOn > 0 && !IsFungleMap() && !LocalPlayer().Is(Faction.Impostors)) ColorMapping.Add("Miner", ColorManager.ImpostorRed);
+            if (CustomGameOptions.MinerOn > 0 && IsFungleMap() && !LocalPlayer().Is(Faction.Impostors)) ColorMapping.Add("Herbalist", ColorManager.ImpostorRed);
             if (CustomGameOptions.SwooperOn > 0 && !LocalPlayer().Is(Faction.Impostors)) ColorMapping.Add("Swooper", ColorManager.ImpostorRed);
             if (CustomGameOptions.PoisonerOn > 0 && !LocalPlayer().Is(Faction.Impostors)) ColorMapping.Add("Poisoner", ColorManager.ImpostorRed);
             if (CustomGameOptions.BountyHunterOn > 0 && !LocalPlayer().Is(Faction.Impostors)) ColorMapping.Add("Bounty Hunter", ColorManager.ImpostorRed);
@@ -291,12 +290,13 @@ namespace TownOfSushi.Roles.Modifiers
                 Sound().PlaySound(LocalPlayer().KillSfx, false, 1f);
             } 
             catch {}
-                if (LocalPlayer()== player) 
-                {
-                    hudManager.KillOverlay.ShowKillAnimation(assassinPlayer.Data, player.Data);
-                    if (AddButtonVigilante.vigilanteUI != null) AddButtonVigilante.vigilanteUIExitButton.OnClick.Invoke();
-                    if (AssassinAddButton.assassinUI != null) AssassinAddButton.assassinUIExitButton.OnClick.Invoke();
-                    if (AddButtonDoomsayer.doomsayerUI != null) AddButtonDoomsayer.doomsayerUIExitButton.OnClick.Invoke();
+            
+            if (LocalPlayer()== player) 
+            {
+                hudManager.KillOverlay.ShowKillAnimation(assassinPlayer.Data, player.Data);
+                if (AddButtonVigilante.vigilanteUI != null) AddButtonVigilante.vigilanteUIExitButton.OnClick.Invoke();
+                if (AssassinAddButton.assassinUI != null) AssassinAddButton.assassinUIExitButton.OnClick.Invoke();
+                if (AddButtonDoomsayer.doomsayerUI != null) AddButtonDoomsayer.doomsayerUIExitButton.OnClick.Invoke();
             }
             
 
@@ -332,9 +332,9 @@ namespace TownOfSushi.Roles.Modifiers
 
                 player.myTasks.Insert(0, importantTextTask);
 
-                if (PlayerControl.LocalPlayer.Is(RoleEnum.Swapper) && !PlayerControl.LocalPlayer.Data.IsDead)
+                if (player.Is(RoleEnum.Swapper) && !player.Data.IsDead)
                 {
-                    var swapper = GetRole<Swapper>(PlayerControl.LocalPlayer);
+                    var swapper = GetRole<Swapper>(player);
                     var index = int.MaxValue;
                     for (var i = 0; i < swapper.ListOfActives.Count; i++)
                     {
@@ -377,6 +377,7 @@ namespace TownOfSushi.Roles.Modifiers
                     }
                 }
             }
+
             player.Die(DeathReason.Kill, false);
 
             var deadPlayer = new DeadPlayer
@@ -444,6 +445,15 @@ namespace TownOfSushi.Roles.Modifiers
                     dep.ExecuteButton.SetActive(false);
                     dep.ExecuteButton.GetComponent<PassiveButton>().OnClick = new Button.ButtonClickedEvent();
                 }
+            }
+
+            foreach (var playerVoteArea in meetingHud.playerStates)
+            {
+                if (playerVoteArea.VotedFor != player.PlayerId) continue;
+                playerVoteArea.UnsetVote();
+                var voteAreaPlayer = PlayerById(playerVoteArea.TargetPlayerId);
+                if (!voteAreaPlayer.AmOwner) continue;
+                meetingHud.ClearVote();
             }
             
             if (AmongUsClient.Instance.AmHost) meetingHud.CheckForEndVoting();

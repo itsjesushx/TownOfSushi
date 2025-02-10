@@ -10,16 +10,15 @@ namespace TownOfSushi.Roles
 
         public Miner(PlayerControl player) : base(player)
         {
-            Name = "Miner";
-            StartText = () => "From The Top, Make It Drop, That's A Vent";
-            TaskText = () => "Place vents";
+            Name = IsFungleMap() ? "Herbalist" : "Miner";
+            StartText = () => IsFungleMap() ? "From the top, make it drop, that's a vent" : "From the top, make it drop, that's a plant";
+            TaskText = () => IsFungleMap() ? "Create plants" : "Place vents";
             RoleInfo = "The Miner is an Impostor that can create new vents. These vents only connect to each other, forming a new passway.";
             LoreText = "A skilled worker underground, you have the power to shape the map itself. As the Miner, you can place vents around the map, giving you and your allies new pathways for movement. Your ability to alter the landscape allows you to sneak around unnoticed, setting traps or escaping danger while the Crewmates remain unaware of the new routes you've created beneath their feet.";
             Color = ColorManager.ImpostorRed;
             LastMined = DateTime.UtcNow;
             RoleType = RoleEnum.Miner;  
             Faction = Faction.Impostors;
-
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.ImpSupport;
         }
@@ -57,8 +56,8 @@ namespace TownOfSushi.Roles
         public static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (LocalPlayer()== null) return;
-            if (LocalPlayer().Data == null) return;
+            if (NullLocalPlayer()) return;
+            if (NullLocalPlayerData()) return;
             if (!LocalPlayer().Is(RoleEnum.Miner)) return;
             var role = GetRole<Miner>(LocalPlayer());
             if (role.MineButton == null)

@@ -94,8 +94,8 @@ namespace TownOfSushi.Roles
         public static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (LocalPlayer()== null) return;
-            if (LocalPlayer().Data == null) return;
+            if (NullLocalPlayer()) return;
+            if (NullLocalPlayerData()) return;
             if (!LocalPlayer().Is(RoleEnum.Morphling)) return;
             var role = GetRole<Morphling>(LocalPlayer());
             if (role.MorphButton == null)
@@ -202,8 +202,8 @@ namespace TownOfSushi.Roles
         public static void Postfix(KillButton __instance, [HarmonyArgument(0)] PlayerControl target)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (LocalPlayer()== null) return;
-            if (LocalPlayer().Data == null) return;
+            if (NullLocalPlayer()) return;
+            if (NullLocalPlayerData()) return;
             if (!LocalPlayer().Is(RoleEnum.Morphling)) return;
             if (target != null && __instance == HUDManager().KillButton)
             if (target.Data.IsImpostor())

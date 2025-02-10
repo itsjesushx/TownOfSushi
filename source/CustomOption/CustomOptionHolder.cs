@@ -46,6 +46,11 @@ namespace TownOfSushi.CustomOption
         public static CustomOption NeutralEvilShowsEvil;
         public static CustomOption NeutralKillingShowsEvil;
 
+        public static CustomOption AurialOn;
+        public static CustomOption AuraInnerRadius;
+        public static CustomOption AuraOuterRadius;
+        public static CustomOption SenseDuration;
+
         public static CustomOption SeerOn;
         public static CustomOption SeerCd;
 
@@ -124,8 +129,6 @@ namespace TownOfSushi.CustomOption
 
         public static CustomOption EngineerOn;
         public static CustomOption MaxFixes;
-        public static CustomOption EngiVentCooldown;
-        public static CustomOption EngiVentDuration;
 
         public static CustomOption InvestigatorOn;
         public static CustomOption ExamineCooldown;
@@ -258,6 +261,8 @@ namespace TownOfSushi.CustomOption
         #region Modifiers
         public static CustomOption AftermathOn;
 
+        public static CustomOption LazyOn;
+
         public static CustomOption BaitOn;
         public static CustomOption BaitMinDelay;
         public static CustomOption BaitMaxDelay;
@@ -270,6 +275,9 @@ namespace TownOfSushi.CustomOption
         public static CustomOption ChillStartSpeed;
 
         public static CustomOption MultitaskerOn;
+
+        public static CustomOption CelebrityOn;
+        public static CustomOption ShowCelebrityFaction;
 
         #endregion
 
@@ -574,6 +582,12 @@ namespace TownOfSushi.CustomOption
 
             #region  Crewmate Roles
 
+            AurialOn = CustomOption.Create(312, Types.Crewmate, ColorString(ColorManager.Aurial, "Aurial"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            AuraInnerRadius = CustomOption.Create(313, Types.Crewmate, "Radiate Colour Range", 0.5f, 0f, 1f, 0.25f, InvestigatorOn, format: "x");
+            AuraOuterRadius = CustomOption.Create(314, Types.Crewmate, "Radiate Max Range", 1.5f, 1f, 5f, 0.25f, InvestigatorOn, format: "x");
+            SenseDuration = CustomOption.Create(315, Types.Crewmate,  "Sense Duration", 10f, 1f, 15f, 1f, InvestigatorOn, format: "s");
+
+
             InvestigatorOn = CustomOption.Create(30, Types.Crewmate, ColorString(ColorManager.Investigator, "Investigator"), 0f, 0f, 100f, 10f, null, true, format: "%");
             FootprintSize = CustomOption.Create(31, Types.Crewmate, "Footprint Size", 4f, 1f, 10f, 1f, InvestigatorOn);
             FootprintInterval = CustomOption.Create(32, Types.Crewmate, "Footprint Interval", 0.1f, 0.05f, 1f, 0.05f, InvestigatorOn);
@@ -677,8 +691,6 @@ namespace TownOfSushi.CustomOption
 
             EngineerOn = CustomOption.Create(116, Types.Crewmate, ColorString(ColorManager.Engineer, "Engineer"), 0f, 0f, 100f, 10f, null, true, format: "%");
             MaxFixes = CustomOption.Create(117, Types.Crewmate, "Maximum Number Of Fixes", 5, 1, 15, 1, EngineerOn);
-            EngiVentCooldown = CustomOption.Create(11812, Types.Crewmate, "Vent Cooldown", 25f, 10f, 60f, 2.5f, EngineerOn, format: "s");
-            EngiVentDuration = CustomOption.Create(11813, Types.Crewmate, "Vent Duration", 10f, 5f, 15f, 1f, EngineerOn, format: "s");
 
             ImitatorOn = CustomOption.Create(118, Types.Crewmate, ColorString(ColorManager.Imitator, "Imitator"), 0f, 0f, 100f, 10f, null, true, format: "%");
 
@@ -866,7 +878,7 @@ namespace TownOfSushi.CustomOption
             JanitorOn = CustomOption.Create(261, Types.Impostor, ColorString(ColorManager.ImpostorRed, "Janitor"), 0f, 0f, 100f, 10f, null, true, format: "%");
 
             MinerOn = CustomOption.Create(262, Types.Impostor, ColorString(ColorManager.ImpostorRed, "Miner"), 0f, 0f, 100f, 10f, null, true, format: "%");
-            MineCooldown = CustomOption.Create(262, Types.Impostor, "Mine Cooldown", 25f, 10f, 60f, 2.5f, MinerOn, format: "s");
+            MineCooldown = CustomOption.Create(26211, Types.Impostor, "Mine Cooldown", 25f, 10f, 60f, 2.5f, MinerOn, format: "s");
 
             UndertakerOn = CustomOption.Create(263, Types.Impostor, ColorString(ColorManager.ImpostorRed, "Undertaker"), 0f, 0f, 100f, 10f, null, true, format: "%");
             DragCooldown = CustomOption.Create(264, Types.Impostor, "Cooldown", 25f, 10f, 60f, 2.5f, UndertakerOn, format: "s");
@@ -885,9 +897,14 @@ namespace TownOfSushi.CustomOption
             DiseasedOn = CustomOption.Create(2701, Types.ModifierAbility, ColorString(ColorManager.Diseased, "Diseased"), 0f, 0f, 100f, 10f, null, true, format: "%");
             DiseasedKillMultiplier = CustomOption.Create(271, Types.ModifierAbility, "Kill Multiplier", 3f, 1.5f, 5f, 0.5f, DiseasedOn, format: "x");
 
+            CelebrityOn = CustomOption.Create(317, Types.ModifierAbility, ColorString(ColorManager.Celebrity, "Celebrity"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            ShowCelebrityFaction = CustomOption.Create(318, Types.ModifierAbility, "Show The Faction", false, CelebrityOn);
+
             FrostyOn = CustomOption.Create(272, Types.ModifierAbility, ColorString(ColorManager.Frosty, "Frosty"), 0f, 0f, 100f, 10f, null, true, format: "%");
             ChillDuration = CustomOption.Create(273, Types.ModifierAbility, "Chill Duration", 10f, 1f, 15f, 1f, FrostyOn, format: "s");
             ChillStartSpeed = CustomOption.Create(274, Types.ModifierAbility, "Chill Start Speed", 0.75f, 0.25f, 0.95f, 0.05f, FrostyOn, format: "x");
+
+            LazyOn = CustomOption.Create(316, Types.ModifierAbility, ColorString(ColorManager.Lazy, "Lazy"), 0f, 0f, 100f, 10f, null, true, format: "%");
 
             #endregion
 
@@ -947,9 +964,10 @@ namespace TownOfSushi.CustomOption
             DisperseCooldown = CustomOption.Create(303, Types.ModifierAbility, "Cooldown", 25f, 10f, 40f, 2.5f, DisperserOn, format: "s");
             MaxDisperses = CustomOption.Create(304, Types.ModifierAbility, "Maximum Number Of Disperses Per Game", 5, 1, 15, 1, DisperserOn);
 
-            SaboteurOn = CustomOption.Create(30211, Types.ModifierAbility, ColorString(ColorManager.ImpostorRed, "Saboteur"), 0f, 0f, 100f, 10f, null, true, format: "%");
-            ReducedSaboCd = CustomOption.Create(30311, Types.ModifierAbility, "Reduced Sabotage Cooldown", 10f, 5f, 15f, 1f, SaboteurOn, format: "s");
+            SaboteurOn = CustomOption.Create(310, Types.ModifierAbility, ColorString(ColorManager.ImpostorRed, "Saboteur"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            ReducedSaboCd = CustomOption.Create(311, Types.ModifierAbility, "Reduced Sabotage Cooldown", 10f, 5f, 15f, 1f, SaboteurOn, format: "s");
             
+            //care: 317 is next option id!
             #endregion
         }
     }

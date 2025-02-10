@@ -162,6 +162,13 @@ namespace TownOfSushi.Roles
                     mysticRole.BodyArrows.Values.DestroyAll();
                     mysticRole.BodyArrows.Clear();
                 }
+                
+                if (LocalPlayer().Is(RoleEnum.Aurial))
+                {
+                    var aurialRole = GetRole<Aurial>(LocalPlayer());
+                    aurialRole.SenseArrows.Values.DestroyAll();
+                    aurialRole.SenseArrows.Clear();
+                }
 
                 if (LocalPlayer().Is(RoleEnum.Lookout))
                 {
@@ -237,8 +244,8 @@ namespace TownOfSushi.Roles
         public static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (LocalPlayer()== null) return;
-            if (LocalPlayer().Data == null) return;
+            if (NullLocalPlayer()) return;
+            if (NullLocalPlayerData()) return;
             if (!LocalPlayer().Is(RoleEnum.Vampire)) return;
             var biteButton = __instance.KillButton;
 

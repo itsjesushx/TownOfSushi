@@ -42,7 +42,8 @@ namespace TownOfSushi.Roles
             if (CustomGameOptions.GrenadierOn > 0) ColorMapping.Add("Grenadier", ColorManager.ImpostorRed);
             if (CustomGameOptions.JanitorOn > 0) ColorMapping.Add("Janitor", ColorManager.ImpostorRed);
             if (CustomGameOptions.MorphlingOn > 0) ColorMapping.Add("Morphling", ColorManager.ImpostorRed);
-            if (CustomGameOptions.MinerOn > 0) ColorMapping.Add("Miner", ColorManager.ImpostorRed);
+            if (CustomGameOptions.MinerOn > 0 && !IsFungleMap()) ColorMapping.Add("Miner", ColorManager.ImpostorRed);
+            if (CustomGameOptions.MinerOn > 0 && IsFungleMap()) ColorMapping.Add("Herbalist", ColorManager.ImpostorRed);
             if (CustomGameOptions.SwooperOn > 0) ColorMapping.Add("Swooper", ColorManager.ImpostorRed);
             if (CustomGameOptions.VenererOn > 0) ColorMapping.Add("Venerer", ColorManager.ImpostorRed);
             if (CustomGameOptions.PoisonerOn > 0) ColorMapping.Add("Poisoner", ColorManager.ImpostorRed);
@@ -392,6 +393,15 @@ namespace TownOfSushi.Roles
                 }
             }
 
+            foreach (var playerVoteArea in meetingHud.playerStates)
+            {
+                if (playerVoteArea.VotedFor != player.PlayerId) continue;
+                playerVoteArea.UnsetVote();
+                var voteAreaPlayer = PlayerById(playerVoteArea.TargetPlayerId);
+                if (!voteAreaPlayer.AmOwner) continue;
+                meetingHud.ClearVote();
+            }
+
             if (AmongUsClient.Instance.AmHost) meetingHud.CheckForEndVoting();
 
             AssassinExileControllerPatch.AssassinatedPlayers.Add(player);
@@ -470,8 +480,8 @@ namespace TownOfSushi.Roles
         {
             KillButton = __instance.KillButton;
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (LocalPlayer()== null) return;
-            if (LocalPlayer().Data == null) return;
+            if (NullLocalPlayer()) return;
+            if (NullLocalPlayerData()) return;
             var flag7 = PlayerControl.AllPlayerControls.Count > 1;
             if (!flag7) return;
             var flag8 = LocalPlayer().Is(RoleEnum.Vigilante);

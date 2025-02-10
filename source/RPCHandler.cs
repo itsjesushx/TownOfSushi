@@ -1257,6 +1257,11 @@ namespace TownOfSushi
                                 if (!lookout.Watching[abilitytargetId].Contains(playerRole)) lookout.Watching[abilitytargetId].Add(playerRole);
                             }
                         }
+                        if (LocalPlayer().Is(RoleEnum.Aurial) && !IsDead())
+                        {
+                            var aurial = GetRole<Aurial>(LocalPlayer());
+                            Coroutines.Start(aurial.Sense(abilityUser));
+                        }
                         break;
                     case CustomRPC.StopStart:
                         StopStart(reader.ReadByte());
@@ -1440,6 +1445,9 @@ namespace TownOfSushi
 
                 if (CustomGameOptions.SeerOn > 0)
                     CrewmateInvestigativeRoles.Add((typeof(Seer), CustomGameOptions.SeerOn, false || CustomGameOptions.UniqueRoles));
+                
+                if (CustomGameOptions.AurialOn > 0)
+                    CrewmateInvestigativeRoles.Add((typeof(Aurial), CustomGameOptions.AurialOn, false || CustomGameOptions.UniqueRoles));
 
                 if (CustomGameOptions.TrackerOn > 0)
                     CrewmateInvestigativeRoles.Add((typeof(Tracker), CustomGameOptions.TrackerOn, false || CustomGameOptions.UniqueRoles));
@@ -1481,7 +1489,7 @@ namespace TownOfSushi
                     NeutralBenignRoles.Add((typeof(GuardianAngel), CustomGameOptions.GuardianAngelOn, false || CustomGameOptions.UniqueRoles));
                 
                 // Block Glitch if it's Fungle
-                if (CustomGameOptions.GlitchOn > 0 && !FungleMap())
+                if (CustomGameOptions.GlitchOn > 0 && !IsFungleMap())
                     NeutralKillingRoles.Add((typeof(Glitch), CustomGameOptions.GlitchOn, false || CustomGameOptions.UniqueRoles));
 
                 if (CustomGameOptions.ArsonistOn > 0)
@@ -1494,11 +1502,11 @@ namespace TownOfSushi
                     NeutralKillingRoles.Add((typeof(SerialKiller), CustomGameOptions.SerialKillerOn, false || CustomGameOptions.UniqueRoles));
                 
                 // Block Agent if it's Fungle
-                if (CustomGameOptions.AgentOn > 0 && !CustomGameOptions.SkipAgent && !FungleMap())
+                if (CustomGameOptions.AgentOn > 0 && !CustomGameOptions.SkipAgent && !IsFungleMap())
                     NeutralKillingRoles.Add((typeof(Agent), CustomGameOptions.AgentOn, true));
                 
                 // Block Hitman if it's Fungle
-                if (CustomGameOptions.AgentOn > 0 && CustomGameOptions.SkipAgent && !FungleMap())
+                if (CustomGameOptions.AgentOn > 0 && CustomGameOptions.SkipAgent && !IsFungleMap())
                     NeutralKillingRoles.Add((typeof(Hitman), CustomGameOptions.AgentOn, true));
                     
                 if (CustomGameOptions.WerewolfOn > 0)
@@ -1517,20 +1525,20 @@ namespace TownOfSushi
                     ImpostorConcealingRoles.Add((typeof(Undertaker), CustomGameOptions.UndertakerOn, true));
 
                 //Block Morphling if it's Fungle
-                if (CustomGameOptions.MorphlingOn > 0 && !FungleMap())
+                if (CustomGameOptions.MorphlingOn > 0 && !IsFungleMap())
                     ImpostorConcealingRoles.Add((typeof(Morphling), CustomGameOptions.MorphlingOn, false || CustomGameOptions.UniqueRoles));
 
                 if (CustomGameOptions.BlackmailerOn > 0)
                     ImpostorSupportRoles.Add((typeof(Blackmailer), CustomGameOptions.BlackmailerOn, true));
 
-                if (CustomGameOptions.MinerOn > 0 && !MiraHQMap())
+                if (CustomGameOptions.MinerOn > 0 && !IsMiraHQMap())
                     ImpostorSupportRoles.Add((typeof(Miner), CustomGameOptions.MinerOn, true));
                     
                 if (CustomGameOptions.PoisonerOn > 0)
                     ImpostorKillingRoles.Add((typeof(Poisoner), CustomGameOptions.PoisonerOn, false || CustomGameOptions.UniqueRoles));
                 
                 // Block Swooper if it's Fungle
-                if (CustomGameOptions.SwooperOn > 0 && !FungleMap())
+                if (CustomGameOptions.SwooperOn > 0 && !IsFungleMap())
                     ImpostorConcealingRoles.Add((typeof(Swooper), CustomGameOptions.SwooperOn, false || CustomGameOptions.UniqueRoles));
 
                 // Only add Janitor if there's at least 2 impostors
@@ -1559,7 +1567,7 @@ namespace TownOfSushi
                     ImpostorKillingRoles.Add((typeof(Warlock), CustomGameOptions.WarlockOn, false || CustomGameOptions.UniqueRoles));
 
                 // Block Venerer on Fungle and if Colourblind Comms is enabled
-                if (CustomGameOptions.VenererOn > 0 && !FungleMap() && !CustomGameOptions.ColourblindComms)
+                if (CustomGameOptions.VenererOn > 0 && !IsFungleMap() && !CustomGameOptions.ColourblindComms)
                     ImpostorConcealingRoles.Add((typeof(Venerer), CustomGameOptions.VenererOn, true));
 
                 #endregion
@@ -1585,6 +1593,12 @@ namespace TownOfSushi
 
                 if (Check(CustomGameOptions.FrostyOn))
                     Modifiers.Add((typeof(Frosty), CustomGameOptions.FrostyOn));
+                
+                if (Check(CustomGameOptions.LazyOn))
+                    Modifiers.Add((typeof(Lazy), CustomGameOptions.LazyOn));
+                
+                if (Check(CustomGameOptions.CelebrityOn))
+                    Modifiers.Add((typeof(Celebrity), CustomGameOptions.CelebrityOn));
 
                 #endregion
 
@@ -1595,7 +1609,7 @@ namespace TownOfSushi
                 if (Check(CustomGameOptions.FlashOn))
                     Abilities.Add((typeof(Flash), CustomGameOptions.FlashOn));
                     
-                if (Check(CustomGameOptions.TorchOn) && !FungleMap())
+                if (Check(CustomGameOptions.TorchOn) && !IsFungleMap())
                     VisionAbilities.Add((typeof(Torch), CustomGameOptions.TorchOn));
 
                 if (Check(CustomGameOptions.ButtonBarryOn))

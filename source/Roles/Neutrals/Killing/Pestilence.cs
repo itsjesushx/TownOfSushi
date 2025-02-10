@@ -71,8 +71,8 @@ namespace TownOfSushi.Roles
         public static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (LocalPlayer()== null) return;
-            if (LocalPlayer().Data == null) return;
+            if (NullLocalPlayer()) return;
+            if (NullLocalPlayerData()) return;
             if (!LocalPlayer().Is(RoleEnum.Pestilence)) return;
             var role = GetRole<Pestilence>(LocalPlayer());
 

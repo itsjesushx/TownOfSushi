@@ -113,8 +113,8 @@ namespace TownOfSushi.Roles
         {
             if (!LocalPlayer().Is(RoleEnum.Poisoner)) return;
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (LocalPlayer()== null) return;
-            if (LocalPlayer().Data == null) return;
+            if (NullLocalPlayer()) return;
+            if (NullLocalPlayerData()) return;
             var role = GetRole<Poisoner>(LocalPlayer());
             if (role.PoisonButton == null)
             {
@@ -257,8 +257,8 @@ namespace TownOfSushi.Roles
         public static void Postfix(KillButton __instance, [HarmonyArgument(0)] PlayerControl target)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (LocalPlayer()== null) return;
-            if (LocalPlayer().Data == null) return;
+            if (NullLocalPlayer()) return;
+            if (NullLocalPlayerData()) return;
             if (!LocalPlayer().Is(RoleEnum.Poisoner)) return;
             var role = Role.GetRole<Poisoner>(LocalPlayer());
             if (target != null && __instance == HUDManager().KillButton)

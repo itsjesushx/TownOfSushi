@@ -258,6 +258,7 @@ namespace TownOfSushi.Roles
                 case RoleEnum.Seer:
                 case RoleEnum.Tracker:
                 case RoleEnum.Deputy:
+                case RoleEnum.Aurial:
                 case RoleEnum.Medium:
                 case RoleEnum.Mystic:
                 case RoleEnum.Swapper:
@@ -442,6 +443,14 @@ namespace TownOfSushi.Roles
                 var vigiRole = GetRole<Vigilante>(amnesiac);
                 vigiRole.RemainingKills = CustomGameOptions.VigilanteKills;
                 vigiRole.LastKilled = DateTime.UtcNow;
+                HUDManager().KillButton.gameObject.SetActive(false);
+            }
+
+            else if (role == RoleEnum.Aurial)
+            {
+                var aurialRole = GetRole<Aurial>(amnesiac);
+                aurialRole.SenseArrows.Values.DestroyAll();
+                aurialRole.SenseArrows.Clear();
                 HUDManager().KillButton.gameObject.SetActive(false);
             }
 

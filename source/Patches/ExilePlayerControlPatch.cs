@@ -40,6 +40,12 @@ namespace TownOfSushi.Patches
             {
                 role4.Fortified = null;
             }
+
+            var lazy = AllModifiers.Where(x => x.ModifierType == ModifierEnum.Lazy && !x.Player.Data.IsDead && x.Player != null).Cast<Lazy>();
+            foreach (var modifier in lazy)
+            {
+                modifier.SetPosition();
+            }
         }
     }
 
@@ -71,6 +77,30 @@ namespace TownOfSushi.Patches
         {
             if (ExiledInstance() == null || obj != ExiledInstance().gameObject) return;
                 ResetCustomTimers();
+        }
+    }
+    [HarmonyPatch(typeof(SpawnInMinigame), nameof(SpawnInMinigame.Close))]
+    class AirshipSpawnInPatch 
+    {
+        static void Postfix() 
+        {
+            var lazy = AllModifiers.Where(x => x.ModifierType == ModifierEnum.Lazy && !x.Player.Data.IsDead && x.Player != null).Cast<Lazy>();
+            foreach (var modifier in lazy)
+            {
+                modifier.SetPosition();
+            }
+        }
+        [HarmonyPatch(typeof(UnityEngine.Object), nameof(UnityEngine.Object.Destroy), new Type[] { typeof(GameObject) })]
+        public static void Prefix(GameObject obj) 
+        {
+            if (obj.name.Contains("SpawnInMinigame")) 
+            {
+                var lazy = AllModifiers.Where(x => x.ModifierType == ModifierEnum.Lazy && !x.Player.Data.IsDead && x.Player != null).Cast<Lazy>();
+                foreach (var modifier in lazy)
+                {
+                    modifier.SetPosition();
+                }
+            }
         }
     }
 }

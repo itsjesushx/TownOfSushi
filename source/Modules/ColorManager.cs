@@ -6,6 +6,7 @@
         #region Crewmate Colors
 
         public readonly static Color32  Engineer = new Color32(145, 145, 145, byte.MaxValue);
+        public readonly static Color32  Aurial = new Color32(179, 77, 154, byte.MaxValue);
         public readonly static Color32  Tracker = new Color32(100, 58, 220, byte.MaxValue);
         public readonly static Color32  Investigator = new Color32(0, 179, 179, byte.MaxValue);
         public readonly static Color32  Jailor = new Color32(166, 166, 166, byte.MaxValue);
@@ -53,7 +54,9 @@
         #region Modifier Colors
 
         public readonly static Color32  Bait = new Color32(0, 179, 179, byte.MaxValue);
+        public readonly static Color32  Lazy = new Color32(114, 136, 176, byte.MaxValue);
         public readonly static Color32  Aftermath = new Color32(166, 255, 166, byte.MaxValue);
+        public readonly static Color32 Celebrity = new Color32(222, 194, 122, byte.MaxValue);
         public readonly static Color32  Diseased = Color.grey;
         public readonly static Color32  Giant = new Color32(255, 178, 77, byte.MaxValue);
         public readonly static Color32  Frosty = new Color32(153, 255, 255, byte.MaxValue);

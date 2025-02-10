@@ -280,34 +280,37 @@ namespace TownOfSushi.Roles
             var role = GetPlayerRole(ImitatingPlayer);
             var killsList = (role.Kills, role.CorrectKills,  role.CorrectDeputyShot, role.CorrectShot, role.IncorrectShots, role.CorrectVigilanteShot, role.CorrectAssassinKills);
             RoleDictionary.Remove(ImitatingPlayer.PlayerId);
-            if (imitatorRole == RoleEnum.Investigator) new Investigator(ImitatingPlayer);
-            if (imitatorRole == RoleEnum.Lookout) new Lookout(ImitatingPlayer);
             if (imitatorRole == RoleEnum.Crewmate) new Crewmate(ImitatingPlayer);
-            if (imitatorRole == RoleEnum.Mystic) new Mystic(ImitatingPlayer);
-            if (imitatorRole == RoleEnum.Seer) new Seer(ImitatingPlayer);
-            if (imitatorRole == RoleEnum.Tracker) new Tracker(ImitatingPlayer);
-            if (imitatorRole == RoleEnum.Veteran) new Veteran(ImitatingPlayer);
-            if (imitatorRole == RoleEnum.Vigilante) new Vigilante(ImitatingPlayer);
-            if (imitatorRole == RoleEnum.Detective) new Detective(ImitatingPlayer);
-            if (imitatorRole == RoleEnum.Deputy) new Deputy(ImitatingPlayer);
-            if (imitatorRole == RoleEnum.Jailor) new Jailor(ImitatingPlayer);
-            if (imitatorRole == RoleEnum.Swapper) new Swapper(ImitatingPlayer);
-            if (imitatorRole == RoleEnum.Engineer) new Engineer(ImitatingPlayer);
-            if (imitatorRole == RoleEnum.Medium) new Medium(ImitatingPlayer);
-            if (imitatorRole == RoleEnum.Trapper) new Trapper(ImitatingPlayer);
-            if (imitatorRole == RoleEnum.Oracle) new Oracle(ImitatingPlayer);
-            if (imitatorRole == RoleEnum.Hunter) new Hunter(ImitatingPlayer);
-            if (imitatorRole == RoleEnum.Medic)
+            else if (imitatorRole == RoleEnum.Investigator) new Investigator(ImitatingPlayer);
+            else if (imitatorRole == RoleEnum.Lookout) new Lookout(ImitatingPlayer);
+            else if (imitatorRole == RoleEnum.Aurial) new Aurial(ImitatingPlayer);
+            else if (imitatorRole == RoleEnum.Mystic) new Mystic(ImitatingPlayer);
+            else if (imitatorRole == RoleEnum.Seer) new Seer(ImitatingPlayer);
+            else if (imitatorRole == RoleEnum.Tracker) new Tracker(ImitatingPlayer);
+            else if (imitatorRole == RoleEnum.Veteran) new Veteran(ImitatingPlayer);
+            else if (imitatorRole == RoleEnum.Vigilante) new Vigilante(ImitatingPlayer);
+            else if (imitatorRole == RoleEnum.Detective) new Detective(ImitatingPlayer);
+            else if (imitatorRole == RoleEnum.Deputy) new Deputy(ImitatingPlayer);
+            else if (imitatorRole == RoleEnum.Jailor) new Jailor(ImitatingPlayer);
+            else if (imitatorRole == RoleEnum.Swapper) new Swapper(ImitatingPlayer);
+            else if (imitatorRole == RoleEnum.Engineer) new Engineer(ImitatingPlayer);
+            else if (imitatorRole == RoleEnum.Medium) new Medium(ImitatingPlayer);
+            else if (imitatorRole == RoleEnum.Trapper) new Trapper(ImitatingPlayer);
+            else if (imitatorRole == RoleEnum.Oracle) new Oracle(ImitatingPlayer);
+            else if (imitatorRole == RoleEnum.Hunter) new Hunter(ImitatingPlayer);
+            else if (imitatorRole == RoleEnum.Medic)
             {
                 var medic = new Medic(ImitatingPlayer);
                 medic.UsedAbility = true;
                 medic.StartingCooldown = medic.StartingCooldown.AddSeconds(-10f);
             }
-            if (imitatorRole == RoleEnum.Crusader)
+            else if (imitatorRole == RoleEnum.Crusader)
             {
                 var crusader = new Crusader(ImitatingPlayer);
                 crusader.StartingCooldown = crusader.StartingCooldown.AddSeconds(-10f);
             }
+
+            else ImitatingPlayer = null;
 
             var newRole = GetPlayerRole(ImitatingPlayer);
             newRole.RemoveFromRoleHistory(newRole.RoleType);
@@ -337,7 +340,7 @@ namespace TownOfSushi.Roles
                 Dictionary<byte, List<RoleEnum>> seenPlayers = null;
                 PlayerControl confessingPlayer = null;
 
-                if (LocalPlayer()== StartImitate.ImitatingPlayer)
+                if (LocalPlayer() == StartImitate.ImitatingPlayer)
                 {
                     if (LocalPlayer().Is(RoleEnum.Engineer))
                     {
@@ -373,6 +376,13 @@ namespace TownOfSushi.Roles
                         Object.Destroy(trapperRole.UsesText);
                         trapperRole.traps.ClearTraps();
                         trappedPlayers = trapperRole.trappedPlayers;
+                    }
+
+                    if (LocalPlayer().Is(RoleEnum.Aurial))
+                    {
+                        var aurialRole = GetRole<Aurial>(LocalPlayer());
+                        aurialRole.SenseArrows.Values.DestroyAll();
+                        aurialRole.SenseArrows.Clear();
                     }
 
                     if (LocalPlayer().Is(RoleEnum.Lookout))
@@ -494,8 +504,8 @@ namespace TownOfSushi.Roles
         public static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (LocalPlayer()== null) return;
-            if (LocalPlayer().Data == null) return;
+            if (NullLocalPlayer()) return;
+            if (NullLocalPlayerData()) return;
             if (IsDead()) return;
             if (StartImitate.ImitatingPlayer == null) return;
             if (LocalPlayer()!= StartImitate.ImitatingPlayer) return;

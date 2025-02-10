@@ -126,8 +126,8 @@ namespace TownOfSushi.Roles
             var role = GetRole<Seer>(LocalPlayer());
 
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (LocalPlayer()== null) return;
-            if (LocalPlayer().Data == null) return;
+            if (NullLocalPlayer()) return;
+            if (NullLocalPlayerData()) return;
             if (!LocalPlayer().Is(RoleEnum.Seer)) return;
             if (role.HasInvested2) return;
 

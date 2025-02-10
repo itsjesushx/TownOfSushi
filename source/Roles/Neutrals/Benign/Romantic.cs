@@ -83,8 +83,8 @@ namespace TownOfSushi.Roles
         public static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (LocalPlayer()== null) return;
-            if (LocalPlayer().Data == null) return;
+            if (NullLocalPlayer()) return;
+            if (NullLocalPlayerData()) return;
             if (!LocalPlayer().Is(RoleEnum.Romantic)) return;
             var role = GetRole<Romantic>(LocalPlayer());
             if (role.AlreadyPicked) return;
@@ -127,8 +127,8 @@ namespace TownOfSushi.Roles
             public static bool Prefix(ChatController __instance, [HarmonyArgument(0)] PlayerControl sourcePlayer)
             {
                 if (__instance != Chat()) return true;
-                if (LocalPlayer() == null) return true;
-                Boolean shouldSeeMessage = LocalPlayer().Data.IsDead || LocalPlayer().RomanticCoupleChat(sourcePlayer) ||
+                if (NullLocalPlayer()) return true;
+                Boolean shouldSeeMessage = IsDead() || LocalPlayer().RomanticCoupleChat(sourcePlayer) ||
                     sourcePlayer.PlayerId == LocalPlayer().PlayerId;
                 if (DateTime.UtcNow - MeetingStartTime < TimeSpan.FromSeconds(1))
                 {
@@ -165,8 +165,8 @@ namespace TownOfSushi.Roles
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
             if (!LocalPlayer().Is(RoleEnum.Romantic)) return;
-            if (LocalPlayer()== null) return;
-            if (LocalPlayer().Data == null) return;
+            if (NullLocalPlayer()) return;
+            if (NullLocalPlayerData()) return;
             if (IsDead()) return;
 
             var role = GetRole<Romantic>(LocalPlayer());

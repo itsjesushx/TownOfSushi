@@ -77,8 +77,8 @@ namespace TownOfSushi.Roles.Abilities
         private static void UpdateButtonBarry(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (LocalPlayer()== null) return;
-            if (LocalPlayer().Data == null) return;
+            if (NullLocalPlayer()) return;
+            if (NullLocalPlayerData()) return;
             if (!LocalPlayer().Is(AbilityEnum.ButtonBarry)) return;
             if (LocalPlayer().Is(RoleEnum.Glitch)) return;
             if (LocalPlayer().Is(RoleEnum.Agent)) return;

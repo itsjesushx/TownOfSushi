@@ -4,6 +4,8 @@ namespace TownOfSushi.CustomOption
     {
         public static int CrusaderOn => Mathf.RoundToInt(CustomOptionHolder.CrusaderOn.GetFloat());
         public static int SaboteurOn => Mathf.RoundToInt(CustomOptionHolder.SaboteurOn.GetFloat());
+        public static int CelebrityOn => Mathf.RoundToInt(CustomOptionHolder.CelebrityOn.GetFloat());
+        public static int LazyOn => Mathf.RoundToInt(CustomOptionHolder.LazyOn.GetFloat());
         public static int BountyHunterOn => Mathf.RoundToInt(CustomOptionHolder.BountyHunterOn.GetFloat());
         public static int LookoutOn => Mathf.RoundToInt(CustomOptionHolder.LookoutOn.GetFloat());
         public static int WerewolfOn => Mathf.RoundToInt(CustomOptionHolder.WerewolfOn.GetFloat());
@@ -38,6 +40,7 @@ namespace TownOfSushi.CustomOption
         public static int DrunkOn => Mathf.RoundToInt(CustomOptionHolder.DrunkOn.GetFloat());
         public static int AgentOn => Mathf.RoundToInt(CustomOptionHolder.AgentOn.GetFloat());
         public static int MediumOn => Mathf.RoundToInt(CustomOptionHolder.MediumOn.GetFloat());
+        public static int AurialOn => Mathf.RoundToInt(CustomOptionHolder.AurialOn.GetFloat());
         public static int RomanticOn => Mathf.RoundToInt(CustomOptionHolder.RomanticOn.GetFloat());
         public static int GuardianAngelOn => Mathf.RoundToInt(CustomOptionHolder.GuardianAngelOn.GetFloat());
         public static int MysticOn => Mathf.RoundToInt(CustomOptionHolder.MysticOn.GetFloat());
@@ -132,9 +135,8 @@ namespace TownOfSushi.CustomOption
         public static bool HunterBodyReport => CustomOptionHolder.HunterBodyReport.GetBool();
         public static bool ParallelMedScans => CustomOptionHolder.ParallelMedScans.GetBool();
         public static bool CamoCommsKillAnyone => CustomOptionHolder.CamoCommsKillAnyone.GetBool();
+        public static bool ShowCelebrityFaction => CustomOptionHolder.ShowCelebrityFaction.GetBool();
         public static int MaxFixes => Mathf.RoundToInt(CustomOptionHolder.MaxFixes.GetFloat());
-        public static float EngiVentCooldown => CustomOptionHolder.EngiVentCooldown.GetFloat();
-        public static float EngiVentDuration => CustomOptionHolder.EngiVentDuration.GetFloat();
         public static bool VigilanteBodyReport => CustomOptionHolder.VigilanteBodyReport.GetBool();
         public static bool VeteranBodyReport => CustomOptionHolder.VeteranBodyReport.GetBool();
         public static float DragCd => CustomOptionHolder.DragCooldown.GetFloat();
@@ -171,6 +173,9 @@ namespace TownOfSushi.CustomOption
         public static float GrenadeCd => CustomOptionHolder.GrenadeCooldown.GetFloat();
         public static float GrenadeDuration => CustomOptionHolder.GrenadeDuration.GetFloat();
         public static bool GrenadierIndicators => CustomOptionHolder.GrenadierIndicators.GetBool();
+        public static float AuraInnerRadius => CustomOptionHolder.AuraInnerRadius.GetFloat();
+        public static float AuraOuterRadius => CustomOptionHolder.AuraOuterRadius.GetFloat();
+        public static float SenseDuration => CustomOptionHolder.SenseDuration.GetFloat();
         public static float FlashRadius => CustomOptionHolder.FlashRadius.GetFloat();
         public static bool KilledOnAlert => CustomOptionHolder.KilledOnAlert.GetBool();
         public static float AlertCd => CustomOptionHolder.AlertCooldown.GetFloat();

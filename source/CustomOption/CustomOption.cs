@@ -129,7 +129,7 @@ namespace TownOfSushi.CustomOption
 
         public static void ShareOptionSelections() 
         {
-            if (PlayerControl.AllPlayerControls.Count <= 1 || AmongUsClient.Instance!.AmHost == false && LocalPlayer()== null) return;
+            if (PlayerControl.AllPlayerControls.Count <= 1 || AmongUsClient.Instance!.AmHost == false && NullLocalPlayer()) return;
             var optionsList = new List<CustomOption>(CustomOption.Options);
             while (optionsList.Any())
             {

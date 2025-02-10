@@ -7,7 +7,7 @@ namespace TownOfSushi.Patches
     static class AdditionalTempData 
     {
         public static List<PlayerRoleInfo> GameSummaryText = new List<PlayerRoleInfo>();
-        public static void Clear() 
+        public static void Clear()
         {
             GameSummaryText.Clear();
         }
@@ -25,6 +25,7 @@ namespace TownOfSushi.Patches
         {
             // Reset zoomed out ghosts
             ToggleZoom(reset: true);
+
             AdditionalTempData.GameSummaryText.Clear();
             
             foreach (var playerControl in PlayerControl.AllPlayerControls)
@@ -42,11 +43,9 @@ namespace TownOfSushi.Patches
                     SummaryText += $"{role.ColorString}{role.Name}</color>";
                 }
 
-                if (modifier?.ModifierType != null)
-                    SummaryText += $" ({modifier?.ColorString}{modifier?.Name}</color>)";
+                if (modifier?.ModifierType != null) SummaryText += $" ({modifier?.ColorString}{modifier?.Name}</color>)";
 
-                if (ability?.AbilityType != null)
-                    SummaryText += $" [{ability?.ColorString}{ability?.Name}</color>]";
+                if (ability?.AbilityType != null) SummaryText += $" [{ability?.ColorString}{ability?.Name}</color>]";
                     
                 if (playerControl.IsShielded())
                 {
@@ -204,7 +203,6 @@ namespace TownOfSushi.Patches
         public static IEnumerator CheckForEndGame()
         {
             yield return new WaitForSeconds(1f);
-
             foreach (var role in AllRoles)
             {
                 if (NeutralEvilWin())

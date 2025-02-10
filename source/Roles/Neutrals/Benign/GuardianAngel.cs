@@ -70,8 +70,8 @@ namespace TownOfSushi.Roles
         public static void UpdateProtectButton(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (LocalPlayer()== null) return;
-            if (LocalPlayer().Data == null) return;
+            if (NullLocalPlayer()) return;
+            if (NullLocalPlayerData()) return;
             if (!LocalPlayer().Is(RoleEnum.GuardianAngel)) return;
             var protectButton = __instance.KillButton;
 
@@ -206,8 +206,8 @@ namespace TownOfSushi.Roles
         private static void Postfix()
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (LocalPlayer()== null) return;
-            if (LocalPlayer().Data == null) return;
+            if (NullLocalPlayer()) return;
+            if (NullLocalPlayerData()) return;
             if (!LocalPlayer().Is(RoleEnum.GuardianAngel)) return;
             if (IsDead()) return;
 

@@ -8,7 +8,7 @@ namespace TownOfSushi.Patches
         {
             foreach (var player in PlayerControl.AllPlayerControls)
             {
-                if (player.Is(ModifierEnum.Mini) && player.transform.localPosition.y > 4 && MiraHQMap())
+                if (player.Is(ModifierEnum.Mini) && player.transform.localPosition.y > 4 && IsMiraHQMap())
                 {
                     player.transform.localPosition = new Vector3(player.transform.localPosition.x, 4f, player.transform.localPosition.z);
                 }

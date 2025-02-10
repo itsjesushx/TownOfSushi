@@ -69,8 +69,8 @@ namespace TownOfSushi.Roles
         private static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (LocalPlayer()== null) return;
-            if (LocalPlayer().Data == null) return;
+            if (NullLocalPlayer()) return;
+            if (NullLocalPlayerData()) return;
             if (IsDead()) return;
 
             if (!LocalPlayer().Is(RoleEnum.Detective)) return;
@@ -151,8 +151,8 @@ namespace TownOfSushi.Roles
         public static void UpdateInvButton(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (LocalPlayer()== null) return;
-            if (LocalPlayer().Data == null) return;
+            if (NullLocalPlayer()) return;
+            if (NullLocalPlayerData()) return;
             if (!LocalPlayer().Is(RoleEnum.Detective)) return;
             var investigateButton = __instance.KillButton;
 

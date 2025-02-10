@@ -109,8 +109,8 @@ namespace TownOfSushi.Roles
         public static void UpdateAlertButton(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (LocalPlayer()== null) return;
-            if (LocalPlayer().Data == null) return;
+            if (NullLocalPlayer()) return;
+            if (NullLocalPlayerData()) return;
             if (!LocalPlayer().Is(RoleEnum.Veteran)) return;
             var alertButton = __instance.KillButton;
 

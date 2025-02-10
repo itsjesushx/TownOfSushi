@@ -7,7 +7,7 @@ namespace TownOfSushi.Roles
             Name = "Engineer";
             StartText = () => "Fix sabotages and vent around the map";
             TaskText = () => "Vent around and fix sabotages";
-            RoleInfo = $"The Engineer is able to vent every {CustomGameOptions.EngiVentCooldown} seconds around the map  for {CustomGameOptions.EngiVentDuration} seconds and fix sabotages. The Engineer can fix a maximum of " + CustomGameOptions.MaxFixes + " sabotages.";
+            RoleInfo = $"The Engineer is able to vent around the map and fix sabotages. The Engineer can fix a maximum of " + CustomGameOptions.MaxFixes + " sabotages.";
             LoreText = "A brilliant technician, you specialize in repairing sabotaged systems and navigating the map's vents. As the Engineer, you have the unique ability to vent around the map, bypassing obstacles and gaining quick access to critical areas. Your technical expertise is invaluable in keeping the crew safe and maintaining the map integrity, all while staying one step ahead of the Impostors.";
             Color = ColorManager.Engineer;
             RoleType = RoleEnum.Engineer;
@@ -15,16 +15,6 @@ namespace TownOfSushi.Roles
             AddToRoleHistory(RoleType);
             RoleAlignment = RoleAlignment.CrewSupport;
             MaxUses = CustomGameOptions.MaxFixes;
-        }
-        public DateTime LastVent { get; set; }
-        public float EngineerTimer(DateTime last, float timer)
-        {
-            var utcNow = DateTime.UtcNow;
-            var timeSpan = utcNow - last;
-            var num = timer * 1000f;
-            var flag2 = num - (float) timeSpan.TotalMilliseconds < 0f;
-            if (flag2) return 0;
-            return (num - (float) timeSpan.TotalMilliseconds) / 1000f;
         }
         public float TimeRemaining;
         public int MaxUses;
@@ -188,55 +178,20 @@ namespace TownOfSushi.Roles
             return false;
         }
     }
-    [HarmonyPatch(typeof(VentButton), nameof(VentButton.DoClick))]
-    public class VentButtonDoClick
-    {
-        public static bool Prefix(VentButton __instance)
-        {
-            if (!LocalPlayer().Is(RoleEnum.Engineer)) return true;
-            if (IsDead()) return true;
-            if (!__instance.enabled) return true;
-            if (__instance.isCoolingDown && !LocalPlayer().inVent) return false;
-            var role = GetRole<Engineer>(LocalPlayer());
-            role.TimeRemaining = CustomGameOptions.EngiVentDuration;
-            role.LastVent = DateTime.UtcNow;
-            return true;
-        }
-    }
 
     [HarmonyPatch(typeof(HudManager))]
     public class EngineerButtonSprite
     {
-        private static void UpdtateVentTimer(HudManager __instance, Engineer role)
-        {
-            var ventButton = __instance.ImpostorVentButton;
-            if (ventButton.cooldownTimerText == null) ventButton.cooldownTimerText = Object.Instantiate(__instance.KillButton.cooldownTimerText, ventButton.transform);
-            if (LocalPlayer().inVent)
-            {
-                if (role.TimeRemaining <= 0)
-                {
-                    ventButton.DoClick();
-                }
-                ventButton.SetCoolDown(role.TimeRemaining, CustomGameOptions.EngiVentDuration);
-                role.TimeRemaining -= Time.deltaTime;
-            }
-            else
-            {
-                ventButton.SetCoolDown(role.EngineerTimer(role.LastVent, CustomGameOptions.EngiVentCooldown), CustomGameOptions.EngiVentCooldown);
-            }
-        }
 
         [HarmonyPatch(nameof(HudManager.Update))]
         public static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (LocalPlayer()== null) return;
-            if (LocalPlayer().Data == null) return;
+            if (NullLocalPlayer()) return;
+            if (NullLocalPlayerData()) return;
             if (!LocalPlayer().Is(RoleEnum.Engineer)) return;
 
             var role = GetRole<Engineer>(LocalPlayer());
-
-            UpdtateVentTimer(__instance, role);
 
             if (role.UsesText == null && role.MaxUses > 0)
             {

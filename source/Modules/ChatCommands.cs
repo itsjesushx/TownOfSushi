@@ -308,6 +308,11 @@ namespace TownOfSushi.Modules
                         AddModifierMessage(ModifierEnum.Bait);
                         return false;
                     }
+                    else if (chatText.ToLower().StartsWith("/lazy") || chatText.ToLower().StartsWith("/ lazy"))
+                    {
+                        AddModifierMessage(ModifierEnum.Lazy);
+                        return false;
+                    }
                     else if (chatText.ToLower().StartsWith("/dis") || chatText.ToLower().StartsWith("/ dis"))
                     {
                         AddModifierMessage(ModifierEnum.Diseased);
@@ -559,6 +564,8 @@ namespace TownOfSushi.Modules
                     LocalPlayer(), "The Aftermath is a modifier that forces their killer to instantly use their ability.");
                 if (modifier == ModifierEnum.Bait) Chat().AddChat(
                     LocalPlayer(), "The Bait is a modifier that forces their killer to report their body.");
+                if (modifier == ModifierEnum.Lazy) Chat().AddChat(
+                    LocalPlayer(), "As the Lazy you won't be teleported to the meeting table.");
                 if (modifier == ModifierEnum.Diseased) Chat().AddChat(
                     LocalPlayer(), "The Diseased is a modifier that increases their killer's kill cooldown.");
                 if (modifier == ModifierEnum.Disperser) Chat().AddChat(LocalPlayer(),

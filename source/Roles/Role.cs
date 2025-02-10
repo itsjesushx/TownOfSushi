@@ -366,6 +366,11 @@ namespace TownOfSushi.Roles
                     ((Medium)role).MediatedPlayers.Values.DestroyAll();
                     ((Medium)role).MediatedPlayers.Clear();
                 }
+                foreach (var role in AllRoles.Where(x => x.RoleType == RoleEnum.Aurial))
+                {
+                    ((Aurial)role).SenseArrows.Values.DestroyAll();
+                    ((Aurial)role).SenseArrows.Clear();
+                }
                 foreach (var role in AllRoles.Where(x => x.RoleType == RoleEnum.Mystic))
                 {
                     ((Mystic)role).BodyArrows.Values.DestroyAll();
@@ -572,8 +577,8 @@ namespace TownOfSushi.Roles
                 if (Meeting() != null) UpdateMeeting(Meeting());
 
                 if (PlayerControl.AllPlayerControls.Count <= 1) return;
-                if (LocalPlayer()== null) return;
-                if (LocalPlayer().Data == null) return;
+                if (NullLocalPlayer()) return;
+                if (NullLocalPlayerData()) return;
 
                 foreach (var player in PlayerControl.AllPlayerControls)
                 {

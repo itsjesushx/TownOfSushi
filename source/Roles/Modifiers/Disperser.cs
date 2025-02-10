@@ -149,8 +149,8 @@ namespace TownOfSushi.Roles.Modifiers
         private static void UpdateButtonButton(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (LocalPlayer()== null) return;
-            if (LocalPlayer().Data == null) return;
+            if (NullLocalPlayer()) return;
+            if (NullLocalPlayerData()) return;
             if (!LocalPlayer().Is(ModifierEnum.Disperser)) return;
 
             var role = GetModifier<Disperser>(LocalPlayer());

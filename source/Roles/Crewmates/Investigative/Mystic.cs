@@ -114,8 +114,8 @@ namespace TownOfSushi.Roles
         public static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (LocalPlayer()== null) return;
-            if (LocalPlayer().Data == null) return;
+            if (NullLocalPlayer()) return;
+            if (NullLocalPlayerData()) return;
             if (!LocalPlayer().Is(RoleEnum.Mystic)) return;
             var role = GetRole<Mystic>(LocalPlayer());
             var data = LocalPlayer().Data;
@@ -174,8 +174,8 @@ namespace TownOfSushi.Roles
         public static void UpdateMysticExamineButton(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (LocalPlayer()== null) return;
-            if (LocalPlayer().Data == null) return;
+            if (NullLocalPlayer()) return;
+            if (NullLocalPlayerData()) return;
             if (!LocalPlayer().Is(RoleEnum.Mystic)) return;
 
             var examineButton = __instance.KillButton;
@@ -239,7 +239,7 @@ namespace TownOfSushi.Roles
 
         public static string PlayerReportFeedback(PlayerControl player)
         {
-            if (player.Is(RoleEnum.Imitator) || StartImitate.ImitatingPlayer == player
+            if (player.Is(RoleEnum.Aurial) || player.Is(RoleEnum.Imitator) || StartImitate.ImitatingPlayer == player
                 || player.Is(RoleEnum.Morphling) || player.Is(RoleEnum.Mystic)
                 || player.Is(RoleEnum.Glitch))
                 return "Your target has an altered perception of reality";
@@ -272,10 +272,10 @@ namespace TownOfSushi.Roles
 
         public static string RoleReportFeedback(PlayerControl player)
         {
-            if (player.Is(RoleEnum.Imitator) || StartImitate.ImitatingPlayer == player
+            if (player.Is(RoleEnum.Aurial) || player.Is(RoleEnum.Imitator) || StartImitate.ImitatingPlayer == player
                 || player.Is(RoleEnum.Morphling) || player.Is(RoleEnum.Mystic)
                 || player.Is(RoleEnum.Glitch))
-                return "(Imitator, Morphling, Mystic or The Glitch)";
+                return "(Aurial, Imitator, Morphling, Mystic or Glitch)";
             else if (player.Is(RoleEnum.Blackmailer) || player.Is(RoleEnum.Witch) || player.Is(RoleEnum.Mystic) || player.Is(RoleEnum.Doomsayer)
                  || player.Is(RoleEnum.Oracle) || player.Is(RoleEnum.Agent) || player.Is(RoleEnum.Trapper))
                 return "(Blackmailer, Mystic, Witch, Doomsayer, Agent, Oracle or Trapper)";

@@ -30,14 +30,12 @@ namespace TownOfSushi.Roles
             if (CustomGameOptions.HunterOn > 0) ColorMapping.Add("Hunter", ColorManager.Hunter);
             if (CustomGameOptions.MedicOn > 0) ColorMapping.Add("Medic", ColorManager.Medic);
             if (CustomGameOptions.CrusaderOn > 0) ColorMapping.Add("Crusader", ColorManager.Crusader);
+            if (CustomGameOptions.AurialOn > 0) ColorMapping.Add("Aurial", ColorManager.Aurial);
             if (CustomGameOptions.MediumOn > 0) ColorMapping.Add("Medium", ColorManager.Medium);
             if (CustomGameOptions.LookoutOn > 0) ColorMapping.Add("Lookout", ColorManager.Lookout);
             if (CustomGameOptions.SwapperOn > 0) ColorMapping.Add("Swapper", ColorManager.Swapper);
-            
-            // this will be gone for now 
-            //if (CustomGameOptions.DeputyOn > 0) ColorMapping.Add("Deputy", ColorManager.Deputy);
-            //if (CustomGameOptions.JailorOn > 0) ColorMapping.Add("Jailor", ColorManager.Jailor);
-            
+            if (CustomGameOptions.DeputyOn > 0) ColorMapping.Add("Deputy", ColorManager.Deputy);
+            if (CustomGameOptions.JailorOn > 0) ColorMapping.Add("Jailor", ColorManager.Jailor);
             if (CustomGameOptions.SeerOn > 0) ColorMapping.Add("Seer", ColorManager.Seer);
             if (CustomGameOptions.MysticOn > 0) ColorMapping.Add("Mystic", ColorManager.Mystic);
             if (CustomGameOptions.OracleOn > 0) ColorMapping.Add("Oracle", ColorManager.Oracle);
@@ -84,7 +82,8 @@ namespace TownOfSushi.Roles
                 if (CustomGameOptions.WitchOn > 0) ColorMapping.Add("Witch", ColorManager.ImpostorRed);
                 if (CustomGameOptions.MorphlingOn > 0) ColorMapping.Add("Morphling", ColorManager.ImpostorRed);
                 if (CustomGameOptions.BountyHunterOn > 0) ColorMapping.Add("Bounty Hunter", ColorManager.ImpostorRed);
-                if (CustomGameOptions.MinerOn > 0) ColorMapping.Add("Miner", ColorManager.ImpostorRed);
+                if (CustomGameOptions.MinerOn > 0 && !IsFungleMap()) ColorMapping.Add("Miner", ColorManager.ImpostorRed);
+                if (CustomGameOptions.MinerOn > 0 && IsFungleMap()) ColorMapping.Add("Herbalist", ColorManager.ImpostorRed);
                 if (CustomGameOptions.SwooperOn > 0) ColorMapping.Add("Swooper", ColorManager.ImpostorRed);
                 if (CustomGameOptions.VenererOn > 0) ColorMapping.Add("Venerer", ColorManager.ImpostorRed);
                 if (CustomGameOptions.PoisonerOn > 0) ColorMapping.Add("Poisoner", ColorManager.ImpostorRed);
@@ -444,6 +443,15 @@ namespace TownOfSushi.Roles
                 Deputy.ExecuteButton.Destroy();
             }
 
+            foreach (var playerVoteArea in meetingHud.playerStates)
+            {
+                if (playerVoteArea.VotedFor != player.PlayerId) continue;
+                playerVoteArea.UnsetVote();
+                var voteAreaPlayer = PlayerById(playerVoteArea.TargetPlayerId);
+                if (!voteAreaPlayer.AmOwner) continue;
+                meetingHud.ClearVote();
+            }
+
             if (AmongUsClient.Instance.AmHost) meetingHud.CheckForEndVoting();
 
             AssassinExileControllerPatch.AssassinatedPlayers.Add(player);
@@ -456,8 +464,8 @@ namespace TownOfSushi.Roles
         public static void Postfix(HudManager __instance)
         {
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
-            if (LocalPlayer()== null) return;
-            if (LocalPlayer().Data == null) return;
+            if (NullLocalPlayer()) return;
+            if (NullLocalPlayerData()) return;
             if (!LocalPlayer().Is(RoleEnum.Doomsayer)) return;
             var role = GetRole<Doomsayer>(LocalPlayer());
 
@@ -490,7 +498,7 @@ namespace TownOfSushi.Roles
 
         public static string PlayerReportFeedback(PlayerControl player)
         {
-            if (player.Is(RoleEnum.Imitator) || StartImitate.ImitatingPlayer == player
+            if (player.Is(RoleEnum.Aurial) || player.Is(RoleEnum.Imitator) || StartImitate.ImitatingPlayer == player
                 || player.Is(RoleEnum.Morphling) || player.Is(RoleEnum.Mystic)
                   || player.Is(RoleEnum.Glitch))
                 return $"You observe that {player.GetDefaultOutfit().PlayerName} has an altered perception of reality";
@@ -523,10 +531,10 @@ namespace TownOfSushi.Roles
 
         public static string RoleReportFeedback(PlayerControl player)
         {
-            if (player.Is(RoleEnum.Imitator) || StartImitate.ImitatingPlayer == player
+            if (player.Is(RoleEnum.Aurial) || player.Is(RoleEnum.Imitator) || StartImitate.ImitatingPlayer == player
                 || player.Is(RoleEnum.Morphling) || player.Is(RoleEnum.Mystic)
                 || player.Is(RoleEnum.Glitch))
-                return "(" + ColorString(ColorManager.Imitator,"Imitator") + ", " + ColorString(ColorManager.ImpostorRed,"Morphling") +", "+ ColorString(ColorManager.Mystic,"Mystic") + " or " + ColorString(ColorManager.Glitch,"Glitch") + ")";
+                return "(" + ColorString(ColorManager.Imitator,"Imitator") + ", " + ColorString(ColorManager.ImpostorRed,"Morphling")  + ", " + ColorString(ColorManager.Aurial,"Aurial") + ", "+ ColorString(ColorManager.Mystic,"Mystic") + " or " + ColorString(ColorManager.Glitch,"Glitch") + ")";
             
             else if (player.Is(RoleEnum.Blackmailer)|| player.Is(RoleEnum.Doomsayer)
                  || player.Is(RoleEnum.Oracle) || player.Is(RoleEnum.Witch)|| player.Is(RoleEnum.Trapper) || player.Is(RoleEnum.Seer) || player.Is(RoleEnum.Agent))
