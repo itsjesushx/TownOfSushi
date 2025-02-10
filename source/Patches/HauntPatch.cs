@@ -11,11 +11,11 @@ namespace TownOfSushi.Patches
             if (IsHideNSeek()) return true;
             var role = GetPlayerRole(__instance.HauntTarget);
             var modifier = GetModifier(__instance.HauntTarget);
-            var roleName = role == null ? "" : $"{role.Name} ";
+            var roleName = role == null ? "" : $"{role.Name}";
             var modifierName = modifier == null ? "" : $"({modifier.Name})";
-            var IsDead = __instance.HauntTarget.Data.IsDead ? $"({__instance.HauntTarget.GetDeadInfo()}) " : "(Alive) ";
+            var IsDead = __instance.HauntTarget.Data.IsDead ? $"({__instance.HauntTarget.GetDeadInfo()})" : "(Alive)";
 
-            if (TownOfSushi.DeadSeeRoles.Value) __instance.FilterText.text = $"{IsDead}{roleName}{modifierName}";
+            if (TownOfSushi.DeadSeeRoles.Value) __instance.FilterText.text = $"{roleName} {modifierName} {IsDead}";
             else __instance.FilterText.text = "";
             
             return false;

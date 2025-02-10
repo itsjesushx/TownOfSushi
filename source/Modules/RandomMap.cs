@@ -3,7 +3,7 @@ using Random2 = System.Random;
 namespace TownOfSushi.Modules
 {
     [HarmonyPatch]
-    class RandomMapPicker
+    class RandomMap
     {
         public static byte previousMap;
         public static byte GetRandomMap()
@@ -18,7 +18,7 @@ namespace TownOfSushi.Modules
             totalWeight += CustomGameOptions.RandomMapSubmerged;
             totalWeight += CustomGameOptions.RandomMapLevelImpostor;
 
-            if (totalWeight == 0) return OptionsManager().currentNormalGameOptions.MapId;
+            if (totalWeight == 0) return VanillaOptions().currentNormalGameOptions.MapId;
 
             float randomNumber = _rnd.Next(0, (int)totalWeight);
             if (randomNumber < CustomGameOptions.RandomMapSkeld) return 0;
@@ -35,7 +35,7 @@ namespace TownOfSushi.Modules
             randomNumber -= CustomGameOptions.RandomMapSubmerged;
             if (TownOfSushi.LevelImpLoaded && randomNumber < CustomGameOptions.RandomMapLevelImpostor) return 7;
 
-            return OptionsManager().currentNormalGameOptions.MapId;
+            return VanillaOptions().currentNormalGameOptions.MapId;
         }
 
         [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.BeginGame))]
@@ -44,20 +44,20 @@ namespace TownOfSushi.Modules
         {
             if (AmongUsClient.Instance.AmHost)
             {
-                previousMap = OptionsManager().currentNormalGameOptions.MapId;
-                byte map = OptionsManager().currentNormalGameOptions.MapId;
+                previousMap = VanillaOptions().currentNormalGameOptions.MapId;
+                byte map = VanillaOptions().currentNormalGameOptions.MapId;
                 if (CustomGameOptions.RandomMapEnabled)
                 {
                     map = GetRandomMap();
-                    OptionsManager().currentNormalGameOptions.MapId = map;
+                    VanillaOptions().currentNormalGameOptions.MapId = map;
                 }
-                OptionsManager().currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Scientist, 0, 0);
-                OptionsManager().currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Engineer, 0, 0);
-                OptionsManager().currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.GuardianAngel, 0, 0);
-                OptionsManager().currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Tracker, 0, 0);
-                OptionsManager().currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Noisemaker, 0, 0);
-                OptionsManager().currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Shapeshifter, 0, 0);
-                OptionsManager().currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Phantom, 0, 0);
+                VanillaOptions().currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Scientist, 0, 0);
+                VanillaOptions().currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Engineer, 0, 0);
+                VanillaOptions().currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.GuardianAngel, 0, 0);
+                VanillaOptions().currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Tracker, 0, 0);
+                VanillaOptions().currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Noisemaker, 0, 0);
+                VanillaOptions().currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Shapeshifter, 0, 0);
+                VanillaOptions().currentNormalGameOptions.RoleOptions.SetRoleRate(RoleTypes.Phantom, 0, 0);
                 StartRPC(CustomRPC.SetSettings, map);
             }
             return true;
