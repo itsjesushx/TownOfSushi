@@ -42,7 +42,6 @@ namespace TownOfSushi
         Vampire,
         Snitch,
         Jackal,
-        Oracle,
         Sidekick,
         Eraser,
         Spy,

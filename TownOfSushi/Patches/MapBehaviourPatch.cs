@@ -16,11 +16,11 @@ namespace TownOfSushi.Patches
     {
         public static void Postfix(MapBehaviour __instance)    
         {
-			var roleInfo = RoleInfo.GetRoleInfoForPlayer(PlayerControl.LocalPlayer, false);
-			if (roleInfo != null && roleInfo.Count > 0)
+			var role = RoleInfo.GetRoleInfoForPlayer(PlayerControl.LocalPlayer);
+			foreach (RoleInfo roleInfo in role)
 			{
-				__instance.ColorControl.baseColor = roleInfo[0].color;
-				__instance.ColorControl.SetColor(roleInfo[0].color);
+				__instance.ColorControl.baseColor = roleInfo.color;
+				__instance.ColorControl.SetColor(roleInfo.color);
 			}
         }
     }
