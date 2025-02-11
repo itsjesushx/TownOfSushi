@@ -14,7 +14,7 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 Even more roles are coming soon. :)
 
 | Impostor | Crewmate | Neutral | Modifier |
-|----------|-------------|-----------------|----------------|----------------|
+|----------|-------------|-----------------|----------------|
 | [Godfather (Mafia)](#mafia) | [Mayor](#mayor) | [Jester](#jester) | [Bloody](#bloody) |
 | [Mafioso (Mafia)](#mafia) | [Engineer](#engineer) | [Arsonist](#arsonist) | [Anti Teleport](#anti-teleport) |
 | [Janitor (Mafia)](#mafia) | [Sheriff](#sheriff) | [Jackal](#jackal) | [Tie Breaker](#tie-breaker) | 
