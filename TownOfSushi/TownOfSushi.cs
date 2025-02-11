@@ -682,10 +682,10 @@ namespace TownOfSushi
                     message =  "I've been nearby too many kills! They must think I'm evil. \n\n(Sheriff, Warlock, Jackal, Sidekick, Godfather, Bounty Hunter, Vampire or Veteran)";
                 }
                     
-                else if (roleInfo.roleId == RoleId.Lawyer || roleInfo.roleId == RoleId.TimeMaster ||
+                else if (roleInfo.roleId == RoleId.Lawyer || roleInfo.roleId == RoleId.TimeMaster || roleInfo.roleId == RoleId.SecurityGuard ||
                 roleInfo.roleId == RoleId.Medic || roleInfo.roleId == RoleId.Mafioso || roleInfo.roleId == RoleId.Pursuer)
                 {
-                    message =  "I'm scared. I'm going to hide myself or others! \n\n(Medic, Lawyer, Time Master, Mafioso or Pursuer)";
+                    message =  "I'm scared. I'm going to hide myself or others! \n\n(Medic, Security Guard,  Lawyer, Time Master, Mafioso or Pursuer)";
                 }
                 
                 else if (roleInfo.roleId == RoleId.Arsonist || roleInfo.roleId == RoleId.Camouflager || roleInfo.roleId == RoleId.Portalmaker ||
@@ -1468,6 +1468,59 @@ namespace TownOfSushi
         }
     }
 
+    public static class Bomber 
+    {
+        public static PlayerControl bomber = null;
+        public static Color color = Palette.ImpostorRed;
+
+        public static Bomb bomb = null;
+        public static bool isPlanted = false;
+        public static bool isActive = false;
+        public static float destructionTime = 20f;
+        public static float destructionRange = 2f;
+        public static float hearRange = 30f;
+        public static float defuseDuration = 3f;
+        public static float bombCooldown = 15f;
+        public static float bombActiveAfter = 3f;
+        private static Sprite buttonSprite;
+
+        public static Sprite GetButtonSprite() 
+        {
+            if (buttonSprite) return buttonSprite;
+            buttonSprite = Helpers.LoadSpriteFromResources("TheOtherRoles.Resources.Bomb_Button_Plant.png", 115f);
+            return buttonSprite;
+        }
+
+        public static void ClearBomb(bool flag = true) 
+        {
+            if (bomb != null) 
+            {
+                UnityEngine.Object.Destroy(bomb.bomb);
+                UnityEngine.Object.Destroy(bomb.background);
+                bomb = null;
+            }
+            isPlanted = false;
+            isActive = false;
+            if (flag) SoundEffectsManager.Stop("bombFuseBurning");
+        }
+
+        public static void ClearAndReload() 
+        {
+            ClearBomb(false);
+            bomber = null;
+            bomb = null;
+            isPlanted = false;
+            isActive = false;
+            destructionTime = CustomOptionHolder.bomberBombDestructionTime.GetFloat();
+            destructionRange = CustomOptionHolder.bomberBombDestructionRange.GetFloat() / 10;
+            hearRange = CustomOptionHolder.bomberBombHearRange.GetFloat() / 10;
+            defuseDuration = CustomOptionHolder.bomberDefuseDuration.GetFloat();
+            bombCooldown = CustomOptionHolder.bomberBombCooldown.GetFloat();
+            bombActiveAfter = CustomOptionHolder.bomberBombActiveAfter.GetFloat();
+            Bomb.ClearBackgroundSprite();
+        }
+    }
+
     public static class BountyHunter {
         public static PlayerControl bountyHunter;
         public static Color color = Palette.ImpostorRed;
@@ -1925,58 +1978,6 @@ namespace TownOfSushi
         }
     }
 
-    public static class Bomber 
-    {
-        public static PlayerControl bomber = null;
-        public static Color color = Palette.ImpostorRed;
-
-        public static Bomb bomb = null;
-        public static bool isPlanted = false;
-        public static bool isActive = false;
-        public static float destructionTime = 20f;
-        public static float destructionRange = 2f;
-        public static float hearRange = 30f;
-        public static float defuseDuration = 3f;
-        public static float bombCooldown = 15f;
-        public static float bombActiveAfter = 3f;
-
-        private static Sprite buttonSprite;
-
-        public static Sprite GetButtonSprite() 
-        {
-            if (buttonSprite) return buttonSprite;
-            buttonSprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.Bomb_Button_Plant.png", 115f);
-            return buttonSprite;
-        }
-
-        public static void ClearBomb(bool flag = true) 
-        {
-            if (bomb != null) {
-                UnityEngine.Object.Destroy(bomb.bomb);
-                UnityEngine.Object.Destroy(bomb.background);
-                bomb = null;
-            }
-            isPlanted = false;
-            isActive = false;
-            if (flag) SoundEffectsManager.Stop("bombFuseBurning");
-        }
-
-        public static void ClearAndReload() 
-        {
-            ClearBomb(false);
-            bomber = null;
-            bomb = null;
-            isPlanted = false;
-            isActive = false;
-            destructionTime = CustomOptionHolder.bomberBombDestructionTime.GetFloat();
-            destructionRange = CustomOptionHolder.bomberBombDestructionRange.GetFloat() / 10;
-            hearRange = CustomOptionHolder.bomberBombHearRange.GetFloat() / 10;
-            defuseDuration = CustomOptionHolder.bomberDefuseDuration.GetFloat();
-            bombCooldown = CustomOptionHolder.bomberBombCooldown.GetFloat();
-            bombActiveAfter = CustomOptionHolder.bomberBombActiveAfter.GetFloat();
-            Bomb.ClearBackgroundSprite();
-        }
-    }
 
     public static class Yoyo 
     {
@@ -1998,7 +1999,7 @@ namespace TownOfSushi
         public static Sprite GetMarkButtonSprite() 
         {
             if (markButtonSprite) return markButtonSprite;
-            markButtonSprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.YoyoMarkButtonSprite.png", 115f);
+            markButtonSprite = Helpers.LoadSpriteFromResources("TownofSushi.Resources.YoyoMarkButtonSprite.png", 115f);
             return markButtonSprite;
         }
         private static Sprite blinkButtonSprite;
@@ -2006,7 +2007,7 @@ namespace TownOfSushi
         public static Sprite GetBlinkButtonSprite() 
         {
             if (blinkButtonSprite) return blinkButtonSprite;
-            blinkButtonSprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.YoyoBlinkButtonSprite.png", 115f);
+            blinkButtonSprite = Helpers.LoadSpriteFromResources("TheOtherRoles.Resources.YoyoBlinkButtonSprite.png", 115f);
             return blinkButtonSprite;
         }
 
@@ -2023,7 +2024,6 @@ namespace TownOfSushi
             hasAdminTable = CustomOptionHolder.yoyoHasAdminTable.GetBool();
             adminCooldown = CustomOptionHolder.yoyoAdminTableCooldown.GetFloat();
             silhouetteVisibility = CustomOptionHolder.yoyoSilhouetteVisibility.GetSelection() / 10f;
-
             markedLocation = null;
             
         }
