@@ -35,7 +35,7 @@ namespace TownOfSushi
             Shifter.ClearAndReload();
             Swapper.ClearAndReload();
             Lovers.ClearAndReload();
-            Seer.ClearAndReload();
+            Mystic.ClearAndReload();
             Morphling.ClearAndReload();
             Camouflager.ClearAndReload();
             Hacker.ClearAndReload();
@@ -49,6 +49,7 @@ namespace TownOfSushi
             Trickster.ClearAndReload();
             Cleaner.ClearAndReload();
             Warlock.ClearAndReload();
+            Veteran.ClearAndReload();
             SecurityGuard.ClearAndReload();
             Arsonist.ClearAndReload();
             BountyHunter.ClearAndReload();
@@ -499,11 +500,11 @@ namespace TownOfSushi
             bool isMimicGlitch = target == Glitch.Player && Glitch.MimicTarget != null && Glitch.MimicTimer > 0f;
             if (Medic.shielded != null && ((target == Medic.shielded && !isMorphedMorphling) || (target == Medic.shielded && !isMimicGlitch) || (isMorphedMorphling && Morphling.morphTarget == Medic.shielded) || (isMimicGlitch && Glitch.MimicTarget == Medic.shielded))) 
             {
-                hasVisibleShield = Medic.showShielded == 0 || Helpers.shouldShowGhostInfo() // Everyone or Ghost info
+                hasVisibleShield = Medic.showShielded == 0 || Helpers.ShouldShowGhostInfo() // Everyone or Ghost info
                     || (Medic.showShielded == 1 && (PlayerControl.LocalPlayer == Medic.shielded || PlayerControl.LocalPlayer == Medic.medic)) // Shielded + Medic
                     || (Medic.showShielded == 2 && PlayerControl.LocalPlayer == Medic.medic); // Medic only
                 // Make shield invisible till after the next meeting if the option is set (the medic can already see the shield)
-                hasVisibleShield = hasVisibleShield && (Medic.meetingAfterShielding || !Medic.showShieldAfterMeeting || PlayerControl.LocalPlayer == Medic.medic || Helpers.shouldShowGhostInfo());
+                hasVisibleShield = hasVisibleShield && (Medic.meetingAfterShielding || !Medic.showShieldAfterMeeting || PlayerControl.LocalPlayer == Medic.medic || Helpers.ShouldShowGhostInfo());
             }
             return hasVisibleShield;
         }
@@ -622,15 +623,94 @@ namespace TownOfSushi
         }
     }
 
-    public static class Seer 
+    public static class Mystic 
     {
-        public static PlayerControl seer;
-        public static Color color = new Color32(97, 178, 108, byte.MaxValue);
+        public static bool Investigated;
+        public static PlayerControl Player;
+        public static Color color = new Color32(77, 154, 230, byte.MaxValue);
         public static List<Vector3> deadBodyPositions = new List<Vector3>();
-
+        public static PlayerControl currentTarget;
+        public static float Cooldown;
         public static float soulDuration = 15f;
         public static bool limitSoulDuration = false;
         public static int mode = 0;
+        private static Sprite ButtonSprite;
+        public static Sprite GetButtonSprite() 
+        {
+            if (ButtonSprite) return ButtonSprite;
+            ButtonSprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.Mystic.png", 115f);
+            return ButtonSprite;
+        }
+        public static string GetInfo(PlayerControl target)
+        {
+            var role = RoleInfo.GetRoleInfoForPlayer(target);
+            if (target == null) return "";
+            if (role == null) return "";
+
+            string message = "";
+            foreach (RoleInfo roleInfo in role) 
+            {
+
+                if (roleInfo.roleId == RoleId.Jester || roleInfo.roleId == RoleId.Prosecutor 
+                ||roleInfo.roleId == RoleId.Mayor || roleInfo.roleId == RoleId.Ninja 
+                ||roleInfo.roleId == RoleId.Swapper || roleInfo.roleId == RoleId.Spy)
+                {
+                    message =  "They will never know that I have a trick up my sleeve! \n\n(Jester, Mayor, Prosecutor, Ninja or Swapper)";
+                }
+
+                else if (roleInfo.roleId == RoleId.Witch || roleInfo.roleId == RoleId.Tracker && !Tracker.canTrackCorpses ||
+                roleInfo.roleId == RoleId.Trapper || roleInfo.roleId == RoleId.Detective ||roleInfo.roleId == RoleId.Hacker)
+                {
+                    message =  "Hmm, this player must be bad, but I can't share my info or I will be guessed! \n\n(Witch, Tracker, Trapper, Hacker or Detective)";
+                }
+                
+                else if (roleInfo.roleId == RoleId.Morphling || roleInfo.roleId == RoleId.Medium ||
+                roleInfo.roleId == RoleId.Glitch || roleInfo.roleId == RoleId.Engineer || roleInfo.roleId == RoleId.Snitch)
+                {
+                    message =  "Why is everything in my reality so weird looking?! \n\n(Glitch, Morphling, Snitch, Medium or Engineer)";
+                }
+                
+                else if (roleInfo.roleId == RoleId.Vulture || roleInfo.roleId == RoleId.Tracker && Tracker.canTrackCorpses ||
+                roleInfo.roleId == RoleId.Cleaner || roleInfo.roleId == RoleId.Janitor)
+                {
+                    message =  "BODIES?? WHERE?! I NEED ONE NOW! \n\n(Cleaner, Vulture, Tracker or Janitor)";
+                }
+
+                else if (roleInfo.roleId == RoleId.Sheriff ||  roleInfo.roleId == RoleId.Godfather || roleInfo.roleId == RoleId.Veteran || roleInfo.roleId == RoleId.BountyHunter || 
+                roleInfo.roleId == RoleId.Warlock || roleInfo.roleId == RoleId.Vampire ||roleInfo.roleId == RoleId.Sidekick || roleInfo.roleId == RoleId.Jackal)
+                {
+                    message =  "I've been nearby too many kills! They must think I'm evil. \n\n(Sheriff, Warlock, Jackal, Sidekick, Godfather, Bounty Hunter, Vampire or Veteran)";
+                }
+                    
+                else if (roleInfo.roleId == RoleId.Lawyer || roleInfo.roleId == RoleId.TimeMaster ||
+                roleInfo.roleId == RoleId.Medic || roleInfo.roleId == RoleId.Mafioso || roleInfo.roleId == RoleId.Pursuer)
+                {
+                    message =  "I'm scared. I'm going to hide myself or others! \n\n(Medic, Lawyer, Time Master, Mafioso or Pursuer)";
+                }
+                
+                else if (roleInfo.roleId == RoleId.Arsonist || roleInfo.roleId == RoleId.Camouflager || roleInfo.roleId == RoleId.Portalmaker ||
+                roleInfo.roleId == RoleId.Thief || roleInfo.roleId == RoleId.Bomber || roleInfo.roleId == RoleId.Lighter || roleInfo.roleId == RoleId.Trickster)
+                {
+                    message =  "I love playing among the group! \n\n(Portalmaker, Lighter, Arsonist, Camouflager, Thief, Bomber or Trickster)";
+                }
+                    
+                else if (roleInfo.roleId == RoleId.Crewmate || roleInfo.roleId == RoleId.Impostor)
+                {
+                    message =  "I'm roleless. this sucks! \n\n(Regular Impostor or Crewmate)";
+                }
+                
+                else 
+                {
+                    message = "Error";
+                }
+            }
+
+            return currentTarget.Data.PlayerName + "'s Mind:\n" + message;
+        }
+
+        public static int Charges;
+        public static int rechargeTasksNumber;
+        public static int rechargedTasks;
 
         private static Sprite soulSprite;
         public static Sprite GetSoulSprite() 
@@ -642,11 +722,17 @@ namespace TownOfSushi
 
         public static void ClearAndReload() 
         {
-            seer = null;
+            Player = null;
+            currentTarget = null;
+            Investigated = false;
             deadBodyPositions = new List<Vector3>();
-            limitSoulDuration = CustomOptionHolder.seerLimitSoulDuration.GetBool();
-            soulDuration = CustomOptionHolder.seerSoulDuration.GetFloat();
-            mode = CustomOptionHolder.seerMode.GetSelection();
+            Cooldown = CustomOptionHolder.MysticCooldown.GetFloat();
+            limitSoulDuration = CustomOptionHolder.MysticLimitSoulDuration.GetBool();
+            soulDuration = CustomOptionHolder.MysticSoulDuration.GetFloat();
+            mode = CustomOptionHolder.MysticMode.GetSelection();
+            Charges = Mathf.RoundToInt(CustomOptionHolder.MysticCharges.GetFloat());
+            rechargeTasksNumber = Mathf.RoundToInt(CustomOptionHolder.MysticRechargeTasksNumber.GetFloat());
+            rechargedTasks = Mathf.RoundToInt(CustomOptionHolder.MysticRechargeTasksNumber.GetFloat());
         }
     }
 
@@ -707,12 +793,12 @@ namespace TownOfSushi
         public static float duration = 10f;
         public static float camouflageTimer = 0f;
 
-        private static Sprite buttonSprite;
+        private static Sprite ButtonSprite;
         public static Sprite GetButtonSprite() 
         {
-            if (buttonSprite) return buttonSprite;
-            buttonSprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.CamoButton.png", 115f);
-            return buttonSprite;
+            if (ButtonSprite) return ButtonSprite;
+            ButtonSprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.CamoButton.png", 115f);
+            return ButtonSprite;
         }
 
         public static void ResetCamouflage() 
@@ -783,10 +869,10 @@ namespace TownOfSushi
         {
             byte mapId = GameOptionsManager.Instance.currentNormalGameOptions.MapId;
             UseButtonSettings button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.PolusAdminButton]; // Polus
-            if (Helpers.isSkeld() || mapId == 3) button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.AdminMapButton]; // Skeld || Dleks
-            else if (Helpers.isMira()) button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.MIRAAdminButton]; // Mira HQ
-            else if (Helpers.isAirship()) button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.AirshipAdminButton]; // Airship
-            else if (Helpers.isFungle()) button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.AdminMapButton];  // Hacker can Access the Admin panel on Fungle
+            if (Helpers.IsSkeld() || mapId == 3) button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.AdminMapButton]; // Skeld || Dleks
+            else if (Helpers.IsMira()) button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.MIRAAdminButton]; // Mira HQ
+            else if (Helpers.IsAirship()) button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.AirshipAdminButton]; // Airship
+            else if (Helpers.IsFungle()) button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.AdminMapButton];  // Hacker can Access the Admin panel on Fungle
             adminSprite = button.Image;
             return adminSprite;
         }
@@ -967,6 +1053,36 @@ namespace TownOfSushi
             targets = (Targets) CustomOptionHolder.snitchTargets.GetSelection();
         }
     }
+    
+
+    public static class Veteran
+    {
+        public static PlayerControl Player;
+        public static Color color = new Color32(153, 128, 64, byte.MaxValue);
+        public static float Cooldown;
+        public static float Duration;
+        public static bool AlertActive;
+        public static int Charges;
+        public static int rechargeTasksNumber;
+        public static int rechargedTasks;
+        private static Sprite ButtonSprite;
+        public static Sprite GetButtonSprite() 
+        {
+            if (ButtonSprite) return ButtonSprite;
+            ButtonSprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.Alert.png", 115f);
+            return ButtonSprite;
+        }
+        public static void ClearAndReload()
+        {
+            Player = null;
+            Cooldown = CustomOptionHolder.VeteranCooldown.GetFloat();
+            Duration = CustomOptionHolder.VeteranDuration.GetFloat();
+            AlertActive = false;
+            Charges = Mathf.RoundToInt(CustomOptionHolder.VeteranCharges.GetFloat());
+            rechargeTasksNumber = Mathf.RoundToInt(CustomOptionHolder.VeteranRechargeTasksNumber.GetFloat());
+            rechargedTasks = Mathf.RoundToInt(CustomOptionHolder.VeteranRechargeTasksNumber.GetFloat());
+        }
+    }
 
     public static class Jackal {
         public static PlayerControl jackal;
@@ -1060,11 +1176,12 @@ namespace TownOfSushi
         public static float cooldown = 30f;
         public static bool canEraseAnyone = false; 
 
-        private static Sprite buttonSprite;
-        public static Sprite getButtonSprite() {
-            if (buttonSprite) return buttonSprite;
-            buttonSprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.EraserButton.png", 115f);
-            return buttonSprite;
+        private static Sprite ButtonSprite;
+        public static Sprite GetButtonSprite() 
+        {
+            if (ButtonSprite) return ButtonSprite;
+            ButtonSprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.EraserButton.png", 115f);
+            return ButtonSprite;
         }
 
         public static void ClearAndReload() {
@@ -1482,13 +1599,15 @@ namespace TownOfSushi
             chanceAdditionalInfo = CustomOptionHolder.mediumChanceAdditionalInfo.GetSelection() / 10f;
         }
 
-        public static string getInfo(PlayerControl target, PlayerControl killer, DeadPlayer.CustomDeathReason deathReason) {
+        public static string GetInfo(PlayerControl target, PlayerControl killer, DeadPlayer.CustomDeathReason deathReason) 
+        {
             string msg = "";
 
             List<SpecialMediumInfo> infos = new List<SpecialMediumInfo>();
             // collect fitting death info types.
             // suicides:
-            if (killer == target) {
+            if (killer == target) 
+            {
                 if ((target == Sheriff.sheriff) && deathReason != DeadPlayer.CustomDeathReason.LoverSuicide) infos.Add(SpecialMediumInfo.SheriffSuicide);
                 if (target == Lovers.lover1 || target == Lovers.lover2) infos.Add(SpecialMediumInfo.PassiveLoverSuicide);
                 if (target == Thief.thief && deathReason != DeadPlayer.CustomDeathReason.LoverSuicide) infos.Add(SpecialMediumInfo.ThiefSuicide);
@@ -1501,9 +1620,11 @@ namespace TownOfSushi
             if (target == Lawyer.lawyer && killer == Lawyer.target) infos.Add(SpecialMediumInfo.LawyerKilledByClient);
             if (Medium.target.wasCleaned) infos.Add(SpecialMediumInfo.BodyCleaned);
             
-            if (infos.Count > 0) {
+            if (infos.Count > 0) 
+            {
                 var selectedInfo = infos[rnd.Next(infos.Count)];
-                switch (selectedInfo) {
+                switch (selectedInfo) 
+                {
                     case SpecialMediumInfo.SheriffSuicide:
                         msg = "Yikes, that Sheriff shot backfired.";
                         break;
@@ -1532,7 +1653,9 @@ namespace TownOfSushi
                         msg = "Is my dead body some kind of art now or... aaand it's gone.";
                         break;
                 }
-            } else {
+            }
+            else 
+            {
                 int randomNumber = rnd.Next(4);
                 string typeOfColor = Helpers.IsLighterColor(Medium.target.killerIfExisting) ? "lighter" : "darker";
                 float timeSinceDeath = ((float)(Medium.meetingStartTime - Medium.target.timeOfDeath).TotalMilliseconds);
@@ -1547,7 +1670,8 @@ namespace TownOfSushi
                 else msg = "It seems like my killer is the " + RoleInfo.GetRolesString(Medium.target.killerIfExisting, false, false, true) + ".";
             }
 
-            if (rnd.NextDouble() < chanceAdditionalInfo) {
+            if (rnd.NextDouble() < chanceAdditionalInfo) 
+            {
                 int count = 0;
                 string condition = "";
                 var alivePlayersList = PlayerControl.AllPlayerControls.ToArray().Where(pc => !pc.Data.IsDead);
@@ -1656,14 +1780,14 @@ namespace TownOfSushi
         public static bool witchVoteSavesTargets = true;
 
         private static Sprite buttonSprite;
-        public static Sprite getButtonSprite() {
+        public static Sprite GetButtonSprite() {
             if (buttonSprite) return buttonSprite;
             buttonSprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.SpellButton.png", 115f);
             return buttonSprite;
         }
 
         private static Sprite spelledOverlaySprite;
-        public static Sprite getSpelledOverlaySprite() {
+        public static Sprite GetSpelledOverlaySprite() {
             if (spelledOverlaySprite) return spelledOverlaySprite;
             spelledOverlaySprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.SpellButtonMeeting.png", 225f);
             return spelledOverlaySprite;
@@ -2177,9 +2301,9 @@ namespace TownOfSushi
             } else if (Swapper.swapper != null && Swapper.swapper == player2) {
                 if (repeat) ShiftRole(player2, player1, false);
                 Swapper.swapper = player1;
-            } else if (Seer.seer != null && Seer.seer == player2) {
+            } else if (Mystic.Player != null && Mystic.Player == player2) {
                 if (repeat) ShiftRole(player2, player1, false);
-                Seer.seer = player1;
+                Mystic.Player = player1;
             } else if (Hacker.hacker != null && Hacker.hacker == player2) {
                 if (repeat) ShiftRole(player2, player1, false);
                 Hacker.hacker = player1;

@@ -66,7 +66,7 @@ namespace TownOfSushi.Objects
             vent.GetComponent<PowerTools.SpriteAnim>()?.Stop();
             vent.Id = MapUtilities.CachedShipStatus.AllVents.Select(x => x.Id).Max() + 1; // Make sure we have a unique id
             ventRenderer = vent.GetComponent<SpriteRenderer>();
-            if (Helpers.isFungle()) {
+            if (Helpers.IsFungle()) {
                 ventRenderer = vent.transform.GetChild(3).GetComponent<SpriteRenderer>();
                 var animator = vent.transform.GetChild(3).GetComponent<PowerTools.SpriteAnim>();
                 animator?.Stop();

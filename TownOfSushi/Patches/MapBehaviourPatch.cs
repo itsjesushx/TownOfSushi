@@ -9,10 +9,25 @@ using TownOfSushi.Utilities;
 using UnityEngine;
 
 
-namespace TownOfSushi.Patches {
+namespace TownOfSushi.Patches 
+{
+	[HarmonyPatch(typeof (MapBehaviour), "FixedUpdate")]  
+    public static class ChangeMapColorPatch  
+    {
+        public static void Postfix(MapBehaviour __instance)    
+        {
+			var roleInfo = RoleInfo.GetRoleInfoForPlayer(PlayerControl.LocalPlayer, false);
+			if (roleInfo != null && roleInfo.Count > 0)
+			{
+				__instance.ColorControl.baseColor = roleInfo[0].color;
+				__instance.ColorControl.SetColor(roleInfo[0].color);
+			}
+        }
+    }
 
 	[HarmonyPatch(typeof(MapBehaviour))]
-	static class MapBehaviourPatch {
+	static class MapBehaviourPatch 
+	{
 		public static Dictionary<Byte, SpriteRenderer> herePoints = new();
 
 		public static Sprite Vent = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.Vent.png", 150f);
@@ -223,7 +238,7 @@ namespace TownOfSushi.Patches {
 		{
 			if (VentNetworks.Count != 0) return;
 			
-			if (Helpers.isMira()) {
+			if (Helpers.IsMira()) {
 				var vents = MapUtilities.CachedShipStatus.AllVents.Where(x => !x.name.Contains("JackInTheBoxVent_"));
 				VentNetworks.Add(vents.ToList());
 				return;

@@ -47,10 +47,12 @@ namespace TownOfSushi.Objects
             arrowBehaviour.Update();
         }
 
-         public static void UpdateProximity(Vector3 position) {
+         public static void UpdateProximity(Vector3 position) 
+         {
             if (!GameManager.Instance.GameHasStarted) return;
             
-            if (Tracker.DangerMeterParent == null) {
+            if (Tracker.DangerMeterParent == null) 
+            {
                 Tracker.DangerMeterParent = GameObject.Instantiate(GameObject.Find("ImpostorDetector"), HudManager.Instance.transform);
                 Tracker.Meter = Tracker.DangerMeterParent.transform.GetChild(0).GetComponent<DangerMeter>();
                 Tracker.DangerMeterParent.transform.localPosition = new(3.7f, -1.6f, 0);

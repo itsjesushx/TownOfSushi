@@ -18,7 +18,8 @@ namespace TownOfSushi.Patches
             var target = __instance.HauntTarget;
             var roleInfo = RoleInfo.GetRoleInfoForPlayer(target, false);
             string roleString = (roleInfo.Count > 0 && MapOptions.ghostsSeeRoles) ? roleInfo[0].name : "";
-            if (__instance.HauntTarget.Data.IsDead) {
+            if (__instance.HauntTarget.Data.IsDead) 
+            {
                 __instance.FilterText.text = roleString + " Ghost";
                 return;
             }
@@ -34,9 +35,7 @@ namespace TownOfSushi.Patches
             if (GameOptionsManager.Instance.currentGameOptions.GameMode != GameModes.Normal) return;
             if (__instance.filterMode == HauntMenuMinigame.HauntFilters.Impostor) 
             {
-                var info = RoleInfo.GetRoleInfoForPlayer(pc, false);
-                __result = (pc.Data.Role.IsImpostor || info.Any(x => x.FactionId == Factions.Neutral) 
-                || info.Any(x => x.FactionId == Factions.NeutralKiller)) && !pc.Data.IsDead;
+                __result = !pc.IsCrew() && !pc.Data.IsDead;
             }
         }
 

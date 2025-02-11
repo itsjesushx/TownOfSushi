@@ -98,8 +98,10 @@ namespace TownOfSushi
         {
             foreach (PlayerControl player in PlayerControl.AllPlayerControls) 
             {
-                if (player.PlayerId == playerId) {
-                    switch ((RoleId)roleId) {
+                if (player.PlayerId == playerId) 
+                {
+                    switch ((RoleId)roleId) 
+                    {
                     case RoleId.Jester:
                         Jester.jester = player;
                         break;
@@ -136,6 +138,9 @@ namespace TownOfSushi
                     case RoleId.TimeMaster:
                         TimeMaster.timeMaster = player;
                         break;
+                    case RoleId.Veteran:
+                        Veteran.Player = player;
+                        break;
                     case RoleId.Medic:
                         Medic.medic = player;
                         break;
@@ -145,8 +150,8 @@ namespace TownOfSushi
                     case RoleId.Swapper:
                         Swapper.swapper = player;
                         break;
-                    case RoleId.Seer:
-                        Seer.seer = player;
+                    case RoleId.Mystic:
+                        Mystic.Player = player;
                         break;
                     case RoleId.Morphling:
                         Morphling.morphling = player;
@@ -354,7 +359,7 @@ namespace TownOfSushi
         public static void EngineerUsedRepair() 
         {
             Engineer.remainingFixes--;
-            if (Helpers.shouldShowGhostInfo()) 
+            if (Helpers.ShouldShowGhostInfo()) 
             {
                 Helpers.ShowFlash(Engineer.color, 0.5f, "Engineer Fix"); ;
             }
@@ -418,6 +423,23 @@ namespace TownOfSushi
             })));
         }
 
+        public static void VeteranAlert() 
+        {
+            Veteran.AlertActive = true;
+            FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(Veteran.Duration, new Action<float>((p) => {
+                if (p == 1f) Veteran.AlertActive = false;
+            })));
+        }
+
+        public static void VeterenAlertKill(byte targetId)
+        {
+            if (PlayerControl.LocalPlayer == Veteran.Player)
+            {
+                PlayerControl player = Helpers.PlayerById(targetId);
+                Helpers.CheckMurderAttemptAndKill(Veteran.Player, player);
+            }
+        }
+
         public static void MedicSetShielded(byte shieldedId) 
         {
             Medic.usedShield = true;
@@ -433,7 +455,7 @@ namespace TownOfSushi
             isShieldedAndShow = isShieldedAndShow && (Medic.meetingAfterShielding || !Medic.showShieldAfterMeeting);  // Dont show attempt, if shield is not shown yet
             bool isMedicAndShow = Medic.medic == PlayerControl.LocalPlayer && Medic.showAttemptToMedic;
 
-            if (isShieldedAndShow || isMedicAndShow || Helpers.shouldShowGhostInfo()) Helpers.ShowFlash(Palette.ImpostorRed, duration: 0.5f, "Failed Murder Attempt on Shielded Player");
+            if (isShieldedAndShow || isMedicAndShow || Helpers.ShouldShowGhostInfo()) Helpers.ShowFlash(Palette.ImpostorRed, duration: 0.5f, "Failed Murder Attempt on Shielded Player");
         }
 
         public static void ShifterShift(byte targetId) 
@@ -598,9 +620,10 @@ namespace TownOfSushi
             if (player == Lighter.lighter) Lighter.ClearAndReload();
             if (player == Detective.detective) Detective.ClearAndReload();
             if (player == TimeMaster.timeMaster) TimeMaster.ClearAndReload();
+            if (player == Veteran.Player) Veteran.ClearAndReload();
             if (player == Medic.medic) Medic.ClearAndReload();
             if (player == Shifter.shifter) Shifter.ClearAndReload();
-            if (player == Seer.seer) Seer.ClearAndReload();
+            if (player == Mystic.Player) Mystic.ClearAndReload();
             if (player == Hacker.hacker) Hacker.ClearAndReload();
             if (player == Tracker.tracker) Tracker.ClearAndReload();
             if (player == Snitch.snitch) Snitch.ClearAndReload();
@@ -814,7 +837,7 @@ namespace TownOfSushi
                 vent.EnterVentAnim = vent.ExitVentAnim = null;
                 Sprite newSprite = animator == null ? SecurityGuard.getStaticVentSealedSprite() : SecurityGuard.getAnimatedVentSealedSprite();
                 SpriteRenderer rend = vent.myRend;
-                if (Helpers.isFungle()) {
+                if (Helpers.IsFungle()) {
                     newSprite = SecurityGuard.getFungleVentSealedSprite();
                     rend = vent.transform.GetChild(3).GetComponent<SpriteRenderer>();
                     animator = vent.transform.GetChild(3).GetComponent<PowerTools.SpriteAnim>();
@@ -1090,22 +1113,27 @@ namespace TownOfSushi
                     break;
                 case GhostInfoTypes.MediumInfo:
                     string mediumInfo = reader.ReadString();
-		             if (Helpers.shouldShowGhostInfo())
+		             if (Helpers.ShouldShowGhostInfo())
                     	FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sender, mediumInfo);
+                    break;
+                case GhostInfoTypes.MysticInfo:
+                    string mysticInfo = reader.ReadString();
+		             if (Helpers.ShouldShowGhostInfo())
+                    	FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sender, mysticInfo);
                     break;
                 case GhostInfoTypes.DetectiveOrMedicInfo:
                     string detectiveInfo = reader.ReadString();
-                    if (Helpers.shouldShowGhostInfo())
+                    if (Helpers.ShouldShowGhostInfo())
 		    	        FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sender, detectiveInfo);
                     break;
                 case GhostInfoTypes.BlankUsed:
                     Pursuer.blankedList.Remove(sender);
                     break;
                 case GhostInfoTypes.VampireTimer:
-                    HudManagerStartPatch.vampireKillButton.Timer = (float)reader.ReadByte();
+                    vampireKillButton.Timer = (float)reader.ReadByte();
                     break;
                 case GhostInfoTypes.DeathReasonAndKiller:
-                    GameHistory.OverrideDeathReasonAndKiller(Helpers.PlayerById(reader.ReadByte()), (DeadPlayer.CustomDeathReason)reader.ReadByte(), Helpers.PlayerById(reader.ReadByte()));
+                    OverrideDeathReasonAndKiller(Helpers.PlayerById(reader.ReadByte()), (DeadPlayer.CustomDeathReason)reader.ReadByte(), Helpers.PlayerById(reader.ReadByte()));
                     break;
             }
         }
@@ -1283,6 +1311,12 @@ namespace TownOfSushi
                     break;
                 case (byte)CustomRPC.TimeMasterShield:
                     RPCProcedure.TimeMasterShield();
+                    break;
+                case (byte)CustomRPC.VeteranAlert:
+                    RPCProcedure.VeteranAlert();
+                    break;
+                case (byte)CustomRPC.VeterenAlertKill:
+                    RPCProcedure.VeterenAlertKill(reader.ReadByte());
                     break;
                 case (byte)CustomRPC.MedicSetShielded:
                     RPCProcedure.MedicSetShielded(reader.ReadByte());

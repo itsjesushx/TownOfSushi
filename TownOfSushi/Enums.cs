@@ -5,7 +5,8 @@ namespace TownOfSushi
         PerformKill,
         SuppressKill,
         BlankKill,
-        DelayVampireKill
+        DelayVampireKill,
+        MirrorKill,
     }
     public enum CustomOptionType 
     {
@@ -28,11 +29,12 @@ namespace TownOfSushi
         Godfather,
         Mafioso,
         Janitor,
+        Veteran,
         Detective,
         TimeMaster,
         Medic,
         Swapper,
-        Seer,
+        Mystic,
         Morphling,
         Camouflager,
         Hacker,
@@ -106,6 +108,8 @@ namespace TownOfSushi
         MedicSetShielded,
         ShieldedMurderAttempt,
         GlitchMimic,
+        VeteranAlert,
+        VeterenAlertKill,
         TimeMasterShield,
         TimeMasterRewindTime,
         ShifterShift,
@@ -172,6 +176,7 @@ namespace TownOfSushi
         BountyTarget,
         NinjaMarked,
         WarlockTarget,
+        MysticInfo,
         MediumInfo,
         BlankUsed,
         DetectiveOrMedicInfo,

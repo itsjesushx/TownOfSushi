@@ -18,7 +18,6 @@ namespace TownOfSushi
     {
 
         public static Dictionary<string, Sprite> CachedSprites = new();
-
         public static Sprite LoadSpriteFromResources(string path, float pixelsPerUnit, bool cache=true) 
         {
             try
@@ -119,7 +118,8 @@ namespace TownOfSushi
             return textStreamReader.ReadToEnd();
         }
 
-        public static string ReadTextFromFile(string path) {
+        public static string ReadTextFromFile(string path) 
+        {
             Stream stream = File.OpenRead(path);
             StreamReader textStreamReader = new StreamReader(stream);
             return textStreamReader.ReadToEnd();
@@ -234,12 +234,12 @@ namespace TownOfSushi
             return (player != Jackal.jackal && player != Sidekick.sidekick && !Jackal.formerJackals.Any(x => x == player));
         }
 
-        public static bool shouldShowGhostInfo() 
+        public static bool ShouldShowGhostInfo() 
         {
             return PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.Data.IsDead && MapOptions.ghostsSeeInformation || AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Ended;
         }
 
-        public static void clearAllTasks(this PlayerControl player) {
+        public static void ClearAllTasks(this PlayerControl player) {
             if (player == null) return;
             foreach (var playerTask in player.myTasks.GetFastEnumerator())
             {
@@ -262,39 +262,48 @@ namespace TownOfSushi
             shipStatus.RpcUpdateSystem(systemType, amount);
         }
 
-        public static bool isMira() {
+        public static bool IsMira() 
+        {
             return GameOptionsManager.Instance.CurrentGameOptions.MapId == 1;
         }
 
-        public static bool isAirship() {
+        public static bool IsAirship() 
+        {
             return GameOptionsManager.Instance.CurrentGameOptions.MapId == 4;
         }
-        public static bool isSkeld() {
+        public static bool IsSkeld() 
+        {
             return GameOptionsManager.Instance.CurrentGameOptions.MapId == 0;
         }
-        public static bool isPolus() {
+        public static bool IsPolus() 
+        {
             return GameOptionsManager.Instance.CurrentGameOptions.MapId == 2;
         }
 
-        public static bool isFungle() {           
+        public static bool IsFungle() {   
+
             return GameOptionsManager.Instance.CurrentGameOptions.MapId == 5;
         }
 
-        public static bool MushroomSabotageActive() {
+        public static bool MushroomSabotageActive() 
+        {
             return PlayerControl.LocalPlayer.myTasks.ToArray().Any((x) => x.TaskType == TaskTypes.MushroomMixupSabotage);
         }
 
 
-        public static bool sabotageActive() {
+        public static bool SabotageActive() 
+        {
             var sabSystem = ShipStatus.Instance.Systems[SystemTypes.Sabotage].CastFast<SabotageSystemType>();
             return sabSystem.AnyActive;
         }
 
-        public static float sabotageTimer() {
+        public static float SabotageTimer() 
+        {
             var sabSystem = ShipStatus.Instance.Systems[SystemTypes.Sabotage].CastFast<SabotageSystemType>();
             return sabSystem.Timer;
         }
-        public static bool canUseSabotage() {
+        public static bool CanUseSabotage() 
+        {
             var sabSystem = ShipStatus.Instance.Systems[SystemTypes.Sabotage].CastFast<SabotageSystemType>();
             ISystemType systemType;
             IActivatable doors = null;
@@ -304,7 +313,8 @@ namespace TownOfSushi
             return GameManager.Instance.SabotagesEnabled() && sabSystem.Timer <= 0f && !sabSystem.AnyActive && !(doors != null && doors.IsActive);
         }
 
-        public static void setSemiTransparent(this PoolablePlayer player, bool value, float alpha=0.25f) {
+        public static void SetSemiTransparent(this PoolablePlayer player, bool value, float alpha=0.25f) 
+        {
             alpha = value ? alpha : 1f;
             foreach (SpriteRenderer r in player.gameObject.GetComponentsInChildren<SpriteRenderer>())
                 r.color = new Color(r.color.r, r.color.g, r.color.b, alpha);
@@ -480,7 +490,8 @@ namespace TownOfSushi
             return false;
         }
 
-        public static MurderAttemptResult CheckMuderAttempt(PlayerControl killer, PlayerControl target, bool blockRewind = false, bool ignoreBlank = false, bool ignoreIfKillerIsDead = false, bool ignoreMedic = false) {
+        public static MurderAttemptResult CheckMuderAttempt(PlayerControl killer, PlayerControl target, bool blockRewind = false, bool ignoreBlank = false, bool ignoreIfKillerIsDead = false, bool ignoreMedic = false) 
+        {
             var targetRole = RoleInfo.GetRoleInfoForPlayer(target, false).FirstOrDefault();
             // Modified vanilla checks
             if (AmongUsClient.Instance.IsGameOver) return MurderAttemptResult.SuppressKill;
@@ -512,7 +523,8 @@ namespace TownOfSushi
             }
 
             // Block impostor not fully grown mini kill
-            else if (Mini.mini != null && target == Mini.mini && !Mini.IsGrownUp()) {
+            else if (Mini.mini != null && target == Mini.mini && !Mini.IsGrownUp()) 
+            {
                 return MurderAttemptResult.SuppressKill;
             }
 
@@ -527,10 +539,24 @@ namespace TownOfSushi
             }
 
             // Thief if hit crew only kill if setting says so, but also kill the thief.
-            else if (Thief.IsFailedThiefKill(target, killer, targetRole)) {
+            else if (Thief.IsFailedThiefKill(target, killer, targetRole)) 
+            {
                 if (!CheckArmored(killer, true, true))
                     Thief.suicideFlag = true;
                 return MurderAttemptResult.SuppressKill;
+            }
+
+            //Veteran with alert active
+            else if (Veteran.Player != null && Veteran.AlertActive && Veteran.Player == target) 
+            {
+                if (Medic.shielded != null && Medic.shielded == target)
+                {
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(killer.NetId, (byte)CustomRPC.ShieldedMurderAttempt, SendOption.Reliable, -1);
+                    writer.Write(target.PlayerId);
+                    AmongUsClient.Instance.FinishRpcImmediately(writer);
+                    RPCProcedure.ShieldedMurderAttempt();
+                }
+                return MurderAttemptResult.MirrorKill;
             }
 
             // Block Armored with armor kill
@@ -540,10 +566,11 @@ namespace TownOfSushi
                 return MurderAttemptResult.BlankKill;
             }
             
-            if (TransportationToolPatches.isUsingTransportation(target) && !blockRewind && killer == Vampire.vampire) {
+            if (TransportationToolPatches.isUsingTransportation(target) && !blockRewind && killer == Vampire.vampire) 
+            {
                 return MurderAttemptResult.DelayVampireKill;
-            } else if (TransportationToolPatches.isUsingTransportation(target))
-                return MurderAttemptResult.SuppressKill;
+            } 
+            else if (TransportationToolPatches.isUsingTransportation(target)) return MurderAttemptResult.SuppressKill;
             return MurderAttemptResult.PerformKill;
         }
 
@@ -561,9 +588,16 @@ namespace TownOfSushi
             // The kill attempt will be shared using a custom RPC, hence combining modded and unmodded versions is impossible
             MurderAttemptResult murder = CheckMuderAttempt(killer, target, isMeetingStart, ignoreBlank, ignoreIfKillerIsDead);
 
-            if (murder == MurderAttemptResult.PerformKill) {
+            if (murder == MurderAttemptResult.PerformKill) 
+            {
                 MurderPlayer(killer, target, showAnimation);
-            } else if (murder == MurderAttemptResult.DelayVampireKill) {
+            }
+            else if (murder == MurderAttemptResult.MirrorKill) 
+            {
+                MurderPlayer(target, killer, showAnimation);
+            } 
+            else if (murder == MurderAttemptResult.DelayVampireKill) 
+            {
                 HudManager.Instance.StartCoroutine(Effects.Lerp(10f, new Action<float>((p) => { 
                     if (!TransportationToolPatches.isUsingTransportation(target) && Vampire.bitten != null) {
                         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.VampireSetBitten, Hazel.SendOption.Reliable, -1);
@@ -642,6 +676,18 @@ namespace TownOfSushi
                 return roleInfo.FactionId == Factions.Crewmate;
             return false;
         }
+        public static bool CheckVeteranAlertKill(this PlayerControl target)
+        {
+            bool CanKill = Veteran.Player == target && Veteran.AlertActive;
+            if (CanKill)
+            {
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.VeterenAlertKill, SendOption.Reliable, -1);
+                writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                AmongUsClient.Instance.FinishRpcImmediately(writer);
+                RPCProcedure.VeterenAlertKill(PlayerControl.LocalPlayer.PlayerId);
+            }
+            return CanKill;
+        }
 
         public static bool IsKiller(PlayerControl player) 
         {
@@ -662,8 +708,8 @@ namespace TownOfSushi
             if (tzGO != null) {
                 var rend = tzGO.transform.Find("Inactive").GetComponent<SpriteRenderer>();
                 var rendActive = tzGO.transform.Find("Active").GetComponent<SpriteRenderer>();
-                rend.sprite = zoomOutStatus ? Helpers.LoadSpriteFromResources("TownOfSushi.Resources.Plus_Button.png", 100f) : Helpers.LoadSpriteFromResources("TownOfSushi.Resources.Minus_Button.png", 100f);
-                rendActive.sprite = zoomOutStatus ? Helpers.LoadSpriteFromResources("TownOfSushi.Resources.Plus_ButtonActive.png", 100f) : Helpers.LoadSpriteFromResources("TownOfSushi.Resources.Minus_ButtonActive.png", 100f);
+                rend.sprite = zoomOutStatus ? LoadSpriteFromResources("TownOfSushi.Resources.Plus_Button.png", 100f) : Helpers.LoadSpriteFromResources("TownOfSushi.Resources.Minus_Button.png", 100f);
+                rendActive.sprite = zoomOutStatus ? LoadSpriteFromResources("TownOfSushi.Resources.Plus_ButtonActive.png", 100f) : Helpers.LoadSpriteFromResources("TownOfSushi.Resources.Minus_ButtonActive.png", 100f);
                 tzGO.transform.localScale = new Vector3(1.2f, 1.2f, 1f) * (zoomOutStatus ? 4 : 1);
             }
 

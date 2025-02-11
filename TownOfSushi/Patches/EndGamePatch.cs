@@ -337,7 +337,7 @@ namespace TownOfSushi.Patches
             } 
             else if (AdditionalTempData.winCondition == WinCondition.JackalWin) 
             {
-                textRenderer.text = "Team Jackal Wins";
+                textRenderer.text = "Jackals Win";
                 textRenderer.color = Jackal.color;
             }
             else if (AdditionalTempData.winCondition == WinCondition.GlitchWin) 
@@ -705,31 +705,39 @@ namespace TownOfSushi.Patches
                         bool lover = IsLover(playerInfo);
                         if (lover) numLoversAlive++;
 
-                        if (playerInfo.Role.IsImpostor) {
+                        if (playerInfo.Role.IsImpostor) 
+                        {
                             numImpostorsAlive++;
                             if (lover) impLover = true;
                         }
-                        if (Jackal.jackal != null && Jackal.jackal.PlayerId == playerInfo.PlayerId) {
+                        if (Jackal.jackal != null && Jackal.jackal.PlayerId == playerInfo.PlayerId) 
+                        {
                             numJackalAlive++;
                             if (lover) jackalLover = true;
                         }
-                        if (Sheriff.sheriff != null &&  Sheriff.sheriff.PlayerId == playerInfo.PlayerId) 
+                        if (Sheriff.sheriff != null && Sheriff.sheriff.PlayerId == playerInfo.PlayerId) 
                         {
                             numCrewPowerAlive++;
                         }
-                        if (Mayor.mayor != null &&  Mayor.mayor.PlayerId == playerInfo.PlayerId) 
+                        if (Mayor.mayor != null && Mayor.mayor.PlayerId == playerInfo.PlayerId) 
                         {
                             numCrewPowerAlive++;
                         }
-                        if (Swapper.swapper != null &&  Swapper.swapper.PlayerId == playerInfo.PlayerId && Swapper.charges > 0) 
+                        if (Veteran.Player != null && Veteran.Charges > 0 && Veteran.Player.PlayerId == playerInfo.PlayerId) 
                         {
                             numCrewPowerAlive++;
                         }
-                        if (Sidekick.sidekick != null && Sidekick.sidekick.PlayerId == playerInfo.PlayerId) {
+                        if (Swapper.swapper != null && Swapper.charges > 0 && Swapper.swapper.PlayerId == playerInfo.PlayerId) 
+                        {
+                            numCrewPowerAlive++;
+                        }
+                        if (Sidekick.sidekick != null && Sidekick.sidekick.PlayerId == playerInfo.PlayerId) 
+                        {
                             numJackalAlive++;
                             if (lover) jackalLover = true;
                         }
-                        if (Glitch.Player != null && Glitch.Player.PlayerId == playerInfo.PlayerId) {
+                        if (Glitch.Player != null && Glitch.Player.PlayerId == playerInfo.PlayerId) 
+                        {
                             numGlitchAlive++;
                             if (lover) glitchLover = true;
                         }

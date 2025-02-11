@@ -1237,7 +1237,8 @@ namespace TownOfSushi {
             LastPosition = GameSettings.transform.localPosition;
         }
 
-        private static void CreateScroller(HudManager __instance) {
+        private static void CreateScroller(HudManager __instance) 
+        {
             if (Scroller != null) return;
 
             Transform target = GameSettings.transform;
@@ -1260,7 +1261,8 @@ namespace TownOfSushi {
         }
 
         [HarmonyPrefix]
-        public static void Prefix2(HudManager __instance) {
+        public static void Prefix2(HudManager __instance) 
+        {
             if (!settingsTMPs[0]) return;
             foreach (var tmp in settingsTMPs) tmp.text = "";
             var settingsString = GameOptionsDataPatch.buildAllOptions(hideExtras: true);
@@ -1268,7 +1270,8 @@ namespace TownOfSushi {
             string curString = "";
             string curBlock;
             int j = 0;
-            for (int i = 0; i < blocks.Length; i++) {
+            for (int i = 0; i < blocks.Length; i++) 
+            {
                 curBlock = blocks[i];
                 if (Helpers.lineCount(curBlock) + Helpers.lineCount(curString) < 43) {
                     curString += curBlock + "\n\n";
@@ -1282,18 +1285,21 @@ namespace TownOfSushi {
             }
             if (j < settingsTMPs.Length) settingsTMPs[j].text = curString;
             int blockCount = 0;
-            foreach (var tmp in settingsTMPs) {
+            foreach (var tmp in settingsTMPs) 
+            {
                 if (tmp.text != "")
                     blockCount++;
             }
-            for (int i = 0; i < blockCount; i++) {
+            for (int i = 0; i < blockCount; i++) 
+            {
                 settingsTMPs[i].transform.localPosition = new Vector3(- blockCount * 1.2f + 2.7f * i, 2.2f, -500f);
             }
         }
 
         private static TMPro.TextMeshPro[] settingsTMPs = new TMPro.TextMeshPro[4];
         private static GameObject settingsBackground;
-        public static void OpenSettings(HudManager __instance) {
+        public static void OpenSettings(HudManager __instance) 
+        {
             if (__instance.FullScreen == null || MapBehaviour.Instance && MapBehaviour.Instance.IsOpen) return;
             settingsBackground = GameObject.Instantiate(__instance.FullScreen.gameObject, __instance.transform);
             settingsBackground.SetActive(true);
@@ -1310,14 +1316,16 @@ namespace TownOfSushi {
             }
         }
 
-        public static void CloseSettings() {
+        public static void CloseSettings() 
+        {
             foreach (var tmp in settingsTMPs)
                 if (tmp) tmp.gameObject.Destroy();
 
             if (settingsBackground) settingsBackground.Destroy();
         }
 
-        public static void ToggleSettings(HudManager __instance) {
+        public static void ToggleSettings(HudManager __instance) 
+        {
             if (settingsTMPs[0]) CloseSettings();
             else OpenSettings(__instance);
         }
@@ -1365,7 +1373,7 @@ namespace TownOfSushi {
             }
             var (playerCompleted, playerTotal) = TasksHandler.TaskInfo(PlayerControl.LocalPlayer.Data);
             int numberOfLeftTasks = playerTotal - playerCompleted;
-            bool zoomButtonActive = !(PlayerControl.LocalPlayer == null || !PlayerControl.LocalPlayer.Data.IsDead || (PlayerControl.LocalPlayer.Data.Role.IsImpostor && !CustomOptionHolder.deadImpsBlockSabotage.GetBool()) || MeetingHud.Instance);
+            bool zoomButtonActive = !(PlayerControl.LocalPlayer == null || !PlayerControl.LocalPlayer.Data.IsDead || (PlayerControl.LocalPlayer.Data.Role.IsImpostor && !CustomOptionHolder.deadImpsBlockSabotage.GetBool()) || MeetingHud.Instance || ExileController.Instance);
             zoomButtonActive &= numberOfLeftTasks <= 0 || !CustomOptionHolder.finishTasksBeforeHauntingOrZoomingOut.GetBool();
             toggleZoomButtonObject.SetActive(zoomButtonActive);
             var posOffset = Helpers.zoomOutStatus ? new Vector3(-1.27f, -7.92f, -52f) : new Vector3(0, -1.6f, -52f);

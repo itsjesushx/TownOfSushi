@@ -68,6 +68,7 @@ namespace TownOfSushi
         public readonly static RoleInfo securityGuard = new("Security Guard", SecurityGuard.color, "Seal vents and place cameras", "Seal vents and place cameras", RoleId.SecurityGuard, Factions.Crewmate);
         public readonly static RoleInfo mayor = new("Mayor", Mayor.color, "Your vote counts twice", "Your vote counts twice", RoleId.Mayor, Factions.Crewmate);
         public readonly static RoleInfo portalmaker = new("Portalmaker", Portalmaker.color, "You can create portals", "You can create portals", RoleId.Portalmaker, Factions.Crewmate);
+        public readonly static RoleInfo veteran = new("Veteran", Veteran.color, "Alert to murder whoever touches you", "Alert to kill the <color=#FF1919FF>Impostors</color>", RoleId.Veteran, Factions.Crewmate);
         public readonly static RoleInfo engineer = new("Engineer",  Engineer.color, "Maintain important systems on the ship", "Repair the ship", RoleId.Engineer, Factions.Crewmate);
         public readonly static RoleInfo sheriff = new("Sheriff", Sheriff.color, "Shoot the <color=#FF1919FF>Impostors</color>", "Shoot the Impostors", RoleId.Sheriff, Factions.Crewmate);
         public readonly static RoleInfo medium = new("Medium", Medium.color, "Question the souls of the dead to gain information", "Question the souls", RoleId.Medium, Factions.Crewmate);
@@ -75,7 +76,7 @@ namespace TownOfSushi
         public readonly static RoleInfo timeMaster = new("Time Master", TimeMaster.color, "Save yourself with your time shield", "Use your time shield", RoleId.TimeMaster, Factions.Crewmate);
         public readonly static RoleInfo medic = new("Medic", Medic.color, "Protect someone with your shield", "Protect other players", RoleId.Medic, Factions.Crewmate);
         public readonly static RoleInfo swapper = new("Swapper", Swapper.color, "Swap votes to exile the <color=#FF1919FF>Impostors</color>", "Swap votes", RoleId.Swapper, Factions.Crewmate);
-        public readonly static RoleInfo seer = new("Seer", Seer.color, "You will see players die", "You will see players die", RoleId.Seer, Factions.Crewmate);
+        public readonly static RoleInfo mystic = new("Mystic", Mystic.color, "You will see players die", "You will see players die", RoleId.Mystic, Factions.Crewmate);
 
         #endregion
 
@@ -135,13 +136,14 @@ namespace TownOfSushi
             portalmaker,
             engineer,
             sheriff,
+            veteran,
             glitch,
             lighter,
             detective,
             timeMaster,
             medic,
             swapper,
-            seer,
+            mystic,
             hacker,
             tracker,
             snitch,
@@ -196,6 +198,7 @@ namespace TownOfSushi
             if (p == Engineer.engineer) infos.Add(engineer);
             if (p == Sheriff.sheriff) infos.Add(sheriff);
             if (p == Glitch.Player) infos.Add(glitch);
+            if (p == Veteran.Player) infos.Add(veteran);
             if (p == Lighter.lighter) infos.Add(lighter);
             if (p == Godfather.godfather) infos.Add(godfather);
             if (p == Mafioso.mafioso) infos.Add(mafioso);
@@ -215,7 +218,7 @@ namespace TownOfSushi
             if (p == TimeMaster.timeMaster) infos.Add(timeMaster);
             if (p == Medic.medic) infos.Add(medic);
             if (p == Swapper.swapper) infos.Add(swapper);
-            if (p == Seer.seer) infos.Add(seer);
+            if (p == Mystic.Player) infos.Add(mystic);
             if (p == Hacker.hacker) infos.Add(hacker);
             if (p == Tracker.tracker) infos.Add(tracker);
             if (p == Snitch.snitch) infos.Add(snitch);
@@ -263,11 +266,11 @@ namespace TownOfSushi
 
             if (!suppressGhostInfo && p != null) 
             {
-                if (p == Shifter.shifter && (PlayerControl.LocalPlayer == Shifter.shifter || Helpers.shouldShowGhostInfo()) && Shifter.futureShift != null)
+                if (p == Shifter.shifter && (PlayerControl.LocalPlayer == Shifter.shifter || Helpers.ShouldShowGhostInfo()) && Shifter.futureShift != null)
                     roleName += Helpers.ColorString(Color.yellow, " ← " + Shifter.futureShift.Data.PlayerName);
-                if (p == Vulture.vulture && (PlayerControl.LocalPlayer == Vulture.vulture || Helpers.shouldShowGhostInfo()))
+                if (p == Vulture.vulture && (PlayerControl.LocalPlayer == Vulture.vulture || Helpers.ShouldShowGhostInfo()))
                     roleName = roleName + Helpers.ColorString(Vulture.color, $" ({Vulture.vultureNumberToWin - Vulture.eatenBodies} left)");
-                if (Helpers.shouldShowGhostInfo()) 
+                if (Helpers.ShouldShowGhostInfo()) 
                 {
                     if (Eraser.futureErased.Contains(p))
                         roleName = Helpers.ColorString(Color.gray, "(erased) ") + roleName;

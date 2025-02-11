@@ -593,7 +593,8 @@ namespace TownOfSushi.Patches
             }
 
             // Add meeting extra button, i.e. Swapper Confirm Button or Mayor Toggle Double Vote Button. Swapper Button uses ExtraButtonText on the Left of the Button. (Future meeting buttons can easily be added here)
-            if (addSwapperButtons || addMayorButton) {
+            if (addSwapperButtons || addMayorButton) 
+            {
                 Transform meetingUI = UnityEngine.Object.FindObjectsOfType<Transform>().FirstOrDefault(x => x.name == "PhoneUI");
 
                 var buttonTemplate = __instance.playerStates[0].transform.FindChild("votePlayerBase");
@@ -657,7 +658,7 @@ namespace TownOfSushi.Patches
                         rend.transform.SetParent(pva.transform);
                         rend.gameObject.layer = pva.Megaphone.gameObject.layer;
                         rend.transform.localPosition = new Vector3(-0.725f, -0.15f, -1f);
-                        rend.sprite = Witch.getSpelledOverlaySprite();
+                        rend.sprite = Witch.GetSpelledOverlaySprite();
                     }
                 }
             }
@@ -746,7 +747,7 @@ namespace TownOfSushi.Patches
 
 
                 // Add Portal info into Portalmaker Chat:
-                if (Portalmaker.portalmaker != null && (PlayerControl.LocalPlayer == Portalmaker.portalmaker || Helpers.shouldShowGhostInfo()) && !Portalmaker.portalmaker.Data.IsDead) {
+                if (Portalmaker.portalmaker != null && (PlayerControl.LocalPlayer == Portalmaker.portalmaker || Helpers.ShouldShowGhostInfo()) && !Portalmaker.portalmaker.Data.IsDead) {
                     if (Portal.teleportedPlayers.Count > 0) {
                         string msg = "Portal Log:\n";
                         foreach (var entry in Portal.teleportedPlayers) {
@@ -759,7 +760,7 @@ namespace TownOfSushi.Patches
                 }
 
                 // Add trapped Info into Trapper chat
-                if (Trapper.trapper != null && (PlayerControl.LocalPlayer == Trapper.trapper || Helpers.shouldShowGhostInfo()) && !Trapper.trapper.Data.IsDead) {
+                if (Trapper.trapper != null && (PlayerControl.LocalPlayer == Trapper.trapper || Helpers.ShouldShowGhostInfo()) && !Trapper.trapper.Data.IsDead) {
                     if (Trap.traps.Any(x => x.revealed))
                         FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(Trapper.trapper, "Trap Logs:");
                     foreach (Trap trap in Trap.traps) {
@@ -782,7 +783,7 @@ namespace TownOfSushi.Patches
                 // Add Snitch info
                 string output = "";
 
-                if (Snitch.snitch != null && Snitch.mode != Snitch.Mode.Map && (PlayerControl.LocalPlayer == Snitch.snitch || Helpers.shouldShowGhostInfo()) && !Snitch.snitch.Data.IsDead) {
+                if (Snitch.snitch != null && Snitch.mode != Snitch.Mode.Map && (PlayerControl.LocalPlayer == Snitch.snitch || Helpers.ShouldShowGhostInfo()) && !Snitch.snitch.Data.IsDead) {
                     var (playerCompleted, playerTotal) = TasksHandler.TaskInfo(Snitch.snitch.Data);
                     int numberOfTasks = playerTotal - playerCompleted;
                     if (numberOfTasks == 0) {

@@ -104,8 +104,8 @@ namespace TownOfSushi.Patches
                 setPlayerNameColor(Shifter.shifter, Shifter.color);
             else if (Swapper.swapper != null && Swapper.swapper == localPlayer)
                 setPlayerNameColor(Swapper.swapper, Swapper.color);
-            else if (Seer.seer != null && Seer.seer == localPlayer)
-                setPlayerNameColor(Seer.seer, Seer.color);
+            else if (Mystic.Player != null && Mystic.Player == localPlayer)
+                setPlayerNameColor(Mystic.Player, Mystic.color);
             else if (Hacker.hacker != null && Hacker.hacker == localPlayer)
                 setPlayerNameColor(Hacker.hacker, Hacker.color);
             else if (Tracker.tracker != null && Tracker.tracker == localPlayer)

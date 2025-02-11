@@ -2,9 +2,11 @@ using HarmonyLib;
 using System;
 using TownOfSushi.Utilities;
 
-namespace TownOfSushi {
+namespace TownOfSushi 
+{
     [HarmonyPatch]
-    public static class TasksHandler {
+    public static class TasksHandler 
+    {
 
         public static Tuple<int, int> TaskInfo(NetworkedPlayerInfo playerInfo) {
             int TotalTasks = 0;

@@ -113,7 +113,7 @@ namespace TownOfSushi.Patches
                 vent.EnterVentAnim = vent.ExitVentAnim = null;
                 Sprite newSprite = animator == null ? SecurityGuard.getStaticVentSealedSprite() : SecurityGuard.getAnimatedVentSealedSprite();
                 SpriteRenderer rend = vent.myRend;
-                if (Helpers.isFungle()) {
+                if (Helpers.IsFungle()) {
                     newSprite = SecurityGuard.getFungleVentSealedSprite();
                     rend = vent.transform.GetChild(3).GetComponent<SpriteRenderer>();
                     animator = vent.transform.GetChild(3).GetComponent<PowerTools.SpriteAnim>();
@@ -198,6 +198,8 @@ namespace TownOfSushi.Patches
             // Reset custom button timers where necessary
             CustomButton.MeetingEndedUpdate();
 
+            Mystic.Investigated = false;
+
             // Mini set adapted cooldown
             if (Mini.mini != null && PlayerControl.LocalPlayer == Mini.mini && Mini.mini.Data.Role.IsImpostor) 
             {
@@ -205,9 +207,9 @@ namespace TownOfSushi.Patches
                 Mini.mini.SetKillTimer(GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown * multiplier);
             }
 
-            // Seer spawn souls
-            if (Seer.deadBodyPositions != null && Seer.seer != null && PlayerControl.LocalPlayer == Seer.seer && (Seer.mode == 0 || Seer.mode == 2)) {
-                foreach (Vector3 pos in Seer.deadBodyPositions) 
+            // Mystic spawn souls
+            if (Mystic.deadBodyPositions != null && Mystic.Player != null && PlayerControl.LocalPlayer == Mystic.Player && (Mystic.mode == 0 || Mystic.mode == 2)) {
+                foreach (Vector3 pos in Mystic.deadBodyPositions) 
                 {
                     GameObject soul = new GameObject();
                     //soul.transform.position = pos;
@@ -215,11 +217,11 @@ namespace TownOfSushi.Patches
                     soul.layer = 5;
                     var rend = soul.AddComponent<SpriteRenderer>();
                     soul.AddSubmergedComponent(SubmergedCompatibility.Classes.ElevatorMover);
-                    rend.sprite = Seer.GetSoulSprite();
+                    rend.sprite = Mystic.GetSoulSprite();
                     
-                    if(Seer.limitSoulDuration) 
+                    if(Mystic.limitSoulDuration) 
                     {
-                        FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(Seer.soulDuration, new Action<float>((p) => {
+                        FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(Mystic.soulDuration, new Action<float>((p) => {
                             if (rend != null) 
                             {
                                 var tmp = rend.color;
@@ -230,7 +232,7 @@ namespace TownOfSushi.Patches
                         })));
                     }
                 }
-                Seer.deadBodyPositions = new List<Vector3>();
+                Mystic.deadBodyPositions = new List<Vector3>();
             }
 
             // Tracker reset deadBodyPositions

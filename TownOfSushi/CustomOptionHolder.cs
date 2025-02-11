@@ -32,6 +32,12 @@ namespace TownOfSushi
         public static CustomOption mafiaSpawnRate;
         public static CustomOption janitorCooldown;
 
+        public static CustomOption VeteranSpawnRate;
+        public static CustomOption VeteranCooldown;
+        public static CustomOption VeteranCharges;
+        public static CustomOption VeteranRechargeTasksNumber;
+        public static CustomOption VeteranDuration;
+
         public static CustomOption morphlingSpawnRate;
         public static CustomOption morphlingCooldown;
         public static CustomOption morphlingDuration;
@@ -154,10 +160,14 @@ namespace TownOfSushi
         public static CustomOption swapperSwapsNumber;
         public static CustomOption swapperRechargeTasksNumber;
 
-        public static CustomOption seerSpawnRate;
-        public static CustomOption seerMode;
-        public static CustomOption seerSoulDuration;
-        public static CustomOption seerLimitSoulDuration;
+        public static CustomOption MysticSpawnRate;
+        public static CustomOption MysticMode;
+        public static CustomOption MysticSoulDuration;
+        public static CustomOption MysticLimitSoulDuration;
+        public static CustomOption MysticCooldown;
+        public static CustomOption MysticCharges;
+        public static CustomOption MysticRechargeTasksNumber;
+        public static CustomOption MysticDuration;
 
         public static CustomOption hackerSpawnRate;
         public static CustomOption hackerCooldown;
@@ -539,18 +549,26 @@ namespace TownOfSushi
 
             medicShowAttemptToMedic = CustomOption.Create(146, Types.Crewmate, "Medic Sees Murder Attempt On Shielded Player", false, medicSpawnRate);
 
+            VeteranSpawnRate = CustomOption.Create(15011, Types.Crewmate, ColorString(Veteran.color, "Veteran"), rates, null, true);
+            VeteranCooldown = CustomOption.Create(151, Types.Crewmate, "Alert Cooldown", 30f, 10f, 120f, 2.5f, VeteranSpawnRate);
+            VeteranDuration = CustomOption.Create(152, Types.Crewmate, "Alert Duration", 10f, 5f, 15f, 1f, VeteranSpawnRate);
+            VeteranCharges = CustomOption.Create(153, Types.Crewmate, "Initial Alert Charges", 1f, 0f, 5f, 1f, VeteranSpawnRate);
+            VeteranRechargeTasksNumber = CustomOption.Create(154, Types.Crewmate, "Number Of Tasks Needed For Recharging", 2f, 1f, 10f, 1f, VeteranSpawnRate);
+
             swapperSpawnRate = CustomOption.Create(150, Types.Crewmate, ColorString(Swapper.color, "Swapper"), rates, null, true);
             swapperCanCallEmergency = CustomOption.Create(151, Types.Crewmate, "Swapper Can Call Emergency Meeting", false, swapperSpawnRate);
             swapperCanOnlySwapOthers = CustomOption.Create(152, Types.Crewmate, "Swapper Can Only Swap Others", false, swapperSpawnRate);
-
             swapperSwapsNumber = CustomOption.Create(153, Types.Crewmate, "Initial Swap Charges", 1f, 0f, 5f, 1f, swapperSpawnRate);
             swapperRechargeTasksNumber = CustomOption.Create(154, Types.Crewmate, "Number Of Tasks Needed For Recharging", 2f, 1f, 10f, 1f, swapperSpawnRate);
 
 
-            seerSpawnRate = CustomOption.Create(160, Types.Crewmate, ColorString(Seer.color, "Seer"), rates, null, true);
-            seerMode = CustomOption.Create(161, Types.Crewmate, "Seer Mode", new string[]{ "Show Death Flash + Souls", "Show Death Flash", "Show Souls"}, seerSpawnRate);
-            seerLimitSoulDuration = CustomOption.Create(163, Types.Crewmate, "Seer Limit Soul Duration", false, seerSpawnRate);
-            seerSoulDuration = CustomOption.Create(162, Types.Crewmate, "Seer Soul Duration", 15f, 0f, 120f, 5f, seerLimitSoulDuration);
+            MysticSpawnRate = CustomOption.Create(160, Types.Crewmate, ColorString(Mystic.color, "Mystic"), rates, null, true);
+            MysticMode = CustomOption.Create(161, Types.Crewmate, "Mystic Mode", new string[]{ "Show Death Flash + Souls", "Show Death Flash", "Show Souls"}, MysticSpawnRate);
+            MysticLimitSoulDuration = CustomOption.Create(163, Types.Crewmate, "Mystic Limit Soul Duration", false, MysticSpawnRate);
+            MysticSoulDuration = CustomOption.Create(162, Types.Crewmate, "Mystic Soul Duration", 15f, 0f, 120f, 5f, MysticLimitSoulDuration);
+            MysticCooldown = CustomOption.Create(163, Types.Crewmate, "Mystic Reveal Cooldown", 30f, 10f, 120f, 2.5f, MysticSpawnRate);
+            MysticCharges = CustomOption.Create(16311, Types.Crewmate, "Initial Mystic Charges", 1f, 0f, 5f, 1f, VeteranSpawnRate);
+            MysticRechargeTasksNumber = CustomOption.Create(16312, Types.Crewmate, "Number Of Tasks Needed For Recharging", 2f, 1f, 10f, 1f, VeteranSpawnRate);
         
             hackerSpawnRate = CustomOption.Create(170, Types.Crewmate, ColorString(Hacker.color, "Hacker"), rates, null, true);
             hackerCooldown = CustomOption.Create(171, Types.Crewmate, "Hacker Cooldown", 30f, 5f, 60f, 5f, hackerSpawnRate);

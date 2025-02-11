@@ -172,6 +172,13 @@ namespace TownOfSushi.Patches {
             if (Shifter.futureShift == null) SetPlayerOutline(Shifter.currentTarget, Color.yellow);
         }
 
+        static void MysticSetTarget() 
+        {
+            if (Mystic.Player == null || Mystic.Player != PlayerControl.LocalPlayer) return;
+            Mystic.currentTarget = SetTarget();
+            SetPlayerOutline(Mystic.currentTarget, Mystic.color);
+        }
+
 
         static void MorphlingSetTarget() 
         {
@@ -880,7 +887,7 @@ namespace TownOfSushi.Patches {
             }
         }
 
-        // For swapper swap charges        
+        // For Charges
         public static void SwapperUpdate() 
         {
             if (Swapper.swapper == null || PlayerControl.LocalPlayer != Swapper.swapper || PlayerControl.LocalPlayer.Data.IsDead) return;
@@ -888,6 +895,28 @@ namespace TownOfSushi.Patches {
             if (playerCompleted == Swapper.rechargedTasks) {
                 Swapper.rechargedTasks += Swapper.rechargeTasksNumber;
                 Swapper.charges++;
+            }
+        }
+
+        public static void VeteranUpdate() 
+        {
+            if (Veteran.Player == null || PlayerControl.LocalPlayer != Veteran.Player || PlayerControl.LocalPlayer.Data.IsDead) return;
+            var (playerCompleted, _) = TasksHandler.TaskInfo(PlayerControl.LocalPlayer.Data);
+            if (playerCompleted == Veteran.rechargedTasks) 
+            {
+                Veteran.rechargedTasks += Veteran.rechargeTasksNumber;
+                Veteran.Charges++;
+            }
+        }
+
+        public static void MysticUpdate() 
+        {
+            if (Mystic.Player == null || PlayerControl.LocalPlayer != Mystic.Player || PlayerControl.LocalPlayer.Data.IsDead) return;
+            var (playerCompleted, _) = TasksHandler.TaskInfo(PlayerControl.LocalPlayer.Data);
+            if (playerCompleted == Mystic.rechargedTasks) 
+            {
+                Mystic.rechargedTasks += Mystic.rechargeTasksNumber;
+                Mystic.Charges++;
             }
         }
 
@@ -1075,6 +1104,9 @@ namespace TownOfSushi.Patches {
                 SecurityGuardUpdate();
                 // Arsonist
                 ArsonistSetTarget();
+                //Mystic
+                MysticSetTarget();
+                MysticUpdate();
                 // Snitch
                 SnitchUpdate();
                 // BountyHunter
@@ -1102,6 +1134,8 @@ namespace TownOfSushi.Patches {
 
                 HackerUpdate();
                 SwapperUpdate();
+                //Veteran
+                VeteranUpdate();
                 // Hacker
                 HackerUpdate();
                 // Trapper
@@ -1226,7 +1260,7 @@ namespace TownOfSushi.Patches {
 
             // Remove fake tasks when player dies
             if (target.HasFakeTasks() || target == Lawyer.lawyer || target == Pursuer.pursuer || target == Thief.thief)
-                target.clearAllTasks();
+                target.ClearAllTasks();
 
             // First kill (set before lover suicide)
             if (MapOptions.firstKillName == "") MapOptions.firstKillName = target.Data.PlayerName;
@@ -1254,11 +1288,11 @@ namespace TownOfSushi.Patches {
                 RPCProcedure.LawyerPromotesToPursuer();
             }
 
-            // Seer show flash and add dead player position
-            if (Seer.seer != null && (PlayerControl.LocalPlayer == Seer.seer || Helpers.shouldShowGhostInfo()) && !Seer.seer.Data.IsDead && Seer.seer != target && Seer.mode <= 1) {
-                Helpers.ShowFlash(new Color(42f / 255f, 187f / 255f, 245f / 255f), message : "Seer Info: Someone Died");
+            // Mystic show flash and add dead player position
+            if (Mystic.Player != null && (PlayerControl.LocalPlayer == Mystic.Player || Helpers.ShouldShowGhostInfo()) && !Mystic.Player.Data.IsDead && Mystic.Player != target && Mystic.mode <= 1) {
+                Helpers.ShowFlash(new Color(42f / 255f, 187f / 255f, 245f / 255f), message : "Mystic Info: Someone Died");
             }
-            if (Seer.deadBodyPositions != null) Seer.deadBodyPositions.Add(target.transform.position);
+            if (Mystic.deadBodyPositions != null) Mystic.deadBodyPositions.Add(target.transform.position);
 
             // Tracker store body positions
             if (Tracker.deadBodyPositions != null) Tracker.deadBodyPositions.Add(target.transform.position);
@@ -1407,7 +1441,7 @@ namespace TownOfSushi.Patches {
 
             // Remove fake tasks when player dies
             if (__instance.HasFakeTasks() || __instance == Lawyer.lawyer || __instance == Pursuer.pursuer || __instance == Thief.thief)
-                __instance.clearAllTasks();
+                __instance.ClearAllTasks();
 
             // Lover suicide trigger on exile
             if ((Lovers.lover1 != null && __instance == Lovers.lover1) || (Lovers.lover2 != null && __instance == Lovers.lover2)) {

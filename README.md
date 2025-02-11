@@ -24,7 +24,7 @@ Even more roles are coming soon. :)
 | [Eraser](#eraser) | [Time Master](#time-master) | [Prosecutor](#prosecutor) | [Mini](#mini) |
 | [Trickster](#trickster) | [Medic](#medic) | [Pursuer](#pursuer) | [VIP](#vip) |
 | [Cleaner](#cleaner) | [Swapper](#swapper) | [Thief](#thief) | [Invert](#invert) |
-| [Warlock](#warlock) | [Seer](#seer) |  | [Chameleon](#chameleon) |
+| [Warlock](#warlock) | [Mystic](#mystic) |  | [Chameleon](#chameleon) |
 | [Bounty Hunter](#bounty-hunter) | [Hacker](#hacker) |  | [Shifter](#shifter)
 | [Witch](#witch) | [Tracker](#tracker) | [Glitch](#glitch)  | [Armored](#armored) |
 | [Ninja](#ninja) | [Snitch](#snitch) |  |  |
@@ -937,19 +937,19 @@ The Swapper now has initial swap charges and can recharge those charges after co
 | Number Of Tasks Needed For Recharging | -
 -----------------------
 
-## Seer
+## Mystic
 ### **Team: Crewmates**
-The Seer has two abilities (one can activate one of them or both in the options).\
-The Seer sees the souls of players that died a round earlier, the souls slowly fade away.\
-The Seer gets a blue flash on their screen, if a player dies somewhere on the map.
+The Mystic has two abilities (one can activate one of them or both in the options).\
+The Mystic sees the souls of players that died a round earlier, the souls slowly fade away.\
+The Mystic gets a blue flash on their screen, if a player dies somewhere on the map.
 
 ### Game Options
 | Name | Description |
 |----------|:-------------:|
-| Seer Spawn Chance | -
-| Seer Mode | Options: Show death flash and souls, show death flash, show souls
-| Seer Limit Soul Duration | Toggle if souls should turn invisible after a while
-| Seer Soul Duration | Sets how long it will take the souls to turn invisible after a meeting
+| Mystic Spawn Chance | -
+| Mystic Mode | Options: Show death flash and souls, show death flash, show souls
+| Mystic Limit Soul Duration | Toggle if souls should turn invisible after a while
+| Mystic Soul Duration | Sets how long it will take the souls to turn invisible after a meeting
 -----------------------
 
 ## Hacker
@@ -1097,7 +1097,7 @@ The vents will be sealed after the next meeting, players can't enter or exit sea
 
 ## Medium
 ### **Team: Crewmates**
-The medium is a crewmate who can ask the souls of dead players for information. Like the Seer, the medium will see the souls of the players who have died (after the next meeting) and can question them. They then gets random information about the soul or the killer in the chat. The souls only stay for one round, i.e. until the next meeting. Depending on the options, the souls can only be questioned once and then disappear.
+The medium is a crewmate who can ask the souls of dead players for information. Like the Mystic, the medium will see the souls of the players who have died (after the next meeting) and can question them. They then gets random information about the soul or the killer in the chat. The souls only stay for one round, i.e. until the next meeting. Depending on the options, the souls can only be questioned once and then disappear.
 \
 **Questions:**
 The souls will always prefer to answer with the role specific information first!
@@ -1310,7 +1310,7 @@ The Mini cannot be killed until it turns 18 years old, however it can be voted o
 ## VIP
 
 An Impostor, Jackal or Crewmate can be affected by the VIP (Very Important Player) Modifier.\
-The VIP will show everyone when he dies with a flash similar to the Seer Flash.\
+The VIP will show everyone when he dies with a flash similar to the Mystic Flash.\
 If the option Show Team Color is On, then everyone will get a flash in the color of the team the player was part of.
 
 Teams:
