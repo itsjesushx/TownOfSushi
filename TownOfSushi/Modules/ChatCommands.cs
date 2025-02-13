@@ -38,12 +38,16 @@ namespace TownOfSushi.Modules {
                     }
                 }
                 
-                if (AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay) {
-                    if (text.ToLower().Equals("/murder")) {
+                if (AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay) 
+                {
+                    if (text.ToLower().Equals("/murder")) 
+                    {
                         PlayerControl.LocalPlayer.Exiled();
                         FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(PlayerControl.LocalPlayer.Data, PlayerControl.LocalPlayer.Data);
                         handled = true;
-                    } else if (text.ToLower().StartsWith("/color ")) {
+                    } 
+                    else if (text.ToLower().StartsWith("/color ")) 
+                    {
                         handled = true;
                         int col;
                         if (!Int32.TryParse(text.Substring(7), out col)) {
@@ -55,10 +59,12 @@ namespace TownOfSushi.Modules {
                     } 
                 }
 
-                if (text.ToLower().StartsWith("/tp ") && PlayerControl.LocalPlayer.Data.IsDead) {
+                if (text.ToLower().StartsWith("/tp ") && PlayerControl.LocalPlayer.Data.IsDead) 
+                {
                     string playerName = text.Substring(4).ToLower();
                     PlayerControl target = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(x => x.Data.PlayerName.ToLower().Equals(playerName));
-                    if (target != null) {
+                    if (target != null) 
+                    {
                         PlayerControl.LocalPlayer.transform.position = target.transform.position;
                         handled = true;
                     }

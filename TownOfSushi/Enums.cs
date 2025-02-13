@@ -15,7 +15,7 @@ namespace TownOfSushi
         Neutral,
         Crewmate,
         Modifier,
-        Guesser
+        NeutralKiller
     }
     public enum RoleId 
     {
@@ -31,6 +31,7 @@ namespace TownOfSushi
         Janitor,
         Veteran,
         Detective,
+        SerialKiller,
         TimeMaster,
         Medic,
         Swapper,
@@ -48,6 +49,7 @@ namespace TownOfSushi
         Trickster,
         Cleaner,
         Warlock,
+        Werewolf,
         SecurityGuard,
         Arsonist,
         BountyHunter,
@@ -92,6 +94,7 @@ namespace TownOfSushi
         VersionHandshake,
         UseUncheckedVent,
         UncheckedMurderPlayer,
+        WerewolfMaul,
         UncheckedCmdReportDeadBody,
         UncheckedExilePlayer,
         DynamicMapOption,
@@ -181,5 +184,36 @@ namespace TownOfSushi
         DetectiveOrMedicInfo,
         VampireTimer,
         DeathReasonAndKiller,
+    }
+    enum CustomGameOverReason 
+    {
+        LoversWin = 10,
+        TeamJackalWin = 11,
+        MiniLose = 12,
+        JesterWin = 13,
+        ArsonistWin = 14,
+        VultureWin = 15,
+        ProsecutorWin = 16,
+        GlitchWin = 17,
+        WerewolfWin = 18,
+        SerialKillerWin = 19,
+    }
+
+    enum WinCondition 
+    {
+        Default,
+        LoversTeamWin,
+        LoversSoloWin,
+        JesterWin,
+        JackalWin,
+        MiniLose,
+        ArsonistWin,
+        VultureWin,
+        AdditionalLawyerBonusWin,
+        AdditionalAlivePursuerWin,
+        ProsecutorWin,
+        GlitchWin,
+        WerewolfWin,
+        SerialKillerWin
     }
 }

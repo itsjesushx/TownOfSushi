@@ -8,7 +8,7 @@ namespace TownOfSushi.Objects
 {
     public class JackInTheBox 
     {
-        public static System.Collections.Generic.List<JackInTheBox> AllJackInTheBoxes = new System.Collections.Generic.List<JackInTheBox>();
+        public static List<JackInTheBox> AllJackInTheBoxes = new List<JackInTheBox>();
         public static int JackInTheBoxLimit = 3;
         public static bool boxesConvertedToVents = false;
         public static Sprite[] boxAnimationSprites = new Sprite[18];
@@ -27,8 +27,10 @@ namespace TownOfSushi.Objects
             JackInTheBox box = AllJackInTheBoxes.FirstOrDefault((x) => x?.vent != null && x.vent.Id == ventId);
             if (box == null) return;
 
-            FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(0.6f, new Action<float>((p) => {
-                if (box.boxRenderer != null) {
+            FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(0.6f, new Action<float>((p) => 
+            {
+                if (box.boxRenderer != null) 
+                {
                     box.boxRenderer.sprite = GetBoxAnimationSprite((int)(p * boxAnimationSprites.Length));
                     if (p == 1f) box.boxRenderer.sprite = GetBoxAnimationSprite(0);
                 }
@@ -124,7 +126,8 @@ namespace TownOfSushi.Objects
 
         private static void ConnectVents() 
         {
-            for (var i = 0; i < AllJackInTheBoxes.Count - 1; i++) {
+            for (var i = 0; i < AllJackInTheBoxes.Count - 1; i++) 
+            {
                 var a = AllJackInTheBoxes[i];
                 var b = AllJackInTheBoxes[i + 1];
                 a.vent.Right = b.vent;

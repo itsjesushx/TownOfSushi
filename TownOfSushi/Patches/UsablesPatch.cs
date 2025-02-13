@@ -413,10 +413,12 @@ namespace TownOfSushi.Patches {
                             int num2 = 0;
                             for (int j = 0; j < num; j++) {
                                 Collider2D collider2D = __instance.buffer[j];
-                                if (collider2D.CompareTag("DeadBody") && __instance.includeDeadBodies) {
+                                if (collider2D.CompareTag("DeadBody") && __instance.includeDeadBodies) 
+                                {
                                     num2++;
                                     DeadBody bodyComponent = collider2D.GetComponent<DeadBody>();
-                                    if (bodyComponent) {
+                                    if (bodyComponent) 
+                                    {
                                         NetworkedPlayerInfo playerInfo = GameData.Instance.GetPlayerById(bodyComponent.ParentId);
                                         if (playerInfo != null) {
                                             var color = Palette.PlayerColors[playerInfo.DefaultOutfit.ColorId];

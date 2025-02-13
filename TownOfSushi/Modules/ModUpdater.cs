@@ -14,9 +14,8 @@ using UnityEngine.SceneManagement;
 using AmongUs.Data;
 using Assets.InnerNet;
 using Twitch;
-using static StarGen;
 
-namespace TownOfSushi.Modules 
+namespace TownOfSushi.Modules
 {
     public class ModUpdater : MonoBehaviour 
     {
@@ -30,10 +29,12 @@ namespace TownOfSushi.Modules
         private bool showPopUp = true;
         public List<GithubRelease> Releases;
 
-        public void Awake() {
+        public void Awake() 
+        {
             if (Instance) Destroy(Instance);
             Instance = this;
-            foreach (var file in Directory.GetFiles(Paths.PluginPath, "*.old")) {
+            foreach (var file in Directory.GetFiles(Paths.PluginPath, "*.old")) 
+            {
                 File.Delete(file);
             }
         }
@@ -52,7 +53,8 @@ namespace TownOfSushi.Modules
         }
 
         [HideFromIl2Cpp]
-        private IEnumerator CoCheckForUpdate() {
+        private IEnumerator CoCheckForUpdate() 
+        {
             _busy = true;
             var www = new UnityWebRequest();
             www.SetMethod(UnityWebRequest.UnityWebRequestMethod.Get);
@@ -64,7 +66,8 @@ namespace TownOfSushi.Modules
                 yield return new WaitForEndOfFrame();
             }
 
-            if (www.isNetworkError || www.isHttpError) {
+            if (www.isNetworkError || www.isHttpError) 
+            {
                 yield break;
             }
 
@@ -76,7 +79,8 @@ namespace TownOfSushi.Modules
         }
 
         [HideFromIl2Cpp]
-        private IEnumerator CoDownloadRelease(GithubRelease release) {
+        private IEnumerator CoDownloadRelease(GithubRelease release) 
+        {
             _busy = true;
 
             var popup = Instantiate(TwitchManager.Instance.TwitchPopup);
@@ -87,7 +91,7 @@ namespace TownOfSushi.Modules
 
             var button = popup.transform.GetChild(2).gameObject;
             button.SetActive(false);
-            popup.TextAreaTMP.text = $"Updating TOR\nPlease wait...";
+            popup.TextAreaTMP.text = $"Updating TOS\nPlease wait...";
 
             var asset = release.Assets.Find(FilterPluginAsset);
             var www = new UnityWebRequest();
@@ -96,18 +100,20 @@ namespace TownOfSushi.Modules
             www.downloadHandler = new DownloadHandlerBuffer();
             var operation = www.SendWebRequest();
 
-            while (!operation.isDone) {
+            while (!operation.isDone) 
+            {
                 int stars = Mathf.CeilToInt(www.downloadProgress * 10);
-                string progress = $"Updating TOR\nPlease wait...\nDownloading...\n{new String((char)0x25A0, stars) + new String((char)0x25A1, 10 - stars)}";
+                string progress = $"Updating TOS\nPlease wait...\nDownloading...\n{new String((char)0x25A0, stars) + new String((char)0x25A1, 10 - stars)}";
                 popup.TextAreaTMP.text = progress;
                 yield return new WaitForEndOfFrame();
             }
             
-            if (www.isNetworkError || www.isHttpError) {
+            if (www.isNetworkError || www.isHttpError) 
+            {
                 popup.TextAreaTMP.text = "Update wasn't successful\nTry again later,\nor update manually.";
                 yield break;
             }
-            popup.TextAreaTMP.text = $"Updating TOR\nPlease wait...\n\nDownload complete\ncopying file...";
+            popup.TextAreaTMP.text = $"Updating TOS\nPlease wait...\n\nDownload complete\ncopying file...";
 
             var filePath = Path.Combine(Paths.PluginPath, asset.Name);
 
@@ -116,8 +122,10 @@ namespace TownOfSushi.Modules
 
             var persistTask = File.WriteAllBytesAsync(filePath, www.downloadHandler.data);
             var hasError = false;
-            while (!persistTask.IsCompleted) {
-                if (persistTask.Exception != null) {
+            while (!persistTask.IsCompleted) 
+            {
+                if (persistTask.Exception != null) 
+                {
                     hasError = true;
                     break;
                 }
@@ -128,7 +136,8 @@ namespace TownOfSushi.Modules
             www.downloadHandler.Dispose();
             www.Dispose();
 
-            if (!hasError) {
+            if (!hasError) 
+            {
                 popup.TextAreaTMP.text = $"TownOfSushi\nupdated successfully\nPlease restart the game.";
             }
             button.SetActive(true);
@@ -136,23 +145,27 @@ namespace TownOfSushi.Modules
         }
 
         [HideFromIl2Cpp]
-        private static bool FilterLatestRelease(GithubRelease release) {
+        private static bool FilterLatestRelease(GithubRelease release) 
+        {
             return release.IsNewer(TownOfSushiPlugin.Version) && release.Assets.Any(FilterPluginAsset);
         }
 
         [HideFromIl2Cpp]
-        private static bool FilterPluginAsset(GithubAsset asset) {
+        private static bool FilterPluginAsset(GithubAsset asset) 
+        {
             return asset.Name == "TownOfSushi.dll";
         }
 
         [HideFromIl2Cpp]
-        private static int SortReleases(GithubRelease a, GithubRelease b) {
+        private static int SortReleases(GithubRelease a, GithubRelease b) 
+        {
             if (a.IsNewer(b.Version)) return -1;
             if (b.IsNewer(a.Version)) return 1;
             return 0;
         }
 
-        private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode) 
+        {
             if (_busy || scene.name != "MainMenu") return;
             var latestRelease = Releases.FirstOrDefault();
             if (latestRelease == null || latestRelease.Version <= TownOfSushiPlugin.Version)
@@ -175,19 +188,20 @@ namespace TownOfSushi.Modules
             }));
 
             var text = button.transform.GetComponentInChildren<TMPro.TMP_Text>();
-            string t = "Update TOR";
+            string t = "Update TOS";
             StartCoroutine(Effects.Lerp(0.1f, (System.Action<float>)(p => text.SetText(t))));
             passiveButton.OnMouseOut.AddListener((Action)(() => text.color = Color.red));
             passiveButton.OnMouseOver.AddListener((Action)(() => text.color = Color.white));
             var announcement = $"<size=150%>A new Town Of Sushi update to {latestRelease.Tag} is available</size>\n{latestRelease.Description}";
             var mgr = FindObjectOfType<MainMenuManager>(true);
-            if (showPopUp) mgr.StartCoroutine(CoShowAnnouncement(announcement, shortTitle: "TOR Update", date : latestRelease.PublishedAt)) ;
+            if (showPopUp) mgr.StartCoroutine(CoShowAnnouncement(announcement, shortTitle: "TOS Update", date : latestRelease.PublishedAt)) ;
             showPopUp = false;
 
         }
 
         [HideFromIl2Cpp]
-        public IEnumerator CoShowAnnouncement(string announcement, bool show = true, string shortTitle = "TOR Update", string title = "", string date = "") {
+        public IEnumerator CoShowAnnouncement(string announcement, bool show = true, string shortTitle = "TOS Update", string title = "", string date = "") 
+        {
             var mgr = FindObjectOfType<MainMenuManager>(true);
             var popUpTemplate = UnityEngine.Object.FindObjectOfType<AnnouncementPopUp>(true);
             if (popUpTemplate == null) {
@@ -224,7 +238,8 @@ namespace TownOfSushi.Modules
         }
     }
 
-    public class GithubRelease {
+    public class GithubRelease 
+    {
         [JsonPropertyName("id")]
         public int Id { get; set; }
 
@@ -254,12 +269,14 @@ namespace TownOfSushi.Modules
 
         public Version Version => Version.Parse(Tag.Replace("v", string.Empty));
 
-        public bool IsNewer(Version version) {
+        public bool IsNewer(Version version) 
+        {
             return Version > version;
         }
     }
 
-    public class GithubAsset {
+    public class GithubAsset 
+    {
         [JsonPropertyName("url")]
         public string Url { get; set; }
 

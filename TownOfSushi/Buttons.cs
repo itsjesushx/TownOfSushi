@@ -39,7 +39,10 @@ namespace TownOfSushi
         public static CustomButton vampireKillButton;
         public static CustomButton garlicButton;
         public static CustomButton jackalKillButton;
+        public static CustomButton SerialKillerStabButton;
+        public static CustomButton SerialKillerKillButton;
         public static CustomButton GlitchKillButton;
+        public static CustomButton WerewolfMaulButton;
         public static CustomButton sidekickKillButton;
         private static CustomButton jackalSidekickButton;
         public static CustomButton jackalAndSidekickSabotageLightsButton;
@@ -100,6 +103,8 @@ namespace TownOfSushi
             timeMasterShieldButton.MaxTimer = TimeMaster.cooldown;
             medicShieldButton.MaxTimer = 0f;
             VeteranAlertButton.MaxTimer = Veteran.Cooldown;
+            SerialKillerStabButton.MaxTimer = SerialKiller.StabCooldown;
+            SerialKillerKillButton.MaxTimer = SerialKiller.StabKillCooldown;
             shifterShiftButton.MaxTimer = 0f;
             morphlingButton.MaxTimer = Morphling.cooldown;
             MimicButton.MaxTimer = Glitch.MimicCooldown;
@@ -116,6 +121,7 @@ namespace TownOfSushi
             garlicButton.MaxTimer = 0f;
             jackalKillButton.MaxTimer = Jackal.cooldown;
             GlitchKillButton.MaxTimer = Glitch.KillCooldown;
+            WerewolfMaulButton.MaxTimer = Werewolf.Cooldown;
             sidekickKillButton.MaxTimer = Sidekick.cooldown;
             jackalSidekickButton.MaxTimer = Jackal.createSidekickCooldown;
             eraserButton.MaxTimer = Eraser.cooldown;
@@ -154,6 +160,7 @@ namespace TownOfSushi
             arsonistButton.EffectDuration = Arsonist.duration;
             mediumButton.EffectDuration = Medium.duration;
             VeteranAlertButton.EffectDuration = Veteran.Duration;
+            SerialKillerStabButton.EffectDuration = SerialKiller.StabDuration;
             trackerTrackCorpsesButton.EffectDuration = Tracker.corpsesTrackingDuration;
             witchSpellButton.EffectDuration = Witch.spellCastingDuration;
             securityGuardCamButton.EffectDuration = SecurityGuard.duration;
@@ -472,6 +479,63 @@ namespace TownOfSushi
                 }
             );
 
+                // Serial Killer Stab
+                SerialKillerStabButton = new CustomButton(
+                () => 
+                { 
+                    SerialKiller.Stabbing = true; 
+                    SerialKiller.HasImpostorVision = true; 
+                    SerialKillerKillButton.Timer = 0f; 
+                },
+                () => 
+                { 
+                    return SerialKiller.Player != null && SerialKiller.Player == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead; },
+                () => 
+                { 
+                    SerialKillerStabButton.actionButton.OverrideText("STAB");
+                    return PlayerControl.LocalPlayer.CanMove; },
+                () =>
+                {
+                    SerialKillerStabButton.Timer = SerialKillerStabButton.MaxTimer;
+                    SerialKillerStabButton.isEffectActive = false;
+                    SerialKillerStabButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
+                    SerialKiller.Stabbing = false;
+                    SerialKiller.HasImpostorVision = false;
+
+                },
+                SerialKiller.GetButtonSprite(),
+                CustomButton.ButtonPositions.upperRowCenter,
+                __instance,
+                KeyCode.F,
+               true,
+                SerialKiller.StabDuration,
+                () => 
+                { 
+                    SerialKillerStabButton.Timer = SerialKillerStabButton.MaxTimer; 
+                    SerialKiller.Stabbing = false; 
+                    SerialKiller.HasImpostorVision = false; 
+                }
+            );
+
+             // Serial Killer Kill
+            SerialKillerKillButton = new CustomButton(
+                () => 
+                {
+                    if (SerialKiller.currentTarget.CheckVeteranAlertKill()) return;
+                    if (Helpers.CheckMurderAttemptAndKill(SerialKiller.Player, SerialKiller.currentTarget) == MurderAttemptResult.SuppressKill) return;
+
+                    SerialKillerKillButton.Timer = SerialKillerKillButton.MaxTimer; 
+                    SerialKiller.currentTarget = null;
+                },
+                () => { return SerialKiller.Player != null && SerialKiller.Player == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead && SerialKiller.Stabbing; },
+                () => { return SerialKiller.currentTarget && PlayerControl.LocalPlayer.CanMove; },
+                () => { SerialKillerKillButton.Timer = SerialKillerKillButton.MaxTimer;},
+                __instance.KillButton.graphic.sprite,
+                CustomButton.ButtonPositions.upperRowRight,
+                __instance,
+                KeyCode.Q
+            );
+
             // Veteran Alert
             VeteranAlertButton = new CustomButton(
                 () => {
@@ -524,6 +588,28 @@ namespace TownOfSushi
                 () => { GlitchKillButton.Timer = GlitchKillButton.MaxTimer;},
                 __instance.KillButton.graphic.sprite,
                 CustomButton.ButtonPositions.upperRowRight,
+                __instance,
+                KeyCode.Q
+            );
+
+            // Werewolf Maul Kill
+            WerewolfMaulButton = new CustomButton(
+                () => 
+                {
+                    if (Werewolf.currentTarget.CheckVeteranAlertKill()) return;
+                    if (Helpers.CheckMurderAttemptAndKill(Werewolf.Player, Werewolf.currentTarget) == MurderAttemptResult.SuppressKill) return;
+                    
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.WerewolfMaul, Hazel.SendOption.Reliable, -1);
+                    AmongUsClient.Instance.FinishRpcImmediately(writer);
+                    RPCProcedure.WerewolfMaul();
+                    WerewolfMaulButton.Timer = WerewolfMaulButton.MaxTimer; 
+                    Werewolf.currentTarget = null;
+                },
+                () => { return Werewolf.Player != null && Werewolf.Player == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead; },
+                () => { return Werewolf.currentTarget && PlayerControl.LocalPlayer.CanMove; },
+                () => { WerewolfMaulButton.Timer = WerewolfMaulButton.MaxTimer;},
+                Werewolf.GetButtonSprite(),
+                CustomButton.ButtonPositions.lowerRowRight,
                 __instance,
                 KeyCode.Q
             );
@@ -1891,7 +1977,8 @@ namespace TownOfSushi
             );
 
             mayorMeetingButton = new CustomButton(
-               () => {
+               () => 
+               {
                    PlayerControl.LocalPlayer.NetTransform.Halt(); // Stop current movement 
                    Mayor.remoteMeetingsLeft--;
 	               Helpers.HandleVampireBiteOnBodyReport(); // Manually call Vampire handling, since the CmdReportDeadBody Prefix won't be called

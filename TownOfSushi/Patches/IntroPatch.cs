@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Hazel;
 using TownOfSushi.Utilities;
+using TownOfSushi.Modules.BetterMaps;
+using static TownOfSushi.SubmergedCompatibility;
 
 namespace TownOfSushi.Patches 
 {
@@ -83,6 +85,28 @@ namespace TownOfSushi.Patches
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                     RPCProcedure.SetFirstKill(target.PlayerId);
                 }
+            }
+
+            if (Helpers.IsPolus() && MapOptions.BPVentImprovements) 
+            {
+                var list = GameObject.FindObjectsOfType<Vent>().ToList();
+                var adminVent = list.FirstOrDefault(x => x.gameObject.name == "AdminVent");
+                var bathroomVent = list.FirstOrDefault(x => x.gameObject.name == "BathroomVent");
+                BetterPolus.SpecimenVent = UnityEngine.Object.Instantiate<Vent>(adminVent);
+                BetterPolus.SpecimenVent.gameObject.AddSubmergedComponent(Classes.ElevatorMover);
+                BetterPolus.SpecimenVent.transform.position = new Vector3(36.55068f, -21.5168f, -0.0215168f);
+                BetterPolus.SpecimenVent.Left = adminVent;
+                BetterPolus.SpecimenVent.Right = bathroomVent;
+                BetterPolus.SpecimenVent.Center = null;
+                BetterPolus.SpecimenVent.Id = ShipStatus.Instance.AllVents.Select(x => x.Id).Max() + 1;
+                var allVentsList = ShipStatus.Instance.AllVents.ToList();
+                allVentsList.Add(BetterPolus.SpecimenVent);
+                ShipStatus.Instance.AllVents = allVentsList.ToArray();
+                BetterPolus.SpecimenVent.gameObject.SetActive(true);
+                BetterPolus.SpecimenVent.name = "newVent_" + BetterPolus.SpecimenVent.Id;
+
+                adminVent.Center = BetterPolus.SpecimenVent;
+                bathroomVent.Center = BetterPolus.SpecimenVent;
             }
             MapOptions.firstKillName = "";
 

@@ -21,6 +21,13 @@ namespace TownOfSushi{
         public static bool shieldFirstKill = false;
         public static bool ShowVentsOnMap = true;
         public static bool ShowChatNotifications = true;
+        public static bool SkeldVentImprovements = false;
+
+        public static bool BPVitalsLab = false;
+        public static bool BPVentImprovements = false;
+        public static bool BPColdTempDeathValley = false;
+        public static bool BPWifiChartCourseSwap = false;
+        public static bool EnableBetterPolus = false;
 
         // Updating values
         public static int meetingsCount = 0;
@@ -43,10 +50,19 @@ namespace TownOfSushi{
             hidePlayerNames = CustomOptionHolder.hidePlayerNames.GetBool();
             allowParallelMedBayScans = CustomOptionHolder.allowParallelMedBayScans.GetBool();
             shieldFirstKill = CustomOptionHolder.shieldFirstKill.GetBool();
+            SkeldVentImprovements = CustomOptionHolder.SkeldVentImprovements.GetBool();
+
+            BPVitalsLab = CustomOptionHolder.BPVitalsLab.GetBool();
+            BPWifiChartCourseSwap = CustomOptionHolder.BPWifiChartCourseSwap.GetBool();
+            BPColdTempDeathValley = CustomOptionHolder.BPColdTempDeathValley.GetBool();
+            BPVentImprovements = CustomOptionHolder.BPVentImprovements.GetBool();
+            EnableBetterPolus = CustomOptionHolder.EnableBetterPolus.GetBool();
+
             firstKillPlayer = null;
         }
 
-        public static void reloadPluginOptions() {
+        public static void ReloadPluginOptions() 
+        {
             ghostsSeeRoles = TownOfSushiPlugin.GhostsSeeRoles.Value;
             ghostsSeeModifier = TownOfSushiPlugin.GhostsSeeModifier.Value;
             ghostsSeeInformation = TownOfSushiPlugin.GhostsSeeInformation.Value;

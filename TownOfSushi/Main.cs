@@ -203,7 +203,7 @@ namespace TownOfSushi
             if(Input.GetKeyDown(KeyCode.L)) {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ForceEnd, Hazel.SendOption.Reliable, -1);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
-                RPCProcedure.forceEnd();
+                RPCProcedure.ForceEnd();
             }
         }
 

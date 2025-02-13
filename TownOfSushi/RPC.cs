@@ -19,9 +19,7 @@ namespace TownOfSushi
 {
     public static class RPCProcedure 
     {
-
         // Main Controls
-
         public static void ResetVariables() 
         {
             Garlic.clearGarlics();
@@ -35,7 +33,7 @@ namespace TownOfSushi
             ClearAndReloadRoles();
             ClearGameHistory();
             SetCustomButtonCooldowns();
-            reloadPluginOptions();
+            ReloadPluginOptions();
             Helpers.ToggleZoom(reset : true);
             GameStartManagerPatch.GameStartManagerUpdatePatch.startingTimer = 0;
             SurveillanceMinigamePatch.nightVisionOverlays = null;
@@ -43,20 +41,25 @@ namespace TownOfSushi
             MapBehaviourPatch.ClearAndReload();
         }
 
-    public static void HandleShareOptions(byte numberOfOptions, MessageReader reader) {            
-            try {
+        public static void HandleShareOptions(byte numberOfOptions, MessageReader reader) 
+        {
+            try 
+            {
                 for (int i = 0; i < numberOfOptions; i++) {
                     uint optionId = reader.ReadPackedUInt32();
                     uint selection = reader.ReadPackedUInt32();
                     CustomOption option = CustomOption.options.First(option => option.id == (int)optionId);
-                    option.updateSelection((int)selection, i == numberOfOptions - 1);
+                    option.UpdateSelection((int)selection, i == numberOfOptions - 1);
                 }
-            } catch (Exception e) {
+            } 
+            catch (Exception e) 
+            {
                 TownOfSushiPlugin.Logger.LogError("Error while deserializing options: " + e.Message);
             }
         }
 
-        public static void forceEnd() {
+        public static void ForceEnd() 
+        {
             if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
             foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
@@ -72,14 +75,16 @@ namespace TownOfSushi
             }
         }
 
-        public static void stopStart(byte playerId) {
-            if (AmongUsClient.Instance.AmHost && CustomOptionHolder.anyPlayerCanStopStart.GetBool()) {
+        public static void StopStart(byte playerId) 
+        {
+            if (AmongUsClient.Instance.AmHost && CustomOptionHolder.anyPlayerCanStopStart.GetBool()) 
+            {
                 GameStartManager.Instance.ResetStartState();
                 PlayerControl.LocalPlayer.RpcSendChat($"{Helpers.PlayerById(playerId).Data.PlayerName} stopped the game start!");
             }
         }
 
-        public static void workaroundSetRoles(byte numberOfRoles, MessageReader reader)
+        public static void WorkaroundSetRoles(byte numberOfRoles, MessageReader reader)
         {
                 for (int i = 0; i < numberOfRoles; i++)
                 {                   
@@ -120,6 +125,9 @@ namespace TownOfSushi
                     case RoleId.Glitch:
                         Glitch.Player = player;
                         break;
+                    case RoleId.Werewolf:
+                        Werewolf.Player = player;
+                        break;
                     case RoleId.Lighter:
                         Lighter.lighter = player;
                         break;
@@ -158,6 +166,9 @@ namespace TownOfSushi
                         break;
                     case RoleId.Camouflager:
                         Camouflager.camouflager = player;
+                        break;
+                    case RoleId.SerialKiller:
+                        SerialKiller.Player = player;
                         break;
                     case RoleId.Hacker:
                         Hacker.hacker = player;
@@ -446,6 +457,33 @@ namespace TownOfSushi
             Medic.shielded = Helpers.PlayerById(shieldedId);
             Medic.futureShielded = null;
         }
+        public static void WerewolfMaul() 
+        {
+           var nearbyPlayers = Helpers.GetClosestPlayers(Werewolf.Player.GetTruePosition(), Werewolf.Radius);
+
+            foreach (var player in nearbyPlayers)
+            {
+                if (Werewolf.Player == player || player.Data.IsDead || player == MapOptions.firstKillPlayer)
+                    continue;
+                    
+                if (Veteran.Player != null && Veteran.Player == player && Veteran.AlertActive)
+                {
+                    Helpers.CheckMurderAttemptAndKill(player, Werewolf.Player, showAnimation: false);
+                }
+                else
+                {
+                    Helpers.CheckMurderAttemptAndKill(Werewolf.Player, player, showAnimation: false);
+                }
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(player.NetId, (byte)CustomRPC.ShareGhostInfo, Hazel.SendOption.Reliable, -1);
+                writer.Write(player.PlayerId);
+                writer.Write((byte)GhostInfoTypes.DeathReasonAndKiller);
+                writer.Write(player.PlayerId);
+                writer.Write((byte)DeadPlayer.CustomDeathReason.Maul);
+                writer.Write(Werewolf.Player.PlayerId);
+                AmongUsClient.Instance.FinishRpcImmediately(writer);
+                OverrideDeathReasonAndKiller(player, DeadPlayer.CustomDeathReason.Maul, killer: Werewolf.Player);
+            }
+        }
 
         public static void ShieldedMurderAttempt() 
         {
@@ -524,7 +562,6 @@ namespace TownOfSushi
             if (Helpers.MushroomSabotageActive()) return; // Dont overwrite the fungle "camo"
             foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                 player.SetLook("", 6, "", "", "", "");
-
         }
 
         public static void VampireSetBitten(byte targetId, byte performReset) 
@@ -570,9 +607,12 @@ namespace TownOfSushi
             if (player == null) return;
             if (Lawyer.target == player && Lawyer.isProsecutor && Lawyer.lawyer != null && !Lawyer.lawyer.Data.IsDead) Lawyer.isProsecutor = false;
 
-            if (!Jackal.canCreateSidekickFromImpostor && player.Data.Role.IsImpostor) {
+            if (!Jackal.canCreateSidekickFromImpostor && player.Data.Role.IsImpostor) 
+            {
                 Jackal.fakeSidekick = player;
-            } else {
+            } 
+            else 
+            {
                 bool wasSpy = Spy.spy != null && player == Spy.spy;
                 bool wasImpostor = player.Data.Role.IsImpostor;  // This can only be reached if impostors can be sidekicked.
                 FastDestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
@@ -652,7 +692,8 @@ namespace TownOfSushi
             // Other roles
             if (player == Jester.jester) Jester.ClearAndReload();
             if (player == Glitch.Player) Glitch.ClearAndReload();
-            if (player == Glitch.Player) Glitch.ClearAndReload();
+            if (player == Werewolf.Player) Werewolf.ClearAndReload();
+            if (player == SerialKiller.Player) SerialKiller.ClearAndReload();
             if (player == Arsonist.arsonist) Arsonist.ClearAndReload();
             if (Guesser.IsGuesser(player.PlayerId)) Guesser.Clear(player.PlayerId);
             if (player == Jackal.jackal) 
@@ -1015,6 +1056,8 @@ namespace TownOfSushi
             if (target == null) return;
             if (target == Sheriff.sheriff) Sheriff.sheriff = thief;
             if (target == Glitch.Player) Glitch.Player = thief;
+            if (target == SerialKiller.Player) SerialKiller.Player = thief;
+            if (target == Werewolf.Player) Werewolf.Player = thief;
             if (target == Jackal.jackal)
             {
                 Jackal.jackal = thief;
@@ -1228,10 +1271,10 @@ namespace TownOfSushi
                     RPCProcedure.HandleShareOptions(reader.ReadByte(), reader);
                     break;
                 case (byte)CustomRPC.ForceEnd:
-                    RPCProcedure.forceEnd();
+                    RPCProcedure.ForceEnd();
                     break; 
                 case (byte)CustomRPC.WorkaroundSetRoles:
-                    RPCProcedure.workaroundSetRoles(reader.ReadByte(), reader);
+                    RPCProcedure.WorkaroundSetRoles(reader.ReadByte(), reader);
                     break;
                 case (byte)CustomRPC.SetRole:
                     byte roleId = reader.ReadByte();
@@ -1343,6 +1386,9 @@ namespace TownOfSushi
                     break;
                 case (byte)CustomRPC.CamouflagerCamouflage:
                     RPCProcedure.CamouflagerCamouflage();
+                    break;
+                case (byte)CustomRPC.WerewolfMaul:
+                    RPCProcedure.WerewolfMaul();
                     break;
                 case (byte)CustomRPC.VampireSetBitten:
                     byte bittenId = reader.ReadByte();
@@ -1459,7 +1505,7 @@ namespace TownOfSushi
                     RPCProcedure.DefuseBomb();
                     break;
                 case (byte)CustomRPC.StopStart:
-                    RPCProcedure.stopStart(reader.ReadByte());
+                    RPCProcedure.StopStart(reader.ReadByte());
                     break;
                 case (byte)CustomRPC.YoyoMarkLocation:
                     RPCProcedure.YoyoMarkLocation(reader.ReadBytesAndSize());

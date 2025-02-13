@@ -87,9 +87,12 @@ namespace TownOfSushi.Objects
                 }
 
                 Color color;
-                if (AnonymousFootprints || Camouflager.camouflageTimer > 0 || Helpers.MushroomSabotageActive()) {
+                if (AnonymousFootprints || Camouflager.camouflageTimer > 0 || Helpers.MushroomSabotageActive()) 
+                {
                     color = Palette.PlayerColors[6];
-                } else if (activeFootprint.Owner == Morphling.morphling && Morphling.morphTimer > 0 && Morphling.morphTarget && Morphling.morphTarget.Data != null) {
+                } 
+                else if (activeFootprint.Owner == Morphling.morphling && Morphling.morphTimer > 0 && Morphling.morphTarget && Morphling.morphTarget.Data != null) 
+                {
                     color = Palette.PlayerColors[Morphling.morphTarget.Data.DefaultOutfit.ColorId];
                 } 
                 else if (activeFootprint.Owner == Glitch.Player && Glitch.MimicTimer > 0 && Glitch.MimicTarget && Glitch.MimicTarget.Data != null) {

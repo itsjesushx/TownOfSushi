@@ -78,7 +78,7 @@ namespace TownOfSushi
             return null;
         }
 
-        /* This function has been removed from TOR because we switched to assetbundles for compressed audio. leaving it here for reference - Gendelo
+        /* This function has been removed from TOS because we switched to assetbundles for compressed audio. leaving it here for reference - Gendelo
         public static AudioClip loadAudioClipFromResources(string path, string clipName = "UNNAMED_TOR_AUDIO_CLIP") {
 
             // must be "raw (headerless) 2-channel signed 32 bit pcm (le) 48kHz" (can e.g. use Audacity® to export )
@@ -216,6 +216,31 @@ namespace TownOfSushi
         {
             return IsD(target.PlayerId);
         }
+        public static Il2CppSystem.Collections.Generic.List<PlayerControl> GetClosestPlayers(Vector2 truePosition, float radius)
+        {
+            var playerControlList = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+            var allPlayers = GameData.Instance.AllPlayers;
+            var lightRadius = radius * ShipStatus.Instance.MaxLightRadius;
+
+            for (var index = 0; index < allPlayers.Count; ++index)
+            {
+                var playerInfo = allPlayers[index];
+
+                if (!playerInfo.Disconnected)
+                {
+                    var vector2 = new Vector2(playerInfo.Object.GetTruePosition().x - truePosition.x, playerInfo.Object.GetTruePosition().y - truePosition.y);
+                    var magnitude = vector2.magnitude;
+
+                    if (magnitude <= lightRadius)
+                    {
+                        var playerControl = playerInfo.Object;
+                        playerControlList.Add(playerControl);
+                    }
+                }
+            }
+
+            return playerControlList;
+        }
 
         public static bool IsCustomServer() 
         {
@@ -226,12 +251,13 @@ namespace TownOfSushi
 
         public static bool HasFakeTasks(this PlayerControl player) 
         {
-            return (player == Jester.jester || player == Jackal.jackal || player == Glitch.Player || player == Sidekick.sidekick || player == Arsonist.arsonist || player == Vulture.vulture || Jackal.formerJackals.Any(x => x == player));
+            return player == Jester.jester || player.IsNeutralKiller() || player == Arsonist.arsonist || player == Vulture.vulture;
         }
+        
 
         public static bool CanBeErased(this PlayerControl player) 
         {
-            return (player != Jackal.jackal && player != Sidekick.sidekick && !Jackal.formerJackals.Any(x => x == player));
+            return !player.IsNeutralKiller();
         }
 
         public static bool ShouldShowGhostInfo() 
@@ -445,7 +471,6 @@ namespace TownOfSushi
                 if (p == 1f) messageText.gameObject.Destroy();
             })));
         }
-
         public static bool RoleCanUseVents(this PlayerControl player) 
         {
             bool roleCouldUse = false;
@@ -453,9 +478,13 @@ namespace TownOfSushi
                 roleCouldUse = true;
             else if (Jackal.canUseVents && Jackal.jackal != null && Jackal.jackal == player)
                 roleCouldUse = true;
+            else if (Werewolf.CanUseVents && Werewolf.Player != null && Werewolf.Player == player)
+                roleCouldUse = true;
             else if (Sidekick.canUseVents && Sidekick.sidekick != null && Sidekick.sidekick == player)
                 roleCouldUse = true;
             else if (Spy.canEnterVents && Spy.spy != null && Spy.spy == player)
+                roleCouldUse = true;
+            else if (SerialKiller.CanUseVents && SerialKiller.Player != null && SerialKiller.Player == player)
                 roleCouldUse = true;
             else if (Glitch.canEnterVents && Glitch.Player != null && Glitch.Player == player)
                 roleCouldUse = true;
@@ -475,7 +504,8 @@ namespace TownOfSushi
             return roleCouldUse;
         }
 
-        public static bool CheckArmored(PlayerControl target, bool breakShield, bool showShield, bool additionalCondition = true) {
+        public static bool CheckArmored(PlayerControl target, bool breakShield, bool showShield, bool additionalCondition = true) 
+        {
             if (target != null && Armored.armored != null && Armored.armored == target && !Armored.isBrokenArmor && additionalCondition) {
                 if (breakShield) {
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.BreakArmor, Hazel.SendOption.Reliable, -1);
@@ -574,7 +604,8 @@ namespace TownOfSushi
             return MurderAttemptResult.PerformKill;
         }
 
-        public static void MurderPlayer(PlayerControl killer, PlayerControl target, bool showAnimation) {
+        public static void MurderPlayer(PlayerControl killer, PlayerControl target, bool showAnimation) 
+        {
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.UncheckedMurderPlayer, Hazel.SendOption.Reliable, -1);
             writer.Write(killer.PlayerId);
             writer.Write(target.PlayerId);
@@ -582,8 +613,8 @@ namespace TownOfSushi
             AmongUsClient.Instance.FinishRpcImmediately(writer);
             RPCProcedure.UncheckedMurderPlayer(killer.PlayerId, target.PlayerId, showAnimation ? Byte.MaxValue : (byte)0);
         }
-
-        public static MurderAttemptResult CheckMurderAttemptAndKill(PlayerControl killer, PlayerControl target, bool isMeetingStart = false, bool showAnimation = true, bool ignoreBlank = false, bool ignoreIfKillerIsDead = false)  {
+        public static MurderAttemptResult CheckMurderAttemptAndKill(PlayerControl killer, PlayerControl target, bool isMeetingStart = false, bool showAnimation = true, bool ignoreBlank = false, bool ignoreIfKillerIsDead = false)  
+        {
             // The local player checks for the validity of the kill and performs it afterwards (different to vanilla, where the host performs all the checks)
             // The kill attempt will be shared using a custom RPC, hence combining modded and unmodded versions is impossible
             MurderAttemptResult murder = CheckMuderAttempt(killer, target, isMeetingStart, ignoreBlank, ignoreIfKillerIsDead);
@@ -595,11 +626,14 @@ namespace TownOfSushi
             else if (murder == MurderAttemptResult.MirrorKill) 
             {
                 MurderPlayer(target, killer, showAnimation);
-            } 
+            }
             else if (murder == MurderAttemptResult.DelayVampireKill) 
             {
-                HudManager.Instance.StartCoroutine(Effects.Lerp(10f, new Action<float>((p) => { 
-                    if (!TransportationToolPatches.isUsingTransportation(target) && Vampire.bitten != null) {
+                HudManager.Instance.StartCoroutine(Effects.Lerp(10f, new Action<float>((p) => 
+                {
+
+                    if (!TransportationToolPatches.isUsingTransportation(target) && Vampire.bitten != null) 
+                    {
                         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.VampireSetBitten, Hazel.SendOption.Reliable, -1);
                         writer.Write(byte.MaxValue);
                         writer.Write(byte.MaxValue);
@@ -666,7 +700,7 @@ namespace TownOfSushi
         {
             RoleInfo roleInfo = RoleInfo.GetRoleInfoForPlayer(player, false).FirstOrDefault();
             if (roleInfo != null)
-                return roleInfo.FactionId == Factions.NeutralKiller;
+                return roleInfo.FactionId == Factions.NeutralKiller || Jackal.formerJackals.Any(x => x == player);
             return false;
         }
         public static bool IsCrew(this PlayerControl player) 
@@ -689,7 +723,7 @@ namespace TownOfSushi
             return CanKill;
         }
 
-        public static bool IsKiller(PlayerControl player) 
+        public static bool IsKiller(this PlayerControl player) 
         {
             return player.Data.Role.IsImpostor || player.IsNeutralKiller();
         }
@@ -734,6 +768,8 @@ namespace TownOfSushi
                 || Jackal.jackal != null && Jackal.jackal.PlayerId == player.PlayerId || Jackal.formerJackals.Any(x => x.PlayerId == player.PlayerId)
                 || (Sidekick.sidekick != null && Sidekick.sidekick.PlayerId == player.PlayerId)
                 || (Glitch.Player != null && Glitch.Player.PlayerId == player.PlayerId)
+                || (Werewolf.Player != null && Werewolf.Player.PlayerId == player.PlayerId)
+                || (SerialKiller.Player != null && SerialKiller.HasImpostorVision && SerialKiller.Player.PlayerId == player.PlayerId)
                 || (Spy.spy != null && Spy.spy.PlayerId == player.PlayerId && Spy.hasImpostorVision)
                 || (Jester.jester != null && Jester.jester.PlayerId == player.PlayerId && Jester.hasImpostorVision)
                 || (Thief.thief != null && Thief.thief.PlayerId == player.PlayerId && Thief.hasImpostorVision);

@@ -35,12 +35,13 @@ namespace TownOfSushi {
         public CustomOption parent;
         public bool isHeader;
         public CustomOptionType type;
+        public string format;
         public Action onChange = null;
         public string heading = "";
 
         // Option creation
 
-        public CustomOption(int id, CustomOptionType type, string name,  System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, Action onChange = null, string heading = "") 
+        public CustomOption(int id, CustomOptionType type, string name,  System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, Action onChange = null, string heading = "", string format = "") 
         {
             this.id = id;
             this.name = parent == null ? name : "- " + name;
@@ -52,6 +53,7 @@ namespace TownOfSushi {
             this.type = type;
             this.onChange = onChange;
             this.heading = heading;
+            this.format = format;
             selection = 0;
             if (id != 0) {
                 entry = TownOfSushiPlugin.Instance.Config.Bind($"Preset{preset}", id.ToString(), defaultSelection);
@@ -65,12 +67,12 @@ namespace TownOfSushi {
             return new CustomOption(id, type, name, selections, "", parent, isHeader, onChange, heading);
         }
 
-        public static CustomOption Create(int id, CustomOptionType type, string name, float defaultValue, float min, float max, float step, CustomOption parent = null, bool isHeader = false, Action onChange = null, string heading = "") 
+        public static CustomOption Create(int id, CustomOptionType type, string name, float defaultValue, float min, float max, float step, CustomOption parent = null, bool isHeader = false, Action onChange = null, string heading = "", string format = "") 
         {
             List<object> selections = new();
             for (float s = min; s <= max; s += step)
                 selections.Add(s);
-            return new CustomOption(id, type, name, selections.ToArray(), defaultValue, parent, isHeader, onChange, heading);
+            return new CustomOption(id, type, name, selections.ToArray(), defaultValue, parent, isHeader, onChange, heading, format);
         }
 
         public static CustomOption Create(int id, CustomOptionType type, string name, bool defaultValue, CustomOption parent = null, bool isHeader = false, Action onChange = null, string heading = "") 
@@ -80,7 +82,7 @@ namespace TownOfSushi {
 
         // Static behaviour
 
-        public static void switchPreset(int newPreset) 
+        public static void SwitchPreset(int newPreset) 
         {
             SaveVanillaOptions();
             CustomOption.preset = newPreset;
@@ -95,7 +97,7 @@ namespace TownOfSushi {
                 if (option.optionBehaviour != null && option.optionBehaviour is StringOption stringOption) 
                 {
                     stringOption.oldValue = stringOption.Value = option.selection;
-                    stringOption.ValueText.text = option.selections[option.selection].ToString();
+                    stringOption.ValueText.text = $"{option.selections[option.selection].ToString()}{option.format}";
                 }
             }
         }
@@ -175,11 +177,12 @@ namespace TownOfSushi {
         }
 
 
-        public void updateSelection(int newSelection, bool notifyUsers = true) {
+        public void UpdateSelection(int newSelection, bool notifyUsers = true) {
             newSelection = Mathf.Clamp((newSelection + selections.Length) % selections.Length, 0, selections.Length - 1);
             if (AmongUsClient.Instance?.AmClient == true && notifyUsers && selection != newSelection) {
-                DestroyableSingleton<HudManager>.Instance.Notifier.AddSettingsChangeMessage((StringNames)(this.id + 6000), selections[newSelection].ToString(), false);
-                try {
+                DestroyableSingleton<HudManager>.Instance.Notifier.AddSettingsChangeMessage((StringNames)(this.id + 6000), $"{selections[newSelection].ToString()}{format}", false);
+                try 
+                {
                     selection = newSelection;
                     if (GameStartManager.Instance != null && GameStartManager.Instance.LobbyInfoPane != null && GameStartManager.Instance.LobbyInfoPane.LobbyViewSettingsPane != null && GameStartManager.Instance.LobbyInfoPane.LobbyViewSettingsPane.gameObject.activeSelf) {
                         LobbyViewSettingsPaneChangeTabPatch.Postfix(GameStartManager.Instance.LobbyInfoPane.LobbyViewSettingsPane, GameStartManager.Instance.LobbyInfoPane.LobbyViewSettingsPane.currentTab);
@@ -190,20 +193,23 @@ namespace TownOfSushi {
             try {
                 if (onChange != null) onChange();
             } catch { }
-            if (AmongUsClient.Instance?.AmHost == true) {
+            if (AmongUsClient.Instance?.AmHost == true) 
+            {
                 var currentTab = GameOptionsMenuStartPatch.currentTabs.FirstOrDefault(x => x.active).GetComponent<GameOptionsMenu>();
                 if (currentTab != null) {
                     var optionType = options.First(x => x.optionBehaviour == currentTab.Children[0]).type;
-                    GameOptionsMenuStartPatch.updateGameOptionsMenu(optionType, currentTab);
+                    GameOptionsMenuStartPatch.UpdateGameOptionsMenu(optionType, currentTab);
                 }
             }
 
-            if (optionBehaviour != null && optionBehaviour is StringOption stringOption) {
+            if (optionBehaviour != null && optionBehaviour is StringOption stringOption) 
+            {
                 stringOption.oldValue = stringOption.Value = selection;
-                stringOption.ValueText.text = selections[selection].ToString();
-                if (AmongUsClient.Instance?.AmHost == true && PlayerControl.LocalPlayer) {
+                stringOption.ValueText.text = $"{selections[selection].ToString()}{format}";
+                if (AmongUsClient.Instance?.AmHost == true && PlayerControl.LocalPlayer) 
+                {
                     if (id == 0 && selection != preset) {
-                        switchPreset(selection); // Switch presets
+                        SwitchPreset(selection); // Switch presets
                         ShareOptionSelections();
                     } else if (entry != null) {
                         entry.Value = selection; // Save selection to config
@@ -211,7 +217,7 @@ namespace TownOfSushi {
                     }
                 }
             } else if (id == 0 && AmongUsClient.Instance?.AmHost == true && PlayerControl.LocalPlayer) {  // Share the preset switch for random maps, even if the menu isnt open!
-                switchPreset(selection);
+                SwitchPreset(selection);
                 ShareOptionSelections();// Share all selections
             }
 
@@ -288,7 +294,7 @@ namespace TownOfSushi {
                 ShareOptionSelections();
                 if (TownOfSushiPlugin.Version > versionInfo && versionInfo < Version.Parse("4.6.0")) {
                     vanillaOptionsFine = false;
-                    FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, "Host Info: Pasting vanilla settings failed, TOR Options applied!");
+                    FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, "Host Info: Pasting vanilla settings failed, TOS Options applied!");
                 } else {
                     vanillaSettings.Value = vanillaSettingsSub;
                     vanillaOptionsFine = LoadVanillaOptions();
@@ -424,20 +430,22 @@ namespace TownOfSushi {
 
         public static void drawTab(LobbyViewSettingsPane __instance, CustomOptionType optionType) {
 
-            var relevantOptions = options.Where(x => x.type == optionType || x.type == CustomOptionType.Guesser && optionType == CustomOptionType.General).ToList();
+            var relevantOptions = options.Where(x => x.type == optionType ||optionType == CustomOptionType.General).ToList();
            
-            if ((int)optionType == 99) {
+            if ((int)optionType == 99) 
+            {
                 // Create 4 Groups with Role settings only
                 relevantOptions.Clear();
                 relevantOptions.AddRange(options.Where(x => x.type == CustomOptionType.Impostor && x.isHeader));
                 relevantOptions.AddRange(options.Where(x => x.type == CustomOptionType.Neutral && x.isHeader));
                 relevantOptions.AddRange(options.Where(x => x.type == CustomOptionType.Crewmate && x.isHeader));
+                relevantOptions.AddRange(options.Where(x => x.type == CustomOptionType.NeutralKiller && x.isHeader));
                 relevantOptions.AddRange(options.Where(x => x.type == CustomOptionType.Modifier && x.isHeader));
-                foreach (var option in options) {
-                    if (option.parent != null && option.parent.GetSelection() > 0) {
-                        if (option.id == 103) //Deputy
-                            relevantOptions.Insert(relevantOptions.IndexOf(CustomOptionHolder.sheriffSpawnRate) + 1, option);
-                        else if (option.id == 224) //Sidekick
+                foreach (var option in options) 
+                {
+                    if (option.parent != null && option.parent.GetSelection() > 0) 
+                    {
+                        if (option.id == 224) //Sidekick
                             relevantOptions.Insert(relevantOptions.IndexOf(CustomOptionHolder.jackalSpawnRate) + 1, option);
                         else if (option.id == 358) //Prosecutor
                             relevantOptions.Insert(relevantOptions.IndexOf(CustomOptionHolder.lawyerSpawnRate) + 1, option);
@@ -445,7 +453,8 @@ namespace TownOfSushi {
                 }
             }
 
-            for (int j = 0; j < __instance.settingsInfo.Count; j++) {
+            for (int j = 0; j < __instance.settingsInfo.Count; j++) 
+            {
                 __instance.settingsInfo[j].gameObject.Destroy();
             }
             __instance.settingsInfo.Clear();
@@ -469,7 +478,7 @@ namespace TownOfSushi {
                     categoryHeaderMasked.Title.text = option.heading != "" ? option.heading : option.name;
                     if ((int)optionType == 99)
                         categoryHeaderMasked.Title.text = new Dictionary<CustomOptionType, string>() { { CustomOptionType.Impostor, "Impostor Roles" }, { CustomOptionType.Neutral, "Neutral Roles" },
-                            { CustomOptionType.Crewmate, "Crewmate Roles" }, { CustomOptionType.Modifier, "Modifiers" } }[curType];
+                            { CustomOptionType.Crewmate, "Crewmate Roles" }, { CustomOptionType.Modifier, "Modifiers" }, { CustomOptionType.NeutralKiller, "Neutral Killing Roles" }, }[curType];
                     categoryHeaderMasked.Title.outlineColor = Color.white;
                     categoryHeaderMasked.Title.outlineWidth = 0.2f;
                     categoryHeaderMasked.transform.SetParent(__instance.settingsContainer);
@@ -479,7 +488,7 @@ namespace TownOfSushi {
                     num -= 0.85f;
                     i = 0;
                 } else if (option.parent != null && (option.parent.selection == 0 || option.parent.parent != null && option.parent.parent.selection == 0)) continue;  // Hides options, for which the parent is disabled!
-                if (option == CustomOptionHolder.crewmateRolesCountMax || option == CustomOptionHolder.neutralRolesCountMax || option == CustomOptionHolder.impostorRolesCountMax || option == CustomOptionHolder.modifiersCountMax || option == CustomOptionHolder.crewmateRolesFill)
+                if (option == CustomOptionHolder.crewmateRolesCountMax || option == CustomOptionHolder.neutralRolesCountMax || option == CustomOptionHolder.impostorRolesCountMax || option == CustomOptionHolder.modifiersCountMax)
                     continue;
 
                 ViewSettingsInfoPanel viewSettingsInfoPanel = UnityEngine.Object.Instantiate<ViewSettingsInfoPanel>(__instance.infoPanelOrigin);
@@ -497,17 +506,17 @@ namespace TownOfSushi {
                 }
                 viewSettingsInfoPanel.transform.localPosition = new Vector3(num2, num, -2f);
                 int value = option.GetSelection();
-                var settingTuple = handleSpecialOptionsView(option, option.name, option.selections[value].ToString());
-                viewSettingsInfoPanel.SetInfo(StringNames.ImpostorsCategory, settingTuple.Item2, 61);
+                var settingTuple = HandleSpecialOptionsView(option, option.name, option.selections[value].ToString());
+                viewSettingsInfoPanel.SetInfo(StringNames.ImpostorsCategory, $"{option.selections[value].ToString()}{option.format}", 61);
                 viewSettingsInfoPanel.titleText.text = settingTuple.Item1;
-                if (option.isHeader && (int)optionType != 99 && option.heading == "" && (option.type == CustomOptionType.Neutral || option.type == CustomOptionType.Crewmate || option.type == CustomOptionType.Impostor || option.type == CustomOptionType.Modifier)) {
+                if (option.isHeader && (int)optionType != 99 && option.heading == "" && (option.type == CustomOptionType.Neutral || option.type == CustomOptionType.Crewmate || option.type == CustomOptionType.Impostor  || option.type == CustomOptionType.NeutralKiller || option.type == CustomOptionType.Modifier)) {
                     viewSettingsInfoPanel.titleText.text = "Spawn Chance";
                 }
                 if ((int)optionType == 99) {
                     viewSettingsInfoPanel.titleText.outlineColor = Color.white;
                     viewSettingsInfoPanel.titleText.outlineWidth = 0.2f;
                     if (option.type == CustomOptionType.Modifier)
-                        viewSettingsInfoPanel.settingText.text = viewSettingsInfoPanel.settingText.text + GameOptionsDataPatch.buildModifierExtras(option);
+                        viewSettingsInfoPanel.settingText.text = viewSettingsInfoPanel.settingText.text + GameOptionsDataPatch.BuildModifierExtras(option);
                 }
                 __instance.settingsInfo.Add(viewSettingsInfoPanel.gameObject);
 
@@ -518,36 +527,35 @@ namespace TownOfSushi {
 
         }
 
-        private static Tuple<string, string> handleSpecialOptionsView(CustomOption option, string defaultString, string defaultVal) {
+        private static Tuple<string, string> HandleSpecialOptionsView(CustomOption option, string defaultString, string defaultVal) {
             string name = defaultString;
             string val = defaultVal;
-            if (option == CustomOptionHolder.crewmateRolesCountMin) {
-                val = "";
+            if (option == CustomOptionHolder.crewmateRolesCountMin) 
+            {
                 name = "Crewmate Roles";
                 var min = CustomOptionHolder.crewmateRolesCountMin.GetSelection();
                 var max = CustomOptionHolder.crewmateRolesCountMax.GetSelection();
-                if (CustomOptionHolder.crewmateRolesFill.GetBool()) {
-                    var crewCount = PlayerControl.AllPlayerControls.Count - GameOptionsManager.Instance.currentGameOptions.NumImpostors;
-                    int minNeutral = CustomOptionHolder.neutralRolesCountMin.GetSelection();
-                    int maxNeutral = CustomOptionHolder.neutralRolesCountMax.GetSelection();
-                    if (minNeutral > maxNeutral) minNeutral = maxNeutral;
-                    min = crewCount - maxNeutral;
-                    max = crewCount - minNeutral;
-                    if (min < 0) min = 0;
-                    if (max < 0) max = 0;
-                    val = "Fill: ";
-                }
                 if (min > max) min = max;
-                val += (min == max) ? $"{max}" : $"{min} - {max}";
+                val = (min == max) ? $"{max}" : $"{min} - {max}";
             }
-            if (option == CustomOptionHolder.neutralRolesCountMin) { 
+            if (option == CustomOptionHolder.neutralRolesCountMin) 
+            { 
                 name = "Neutral Roles";
                 var min = CustomOptionHolder.neutralRolesCountMin.GetSelection();
                 var max = CustomOptionHolder.neutralRolesCountMax.GetSelection();
                 if (min > max) min = max;
                 val = (min == max) ? $"{max}" : $"{min} - {max}";
             }
-            if (option == CustomOptionHolder.impostorRolesCountMin) {
+            if (option == CustomOptionHolder.neutralKillingRolesCountMin) 
+            { 
+                name = "Neutral Killing Roles";
+                var min = CustomOptionHolder.neutralKillingRolesCountMin.GetSelection();
+                var max = CustomOptionHolder.neutralKillingRolesCountMax.GetSelection();
+                if (min > max) min = max;
+                val = (min == max) ? $"{max}" : $"{min} - {max}";
+            }
+            if (option == CustomOptionHolder.impostorRolesCountMin) 
+            {
                 name = "Impostor Roles";
                 var min = CustomOptionHolder.impostorRolesCountMin.GetSelection();
                 var max = CustomOptionHolder.impostorRolesCountMax.GetSelection();
@@ -569,15 +577,17 @@ namespace TownOfSushi {
         {
             // Handle different gamemodes and tabs needed therein.
             int next = 3;
-                // create TOR settings
-                createCustomButton(__instance, next++, "TORSettings", "TOR Settings", CustomOptionType.General);
-                   // create TOR settings
+                // create TOS settings
+                createCustomButton(__instance, next++, "TORSettings", "TOS Settings", CustomOptionType.General);
+                // create TOS settings
                 createCustomButton(__instance, next++, "RoleOverview", "Role Overview", (CustomOptionType)99);
                 // IMp
                 createCustomButton(__instance, next++, "ImpostorSettings", "Impostor Roles", CustomOptionType.Impostor);
 
                 // Neutral
                 createCustomButton(__instance, next++, "NeutralSettings", "Neutral Roles", CustomOptionType.Neutral);
+                // Neutral Killer
+                createCustomButton(__instance, next++, "NKSettings", "Neutral Killing Roles", CustomOptionType.NeutralKiller);
                 // Crew
                 createCustomButton(__instance, next++, "CrewmateSettings", "Crewmate Roles", CustomOptionType.Crewmate);
                 // Modifier
@@ -586,13 +596,16 @@ namespace TownOfSushi {
     }
 
     [HarmonyPatch(typeof(GameOptionsMenu), nameof(GameOptionsMenu.CreateSettings))]
-    class GameOptionsMenuCreateSettingsPatch {
-        public static void Postfix(GameOptionsMenu __instance) {
+    class GameOptionsMenuCreateSettingsPatch 
+    {
+        public static void Postfix(GameOptionsMenu __instance) 
+        {
             if (__instance.gameObject.name == "GAME SETTINGS TAB")
-                adaptTaskCount(__instance);
+                AdaptTaskCount(__instance);
         }
 
-        private static void adaptTaskCount(GameOptionsMenu __instance) {
+        private static void AdaptTaskCount(GameOptionsMenu __instance) 
+        {
             // Adapt task count for main options
             var commonTasksOption = __instance.Children.ToArray().FirstOrDefault(x => x.TryCast<NumberOption>()?.intOptionName == Int32OptionNames.NumCommonTasks).Cast<NumberOption>();
             if (commonTasksOption != null) commonTasksOption.ValidRange = new FloatRange(0f, 4f);
@@ -605,11 +618,13 @@ namespace TownOfSushi {
 
 
     [HarmonyPatch(typeof(GameSettingMenu), nameof(GameSettingMenu.Start))]
-    class GameOptionsMenuStartPatch {
+    class GameOptionsMenuStartPatch 
+    {
         public static List<GameObject> currentTabs = new();
         public static List<PassiveButton> currentButtons = new();
 
-        public static void Postfix(GameSettingMenu __instance) {
+        public static void Postfix(GameSettingMenu __instance) 
+        {
             currentTabs.ForEach(x => x?.Destroy());
             currentButtons.ForEach(x => x?.Destroy());
             currentTabs = new();
@@ -677,7 +692,8 @@ namespace TownOfSushi {
             }));
         }
 
-        private static void createSettings(GameOptionsMenu menu, List<CustomOption> options) {
+        private static void CreateSettings(GameOptionsMenu menu, List<CustomOption> options) 
+        {
             float num = 1.5f;
             foreach (CustomOption option in options) {
                 if (option.isHeader) {
@@ -699,7 +715,8 @@ namespace TownOfSushi {
                 for (int i = 0; i < componentsInChildren.Length; i++) {
                     componentsInChildren[i].material.SetInt(PlayerMaterial.MaskLayer, 20);
                 }
-                foreach (TextMeshPro textMeshPro in optionBehaviour.GetComponentsInChildren<TextMeshPro>(true)) {
+                foreach (TextMeshPro textMeshPro in optionBehaviour.GetComponentsInChildren<TextMeshPro>(true)) 
+                {
                     textMeshPro.fontMaterial.SetFloat("_StencilComp", 3f);
                     textMeshPro.fontMaterial.SetFloat("_Stencil", (float)20);
                 }
@@ -707,7 +724,7 @@ namespace TownOfSushi {
                 var stringOption = optionBehaviour as StringOption;
                 stringOption.OnValueChanged = new Action<OptionBehaviour>((o) => { });
                 stringOption.TitleText.text = option.name;
-                if (option.isHeader && option.heading == "" && (option.type == CustomOptionType.Neutral || option.type == CustomOptionType.Crewmate || option.type == CustomOptionType.Impostor || option.type == CustomOptionType.Modifier)) {
+                if (option.isHeader && option.heading == "" && (option.type == CustomOptionType.Neutral || option.type == CustomOptionType.Crewmate || option.type == CustomOptionType.NeutralKiller || option.type == CustomOptionType.Impostor || option.type == CustomOptionType.Modifier)) {
                     stringOption.TitleText.text = "Spawn Chance";
                 }
                 if (stringOption.TitleText.text.Length > 25)
@@ -715,7 +732,7 @@ namespace TownOfSushi {
                 if (stringOption.TitleText.text.Length > 40)
                     stringOption.TitleText.fontSize = 2f;
                 stringOption.Value = stringOption.oldValue = option.selection;
-                stringOption.ValueText.text = option.selections[option.selection].ToString();
+                stringOption.ValueText.text = $"{option.selections[option.selection].ToString()}{option.format}";
                 option.optionBehaviour = stringOption;
 
                 menu.Children.Add(optionBehaviour);
@@ -723,22 +740,26 @@ namespace TownOfSushi {
                 menu.scrollBar.SetYBoundsMax(-num - 1.65f);
             }
 
-            for (int i = 0; i < menu.Children.Count; i++) {
+            for (int i = 0; i < menu.Children.Count; i++) 
+            {
                 OptionBehaviour optionBehaviour = menu.Children[i];
-                if (AmongUsClient.Instance && !AmongUsClient.Instance.AmHost) {
+                if (AmongUsClient.Instance && !AmongUsClient.Instance.AmHost) 
+                {
                     optionBehaviour.SetAsPlayer();
                 }
             }
         }
 
-        private static void removeVanillaTabs(GameSettingMenu __instance) {
+        private static void removeVanillaTabs(GameSettingMenu __instance) 
+        {
             GameObject.Find("What Is This?")?.Destroy();
             GameObject.Find("GamePresetButton")?.Destroy();
             GameObject.Find("RoleSettingsButton")?.Destroy();
             __instance.ChangeTab(1, false);
         }
 
-        public static void createCustomButton(GameSettingMenu __instance, int targetMenu, string buttonName, string buttonText) {
+        public static void createCustomButton(GameSettingMenu __instance, int targetMenu, string buttonName, string buttonText) 
+        {
             var leftPanel = GameObject.Find("LeftPanel");
             var buttonTemplate = GameObject.Find("GameSettingsButton");
             if (targetMenu == 3) {
@@ -763,7 +784,8 @@ namespace TownOfSushi {
             }
         }
 
-        public static void createGameOptionsMenu(GameSettingMenu __instance, CustomOptionType optionType, string settingName) {
+        public static void CreateGameOptionsMenu(GameSettingMenu __instance, CustomOptionType optionType, string settingName) 
+        {
             var tabTemplate = GameObject.Find("GAME SETTINGS TAB");
             currentTabs.RemoveAll(x => x == null);
 
@@ -772,50 +794,53 @@ namespace TownOfSushi {
                 
             var torSettingsGOM = torSettingsTab.GetComponent<GameOptionsMenu>();
 
-            updateGameOptionsMenu(optionType, torSettingsGOM);
+            UpdateGameOptionsMenu(optionType, torSettingsGOM);
 
             currentTabs.Add(torSettingsTab);
             torSettingsTab.SetActive(false);
         }
 
-        public static void updateGameOptionsMenu(CustomOptionType optionType, GameOptionsMenu torSettingsGOM) {
-            foreach (var child in torSettingsGOM.Children) {
+        public static void UpdateGameOptionsMenu(CustomOptionType optionType, GameOptionsMenu torSettingsGOM) 
+        {
+            foreach (var child in torSettingsGOM.Children) 
+            {
                 child.Destroy();
             }
             torSettingsGOM.scrollBar.transform.FindChild("SliderInner").DestroyChildren();
             torSettingsGOM.Children.Clear();
             var relevantOptions = options.Where(x => x.type == optionType).ToList();
-            createSettings(torSettingsGOM, relevantOptions);
+            CreateSettings(torSettingsGOM, relevantOptions);
         }
 
         private static void createSettingTabs(GameSettingMenu __instance) {
             // Handle different gamemodes and tabs needed therein.
             int next = 3;
             
-            // create TOR settings
-            createCustomButton(__instance, next++, "TORSettings", "TOR Settings");
-            createGameOptionsMenu(__instance, CustomOptionType.General, "TORSettings");
-            // Guesser
-            createCustomButton(__instance, next++, "GuesserSettings", "Guesser Settings");
-            createGameOptionsMenu(__instance, CustomOptionType.Guesser, "GuesserSettings");
+            // create TOS settings
+            createCustomButton(__instance, next++, "TORSettings", "TOS Settings");
+            CreateGameOptionsMenu(__instance, CustomOptionType.General, "TORSettings");
+            // NK Settings
+            createCustomButton(__instance, next++, "NKSettings", "Neutral Killer Settings");
+            CreateGameOptionsMenu(__instance, CustomOptionType.NeutralKiller, "NKSettings");
             // IMp
             createCustomButton(__instance, next++, "ImpostorSettings", "Impostor Roles");
-            createGameOptionsMenu(__instance, CustomOptionType.Impostor, "ImpostorSettings");
+            CreateGameOptionsMenu(__instance, CustomOptionType.Impostor, "ImpostorSettings");
 
             // Neutral
             createCustomButton(__instance, next++, "NeutralSettings", "Neutral Roles");
-            createGameOptionsMenu(__instance, CustomOptionType.Neutral, "NeutralSettings");
+            CreateGameOptionsMenu(__instance, CustomOptionType.Neutral, "NeutralSettings");
             // Crew
             createCustomButton(__instance, next++, "CrewmateSettings", "Crewmate Roles");
-            createGameOptionsMenu(__instance, CustomOptionType.Crewmate, "CrewmateSettings");
+            CreateGameOptionsMenu(__instance, CustomOptionType.Crewmate, "CrewmateSettings");
             // Modifier
             createCustomButton(__instance, next++, "ModifierSettings", "Modifiers");
-            createGameOptionsMenu(__instance, CustomOptionType.Modifier, "ModifierSettings");
+            CreateGameOptionsMenu(__instance, CustomOptionType.Modifier, "ModifierSettings");
         }
     }
 
     [HarmonyPatch(typeof(StringOption), nameof(StringOption.Initialize))]
-    public class StringOptionEnablePatch {
+    public class StringOptionEnablePatch 
+    {
         public static bool Prefix(StringOption __instance) {
             CustomOption option = CustomOption.options.FirstOrDefault(option => option.optionBehaviour == __instance);
             if (option == null) return true;
@@ -823,7 +848,7 @@ namespace TownOfSushi {
             __instance.OnValueChanged = new Action<OptionBehaviour>((o) => {});
             //__instance.TitleText.text = option.name;
             __instance.Value = __instance.oldValue = option.selection;
-            __instance.ValueText.text = option.selections[option.selection].ToString();
+            __instance.ValueText.text = $"{option.selections[option.selection].ToString()}{option.format}";
             
             return false;
         }
@@ -836,7 +861,7 @@ namespace TownOfSushi {
         {
             CustomOption option = CustomOption.options.FirstOrDefault(option => option.optionBehaviour == __instance);
             if (option == null) return true;
-            option.updateSelection(option.selection + 1);
+            option.UpdateSelection(option.selection + 1);
             return false;
         }
     }
@@ -848,7 +873,7 @@ namespace TownOfSushi {
         {
             CustomOption option = CustomOption.options.FirstOrDefault(option => option.optionBehaviour == __instance);
             if (option == null) return true;
-            option.updateSelection(option.selection - 1);
+            option.UpdateSelection(option.selection - 1);
             return false;
         }
     }
@@ -884,9 +909,12 @@ namespace TownOfSushi {
     }
 
     [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.CoSpawnPlayer))]
-    public class AmongUsClientOnPlayerJoinedPatch {
-        public static void Postfix() {
-            if (PlayerControl.LocalPlayer != null && AmongUsClient.Instance.AmHost) {
+    public class AmongUsClientOnPlayerJoinedPatch 
+    {
+        public static void Postfix() 
+        {
+            if (PlayerControl.LocalPlayer != null && AmongUsClient.Instance.AmHost) 
+            {
                 GameManager.Instance.LogicOptions.SyncOptions();
                 CustomOption.ShareOptionSelections();
             }
@@ -897,35 +925,40 @@ namespace TownOfSushi {
     [HarmonyPatch] 
     class GameOptionsDataPatch
     {
-        private static string buildRoleOptions() {
-            var impRoles = buildOptionsOfType(CustomOptionType.Impostor, true) + "\n";
-            var neutralRoles = buildOptionsOfType(CustomOptionType.Neutral, true) + "\n";
-            var crewRoles = buildOptionsOfType(CustomOptionType.Crewmate, true) + "\n";
-            var modifiers = buildOptionsOfType(CustomOptionType.Modifier, true);
-            return impRoles + neutralRoles + crewRoles + modifiers;
+        private static string BuildRoleOptions() 
+        {
+            var impRoles = BuildOptionsOfType(CustomOptionType.Impostor, true) + "\n";
+            var neutralRoles = BuildOptionsOfType(CustomOptionType.Neutral, true) + "\n";
+            var neuts = BuildOptionsOfType(CustomOptionType.NeutralKiller, true) + "\n";
+            var crewRoles = BuildOptionsOfType(CustomOptionType.Crewmate, true) + "\n";
+            var modifiers = BuildOptionsOfType(CustomOptionType.Modifier, true);
+            return impRoles + neutralRoles + neuts + crewRoles + modifiers;
         }
-        public static string buildModifierExtras(CustomOption customOption) {
+        public static string BuildModifierExtras(CustomOption customOption) 
+        {
             // find options children with quantity
             var children = CustomOption.options.Where(o => o.parent == customOption);
             var quantity = children.Where(o => o.name.Contains("Quantity")).ToList();
             if (customOption.GetSelection() == 0) return "";
             if (quantity.Count == 1) return $" ({quantity[0].getQuantity()})";
-            if (customOption == CustomOptionHolder.modifierLover) {
+            if (customOption == CustomOptionHolder.modifierLover) 
+            {
                 return $" (1 Evil: {CustomOptionHolder.modifierLoverImpLoverRate.GetSelection() * 10}%)";
             }
             return "";
         }
 
-        private static string buildOptionsOfType(CustomOptionType type, bool headerOnly) {
+        private static string BuildOptionsOfType(CustomOptionType type, bool headerOnly) 
+        {
             StringBuilder sb = new StringBuilder("\n");
             var options = CustomOption.options.Where(o => o.type == type);
-            
-            options = options.Where(x => !(x.type == CustomOptionType.Guesser || x == CustomOptionHolder.crewmateRolesFill));
 
-            foreach (var option in options) {
-                if (option.parent == null) {
-                    string line = $"{option.name}: {option.selections[option.selection].ToString()}";
-                    if (type == CustomOptionType.Modifier) line += buildModifierExtras(option);
+            foreach (var option in options) 
+            {
+                if (option.parent == null) 
+                {
+                    string line = $"{option.name}: {option.selections[option.selection].ToString()}{option.format}";
+                    if (type == CustomOptionType.Modifier) line += BuildModifierExtras(option);
                     sb.AppendLine(line);
                 }
                 else if (option.parent.GetSelection() > 0) {
@@ -946,37 +979,39 @@ namespace TownOfSushi {
 
                     Color c = isIrrelevant ? Color.grey : Color.white;  // No use for now
                     if (isIrrelevant) continue;
-                    sb.AppendLine(Helpers.ColorString(c, $"{option.name}: {option.selections[option.selection].ToString()}"));
+                    sb.AppendLine(Helpers.ColorString(c, $"{option.name}: {option.selections[option.selection].ToString()}{option.format}"));
                 } 
                 else 
                 {
-                    if (option == CustomOptionHolder.crewmateRolesCountMin) {
+                    if (option == CustomOptionHolder.crewmateRolesCountMin) 
+                    {
                         var optionName = CustomOptionHolder.ColorString(new Color(204f / 255f, 204f / 255f, 0, 1f), "Crewmate Roles");
                         var min = CustomOptionHolder.crewmateRolesCountMin.GetSelection();
                         var max = CustomOptionHolder.crewmateRolesCountMax.GetSelection();
-                        string optionValue = "";
-                        if (CustomOptionHolder.crewmateRolesFill.GetBool()) {
-                            var crewCount = PlayerControl.AllPlayerControls.Count - GameOptionsManager.Instance.currentGameOptions.NumImpostors;
-                            int minNeutral = CustomOptionHolder.neutralRolesCountMin.GetSelection();
-                            int maxNeutral = CustomOptionHolder.neutralRolesCountMax.GetSelection();
-                            if (minNeutral > maxNeutral) minNeutral = maxNeutral;
-                            min = crewCount - maxNeutral;
-                            max = crewCount - minNeutral;
-                            if (min < 0) min = 0;
-                            if (max < 0) max = 0;
-                            optionValue = "Fill: ";
-                        }
                         if (min > max) min = max;
-                        optionValue += (min == max) ? $"{max}" : $"{min} - {max}";
+                        var optionValue = (min == max) ? $"{max}" : $"{min} - {max}";
                         sb.AppendLine($"{optionName}: {optionValue}");
-                    } else if (option == CustomOptionHolder.neutralRolesCountMin) {
+                    }
+                    else if (option == CustomOptionHolder.neutralRolesCountMin) 
+                    {
                         var optionName = CustomOptionHolder.ColorString(new Color(204f / 255f, 204f / 255f, 0, 1f), "Neutral Roles");
                         var min = CustomOptionHolder.neutralRolesCountMin.GetSelection();
                         var max = CustomOptionHolder.neutralRolesCountMax.GetSelection();
                         if (min > max) min = max;
                         var optionValue = (min == max) ? $"{max}" : $"{min} - {max}";
                         sb.AppendLine($"{optionName}: {optionValue}");
-                    } else if (option == CustomOptionHolder.impostorRolesCountMin) {
+                    }
+                    else if (option == CustomOptionHolder.neutralKillingRolesCountMin) 
+                    {
+                        var optionName = CustomOptionHolder.ColorString(new Color(204f / 255f, 204f / 255f, 0, 1f), "Neutral Killing Roles");
+                        var min = CustomOptionHolder.neutralKillingRolesCountMin.GetSelection();
+                        var max = CustomOptionHolder.neutralKillingRolesCountMax.GetSelection();
+                        if (min > max) min = max;
+                        var optionValue = (min == max) ? $"{max}" : $"{min} - {max}";
+                        sb.AppendLine($"{optionName}: {optionValue}");
+                    }
+                    else if (option == CustomOptionHolder.impostorRolesCountMin) 
+                    {
                         var optionName = CustomOptionHolder.ColorString(new Color(204f / 255f, 204f / 255f, 0, 1f), "Impostor Roles");
                         var min = CustomOptionHolder.impostorRolesCountMin.GetSelection();
                         var max = CustomOptionHolder.impostorRolesCountMax.GetSelection();
@@ -984,17 +1019,22 @@ namespace TownOfSushi {
                         if (min > max) min = max;
                         var optionValue = (min == max) ? $"{max}" : $"{min} - {max}";
                         sb.AppendLine($"{optionName}: {optionValue}");
-                    } else if (option == CustomOptionHolder.modifiersCountMin) {
+                    } 
+                    else if (option == CustomOptionHolder.modifiersCountMin) 
+                    {
                         var optionName = CustomOptionHolder.ColorString(new Color(204f / 255f, 204f / 255f, 0, 1f), "Modifiers");
                         var min = CustomOptionHolder.modifiersCountMin.GetSelection();
                         var max = CustomOptionHolder.modifiersCountMax.GetSelection();
                         if (min > max) min = max;
                         var optionValue = (min == max) ? $"{max}" : $"{min} - {max}";
                         sb.AppendLine($"{optionName}: {optionValue}");
-                    } else if ((option == CustomOptionHolder.crewmateRolesCountMax) || (option == CustomOptionHolder.neutralRolesCountMax) || (option == CustomOptionHolder.impostorRolesCountMax) || option == CustomOptionHolder.modifiersCountMax) {
+                    } 
+                    else if ((option == CustomOptionHolder.crewmateRolesCountMax) || (option == CustomOptionHolder.neutralRolesCountMax) || (option == CustomOptionHolder.impostorRolesCountMax) || option == CustomOptionHolder.modifiersCountMax) {
                         continue;
-                    } else {
-                        sb.AppendLine($"\n{option.name}: {option.selections[option.selection].ToString()}");
+                    } 
+                    else 
+                    {
+                        sb.AppendLine($"\n{option.name}: {option.selections[option.selection].ToString()}{option.format}");
                     }
                 }
             }
@@ -1008,29 +1048,32 @@ namespace TownOfSushi {
                 vanillaSettings = GameOptionsManager.Instance.CurrentGameOptions.ToHudString(PlayerControl.AllPlayerControls.Count);
             int counter = TownOfSushiPlugin.optionsPage;
             string hudString = counter != 0 && !hideExtras ? Helpers.ColorString(DateTime.Now.Second % 2 == 0 ? Color.white : Color.red, "(Use scroll wheel if necessary)\n\n") : "";
-                maxPage = 7;
+                maxPage = 8;
                 switch (counter) 
                 {
                     case 0:
                         hudString += (!hideExtras ? "" : "Page 1: Vanilla Settings \n\n") + vanillaSettings;
                         break;
                     case 1:
-                        hudString += "Page 2: Town Of Sushi Settings \n" + buildOptionsOfType(CustomOptionType.General, false);
+                        hudString += "Page 2: Town Of Sushi Settings \n" + BuildOptionsOfType(CustomOptionType.General, false);
                         break;
                     case 2:
-                        hudString += "Page 3: Role and Modifier Rates \n" + buildRoleOptions();
+                        hudString += "Page 3: Role and Modifier Rates \n" + BuildRoleOptions();
                         break;
                     case 3:
-                        hudString += "Page 4: Impostor Role Settings \n" + buildOptionsOfType(CustomOptionType.Impostor, false);
+                        hudString += "Page 4: Impostor Role Settings \n" + BuildOptionsOfType(CustomOptionType.Impostor, false);
                         break;
                     case 4:
-                        hudString += "Page 5: Neutral Role Settings \n" + buildOptionsOfType(CustomOptionType.Neutral, false);
+                        hudString += "Page 5: Neutral Role Settings \n" + BuildOptionsOfType(CustomOptionType.Neutral, false);
                         break;
                     case 5:
-                        hudString += "Page 6: Crewmate Role Settings \n" + buildOptionsOfType(CustomOptionType.Crewmate, false);
+                        hudString += "Page 6: Neutral Killing Role Settings \n" + BuildOptionsOfType(CustomOptionType.NeutralKiller, false);
                         break;
                     case 6:
-                        hudString += "Page 7: Modifier Settings \n" + buildOptionsOfType(CustomOptionType.Modifier, false);
+                        hudString += "Page 7: Crewmate Role Settings \n" + BuildOptionsOfType(CustomOptionType.Crewmate, false);
+                        break;
+                    case 7:
+                        hudString += "Page 8: Modifier Settings \n" + BuildOptionsOfType(CustomOptionType.Modifier, false);
                         break;
                 }
 
@@ -1150,31 +1193,43 @@ namespace TownOfSushi {
         public static void Postfix(KeyboardJoystick __instance)
         {
             int page = TownOfSushiPlugin.optionsPage;
-            if (Input.GetKeyDown(KeyCode.Tab)) {
-                TownOfSushiPlugin.optionsPage = (TownOfSushiPlugin.optionsPage + 1) % 7;
+            if (Input.GetKeyDown(KeyCode.Tab)) 
+            {
+                TownOfSushiPlugin.optionsPage = (TownOfSushiPlugin.optionsPage + 1) % 8;
             }
-            if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1)) {
+            if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1)) 
+            {
                 TownOfSushiPlugin.optionsPage = 0;
             }
-            if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2)) {
+            if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2)) 
+            {
                 TownOfSushiPlugin.optionsPage = 1;
             }
-            if (Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Keypad3)) {
+            if (Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Keypad3)) 
+            {
                 TownOfSushiPlugin.optionsPage = 2;
             }
-            if (Input.GetKeyDown(KeyCode.Alpha4) || Input.GetKeyDown(KeyCode.Keypad4)) {
+            if (Input.GetKeyDown(KeyCode.Alpha4) || Input.GetKeyDown(KeyCode.Keypad4)) 
+            {
                 TownOfSushiPlugin.optionsPage = 3;
             }
-            if (Input.GetKeyDown(KeyCode.Alpha5) || Input.GetKeyDown(KeyCode.Keypad5)) {
+            if (Input.GetKeyDown(KeyCode.Alpha5) || Input.GetKeyDown(KeyCode.Keypad5)) 
+            {
                 TownOfSushiPlugin.optionsPage = 4;
             }
-            if (Input.GetKeyDown(KeyCode.Alpha6) || Input.GetKeyDown(KeyCode.Keypad6)) {
+            if (Input.GetKeyDown(KeyCode.Alpha6) || Input.GetKeyDown(KeyCode.Keypad6)) 
+            {
                 TownOfSushiPlugin.optionsPage = 5;
             }
-            if (Input.GetKeyDown(KeyCode.Alpha7) || Input.GetKeyDown(KeyCode.Keypad7)) {
+            if (Input.GetKeyDown(KeyCode.Alpha7) || Input.GetKeyDown(KeyCode.Keypad7)) 
+            {
                 TownOfSushiPlugin.optionsPage = 6;
             }
-            if (Input.GetKeyDown(KeyCode.F1))
+            if (Input.GetKeyDown(KeyCode.Alpha8) || Input.GetKeyDown(KeyCode.Keypad8)) 
+            {
+                TownOfSushiPlugin.optionsPage = 7;
+            }
+            if (Input.GetKeyDown(KeyCode.F1) && !LobbyBehaviour.Instance)
                 HudManagerUpdate.ToggleSettings(HudManager.Instance);
             if (TownOfSushiPlugin.optionsPage >= GameOptionsDataPatch.maxPage) TownOfSushiPlugin.optionsPage = 0;
         }

@@ -9,33 +9,6 @@ using TownOfSushi.Utilities;
 
 namespace TownOfSushi.Patches 
 {
-    enum CustomGameOverReason 
-    {
-        LoversWin = 10,
-        TeamJackalWin = 11,
-        MiniLose = 12,
-        JesterWin = 13,
-        ArsonistWin = 14,
-        VultureWin = 15,
-        ProsecutorWin = 16,
-        GlitchWin = 17,
-    }
-
-    enum WinCondition 
-    {
-        Default,
-        LoversTeamWin,
-        LoversSoloWin,
-        JesterWin,
-        JackalWin,
-        MiniLose,
-        ArsonistWin,
-        VultureWin,
-        AdditionalLawyerBonusWin,
-        AdditionalAlivePursuerWin,
-        ProsecutorWin,
-        GlitchWin
-    }
 
     static class AdditionalTempData 
     {
@@ -68,9 +41,11 @@ namespace TownOfSushi.Patches
 
 
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnGameEnd))]
-    public static class OnGameEndPatch {
+    public static class OnGameEndPatch 
+    {
         public static GameOverReason gameOverReason = GameOverReason.HumansByTask;
-        public static void Prefix(AmongUsClient __instance, [HarmonyArgument(0)]ref EndGameResult endGameResult) {
+        public static void Prefix(AmongUsClient __instance, [HarmonyArgument(0)]ref EndGameResult endGameResult) 
+        {
             gameOverReason = endGameResult.GameOverReason;
             if ((int)endGameResult.GameOverReason >= 10) endGameResult.GameOverReason = GameOverReason.ImpostorByKill;
 
@@ -88,9 +63,10 @@ namespace TownOfSushi.Patches
                 var (tasksCompleted, tasksTotal) = TasksHandler.TaskInfo(playerControl.Data);
                 bool isGuesser = HandleGuesser.IsGuesser(playerControl.PlayerId);
                 int? killCount = GameHistory.deadPlayers.FindAll(x => x.killerIfExisting != null && x.killerIfExisting.PlayerId == playerControl.PlayerId).Count;
-                if (killCount == 0 && !(new List<RoleInfo>() { RoleInfo.sheriff, RoleInfo.jackal, RoleInfo.sidekick, RoleInfo.thief }.Contains(RoleInfo.GetRoleInfoForPlayer(playerControl, false).FirstOrDefault()) || playerControl.Data.Role.IsImpostor)) {
+                if (killCount == 0 && !(new List<RoleInfo>() { RoleInfo.sheriff, RoleInfo.jackal, RoleInfo.sidekick, RoleInfo.thief }.Contains(RoleInfo.GetRoleInfoForPlayer(playerControl, false).FirstOrDefault()) || playerControl.Data.Role.IsImpostor)) 
+                {
                     killCount = null;
-                    }
+                }
                 string roleString = RoleInfo.GetRolesString(playerControl, true, true, false);
                 AdditionalTempData.playerRoles.Add(new AdditionalTempData.PlayerRoleInfo() { PlayerName = playerControl.Data.PlayerName, Roles = roles, RoleNames = roleString, TasksTotal = tasksTotal, TasksCompleted = tasksCompleted, IsGuesser = isGuesser, Kills = killCount, IsAlive = !playerControl.Data.IsDead });
             }
@@ -101,6 +77,8 @@ namespace TownOfSushi.Patches
             if (Sidekick.sidekick != null) notWinners.Add(Sidekick.sidekick);
             if (Jackal.jackal != null) notWinners.Add(Jackal.jackal);
             if (Glitch.Player != null) notWinners.Add(Glitch.Player);
+            if (Werewolf.Player != null) notWinners.Add(Werewolf.Player);
+            if (SerialKiller.Player != null) notWinners.Add(SerialKiller.Player);
             if (Arsonist.arsonist != null) notWinners.Add(Arsonist.arsonist);
             if (Vulture.vulture != null) notWinners.Add(Vulture.vulture);
             if (Lawyer.lawyer != null) notWinners.Add(Lawyer.lawyer);
@@ -110,7 +88,8 @@ namespace TownOfSushi.Patches
             notWinners.AddRange(Jackal.formerJackals);
 
             List<CachedPlayerData> winnersToRemove = new List<CachedPlayerData>();
-            foreach (CachedPlayerData winner in EndGameResult.CachedWinners.GetFastEnumerator()) {
+            foreach (CachedPlayerData winner in EndGameResult.CachedWinners.GetFastEnumerator()) 
+            {
                 if (notWinners.Any(x => x.Data.PlayerName == winner.PlayerName)) winnersToRemove.Add(winner);
             }
             foreach (var winner in winnersToRemove) EndGameResult.CachedWinners.Remove(winner);
@@ -118,14 +97,17 @@ namespace TownOfSushi.Patches
             bool jesterWin = Jester.jester != null && gameOverReason == (GameOverReason)CustomGameOverReason.JesterWin;
             bool arsonistWin = Arsonist.arsonist != null && gameOverReason == (GameOverReason)CustomGameOverReason.ArsonistWin;
             bool glitchWin = Glitch.Player != null && gameOverReason == (GameOverReason)CustomGameOverReason.GlitchWin;
+            bool wwWin = Werewolf.Player != null && gameOverReason == (GameOverReason)CustomGameOverReason.WerewolfWin;
             bool miniLose = Mini.mini != null && gameOverReason == (GameOverReason)CustomGameOverReason.MiniLose;
+            bool SKWin = SerialKiller.Player != null && gameOverReason == (GameOverReason)CustomGameOverReason.SerialKillerWin;
             bool loversWin = Lovers.ExistingAndAlive() && (gameOverReason == (GameOverReason)CustomGameOverReason.LoversWin || (GameManager.Instance.DidHumansWin(gameOverReason) && !Lovers.ExistingWithKiller())); // Either they win if they are among the last 3 players, or they win if they are both Crewmates and both alive and the Crew wins (Team Imp/Jackal Lovers can only win solo wins)
             bool teamJackalWin = gameOverReason == (GameOverReason)CustomGameOverReason.TeamJackalWin && ((Jackal.jackal != null && !Jackal.jackal.Data.IsDead) || (Sidekick.sidekick != null && !Sidekick.sidekick.Data.IsDead));
             bool vultureWin = Vulture.vulture != null && gameOverReason == (GameOverReason)CustomGameOverReason.VultureWin;
             bool prosecutorWin = Lawyer.lawyer != null && gameOverReason == (GameOverReason)CustomGameOverReason.ProsecutorWin;
 
             // Mini lose
-            if (miniLose) {
+            if (miniLose) 
+            {
                 EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
                 CachedPlayerData wpd = new CachedPlayerData(Mini.mini.Data);
                 wpd.IsYou = false; // If "no one is the Mini", it will display the Mini, but also show defeat to everyone
@@ -151,8 +133,27 @@ namespace TownOfSushi.Patches
                 AdditionalTempData.winCondition = WinCondition.GlitchWin;
             }
 
+            // Werewolf win
+            else if (wwWin) 
+            {
+                EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
+                CachedPlayerData wpd = new CachedPlayerData(Werewolf.Player.Data);
+                EndGameResult.CachedWinners.Add(wpd);
+                AdditionalTempData.winCondition = WinCondition.WerewolfWin;
+            }
+
+            // Serial Killer win
+            else if (SKWin) 
+            {
+                EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
+                CachedPlayerData wpd = new CachedPlayerData(SerialKiller.Player.Data);
+                EndGameResult.CachedWinners.Add(wpd);
+                AdditionalTempData.winCondition = WinCondition.SerialKillerWin;
+            }
+
             // Arsonist win
-            else if (arsonistWin) {
+            else if (arsonistWin) 
+            {
                 EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
                 CachedPlayerData wpd = new CachedPlayerData(Arsonist.arsonist.Data);
                 EndGameResult.CachedWinners.Add(wpd);
@@ -178,23 +179,27 @@ namespace TownOfSushi.Patches
             }
 
             // Lovers win conditions
-            else if (loversWin) {
+            else if (loversWin) 
+            {
                 // Double win for lovers, crewmates also win
-                if (!Lovers.ExistingWithKiller()) {
+                if (!Lovers.ExistingWithKiller()) 
+                {
                     AdditionalTempData.winCondition = WinCondition.LoversTeamWin;
                     EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls) {
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls) 
+                    {
                         if (p == null) continue;
                         if (p == Lovers.lover1 || p == Lovers.lover2)
                             EndGameResult.CachedWinners.Add(new CachedPlayerData(p.Data));
                         else if (p == Pursuer.pursuer && !Pursuer.pursuer.Data.IsDead)
                             EndGameResult.CachedWinners.Add(new CachedPlayerData(p.Data));
-                        else if (p != Jester.jester && p != Jackal.jackal && p != Glitch.Player && p != Sidekick.sidekick && p != Arsonist.arsonist && p != Vulture.vulture && !Jackal.formerJackals.Contains(p) && !p.Data.Role.IsImpostor)
+                        else if (p != Jester.jester && p != SerialKiller.Player && p != Jackal.jackal && p != Glitch.Player && p != Werewolf.Player && p != Sidekick.sidekick && p != Arsonist.arsonist && p != Vulture.vulture && !Jackal.formerJackals.Contains(p) && !p.Data.Role.IsImpostor)
                             EndGameResult.CachedWinners.Add(new CachedPlayerData(p.Data));
                     }
                 }
                 // Lovers solo win
-                else {
+                else 
+                {
                     AdditionalTempData.winCondition = WinCondition.LoversSoloWin;
                     EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
                     EndGameResult.CachedWinners.Add(new CachedPlayerData(Lovers.lover1.Data));
@@ -203,7 +208,8 @@ namespace TownOfSushi.Patches
             }
 
             // Jackal win condition (should be implemented using a proper GameOverReason in the future)
-            else if (teamJackalWin) {
+            else if (teamJackalWin) 
+            {
                 // Jackal wins if nobody except jackal is alive
                 AdditionalTempData.winCondition = WinCondition.JackalWin;
                 EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
@@ -211,12 +217,14 @@ namespace TownOfSushi.Patches
                 wpd.IsImpostor = false;
                 EndGameResult.CachedWinners.Add(wpd);
                 // If there is a sidekick. The sidekick also wins
-                if (Sidekick.sidekick != null) {
+                if (Sidekick.sidekick != null) 
+                {
                     CachedPlayerData wpdSidekick = new CachedPlayerData(Sidekick.sidekick.Data);
                     wpdSidekick.IsImpostor = false;
                     EndGameResult.CachedWinners.Add(wpdSidekick);
                 }
-                foreach (var player in Jackal.formerJackals) {
+                foreach (var player in Jackal.formerJackals) 
+                {
                     CachedPlayerData wpdFormerJackal = new CachedPlayerData(player.Data);
                     wpdFormerJackal.IsImpostor = false;
                     EndGameResult.CachedWinners.Add(wpdFormerJackal);
@@ -226,7 +234,8 @@ namespace TownOfSushi.Patches
             // Possible Additional winner: Lawyer
             if (Lawyer.lawyer != null && Lawyer.target != null && (!Lawyer.target.Data.IsDead || Lawyer.target == Jester.jester) && !Pursuer.notAckedExiled && !Lawyer.isProsecutor) {
                 CachedPlayerData winningClient = null;
-                foreach (CachedPlayerData winner in EndGameResult.CachedWinners.GetFastEnumerator()) {
+                foreach (CachedPlayerData winner in EndGameResult.CachedWinners.GetFastEnumerator()) 
+                {
                     if (winner.PlayerName == Lawyer.target.Data.PlayerName)
                         winningClient = winner;
                 }
@@ -249,10 +258,13 @@ namespace TownOfSushi.Patches
     }
 
     [HarmonyPatch(typeof(EndGameManager), nameof(EndGameManager.SetEverythingUp))]
-    public class EndGameManagerSetUpPatch {
-        public static void Postfix(EndGameManager __instance) {
+    public class EndGameManagerSetUpPatch 
+    {
+        public static void Postfix(EndGameManager __instance) 
+        {
             // Delete and readd PoolablePlayers always showing the name and role of the player
-            foreach (PoolablePlayer pb in __instance.transform.GetComponentsInChildren<PoolablePlayer>()) {
+            foreach (PoolablePlayer pb in __instance.transform.GetComponentsInChildren<PoolablePlayer>()) 
+            {
                 UnityEngine.Object.Destroy(pb.gameObject);
             }
             int num = Mathf.CeilToInt(7.5f);
@@ -264,7 +276,8 @@ namespace TownOfSushi.Patches
                 }
                 return -1;
             }).ToList<CachedPlayerData>();
-            for (int i = 0; i < list.Count; i++) {
+            for (int i = 0; i < list.Count; i++) 
+            {
                 CachedPlayerData CachedPlayerData2 = list[i];
                 int num2 = (i % 2 == 0) ? -1 : 1;
                 int num3 = (i + 1) / 2;
@@ -276,10 +289,13 @@ namespace TownOfSushi.Patches
                 float num7 = Mathf.Lerp(1f, 0.65f, num4) * 0.9f;
                 Vector3 vector = new Vector3(num7, num7, 1f);
                 poolablePlayer.transform.localScale = vector;
-                if (CachedPlayerData2.IsDead) {
+                if (CachedPlayerData2.IsDead) 
+                {
                     poolablePlayer.SetBodyAsGhost();
                     poolablePlayer.SetDeadFlipX(i % 2 == 0);
-                } else {
+                } 
+                else 
+                {
                     poolablePlayer.SetFlipX(i % 2 == 0);
                 }
                 poolablePlayer.UpdateFromPlayerOutfit(CachedPlayerData2.Outfit, PlayerMaterial.MaskType.None, CachedPlayerData2.IsDead, true);
@@ -289,7 +305,8 @@ namespace TownOfSushi.Patches
                 poolablePlayer.cosmetics.nameText.transform.localPosition = new Vector3(poolablePlayer.cosmetics.nameText.transform.localPosition.x, poolablePlayer.cosmetics.nameText.transform.localPosition.y, -15f);
                 poolablePlayer.cosmetics.nameText.text = CachedPlayerData2.PlayerName;
 
-                foreach(var data in AdditionalTempData.playerRoles) {
+                foreach(var data in AdditionalTempData.playerRoles) 
+                {
                     if (data.PlayerName != CachedPlayerData2.PlayerName) continue;
                     var roles = 
                     poolablePlayer.cosmetics.nameText.text += $"\n{string.Join("\n", data.Roles.Select(x => Helpers.ColorString(x.color, x.name)))}";
@@ -307,22 +324,26 @@ namespace TownOfSushi.Patches
             {
                 textRenderer.text = "Jester Wins";
                 textRenderer.color = Jester.color;
+                __instance.BackgroundBar.material.SetColor("_Color", Jester.color);
             } 
             else if (AdditionalTempData.winCondition == WinCondition.ArsonistWin) 
             {
                 textRenderer.text = "Arsonist Wins";
                 textRenderer.color = Arsonist.color;
+                __instance.BackgroundBar.material.SetColor("_Color", Arsonist.color);
             }
             else if (AdditionalTempData.winCondition == WinCondition.VultureWin) 
             {
                 textRenderer.text = "Vulture Wins";
                 textRenderer.color = Vulture.color;
-            } 
+                __instance.BackgroundBar.material.SetColor("_Color", Vulture.color);
+            }
             else if (AdditionalTempData.winCondition == WinCondition.ProsecutorWin) 
             {
                 textRenderer.text = "Prosecutor Wins";
                 textRenderer.color = Lawyer.color;
-            } 
+                __instance.BackgroundBar.material.SetColor("_Color", Lawyer.color);
+            }
             else if (AdditionalTempData.winCondition == WinCondition.LoversTeamWin) 
             {
                 textRenderer.text = "Lovers And Crewmates Win";
@@ -339,16 +360,31 @@ namespace TownOfSushi.Patches
             {
                 textRenderer.text = "Jackals Win";
                 textRenderer.color = Jackal.color;
+                __instance.BackgroundBar.material.SetColor("_Color", Jackal.color);
             }
             else if (AdditionalTempData.winCondition == WinCondition.GlitchWin) 
             {
                 textRenderer.text = "The Glitch Wins";
                 textRenderer.color = Glitch.color;
-            } 
+                __instance.BackgroundBar.material.SetColor("_Color", Glitch.color);
+            }
+            else if (AdditionalTempData.winCondition == WinCondition.SerialKillerWin) 
+            {
+                textRenderer.text = "Serial Kille Wins";
+                textRenderer.color = SerialKiller.color;
+                __instance.BackgroundBar.material.SetColor("_Color", SerialKiller.color);
+            }
+            else if (AdditionalTempData.winCondition == WinCondition.WerewolfWin) 
+            {
+                textRenderer.text = "Werewolf Wins";
+                textRenderer.color = Werewolf.color;
+                __instance.BackgroundBar.material.SetColor("_Color", Werewolf.color);
+            }
             else if (AdditionalTempData.winCondition == WinCondition.MiniLose) 
             {
                 textRenderer.text = "Mini died";
                 textRenderer.color = Mini.color;
+                __instance.BackgroundBar.material.SetColor("_Color", Mini.color);
             } 
             else if (AdditionalTempData.winCondition == WinCondition.Default) 
             {
@@ -356,31 +392,38 @@ namespace TownOfSushi.Patches
                 {
                     case GameOverReason.ImpostorDisconnect:
                         textRenderer.text = "Last Crewmate Disconnected";
-                        textRenderer.color = Color.red;
+                        textRenderer.color = Palette.ImpostorRed;
+                        __instance.BackgroundBar.material.SetColor("_Color", Palette.ImpostorRed);
                         break;
                     case GameOverReason.ImpostorByKill:
                         textRenderer.text = "Impostors Win";
-                        textRenderer.color = Color.red;
+                        textRenderer.color = Palette.ImpostorRed;
+                        __instance.BackgroundBar.material.SetColor("_Color", Palette.ImpostorRed);
                         break;
                     case GameOverReason.ImpostorBySabotage:
                         textRenderer.text = "Impostors Win";
-                        textRenderer.color = Color.red;
+                        textRenderer.color = Palette.ImpostorRed;
+                        __instance.BackgroundBar.material.SetColor("_Color", Palette.ImpostorRed);
                         break;
                     case GameOverReason.ImpostorByVote:
                         textRenderer.text = "Impostors Win";
-                        textRenderer.color = Color.red;
+                        textRenderer.color = Palette.ImpostorRed;
+                        __instance.BackgroundBar.material.SetColor("_Color", Palette.ImpostorRed);
                         break;
                     case GameOverReason.HumansByTask:
                         textRenderer.text = "Crewmates Win";
                         textRenderer.color = Palette.CrewmateBlue;
+                        __instance.BackgroundBar.material.SetColor("_Color", Palette.CrewmateBlue);
                         break;
                     case GameOverReason.HumansDisconnect:
-                        textRenderer.text = "Crewmates Win";
+                        textRenderer.text = "Impostors Disconnected";
                         textRenderer.color = Palette.CrewmateBlue;
+                        __instance.BackgroundBar.material.SetColor("_Color", Palette.CrewmateBlue);
                         break;
                     case GameOverReason.HumansByVote:
                         textRenderer.text = "Crewmates Win";
                         textRenderer.color = Palette.CrewmateBlue;
+                        __instance.BackgroundBar.material.SetColor("_Color", Palette.CrewmateBlue);
                         break;
                 }
             }
@@ -481,22 +524,27 @@ namespace TownOfSushi.Patches
             if (CheckAndEndGameForLoverWin(__instance, statistics)) return false;
             if (CheckAndEndGameForJackalWin(__instance, statistics)) return false;
             if (CheckAndEndGameForGlitchWin(__instance, statistics)) return false;
+            if (CheckAndEndGameForWerewolfWin(__instance, statistics)) return false;
+            if (CheckAndEndGameForSerialKillerWin(__instance, statistics)) return false;
             if (CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
             if (CheckAndEndGameForCrewmateWin(__instance, statistics)) return false;
             return false;
         }
 
-        private static bool CheckAndEndGameForMiniLose(ShipStatus __instance) {
-            if (Mini.triggerMiniLose) {
-
+        private static bool CheckAndEndGameForMiniLose(ShipStatus __instance) 
+        {
+            if (Mini.triggerMiniLose) 
+            {
                 GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.MiniLose, false);
                 return true;
             }
             return false;
         }
 
-        private static bool CheckAndEndGameForJesterWin(ShipStatus __instance) {
-            if (Jester.triggerJesterWin) {
+        private static bool CheckAndEndGameForJesterWin(ShipStatus __instance) 
+        {
+            if (Jester.triggerJesterWin) 
+            {
 
                 GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.JesterWin, false);
                 return true;
@@ -504,8 +552,10 @@ namespace TownOfSushi.Patches
             return false;
         }
 
-        private static bool CheckAndEndGameForArsonistWin(ShipStatus __instance) {
-            if (Arsonist.triggerArsonistWin) {
+        private static bool CheckAndEndGameForArsonistWin(ShipStatus __instance) 
+        {
+            if (Arsonist.triggerArsonistWin) 
+            {
 
                 GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.ArsonistWin, false);
                 return true;
@@ -513,8 +563,10 @@ namespace TownOfSushi.Patches
             return false;
         }
 
-        private static bool CheckAndEndGameForVultureWin(ShipStatus __instance) {
-            if (Vulture.triggerVultureWin) {
+        private static bool CheckAndEndGameForVultureWin(ShipStatus __instance) 
+        {
+            if (Vulture.triggerVultureWin) 
+            {
 
                 GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.VultureWin, false);
                 return true;
@@ -522,24 +574,29 @@ namespace TownOfSushi.Patches
             return false;
         }
 
-        private static bool CheckAndEndGameForSabotageWin(ShipStatus __instance) {
+        private static bool CheckAndEndGameForSabotageWin(ShipStatus __instance) 
+        {
             if (MapUtilities.Systems == null) return false;
             var systemType = MapUtilities.Systems.ContainsKey(SystemTypes.LifeSupp) ? MapUtilities.Systems[SystemTypes.LifeSupp] : null;
-            if (systemType != null) {
+            if (systemType != null) 
+            {
                 LifeSuppSystemType lifeSuppSystemType = systemType.TryCast<LifeSuppSystemType>();
-                if (lifeSuppSystemType != null && lifeSuppSystemType.Countdown < 0f) {
+                if (lifeSuppSystemType != null && lifeSuppSystemType.Countdown < 0f) 
+                {
                     EndGameForSabotage(__instance);
                     lifeSuppSystemType.Countdown = 10000f;
                     return true;
                 }
             }
             var systemType2 = MapUtilities.Systems.ContainsKey(SystemTypes.Reactor) ? MapUtilities.Systems[SystemTypes.Reactor] : null;
-            if (systemType2 == null) {
+            if (systemType2 == null) 
+            {
                 systemType2 = MapUtilities.Systems.ContainsKey(SystemTypes.Laboratory) ? MapUtilities.Systems[SystemTypes.Laboratory] : null;
             }
             if (systemType2 != null) {
                 ICriticalSabotage criticalSystem = systemType2.TryCast<ICriticalSabotage>();
-                if (criticalSystem != null && criticalSystem.Countdown < 0f) {
+                if (criticalSystem != null && criticalSystem.Countdown < 0f) 
+                {
                     EndGameForSabotage(__instance);
                     criticalSystem.ClearSabotage();
                     return true;
@@ -570,7 +627,8 @@ namespace TownOfSushi.Patches
             return false;
         }
 
-        private static bool CheckAndEndGameForLoverWin(ShipStatus __instance, PlayerStatistics statistics) {
+        private static bool CheckAndEndGameForLoverWin(ShipStatus __instance, PlayerStatistics statistics) 
+        {
             if (statistics.TeamLoversAlive == 2 && statistics.TotalAlive <= 3) {
 
                 GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.LoversWin, false);
@@ -584,6 +642,8 @@ namespace TownOfSushi.Patches
             if (statistics.TeamJackalAlive >= statistics.TotalAlive - statistics.TeamJackalAlive
             && statistics.TeamImpostorsAlive == 0
             && statistics.GlitchAlive == 0
+            && statistics.WerewolfAlive == 0
+            && statistics.SerialKillerAlive == 0
             && statistics.CrewPowerAlive == 0
             && !(statistics.TeamJackalHasAliveLover 
             && statistics.TeamLoversAlive == 2)) 
@@ -595,12 +655,50 @@ namespace TownOfSushi.Patches
             return false;
         }
 
+        private static bool CheckAndEndGameForWerewolfWin(ShipStatus __instance, PlayerStatistics statistics) 
+        {
+            if (statistics.WerewolfAlive >= statistics.TotalAlive - statistics.WerewolfAlive
+            && statistics.TeamImpostorsAlive == 0
+            && statistics.GlitchAlive == 0
+            && statistics.TeamJackalAlive == 0
+            && statistics.SerialKillerAlive == 0
+            && statistics.CrewPowerAlive == 0
+            && !(statistics.WerewolfAliveHasLover 
+            && statistics.TeamLoversAlive == 2)) 
+            {
+
+                GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.WerewolfWin, false);
+                return true;
+            }
+            return false;
+        }
+
+        private static bool CheckAndEndGameForSerialKillerWin(ShipStatus __instance, PlayerStatistics statistics) 
+        {
+            if (statistics.SerialKillerAlive >= statistics.TotalAlive - statistics.SerialKillerAlive
+            && statistics.TeamImpostorsAlive == 0
+            && statistics.CrewPowerAlive == 0
+            && statistics.TeamJackalAlive == 0
+            && statistics.WerewolfAlive == 0
+            && statistics.GlitchAlive == 0
+            && !(statistics.SerialKillerHasLover
+            && statistics.TeamLoversAlive == 2)) 
+            {
+
+                GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.SerialKillerWin, false);
+                return true;
+            }
+            return false;
+        }
+
         private static bool CheckAndEndGameForGlitchWin(ShipStatus __instance, PlayerStatistics statistics) 
         {
             if (statistics.GlitchAlive >= statistics.TotalAlive - statistics.GlitchAlive
             && statistics.TeamImpostorsAlive == 0
             && statistics.CrewPowerAlive == 0
             && statistics.TeamJackalAlive == 0
+            && statistics.WerewolfAlive == 0
+            && statistics.SerialKillerAlive == 0
             && !(statistics.GlitchHasLoverAlive
             && statistics.TeamLoversAlive == 2)) 
             {
@@ -616,6 +714,8 @@ namespace TownOfSushi.Patches
             if (statistics.TeamImpostorsAlive >= statistics.TotalAlive - statistics.TeamImpostorsAlive 
             && statistics.TeamJackalAlive == 0
             && statistics.GlitchAlive == 0
+            && statistics.WerewolfAlive == 0
+            && statistics.SerialKillerAlive == 0
             && statistics.CrewPowerAlive == 0
             && !(statistics.TeamImpostorHasAliveLover 
             && statistics.TeamLoversAlive == 2)) 
@@ -644,6 +744,8 @@ namespace TownOfSushi.Patches
         {
             if (statistics.TeamImpostorsAlive == 0
             && statistics.TeamJackalAlive == 0
+            && statistics.SerialKillerAlive == 0
+            && statistics.WerewolfAlive == 0
             && statistics.GlitchAlive == 0) 
             {
 
@@ -653,7 +755,8 @@ namespace TownOfSushi.Patches
             return false;
         }
 
-        private static void EndGameForSabotage(ShipStatus __instance) {
+        private static void EndGameForSabotage(ShipStatus __instance) 
+        {
             //__instance.enabled = false;
             GameManager.Instance.RpcEndGame(GameOverReason.ImpostorBySabotage, false);
             return;
@@ -661,23 +764,28 @@ namespace TownOfSushi.Patches
 
     }
 
-    internal class PlayerStatistics {
+    internal class PlayerStatistics 
+    {
         public int TeamImpostorsAlive {get;set;}
         public int TeamJackalAlive {get;set;}
         public int GlitchAlive {get;set;}
+        public int WerewolfAlive {get;set;}
+        public int SerialKillerAlive {get;set;}
         public int CrewPowerAlive {get;set;}
         public int TeamLoversAlive {get;set;}
         public int TotalAlive {get;set;}
         public bool TeamImpostorHasAliveLover {get;set;}
         public bool TeamJackalHasAliveLover {get;set;}
+        public bool WerewolfAliveHasLover {get;set;}
         public bool GlitchHasLoverAlive {get;set;}
+        public bool SerialKillerHasLover {get;set;}
 
         public PlayerStatistics(ShipStatus __instance) 
         {
             GetPlayerCounts();
         }
 
-        private bool IsLover(NetworkedPlayerInfo p) 
+        private static bool IsLover(NetworkedPlayerInfo p) 
         {
             return (Lovers.lover1 != null && Lovers.lover1.PlayerId == p.PlayerId) || (Lovers.lover2 != null && Lovers.lover2.PlayerId == p.PlayerId);
         }
@@ -687,12 +795,16 @@ namespace TownOfSushi.Patches
             int numJackalAlive = 0;
             int numGlitchAlive = 0;
             int numImpostorsAlive = 0;
+            int numWerewolfAlive = 0;
+            int numSerialKillerAlive = 0;
             int numCrewPowerAlive = 0;
             int numLoversAlive = 0;
             int numTotalAlive = 0;
             bool impLover = false;
             bool glitchLover = false;
+            bool SKLover = false;
             bool jackalLover = false;
+            bool WerewolfLover = false;
 
             foreach (var playerInfo in GameData.Instance.AllPlayers.GetFastEnumerator())
             {
@@ -736,10 +848,20 @@ namespace TownOfSushi.Patches
                             numJackalAlive++;
                             if (lover) jackalLover = true;
                         }
+                        if (SerialKiller.Player != null && SerialKiller.Player.PlayerId == playerInfo.PlayerId) 
+                        {
+                            numSerialKillerAlive++;
+                            if (lover) SKLover = true;
+                        }
                         if (Glitch.Player != null && Glitch.Player.PlayerId == playerInfo.PlayerId) 
                         {
                             numGlitchAlive++;
                             if (lover) glitchLover = true;
+                        }
+                        if (Werewolf.Player != null && Werewolf.Player.PlayerId == playerInfo.PlayerId) 
+                        {
+                            numWerewolfAlive++;
+                            if (lover) WerewolfLover = true;
                         }
                     }
                 }
@@ -747,6 +869,8 @@ namespace TownOfSushi.Patches
 
             TeamJackalAlive = numJackalAlive;
             GlitchAlive = numGlitchAlive;
+            SerialKillerAlive = numSerialKillerAlive;
+            WerewolfAlive = numWerewolfAlive;
             CrewPowerAlive = numCrewPowerAlive;
             TeamImpostorsAlive = numImpostorsAlive;
             TeamLoversAlive = numLoversAlive;
@@ -754,6 +878,8 @@ namespace TownOfSushi.Patches
             TeamImpostorHasAliveLover = impLover;
             TeamJackalHasAliveLover = jackalLover;
             GlitchHasLoverAlive = glitchLover;
+            SerialKillerHasLover = SKLover;
+            WerewolfAliveHasLover = WerewolfLover;
         }
     }
 }

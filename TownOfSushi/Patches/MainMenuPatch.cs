@@ -36,7 +36,7 @@ namespace TownOfSushi.Modules
 
             var textDiscord = buttonDiscord.transform.GetComponentInChildren<TMPro.TMP_Text>();
             __instance.StartCoroutine(Effects.Lerp(0.5f, new System.Action<float>((p) => {
-                textDiscord.SetText("TOR Discord");
+                textDiscord.SetText("TOS Discord");
             })));
             PassiveButton passiveButtonDiscord = buttonDiscord.GetComponent<PassiveButton>();
             
@@ -45,7 +45,7 @@ namespace TownOfSushi.Modules
 
 
             
-            // TOR credits button
+            // TOS credits button
             if (template == null) return;
             var creditsButton = Object.Instantiate(template, template.transform.parent);
 
@@ -54,7 +54,7 @@ namespace TownOfSushi.Modules
 
             var textCreditsButton = creditsButton.transform.GetComponentInChildren<TMPro.TMP_Text>();
             __instance.StartCoroutine(Effects.Lerp(0.5f, new System.Action<float>((p) => {
-                textCreditsButton.SetText("TOR Credits");
+                textCreditsButton.SetText("TOS Credits");
             })));
             PassiveButton passiveCreditsButton = creditsButton.GetComponent<PassiveButton>();
 

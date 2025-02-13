@@ -98,7 +98,7 @@ namespace TownOfSushi.Patches
                             message += $"<color=#FF0000FF>{client.Character.Data.PlayerName} has a newer version of Town Of Sushi (v{playerVersions[client.Id].version.ToString()})\n</color>";
                             versionMismatch = true;
                         } else if (!PV.GuidMatches()) { // version presumably matches, check if Guid matches
-                            message += $"<color=#FF0000FF>{client.Character.Data.PlayerName} has a modified version of TOR v{playerVersions[client.Id].version.ToString()} <size=30%>({PV.guid.ToString()})</size>\n</color>";
+                            message += $"<color=#FF0000FF>{client.Character.Data.PlayerName} has a modified version of TOS v{playerVersions[client.Id].version.ToString()} <size=30%>({PV.guid.ToString()})</size>\n</color>";
                             versionMismatch = true;
                         }
                     }
@@ -312,7 +312,7 @@ namespace TownOfSushi.Patches
 
                         // Translate chosen map to presets page and use that maps random map preset page
                         if (CustomOptionHolder.dynamicMapSeparateSettings.GetBool()) {
-                            CustomOptionHolder.presetSelection.updateSelection(chosenMapId + 2);
+                            CustomOptionHolder.presetSelection.UpdateSelection(chosenMapId + 2);
                         }
                         if (chosenMapId >= 3) chosenMapId++;  // Skip dlekS
                                                               

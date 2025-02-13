@@ -24,9 +24,9 @@ Even more roles are coming soon. :)
 | [Eraser](#eraser) | [Time Master](#time-master) | [Prosecutor](#prosecutor) | [Mini](#mini) |
 | [Trickster](#trickster) | [Medic](#medic) | [Pursuer](#pursuer) | [VIP](#vip) |
 | [Cleaner](#cleaner) | [Swapper](#swapper) | [Thief](#thief) | [Invert](#invert) |
-| [Warlock](#warlock) | [Mystic](#mystic) |  | [Chameleon](#chameleon) |
+| [Warlock](#warlock) | [Mystic](#mystic) | [Glitch](#glitch)    | [Chameleon](#chameleon) |
 | [Bounty Hunter](#bounty-hunter) | [Hacker](#hacker) |  | [Shifter](#shifter)
-| [Witch](#witch) | [Tracker](#tracker) | [Glitch](#glitch)  | [Armored](#armored) |
+| [Witch](#witch) | [Tracker](#tracker) || [Armored](#armored) |
 | [Ninja](#ninja) | [Snitch](#snitch) |  |  |
 | [Bomber](#bomber) | [Spy](#spy) |  |  |
 | [Yo-Yo](#yoyo) | [Portalmaker](#portalmaker) |  |  |
@@ -138,7 +138,6 @@ Thanks to miniduikboot & GD for hosting modded servers (and so much more)
 The mod adds a few new settings to Among Us (in addition to the role settings):
 - **Any Player Can Stop The Start:** If turned off, only the host can stop the game start. If on, all players can do it. Non-hosts stopping the start will send a chat message indicating who stopped it.
 - **Number of Crewmates:** The number of Crewmate roles can be set inside a lobby.
-- **Fill Crewmate Roles (Ignores Min/Max):** Everyone will get a role, even if the settings say there would be plain Crewmates (needs enough roles over 0%).
 - **Number of Neutrals:** The number of Neutral roles can be set inside a lobby.
 - **Number of Impostors:** The number of Impostor roles can be set inside a lobby.
 - **Number of Modifiers:** The number of Modifiers can be set inside a lobby.
@@ -219,7 +218,7 @@ Here are a few instructions, on how to create a custom hat:
 Note: Lighter and Darker colors are no longer based on the players color. Instead they are assigned alternatingly, s.t. they are always balanced in a lobby.
 
 A big thank you goes to Avlona & Listoric for sorting the colors in the best possible order (which is surprisingly hard to do)!
-![TOR Colors](./Images/TOR_colors.jpg)
+![TOS Colors](./Images/TOR_colors.jpg)
 
 # Roles
 

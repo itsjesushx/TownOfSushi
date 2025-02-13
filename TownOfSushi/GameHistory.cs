@@ -14,6 +14,7 @@ namespace TownOfSushi
             Disconnect,
             Guess,
             Shift,
+            Maul,
             LawyerSuicide,
             LoverSuicide,
             WitchExile,

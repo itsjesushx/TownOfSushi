@@ -73,7 +73,8 @@ namespace TownOfSushi.Objects
                     FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(Bomber.destructionTime, new Action<float>((x) => { // can you feel the pain?
                         Color combinedColor = Mathf.Clamp01(x) * g + Mathf.Clamp01(1 - x) * c;
                         if (backgroundRenderer) backgroundRenderer.color = combinedColor;
-                        if (x == 1f && this != null) {
+                        if (x == 1f && this != null) 
+                        {
                             Explode(this);
                         }
                     })));

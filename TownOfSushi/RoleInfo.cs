@@ -83,7 +83,9 @@ namespace TownOfSushi
         #region Neutral Killers
         public readonly static RoleInfo jackal = new("Jackal", Jackal.color, "Kill all Crewmates and <color=#FF1919FF>Impostors</color> to win", "Kill everyone", RoleId.Jackal, Factions.NeutralKiller);
         public readonly static RoleInfo sidekick = new("Sidekick", Sidekick.color, "Help your Jackal to kill everyone", "Help your Jackal to kill everyone", RoleId.Sidekick, Factions.NeutralKiller);
+        public readonly static RoleInfo serialKiller = new("Serial Killer", SerialKiller.color, "Stab to make everyone die", "Murder everyone when stabbing", RoleId.SerialKiller, Factions.NeutralKiller);
         public readonly static RoleInfo glitch = new("Glitch", Glitch.color, "Hack, Kill and Mimic your <color=#FF1919FF>enemies</color>", "Hack, Kill and Mimic your <color=#FF1919FF>enemies</color>", RoleId.Glitch, Factions.NeutralKiller);
+        public readonly static RoleInfo werewolf = new("Werewolf", Werewolf.color, "Maul and eliminate your <color=#FF1919FF>enemies</color>", "Maul to eliminate your <color=#FF1919FF>enemies</color>", RoleId.Werewolf, Factions.NeutralKiller);
 
         #endregion
 
@@ -120,10 +122,12 @@ namespace TownOfSushi
             witch,
             ninja,
             bomber,
+            werewolf,
             yoyo,
             lover,
             jester,
             arsonist,
+            serialKiller,
             jackal,
             sidekick,
             vulture,
@@ -170,7 +174,8 @@ namespace TownOfSushi
             if (p == null) return infos;
 
             // Modifier
-            if (showModifier) {
+            if (showModifier) 
+            {
                 // after dead modifier
                 if (!CustomOptionHolder.modifiersAreHidden.GetBool() || PlayerControl.LocalPlayer.Data.IsDead || AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Ended)
                 {
@@ -198,6 +203,8 @@ namespace TownOfSushi
             if (p == Engineer.engineer) infos.Add(engineer);
             if (p == Sheriff.sheriff) infos.Add(sheriff);
             if (p == Glitch.Player) infos.Add(glitch);
+            if (p == SerialKiller.Player) infos.Add(serialKiller);
+            if (p == Werewolf.Player) infos.Add(werewolf);
             if (p == Veteran.Player) infos.Add(veteran);
             if (p == Lighter.lighter) infos.Add(lighter);
             if (p == Godfather.godfather) infos.Add(godfather);
@@ -331,6 +338,9 @@ namespace TownOfSushi
                                     break;
                                 case DeadPlayer.CustomDeathReason.WitchExile:
                                     deathReasonString = $" - {Helpers.ColorString(Witch.color, "witched")} by {Helpers.ColorString(killerColor, deadPlayer.killerIfExisting.Data.PlayerName)}";
+                                    break;
+                                case DeadPlayer.CustomDeathReason.Maul:
+                                    deathReasonString = $" - {Helpers.ColorString(Werewolf.color, "Mauled")} by {Helpers.ColorString(killerColor, deadPlayer.killerIfExisting.Data.PlayerName)}";
                                     break;
                                 case DeadPlayer.CustomDeathReason.LoverSuicide:
                                     deathReasonString = $" - {Helpers.ColorString(Lovers.color, "lover died")}";

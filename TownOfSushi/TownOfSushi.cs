@@ -23,6 +23,7 @@ namespace TownOfSushi
             Mayor.ClearAndReload();
             Portalmaker.ClearAndReload();
             Engineer.ClearAndReload();
+            Werewolf.ClearAndReload();
             Sheriff.ClearAndReload();
             Glitch.ClearAndReload();
             Lighter.ClearAndReload();
@@ -51,6 +52,7 @@ namespace TownOfSushi
             Warlock.ClearAndReload();
             Veteran.ClearAndReload();
             SecurityGuard.ClearAndReload();
+            SerialKiller.ClearAndReload();
             Arsonist.ClearAndReload();
             BountyHunter.ClearAndReload();
             Vulture.ClearAndReload();
@@ -76,6 +78,8 @@ namespace TownOfSushi
             Chameleon.ClearAndReload();
             Armored.ClearAndReload();
             HandleGuesser.ClearAndReload();
+
+           Modules.BetterMaps.BetterPolus.ClearAndReload();
         }
 
         public static class Jester 
@@ -92,6 +96,37 @@ namespace TownOfSushi
                 triggerJesterWin = false;
                 canCallEmergency = CustomOptionHolder.jesterCanCallEmergency.GetBool();
                 hasImpostorVision = CustomOptionHolder.jesterHasImpostorVision.GetBool();
+            }
+        }
+
+        public static class SerialKiller
+        {
+            public static PlayerControl Player;
+            public static PlayerControl currentTarget;
+            public static bool HasImpostorVision;
+            public static Color color = new Color32(51, 110, 255, byte.MaxValue);           
+            public static float StabCooldown;
+            public static float StabDuration;
+            public static float StabKillCooldown;
+            public static bool CanUseVents;
+            public static bool Stabbing;
+            private static Sprite ButtonSprite;
+            public static Sprite GetButtonSprite() 
+            {
+                if (ButtonSprite) return ButtonSprite;
+                ButtonSprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.Stab.png", 80f);
+                return ButtonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                currentTarget = null;
+                Player = null;
+                Stabbing = false;
+                HasImpostorVision = false;
+                StabCooldown = CustomOptionHolder.SerialKillerStabCooldown.GetFloat();
+                StabDuration = CustomOptionHolder.SerialKillerStabDuration.GetFloat();
+                StabKillCooldown = CustomOptionHolder.SerialKillerStabKillCooldown.GetFloat();
+                CanUseVents = CustomOptionHolder.SerialKillerCanUseVents.GetBool();
             }
         }
         
@@ -199,17 +234,17 @@ namespace TownOfSushi
         {
             public static PlayerControl engineer;
             public static Color color = new Color32(0, 40, 245, byte.MaxValue);
-            private static Sprite buttonSprite;
 
             public static int remainingFixes = 1;           
             public static bool highlightForImpostors = true;
             public static bool highlightForTeamJackal = true; 
 
+            private static Sprite ButtonSprite;
             public static Sprite GetButtonSprite() 
             {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.RepairButton.png", 115f);
-                return buttonSprite;
+                if (ButtonSprite) return ButtonSprite;
+                ButtonSprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.RepairButton.png", 115f);
+                return ButtonSprite;
             }
 
             public static void ClearAndReload() 
@@ -696,7 +731,7 @@ namespace TownOfSushi
                     
                 else if (roleInfo.roleId == RoleId.Crewmate || roleInfo.roleId == RoleId.Impostor)
                 {
-                    message =  "I'm roleless. this sucks! \n\n(Regular Impostor or Crewmate)";
+                    message =  "I'm roleless. this sucks! \n\n(Plain Impostor or Crewmate)";
                 }
                 
                 else 
@@ -1487,13 +1522,13 @@ namespace TownOfSushi
         public static Sprite GetButtonSprite() 
         {
             if (buttonSprite) return buttonSprite;
-            buttonSprite = Helpers.LoadSpriteFromResources("TheOtherRoles.Resources.Bomb_Button_Plant.png", 115f);
+            buttonSprite = Helpers.LoadSpriteFromResources("TownofSushi.Resources.Bomb_Button_Plant.png", 115f);
             return buttonSprite;
         }
 
         public static void ClearBomb(bool flag = true) 
         {
-            if (bomb != null) 
+            if (bomb != null)
             {
                 UnityEngine.Object.Destroy(bomb.bomb);
                 UnityEngine.Object.Destroy(bomb.background);
@@ -1978,6 +2013,30 @@ namespace TownOfSushi
         }
     }
 
+    public static class Werewolf
+    {
+        public static Color color = new Color32(168, 102, 41, byte.MaxValue);
+        public static PlayerControl Player;
+        public static PlayerControl currentTarget;
+        public static float Cooldown;
+        public static float Radius;
+        public static bool CanUseVents;
+        private static Sprite buttonSprite;
+        public static Sprite GetButtonSprite() 
+        {
+            if (buttonSprite) return buttonSprite;
+            buttonSprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.Maul.png", 115f);
+            return buttonSprite;
+        }
+        public static void ClearAndReload()
+        {
+            currentTarget = null;
+            Player = null;
+            Cooldown = CustomOptionHolder.WerewolfCooldown.GetFloat();
+            CanUseVents = CustomOptionHolder.WerewolfCanUseVents.GetBool();
+            Radius = CustomOptionHolder.WerewolfMaulRadius.GetFloat();
+        }
+    }
 
     public static class Yoyo 
     {
@@ -2007,7 +2066,7 @@ namespace TownOfSushi
         public static Sprite GetBlinkButtonSprite() 
         {
             if (blinkButtonSprite) return blinkButtonSprite;
-            blinkButtonSprite = Helpers.LoadSpriteFromResources("TheOtherRoles.Resources.YoyoBlinkButtonSprite.png", 115f);
+            blinkButtonSprite = Helpers.LoadSpriteFromResources("TownofSushi.Resources.YoyoBlinkButtonSprite.png", 115f);
             return blinkButtonSprite;
         }
 

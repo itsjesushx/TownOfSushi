@@ -25,7 +25,7 @@ namespace TownOfSushi.Patches
         public static void Postfix(ref int __result) 
         {
             if (GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.Normal) 
-            {  // Ignore Vanilla impostor limits in TOR Games.
+            {  // Ignore Vanilla impostor limits in TOS Games.
                 __result = Mathf.Clamp(GameOptionsManager.Instance.CurrentGameOptions.NumImpostors, 1, 3);
             } 
         }
@@ -89,27 +89,12 @@ namespace TownOfSushi.Patches
             if (neutralMin > neutralMax) neutralMin = neutralMax;
             if (neutralKMin > neutralKMax) neutralKMin = neutralKMax;
             if (impostorMin > impostorMax) impostorMin = impostorMax;
-
-            // Automatically force everyone to get a role by setting crew Min / Max according to Neutral Settings
-            if (CustomOptionHolder.crewmateRolesFill.GetBool()) 
-            {
-                int tempCrewmateMax = crewmates.Count - neutralMin;
-                int tempCrewmateMin = crewmates.Count - neutralMax;
-                int tempCrewmateMaxK = crewmates.Count - neutralKMin;
-                int tempCrewmateMinK = crewmates.Count - neutralKMax;
-
-                crewmateMax = Math.Min(tempCrewmateMax, tempCrewmateMaxK);
-                crewmateMin = Math.Min(tempCrewmateMin, tempCrewmateMinK);
-            }
            
             // Get the maximum allowed count of each role type based on the minimum and maximum option
             int crewCountSettings = rnd.Next(crewmateMin, crewmateMax + 1);
             int neutralCountSettings = rnd.Next(neutralMin, neutralMax + 1);
             int neutralKCountSettings = rnd.Next(neutralKMin, neutralKMax + 1);
             int impCountSettings = rnd.Next(impostorMin, impostorMax + 1);
-            // If fill crewmates is enabled, make sure crew + neutral >= crewmates s.t. everyone has a role!
-            while (crewCountSettings + neutralCountSettings + neutralKCountSettings < crewmates.Count && CustomOptionHolder.crewmateRolesFill.GetBool())
-                crewCountSettings++;
 
             // Potentially lower the actual maximum to the assignable players
             int maxCrewmateRoles = Mathf.Min(crewmates.Count, crewCountSettings);
@@ -137,6 +122,8 @@ namespace TownOfSushi.Patches
 
             neutralKSettings.Add((byte)RoleId.Jackal, CustomOptionHolder.jackalSpawnRate.GetSelection());
             neutralKSettings.Add((byte)RoleId.Glitch, CustomOptionHolder.GlitchSpawnRate.GetSelection());
+            neutralKSettings.Add((byte)RoleId.Werewolf, CustomOptionHolder.WerewolfSpawnRate.GetSelection());
+            neutralKSettings.Add((byte)RoleId.SerialKiller, CustomOptionHolder.SerialKillerSpawnRate.GetSelection());
 
             neutralSettings.Add((byte)RoleId.Jester, CustomOptionHolder.jesterSpawnRate.GetSelection());
             neutralSettings.Add((byte)RoleId.Arsonist, CustomOptionHolder.arsonistSpawnRate.GetSelection());
@@ -320,14 +307,15 @@ namespace TownOfSushi.Patches
                 if (!Lawyer.isProsecutor) 
                 { // Lawyer
                     foreach (PlayerControl p in PlayerControl.AllPlayerControls) {
-                        if (!p.Data.IsDead && !p.Data.Disconnected && p != Lovers.lover1 && p != Lovers.lover2 && (p.Data.Role.IsImpostor || p == Jackal.jackal || (Lawyer.targetCanBeJester && p == Jester.jester)))
+                        if (!p.Data.IsDead && !p.Data.Disconnected && p != Lovers.lover1 && p != Lovers.lover2 && (p.IsKiller() || (Lawyer.targetCanBeJester && p == Jester.jester)))
                             possibleTargets.Add(p);
                     }
                 } 
                 else 
                 { // Prosecutor
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls) {
-                        if (!p.Data.IsDead && !p.Data.Disconnected && p != Lovers.lover1 && p != Lovers.lover2 && p != Mini.mini && !p.Data.Role.IsImpostor && !Helpers.IsNeutral(p) && p != Swapper.swapper)
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls) 
+                    {
+                        if (!p.Data.IsDead && !p.Data.Disconnected && p != Lovers.lover1 && p != Lovers.lover2 && p != Mini.mini && p.IsCrew() && p != Swapper.swapper)
                             possibleTargets.Add(p);
                     }
                 }

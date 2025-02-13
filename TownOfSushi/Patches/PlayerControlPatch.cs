@@ -215,7 +215,8 @@ namespace TownOfSushi.Patches {
             Detective.timer -= Time.fixedDeltaTime;
             if (Detective.timer <= 0f) {
                 Detective.timer = Detective.footprintIntervall;
-                foreach (PlayerControl player in PlayerControl.AllPlayerControls) {
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls) 
+                {
                     if (player != null && player != PlayerControl.LocalPlayer && !player.Data.IsDead && !player.inVent) 
                     {
                         FootprintHolder.Instance.MakeFootprint(player);
@@ -229,8 +230,10 @@ namespace TownOfSushi.Patches {
             if (Vampire.vampire == null || Vampire.vampire != PlayerControl.LocalPlayer) return;
 
             PlayerControl target = null;
-            if (Spy.spy != null || Sidekick.wasSpy || Jackal.wasSpy) {
-                if (Spy.impostorsCanKillAnyone) {
+            if (Spy.spy != null || Sidekick.wasSpy || Jackal.wasSpy) 
+            {
+                if (Spy.impostorsCanKillAnyone) 
+                {
                     target = SetTarget(false, true);
                 }
                 else {
@@ -260,13 +263,32 @@ namespace TownOfSushi.Patches {
         {
             if (Jackal.jackal == null || Jackal.jackal != PlayerControl.LocalPlayer) return;
             var untargetablePlayers = new List<PlayerControl>();
-            if (Jackal.canCreateSidekickFromImpostor) {
+            if (Jackal.canCreateSidekickFromImpostor)
+            {
                 // Only exclude sidekick from beeing targeted if the jackal can create sidekicks from impostors
                 if (Sidekick.sidekick != null) untargetablePlayers.Add(Sidekick.sidekick);
             }
             if (Mini.mini != null && !Mini.IsGrownUp()) untargetablePlayers.Add(Mini.mini); // Exclude Jackal from targeting the Mini unless it has grown up
             Jackal.currentTarget = SetTarget(untargetablePlayers: untargetablePlayers);
-            SetPlayerOutline(Jackal.currentTarget, Palette.ImpostorRed);
+            SetPlayerOutline(Jackal.currentTarget, Jackal.color);
+        }
+
+        static void SerialKillerSetTarget() 
+        {
+            if (SerialKiller.Player == null || SerialKiller.Player != PlayerControl.LocalPlayer) return;
+            var untargetablePlayers = new List<PlayerControl>();
+            if (Mini.mini != null && !Mini.IsGrownUp()) untargetablePlayers.Add(Mini.mini); // Exclude Serial Killer from targeting the Mini unless it has grown up
+            SerialKiller.currentTarget = SetTarget(untargetablePlayers: untargetablePlayers);
+            SetPlayerOutline(SerialKiller.currentTarget, SerialKiller.color);
+        }
+
+        static void WerewolfSetTarget() 
+        {
+            if (Werewolf.Player == null || Werewolf.Player != PlayerControl.LocalPlayer) return;
+            var untargetablePlayers = new List<PlayerControl>();
+            if (Mini.mini != null && !Mini.IsGrownUp()) untargetablePlayers.Add(Mini.mini); // Exclude Werewolf from targeting the Mini unless it has grown up
+            Werewolf.currentTarget = SetTarget(untargetablePlayers: untargetablePlayers);
+            SetPlayerOutline(Werewolf.currentTarget, Werewolf.color);
         }
 
         static void SidekickSetTarget() {
@@ -275,7 +297,7 @@ namespace TownOfSushi.Patches {
             if (Jackal.jackal != null) untargetablePlayers.Add(Jackal.jackal);
             if (Mini.mini != null && !Mini.IsGrownUp()) untargetablePlayers.Add(Mini.mini); // Exclude Sidekick from targeting the Mini unless it has grown up
             Sidekick.currentTarget = SetTarget(untargetablePlayers: untargetablePlayers);
-            if (Sidekick.canKill) SetPlayerOutline(Sidekick.currentTarget, Palette.ImpostorRed);
+            if (Sidekick.canKill) SetPlayerOutline(Sidekick.currentTarget, Sidekick.color);
         }
 
         static void SidekickCheckPromotion() {
@@ -1091,6 +1113,10 @@ namespace TownOfSushi.Patches {
                 trackerUpdate();
                 // Jackal
                 JackalSetTarget();
+                //Serial Killer
+                SerialKillerSetTarget();
+                //Werewolf
+                WerewolfSetTarget();
                 // Sidekick
                 SidekickSetTarget();
                 // Impostor
@@ -1384,8 +1410,10 @@ namespace TownOfSushi.Patches {
     }
 
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetKillTimer))]
-    class PlayerControlSetCoolDownPatch {
-        public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)]float time) {
+    class PlayerControlSetCoolDownPatch 
+    {
+        public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)]float time) 
+        {
             if (GameOptionsManager.Instance.currentGameOptions.GameMode == GameModes.HideNSeek) return true;
             if (GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown <= 0f) return false;
             float multiplier = 1f;
@@ -1400,9 +1428,11 @@ namespace TownOfSushi.Patches {
     }
 
     [HarmonyPatch(typeof(KillAnimation), nameof(KillAnimation.CoPerformKill))]
-    class KillAnimationCoPerformKillPatch {
+    class KillAnimationCoPerformKillPatch 
+    {
         public static bool hideNextAnimation = false;
-        public static void Prefix(KillAnimation __instance, [HarmonyArgument(0)]ref PlayerControl source, [HarmonyArgument(1)]ref PlayerControl target) {
+        public static void Prefix(KillAnimation __instance, [HarmonyArgument(0)]ref PlayerControl source, [HarmonyArgument(1)]ref PlayerControl target) 
+        {
             if (hideNextAnimation)
                 source = target;
             hideNextAnimation = false;
