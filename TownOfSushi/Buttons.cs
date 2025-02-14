@@ -62,10 +62,8 @@ namespace TownOfSushi
         public static CustomButton mayorMeetingButton;
         public static CustomButton thiefKillButton;
         public static CustomButton trapperButton;
-        public static CustomButton bomberButton;
         public static CustomButton yoyoButton;
         public static CustomButton yoyoAdminTableButton;
-        public static CustomButton defuseButton;
         public static CustomButton zoomOutButton;
 
         public static Dictionary<byte, List<CustomButton>> PlayerHackedButtons = null;
@@ -141,12 +139,9 @@ namespace TownOfSushi
             thiefKillButton.MaxTimer = Thief.cooldown;
             mayorMeetingButton.MaxTimer = GameManager.Instance.LogicOptions.GetEmergencyCooldown();
             trapperButton.MaxTimer = Trapper.cooldown;
-            bomberButton.MaxTimer = Bomber.bombCooldown;
             yoyoButton.MaxTimer = Yoyo.markCooldown;
             yoyoAdminTableButton.MaxTimer = Yoyo.adminCooldown;
             yoyoAdminTableButton.EffectDuration = 10f;
-            defuseButton.MaxTimer = 0f;
-            defuseButton.Timer = 0f;
 
             timeMasterShieldButton.EffectDuration = TimeMaster.shieldDuration;
             hackerButton.EffectDuration = Hacker.duration;
@@ -164,8 +159,6 @@ namespace TownOfSushi
             trackerTrackCorpsesButton.EffectDuration = Tracker.corpsesTrackingDuration;
             witchSpellButton.EffectDuration = Witch.spellCastingDuration;
             securityGuardCamButton.EffectDuration = SecurityGuard.duration;
-            defuseButton.EffectDuration = Bomber.defuseDuration;
-            bomberButton.EffectDuration = Bomber.destructionTime + Bomber.bombActiveAfter;
             // Already set the timer to the max, as the button is enabled during the game and not available at the start
             lightsOutButton.Timer = lightsOutButton.MaxTimer;
             zoomOutButton.MaxTimer = 0f;
@@ -1705,7 +1698,7 @@ namespace TownOfSushi
                 () => { return Vulture.vulture != null && Vulture.vulture == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead; },
                 () => { return __instance.ReportButton.graphic.color == Palette.EnabledColor && PlayerControl.LocalPlayer.CanMove; },
                 () => { vultureEatButton.Timer = vultureEatButton.MaxTimer; },
-                Vulture.getButtonSprite(),
+                Vulture.GetButtonSprite(),
                 CustomButton.ButtonPositions.lowerRowCenter,
                 __instance,
                 KeyCode.F
@@ -2042,80 +2035,6 @@ namespace TownOfSushi
                 KeyCode.F
             );
 
-            // Bomber button
-            bomberButton = new CustomButton(
-                () => {
-                    if (Helpers.CheckMuderAttempt(Bomber.bomber, Bomber.bomber, ignoreMedic: true) != MurderAttemptResult.BlankKill) {
-                        var pos = PlayerControl.LocalPlayer.transform.position;
-                        byte[] buff = new byte[sizeof(float) * 2];
-                        Buffer.BlockCopy(BitConverter.GetBytes(pos.x), 0, buff, 0 * sizeof(float), sizeof(float));
-                        Buffer.BlockCopy(BitConverter.GetBytes(pos.y), 0, buff, 1 * sizeof(float), sizeof(float));
-
-                        MessageWriter writer = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.PlaceBomb, Hazel.SendOption.Reliable);
-                        writer.WriteBytesAndSize(buff);
-                        writer.EndMessage();
-                        RPCProcedure.PlaceBomb(buff);
-
-                        SoundEffectsManager.Play("trapperTrap");
-                    }
-
-                    bomberButton.Timer = bomberButton.MaxTimer;
-                    Bomber.isPlanted = true;
-                },
-                () => { return Bomber.bomber != null && Bomber.bomber == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead; },
-                () => { return PlayerControl.LocalPlayer.CanMove && !Bomber.isPlanted; },
-                () => { bomberButton.Timer = bomberButton.MaxTimer; },
-                Bomber.GetButtonSprite(),
-                CustomButton.ButtonPositions.upperRowLeft,
-                __instance,
-                KeyCode.F,
-                true,
-                Bomber.destructionTime,
-                () => {
-                    bomberButton.Timer = bomberButton.MaxTimer;
-                    bomberButton.isEffectActive = false;
-                    bomberButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
-                }
-            );
-
-            defuseButton = new CustomButton(
-                () => {
-                    defuseButton.HasEffect = true;
-                },
-                () => {
-                    if (shifterShiftButton.HasButton())
-                        defuseButton.PositionOffset = new Vector3(0f, 2f, 0f);
-                    else
-                        defuseButton.PositionOffset = new Vector3(0f, 1f, 0f);
-                    return Bomber.bomb != null && Bomb.canDefuse && !PlayerControl.LocalPlayer.Data.IsDead; },
-                () => {
-                    if (defuseButton.isEffectActive && !Bomb.canDefuse) {
-                        defuseButton.Timer = 0f;
-                        defuseButton.isEffectActive = false;
-                    }
-                    return PlayerControl.LocalPlayer.CanMove; 
-                },
-                () => {
-                    defuseButton.Timer = 0f;
-                    defuseButton.isEffectActive = false;
-                },
-                Bomb.GetDefuseSprite(),
-                new Vector3(0f, 1f, 0),
-                __instance,
-                null,
-                true,
-                Bomber.defuseDuration,
-                () => {
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.DefuseBomb, Hazel.SendOption.Reliable, -1);
-                    AmongUsClient.Instance.FinishRpcImmediately(writer);
-                    RPCProcedure.DefuseBomb();
-
-                    defuseButton.Timer = 0f;
-                    Bomb.canDefuse = false;
-                },
-                true
-            );
-
             thiefKillButton = new CustomButton(
                 () => {
                     PlayerControl thief = Thief.thief;
@@ -2266,15 +2185,19 @@ namespace TownOfSushi
             );
 
             yoyoAdminTableButton = new CustomButton(
-               () => {
+               () => 
+               {
                    if (!MapBehaviour.Instance || !MapBehaviour.Instance.isActiveAndEnabled) {
                        HudManager __instance = FastDestroyableSingleton<HudManager>.Instance;
                        __instance.InitMap();
                        MapBehaviour.Instance.ShowCountOverlay(allowedToMove: true, showLivePlayerPosition: true, includeDeadBodies: true);
                    }
                },
-               () => { return Yoyo.yoyo != null && Yoyo.yoyo == PlayerControl.LocalPlayer && Yoyo.hasAdminTable && !PlayerControl.LocalPlayer.Data.IsDead; },
-               () => {
+               () => 
+               {
+                 return Yoyo.yoyo != null && Yoyo.yoyo == PlayerControl.LocalPlayer && Yoyo.hasAdminTable && !PlayerControl.LocalPlayer.Data.IsDead; },
+               () => 
+               {
                    return true;
                },
                () => {
@@ -2300,7 +2223,9 @@ namespace TownOfSushi
             zoomOutButton = new CustomButton(
                 () => { Helpers.ToggleZoom();
                 },
-                () => { if (PlayerControl.LocalPlayer == null || !PlayerControl.LocalPlayer.Data.IsDead || (PlayerControl.LocalPlayer.Data.Role.IsImpostor && !CustomOptionHolder.deadImpsBlockSabotage.GetBool())) return false;
+                () => 
+                { 
+                    if (PlayerControl.LocalPlayer == null || !PlayerControl.LocalPlayer.Data.IsDead) return false;
                     var (playerCompleted, playerTotal) = TasksHandler.TaskInfo(PlayerControl.LocalPlayer.Data);
                     int numberOfLeftTasks = playerTotal - playerCompleted;
                     return numberOfLeftTasks <= 0 || !CustomOptionHolder.finishTasksBeforeHauntingOrZoomingOut.GetBool();

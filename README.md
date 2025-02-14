@@ -28,8 +28,8 @@ Even more roles are coming soon. :)
 | [Bounty Hunter](#bounty-hunter) | [Hacker](#hacker) |  | [Shifter](#shifter)
 | [Witch](#witch) | [Tracker](#tracker) || [Armored](#armored) |
 | [Ninja](#ninja) | [Snitch](#snitch) |  |  |
-| [Bomber](#bomber) | [Spy](#spy) |  |  |
-| [Yo-Yo](#yoyo) | [Portalmaker](#portalmaker) |  |  |
+| [Yo-Yo](#yoyo)  | [Spy](#spy) |  |  |
+| | [Portalmaker](#portalmaker) |  |  |
 | | [Security Guard](#security-guard) |  |  |
 |  | [Medium](#medium) |  |  |
 |  |  |  |  |
@@ -131,7 +131,7 @@ Thanks to miniduikboot & GD for hosting modded servers (and so much more)
 [Crowded-Mod](https://github.com/CrowdedMods/CrowdedMod) - Our implementation for 10+ player lobbies were inspired by the one from the **Crowded Mod Team**\
 [Goose-Goose-Duck](https://store.steampowered.com/app/1568590/Goose_Goose_Duck) - Idea for the Vulture role came from **Slushiegoose**\
 [TheEpicRoles](https://github.com/LaicosVK/TheEpicRoles) - Idea for the first kill shield (partly) and the tabbed option menu (fully + some code), by **LaicosVK** **DasMonschta** **Nova**\
-[Ninja](#ninja), [Thief](#thief), [Lawyer](#lawyer) / [Pursuer](#pursuer), [Deputy](#deputy), [Portalmaker](#portalmaker), [Guesser Modifier](#guesser-modifier) - Idea: [K3ndo](https://github.com/K3ndoo) ; Developed by [Gendelo](https://github.com/gendelo3) & [Mallöris](https://github.com/Mallaris) \
+[Ninja](#ninja), [Thief](#thief), [Lawyer](#lawyer) / [Pursuer](#pursuer), [Portalmaker](#portalmaker), [Guesser Modifier](#guesser-modifier) - Idea: [K3ndo](https://github.com/K3ndoo) ; Developed by [Gendelo](https://github.com/gendelo3) & [Mallöris](https://github.com/Mallaris) \
 [ugackMiner53](https://github.com/ugackMiner53/PropHunt) - Idea and core code for the Prop Hunt game mode
 
 # Settings
@@ -467,33 +467,6 @@ When performing a ninja ability kill, the ninja can be invisible for some second
 | Time The Ninja Is Invisible | -
 -----------------------
 
-## Bomber
-### **Team: Impostors**
-The Bomber is an Impostor who has the ability to be very explosive. They have the ability to plant bombs to spread grouping Crewmates and also kill them.\
-The Bomber also has the ability to perform a normal kill like all Impostors.\
-The plant time of the bomb can be different to the kill cooldown depending on the settings.\
-Crewmates can defuse a bomb depending on the settings.
-
-**NOTE:**
-- The bomb won't kill a shielded player (Medic, First Kill Shield)
-- The bomb won't kill a Mini until it's grown up
-- The bomb can kill the bomber as well as their teammate(s)
-- The hearing range can be higher/lower than the actual destruction range, depending on the settings, and has a visual indicator
-- The visual indicator slowly fades into red until the bomb explodes and it does not show the explosion range (only hearing range)!
-- The bomb can be defused by standing on it and snipping the fuse (button)
-
-### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Bomber Spawn Chance | -
-| Bomb Destruction Time | -
-| Bomb Destruction Range | -
-| Bomb Hear Range | -
-| Bomb Defuse Duration | -
-| Bomb Cooldown | -
-| Bomb Is Active After |
------------------------
-
 ## YoYo
 ### **Team: Impostors**
 The Yo-Yo is an Impostor who has the ability mark a position and later blink (teleport) to this position.\
@@ -802,34 +775,7 @@ If they try to kill a Crewmate, they die instead.\
 | Sheriff Spawn Chance | -
 | Sheriff Cooldown | -
 | Sheriff Can Kill Neutrals | -
-| Sheriff Has A Deputy | Deputy can not be in game without Sheriff
 -----------------------
-
-## Deputy
-### **Team: Crewmates**
-The Deputy has the ability to Hack player.\
-Hacks will be hidden until the Hacked player try to use a disabled button/hotkey.\
-Hacks disable:
-- Kill
-- Abilities
-- Vent
-- Report\
-\
-**NOTE:**
-- Duration starts after the Hacks become visible.
-- Deputy can not be in game without Sheriff.
-
-### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Deputy Number Of Hacks | -
-| Hack Cooldown| -
-| Hack Duration | -
-| Sheriff And Deputy Know Each Other | -
-| Deputy Gets Promoted To Sheriff | "Off", "On (Immediately)" or "On (After Meeting)"
-| Deputy Keeps Hacks When Promoted |-
------------------------
-
 ## Lighter
 ### **Team: Crewmates**
 The Lighter has a different vision than everyone else depending on the settings.\
@@ -938,7 +884,7 @@ The Swapper now has initial swap charges and can recharge those charges after co
 
 ## Mystic
 ### **Team: Crewmates**
-The Mystic has two abilities (one can activate one of them or both in the options).\
+The Mystic has Multiple abilities (one can activate one of them or both in the options).\
 The Mystic sees the souls of players that died a round earlier, the souls slowly fade away.\
 The Mystic gets a blue flash on their screen, if a player dies somewhere on the map.
 

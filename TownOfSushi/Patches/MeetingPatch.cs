@@ -356,13 +356,15 @@ namespace TownOfSushi.Patches
             }
         }
 
-        public static void swapperCheckAndReturnSwap(MeetingHud __instance, byte dyingPlayerId) {
-            // someone was guessed or dced in the meeting, check if this affects the swapper.
+        public static void SwapperCheckAndReturnSwap(MeetingHud __instance, byte dyingPlayerId) 
+        {
+            // someone was guessed, Executed or dced in the meeting, check if this affects the swapper.
             if (Swapper.swapper == null || __instance.state == MeetingHud.VoteStates.Results) return;
 
             // reset swap.
             bool reset = false;
-            if (dyingPlayerId == Swapper.playerId1 || dyingPlayerId == Swapper.playerId2) {
+            if (dyingPlayerId == Swapper.playerId1 || dyingPlayerId == Swapper.playerId2) 
+            {
                 reset = true;
                 Swapper.playerId1 = Swapper.playerId2 = byte.MaxValue;
             }
@@ -396,7 +398,7 @@ namespace TownOfSushi.Patches
 
         }
 
-        static void mayorToggleVoteTwice(MeetingHud __instance) {
+        static void MayorToggleVoteTwice(MeetingHud __instance) {
             __instance.playerStates[0].Cancel();  // This will stop the underlying buttons of the template from showing up
             if (__instance.state == MeetingHud.VoteStates.Results || Mayor.mayor.Data.IsDead) return;
             if (Mayor.mayorChooseSingleVote == 1) { // Only accept changes until the mayor voted
@@ -419,7 +421,7 @@ namespace TownOfSushi.Patches
         public static GameObject guesserUI;
         public static PassiveButton guesserUIExitButton;
         public static byte guesserCurrentTarget;
-        static void GuesserOnClick(int buttonTarget, MeetingHud __instance) 
+        static void GuesserOnClick(int buttonTarget, MeetingHud __instance)
         {
             if (guesserUI != null || !(__instance.state == MeetingHud.VoteStates.Voted || __instance.state == MeetingHud.VoteStates.NotVoted)) return;
             __instance.playerStates.ToList().ForEach(x => x.gameObject.SetActive(false));
@@ -446,8 +448,10 @@ namespace TownOfSushi.Patches
             exitButtonParent.transform.localScale = new Vector3(0.217f, 0.9f, 1);
             guesserUIExitButton = exitButton.GetComponent<PassiveButton>();
             guesserUIExitButton.OnClick.RemoveAllListeners();
-            guesserUIExitButton.OnClick.AddListener((System.Action)(() => {
-                __instance.playerStates.ToList().ForEach(x => {
+            guesserUIExitButton.OnClick.AddListener((System.Action)(() => 
+            {
+                __instance.playerStates.ToList().ForEach(x => 
+                {
                     x.gameObject.SetActive(true);
                     if (PlayerControl.LocalPlayer.Data.IsDead && x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("ShootButton").gameObject);
                 });
@@ -508,7 +512,8 @@ namespace TownOfSushi.Patches
                         PlayerControl focusedTarget = Helpers.PlayerById((byte)__instance.playerStates[buttonTarget].TargetPlayerId);
                         if (!(__instance.state == MeetingHud.VoteStates.Voted || __instance.state == MeetingHud.VoteStates.NotVoted) || focusedTarget == null || HandleGuesser.RemainingShots(PlayerControl.LocalPlayer.PlayerId) <= 0 ) return;
 
-                        if (!HandleGuesser.killsThroughShield && focusedTarget == Medic.shielded) { // Depending on the options, shooting the shielded player will not allow the guess, notifiy everyone about the kill attempt and close the window
+                        if (!HandleGuesser.killsThroughShield && focusedTarget == Medic.shielded) 
+                        { // Depending on the options, shooting the shielded player will not allow the guess, notifiy everyone about the kill attempt and close the window
                             __instance.playerStates.ToList().ForEach(x => x.gameObject.SetActive(true)); 
                             UnityEngine.Object.Destroy(container.gameObject);
 
@@ -557,7 +562,8 @@ namespace TownOfSushi.Patches
             }
         }
 
-        static void populateButtonsPostfix(MeetingHud __instance) {
+        static void PopulateButtonsPostfix(MeetingHud __instance) 
+        {
             // Add Swapper Buttons
             bool addSwapperButtons = Swapper.swapper != null && PlayerControl.LocalPlayer == Swapper.swapper && !Swapper.swapper.Data.IsDead;
             bool addMayorButton = Mayor.mayor != null && PlayerControl.LocalPlayer == Mayor.mayor && !Mayor.mayor.Data.IsDead && Mayor.mayorChooseSingleVote > 0;
@@ -633,7 +639,7 @@ namespace TownOfSushi.Patches
                     if (addSwapperButtons)
                         passiveButton.OnClick.AddListener((Action)(() => SwapperConfirm(__instance)));
                     else if (addMayorButton)
-                        passiveButton.OnClick.AddListener((Action)(() => mayorToggleVoteTwice(__instance)));
+                        passiveButton.OnClick.AddListener((Action)(() => MayorToggleVoteTwice(__instance)));
                 }
                 meetingExtraButton.parent.gameObject.SetActive(false);
                 __instance.StartCoroutine(Effects.Lerp(7.27f, new Action<float>((p) => { // Button appears delayed, so that its visible in the voting screen only!
@@ -669,7 +675,8 @@ namespace TownOfSushi.Patches
 
             if (isGuesser && !PlayerControl.LocalPlayer.Data.IsDead && remainingShots > 0) 
             {
-                for (int i = 0; i < __instance.playerStates.Length; i++) {
+                for (int i = 0; i < __instance.playerStates.Length; i++) 
+                {
                     PlayerVoteArea playerVoteArea = __instance.playerStates[i];
                     if (playerVoteArea.AmDead || playerVoteArea.TargetPlayerId == PlayerControl.LocalPlayer.PlayerId) continue;
                     if (PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer == Eraser.eraser && Eraser.alreadyErased.Contains(playerVoteArea.TargetPlayerId)) continue;
@@ -693,7 +700,7 @@ namespace TownOfSushi.Patches
         class MeetingServerStartPatch {
             static void Postfix(MeetingHud __instance)
             {
-                populateButtonsPostfix(__instance);
+                PopulateButtonsPostfix(__instance);
             }
         }
 
@@ -703,7 +710,7 @@ namespace TownOfSushi.Patches
             {
                 // Add swapper buttons
                 if (initialState) {
-                    populateButtonsPostfix(__instance);
+                    PopulateButtonsPostfix(__instance);
                 }
             }
         }
@@ -816,8 +823,6 @@ namespace TownOfSushi.Patches
                 // Remove revealed traps
                 Trap.clearRevealedTraps();
 
-                Bomber.ClearBomb();
-
                 // Reset zoomed out ghosts
                 Helpers.ToggleZoom(reset: true);
 
@@ -847,7 +852,7 @@ namespace TownOfSushi.Patches
         [HarmonyPrefix]
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.StartMeeting))]
         public static void MeetingHudIntroPrefix() {
-            EventUtility.meetingStartsUpdate();
+            EventUtility.MeetingStartsUpdate();
         }
 
         [HarmonyPatch]

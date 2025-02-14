@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace TownOfSushi{
+namespace TownOfSushi
+{
     static class MapOptions 
     {
         // Set values
@@ -22,6 +23,7 @@ namespace TownOfSushi{
         public static bool ShowVentsOnMap = true;
         public static bool ShowChatNotifications = true;
         public static bool SkeldVentImprovements = false;
+        public static bool LimitAbilities = true;
 
         public static bool BPVitalsLab = false;
         public static bool BPVentImprovements = false;
@@ -51,6 +53,7 @@ namespace TownOfSushi{
             allowParallelMedBayScans = CustomOptionHolder.allowParallelMedBayScans.GetBool();
             shieldFirstKill = CustomOptionHolder.shieldFirstKill.GetBool();
             SkeldVentImprovements = CustomOptionHolder.SkeldVentImprovements.GetBool();
+            LimitAbilities = CustomOptionHolder.LimitAbilities.GetBool();
 
             BPVitalsLab = CustomOptionHolder.BPVitalsLab.GetBool();
             BPWifiChartCourseSwap = CustomOptionHolder.BPWifiChartCourseSwap.GetBool();

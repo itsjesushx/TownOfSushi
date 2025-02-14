@@ -254,7 +254,6 @@ namespace TownOfSushi
         public static CustomOption thiefHasImpVision;
         public static CustomOption thiefCanUseVents;
         public static CustomOption thiefCanKillSheriff;
-        public static CustomOption thiefCanStealWithGuess;
 
 
         public static CustomOption trapperSpawnRate;
@@ -265,14 +264,6 @@ namespace TownOfSushi
         public static CustomOption trapperAnonymousMap;
         public static CustomOption trapperInfoType;
         public static CustomOption trapperTrapDuration;
-
-        public static CustomOption bomberSpawnRate;
-        public static CustomOption bomberBombDestructionTime;
-        public static CustomOption bomberBombDestructionRange;
-        public static CustomOption bomberBombHearRange;
-        public static CustomOption bomberDefuseDuration;
-        public static CustomOption bomberBombCooldown;
-        public static CustomOption bomberBombActiveAfter;
 
         public static CustomOption yoyoSpawnRate;
         public static CustomOption yoyoBlinkDuration;
@@ -343,6 +334,7 @@ namespace TownOfSushi
         public static CustomOption camsNoNightVisionIfImpVision;
 
         public static CustomOption RandomSpawns;
+        public static CustomOption LimitAbilities;
         public static CustomOption SkeldVentImprovements;
 
         public static CustomOption BPVitalsLab;
@@ -463,15 +455,6 @@ namespace TownOfSushi
             ninjaTraceTime = CustomOption.Create(383, Types.Impostor, "Trace Duration", 5f, 1f, 20f, 0.5f, ninjaSpawnRate, format: "s");
             ninjaTraceColorTime = CustomOption.Create(384, Types.Impostor, "Time Till Trace Color Has Faded", 2f, 0f, 20f, 0.5f, ninjaSpawnRate, format: "s");
             ninjaInvisibleDuration = CustomOption.Create(385, Types.Impostor, "Time The Ninja Is Invisible", 3f, 0f, 20f, 1f, ninjaSpawnRate, format: "s");
-
-            bomberSpawnRate = CustomOption.Create(460, Types.Impostor, ColorString(Bomber.color, "Bomber"), rates, null, true);
-            bomberBombDestructionTime = CustomOption.Create(461, Types.Impostor, "Bomb Destruction Time", 20f, 2.5f, 120f, 2.5f, bomberSpawnRate);
-            bomberBombDestructionRange = CustomOption.Create(462, Types.Impostor, "Bomb Destruction Range", 50f, 5f, 150f, 5f, bomberSpawnRate, format: "x");
-            bomberBombHearRange = CustomOption.Create(463, Types.Impostor, "Bomb Hear Range", 60f, 5f, 150f, 5f, bomberSpawnRate, format: "x");
-            bomberDefuseDuration = CustomOption.Create(464, Types.Impostor, "Bomb Defuse Duration", 3f, 0.5f, 30f, 0.5f, bomberSpawnRate);
-            bomberBombCooldown = CustomOption.Create(465, Types.Impostor, "Bomb Cooldown", 15f, 2.5f, 30f, 2.5f, bomberSpawnRate, format: "s");
-            bomberBombActiveAfter = CustomOption.Create(466, Types.Impostor, "Bomb Is Active After", 3f, 0.5f, 15f, 0.5f, bomberSpawnRate, format: "s");
-
 
             yoyoSpawnRate = CustomOption.Create(470, Types.Impostor, ColorString(Yoyo.color, "Yo-Yo"), rates, null, true);
             yoyoBlinkDuration = CustomOption.Create(471, Types.Impostor, "Blink Duration", 20f, 2.5f, 120f, 2.5f, yoyoSpawnRate, format: "s");
@@ -653,7 +636,6 @@ namespace TownOfSushi
             thiefCanKillSheriff = CustomOption.Create(402, Types.Neutral, "Thief Can Kill Sheriff", true, thiefSpawnRate);
             thiefHasImpVision = CustomOption.Create(403, Types.Neutral, "Thief Has Impostor Vision", true, thiefSpawnRate);
             thiefCanUseVents = CustomOption.Create(404, Types.Neutral, "Thief Can Use Vents", true, thiefSpawnRate);
-            thiefCanStealWithGuess = CustomOption.Create(405, Types.Neutral, "Thief Can Guess To Steal A Role (If Guesser)", false, thiefSpawnRate);
 
             trapperSpawnRate = CustomOption.Create(410, Types.Crewmate, ColorString(Trapper.color, "Trapper"), rates, null, true);
             trapperCooldown = CustomOption.Create(420, Types.Crewmate, "Trapper Cooldown", 30f, 5f, 120f, 5f, trapperSpawnRate, format: "s");
@@ -728,6 +710,7 @@ namespace TownOfSushi
 
             // Other options
             maxNumberOfMeetings = CustomOption.Create(3, Types.General, "Number Of Meetings (excluding Mayor meeting)", 10, 0, 15, 1, null, true, heading: "Gameplay Settings");
+            LimitAbilities = CustomOption.Create(1321, Types.General, "Limit Player Abilities When 2 Players Are Left Alive", true);
             anyPlayerCanStopStart = CustomOption.Create(2, Types.General, ColorString(new Color(204f / 255f, 204f / 255f, 0, 1f), "Any Player Can Stop The Start"), false, null, false);
             blockSkippingInEmergencyMeetings = CustomOption.Create(4, Types.General, "Block Skipping In Emergency Meetings", false);
             noVoteIsSelfVote = CustomOption.Create(5, Types.General, "No Vote Is Self Vote", false, blockSkippingInEmergencyMeetings);

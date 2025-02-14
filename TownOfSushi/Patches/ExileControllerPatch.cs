@@ -7,6 +7,7 @@ using TownOfSushi.Objects;
 using System;
 using TownOfSushi.Utilities;
 using UnityEngine;
+using Reactor.Utilities.Extensions;
 
 namespace TownOfSushi.Patches 
 {
@@ -193,7 +194,6 @@ namespace TownOfSushi.Patches
             {
                 Jester.triggerJesterWin = true;
             }
-
 
             // Reset custom button timers where necessary
             CustomButton.MeetingEndedUpdate();

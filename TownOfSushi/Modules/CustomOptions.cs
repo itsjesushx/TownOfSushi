@@ -678,7 +678,8 @@ namespace TownOfSushi {
             pasteButtonActiveRenderer.sprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.PasteActive.png", 100f);
             pasteButtonPassive.OnClick.RemoveAllListeners();
             pasteButtonPassive.OnClick = new UnityEngine.UI.Button.ButtonClickedEvent();
-            pasteButtonPassive.OnClick.AddListener((System.Action)(() => {
+            pasteButtonPassive.OnClick.AddListener((System.Action)(() => 
+            {
                 pasteButtonRenderer.color = Color.yellow;
                 int success = pasteFromClipboard();
                 pasteButtonRenderer.color = success == 3 ? Color.green : success == 0 ? Color.red : Color.yellow;
@@ -1388,43 +1389,67 @@ namespace TownOfSushi {
         static PassiveButton toggleSettingsButton;
         static GameObject toggleSettingsButtonObject;
 
+        static PassiveButton toggleRoleInfo;
+        static GameObject toggleRoleInfoButtonObject;
+
         static GameObject toggleZoomButtonObject;
         static PassiveButton toggleZoomButton;
 
         [HarmonyPostfix]
-        public static void Postfix(HudManager __instance) {
+        public static void Postfix(HudManager __instance) 
+        {
             if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
-            if (!toggleSettingsButton || !toggleSettingsButtonObject) {
-                // add a special button for settings viewing:
-                toggleSettingsButtonObject = GameObject.Instantiate(__instance.MapButton.gameObject, __instance.MapButton.transform.parent);
-                toggleSettingsButtonObject.transform.localPosition = __instance.MapButton.transform.localPosition + new Vector3(0, -1.25f, -500f);
-                toggleSettingsButtonObject.name = "TOGGLESETTINGSBUTTON";
-                SpriteRenderer renderer = toggleSettingsButtonObject.transform.Find("Inactive").GetComponent<SpriteRenderer>();
-                SpriteRenderer rendererActive = toggleSettingsButtonObject.transform.Find("Active").GetComponent<SpriteRenderer>();
-                toggleSettingsButtonObject.transform.Find("Background").localPosition = Vector3.zero;
-                renderer.sprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.Settings_Button.png", 100f);
-                rendererActive.sprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.Settings_ButtonActive.png", 100);
-                toggleSettingsButton = toggleSettingsButtonObject.GetComponent<PassiveButton>();
-                toggleSettingsButton.OnClick.RemoveAllListeners();
-                toggleSettingsButton.OnClick.AddListener((Action)(() => ToggleSettings(__instance)));
+            if (!toggleSettingsButton || !toggleSettingsButtonObject) 
+            {
+            // add a special button for settings viewing:
+            toggleSettingsButtonObject = GameObject.Instantiate(__instance.MapButton.gameObject, __instance.MapButton.transform.parent);
+            toggleSettingsButtonObject.transform.localPosition = __instance.MapButton.transform.localPosition + new Vector3(0, -1.25f, -500f);
+            toggleSettingsButtonObject.name = "TOGGLESETTINGSBUTTON";
+            SpriteRenderer renderer = toggleSettingsButtonObject.transform.Find("Inactive").GetComponent<SpriteRenderer>();
+            SpriteRenderer rendererActive = toggleSettingsButtonObject.transform.Find("Active").GetComponent<SpriteRenderer>();
+            toggleSettingsButtonObject.transform.Find("Background").localPosition = Vector3.zero;
+            renderer.sprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.Settings_Button.png", 100f);
+            rendererActive.sprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.Settings_ButtonActive.png", 100);
+            toggleSettingsButton = toggleSettingsButtonObject.GetComponent<PassiveButton>();
+            toggleSettingsButton.OnClick.RemoveAllListeners();
+            toggleSettingsButton.OnClick.AddListener((Action)(() => ToggleSettings(__instance)));
             }
             toggleSettingsButtonObject.SetActive(__instance.MapButton.gameObject.active && !(MapBehaviour.Instance && MapBehaviour.Instance.IsOpen) && GameOptionsManager.Instance.currentGameOptions.GameMode != GameModes.HideNSeek);
             toggleSettingsButtonObject.transform.localPosition = __instance.MapButton.transform.localPosition + new Vector3(0, -0.8f, -500f);
 
+            if (!toggleRoleInfo || !toggleRoleInfoButtonObject) 
+            {
+            // add a special button for descriptions viewing:
+            toggleRoleInfoButtonObject = GameObject.Instantiate(__instance.MapButton.gameObject, __instance.MapButton.transform.parent);
+            toggleRoleInfoButtonObject.transform.localPosition = __instance.MapButton.transform.localPosition + new Vector3(0, -1.25f, -500f);
+            toggleRoleInfoButtonObject.name = "TOGGLEDESC";
+            SpriteRenderer renderer = toggleRoleInfoButtonObject.transform.Find("Inactive").GetComponent<SpriteRenderer>();
+            SpriteRenderer rendererActive = toggleRoleInfoButtonObject.transform.Find("Active").GetComponent<SpriteRenderer>();
+            toggleRoleInfoButtonObject.transform.Find("Background").localPosition = Vector3.zero;
+            renderer.sprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.InfoButton.png", 100f);
+            rendererActive.sprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.InfoButton_Active.png", 100);
+            toggleRoleInfo = toggleRoleInfoButtonObject.GetComponent<PassiveButton>();
+            toggleRoleInfo.OnClick.RemoveAllListeners();
+            toggleRoleInfo.OnClick.AddListener((Action)(() => Helpers.ShowRoleInfo()));
+            }
+            toggleRoleInfoButtonObject.SetActive(__instance.MapButton.gameObject.active && !(MapBehaviour.Instance && MapBehaviour.Instance.IsOpen) && GameOptionsManager.Instance.currentGameOptions.GameMode != GameModes.HideNSeek);
+            toggleRoleInfoButtonObject.transform.localPosition = __instance.MapButton.transform.localPosition + new Vector3(-0.8f, -0.8f, -500f);
 
-            if (!toggleZoomButton || !toggleZoomButtonObject) {
-                // add a special button for settings viewing:
-                toggleZoomButtonObject = GameObject.Instantiate(__instance.MapButton.gameObject, __instance.MapButton.transform.parent);
-                toggleZoomButtonObject.transform.localPosition = __instance.MapButton.transform.localPosition + new Vector3(0, -1.25f, -500f);
-                toggleZoomButtonObject.name = "TOGGLEZOOMBUTTON";
-                SpriteRenderer tZrenderer = toggleZoomButtonObject.transform.Find("Inactive").GetComponent<SpriteRenderer>();
-                SpriteRenderer tZArenderer = toggleZoomButtonObject.transform.Find("Active").GetComponent<SpriteRenderer>();
-                toggleZoomButtonObject.transform.Find("Background").localPosition = Vector3.zero;
-                tZrenderer.sprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.Minus_Button.png", 100f);
-                tZArenderer.sprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.Minus_ButtonActive.png", 100);
-                toggleZoomButton = toggleZoomButtonObject.GetComponent<PassiveButton>();
-                toggleZoomButton.OnClick.RemoveAllListeners();
-                toggleZoomButton.OnClick.AddListener((Action)(() => Helpers.ToggleZoom()));
+
+            if (!toggleZoomButton || !toggleZoomButtonObject) 
+            {
+            // add a special button for settings viewing:
+            toggleZoomButtonObject = GameObject.Instantiate(__instance.MapButton.gameObject, __instance.MapButton.transform.parent);
+            toggleZoomButtonObject.transform.localPosition = __instance.MapButton.transform.localPosition + new Vector3(-0.8f, -1.25f, -500f);
+            toggleZoomButtonObject.name = "TOGGLEZOOMBUTTON";
+            SpriteRenderer tZrenderer = toggleZoomButtonObject.transform.Find("Inactive").GetComponent<SpriteRenderer>();
+            SpriteRenderer tZArenderer = toggleZoomButtonObject.transform.Find("Active").GetComponent<SpriteRenderer>();
+            toggleZoomButtonObject.transform.Find("Background").localPosition = Vector3.zero;
+            tZrenderer.sprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.Minus_Button.png", 100f);
+            tZArenderer.sprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.Minus_ButtonActive.png", 100);
+            toggleZoomButton = toggleZoomButtonObject.GetComponent<PassiveButton>();
+            toggleZoomButton.OnClick.RemoveAllListeners();
+            toggleZoomButton.OnClick.AddListener((Action)(() => Helpers.ToggleZoom()));
             }
             var (playerCompleted, playerTotal) = TasksHandler.TaskInfo(PlayerControl.LocalPlayer.Data);
             int numberOfLeftTasks = playerTotal - playerCompleted;

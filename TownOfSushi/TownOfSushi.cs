@@ -63,7 +63,6 @@ namespace TownOfSushi
             Ninja.ClearAndReload();
             Thief.ClearAndReload();
             Trapper.ClearAndReload();
-            Bomber.ClearAndReload();
             Yoyo.ClearAndReload();
 
             // Modifier
@@ -98,7 +97,6 @@ namespace TownOfSushi
                 hasImpostorVision = CustomOptionHolder.jesterHasImpostorVision.GetBool();
             }
         }
-
         public static class SerialKiller
         {
             public static PlayerControl Player;
@@ -724,9 +722,9 @@ namespace TownOfSushi
                 }
                 
                 else if (roleInfo.roleId == RoleId.Arsonist || roleInfo.roleId == RoleId.Camouflager || roleInfo.roleId == RoleId.Portalmaker ||
-                roleInfo.roleId == RoleId.Thief || roleInfo.roleId == RoleId.Bomber || roleInfo.roleId == RoleId.Lighter || roleInfo.roleId == RoleId.Trickster)
+                roleInfo.roleId == RoleId.Thief ||  roleInfo.roleId == RoleId.Lighter || roleInfo.roleId == RoleId.Trickster)
                 {
-                    message =  "I love playing among the group! \n\n(Portalmaker, Lighter, Arsonist, Camouflager, Thief, Bomber or Trickster)";
+                    message =  "I love playing among the group! \n\n(Portalmaker, Lighter, Arsonist, Camouflager, Thief or Trickster)";
                 }
                     
                 else if (roleInfo.roleId == RoleId.Crewmate || roleInfo.roleId == RoleId.Impostor)
@@ -1503,60 +1501,8 @@ namespace TownOfSushi
         }
     }
 
-    public static class Bomber 
+    public static class BountyHunter 
     {
-        public static PlayerControl bomber = null;
-        public static Color color = Palette.ImpostorRed;
-
-        public static Bomb bomb = null;
-        public static bool isPlanted = false;
-        public static bool isActive = false;
-        public static float destructionTime = 20f;
-        public static float destructionRange = 2f;
-        public static float hearRange = 30f;
-        public static float defuseDuration = 3f;
-        public static float bombCooldown = 15f;
-        public static float bombActiveAfter = 3f;
-        private static Sprite buttonSprite;
-
-        public static Sprite GetButtonSprite() 
-        {
-            if (buttonSprite) return buttonSprite;
-            buttonSprite = Helpers.LoadSpriteFromResources("TownofSushi.Resources.Bomb_Button_Plant.png", 115f);
-            return buttonSprite;
-        }
-
-        public static void ClearBomb(bool flag = true) 
-        {
-            if (bomb != null)
-            {
-                UnityEngine.Object.Destroy(bomb.bomb);
-                UnityEngine.Object.Destroy(bomb.background);
-                bomb = null;
-            }
-            isPlanted = false;
-            isActive = false;
-            if (flag) SoundEffectsManager.Stop("bombFuseBurning");
-        }
-
-        public static void ClearAndReload() 
-        {
-            ClearBomb(false);
-            bomber = null;
-            bomb = null;
-            isPlanted = false;
-            isActive = false;
-            destructionTime = CustomOptionHolder.bomberBombDestructionTime.GetFloat();
-            destructionRange = CustomOptionHolder.bomberBombDestructionRange.GetFloat() / 10;
-            hearRange = CustomOptionHolder.bomberBombHearRange.GetFloat() / 10;
-            defuseDuration = CustomOptionHolder.bomberDefuseDuration.GetFloat();
-            bombCooldown = CustomOptionHolder.bomberBombCooldown.GetFloat();
-            bombActiveAfter = CustomOptionHolder.bomberBombActiveAfter.GetFloat();
-            Bomb.ClearBackgroundSprite();
-        }
-    }
-
-    public static class BountyHunter {
         public static PlayerControl bountyHunter;
         public static Color color = Palette.ImpostorRed;
 
@@ -1606,7 +1552,7 @@ namespace TownOfSushi
         public static bool canUseVents = true;
         public static bool showArrows = true;
         private static Sprite buttonSprite;
-        public static Sprite getButtonSprite() {
+        public static Sprite GetButtonSprite() {
             if (buttonSprite) return buttonSprite;
             buttonSprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.VultureButton.png", 115f);
             return buttonSprite;
@@ -1952,9 +1898,9 @@ namespace TownOfSushi
         public static bool hasImpostorVision;
         public static bool canUseVents;
         public static bool canKillSheriff;
-        public static bool canStealWithGuess;
 
-        public static void ClearAndReload() {
+        public static void ClearAndReload() 
+        {
             thief = null;
             suicideFlag = false;
             currentTarget = null;
@@ -1963,7 +1909,6 @@ namespace TownOfSushi
             cooldown = CustomOptionHolder.thiefCooldown.GetFloat();
             canUseVents = CustomOptionHolder.thiefCanUseVents.GetBool();
             canKillSheriff = CustomOptionHolder.thiefCanKillSheriff.GetBool();
-            canStealWithGuess = CustomOptionHolder.thiefCanStealWithGuess.GetBool();
         }
 
         public static bool IsFailedThiefKill(PlayerControl target, PlayerControl killer, RoleInfo targetRole) 

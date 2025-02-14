@@ -253,7 +253,7 @@ namespace TownOfSushi.Patches
                 AdditionalTempData.additionalWinConditions.Add(WinCondition.AdditionalAlivePursuerWin);
             }
             RPCProcedure.ResetVariables();
-            EventUtility.gameEndsUpdate();
+            EventUtility.GameEndsUpdate();
         }
     }
 

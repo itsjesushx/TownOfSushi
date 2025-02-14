@@ -240,9 +240,6 @@ namespace TownOfSushi
                     case RoleId.Thief:
                         Thief.thief = player;
                         break;
-                    case RoleId.Bomber:
-                        Bomber.bomber = player;
-                        break;
                     case RoleId.Yoyo:
                         Yoyo.yoyo = player;
                         break;
@@ -686,7 +683,6 @@ namespace TownOfSushi
             if (player == Warlock.warlock) Warlock.ClearAndReload();
             if (player == Witch.witch) Witch.ClearAndReload();
             if (player == Ninja.ninja) Ninja.ClearAndReload();
-            if (player == Bomber.bomber) Bomber.ClearAndReload();
             if (player == Yoyo.yoyo) Yoyo.ClearAndReload();
 
             // Other roles
@@ -762,7 +758,8 @@ namespace TownOfSushi
             }
         }
 
-        public static void PlaceNinjaTrace(byte[] buff) {
+        public static void PlaceNinjaTrace(byte[] buff) 
+        {
             Vector3 position = Vector3.zero;
             position.x = BitConverter.ToSingle(buff, 0 * sizeof(float));
             position.y = BitConverter.ToSingle(buff, 1 * sizeof(float));
@@ -897,8 +894,10 @@ namespace TownOfSushi
         public static void ArsonistWin() 
         {
             Arsonist.triggerArsonistWin = true;
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls) {
-                if (p != Arsonist.arsonist && !p.Data.IsDead) {
+            foreach (PlayerControl p in PlayerControl.AllPlayerControls) 
+            {
+                if (p != Arsonist.arsonist && !p.Data.IsDead) 
+                {
                     p.Exiled();
                     OverrideDeathReasonAndKiller(p, DeadPlayer.CustomDeathReason.Arson, Arsonist.arsonist);
                 }
@@ -925,7 +924,6 @@ namespace TownOfSushi
                     if (playerInfo != null) playerInfo.text = "";
             }
         }
-
         public static void GuesserShoot(byte killerId, byte dyingTargetId, byte guessedTargetId, byte guessedRoleId) 
         {
             PlayerControl dyingTarget = Helpers.PlayerById(dyingTargetId);
@@ -935,18 +933,12 @@ namespace TownOfSushi
             if (Lawyer.target != null && dyingLoverPartner == Lawyer.target) Lawyer.targetWasGuessed = true;  // Lawyer shouldn't be exiled with the client for guesses
 
             PlayerControl guesser = Helpers.PlayerById(killerId);
-            if (Thief.thief != null && Thief.thief.PlayerId == killerId && Thief.canStealWithGuess) {
-                RoleInfo roleInfo = RoleInfo.allRoleInfos.FirstOrDefault(x => (byte)x.roleId == guessedRoleId);
-                if (!Thief.thief.Data.IsDead && !Thief.IsFailedThiefKill(dyingTarget, guesser, roleInfo)) {
-                    RPCProcedure.ThiefStealsRole(dyingTarget.PlayerId);
-                }
-            }
-
             bool lawyerDiedAdditionally = false;
             if (Lawyer.lawyer != null && !Lawyer.isProsecutor && Lawyer.lawyer.PlayerId == killerId && Lawyer.target != null && Lawyer.target.PlayerId == dyingTargetId) 
             {
                 // Lawyer guessed client.
-                if (PlayerControl.LocalPlayer == Lawyer.lawyer) {
+                if (PlayerControl.LocalPlayer == Lawyer.lawyer) 
+                {
                     FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(Lawyer.lawyer.Data, Lawyer.lawyer.Data);
                     if (MeetingHudPatch.guesserUI != null) MeetingHudPatch.guesserUIExitButton.OnClick.Invoke();
                 }
@@ -969,7 +961,7 @@ namespace TownOfSushi
                     {
                         pva.SetDead(pva.DidReport, true);
                         pva.Overlay.gameObject.SetActive(true);
-                        MeetingHudPatch.swapperCheckAndReturnSwap(MeetingHud.Instance, pva.TargetPlayerId);
+                        MeetingHudPatch.SwapperCheckAndReturnSwap(MeetingHud.Instance, pva.TargetPlayerId);
                     }
 
                     //Give players back their vote if target is shot dead
@@ -988,7 +980,9 @@ namespace TownOfSushi
                 {
                     FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(guesser.Data, dyingTarget.Data);
                     if (MeetingHudPatch.guesserUI != null) MeetingHudPatch.guesserUIExitButton.OnClick.Invoke();
-                } else if (dyingLoverPartner != null && PlayerControl.LocalPlayer == dyingLoverPartner) {
+                } 
+                else if (dyingLoverPartner != null && PlayerControl.LocalPlayer == dyingLoverPartner) 
+                {
                     FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(dyingLoverPartner.Data, dyingLoverPartner.Data);
                     if (MeetingHudPatch.guesserUI != null) MeetingHudPatch.guesserUIExitButton.OnClick.Invoke();
                 }
@@ -1091,7 +1085,6 @@ namespace TownOfSushi
                     Witch.futureSpelled.RemoveAll(x => x.PlayerId == thief.PlayerId);
             }
             if (target == Ninja.ninja) Ninja.ninja = thief;
-            if (target == Bomber.bomber) Bomber.bomber = thief;
             if (target == Yoyo.yoyo) {
                 Yoyo.yoyo = thief;
                 Yoyo.markedLocation = null;
@@ -1179,26 +1172,6 @@ namespace TownOfSushi
                     OverrideDeathReasonAndKiller(Helpers.PlayerById(reader.ReadByte()), (DeadPlayer.CustomDeathReason)reader.ReadByte(), Helpers.PlayerById(reader.ReadByte()));
                     break;
             }
-        }
-
-        public static void PlaceBomb(byte[] buff) 
-        {
-            if (Bomber.bomber == null) return;
-            Vector3 position = Vector3.zero;
-            position.x = BitConverter.ToSingle(buff, 0 * sizeof(float));
-            position.y = BitConverter.ToSingle(buff, 1 * sizeof(float));
-            new Bomb(position);
-        }
-
-        public static void DefuseBomb() 
-        {
-            try {
-                SoundEffectsManager.PlayAtPosition("bombDefused", Bomber.bomb.bomb.transform.position, range: Bomber.hearRange);
-            } catch { }
-            Bomber.ClearBomb();
-            bomberButton.Timer = bomberButton.MaxTimer;
-            bomberButton.isEffectActive = false;
-            bomberButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
         }
 
         public static void ShareRoom(byte playerId, byte roomId) 
@@ -1497,12 +1470,6 @@ namespace TownOfSushi
                     byte trappedPlayer = reader.ReadByte();
                     byte trapId = reader.ReadByte();
                     RPCProcedure.TriggerTrap(trappedPlayer, trapId);
-                    break;
-                case (byte)CustomRPC.PlaceBomb:
-                    RPCProcedure.PlaceBomb(reader.ReadBytesAndSize());
-                    break;
-                case (byte)CustomRPC.DefuseBomb:
-                    RPCProcedure.DefuseBomb();
                     break;
                 case (byte)CustomRPC.StopStart:
                     RPCProcedure.StopStart(reader.ReadByte());

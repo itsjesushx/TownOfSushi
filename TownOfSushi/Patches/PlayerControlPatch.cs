@@ -595,7 +595,8 @@ namespace TownOfSushi.Patches {
                         if (p.Data.IsDead) roleNames = roleText;
                         playerInfoText = $"{roleNames}";
                         if (p == Swapper.swapper) playerInfoText = $"{roleNames}" + Helpers.ColorString(Swapper.color, $" ({Swapper.charges})");
-                        if (HudManager.Instance.TaskPanel != null) {
+                        if (HudManager.Instance.TaskPanel != null) 
+                        {
                             TMPro.TextMeshPro tabText = HudManager.Instance.TaskPanel.tab.transform.FindChild("TabText_TMP").GetComponent<TMPro.TextMeshPro>();
                             tabText.SetText($"Tasks {taskInfo}");
                         }
@@ -920,7 +921,7 @@ namespace TownOfSushi.Patches {
             }
         }
 
-        public static void VeteranUpdate() 
+        public static void VeteranUpdate()
         {
             if (Veteran.Player == null || PlayerControl.LocalPlayer != Veteran.Player || PlayerControl.LocalPlayer.Data.IsDead) return;
             var (playerCompleted, _) = TasksHandler.TaskInfo(PlayerControl.LocalPlayer.Data);
@@ -1039,6 +1040,8 @@ namespace TownOfSushi.Patches {
                 HudManagerStartPatch.vampireKillButton.MaxTimer = Vampire.cooldown * multiplier;
                 HudManagerStartPatch.jackalKillButton.MaxTimer = Jackal.cooldown * multiplier;
                 HudManagerStartPatch.GlitchKillButton.MaxTimer = Glitch.KillCooldown * multiplier;
+                HudManagerStartPatch.SerialKillerStabButton.MaxTimer = SerialKiller.StabCooldown * multiplier;
+                HudManagerStartPatch.WerewolfMaulButton.MaxTimer = Werewolf.Cooldown * multiplier;
                 HudManagerStartPatch.sidekickKillButton.MaxTimer = Sidekick.cooldown * multiplier;
                 HudManagerStartPatch.warlockCurseButton.MaxTimer = Warlock.cooldown * multiplier;
                 HudManagerStartPatch.cleanerCleanButton.MaxTimer = Cleaner.cooldown * multiplier;
@@ -1176,7 +1179,6 @@ namespace TownOfSushi.Patches {
                 MiniCooldownUpdate();
                 // Chameleon (invis stuff, timers)
                 Chameleon.Update();
-                Bomb.Update();
             } 
         }
     }
@@ -1562,7 +1564,7 @@ namespace TownOfSushi.Patches {
     public static class GameDataHandleDisconnectPatch {
         public static void Prefix(GameData __instance, PlayerControl player, DisconnectReasons reason) {
             if (MeetingHud.Instance) {
-                MeetingHudPatch.swapperCheckAndReturnSwap(MeetingHud.Instance, player.PlayerId);
+                MeetingHudPatch.SwapperCheckAndReturnSwap(MeetingHud.Instance, player.PlayerId);
             }
         }
     }

@@ -13,12 +13,12 @@ namespace TownOfSushi
             Kill,
             Disconnect,
             Guess,
+            Execute,
             Shift,
             Maul,
             LawyerSuicide,
             LoverSuicide,
             WitchExile,
-            Bomb,
             Arson,
         };
 
@@ -28,7 +28,8 @@ namespace TownOfSushi
         public PlayerControl killerIfExisting;
         public bool wasCleaned;
 
-        public DeadPlayer(PlayerControl player, DateTime timeOfDeath, CustomDeathReason deathReason, PlayerControl killerIfExisting) {
+        public DeadPlayer(PlayerControl player, DateTime timeOfDeath, CustomDeathReason deathReason, PlayerControl killerIfExisting) 
+        {
             this.player = player;
             this.timeOfDeath = timeOfDeath;
             this.deathReason = deathReason;

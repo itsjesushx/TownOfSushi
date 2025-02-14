@@ -83,13 +83,7 @@ namespace TownOfSushi.Patches
             else if (Mayor.mayor != null && Mayor.mayor == localPlayer)
                 setPlayerNameColor(Mayor.mayor, Mayor.color);
             else if (Engineer.engineer != null && Engineer.engineer == localPlayer)
-                setPlayerNameColor(Engineer.engineer, Engineer.color);
-            else if (Sheriff.sheriff != null && Sheriff.sheriff == localPlayer) {
-                setPlayerNameColor(Sheriff.sheriff, Sheriff.color);
-                if (Deputy.deputy != null && Deputy.knowsSheriff) {
-                    setPlayerNameColor(Deputy.deputy, Deputy.color);
-                }
-            } else*/
+                setPlayerNameColor(Engineer.engineer, Engineer.color); else*/
            /*else if (Portalmaker.portalmaker != null && Portalmaker.portalmaker == localPlayer)
                 setPlayerNameColor(Portalmaker.portalmaker, Portalmaker.color);
             else if (Lighter.lighter != null && Lighter.lighter == localPlayer)
@@ -323,26 +317,26 @@ namespace TownOfSushi.Patches
         static void UpdateReportButton(HudManager __instance) 
         {
             if (GameOptionsManager.Instance.currentGameOptions.GameMode == GameModes.HideNSeek) return;
-            if (Glitch.HackedKnows.ContainsKey(PlayerControl.LocalPlayer.PlayerId) && Glitch.HackedKnows[PlayerControl.LocalPlayer.PlayerId] > 0 || MeetingHud.Instance) __instance.ReportButton.Hide();
+            if (Glitch.HackedKnows.ContainsKey(PlayerControl.LocalPlayer.PlayerId) && Glitch.HackedKnows[PlayerControl.LocalPlayer.PlayerId] > 0 || MeetingHud.Instance || Helpers.TwoPlayersAlive() && MapOptions.LimitAbilities) __instance.ReportButton.Hide();
             else if (!__instance.ReportButton.isActiveAndEnabled) __instance.ReportButton.Show();
         }
          
         static void UpdateVentButton(HudManager __instance)
         {
             if (GameOptionsManager.Instance.currentGameOptions.GameMode == GameModes.HideNSeek) return;
-            if (Glitch.HackedKnows.ContainsKey(PlayerControl.LocalPlayer.PlayerId) && Glitch.HackedKnows[PlayerControl.LocalPlayer.PlayerId] > 0 || MeetingHud.Instance) __instance.ImpostorVentButton.Hide();
+            if (Glitch.HackedKnows.ContainsKey(PlayerControl.LocalPlayer.PlayerId) && Glitch.HackedKnows[PlayerControl.LocalPlayer.PlayerId] > 0 || MeetingHud.Instance || Helpers.TwoPlayersAlive() && MapOptions.LimitAbilities) __instance.ImpostorVentButton.Hide();
             else if (PlayerControl.LocalPlayer.RoleCanUseVents() && !__instance.ImpostorVentButton.isActiveAndEnabled) __instance.ImpostorVentButton.Show();
 
         }
 
         static void UpdateUseButton(HudManager __instance) 
         {
-            if (MeetingHud.Instance) __instance.UseButton.Hide();
+            if (MeetingHud.Instance || Helpers.TwoPlayersAlive() && MapOptions.LimitAbilities) __instance.UseButton.Hide();
         }
 
         static void UpdateSabotageButton(HudManager __instance) 
         {
-            if (MeetingHud.Instance) __instance.SabotageButton.Hide();
+            if (MeetingHud.Instance || Helpers.TwoPlayersAlive() && MapOptions.LimitAbilities) __instance.SabotageButton.Hide();
             if (PlayerControl.LocalPlayer.Data.IsDead && CustomOptionHolder.deadImpsBlockSabotage.GetBool()) __instance.SabotageButton.Hide();
         }
 
@@ -371,7 +365,7 @@ namespace TownOfSushi.Patches
             // Mini
             MiniUpdate();
 
-            // Deputy Sabotage, Use and Vent Button Disabling
+            // Glitch Sabotage, Use and Vent Button Disabling
             UpdateReportButton(__instance);
             UpdateVentButton(__instance);
             // Meeting hide buttons if needed (used for the map usage, because closing the map would show buttons)
@@ -381,12 +375,24 @@ namespace TownOfSushi.Patches
             if (!MeetingHud.Instance) __instance.AbilityButton?.Update();
 
             // Fix dead player's pets being visible by just always updating whether the pet should be visible at all.
-            foreach (PlayerControl target in PlayerControl.AllPlayerControls) {
+            foreach (PlayerControl target in PlayerControl.AllPlayerControls) 
+            {
                 var pet = target.GetPet();
                 if (pet != null) {
                     pet.Visible = (PlayerControl.LocalPlayer.Data.IsDead && target.Data.IsDead || !target.Data.IsDead) && !target.inVent;
                 }
             }
+        }
+    }
+    //Reports can't happen by clicking the corpse
+    [HarmonyPatch(typeof(DeadBody), nameof(DeadBody.OnClick))]
+    public static class DeadBodyOnClickUpdate
+    {
+        public static bool Prefix(DeadBody __instance) 
+        {
+            if (GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek) return false;
+            if (Helpers.TwoPlayersAlive() && MapOptions.LimitAbilities)  return false;
+            return true;
         }
     }
 }

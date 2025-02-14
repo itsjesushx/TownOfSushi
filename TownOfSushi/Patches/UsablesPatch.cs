@@ -226,27 +226,38 @@ namespace TownOfSushi.Patches {
     [HarmonyPatch(typeof(EmergencyMinigame), nameof(EmergencyMinigame.Update))]
     class EmergencyMinigameUpdatePatch {
         static void Postfix(EmergencyMinigame __instance) {
-            var roleCanCallEmergency = true;
+            var CanCallEmergency = true;
             var statusText = "";
 
             // Deactivate emergency button for Swapper
-            if (Swapper.swapper != null && Swapper.swapper == PlayerControl.LocalPlayer && !Swapper.canCallEmergency) {
-                roleCanCallEmergency = false;
+            if (Swapper.swapper != null && Swapper.swapper == PlayerControl.LocalPlayer && !Swapper.canCallEmergency) 
+            {
+                CanCallEmergency = false;
                 statusText = "The Swapper can't start an emergency meeting";
             }
             // Potentially deactivate emergency button for Jester
-            if (Jester.jester != null && Jester.jester == PlayerControl.LocalPlayer && !Jester.canCallEmergency) {
-                roleCanCallEmergency = false;
+            if (Jester.jester != null && Jester.jester == PlayerControl.LocalPlayer && !Jester.canCallEmergency) 
+            {
+                CanCallEmergency = false;
                 statusText = "The Jester can't start an emergency meeting";
             }
             // Potentially deactivate emergency button for Lawyer/Prosecutor
-            if (Lawyer.lawyer != null && Lawyer.lawyer == PlayerControl.LocalPlayer && !Lawyer.canCallEmergency) {
-                roleCanCallEmergency = false;
+            if (Lawyer.lawyer != null && Lawyer.lawyer == PlayerControl.LocalPlayer && !Lawyer.canCallEmergency) 
+            {
+                CanCallEmergency = false;
                 statusText = "The Lawyer can't start an emergency meeting";
                 if (Lawyer.isProsecutor) statusText = "The Prosecutor can't start an emergency meeting";
             }
 
-            if (!roleCanCallEmergency) {
+            // Potentially deactivate emergency button if 2 players are left alive
+            if (MapOptions.LimitAbilities && Helpers.TwoPlayersAlive()) 
+            {
+                CanCallEmergency = false;
+                statusText = "Two Players Alive Only. Impossible to start a meeting!";
+            }
+
+            if (!CanCallEmergency) 
+            {
                 __instance.StatusText.text = statusText;
                 __instance.NumberText.text = string.Empty;
                 __instance.ClosedLid.gameObject.SetActive(true);
@@ -748,10 +759,12 @@ namespace TownOfSushi.Patches {
         }
     }
     [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.ShowSabotageMap))]
-    class ShowSabotageMapPatch {
+    class ShowSabotageMapPatch
+    {
         static bool Prefix(MapBehaviour __instance) 
         {
-            if (PlayerControl.LocalPlayer.Data.IsDead && CustomOptionHolder.deadImpsBlockSabotage.GetBool()) 
+            if (PlayerControl.LocalPlayer.Data.IsDead && CustomOptionHolder.deadImpsBlockSabotage.GetBool()  
+            || Helpers.TwoPlayersAlive() && MapOptions.LimitAbilities) 
             {
                 __instance.ShowNormalMap();
                 return false;

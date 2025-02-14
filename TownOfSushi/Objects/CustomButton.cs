@@ -89,7 +89,7 @@ namespace TownOfSushi.Objects
                 actionButtonRenderer.color = new Color(1f, 1f, 1f, 0.3f);
                 this.OnClick();
 
-                // Deputy skip onClickEvent if Hacked
+                // Glitch skip onClickEvent if Hacked
                 if (Glitch.HackedKnows.ContainsKey(PlayerControl.LocalPlayer.PlayerId) && Glitch.HackedKnows[PlayerControl.LocalPlayer.PlayerId] > 0f) return;
 
                 if (this.HasEffect && !this.isEffectActive) 
@@ -240,7 +240,7 @@ namespace TownOfSushi.Objects
             // Trigger OnClickEvent if the hotkey is being pressed down
             if (hotkey.HasValue && Input.GetKeyDown(hotkey.Value)) OnClickEvent();
 
-            // Deputy disable the button and display Hacks instead...
+            // Glitch disable the button and display Hacks instead...
             if (Glitch.HackedPlayers.Contains(localPlayer.PlayerId)) {
                 OnClick = () => {
                     Glitch.SetHackedKnows();

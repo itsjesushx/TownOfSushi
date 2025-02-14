@@ -35,22 +35,27 @@ public static class EventUtility
     }
 
 
-    public static void meetingStartsUpdate() {
+    public static void MeetingStartsUpdate() 
+    {
         if (!isEnabled) return;
     }
 
-    public static void gameStartsUpdate() {
+    public static void GameStartsUpdate() 
+    {
         if (!isEnabled) return;
     }
 
-    public static void gameEndsUpdate() {
+    public static void GameEndsUpdate() 
+    {
         if (!isEnabled) return;
     }
 
 
     [HarmonyPatch(typeof(ChatController), nameof(ChatController.AddChat))]
-    public static class AddChatPatch {
-        public static void Prefix(ChatController __instance, PlayerControl sourcePlayer, ref string chatText, bool censor) {
+    public static class AddChatPatch 
+    {
+        public static void Prefix(ChatController __instance, PlayerControl sourcePlayer, ref string chatText, bool censor) 
+        {
             if (!isEnabled) return;
             var charArray = chatText.ToCharArray();
             Array.Reverse(charArray);

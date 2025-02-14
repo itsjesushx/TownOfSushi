@@ -76,10 +76,11 @@ namespace TownOfSushi.Patches
             SoundEffectsManager.Load();
 
             // First kill
-            if (AmongUsClient.Instance.AmHost && MapOptions.shieldFirstKill && MapOptions.firstKillName != "") 
+            if (AmongUsClient.Instance.AmHost && MapOptions.shieldFirstKill && MapOptions.firstKillName != "")
             {
                 PlayerControl target = PlayerControl.AllPlayerControls.ToArray().ToList().FirstOrDefault(x => x.Data.PlayerName.Equals(MapOptions.firstKillName));
-                if (target != null) {
+                if (target != null) 
+                {
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetFirstKill, Hazel.SendOption.Reliable, -1);
                     writer.Write(target.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -110,7 +111,7 @@ namespace TownOfSushi.Patches
             }
             MapOptions.firstKillName = "";
 
-            EventUtility.gameStartsUpdate();
+            EventUtility.GameStartsUpdate();
         }
     }
 

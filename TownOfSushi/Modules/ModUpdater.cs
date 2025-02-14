@@ -22,7 +22,6 @@ namespace TownOfSushi.Modules
         public const string RepositoryOwner = "itsjesushx";
         public const string RepositoryName = "TownOfSushi";
         public static ModUpdater Instance { get; private set; }
-
         public ModUpdater(IntPtr ptr) : base(ptr) { }
 
         private bool _busy;

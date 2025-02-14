@@ -11,6 +11,7 @@ using TownOfSushi.Utilities;
 using Reactor.Utilities.Extensions;
 using AmongUs.GameOptions;
 using TownOfSushi.Patches;
+using System.Text;
 
 namespace TownOfSushi 
 {
@@ -140,6 +141,8 @@ namespace TownOfSushi
                 res.Add(player.PlayerId, player);
             return res;
         }
+
+        public static bool TwoPlayersAlive() => PlayerControl.AllPlayerControls.ToArray().Count(x => !x.Data.IsDead) == 2;
 
         public static void HandleVampireBiteOnBodyReport() 
         {
@@ -727,6 +730,21 @@ namespace TownOfSushi
         {
             return player.Data.Role.IsImpostor || player.IsNeutralKiller();
         }
+        public static void ShowRoleInfo()
+        {
+            var role = RoleInfo.GetRoleInfoForPlayer(PlayerControl.LocalPlayer, false);
+			foreach (RoleInfo roleInfo in role)
+            {
+                if (role == null) return;
+                
+                var stringb = new StringBuilder();
+                stringb.Append(ColorString(roleInfo.color, $"{roleInfo.name} Description:\n"));
+                stringb.Append(ColorString(roleInfo.color, $"{roleInfo.RoleDescription}\n\n"));
+                
+                FastDestroyableSingleton<HudManager>.Instance.ShowPopUp(stringb.ToString());
+                SoundEffectsManager.Play("knockKnock");
+            }
+        }
         public static bool zoomOutStatus = false;
         public static void ToggleZoom(bool reset=false) 
         {
@@ -739,7 +757,8 @@ namespace TownOfSushi
             }
 
             var tzGO = GameObject.Find("TOGGLEZOOMBUTTON");
-            if (tzGO != null) {
+            if (tzGO != null) 
+            {
                 var rend = tzGO.transform.Find("Inactive").GetComponent<SpriteRenderer>();
                 var rendActive = tzGO.transform.Find("Active").GetComponent<SpriteRenderer>();
                 rend.sprite = zoomOutStatus ? LoadSpriteFromResources("TownOfSushi.Resources.Plus_Button.png", 100f) : Helpers.LoadSpriteFromResources("TownOfSushi.Resources.Minus_Button.png", 100f);

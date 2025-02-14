@@ -117,7 +117,6 @@ namespace TownOfSushi.Patches
             impSettings.Add((byte)RoleId.BountyHunter, CustomOptionHolder.bountyHunterSpawnRate.GetSelection());
             impSettings.Add((byte)RoleId.Witch, CustomOptionHolder.witchSpawnRate.GetSelection());
             impSettings.Add((byte)RoleId.Ninja, CustomOptionHolder.ninjaSpawnRate.GetSelection());
-            impSettings.Add((byte)RoleId.Bomber, CustomOptionHolder.bomberSpawnRate.GetSelection());
             impSettings.Add((byte)RoleId.Yoyo, CustomOptionHolder.yoyoSpawnRate.GetSelection());
 
             neutralKSettings.Add((byte)RoleId.Jackal, CustomOptionHolder.jackalSpawnRate.GetSelection());
@@ -365,7 +364,8 @@ namespace TownOfSushi.Patches
                 RoleId.Shifter
             });
 
-            if (rnd.Next(1, 101) <= CustomOptionHolder.modifierLover.GetSelection() * 10) { // Assign lover
+            if (rnd.Next(1, 101) <= CustomOptionHolder.modifierLover.GetSelection() * 10) 
+            { // Assign lover
                 bool isEvilLover = rnd.Next(1, 101) <= CustomOptionHolder.modifierLoverImpLoverRate.GetSelection() * 10;
                 byte firstLoverId;
                 List<PlayerControl> impPlayer = new List<PlayerControl>(players);
@@ -381,7 +381,8 @@ namespace TownOfSushi.Patches
                 modifierCount--;
             }
 
-            foreach (RoleId m in allModifiers) {
+            foreach (RoleId m in allModifiers) 
+            {
                 if (GetSelectionForRoleId(m) == 10) ensuredModifiers.AddRange(Enumerable.Repeat(m, GetSelectionForRoleId(m, true) / 10));
                 else chanceModifiers.AddRange(Enumerable.Repeat(m, GetSelectionForRoleId(m, true)));
             }

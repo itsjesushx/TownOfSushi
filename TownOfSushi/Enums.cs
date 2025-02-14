@@ -62,7 +62,6 @@ namespace TownOfSushi
         Witch,
         Ninja,
         Thief,
-        Bomber,
         Yoyo,
         Crewmate,
         Impostor,
@@ -96,6 +95,7 @@ namespace TownOfSushi
         UncheckedMurderPlayer,
         WerewolfMaul,
         UncheckedCmdReportDeadBody,
+        RemoveAllBodies,
         UncheckedExilePlayer,
         DynamicMapOption,
         SetGameStarting,
@@ -150,8 +150,6 @@ namespace TownOfSushi
         SetTrap,
         TriggerTrap,
         MayorSetVoteTwice,
-        PlaceBomb,
-        DefuseBomb,
         ShareRoom,
         YoyoMarkLocation,
         YoyoBlink,
@@ -168,7 +166,8 @@ namespace TownOfSushi
         Neutral,
         NeutralKiller,
         Impostor,
-        Modifier
+        Modifier,
+        Other
     }
     public enum GhostInfoTypes 
     {

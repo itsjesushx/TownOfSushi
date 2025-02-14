@@ -13,10 +13,11 @@ namespace TownOfSushi
         public string name;
         public string introDescription;
         public string shortDescription;
+        public string RoleDescription;
         public RoleId roleId;
         public Factions FactionId;
 
-        public RoleInfo(string name, Color color, string introDescription, string shortDescription, RoleId roleId, Factions FactionId) 
+        public RoleInfo(string name, Color color, string introDescription, string shortDescription, RoleId roleId, Factions FactionId, string RoleDescription) 
         {
             this.color = color;
             this.name = name;
@@ -24,84 +25,84 @@ namespace TownOfSushi
             this.shortDescription = shortDescription;
             this.roleId = roleId;
             this.FactionId = FactionId;
+            this.RoleDescription = RoleDescription;
         }
 
         #region Neutrals
-        public readonly static RoleInfo jester = new("Jester", Jester.color, "Get voted out", "Get voted out", RoleId.Jester, Factions.Neutral);
-        public readonly static RoleInfo thief = new("Thief", Thief.color, "Steal a killers role by killing them", "Steal a killers role", RoleId.Thief, Factions.Neutral);
-        public readonly static RoleInfo arsonist = new("Arsonist", Arsonist.color, "Let them burn", "Let them burn", RoleId.Arsonist, Factions.Neutral);
-        public readonly static RoleInfo vulture = new("Vulture", Vulture.color, "Eat corpses to win", "Eat dead bodies", RoleId.Vulture, Factions.Neutral);
-        public readonly static RoleInfo lawyer = new("Lawyer", Lawyer.color, "Defend your client", "Defend your client", RoleId.Lawyer, Factions.Neutral);
-        public readonly static RoleInfo prosecutor = new("Prosecutor", Lawyer.color, "Vote out your target", "Vote out your target", RoleId.Prosecutor, Factions.Neutral);
-        public readonly static RoleInfo pursuer = new("Pursuer", Pursuer.color, "Blank the Impostors", "Blank the Impostors", RoleId.Pursuer, Factions.Neutral);
+        public readonly static RoleInfo jester = new("Jester", Jester.color, "Get voted out", "Get voted out", RoleId.Jester, Factions.Neutral, "As a Jester, your job is to get voted out by any means to win, if you don't get voted out, you lose.");
+        public readonly static RoleInfo thief = new("Thief", Thief.color, "Steal a killer's role by killing them", "Steal a killer's role", RoleId.Thief, Factions.Neutral, "As the Thief you have to kill an evil person to win. You may be able to kill the Sheriff. When you kill someone, you gain their role and their win condition.");
+        public readonly static RoleInfo arsonist = new("Arsonist", Arsonist.color, "Let them burn", "Let them burn", RoleId.Arsonist, Factions.Neutral, "The Arsonist needs to spread gasoline on every single player to win.");
+        public readonly static RoleInfo vulture = new("Vulture", Vulture.color, "Eat corpses to win", "Eat dead bodies", RoleId.Vulture, Factions.Neutral, $"The goal of the Vulture is to eat {Vulture.vultureNumberToWin - Vulture.eatenBodies} dead bodies to win.");
+        public readonly static RoleInfo lawyer = new("Lawyer", Lawyer.color, "Defend your client", "Defend your client", RoleId.Lawyer, Factions.Neutral, "The Lawyer's duty is to prevent their client from getting ejected, if they get voted out, you suicide, if they are killed, you become a Pursuer.");
+        public readonly static RoleInfo prosecutor = new("Prosecutor", Lawyer.color, "Vote out your target", "Vote out your target", RoleId.Prosecutor, Factions.Neutral, "The Prosecutor is the opposite of a Lawyer, they are also given a target, but instead of protecting them, you have to make them look guilty. If they are voted out you win. If they die you become a Pursuer.");
+        public readonly static RoleInfo pursuer = new("Pursuer", Pursuer.color, "Blank the Impostors", "Blank the Impostors", RoleId.Pursuer, Factions.Neutral, "As the Pursuer you were either a Lawyer or Prosecutor which target die. All you have to do is stay alive to win, you may also blank players to prevent them from killing.");
 
         #endregion
 
         #region Impostors
-        public readonly static RoleInfo godfather = new("Godfather", Godfather.color, "Kill all Crewmates", "Kill all Crewmates", RoleId.Godfather, Factions.Impostor);
-        public readonly static RoleInfo mafioso = new("Mafioso", Mafioso.color, "Work with the <color=#FF1919FF>Mafia</color> to kill the Crewmates", "Kill all Crewmates", RoleId.Mafioso, Factions.Impostor);
-        public readonly static RoleInfo janitor = new("Janitor", Janitor.color, "Work with the <color=#FF1919FF>Mafia</color> by hiding dead bodies", "Hide dead bodies", RoleId.Janitor, Factions.Impostor);
-        public readonly static RoleInfo morphling = new("Morphling", Morphling.color, "Change your look to not get caught", "Change your look", RoleId.Morphling, Factions.Impostor);
-        public readonly static RoleInfo camouflager = new("Camouflager", Camouflager.color, "Camouflage and kill the Crewmates", "Hide among others", RoleId.Camouflager, Factions.Impostor);
-        public readonly static RoleInfo vampire = new("Vampire", Vampire.color, "Kill the Crewmates with your bites", "Bite your enemies", RoleId.Vampire, Factions.Impostor);
-        public readonly static RoleInfo eraser = new("Eraser", Eraser.color, "Kill the Crewmates and erase their roles", "Erase the roles of your enemies", RoleId.Eraser, Factions.Impostor);
-        public readonly static RoleInfo trickster = new("Trickster", Trickster.color, "Use your jack-in-the-boxes to surprise others", "Surprise your enemies", RoleId.Trickster, Factions.Impostor);
-        public readonly static RoleInfo cleaner = new("Cleaner", Cleaner.color, "Kill everyone and leave no traces", "Clean up dead bodies", RoleId.Cleaner, Factions.Impostor);
-        public readonly static RoleInfo warlock = new("Warlock", Warlock.color, "Curse other players and kill everyone", "Curse and kill everyone", RoleId.Warlock, Factions.Impostor);
-        public readonly static RoleInfo bountyHunter = new("Bounty Hunter", BountyHunter.color, "Hunt your bounty down", "Hunt your bounty down", RoleId.BountyHunter, Factions.Impostor);
-        public readonly static RoleInfo impostor = new("Impostor", Palette.ImpostorRed, Helpers.ColorString(Palette.ImpostorRed, "Sabotage and kill everyone"), "Sabotage and kill everyone", RoleId.Impostor, Factions.Impostor);
-        public readonly static RoleInfo witch = new("Witch", Witch.color, "Cast a spell upon your foes", "Cast a spell upon your foes", RoleId.Witch, Factions.Impostor);
-        public readonly static RoleInfo ninja = new("Ninja", Ninja.color, "Surprise and assassinate your foes", "Surprise and assassinate your foes", RoleId.Ninja, Factions.Impostor);
-        public readonly static RoleInfo bomber = new("Bomber", Bomber.color, "Bomb all Crewmates", "Bomb all Crewmates", RoleId.Bomber, Factions.Impostor);
-        public readonly static RoleInfo yoyo = new("Yo-Yo", Yoyo.color, "Blink to a marked location and Back", "Blink to a location", RoleId.Yoyo, Factions.Impostor);
+        public readonly static RoleInfo godfather = new("Godfather", Godfather.color, "Kill all Crewmates", "Kill all Crewmates", RoleId.Godfather, Factions.Impostor, "As the Godfather, you are a plain impostor that has other 2 helpers, the Janitor and the Mafioso.");
+        public readonly static RoleInfo mafioso = new("Mafioso", Mafioso.color, "Work with the <color=#FF1919FF>Mafia</color> to kill the Crewmates", "Kill all Crewmates", RoleId.Mafioso, Factions.Impostor, "The Mafioso is an Impostor who cannot kill until the Godfather is dead.");
+        public readonly static RoleInfo janitor = new("Janitor", Janitor.color, "Work with the <color=#FF1919FF>Mafia</color> by hiding dead bodies", "Hide dead bodies", RoleId.Janitor, Factions.Impostor, "The Janitor is an Impostor who cannot kill, but they can hide dead bodies instead.");
+        public readonly static RoleInfo morphling = new("Morphling", Morphling.color, "Change your look to not get caught", "Change your look", RoleId.Morphling, Factions.Impostor, $"The Morphling can morph into the form of their fellow Crewmates, morphing changes the Morphling's look to make them not look sus. The morphling can only morph into a crewmate once every {Morphling.cooldown} seconds and lasts for {Morphling.duration} seconds.");
+        public readonly static RoleInfo camouflager = new("Camouflager", Camouflager.color, "Camouflage and kill the Crewmates", "Hide among others", RoleId.Camouflager, Factions.Impostor, $"The Camouflager can turn everyone gray making nobody knows who is who for {Camouflager.duration} seconds every {Camouflager.cooldown}s.");
+        public readonly static RoleInfo vampire = new("Vampire", Vampire.color, "Kill the Crewmates with your bites", "Bite your enemies", RoleId.Vampire, Factions.Impostor,  $"The Vampire can bite a player every {Vampire.cooldown} seconds, after {Vampire.delay} seconds the player die. Players with protection can't be killed by the poisoner. If the poisoner is alive in the last 4, they will directly kill instead of poisoning.");
+        public readonly static RoleInfo eraser = new("Eraser", Eraser.color, "Kill the Crewmates and erase their roles", "Erase the roles of your enemies", RoleId.Eraser, Factions.Impostor, "The Eraser can delete player's role for the rest of the game, making them become regular crewmate. They may be able to erase Neutral killers depending on settings.");
+        public readonly static RoleInfo trickster = new("Trickster", Trickster.color, "Use your jack-in-the-boxes to surprise others", "Surprise your enemies", RoleId.Trickster, Factions.Impostor, "The trickster can place boxes around the map which works like a vent, only the Trickster may use them. They can also manually sabotage lights, at any time, with any sabotage on but lights.");
+        public readonly static RoleInfo cleaner = new("Cleaner", Cleaner.color, "Kill everyone and leave no traces", "Clean up dead bodies", RoleId.Cleaner, Factions.Impostor, "The Cleaner is an Impostor that can clean up bodies. Both their Kill and Clean ability have a shared cooldown, meaning they have to choose which one they want to use.");
+        public readonly static RoleInfo warlock = new("Warlock", Warlock.color, "Curse other players and kill everyone", "Curse and kill everyone", RoleId.Warlock, Factions.Impostor, "The Warlock is an Impostor, that can curse another player (the cursed player doesn't get notified). If the cursed person stands next to another player, the Warlock is able to kill that player (no matter how far away they are).");
+        public readonly static RoleInfo bountyHunter = new("Bounty Hunter", BountyHunter.color, "Hunt your bounty down", "Hunt your bounty down", RoleId.BountyHunter, Factions.Impostor,  "As the Bounty Hunter, you are given a target, which your task is to eliminate them, killing your target gives you a short cooldown, else will give you a long penalty cooldown.");
+        public readonly static RoleInfo impostor = new("Impostor", Palette.ImpostorRed, Helpers.ColorString(Palette.ImpostorRed, "Sabotage and kill everyone"), "Sabotage and kill everyone", RoleId.Impostor, Factions.Impostor,  "Just a regular Impostor");
+        public readonly static RoleInfo witch = new("Witch", Witch.color, "Cast a spell upon your foes", "Cast a spell upon your foes", RoleId.Witch, Factions.Impostor, "The Witch is an Impostor who has the ability to cast a spell on other players. During the next meeting, the spellbound player will be highlighted and they'll die right after the meeting. There are multiple options listed down below with which you can configure to fit your taste. Similar to the Vampire, shields and blanks will be checked twice (at the end of casting the spell on the player and at the end of the meeting, when the spell will be activated).");
+        public readonly static RoleInfo ninja = new("Ninja", Ninja.color, "Surprise and assassinate your foes", "Surprise and assassinate your foes", RoleId.Ninja, Factions.Impostor, "The Ninja is an Impostor who has the ability to kill another player all over the map. You can mark a player with your ability and by using the ability again, you jump to the position of the marked player and kill it.");
+        public readonly static RoleInfo yoyo = new("Yo-Yo", Yoyo.color, "Blink to a marked location and Back", "Blink to a location", RoleId.Yoyo, Factions.Impostor, "The Yo-Yo is an Impostor who has the ability mark a position and later blink (teleport) to this position. After the initial blink, the Yo-Yo has a fixed amount of time (option) to do whatever they want, before automatically blinking back to the starting point of the first blink. Each blink leaves behind a silhouette with configurable transparency. The silhouette is very hard to see.The Yo-Yo may also have access to a mobile admin table, depending on the settings.");
 
         #endregion
 
         #region Crewmates
-        public readonly static RoleInfo crewmate = new("Crewmate", Color.white, "Find the Impostors", "Find the Impostors", RoleId.Crewmate, Factions.Crewmate);
-        public readonly static RoleInfo lighter = new("Lighter", Lighter.color, "Your light never goes out", "Your light never goes out", RoleId.Lighter, Factions.Crewmate);
-        public readonly static RoleInfo detective = new("Detective", Detective.color, "Find the <color=#FF1919FF>Impostors</color> by examining footprints", "Examine footprints", RoleId.Detective, Factions.Crewmate);
-        public readonly static RoleInfo hacker = new("Hacker", Hacker.color, "Hack systems to find the <color=#FF1919FF>Impostors</color>", "Hack to find the Impostors", RoleId.Hacker, Factions.Crewmate);
-        public readonly static RoleInfo tracker = new("Tracker", Tracker.color, "Track the <color=#FF1919FF>Impostors</color> down", "Track the Impostors down", RoleId.Tracker, Factions.Crewmate);
-        public readonly static RoleInfo snitch = new("Snitch", Snitch.color, "Finish your tasks to find the <color=#FF1919FF>Impostors</color>", "Finish your tasks", RoleId.Snitch, Factions.Crewmate);
-        public readonly static RoleInfo spy = new("Spy", Spy.color, "Confuse the <color=#FF1919FF>Impostors</color>", "Confuse the Impostors", RoleId.Spy, Factions.Crewmate);
-        public readonly static RoleInfo securityGuard = new("Security Guard", SecurityGuard.color, "Seal vents and place cameras", "Seal vents and place cameras", RoleId.SecurityGuard, Factions.Crewmate);
-        public readonly static RoleInfo mayor = new("Mayor", Mayor.color, "Your vote counts twice", "Your vote counts twice", RoleId.Mayor, Factions.Crewmate);
-        public readonly static RoleInfo portalmaker = new("Portalmaker", Portalmaker.color, "You can create portals", "You can create portals", RoleId.Portalmaker, Factions.Crewmate);
-        public readonly static RoleInfo veteran = new("Veteran", Veteran.color, "Alert to murder whoever touches you", "Alert to kill the <color=#FF1919FF>Impostors</color>", RoleId.Veteran, Factions.Crewmate);
-        public readonly static RoleInfo engineer = new("Engineer",  Engineer.color, "Maintain important systems on the ship", "Repair the ship", RoleId.Engineer, Factions.Crewmate);
-        public readonly static RoleInfo sheriff = new("Sheriff", Sheriff.color, "Shoot the <color=#FF1919FF>Impostors</color>", "Shoot the Impostors", RoleId.Sheriff, Factions.Crewmate);
-        public readonly static RoleInfo medium = new("Medium", Medium.color, "Question the souls of the dead to gain information", "Question the souls", RoleId.Medium, Factions.Crewmate);
-        public readonly static RoleInfo trapper = new("Trapper", Trapper.color, "Place traps to find the Impostors", "Place traps", RoleId.Trapper, Factions.Crewmate);
-        public readonly static RoleInfo timeMaster = new("Time Master", TimeMaster.color, "Save yourself with your time shield", "Use your time shield", RoleId.TimeMaster, Factions.Crewmate);
-        public readonly static RoleInfo medic = new("Medic", Medic.color, "Protect someone with your shield", "Protect other players", RoleId.Medic, Factions.Crewmate);
-        public readonly static RoleInfo swapper = new("Swapper", Swapper.color, "Swap votes to exile the <color=#FF1919FF>Impostors</color>", "Swap votes", RoleId.Swapper, Factions.Crewmate);
-        public readonly static RoleInfo mystic = new("Mystic", Mystic.color, "You will see players die", "You will see players die", RoleId.Mystic, Factions.Crewmate);
+        public readonly static RoleInfo crewmate = new("Crewmate", Color.white, "Find the Impostors", "Find the Impostors", RoleId.Crewmate, Factions.Crewmate, "Just a regular Crewmate.");
+        public readonly static RoleInfo lighter = new("Lighter", Lighter.color, "Your light never goes out", "Your light never goes out", RoleId.Lighter, Factions.Crewmate, "As the lighter, you have the ability to temporarly enhance your vision.");
+        public readonly static RoleInfo detective = new("Detective", Detective.color, "Find the <color=#FF1919FF>Impostors</color> by examining footprints", "Examine footprints", RoleId.Detective, Factions.Crewmate,  "The Detective can see footprints that other players leave behind. The Detective's other feature shows when they report a corpse: they receive clues about the killer's identity. The type of information they get is based on the time it took them to find the corpse.");
+        public readonly static RoleInfo hacker = new("Hacker", Hacker.color, "Hack systems to find the <color=#FF1919FF>Impostors</color>", "Hack to find the Impostors", RoleId.Hacker, Factions.Crewmate, "If the Hacker activates the Hacker mode, the Hacker gets more information than others from the admin table and vitals for a set duration. Otherwise they see the same information as everyone else. The Hacker can see the colors (or color types) of the players on the table. They can also see how long dead players have been dead for. The Hacker can access his mobile gadgets (vitals & admin table), with a maximum of charges (uses) and a configurable amount of tasks needed to recharge.");
+        public readonly static RoleInfo tracker = new("Tracker", Tracker.color, "Track the <color=#FF1919FF>Impostors</color> down", "Track the Impostors down", RoleId.Tracker, Factions.Crewmate, $"The Tracker is able to track the movements of other players. The Arrow's color will be the tracked players color. The arrow will update the position of the player every {Tracker.updateIntervall} seconds. The Arrows will reset depending on settings after each meeting. They can track dead bodies depending on settings as well.");
+        public readonly static RoleInfo snitch = new("Snitch", Snitch.color, "Finish your tasks to find the <color=#FF1919FF>Impostors</color>", "Finish your tasks", RoleId.Snitch, Factions.Crewmate, "The Snitch has to finish tasks to be able to see the killers or evil players in game.");
+        public readonly static RoleInfo spy = new("Spy", Spy.color, "Confuse the <color=#FF1919FF>Impostors</color>", "Confuse the Impostors", RoleId.Spy, Factions.Crewmate, "The Spy appears as another Impostor when there's more than 2 Impostors, they may vent or be able to die by the Sheriff, your job is to confuse the impostors into killing themselves.");
+        public readonly static RoleInfo securityGuard = new("Security Guard", SecurityGuard.color, "Seal vents and place cameras", "Seal vents and place cameras", RoleId.SecurityGuard, Factions.Crewmate, "The Security Guard is a Crewmate that has a certain number of screws that they can use for either sealing vents or for placing new cameras. bPlacing a new camera and sealing vents takes a configurable amount of screws. The total number of screws that a Security Guard has can also be configured. The new camera will be visible after the next meeting and accessible by everyone. The vents will be sealed after the next meeting, players can't enter or exit sealed vents, but they can still move to them underground.");
+        public readonly static RoleInfo mayor = new("Mayor", Mayor.color, "Your vote counts twice", "Your vote counts twice", RoleId.Mayor, Factions.Crewmate, "The Mayor leads the Crewmates by having a vote that counts twice. The Mayor can always use their meeting, even if the maximum number of meetings was reached. The Mayor has a portable Meeting Button, depending on the options. The Mayor can see the vote colors after completing a configurable amount of tasks, depending on the options. The Mayor has the option to vote with only one vote instead of two (via a button in the meeting screen), depending on the settings.");
+        public readonly static RoleInfo portalmaker = new("Portalmaker", Portalmaker.color, "You can create portals", "You can create portals", RoleId.Portalmaker, Factions.Crewmate, "The Portalmaker is a Crewmate that can place two portals on the map. These two portals are connected to each other. Those portals will be visible after the next meeting and can be used by everyone. Additionally to that, the Portalmaker gets information about who used the portals and when in the chat during each meeting, depending on the options. The Portalmaker can teleport themself to their placed portals from anywhere if the setting is enabled.");
+        public readonly static RoleInfo veteran = new("Veteran", Veteran.color, "Alert to murder whoever touches you", "Alert to kill the <color=#FF1919FF>Impostors</color>", RoleId.Veteran, Factions.Crewmate, $"The Veteran is able to alert, Alerting makes the Veteran Unkillable and will kill anyone who interacts with them. At the start of the game the Veteran can alert a maximum of " + Veteran.Charges + " times.");
+        public readonly static RoleInfo engineer = new("Engineer",  Engineer.color, "Maintain important systems on the ship", "Repair the ship", RoleId.Engineer, Factions.Crewmate, $"The Engineer is able to vent around the map and fix sabotages. The Engineer can fix a maximum of " + Engineer.remainingFixes + " sabotages.");
+        public readonly static RoleInfo sheriff = new("Sheriff", Sheriff.color, "Shoot the <color=#FF1919FF>Impostors</color>", "Shoot the Impostors", RoleId.Sheriff, Factions.Crewmate, "The Sheriff is able to kill players during rounds, if the player they kill is an impostor, or Neutral Killer, the Sheriff will survive. If the player they kill is a crewmate, the Sheriff will die.");
+        public readonly static RoleInfo medium = new("Medium", Medium.color, "Question the souls of the dead to gain information", "Question the souls", RoleId.Medium, Factions.Crewmate, "The medium is a crewmate who can ask the souls of dead players for information. Like the Mystic, the medium will see the souls of the players who have died (after the next meeting) and can question them. They then gets random information about the soul or the killer in the chat. The souls only stay for one round, i.e. until the next meeting. Depending on the options, the souls can only be questioned once and then disappear.");
+        public readonly static RoleInfo trapper = new("Trapper", Trapper.color, "Place traps to find the Impostors", "Place traps", RoleId.Trapper, Factions.Crewmate, "The Tracker can select one player to track. Depending on the options the Tracker can track a different person after each meeting or the Tracker tracks the same person for the whole game. An arrow points to the last tracked position of the player. The arrow updates its position every few seconds (configurable). By an option, the arrow can be replaced or combined with the Proximity Tracker from Hide N Seek. Depending on the options, the Tracker has another ability: They can track all corpses on the map for a set amount of time. They will keep tracking corpses, even if they were cleaned or eaten by the Vulture.");
+        public readonly static RoleInfo timeMaster = new("Time Master", TimeMaster.color, "Save yourself with your time shield", "Use your time shield", RoleId.TimeMaster, Factions.Crewmate, "The Time Master has a time shield which they can activate. The time shield remains active for a configurable amount of time. If a player tries to kill the Time Master while the time shield is active, the kill won't happen and the time will rewind for a set amount of time. The kill cooldown of the killer won't be reset, so the Time Master has to make sure that the game won't result in the same situation. The Time Master won't be affected by the rewind.");
+        public readonly static RoleInfo medic = new("Medic", Medic.color, "Protect someone with your shield", "Protect other players", RoleId.Medic, Factions.Crewmate, "The Medic can shield (highlighted by an outline around the player) one player per game, which makes the player unkillable. The shield is also shown in the meeting as brackets around the shielded player's name. The shielded player can still be voted out and might also be an Impostor. If set in the options, the shielded player and/or the Medic will get a red flash on their screen if someone (Impostor, Sheriff, ...) tried to murder them. If the Medic dies, the shield disappears with them. The Sheriff will not die if they try to kill a shielded Crewmate and won't perform a kill if they try to kill a shielded Impostor. Depending on the options, guesses from the Guesser will be blocked by the shield and the shielded player/medic might be notified. The Medic's other feature shows when they report a corpse: they will see how long ago the player died.");
+        public readonly static RoleInfo swapper = new("Swapper", Swapper.color, "Swap votes to exile the <color=#FF1919FF>Impostors</color>", "Swap votes", RoleId.Swapper, Factions.Crewmate, "During meetings the Swapper can exchange votes that two people get (i.e. all votes that player A got will be given to player B and vice versa). Because of the Swapper's strength in meetings, they might not start emergency meetings and can't fix lights and comms. The Swapper now has initial swap charges and can recharge those charges after completing a configurable amount of tasks.");
+        public readonly static RoleInfo mystic = new("Mystic", Mystic.color, "You will see players die", "You will see players die", RoleId.Mystic, Factions.Crewmate, "The Mystic gets a list of the possible roles that the examined player can be in meetings. The Mystic has more abilities (one can activate one of them or both in the options). The Mystic sees the souls of players that died a round earlier, the souls slowly fade away. The Mystic gets a blue flash on their screen, if a player dies somewhere on the map.");
 
         #endregion
 
         #region Neutral Killers
-        public readonly static RoleInfo jackal = new("Jackal", Jackal.color, "Kill all Crewmates and <color=#FF1919FF>Impostors</color> to win", "Kill everyone", RoleId.Jackal, Factions.NeutralKiller);
-        public readonly static RoleInfo sidekick = new("Sidekick", Sidekick.color, "Help your Jackal to kill everyone", "Help your Jackal to kill everyone", RoleId.Sidekick, Factions.NeutralKiller);
-        public readonly static RoleInfo serialKiller = new("Serial Killer", SerialKiller.color, "Stab to make everyone die", "Murder everyone when stabbing", RoleId.SerialKiller, Factions.NeutralKiller);
-        public readonly static RoleInfo glitch = new("Glitch", Glitch.color, "Hack, Kill and Mimic your <color=#FF1919FF>enemies</color>", "Hack, Kill and Mimic your <color=#FF1919FF>enemies</color>", RoleId.Glitch, Factions.NeutralKiller);
-        public readonly static RoleInfo werewolf = new("Werewolf", Werewolf.color, "Maul and eliminate your <color=#FF1919FF>enemies</color>", "Maul to eliminate your <color=#FF1919FF>enemies</color>", RoleId.Werewolf, Factions.NeutralKiller);
+        public readonly static RoleInfo jackal = new("Jackal", Jackal.color, "Kill all Crewmates and <color=#FF1919FF>Impostors</color> to win", "Kill everyone", RoleId.Jackal, Factions.NeutralKiller, "The Jackal is part of an extra team, that tries to eliminate all the other players. The Jackal has no tasks and can kill Impostors, Crewmates and Neutrals. The Jackal (if allowed by the options) can select another player to be their Sidekick. Creating a Sidekick removes all tasks of the Sidekick and adds them to the team Jackal. The Sidekick loses their current role (except if they're a Lover, then they play in two teams). The Create Sidekick Action may only be used once per Jackal or once per game (depending on the options). The Jackal can also promote Impostors to be their Sidekick, but depending on the options the Impostor will either really turn into the Sidekick and leave the team Impostors or they will just look like the Sidekick to the Jackal and remain as they were. Also if a Spy or Impostor gets sidekicked, they still will appear red to the Impostors.");
+        public readonly static RoleInfo sidekick = new("Sidekick", Sidekick.color, "Help your Jackal to kill everyone", "Help your Jackal to kill everyone", RoleId.Sidekick, Factions.NeutralKiller, "Gets assigned to a player during the game by the Create Sidekick Action of the Jackal and joins the Jackal in their quest to eliminate all other players. Upon the death of the Jackal (depending on the options), they might get promoted to Jackal themself and potentially even assign a Sidekick of their own.");
+        public readonly static RoleInfo serialKiller = new("Serial Killer", SerialKiller.color, "Stab to make everyone die", "Murder everyone when stabbing", RoleId.SerialKiller, Factions.NeutralKiller, "The Serial Killer is a Neutral role with its own win condition. Although the Serial Killer has a kill button, they can't use it unless they are stabbing. Once the Serial Killer rampages they gain Impostor vision and the ability to kill. However, unlike most killers their kill cooldown is really short. The Serial Killer needs to be the last killer alive to win the game.");
+        public readonly static RoleInfo glitch = new("Glitch", Glitch.color, "Hack, Kill and Mimic your <color=#FF1919FF>enemies</color>", "Hack, Kill and Mimic your <color=#FF1919FF>enemies</color>", RoleId.Glitch, Factions.NeutralKiller, "Glitch is a Neutral role with its own win condition. Glitch's aim is to kill everyone and be the last person standing. Glitch can Hack players, resulting in them being unable to report bodies and do tasks. Hacking prevents the hacked player from doing anything but walk around the map. This role cannot spawn on Fungle. Glitch can Mimic someone, which results in them looking exactly like the other person.");
+        public readonly static RoleInfo werewolf = new("Werewolf", Werewolf.color, "Maul and eliminate your <color=#FF1919FF>enemies</color>", "Maul to eliminate your <color=#FF1919FF>enemies</color>", RoleId.Werewolf, Factions.NeutralKiller, "The Werewolf can kill all players within a certain radius.");
 
         #endregion
 
         #region Modifiers
-        public readonly static RoleInfo bloody = new("Bloody", Color.yellow, "Your killer leaves a bloody trail", "Your killer leaves a bloody trail", RoleId.Bloody, Factions.Modifier);
-        public readonly static RoleInfo antiTeleport = new("Anti tp", Color.yellow, "You will not get teleported", "You will not get teleported", RoleId.AntiTeleport, Factions.Modifier);
-        public readonly static RoleInfo tiebreaker = new("Tiebreaker", Color.yellow, "Your vote breaks the tie", "Break the tie", RoleId.Tiebreaker, Factions.Modifier);
-        public readonly static RoleInfo bait = new("Bait", Color.yellow, "Bait your enemies", "Bait your enemies", RoleId.Bait, Factions.Modifier);
-        public readonly static RoleInfo sunglasses = new("Sunglasses", Color.yellow, "You got the sunglasses", "Your vision is reduced", RoleId.Sunglasses, Factions.Modifier);
-        public readonly static RoleInfo lover = new("Lover", Lovers.color, $"You are in love", $"You are in love", RoleId.Lover, Factions.Modifier);
-        public readonly static RoleInfo mini = new("Mini", Color.yellow, "No one will harm you until you grow up", "No one will harm you", RoleId.Mini, Factions.Modifier);
-        public readonly static RoleInfo vip = new("VIP", Color.yellow, "You are the VIP", "Everyone is notified when you die", RoleId.Vip, Factions.Modifier);
-        public readonly static RoleInfo invert = new("Invert", Color.yellow, "Your movement is inverted", "Your movement is inverted", RoleId.Invert, Factions.Modifier);
-        public readonly static RoleInfo chameleon = new("Chameleon", Color.yellow, "You're hard to see when not moving", "You're hard to see when not moving", RoleId.Chameleon, Factions.Modifier);
-        public readonly static RoleInfo armored = new("Armored", Color.yellow, "You are protected from one murder attempt", "You are protected from one murder attempt", RoleId.Armored, Factions.Modifier);
-        public readonly static RoleInfo shifter = new("Shifter", Color.yellow, "Shift your role", "Shift your role", RoleId.Shifter, Factions.Modifier);
+        public readonly static RoleInfo bloody = new("Bloody", Color.yellow, "Your killer leaves a bloody trail", "Your killer leaves a bloody trail", RoleId.Bloody, Factions.Modifier, "");
+        public readonly static RoleInfo antiTeleport = new("Anti tp", Color.yellow, "You will not get teleported", "You will not get teleported", RoleId.AntiTeleport, Factions.Modifier, "");
+        public readonly static RoleInfo tiebreaker = new("Tiebreaker", Color.yellow, "Your vote breaks the tie", "Break the tie", RoleId.Tiebreaker, Factions.Modifier, "");
+        public readonly static RoleInfo bait = new("Bait", Color.yellow, "Bait your enemies", "Bait your enemies", RoleId.Bait, Factions.Modifier, "");
+        public readonly static RoleInfo sunglasses = new("Sunglasses", Color.yellow, "You got the sunglasses", "Your vision is reduced", RoleId.Sunglasses, Factions.Modifier, "");
+        public readonly static RoleInfo lover = new("Lover", Lovers.color, $"You are in love", $"You are in love", RoleId.Lover, Factions.Modifier, "");
+        public readonly static RoleInfo mini = new("Mini", Color.yellow, "No one will harm you until you grow up", "No one will harm you", RoleId.Mini, Factions.Modifier, "");
+        public readonly static RoleInfo vip = new("VIP", Color.yellow, "You are the VIP", "Everyone is notified when you die", RoleId.Vip, Factions.Modifier, "");
+        public readonly static RoleInfo invert = new("Invert", Color.yellow, "Your movement is inverted", "Your movement is inverted", RoleId.Invert, Factions.Modifier, "");
+        public readonly static RoleInfo chameleon = new("Chameleon", Color.yellow, "You're hard to see when not moving", "You're hard to see when not moving", RoleId.Chameleon, Factions.Modifier, "");
+        public readonly static RoleInfo armored = new("Armored", Color.yellow, "You are protected from one murder attempt", "You are protected from one murder attempt", RoleId.Armored, Factions.Modifier, "");
+        public readonly static RoleInfo shifter = new("Shifter", Color.yellow, "Shift your role", "Shift your role", RoleId.Shifter, Factions.Modifier, "");
 
         #endregion
 
@@ -121,7 +122,6 @@ namespace TownOfSushi
             bountyHunter,
             witch,
             ninja,
-            bomber,
             werewolf,
             yoyo,
             lover,
@@ -219,7 +219,6 @@ namespace TownOfSushi
             if (p == Warlock.warlock) infos.Add(warlock);
             if (p == Witch.witch) infos.Add(witch);
             if (p == Ninja.ninja) infos.Add(ninja);
-            if (p == Bomber.bomber) infos.Add(bomber);
             if (p == Yoyo.yoyo) infos.Add(yoyo);
             if (p == Detective.detective) infos.Add(detective);
             if (p == TimeMaster.timeMaster) infos.Add(timeMaster);
@@ -280,29 +279,29 @@ namespace TownOfSushi
                 if (Helpers.ShouldShowGhostInfo()) 
                 {
                     if (Eraser.futureErased.Contains(p))
-                        roleName = Helpers.ColorString(Color.gray, "(erased) ") + roleName;
+                        roleName = Helpers.ColorString(Color.gray, "(Erased) ") + roleName;
                     if (Vampire.vampire != null && !Vampire.vampire.Data.IsDead && Vampire.bitten == p && !p.Data.IsDead)
-                        roleName = Helpers.ColorString(Vampire.color, $"(bitten {(int)HudManagerStartPatch.vampireKillButton.Timer + 1}) ") + roleName;
+                        roleName = Helpers.ColorString(Vampire.color, $"(Bitten {(int)HudManagerStartPatch.vampireKillButton.Timer + 1}) ") + roleName;
                     if (Glitch.HackedPlayers.Contains(p.PlayerId))
-                        roleName = Helpers.ColorString(Color.gray, "(hacked) ") + roleName;
+                        roleName = Helpers.ColorString(Color.gray, "(Hacked) ") + roleName;
                     if (Glitch.HackedKnows.ContainsKey(p.PlayerId))  // Active cuff
-                        roleName = Helpers.ColorString(Glitch.color, "(hacked) ") + roleName;
+                        roleName = Helpers.ColorString(Glitch.color, "(Hacked) ") + roleName;
                     if (p == Warlock.curseVictim)
-                        roleName = Helpers.ColorString(Warlock.color, "(cursed) ") + roleName;
+                        roleName = Helpers.ColorString(Warlock.color, "(Cursed) ") + roleName;
                     if (p == Ninja.ninjaMarked)
-                        roleName = Helpers.ColorString(Ninja.color, "(marked) ") + roleName;
+                        roleName = Helpers.ColorString(Ninja.color, "(Marked) ") + roleName;
                     if (Pursuer.blankedList.Contains(p) && !p.Data.IsDead)
-                        roleName = Helpers.ColorString(Pursuer.color, "(blanked) ") + roleName;
+                        roleName = Helpers.ColorString(Pursuer.color, "(Blanked) ") + roleName;
                     if (Witch.futureSpelled.Contains(p) && !MeetingHud.Instance) // This is already displayed in meetings!
                         roleName = Helpers.ColorString(Witch.color, "☆ ") + roleName;
                     if (BountyHunter.bounty == p)
-                        roleName = Helpers.ColorString(BountyHunter.color, "(bounty) ") + roleName;
+                        roleName = Helpers.ColorString(BountyHunter.color, "(Bounty) ") + roleName;
                     if (Arsonist.dousedPlayers.Contains(p))
                         roleName = Helpers.ColorString(Arsonist.color, "♨ ") + roleName;
                     if (p == Arsonist.arsonist)
                         roleName = roleName + Helpers.ColorString(Arsonist.color, $" ({PlayerControl.AllPlayerControls.ToArray().Count(x => { return x != Arsonist.arsonist && !x.Data.IsDead && !x.Data.Disconnected && !Arsonist.dousedPlayers.Any(y => y.PlayerId == x.PlayerId); })} left)");
                     if (p == Jackal.fakeSidekick)
-                        roleName = Helpers.ColorString(Sidekick.color, $" (fake SK)") + roleName;
+                        roleName = Helpers.ColorString(Sidekick.color, $" (Fake SK)") + roleName;
 
                     // Death Reason on Ghosts
                     if (p.Data.IsDead) {
@@ -319,40 +318,43 @@ namespace TownOfSushi
                             switch (deadPlayer.deathReason) 
                             {
                                 case DeadPlayer.CustomDeathReason.Disconnect:
-                                    deathReasonString = " - disconnected";
+                                    deathReasonString = " - Disconnected";
                                     break;
                                 case DeadPlayer.CustomDeathReason.Exile:
-                                    deathReasonString = " - voted out";
+                                    deathReasonString = " - Voted out";
                                     break;
                                 case DeadPlayer.CustomDeathReason.Kill:
-                                    deathReasonString = $" - killed by {Helpers.ColorString(killerColor, deadPlayer.killerIfExisting.Data.PlayerName)}";
+                                    deathReasonString = $" - Killed by {Helpers.ColorString(killerColor, deadPlayer.killerIfExisting.Data.PlayerName)}";
+                                    break;
+                                case DeadPlayer.CustomDeathReason.Execute:
+                                    if (deadPlayer.killerIfExisting.Data.PlayerName == p.Data.PlayerName)
+                                        deathReasonString = $" - Failed Execute";
+                                    else
+                                    deathReasonString = $" - Executed by {Helpers.ColorString(killerColor, deadPlayer.killerIfExisting.Data.PlayerName)}";
                                     break;
                                 case DeadPlayer.CustomDeathReason.Guess:
                                     if (deadPlayer.killerIfExisting.Data.PlayerName == p.Data.PlayerName)
-                                        deathReasonString = $" - failed guess";
+                                        deathReasonString = $" - Failed Guess Attempt";
                                     else
-                                        deathReasonString = $" - guessed by {Helpers.ColorString(killerColor, deadPlayer.killerIfExisting.Data.PlayerName)}";
+                                        deathReasonString = $" - Guessed by {Helpers.ColorString(killerColor, deadPlayer.killerIfExisting.Data.PlayerName)}";
                                     break;
                                 case DeadPlayer.CustomDeathReason.Shift:
-                                    deathReasonString = $" - {Helpers.ColorString(Color.yellow, "shifted")} {Helpers.ColorString(killerColor, deadPlayer.killerIfExisting.Data.PlayerName)}";
+                                    deathReasonString = $" - {Helpers.ColorString(Color.yellow, "Shifted")} {Helpers.ColorString(killerColor, deadPlayer.killerIfExisting.Data.PlayerName)}";
                                     break;
                                 case DeadPlayer.CustomDeathReason.WitchExile:
-                                    deathReasonString = $" - {Helpers.ColorString(Witch.color, "witched")} by {Helpers.ColorString(killerColor, deadPlayer.killerIfExisting.Data.PlayerName)}";
+                                    deathReasonString = $" - {Helpers.ColorString(Witch.color, "Witched")} by {Helpers.ColorString(killerColor, deadPlayer.killerIfExisting.Data.PlayerName)}";
                                     break;
                                 case DeadPlayer.CustomDeathReason.Maul:
                                     deathReasonString = $" - {Helpers.ColorString(Werewolf.color, "Mauled")} by {Helpers.ColorString(killerColor, deadPlayer.killerIfExisting.Data.PlayerName)}";
                                     break;
                                 case DeadPlayer.CustomDeathReason.LoverSuicide:
-                                    deathReasonString = $" - {Helpers.ColorString(Lovers.color, "lover died")}";
+                                    deathReasonString = $" - {Helpers.ColorString(Lovers.color, "Lover Suicide")}";
                                     break;
                                 case DeadPlayer.CustomDeathReason.LawyerSuicide:
-                                    deathReasonString = $" - {Helpers.ColorString(Lawyer.color, "bad Lawyer")}";
-                                    break;
-                                case DeadPlayer.CustomDeathReason.Bomb:
-                                    deathReasonString = $" - bombed by {Helpers.ColorString(killerColor, deadPlayer.killerIfExisting.Data.PlayerName)}";
+                                    deathReasonString = $" - {Helpers.ColorString(Lawyer.color, "Client Voted Out")}";
                                     break;
                                 case DeadPlayer.CustomDeathReason.Arson:
-                                    deathReasonString = $" - burnt by {Helpers.ColorString(killerColor, deadPlayer.killerIfExisting.Data.PlayerName)}";
+                                    deathReasonString = $" - Burnt by {Helpers.ColorString(killerColor, deadPlayer.killerIfExisting.Data.PlayerName)}";
                                     break;
                             }
                             roleName = roleName + deathReasonString;
