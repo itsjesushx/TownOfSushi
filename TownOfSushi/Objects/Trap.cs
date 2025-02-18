@@ -5,8 +5,10 @@ using System.Linq;
 using TownOfSushi.Utilities;
 using UnityEngine;
 
-namespace TownOfSushi.Objects {
-    class Trap {
+namespace TownOfSushi.Objects 
+{
+    class Trap 
+    {
         public static List<Trap> traps = new List<Trap>();
         public static Dictionary<byte, Trap> trapPlayerIdMap = new Dictionary<byte, Trap>();
 
@@ -53,7 +55,8 @@ namespace TownOfSushi.Objects {
             })));
         }
 
-        public static void clearTraps() {
+        public static void ClearTraps() 
+        {
             foreach (Trap t in traps) {
                 UnityEngine.Object.Destroy(t.arrow.arrow);
                 UnityEngine.Object.Destroy(t.trap); 
@@ -63,7 +66,8 @@ namespace TownOfSushi.Objects {
             instanceCounter = 0;
         }
 
-        public static void clearRevealedTraps() {
+        public static void ClearRevealedTraps() 
+        {
             var trapsToClear = traps.FindAll(x => x.revealed);
 
             foreach (Trap t in trapsToClear) {
@@ -72,7 +76,8 @@ namespace TownOfSushi.Objects {
             }
         }
 
-        public static void triggerTrap(byte playerId, byte trapId) {            
+        public static void TriggerTrap(byte playerId, byte trapId) 
+        {
             Trap t = traps.FirstOrDefault(x => x.instanceId == (int)trapId);
             PlayerControl player = Helpers.PlayerById(playerId);
             if (Trapper.trapper == null || t == null || player == null) return;
@@ -80,7 +85,8 @@ namespace TownOfSushi.Objects {
             if (!trapPlayerIdMap.ContainsKey(playerId)) trapPlayerIdMap.Add(playerId, t);
             t.usedCount ++;
             t.triggerable = false;
-            if (playerId == PlayerControl.LocalPlayer.PlayerId || playerId == Trapper.trapper.PlayerId) {
+            if (playerId == PlayerControl.LocalPlayer.PlayerId || playerId == Trapper.trapper.PlayerId) 
+            {
                 t.trap.SetActive(true);
                 SoundEffectsManager.Play("trapperTrap");
             }
@@ -90,7 +96,8 @@ namespace TownOfSushi.Objects {
             if (localIsTrapper) t.arrow.arrow.SetActive(true);
 
             FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(Trapper.trapDuration, new Action<float>((p) => { 
-                if (p == 1f) {
+                if (p == 1f) 
+                {
                     player.moveable = true;
                     Trapper.playersOnMap.RemoveAll(x => x == player);
                     if (trapPlayerIdMap.ContainsKey(playerId)) trapPlayerIdMap.Remove(playerId);
@@ -98,7 +105,8 @@ namespace TownOfSushi.Objects {
                 }
             })));
 
-            if (t.usedCount == t.neededCount) {
+            if (t.usedCount == t.neededCount) 
+            {
                 t.revealed = true;
             }
 
@@ -107,7 +115,8 @@ namespace TownOfSushi.Objects {
 
         }
 
-        public static void Update() {
+        public static void Update() 
+        {
             if (Trapper.trapper == null) return;
             var player = PlayerControl.LocalPlayer;
             Vent vent = MapUtilities.CachedShipStatus.AllVents[0];
@@ -116,7 +125,8 @@ namespace TownOfSushi.Objects {
             if (vent == null || player == null) return;
             float ud = vent.UsableDistance / 2;
             Trap target = null;
-            foreach (Trap trap in traps) {
+            foreach (Trap trap in traps) 
+            {
                 if (trap.arrow.arrow.active) trap.arrow.Update();
                 if (trap.revealed || !trap.triggerable || trap.trappedPlayer.Contains(player)) continue;
                 if (player.inVent || !player.CanMove) continue;
@@ -126,7 +136,8 @@ namespace TownOfSushi.Objects {
                     target = trap;
                 }
             }
-            if (target != null && player.PlayerId != Trapper.trapper.PlayerId && !player.Data.IsDead) {
+            if (target != null && player.PlayerId != Trapper.trapper.PlayerId && !player.Data.IsDead) 
+            {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.TriggerTrap, Hazel.SendOption.Reliable, -1);
                 writer.Write(player.PlayerId);
                 writer.Write(target.instanceId);
@@ -136,7 +147,8 @@ namespace TownOfSushi.Objects {
 
 
             if (!player.Data.IsDead || player.PlayerId == Trapper.trapper.PlayerId) return;
-            foreach (Trap trap in traps) {
+            foreach (Trap trap in traps) 
+            {
                 if (!trap.trap.active) trap.trap.SetActive(true);
             }
         }

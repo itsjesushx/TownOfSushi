@@ -25,7 +25,7 @@ namespace TownOfSushi.Patches {
             }
 
             // If player is Lighter with ability active
-            if (Lighter.lighter != null && Lighter.lighter.PlayerId == player.PlayerId) {
+            if (Lighter.Player != null && Lighter.Player.PlayerId == player.PlayerId) {
                 float unlerped = Mathf.InverseLerp(__instance.MinLightRadius, __instance.MaxLightRadius, GetNeutralLightRadius(__instance, false));
                 __result = Mathf.Lerp(__instance.MaxLightRadius * Lighter.lighterModeLightsOffVision, __instance.MaxLightRadius * Lighter.lighterModeLightsOnVision, unlerped);
             }
@@ -43,7 +43,7 @@ namespace TownOfSushi.Patches {
             }
 
             // If player is Lawyer, apply Lawyer vision modifier
-            else if (Lawyer.lawyer != null && Lawyer.lawyer.PlayerId == player.PlayerId) {
+            else if (Lawyer.Player != null && Lawyer.Player.PlayerId == player.PlayerId) {
                 float unlerped = Mathf.InverseLerp(__instance.MinLightRadius, __instance.MaxLightRadius, GetNeutralLightRadius(__instance, false));
                 __result = Mathf.Lerp(__instance.MinLightRadius, __instance.MaxLightRadius * Lawyer.vision, unlerped);
                 return false;

@@ -9,7 +9,7 @@ namespace TownOfSushi.Modules
     [HarmonyPatch]
     public static class ChatCommands 
     {
-        public static bool isLover(this PlayerControl player) => !(player == null) && (player == Lovers.lover1 || player == Lovers.lover2);
+        public static bool IsLover(this PlayerControl player) => !(player == null) && (player == Lovers.Lover1 || player == Lovers.Lover2);
 
         [HarmonyPatch(typeof(ChatController), nameof(ChatController.SendChat))]
         private static class SendChatPatch 
@@ -20,17 +20,21 @@ namespace TownOfSushi.Modules
                 bool handled = false;
                 if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) 
                 {
-                    if (text.ToLower().StartsWith("/kick ")) {
+                    if (text.ToLower().StartsWith("/kick ")) 
+                    {
                         string playerName = text.Substring(6);
                         PlayerControl target = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(x => x.Data.PlayerName.Equals(playerName));
                         if (target != null && AmongUsClient.Instance != null && AmongUsClient.Instance.CanBan()) {
                             var client = AmongUsClient.Instance.GetClient(target.OwnerId);
-                            if (client != null) {
+                            if (client != null) 
+                            
+                            {
                                 AmongUsClient.Instance.KickPlayer(client.Id, false);
                                 handled = true;
                             }
                         }
-                    } else if (text.ToLower().StartsWith("/ban ")) 
+                    } 
+                    else if (text.ToLower().StartsWith("/ban ")) 
                     {
                         string playerName = text.Substring(5);
                         PlayerControl target = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(x => x.Data.PlayerName.Equals(playerName));
@@ -90,7 +94,7 @@ namespace TownOfSushi.Modules
         {
             public static void Postfix(HudManager __instance) 
             {
-                if (!__instance.Chat.isActiveAndEnabled && (AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay || (PlayerControl.LocalPlayer.isLover() && Lovers.enableChat)))
+                if (!__instance.Chat.isActiveAndEnabled && (AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay || (PlayerControl.LocalPlayer.IsLover() && Lovers.enableChat)))
                     __instance.Chat.SetVisible(true);
             }
         }
@@ -113,7 +117,7 @@ namespace TownOfSushi.Modules
                 if (__instance != FastDestroyableSingleton<HudManager>.Instance.Chat)
                     return true;
                 PlayerControl localPlayer = PlayerControl.LocalPlayer;
-                return localPlayer == null || (MeetingHud.Instance != null || LobbyBehaviour.Instance != null || (localPlayer.Data.IsDead || localPlayer.isLover() && Lovers.enableChat) || (int)sourcePlayer.PlayerId == (int)PlayerControl.LocalPlayer.PlayerId);
+                return localPlayer == null || (MeetingHud.Instance != null || LobbyBehaviour.Instance != null || (localPlayer.Data.IsDead || localPlayer.IsLover() && Lovers.enableChat) || (int)sourcePlayer.PlayerId == (int)PlayerControl.LocalPlayer.PlayerId);
 
             }
         }

@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using System;
 using TownOfSushi.Utilities;
 
-namespace TownOfSushi.Objects {
-
-    public class CustomMessage {
-
+namespace TownOfSushi.Objects 
+{
+    public class CustomMessage 
+    {
         private TMPro.TMP_Text text;
         private static List<CustomMessage> customMessages = new List<CustomMessage>();
 
-        public CustomMessage(string message, float duration) {
+        public CustomMessage(string message, float duration) 
+        {
             RoomTracker roomTracker =  FastDestroyableSingleton<HudManager>.Instance?.roomTracker;
-            if (roomTracker != null) {
+            if (roomTracker != null) 
+            {
                 GameObject gameObject = UnityEngine.Object.Instantiate(roomTracker.gameObject);
                 
                 gameObject.transform.SetParent(FastDestroyableSingleton<HudManager>.Instance.transform);
@@ -29,7 +31,8 @@ namespace TownOfSushi.Objects {
                     string prefix = (even ? "<color=#FCBA03FF>" : "<color=#FF0000FF>");
                     text.text = prefix + message + "</color>";
                     if (text != null) text.color = even ? Color.yellow : Color.red;
-                    if (p == 1f && text != null && text.gameObject != null) {
+                    if (p == 1f && text != null && text.gameObject != null) 
+                    {
                         UnityEngine.Object.Destroy(text.gameObject);
                         customMessages.Remove(this);
                     }

@@ -35,7 +35,8 @@ namespace TownOfSushi
         public readonly static RoleInfo vulture = new("Vulture", Vulture.color, "Eat corpses to win", "Eat dead bodies", RoleId.Vulture, Factions.Neutral, $"The goal of the Vulture is to eat {Vulture.vultureNumberToWin - Vulture.eatenBodies} dead bodies to win.");
         public readonly static RoleInfo lawyer = new("Lawyer", Lawyer.color, "Defend your client", "Defend your client", RoleId.Lawyer, Factions.Neutral, "The Lawyer's duty is to prevent their client from getting ejected, if they get voted out, you suicide, if they are killed, you become a Pursuer.");
         public readonly static RoleInfo prosecutor = new("Prosecutor", Lawyer.color, "Vote out your target", "Vote out your target", RoleId.Prosecutor, Factions.Neutral, "The Prosecutor is the opposite of a Lawyer, they are also given a target, but instead of protecting them, you have to make them look guilty. If they are voted out you win. If they die you become a Pursuer.");
-        public readonly static RoleInfo pursuer = new("Pursuer", Pursuer.color, "Blank the Impostors", "Blank the Impostors", RoleId.Pursuer, Factions.Neutral, "As the Pursuer you were either a Lawyer or Prosecutor which target die. All you have to do is stay alive to win, you may also blank players to prevent them from killing.");
+        public readonly static RoleInfo pursuer = new("Pursuer", Pursuer.color, "Blank the Impostors", "Blank the Impostors", RoleId.Pursuer, Factions.Neutral, "As the Pursuer you were either a Lawyer, Romantic or Prosecutor which target die. All you have to do is stay alive to win, you may also blank players to prevent them from killing.");
+        public readonly static RoleInfo romantic = new("Romantic", Romantic.color, "Create a lover to win with you", "Create, protect and assist your lover", RoleId.Romantic, Factions.Neutral, "As the Romantic, you must pick a player to love, working together to ensure both of your survival. If your target dies, you will become a Pursuer.");
 
         #endregion
 
@@ -118,6 +119,7 @@ namespace TownOfSushi
             eraser,
             trickster,
             cleaner,
+            romantic,
             warlock,
             bountyHunter,
             witch,
@@ -183,7 +185,7 @@ namespace TownOfSushi
                     if (Bloody.bloody.Any(x => x.PlayerId == p.PlayerId)) infos.Add(bloody);
                     if (Vip.vip.Any(x => x.PlayerId == p.PlayerId)) infos.Add(vip);
                 }
-                if (p == Lovers.lover1 || p == Lovers.lover2) infos.Add(lover);
+                if (p == Lovers.Lover1 || p == Lovers.Lover2) infos.Add(lover);
                 if (p == Tiebreaker.tiebreaker) infos.Add(tiebreaker);
                 if (AntiTeleport.antiTeleport.Any(x => x.PlayerId == p.PlayerId)) infos.Add(antiTeleport);
                 if (Sunglasses.sunglasses.Any(x => x.PlayerId == p.PlayerId)) infos.Add(sunglasses);
@@ -198,15 +200,16 @@ namespace TownOfSushi
 
             // Special roles
             if (p == Jester.jester) infos.Add(jester);
-            if (p == Mayor.mayor) infos.Add(mayor);
+            if (p == Mayor.Player) infos.Add(mayor);
             if (p == Portalmaker.portalmaker) infos.Add(portalmaker);
             if (p == Engineer.engineer) infos.Add(engineer);
-            if (p == Sheriff.sheriff) infos.Add(sheriff);
+            if (p == Sheriff.Player) infos.Add(sheriff);
+            if (p == Romantic.Player) infos.Add(romantic);
             if (p == Glitch.Player) infos.Add(glitch);
             if (p == SerialKiller.Player) infos.Add(serialKiller);
             if (p == Werewolf.Player) infos.Add(werewolf);
             if (p == Veteran.Player) infos.Add(veteran);
-            if (p == Lighter.lighter) infos.Add(lighter);
+            if (p == Lighter.Player) infos.Add(lighter);
             if (p == Godfather.godfather) infos.Add(godfather);
             if (p == Mafioso.mafioso) infos.Add(mafioso);
             if (p == Janitor.janitor) infos.Add(janitor);
@@ -220,10 +223,10 @@ namespace TownOfSushi
             if (p == Witch.witch) infos.Add(witch);
             if (p == Ninja.ninja) infos.Add(ninja);
             if (p == Yoyo.yoyo) infos.Add(yoyo);
-            if (p == Detective.detective) infos.Add(detective);
-            if (p == TimeMaster.timeMaster) infos.Add(timeMaster);
-            if (p == Medic.medic) infos.Add(medic);
-            if (p == Swapper.swapper) infos.Add(swapper);
+            if (p == Detective.Player) infos.Add(detective);
+            if (p == TimeMaster.Player) infos.Add(timeMaster);
+            if (p == Medic.Player) infos.Add(medic);
+            if (p == Swapper.Player) infos.Add(swapper);
             if (p == Mystic.Player) infos.Add(mystic);
             if (p == Hacker.hacker) infos.Add(hacker);
             if (p == Tracker.tracker) infos.Add(tracker);
@@ -236,8 +239,8 @@ namespace TownOfSushi
             if (p == BountyHunter.bountyHunter) infos.Add(bountyHunter);
             if (p == Vulture.vulture) infos.Add(vulture);
             if (p == Medium.medium) infos.Add(medium);
-            if (p == Lawyer.lawyer && !Lawyer.isProsecutor) infos.Add(lawyer);
-            if (p == Lawyer.lawyer && Lawyer.isProsecutor) infos.Add(prosecutor);
+            if (p == Lawyer.Player && !Lawyer.isProsecutor) infos.Add(lawyer);
+            if (p == Lawyer.Player && Lawyer.isProsecutor) infos.Add(prosecutor);
             if (p == Trapper.trapper) infos.Add(trapper);
             if (p == Pursuer.pursuer) infos.Add(pursuer);
             if (p == Thief.thief) infos.Add(thief);

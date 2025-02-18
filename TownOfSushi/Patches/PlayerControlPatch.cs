@@ -160,57 +160,71 @@ namespace TownOfSushi.Patches {
 
         static void MedicSetTarget() 
         {
-            if (Medic.medic == null || Medic.medic != PlayerControl.LocalPlayer) return;
-            Medic.currentTarget = SetTarget();
-            if (!Medic.usedShield) SetPlayerOutline(Medic.currentTarget, Medic.shieldedColor);
+            if (Medic.Player == null || Medic.Player != PlayerControl.LocalPlayer) return;
+            Medic.CurrentTarget = SetTarget();
+            if (!Medic.usedShield) SetPlayerOutline(Medic.CurrentTarget, Medic.shieldedColor);
+        }
+
+        static void RomanticSetTarget()
+        {
+            if (Romantic.Player == null || Romantic.Player != PlayerControl.LocalPlayer) return;
+            Romantic.CurrentTarget = SetTarget();
+            if (!Romantic.HasLover) SetPlayerOutline(Romantic.CurrentTarget, Romantic.color);
         }
 
         static void ShifterSetTarget() 
         {
             if (Shifter.shifter == null || Shifter.shifter != PlayerControl.LocalPlayer) return;
-            Shifter.currentTarget = SetTarget();
-            if (Shifter.futureShift == null) SetPlayerOutline(Shifter.currentTarget, Color.yellow);
+            Shifter.CurrentTarget = SetTarget();
+            if (Shifter.futureShift == null) SetPlayerOutline(Shifter.CurrentTarget, Color.yellow);
         }
 
         static void MysticSetTarget() 
         {
             if (Mystic.Player == null || Mystic.Player != PlayerControl.LocalPlayer) return;
-            Mystic.currentTarget = SetTarget();
-            SetPlayerOutline(Mystic.currentTarget, Mystic.color);
+            Mystic.CurrentTarget = SetTarget();
+            SetPlayerOutline(Mystic.CurrentTarget, Mystic.color);
         }
 
 
         static void MorphlingSetTarget() 
         {
             if (Morphling.morphling == null || Morphling.morphling != PlayerControl.LocalPlayer) return;
-            Morphling.currentTarget = SetTarget();
-            SetPlayerOutline(Morphling.currentTarget, Morphling.color);
+            Morphling.CurrentTarget = SetTarget();
+            SetPlayerOutline(Morphling.CurrentTarget, Morphling.color);
         }
 
         static void SheriffSetTarget() 
         {
-            if (Sheriff.sheriff == null || Sheriff.sheriff != PlayerControl.LocalPlayer) return;
-            Sheriff.currentTarget = SetTarget();
-            SetPlayerOutline(Sheriff.currentTarget, Sheriff.color);
+            if (Sheriff.Player == null || Sheriff.Player != PlayerControl.LocalPlayer) return;
+            Sheriff.CurrentTarget = SetTarget();
+            SetPlayerOutline(Sheriff.CurrentTarget, Sheriff.color);
         }
 
         static void GlitchSetTarget()
         {
             if (Glitch.Player == null || Glitch.Player != PlayerControl.LocalPlayer) return;
-            Glitch.currentTarget = SetTarget();
-            SetPlayerOutline(Glitch.currentTarget, Glitch.color);
+            Glitch.CurrentTarget = SetTarget();
+            SetPlayerOutline(Glitch.CurrentTarget, Glitch.color);
+        }
+
+        static void VengefulRomanticSetTarget()
+        {
+            if (VengefulRomantic.Player == null || VengefulRomantic.Player != PlayerControl.LocalPlayer) return;
+            VengefulRomantic.CurrentTarget = SetTarget();
+            SetPlayerOutline(VengefulRomantic.CurrentTarget, Romantic.color);
         }
 
         static void TrackerSetTarget() 
         {
             if (Tracker.tracker == null || Tracker.tracker != PlayerControl.LocalPlayer) return;
-            Tracker.currentTarget = SetTarget();
-            if (!Tracker.usedTracker) SetPlayerOutline(Tracker.currentTarget, Tracker.color);
+            Tracker.CurrentTarget = SetTarget();
+            if (!Tracker.usedTracker) SetPlayerOutline(Tracker.CurrentTarget, Tracker.color);
         }
 
         static void DetectiveUpdateFootPrints() 
         {
-            if (Detective.detective == null || Detective.detective != PlayerControl.LocalPlayer) return;
+            if (Detective.Player == null || Detective.Player != PlayerControl.LocalPlayer) return;
 
             Detective.timer -= Time.fixedDeltaTime;
             if (Detective.timer <= 0f) {
@@ -255,8 +269,8 @@ namespace TownOfSushi.Patches {
                 }
             }
             Vampire.targetNearGarlic = targetNearGarlic;
-            Vampire.currentTarget = target;
-            SetPlayerOutline(Vampire.currentTarget, Vampire.color);
+            Vampire.CurrentTarget = target;
+            SetPlayerOutline(Vampire.CurrentTarget, Vampire.color);
         }
 
         static void JackalSetTarget() 
@@ -269,8 +283,8 @@ namespace TownOfSushi.Patches {
                 if (Sidekick.sidekick != null) untargetablePlayers.Add(Sidekick.sidekick);
             }
             if (Mini.mini != null && !Mini.IsGrownUp()) untargetablePlayers.Add(Mini.mini); // Exclude Jackal from targeting the Mini unless it has grown up
-            Jackal.currentTarget = SetTarget(untargetablePlayers: untargetablePlayers);
-            SetPlayerOutline(Jackal.currentTarget, Jackal.color);
+            Jackal.CurrentTarget = SetTarget(untargetablePlayers: untargetablePlayers);
+            SetPlayerOutline(Jackal.CurrentTarget, Jackal.color);
         }
 
         static void SerialKillerSetTarget() 
@@ -278,8 +292,8 @@ namespace TownOfSushi.Patches {
             if (SerialKiller.Player == null || SerialKiller.Player != PlayerControl.LocalPlayer) return;
             var untargetablePlayers = new List<PlayerControl>();
             if (Mini.mini != null && !Mini.IsGrownUp()) untargetablePlayers.Add(Mini.mini); // Exclude Serial Killer from targeting the Mini unless it has grown up
-            SerialKiller.currentTarget = SetTarget(untargetablePlayers: untargetablePlayers);
-            SetPlayerOutline(SerialKiller.currentTarget, SerialKiller.color);
+            SerialKiller.CurrentTarget = SetTarget(untargetablePlayers: untargetablePlayers);
+            SetPlayerOutline(SerialKiller.CurrentTarget, SerialKiller.color);
         }
 
         static void WerewolfSetTarget() 
@@ -287,8 +301,8 @@ namespace TownOfSushi.Patches {
             if (Werewolf.Player == null || Werewolf.Player != PlayerControl.LocalPlayer) return;
             var untargetablePlayers = new List<PlayerControl>();
             if (Mini.mini != null && !Mini.IsGrownUp()) untargetablePlayers.Add(Mini.mini); // Exclude Werewolf from targeting the Mini unless it has grown up
-            Werewolf.currentTarget = SetTarget(untargetablePlayers: untargetablePlayers);
-            SetPlayerOutline(Werewolf.currentTarget, Werewolf.color);
+            Werewolf.CurrentTarget = SetTarget(untargetablePlayers: untargetablePlayers);
+            SetPlayerOutline(Werewolf.CurrentTarget, Werewolf.color);
         }
 
         static void SidekickSetTarget() {
@@ -296,8 +310,8 @@ namespace TownOfSushi.Patches {
             var untargetablePlayers = new List<PlayerControl>();
             if (Jackal.jackal != null) untargetablePlayers.Add(Jackal.jackal);
             if (Mini.mini != null && !Mini.IsGrownUp()) untargetablePlayers.Add(Mini.mini); // Exclude Sidekick from targeting the Mini unless it has grown up
-            Sidekick.currentTarget = SetTarget(untargetablePlayers: untargetablePlayers);
-            if (Sidekick.canKill) SetPlayerOutline(Sidekick.currentTarget, Sidekick.color);
+            Sidekick.CurrentTarget = SetTarget(untargetablePlayers: untargetablePlayers);
+            if (Sidekick.canKill) SetPlayerOutline(Sidekick.CurrentTarget, Sidekick.color);
         }
 
         static void SidekickCheckPromotion() {
@@ -318,8 +332,8 @@ namespace TownOfSushi.Patches {
             if (Spy.spy != null) untargetables.Add(Spy.spy);
             if (Sidekick.wasTeamRed) untargetables.Add(Sidekick.sidekick);
             if (Jackal.wasTeamRed) untargetables.Add(Jackal.jackal);
-            Eraser.currentTarget = SetTarget(onlyCrewmates: !Eraser.canEraseAnyone, untargetablePlayers: Eraser.canEraseAnyone ? new List<PlayerControl>() : untargetables);
-            SetPlayerOutline(Eraser.currentTarget, Eraser.color);
+            Eraser.CurrentTarget = SetTarget(onlyCrewmates: !Eraser.canEraseAnyone, untargetablePlayers: Eraser.canEraseAnyone ? new List<PlayerControl>() : untargetables);
+            SetPlayerOutline(Eraser.CurrentTarget, Eraser.color);
         }
 
         static void GlitchUpdate()
@@ -393,8 +407,8 @@ namespace TownOfSushi.Patches {
                 Warlock.resetCurse();
             }
             if (Warlock.curseVictim == null) {
-                Warlock.currentTarget = SetTarget();
-                SetPlayerOutline(Warlock.currentTarget, Warlock.color);
+                Warlock.CurrentTarget = SetTarget();
+                SetPlayerOutline(Warlock.CurrentTarget, Warlock.color);
             }
             else {
                 Warlock.curseVictimTarget = SetTarget(targetingPlayer: Warlock.curseVictim);
@@ -440,7 +454,7 @@ namespace TownOfSushi.Patches {
             }
         }
 
-        static void trackerUpdate() {
+        static void TrackerUpdate() {
             // Handle player tracking
             if (Tracker.arrow?.arrow != null) {
                 if (Tracker.tracker == null || PlayerControl.LocalPlayer != Tracker.tracker) {
@@ -555,7 +569,7 @@ namespace TownOfSushi.Patches {
 
                 p.cosmetics.nameText.transform.parent.SetLocalZ(-0.0001f);  // This moves both the name AND the colorblindtext behind objects (if the player is behind the object), like the rock on polus
 
-                if ((Lawyer.lawyerKnowsRole && PlayerControl.LocalPlayer == Lawyer.lawyer && p == Lawyer.target) || p == PlayerControl.LocalPlayer || PlayerControl.LocalPlayer.Data.IsDead) 
+                if ((Lawyer.lawyerKnowsRole && PlayerControl.LocalPlayer == Lawyer.Player && p == Lawyer.target) || (Romantic.RomanticKnowsRole && PlayerControl.LocalPlayer == Romantic.Player && p == Romantic.beloved) || (Romantic.RomanticKnowsRole && PlayerControl.LocalPlayer == Romantic.beloved && p == Romantic.Player) ||p == PlayerControl.LocalPlayer || PlayerControl.LocalPlayer.Data.IsDead) 
                 {
                     Transform playerInfoTransform = p.cosmetics.nameText.transform.parent.FindChild("Info");
                     TMPro.TextMeshPro playerInfo = playerInfoTransform != null ? playerInfoTransform.GetComponent<TMPro.TextMeshPro>() : null;
@@ -594,7 +608,7 @@ namespace TownOfSushi.Patches {
                     {
                         if (p.Data.IsDead) roleNames = roleText;
                         playerInfoText = $"{roleNames}";
-                        if (p == Swapper.swapper) playerInfoText = $"{roleNames}" + Helpers.ColorString(Swapper.color, $" ({Swapper.charges})");
+                        if (p == Swapper.Player) playerInfoText = $"{roleNames}" + Helpers.ColorString(Swapper.color, $" ({Swapper.charges})");
                         if (HudManager.Instance.TaskPanel != null) 
                         {
                             TMPro.TextMeshPro tabText = HudManager.Instance.TaskPanel.tab.transform.FindChild("TabText_TMP").GetComponent<TMPro.TextMeshPro>();
@@ -607,11 +621,13 @@ namespace TownOfSushi.Patches {
                         playerInfoText = $"{roleText} {taskInfo}".Trim();
                         meetingInfoText = playerInfoText;
                     }
-                    else if (MapOptions.ghostsSeeInformation) {
+                    else if (MapOptions.ghostsSeeInformation) 
+                    {
                         playerInfoText = $"{taskInfo}".Trim();
                         meetingInfoText = playerInfoText;
                     }
-                    else if (MapOptions.ghostsSeeRoles || (Lawyer.lawyerKnowsRole && PlayerControl.LocalPlayer == Lawyer.lawyer && p == Lawyer.target)) {
+                    else if (MapOptions.ghostsSeeRoles || (Lawyer.lawyerKnowsRole && PlayerControl.LocalPlayer == Lawyer.Player && p == Lawyer.target) || (Romantic.RomanticKnowsRole && PlayerControl.LocalPlayer == Romantic.Player && p == Romantic.beloved) || (Romantic.RomanticKnowsRole && PlayerControl.LocalPlayer == Romantic.beloved && p == Romantic.Player)) 
+                    {
                         playerInfoText = $"{roleText}";
                         meetingInfoText = playerInfoText;
                     }
@@ -669,8 +685,8 @@ namespace TownOfSushi.Patches {
                 }
             }
             else untargetables = Arsonist.dousedPlayers;
-            Arsonist.currentTarget = SetTarget(untargetablePlayers: untargetables);
-            if (Arsonist.currentTarget != null) SetPlayerOutline(Arsonist.currentTarget, Arsonist.color);
+            Arsonist.CurrentTarget = SetTarget(untargetablePlayers: untargetables);
+            if (Arsonist.CurrentTarget != null) SetPlayerOutline(Arsonist.CurrentTarget, Arsonist.color);
         }
 
         static void SnitchUpdate() 
@@ -736,8 +752,9 @@ namespace TownOfSushi.Patches {
                 BountyHunter.arrowUpdateTimer = 0f; // Force arrow to update
                 BountyHunter.bountyUpdateTimer = BountyHunter.bountyDuration;
                 var possibleTargets = new List<PlayerControl>();
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls) {
-                    if (!p.Data.IsDead && !p.Data.Disconnected && p != p.Data.Role.IsImpostor && p != Spy.spy && (p != Sidekick.sidekick || !Sidekick.wasTeamRed) && (p != Jackal.jackal || !Jackal.wasTeamRed) && (p != Mini.mini || Mini.IsGrownUp()) && (Lovers.GetPartner(BountyHunter.bountyHunter) == null || p != Lovers.GetPartner(BountyHunter.bountyHunter))) possibleTargets.Add(p);
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls) 
+                {
+                    if (!p.Data.IsDead && !p.Data.Disconnected && p != p.Data.Role.IsImpostor && p != Spy.spy && (Romantic.beloved == BountyHunter.bountyHunter && p != Romantic.Player) && (p != Sidekick.sidekick || !Sidekick.wasTeamRed) && (p != Jackal.jackal || !Jackal.wasTeamRed) && (p != Mini.mini || Mini.IsGrownUp()) && (Lovers.GetPartner(BountyHunter.bountyHunter) == null || p != Lovers.GetPartner(BountyHunter.bountyHunter))) possibleTargets.Add(p);
                 }
                 BountyHunter.bounty = possibleTargets[TownOfSushi.rnd.Next(0, possibleTargets.Count)];
                 if (BountyHunter.bounty == null) return;
@@ -888,13 +905,27 @@ namespace TownOfSushi.Patches {
 
         public static void LawyerUpdate() 
         {
-            if (Lawyer.lawyer == null || Lawyer.lawyer != PlayerControl.LocalPlayer) return;
+            if (Lawyer.Player == null || Lawyer.Player != PlayerControl.LocalPlayer) return;
 
             // Promote to Pursuer
-            if (Lawyer.target != null && Lawyer.target.Data.Disconnected && !Lawyer.lawyer.Data.IsDead) {
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.LawyerPromotesToPursuer, Hazel.SendOption.Reliable, -1);
+            if (Lawyer.target != null && Lawyer.target.Data.Disconnected && !Lawyer.Player.Data.IsDead) 
+            {
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.LawyerChangeRole, Hazel.SendOption.Reliable, -1);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
-                RPCProcedure.LawyerPromotesToPursuer();
+                RPCProcedure.LawyerChangeRole();
+                return;
+            }
+        }
+
+        public static void RomanticUpdate() 
+        {
+            if (Romantic.Player == null || Romantic.Player != PlayerControl.LocalPlayer) return;
+
+            if (Romantic.beloved != null && Romantic.beloved.Data.Disconnected && !Romantic.Player.Data.IsDead) 
+            {
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RomanticChangeRole, Hazel.SendOption.Reliable, -1);
+                AmongUsClient.Instance.FinishRpcImmediately(writer);
+                RPCProcedure.RomanticChangeRole();
                 return;
             }
         }
@@ -913,7 +944,7 @@ namespace TownOfSushi.Patches {
         // For Charges
         public static void SwapperUpdate() 
         {
-            if (Swapper.swapper == null || PlayerControl.LocalPlayer != Swapper.swapper || PlayerControl.LocalPlayer.Data.IsDead) return;
+            if (Swapper.Player == null || PlayerControl.LocalPlayer != Swapper.Player || PlayerControl.LocalPlayer.Data.IsDead) return;
             var (playerCompleted, _) = TasksHandler.TaskInfo(PlayerControl.LocalPlayer.Data);
             if (playerCompleted == Swapper.rechargedTasks) {
                 Swapper.rechargedTasks += Swapper.rechargeTasksNumber;
@@ -961,8 +992,8 @@ namespace TownOfSushi.Patches {
                 if (Sidekick.wasTeamRed && !Witch.canSpellAnyone) untargetables.Add(Sidekick.sidekick);
                 if (Jackal.wasTeamRed && !Witch.canSpellAnyone) untargetables.Add(Jackal.jackal);
             }
-            Witch.currentTarget = SetTarget(onlyCrewmates: !Witch.canSpellAnyone, untargetablePlayers: untargetables);
-            SetPlayerOutline(Witch.currentTarget, Witch.color);
+            Witch.CurrentTarget = SetTarget(onlyCrewmates: !Witch.canSpellAnyone, untargetablePlayers: untargetables);
+            SetPlayerOutline(Witch.CurrentTarget, Witch.color);
         }
 
         static void NinjaSetTarget()
@@ -973,8 +1004,8 @@ namespace TownOfSushi.Patches {
             if (Mini.mini != null && !Mini.IsGrownUp()) untargetables.Add(Mini.mini);
             if (Sidekick.wasTeamRed && !Spy.impostorsCanKillAnyone) untargetables.Add(Sidekick.sidekick);
             if (Jackal.wasTeamRed && !Spy.impostorsCanKillAnyone) untargetables.Add(Jackal.jackal);
-            Ninja.currentTarget = SetTarget(onlyCrewmates: Spy.spy == null || !Spy.impostorsCanKillAnyone, untargetablePlayers: untargetables);
-            SetPlayerOutline(Ninja.currentTarget, Ninja.color);
+            Ninja.CurrentTarget = SetTarget(onlyCrewmates: Spy.spy == null || !Spy.impostorsCanKillAnyone, untargetablePlayers: untargetables);
+            SetPlayerOutline(Ninja.CurrentTarget, Ninja.color);
         }
 
         static void ThiefSetTarget() 
@@ -982,8 +1013,8 @@ namespace TownOfSushi.Patches {
             if (Thief.thief == null || Thief.thief != PlayerControl.LocalPlayer) return;
             List<PlayerControl> untargetables = new List<PlayerControl>();
             if (Mini.mini != null && !Mini.IsGrownUp()) untargetables.Add(Mini.mini);
-            Thief.currentTarget = SetTarget(onlyCrewmates: false, untargetablePlayers: untargetables);
-            SetPlayerOutline(Thief.currentTarget, Thief.color);
+            Thief.CurrentTarget = SetTarget(onlyCrewmates: false, untargetablePlayers: untargetables);
+            SetPlayerOutline(Thief.CurrentTarget, Thief.color);
         }
 
 
@@ -1040,6 +1071,7 @@ namespace TownOfSushi.Patches {
                 HudManagerStartPatch.vampireKillButton.MaxTimer = Vampire.cooldown * multiplier;
                 HudManagerStartPatch.jackalKillButton.MaxTimer = Jackal.cooldown * multiplier;
                 HudManagerStartPatch.GlitchKillButton.MaxTimer = Glitch.KillCooldown * multiplier;
+                HudManagerStartPatch.RomanticKillButton.MaxTimer = VengefulRomantic.Cooldown * multiplier;
                 HudManagerStartPatch.SerialKillerStabButton.MaxTimer = SerialKiller.StabCooldown * multiplier;
                 HudManagerStartPatch.WerewolfMaulButton.MaxTimer = Werewolf.Cooldown * multiplier;
                 HudManagerStartPatch.sidekickKillButton.MaxTimer = Sidekick.cooldown * multiplier;
@@ -1093,6 +1125,9 @@ namespace TownOfSushi.Patches {
                 MorphlingSetTarget();
                 // Medic
                 MedicSetTarget();
+                //Romantic
+                RomanticSetTarget();
+                VengefulRomanticSetTarget();
                 // Shifter
                 ShifterSetTarget();
                 // Sheriff
@@ -1113,7 +1148,7 @@ namespace TownOfSushi.Patches {
                 // Engineer
                 EngineerUpdate();
                 // Tracker
-                trackerUpdate();
+                TrackerUpdate();
                 // Jackal
                 JackalSetTarget();
                 //Serial Killer
@@ -1148,6 +1183,8 @@ namespace TownOfSushi.Patches {
                 MorphlingAndCamouflagerUpdate();
                 // Lawyer
                 LawyerUpdate();
+                //Romantic
+                RomanticUpdate();
                 // Pursuer
                 PursuerSetTarget();
                 // Witch
@@ -1215,8 +1252,8 @@ namespace TownOfSushi.Patches {
         static void Postfix(PlayerControl __instance, [HarmonyArgument(0)]NetworkedPlayerInfo target)
         {
             // Medic or Detective report
-            bool isMedicReport = Medic.medic != null && Medic.medic == PlayerControl.LocalPlayer && __instance.PlayerId == Medic.medic.PlayerId;
-            bool isDetectiveReport = Detective.detective != null && Detective.detective == PlayerControl.LocalPlayer && __instance.PlayerId == Detective.detective.PlayerId;
+            bool isMedicReport = Medic.Player != null && Medic.Player == PlayerControl.LocalPlayer && __instance.PlayerId == Medic.Player.PlayerId;
+            bool isDetectiveReport = Detective.Player != null && Detective.Player == PlayerControl.LocalPlayer && __instance.PlayerId == Detective.Player.PlayerId;
             if (isMedicReport || isDetectiveReport)
             {
                 DeadPlayer deadPlayer = deadPlayers?.Where(x => x.player?.PlayerId == target?.PlayerId)?.FirstOrDefault();
@@ -1287,15 +1324,15 @@ namespace TownOfSushi.Patches {
             if (resetToDead) __instance.Data.IsDead = true;
 
             // Remove fake tasks when player dies
-            if (target.HasFakeTasks() || target == Lawyer.lawyer || target == Pursuer.pursuer || target == Thief.thief)
+            if (target.HasFakeTasks() || target == Lawyer.Player || target == Pursuer.pursuer || target == Thief.thief)
                 target.ClearAllTasks();
 
             // First kill (set before lover suicide)
             if (MapOptions.firstKillName == "") MapOptions.firstKillName = target.Data.PlayerName;
 
             // Lover suicide trigger on murder
-            if ((Lovers.lover1 != null && target == Lovers.lover1) || (Lovers.lover2 != null && target == Lovers.lover2)) {
-                PlayerControl otherLover = target == Lovers.lover1 ? Lovers.lover2 : Lovers.lover1;
+            if ((Lovers.Lover1 != null && target == Lovers.Lover1) || (Lovers.Lover2 != null && target == Lovers.Lover2)) {
+                PlayerControl otherLover = target == Lovers.Lover1 ? Lovers.Lover2 : Lovers.Lover1;
                 if (otherLover != null && !otherLover.Data.IsDead && Lovers.bothDie) {
                     otherLover.MurderPlayer(otherLover);
                     GameHistory.OverrideDeathReasonAndKiller(otherLover, DeadPlayer.CustomDeathReason.LoverSuicide);
@@ -1310,10 +1347,19 @@ namespace TownOfSushi.Patches {
             }
 
             // Pursuer promotion trigger on murder (the host sends the call such that everyone recieves the update before a possible game End)
-            if (target == Lawyer.target && AmongUsClient.Instance.AmHost && Lawyer.lawyer != null) {
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.LawyerPromotesToPursuer, Hazel.SendOption.Reliable, -1);
+            if (target == Lawyer.target && AmongUsClient.Instance.AmHost && Lawyer.Player != null) 
+            {
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.LawyerChangeRole, Hazel.SendOption.Reliable, -1);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
-                RPCProcedure.LawyerPromotesToPursuer();
+                RPCProcedure.LawyerChangeRole();
+            }
+
+            // Pursuer promotion trigger on murder (the host sends the call such that everyone recieves the update before a possible game End)
+            if (target == Romantic.beloved && AmongUsClient.Instance.AmHost && Romantic.Player != null) 
+            {
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RomanticChangeRole, Hazel.SendOption.Reliable, -1);
+                AmongUsClient.Instance.FinishRpcImmediately(writer);
+                RPCProcedure.RomanticChangeRole();
             }
 
             // Mystic show flash and add dead player position
@@ -1472,12 +1518,12 @@ namespace TownOfSushi.Patches {
 
 
             // Remove fake tasks when player dies
-            if (__instance.HasFakeTasks() || __instance == Lawyer.lawyer || __instance == Pursuer.pursuer || __instance == Thief.thief)
+            if (__instance.HasFakeTasks() || __instance == Lawyer.Player || __instance == Pursuer.pursuer || __instance == Thief.thief)
                 __instance.ClearAllTasks();
 
             // Lover suicide trigger on exile
-            if ((Lovers.lover1 != null && __instance == Lovers.lover1) || (Lovers.lover2 != null && __instance == Lovers.lover2)) {
-                PlayerControl otherLover = __instance == Lovers.lover1 ? Lovers.lover2 : Lovers.lover1;
+            if ((Lovers.Lover1 != null && __instance == Lovers.Lover1) || (Lovers.Lover2 != null && __instance == Lovers.Lover2)) {
+                PlayerControl otherLover = __instance == Lovers.Lover1 ? Lovers.Lover2 : Lovers.Lover1;
                 if (otherLover != null && !otherLover.Data.IsDead && Lovers.bothDie) {
                     otherLover.Exiled();
                     GameHistory.OverrideDeathReasonAndKiller(otherLover, DeadPlayer.CustomDeathReason.LoverSuicide);
@@ -1485,23 +1531,37 @@ namespace TownOfSushi.Patches {
 
             }            
             // Sidekick promotion trigger on exile
-            if (Sidekick.promotesToJackal && Sidekick.sidekick != null && !Sidekick.sidekick.Data.IsDead && __instance == Jackal.jackal && Jackal.jackal == PlayerControl.LocalPlayer) {
+            if (Sidekick.promotesToJackal && Sidekick.sidekick != null && !Sidekick.sidekick.Data.IsDead && __instance == Jackal.jackal && Jackal.jackal == PlayerControl.LocalPlayer) 
+            {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SidekickPromotes, Hazel.SendOption.Reliable, -1);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
                 RPCProcedure.SidekickPromotes();
             }
 
-            // Pursuer promotion trigger on exile & suicide (the host sends the call such that everyone recieves the update before a possible game End)
-            if (Lawyer.lawyer != null && __instance == Lawyer.target) {
-                PlayerControl lawyer = Lawyer.lawyer;
-                if (AmongUsClient.Instance.AmHost && ((Lawyer.target != Jester.jester && !Lawyer.isProsecutor) || Lawyer.targetWasGuessed)) {
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.LawyerPromotesToPursuer, Hazel.SendOption.Reliable, -1);
+            if (Romantic.Player != null && !Romantic.Player.Data.IsDead && __instance == Romantic.beloved) 
+            {
+                if (AmongUsClient.Instance.AmHost && (Romantic.beloved != Jester.jester))
+                {
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RomanticChangeRole, Hazel.SendOption.Reliable, -1);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
-                    RPCProcedure.LawyerPromotesToPursuer();
+                    RPCProcedure.RomanticChangeRole();
+                }
+            }
+
+            // Pursuer promotion trigger on exile & suicide (the host sends the call such that everyone recieves the update before a possible game End)
+            if (Lawyer.Player != null && __instance == Lawyer.target) 
+            {
+                PlayerControl lawyer = Lawyer.Player;
+                if (AmongUsClient.Instance.AmHost && ((Lawyer.target != Jester.jester && !Lawyer.isProsecutor) || Lawyer.targetWasGuessed)) 
+                {
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.LawyerChangeRole, Hazel.SendOption.Reliable, -1);
+                    AmongUsClient.Instance.FinishRpcImmediately(writer);
+                    RPCProcedure.LawyerChangeRole();
                 }
 
-                if (!Lawyer.targetWasGuessed && !Lawyer.isProsecutor) {
-                    if (Lawyer.lawyer != null) Lawyer.lawyer.Exiled();
+                if (!Lawyer.targetWasGuessed && !Lawyer.isProsecutor) 
+                {
+                    if (Lawyer.Player != null) Lawyer.Player.Exiled();
                     if (Pursuer.pursuer != null) Pursuer.pursuer.Exiled();
 
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareGhostInfo, Hazel.SendOption.Reliable, -1);
@@ -1539,7 +1599,7 @@ namespace TownOfSushi.Patches {
             if (GameOptionsManager.Instance.currentGameOptions.GameMode == GameModes.HideNSeek)
                 return true;
             __result = false;
-            if (!PlayerControl.LocalPlayer.Data.IsDead && Lighter.lighter != null && Lighter.lighter.PlayerId == PlayerControl.LocalPlayer.PlayerId) {
+            if (!PlayerControl.LocalPlayer.Data.IsDead && Lighter.Player != null && Lighter.Player.PlayerId == PlayerControl.LocalPlayer.PlayerId) {
                 __result = true;
             }
 
@@ -1550,9 +1610,9 @@ namespace TownOfSushi.Patches {
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.AdjustLighting))]
     public static class AdjustLight {
         public static bool Prefix(PlayerControl __instance) {
-            if (__instance == null || PlayerControl.LocalPlayer == null || Lighter.lighter == null) return true;
+            if (__instance == null || PlayerControl.LocalPlayer == null || Lighter.Player == null) return true;
 
-            bool hasFlashlight = !PlayerControl.LocalPlayer.Data.IsDead && Lighter.lighter.PlayerId == PlayerControl.LocalPlayer.PlayerId;
+            bool hasFlashlight = !PlayerControl.LocalPlayer.Data.IsDead && Lighter.Player.PlayerId == PlayerControl.LocalPlayer.PlayerId;
             __instance.SetFlashlightInputMethod();
             __instance.lightSource.SetupLightingForGameplay(hasFlashlight, Lighter.flashlightWidth, __instance.TargetFlashlight.transform);
 

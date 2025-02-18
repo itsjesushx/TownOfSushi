@@ -64,6 +64,8 @@ namespace TownOfSushi
             Thief.ClearAndReload();
             Trapper.ClearAndReload();
             Yoyo.ClearAndReload();
+            Romantic.ClearAndReload();
+            VengefulRomantic.ClearAndReload();
 
             // Modifier
             Bait.ClearAndReload();
@@ -100,7 +102,7 @@ namespace TownOfSushi
         public static class SerialKiller
         {
             public static PlayerControl Player;
-            public static PlayerControl currentTarget;
+            public static PlayerControl CurrentTarget;
             public static bool HasImpostorVision;
             public static Color color = new Color32(51, 110, 255, byte.MaxValue);           
             public static float StabCooldown;
@@ -117,7 +119,7 @@ namespace TownOfSushi
             }
             public static void ClearAndReload()
             {
-                currentTarget = null;
+                CurrentTarget = null;
                 Player = null;
                 Stabbing = false;
                 HasImpostorVision = false;
@@ -194,7 +196,7 @@ namespace TownOfSushi
 
         public static class Mayor 
         {
-            public static PlayerControl mayor;
+            public static PlayerControl Player;
             public static Color color = new Color32(32, 77, 66, byte.MaxValue);
             public static Minigame emergency = null;
             public static Sprite emergencySprite = null;
@@ -216,7 +218,7 @@ namespace TownOfSushi
 
             public static void ClearAndReload() 
             {
-                mayor = null;
+                Player = null;
                 emergency = null;
                 emergencySprite = null;
 		        remoteMeetingsLeft = Mathf.RoundToInt(CustomOptionHolder.mayorMaxRemoteMeetings.GetFloat()); 
@@ -301,17 +303,17 @@ namespace TownOfSushi
 
         public static class Sheriff 
         {
-            public static PlayerControl sheriff;
+            public static PlayerControl Player;
             public static Color color = new Color32(248, 205, 70, byte.MaxValue);
             public static float cooldown = 30f;
             public static bool canKillNeutrals = false;
             public static bool spyCanDieToSheriff = false;
 
-            public static PlayerControl currentTarget;
+            public static PlayerControl CurrentTarget;
             public static void ClearAndReload() 
             {
-                sheriff = null;
-                currentTarget = null;
+                Player = null;
+                CurrentTarget = null;
                 cooldown = CustomOptionHolder.sheriffCooldown.GetFloat();
                 canKillNeutrals = CustomOptionHolder.sheriffCanKillNeutrals.GetBool();
                 spyCanDieToSheriff = CustomOptionHolder.spyCanDieToSheriff.GetBool();
@@ -322,7 +324,7 @@ namespace TownOfSushi
         {
             public static PlayerControl Player;
             public static Color color = Color.green;
-            public static PlayerControl currentTarget;
+            public static PlayerControl CurrentTarget;
             public static bool canEnterVents;
             public static float KillCooldown;
             public static List<byte> HackedPlayers = new List<byte>();
@@ -409,7 +411,7 @@ namespace TownOfSushi
                 sampledTarget = null;
                 MimicTarget = null;
                 MimicTimer = 0f;
-                currentTarget = null;
+                CurrentTarget = null;
                 HackedPlayers = new List<byte>();
                 HackedKnows = new Dictionary<byte, float>();
                 HudManagerStartPatch.SetAllButtonsHackedStatus(false, true);
@@ -425,7 +427,7 @@ namespace TownOfSushi
 
         public static class Lighter 
         {
-            public static PlayerControl lighter;
+            public static PlayerControl Player;
             public static Color color = new Color32(238, 229, 190, byte.MaxValue);
             
             public static float lighterModeLightsOnVision = 2f;
@@ -434,7 +436,7 @@ namespace TownOfSushi
 
             public static void ClearAndReload() 
             {
-                lighter = null;
+                Player = null;
                 flashlightWidth = CustomOptionHolder.lighterFlashlightWidth.GetFloat();
                 lighterModeLightsOnVision = CustomOptionHolder.lighterModeLightsOnVision.GetFloat();
                 lighterModeLightsOffVision = CustomOptionHolder.lighterModeLightsOffVision.GetFloat();
@@ -443,7 +445,7 @@ namespace TownOfSushi
 
         public static class Detective 
         {
-            public static PlayerControl detective;
+            public static PlayerControl Player;
             public static Color color = new Color32(45, 106, 165, byte.MaxValue);
 
             public static float footprintIntervall = 1f;
@@ -455,7 +457,7 @@ namespace TownOfSushi
 
             public static void ClearAndReload() 
             {
-                detective = null;
+                Player = null;
                 anonymousFootprints = CustomOptionHolder.detectiveAnonymousFootprints.GetBool();
                 footprintIntervall = CustomOptionHolder.detectiveFootprintIntervall.GetFloat();
                 footprintDuration = CustomOptionHolder.detectiveFootprintDuration.GetFloat();
@@ -468,7 +470,7 @@ namespace TownOfSushi
 
     public static class TimeMaster 
     {
-        public static PlayerControl timeMaster;
+        public static PlayerControl Player;
         public static Color color = new Color32(112, 142, 239, byte.MaxValue);
 
         public static bool reviveDuringRewind = false;
@@ -489,7 +491,7 @@ namespace TownOfSushi
 
         public static void ClearAndReload() 
         {
-            timeMaster = null;
+            Player = null;
             isRewinding = false;
             shieldActive = false;
             rewindTime = CustomOptionHolder.timeMasterRewindTime.GetFloat();
@@ -500,7 +502,7 @@ namespace TownOfSushi
 
     public static class Medic 
     {
-        public static PlayerControl medic;
+        public static PlayerControl Player;
         public static PlayerControl shielded;
         public static PlayerControl futureShielded;
         
@@ -515,7 +517,7 @@ namespace TownOfSushi
         public static bool meetingAfterShielding = false;
 
         public static Color shieldedColor = new Color32(0, 221, 255, byte.MaxValue);
-        public static PlayerControl currentTarget;
+        public static PlayerControl CurrentTarget;
 
         private static Sprite buttonSprite;
         public static Sprite GetButtonSprite() 
@@ -534,20 +536,20 @@ namespace TownOfSushi
             if (Medic.shielded != null && ((target == Medic.shielded && !isMorphedMorphling) || (target == Medic.shielded && !isMimicGlitch) || (isMorphedMorphling && Morphling.morphTarget == Medic.shielded) || (isMimicGlitch && Glitch.MimicTarget == Medic.shielded))) 
             {
                 hasVisibleShield = Medic.showShielded == 0 || Helpers.ShouldShowGhostInfo() // Everyone or Ghost info
-                    || (Medic.showShielded == 1 && (PlayerControl.LocalPlayer == Medic.shielded || PlayerControl.LocalPlayer == Medic.medic)) // Shielded + Medic
-                    || (Medic.showShielded == 2 && PlayerControl.LocalPlayer == Medic.medic); // Medic only
+                    || (Medic.showShielded == 1 && (PlayerControl.LocalPlayer == Medic.shielded || PlayerControl.LocalPlayer == Medic.Player)) // Shielded + Medic
+                    || (Medic.showShielded == 2 && PlayerControl.LocalPlayer == Medic.Player); // Medic only
                 // Make shield invisible till after the next meeting if the option is set (the medic can already see the shield)
-                hasVisibleShield = hasVisibleShield && (Medic.meetingAfterShielding || !Medic.showShieldAfterMeeting || PlayerControl.LocalPlayer == Medic.medic || Helpers.ShouldShowGhostInfo());
+                hasVisibleShield = hasVisibleShield && (Medic.meetingAfterShielding || !Medic.showShieldAfterMeeting || PlayerControl.LocalPlayer == Medic.Player || Helpers.ShouldShowGhostInfo());
             }
             return hasVisibleShield;
         }
 
         public static void ClearAndReload() 
         {
-            medic = null;
+            Player = null;
             shielded = null;
             futureShielded = null;
-            currentTarget = null;
+            CurrentTarget = null;
             usedShield = false;
             showShielded = CustomOptionHolder.medicShowShielded.GetSelection();
             showAttemptToShielded = CustomOptionHolder.medicShowAttemptToShielded.GetBool();
@@ -560,7 +562,7 @@ namespace TownOfSushi
 
     public static class Swapper 
     {
-        public static PlayerControl swapper;
+        public static PlayerControl Player;
         public static Color color = new Color32(134, 55, 86, byte.MaxValue);
         private static Sprite spriteCheck;
         public static bool canCallEmergency = false;
@@ -581,7 +583,7 @@ namespace TownOfSushi
 
         public static void ClearAndReload() 
         {
-            swapper = null;
+            Player = null;
             playerId1 = Byte.MaxValue;
             playerId2 = Byte.MaxValue;
             canCallEmergency = CustomOptionHolder.swapperCanCallEmergency.GetBool();
@@ -594,8 +596,8 @@ namespace TownOfSushi
 
     public static class Lovers 
     {
-        public static PlayerControl lover1;
-        public static PlayerControl lover2;
+        public static PlayerControl Lover1;
+        public static PlayerControl Lover2;
         public static Color color = new Color32(232, 57, 185, byte.MaxValue);
 
         public static bool bothDie = true;
@@ -605,40 +607,40 @@ namespace TownOfSushi
 
         public static bool Existing() 
         {
-            return lover1 != null && lover2 != null && !lover1.Data.Disconnected && !lover2.Data.Disconnected;
+            return Lover1 != null && Lover2 != null && !Lover1.Data.Disconnected && !Lover2.Data.Disconnected;
         }
 
         public static bool ExistingAndAlive() 
         {
-            return Existing() && !lover1.Data.IsDead && !lover2.Data.IsDead && !notAckedExiledIsLover; // ADD NOT ACKED IS LOVER
+            return Existing() && !Lover1.Data.IsDead && !Lover2.Data.IsDead && !notAckedExiledIsLover; // ADD NOT ACKED IS LOVER
         }
 
         public static PlayerControl OtherLover(PlayerControl oneLover) 
         {
             if (!ExistingAndAlive()) return null;
-            if (oneLover == lover1) return lover2;
-            if (oneLover == lover2) return lover1;
+            if (oneLover == Lover1) return Lover2;
+            if (oneLover == Lover2) return Lover1;
             return null;
         }
 
         public static bool ExistingWithKiller() 
         {
-            return Existing() && (lover1 == Jackal.jackal     || lover2 == Jackal.jackal
-                               || lover1 == Sidekick.sidekick || lover2 == Sidekick.sidekick
-                               || lover1.Data.Role.IsImpostor      || lover2.Data.Role.IsImpostor);
+            return Existing() && (Lover1 == Jackal.jackal     || Lover2 == Jackal.jackal
+                               || Lover1 == Sidekick.sidekick || Lover2 == Sidekick.sidekick
+                               || Lover1.Data.Role.IsImpostor      || Lover2.Data.Role.IsImpostor);
         }
 
         public static bool HasAliveKillingLover(this PlayerControl player) 
         {
             if (!Lovers.ExistingAndAlive() || !ExistingWithKiller())
                 return false;
-            return (player != null && (player == lover1 || player == lover2));
+            return (player != null && (player == Lover1 || player == Lover2));
         }
 
         public static void ClearAndReload() 
         {
-            lover1 = null;
-            lover2 = null;
+            Lover1 = null;
+            Lover2 = null;
             notAckedExiledIsLover = false;
             bothDie = CustomOptionHolder.modifierLoverBothDie.GetBool();
             enableChat = CustomOptionHolder.modifierLoverEnableChat.GetBool();
@@ -648,10 +650,10 @@ namespace TownOfSushi
         {
             if (player == null)
                 return null;
-            if (lover1 == player)
-                return lover2;
-            if (lover2 == player)
-                return lover1;
+            if (Lover1 == player)
+                return Lover2;
+            if (Lover2 == player)
+                return Lover1;
             return null;
         }
     }
@@ -662,7 +664,7 @@ namespace TownOfSushi
         public static PlayerControl Player;
         public static Color color = new Color32(77, 154, 230, byte.MaxValue);
         public static List<Vector3> deadBodyPositions = new List<Vector3>();
-        public static PlayerControl currentTarget;
+        public static PlayerControl CurrentTarget;
         public static float Cooldown;
         public static float soulDuration = 15f;
         public static bool limitSoulDuration = false;
@@ -716,9 +718,9 @@ namespace TownOfSushi
                 }
                     
                 else if (roleInfo.roleId == RoleId.Lawyer || roleInfo.roleId == RoleId.TimeMaster || roleInfo.roleId == RoleId.SecurityGuard ||
-                roleInfo.roleId == RoleId.Medic || roleInfo.roleId == RoleId.Mafioso || roleInfo.roleId == RoleId.Pursuer)
+                roleInfo.roleId == RoleId.Medic || roleInfo.roleId == RoleId.Mafioso || roleInfo.roleId == RoleId.Pursuer || roleInfo.roleId == RoleId.Romantic)
                 {
-                    message =  "I'm scared. I'm going to hide myself or others! \n\n(Medic, Security Guard,  Lawyer, Time Master, Mafioso or Pursuer)";
+                    message =  "I'm scared. I'm going to hide myself or others! \n\n(Medic, Romantic, Security Guard, Lawyer, Time Master, Mafioso or Pursuer)";
                 }
                 
                 else if (roleInfo.roleId == RoleId.Arsonist || roleInfo.roleId == RoleId.Camouflager || roleInfo.roleId == RoleId.Portalmaker ||
@@ -738,7 +740,7 @@ namespace TownOfSushi
                 }
             }
 
-            return currentTarget.Data.PlayerName + "'s Mind:\n" + message;
+            return CurrentTarget.Data.PlayerName + "'s Mind:\n" + message;
         }
 
         public static int Charges;
@@ -756,7 +758,7 @@ namespace TownOfSushi
         public static void ClearAndReload() 
         {
             Player = null;
-            currentTarget = null;
+            CurrentTarget = null;
             Investigated = false;
             deadBodyPositions = new List<Vector3>();
             Cooldown = CustomOptionHolder.MysticCooldown.GetFloat();
@@ -780,7 +782,7 @@ namespace TownOfSushi
         public static PlayerControl sampledTarget;
         public static PlayerControl morphTarget;
         public static float morphTimer = 0f;
-        public static PlayerControl currentTarget;
+        public static PlayerControl CurrentTarget;
 
         public static void ResetMorph() 
         {
@@ -794,7 +796,7 @@ namespace TownOfSushi
         {
             ResetMorph();
             morphling = null;
-            currentTarget = null;
+            CurrentTarget = null;
             sampledTarget = null;
             morphTarget = null;
             morphTimer = 0f;
@@ -943,7 +945,7 @@ namespace TownOfSushi
         public static float corpsesTrackingTimer = 0f;
         public static int trackingMode = 0;
         public static List<Vector3> deadBodyPositions = new();
-        public static PlayerControl currentTarget;
+        public static PlayerControl CurrentTarget;
         public static PlayerControl tracked;
         public static bool usedTracker = false;
         public static float timeUntilUpdate = 0f;
@@ -970,7 +972,7 @@ namespace TownOfSushi
 
         public static void ResetTracked() 
         {
-            currentTarget = tracked = null;
+            CurrentTarget = tracked = null;
             usedTracker = false;
             if (arrow?.arrow != null) UnityEngine.Object.Destroy(arrow.arrow);
             arrow = new Arrow(Color.blue);
@@ -1004,7 +1006,8 @@ namespace TownOfSushi
         }
     }
 
-    public static class Vampire {
+    public static class Vampire 
+    {
         public static PlayerControl vampire;
         public static Color color = Palette.ImpostorRed;
 
@@ -1014,7 +1017,7 @@ namespace TownOfSushi
         public static bool localPlacedGarlic = false;
         public static bool garlicsActive = true;
 
-        public static PlayerControl currentTarget;
+        public static PlayerControl CurrentTarget;
         public static PlayerControl bitten; 
         public static bool targetNearGarlic = false;
 
@@ -1040,7 +1043,7 @@ namespace TownOfSushi
             bitten = null;
             targetNearGarlic = false;
             localPlacedGarlic = false;
-            currentTarget = null;
+            CurrentTarget = null;
             garlicsActive = CustomOptionHolder.vampireSpawnRate.GetSelection() > 0;
             delay = CustomOptionHolder.vampireKillDelay.GetFloat();
             cooldown = CustomOptionHolder.vampireCooldown.GetFloat();
@@ -1121,7 +1124,7 @@ namespace TownOfSushi
         public static PlayerControl jackal;
         public static Color color = new Color32(0, 180, 235, byte.MaxValue);
         public static PlayerControl fakeSidekick;
-        public static PlayerControl currentTarget;
+        public static PlayerControl CurrentTarget;
         public static List<PlayerControl> formerJackals = new List<PlayerControl>();
         
         public static float cooldown = 30f;
@@ -1145,7 +1148,7 @@ namespace TownOfSushi
         public static void removeCurrentJackal() {
             if (!formerJackals.Any(x => x.PlayerId == jackal.PlayerId)) formerJackals.Add(jackal);
             jackal = null;
-            currentTarget = null;
+            CurrentTarget = null;
             fakeSidekick = null;
             cooldown = CustomOptionHolder.jackalKillCooldown.GetFloat();
             createSidekickCooldown = CustomOptionHolder.jackalCreateSidekickCooldown.GetFloat();
@@ -1154,7 +1157,7 @@ namespace TownOfSushi
         public static void ClearAndReload() 
         {
             jackal = null;
-            currentTarget = null;
+            CurrentTarget = null;
             fakeSidekick = null;
             cooldown = CustomOptionHolder.jackalKillCooldown.GetFloat();
             createSidekickCooldown = CustomOptionHolder.jackalCreateSidekickCooldown.GetFloat();
@@ -1173,7 +1176,7 @@ namespace TownOfSushi
         public static PlayerControl sidekick;
         public static Color color = new Color32(0, 180, 235, byte.MaxValue);
 
-        public static PlayerControl currentTarget;
+        public static PlayerControl CurrentTarget;
 
         public static bool wasTeamRed;
         public static bool wasImpostor;
@@ -1188,7 +1191,7 @@ namespace TownOfSushi
         public static void ClearAndReload() 
         {
             sidekick = null;
-            currentTarget = null;
+            CurrentTarget = null;
             cooldown = CustomOptionHolder.jackalKillCooldown.GetFloat();
             canUseVents = CustomOptionHolder.sidekickCanUseVents.GetBool();
             canKill = CustomOptionHolder.sidekickCanKill.GetBool();
@@ -1205,7 +1208,7 @@ namespace TownOfSushi
         public static List<byte> alreadyErased = new List<byte>();
 
         public static List<PlayerControl> futureErased = new List<PlayerControl>();
-        public static PlayerControl currentTarget;
+        public static PlayerControl CurrentTarget;
         public static float cooldown = 30f;
         public static bool canEraseAnyone = false; 
 
@@ -1220,7 +1223,7 @@ namespace TownOfSushi
         public static void ClearAndReload() {
             eraser = null;
             futureErased = new List<PlayerControl>();
-            currentTarget = null;
+            CurrentTarget = null;
             cooldown = CustomOptionHolder.eraserCooldown.GetFloat();
             canEraseAnyone = CustomOptionHolder.eraserCanEraseAnyone.GetBool();
             alreadyErased = new List<byte>();
@@ -1308,7 +1311,7 @@ namespace TownOfSushi
         public static PlayerControl warlock;
         public static Color color = Palette.ImpostorRed;
 
-        public static PlayerControl currentTarget;
+        public static PlayerControl CurrentTarget;
         public static PlayerControl curseVictim;
         public static PlayerControl curseVictimTarget;
 
@@ -1332,7 +1335,7 @@ namespace TownOfSushi
 
         public static void ClearAndReload() {
             warlock = null;
-            currentTarget = null;
+            CurrentTarget = null;
             curseVictim = null;
             curseVictimTarget = null;
             cooldown = CustomOptionHolder.warlockCooldown.GetFloat();
@@ -1343,7 +1346,7 @@ namespace TownOfSushi
             HudManagerStartPatch.warlockCurseButton.Timer = HudManagerStartPatch.warlockCurseButton.MaxTimer;
             HudManagerStartPatch.warlockCurseButton.Sprite = Warlock.getCurseButtonSprite();
             HudManagerStartPatch.warlockCurseButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
-            currentTarget = null;
+            CurrentTarget = null;
             curseVictim = null;
             curseVictimTarget = null;
         }
@@ -1465,7 +1468,7 @@ namespace TownOfSushi
         public static float duration = 3f;
         public static bool triggerArsonistWin = false;
 
-        public static PlayerControl currentTarget;
+        public static PlayerControl CurrentTarget;
         public static PlayerControl douseTarget;
         public static List<PlayerControl> dousedPlayers = new List<PlayerControl>();
 
@@ -1489,7 +1492,7 @@ namespace TownOfSushi
 
         public static void ClearAndReload() {
             arsonist = null;
-            currentTarget = null;
+            CurrentTarget = null;
             douseTarget = null; 
             triggerArsonistWin = false;
             dousedPlayers = new List<PlayerControl>();
@@ -1642,16 +1645,16 @@ namespace TownOfSushi
             // suicides:
             if (killer == target) 
             {
-                if ((target == Sheriff.sheriff) && deathReason != DeadPlayer.CustomDeathReason.LoverSuicide) infos.Add(SpecialMediumInfo.SheriffSuicide);
-                if (target == Lovers.lover1 || target == Lovers.lover2) infos.Add(SpecialMediumInfo.PassiveLoverSuicide);
+                if ((target == Sheriff.Player) && deathReason != DeadPlayer.CustomDeathReason.LoverSuicide) infos.Add(SpecialMediumInfo.SheriffSuicide);
+                if (target == Lovers.Lover1 || target == Lovers.Lover2) infos.Add(SpecialMediumInfo.PassiveLoverSuicide);
                 if (target == Thief.thief && deathReason != DeadPlayer.CustomDeathReason.LoverSuicide) infos.Add(SpecialMediumInfo.ThiefSuicide);
                 if (target == Warlock.warlock && deathReason != DeadPlayer.CustomDeathReason.LoverSuicide) infos.Add(SpecialMediumInfo.WarlockSuicide);
             } else {
-                if (target == Lovers.lover1 || target == Lovers.lover2) infos.Add(SpecialMediumInfo.ActiveLoverDies);
+                if (target == Lovers.Lover1 || target == Lovers.Lover2) infos.Add(SpecialMediumInfo.ActiveLoverDies);
                 if (target.Data.Role.IsImpostor && killer.Data.Role.IsImpostor && Thief.formerThief != killer) infos.Add(SpecialMediumInfo.ImpostorTeamkill);
             }
             if (target == Sidekick.sidekick && (killer == Jackal.jackal || Jackal.formerJackals.Any(x => x.PlayerId == killer.PlayerId))) infos.Add(SpecialMediumInfo.JackalKillsSidekick);
-            if (target == Lawyer.lawyer && killer == Lawyer.target) infos.Add(SpecialMediumInfo.LawyerKilledByClient);
+            if (target == Lawyer.Player && killer == Lawyer.target) infos.Add(SpecialMediumInfo.LawyerKilledByClient);
             if (Medium.target.wasCleaned) infos.Add(SpecialMediumInfo.BodyCleaned);
             
             if (infos.Count > 0) 
@@ -1733,28 +1736,22 @@ namespace TownOfSushi
         }
     }
 
-    public static class Lawyer {
-        public static PlayerControl lawyer;
+    public static class Lawyer 
+    {
+        public static PlayerControl Player;
         public static PlayerControl target;
         public static Color color = new Color32(134, 153, 25, byte.MaxValue);
-        public static Sprite targetSprite;
         public static bool triggerProsecutorWin = false;
         public static bool isProsecutor = false;
         public static bool canCallEmergency = true;
-
         public static float vision = 1f;
         public static bool lawyerKnowsRole = false;
         public static bool targetCanBeJester = false;
         public static bool targetWasGuessed = false;
 
-        public static Sprite getTargetSprite() {
-            if (targetSprite) return targetSprite;
-            targetSprite = Helpers.LoadSpriteFromResources("", 150f);
-            return targetSprite;
-        }
-
-        public static void ClearAndReload(bool clearTarget = true) {
-            lawyer = null;
+        public static void ClearAndReload(bool clearTarget = true) 
+        {
+            Player = null;
             if (clearTarget) {
                 target = null;
                 targetWasGuessed = false;
@@ -1767,8 +1764,53 @@ namespace TownOfSushi
             canCallEmergency = CustomOptionHolder.jesterCanCallEmergency.GetBool();
         }
     }
+    public static class VengefulRomantic
+    {
+        public static PlayerControl Player;
+        public static PlayerControl CurrentTarget;
+        public static bool notAckedExiled = false;
+        public static float Cooldown;
+        public static bool CanUseVents;
+        public static PlayerControl Lover;
+        public static void ClearAndReload()
+        {
+            CurrentTarget = null;
+            Player = null;
+            Lover = null;
+            notAckedExiled = false;
+            Cooldown = CustomOptionHolder.VengefulRomanticCooldown.GetFloat();
+            CanUseVents = CustomOptionHolder.VengefulRomanticCanUseVents.GetBool();
+        }
+    }
+    public static class Romantic
+    {
+        public static PlayerControl Player;
+        public static PlayerControl beloved;
+        public static bool HasLover;
+        public static PlayerControl CurrentTarget;
+        public static Color color = new Color32(255, 102, 204, byte.MaxValue);
+        public static bool RomanticKnowsRole = false;
+        private static Sprite ButtonSprite;
+        public static Sprite GetButtonSprite() 
+        {
+            if (ButtonSprite) return ButtonSprite;
+            ButtonSprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.Romantic.png", 115f);
+            return ButtonSprite;
+        }
+        public static void ClearAndReload(bool clearBeloved = true) 
+        {
+            Player = null;
+            HasLover = false;
+            if (clearBeloved) 
+            {
+                beloved = null;
+            }
+            RomanticKnowsRole = CustomOptionHolder.RomanticKnowsRole.GetBool();
+        }
+    }
 
-    public static class Pursuer {
+    public static class Pursuer 
+    {        
         public static PlayerControl pursuer;
         public static PlayerControl target;
         public static Color color = Lawyer.color;
@@ -1786,7 +1828,8 @@ namespace TownOfSushi
             return blank;
         }
 
-        public static void ClearAndReload() {
+        public static void ClearAndReload() 
+        {
             pursuer = null;
             target = null;
             blankedList = new List<PlayerControl>();
@@ -1803,7 +1846,7 @@ namespace TownOfSushi
         public static Color color = Palette.ImpostorRed;
 
         public static List<PlayerControl> futureSpelled = new List<PlayerControl>();
-        public static PlayerControl currentTarget;
+        public static PlayerControl CurrentTarget;
         public static PlayerControl spellCastingTarget;
         public static float cooldown = 30f;
         public static float spellCastingDuration = 2f;
@@ -1831,7 +1874,7 @@ namespace TownOfSushi
         public static void ClearAndReload() {
             witch = null;
             futureSpelled = new List<PlayerControl>();
-            currentTarget = spellCastingTarget = null;
+            CurrentTarget = spellCastingTarget = null;
             cooldown = CustomOptionHolder.witchCooldown.GetFloat();
             cooldownAddition = CustomOptionHolder.witchAdditionalCooldown.GetFloat();
             currentCooldownAddition = 0f;
@@ -1847,7 +1890,7 @@ namespace TownOfSushi
         public static Color color = Palette.ImpostorRed;
 
         public static PlayerControl ninjaMarked;
-        public static PlayerControl currentTarget;
+        public static PlayerControl CurrentTarget;
         public static float cooldown = 30f;
         public static float traceTime = 1f;
         public static bool knowsTargetLocation = false;
@@ -1872,7 +1915,7 @@ namespace TownOfSushi
 
         public static void ClearAndReload() {
             ninja = null;
-            currentTarget = ninjaMarked = null;
+            CurrentTarget = ninjaMarked = null;
             cooldown = CustomOptionHolder.ninjaCooldown.GetFloat();
             knowsTargetLocation = CustomOptionHolder.ninjaKnowsTargetLocation.GetBool();
             traceTime = CustomOptionHolder.ninjaTraceTime.GetFloat();
@@ -1888,7 +1931,7 @@ namespace TownOfSushi
     public static class Thief {
         public static PlayerControl thief;
         public static Color color = new Color32(71, 99, 45, Byte.MaxValue);
-        public static PlayerControl currentTarget;
+        public static PlayerControl CurrentTarget;
         public static PlayerControl formerThief;
 
         public static float cooldown = 30f;
@@ -1903,7 +1946,7 @@ namespace TownOfSushi
         {
             thief = null;
             suicideFlag = false;
-            currentTarget = null;
+            CurrentTarget = null;
             formerThief = null;
             hasImpostorVision = CustomOptionHolder.thiefHasImpVision.GetBool();
             cooldown = CustomOptionHolder.thiefCooldown.GetFloat();
@@ -1962,7 +2005,7 @@ namespace TownOfSushi
     {
         public static Color color = new Color32(168, 102, 41, byte.MaxValue);
         public static PlayerControl Player;
-        public static PlayerControl currentTarget;
+        public static PlayerControl CurrentTarget;
         public static float Cooldown;
         public static float Radius;
         public static bool CanUseVents;
@@ -1975,7 +2018,7 @@ namespace TownOfSushi
         }
         public static void ClearAndReload()
         {
-            currentTarget = null;
+            CurrentTarget = null;
             Player = null;
             Cooldown = CustomOptionHolder.WerewolfCooldown.GetFloat();
             CanUseVents = CustomOptionHolder.WerewolfCanUseVents.GetBool();
@@ -2265,7 +2308,7 @@ namespace TownOfSushi
         public static PlayerControl shifter;
 
         public static PlayerControl futureShift;
-        public static PlayerControl currentTarget;
+        public static PlayerControl CurrentTarget;
 
         private static Sprite buttonSprite;
         public static Sprite GetButtonSprite() 
@@ -2277,34 +2320,34 @@ namespace TownOfSushi
 
         public static void ShiftRole (PlayerControl player1, PlayerControl player2, bool repeat = true) 
         {
-            if (Mayor.mayor != null && Mayor.mayor == player2) {
+            if (Mayor.Player != null && Mayor.Player == player2) {
                 if (repeat) ShiftRole(player2, player1, false);
-                Mayor.mayor = player1;
+                Mayor.Player = player1;
             } else if (Portalmaker.portalmaker != null && Portalmaker.portalmaker == player2) {
                 if (repeat) ShiftRole(player2, player1, false);
                 Portalmaker.portalmaker = player1;
             } else if (Engineer.engineer != null && Engineer.engineer == player2) {
                 if (repeat) ShiftRole(player2, player1, false);
                 Engineer.engineer = player1;
-            } else if (Sheriff.sheriff != null && Sheriff.sheriff == player2) 
+            } else if (Sheriff.Player != null && Sheriff.Player == player2) 
             {
                 if (repeat) ShiftRole(player2, player1, false);
-                Sheriff.sheriff = player1;
-            }else if (Lighter.lighter != null && Lighter.lighter == player2) {
+                Sheriff.Player = player1;
+            }else if (Lighter.Player != null && Lighter.Player == player2) {
                 if (repeat) ShiftRole(player2, player1, false);
-                Lighter.lighter = player1;
-            } else if (Detective.detective != null && Detective.detective == player2) {
+                Lighter.Player = player1;
+            } else if (Detective.Player != null && Detective.Player == player2) {
                 if (repeat) ShiftRole(player2, player1, false);
-                Detective.detective = player1;
-            } else if (TimeMaster.timeMaster != null && TimeMaster.timeMaster == player2) {
+                Detective.Player = player1;
+            } else if (TimeMaster.Player != null && TimeMaster.Player == player2) {
                 if (repeat) ShiftRole(player2, player1, false);
-                TimeMaster.timeMaster = player1;
-            }  else if (Medic.medic != null && Medic.medic == player2) {
+                TimeMaster.Player = player1;
+            }  else if (Medic.Player != null && Medic.Player == player2) {
                 if (repeat) ShiftRole(player2, player1, false);
-                Medic.medic = player1;
-            } else if (Swapper.swapper != null && Swapper.swapper == player2) {
+                Medic.Player = player1;
+            } else if (Swapper.Player != null && Swapper.Player == player2) {
                 if (repeat) ShiftRole(player2, player1, false);
-                Swapper.swapper = player1;
+                Swapper.Player = player1;
             } else if (Mystic.Player != null && Mystic.Player == player2) {
                 if (repeat) ShiftRole(player2, player1, false);
                 Mystic.Player = player1;
@@ -2338,7 +2381,7 @@ namespace TownOfSushi
         public static void ClearAndReload() 
         {
             shifter = null;
-            currentTarget = null;
+            CurrentTarget = null;
             futureShift = null;
         }
     }

@@ -25,10 +25,10 @@ namespace TownOfSushi
             Garlic.clearGarlics();
             JackInTheBox.ClearJackInTheBoxes();
             NinjaTrace.ClearTraces();
-            Silhouette.clearSilhouettes();
+            Silhouette.ClearSilhouettes();
             Portal.ClearPortals();
             Bloodytrail.ResetSprites();
-            Trap.clearTraps();
+            Trap.ClearTraps();
             ClearAndReloadMapOptions();
             ClearAndReloadRoles();
             ClearGameHistory();
@@ -111,7 +111,7 @@ namespace TownOfSushi
                         Jester.jester = player;
                         break;
                     case RoleId.Mayor:
-                        Mayor.mayor = player;
+                        Mayor.Player = player;
                         break;
                     case RoleId.Portalmaker:
                         Portalmaker.portalmaker = player;
@@ -120,7 +120,10 @@ namespace TownOfSushi
                         Engineer.engineer = player;
                         break;
                     case RoleId.Sheriff:
-                        Sheriff.sheriff = player;
+                        Sheriff.Player = player;
+                        break;
+                    case RoleId.VengefulRomantic:
+                        VengefulRomantic.Player = player;
                         break;
                     case RoleId.Glitch:
                         Glitch.Player = player;
@@ -129,7 +132,7 @@ namespace TownOfSushi
                         Werewolf.Player = player;
                         break;
                     case RoleId.Lighter:
-                        Lighter.lighter = player;
+                        Lighter.Player = player;
                         break;
                     case RoleId.Godfather:
                         Godfather.godfather = player;
@@ -141,22 +144,22 @@ namespace TownOfSushi
                         Janitor.janitor = player;
                         break;
                     case RoleId.Detective:
-                        Detective.detective = player;
+                        Detective.Player = player;
                         break;
                     case RoleId.TimeMaster:
-                        TimeMaster.timeMaster = player;
+                        TimeMaster.Player = player;
                         break;
                     case RoleId.Veteran:
                         Veteran.Player = player;
                         break;
                     case RoleId.Medic:
-                        Medic.medic = player;
+                        Medic.Player = player;
                         break;
                     case RoleId.Shifter:
                         Shifter.shifter = player;
                         break;
                     case RoleId.Swapper:
-                        Swapper.swapper = player;
+                        Swapper.Player = player;
                         break;
                     case RoleId.Mystic:
                         Mystic.Player = player;
@@ -184,6 +187,9 @@ namespace TownOfSushi
                         break;
                     case RoleId.Jackal:
                         Jackal.jackal = player;
+                        break;
+                    case RoleId.Romantic:
+                        Romantic.Player = player;
                         break;
                     case RoleId.Sidekick:
                         Sidekick.sidekick = player;
@@ -222,10 +228,10 @@ namespace TownOfSushi
                         Trapper.trapper = player;
                         break;
                     case RoleId.Lawyer:
-                        Lawyer.lawyer = player;
+                        Lawyer.Player = player;
                         break;
                     case RoleId.Prosecutor:
-                        Lawyer.lawyer = player;
+                        Lawyer.Player = player;
                         Lawyer.isProsecutor = true;
                         break;
                     case RoleId.Pursuer:
@@ -259,8 +265,8 @@ namespace TownOfSushi
                     Bait.bait.Add(player);
                     break;
                 case RoleId.Lover:
-                    if (flag == 0) Lovers.lover1 = player;
-                    else Lovers.lover2 = player;
+                    if (flag == 0) Lovers.Lover1 = player;
+                    else Lovers.Lover2 = player;
                     break;
                 case RoleId.Bloody:
                     global::TownOfSushi.Bloody.bloody.Add(player);
@@ -402,7 +408,7 @@ namespace TownOfSushi
         {
             TimeMaster.shieldActive = false; // Shield is no longer active when rewinding
             SoundEffectsManager.Stop("timemasterShield");  // Shield sound stopped when rewinding
-            if(TimeMaster.timeMaster != null && TimeMaster.timeMaster == PlayerControl.LocalPlayer) {
+            if(TimeMaster.Player != null && TimeMaster.Player == PlayerControl.LocalPlayer) {
                 ResetTimeMasterButton();
             }
             FastDestroyableSingleton<HudManager>.Instance.FullScreen.color = new Color(0f, 0.5f, 0.8f, 0.3f);
@@ -412,7 +418,7 @@ namespace TownOfSushi
                 if (p == 1f) FastDestroyableSingleton<HudManager>.Instance.FullScreen.enabled = false;
             })));
 
-            if (TimeMaster.timeMaster == null || PlayerControl.LocalPlayer == TimeMaster.timeMaster) return; // Time Master himself does not rewind
+            if (TimeMaster.Player == null || PlayerControl.LocalPlayer == TimeMaster.Player) return; // Time Master himself does not rewind
 
             TimeMaster.isRewinding = true;
 
@@ -454,6 +460,11 @@ namespace TownOfSushi
             Medic.shielded = Helpers.PlayerById(shieldedId);
             Medic.futureShielded = null;
         }
+        public static void RomanticSetBeloved(byte belovedId) 
+        {
+            Romantic.HasLover = true;
+            Romantic.beloved = Helpers.PlayerById(belovedId);
+        }
         public static void WerewolfMaul() 
         {
            var nearbyPlayers = Helpers.GetClosestPlayers(Werewolf.Player.GetTruePosition(), Werewolf.Radius);
@@ -484,11 +495,11 @@ namespace TownOfSushi
 
         public static void ShieldedMurderAttempt() 
         {
-            if (Medic.shielded == null || Medic.medic == null) return;
+            if (Medic.shielded == null || Medic.Player == null) return;
             
             bool isShieldedAndShow = Medic.shielded == PlayerControl.LocalPlayer && Medic.showAttemptToShielded;
             isShieldedAndShow = isShieldedAndShow && (Medic.meetingAfterShielding || !Medic.showShieldAfterMeeting);  // Dont show attempt, if shield is not shown yet
-            bool isMedicAndShow = Medic.medic == PlayerControl.LocalPlayer && Medic.showAttemptToMedic;
+            bool isMedicAndShow = Medic.Player == PlayerControl.LocalPlayer && Medic.showAttemptToMedic;
 
             if (isShieldedAndShow || isMedicAndShow || Helpers.ShouldShowGhostInfo()) Helpers.ShowFlash(Palette.ImpostorRed, duration: 0.5f, "Failed Murder Attempt on Shielded Player");
         }
@@ -503,13 +514,21 @@ namespace TownOfSushi
             Shifter.ClearAndReload();
 
             // Suicide (exile) when impostor or impostor variants
-            if ((player.Data.Role.IsImpostor || Helpers.IsNeutral(player)) && !oldShifter.Data.IsDead) {
+            if ((player.Data.Role.IsImpostor || Helpers.IsNeutral(player)) && !oldShifter.Data.IsDead) 
+            {
                 oldShifter.Exiled();
                 GameHistory.OverrideDeathReasonAndKiller(oldShifter, DeadPlayer.CustomDeathReason.Shift, player);
-                if (oldShifter == Lawyer.target && AmongUsClient.Instance.AmHost && Lawyer.lawyer != null) {
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.LawyerPromotesToPursuer, Hazel.SendOption.Reliable, -1);
+                if (oldShifter == Lawyer.target && AmongUsClient.Instance.AmHost && Lawyer.Player != null) 
+                {
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.LawyerChangeRole, Hazel.SendOption.Reliable, -1);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
-                    RPCProcedure.LawyerPromotesToPursuer();
+                    RPCProcedure.LawyerChangeRole();
+                }
+                if (oldShifter == Romantic.beloved && AmongUsClient.Instance.AmHost && Romantic.Player != null) 
+                {
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RomanticChangeRole, Hazel.SendOption.Reliable, -1);
+                    AmongUsClient.Instance.FinishRpcImmediately(writer);
+                    RPCProcedure.RomanticChangeRole();
                 }
                 return;
             }
@@ -602,7 +621,7 @@ namespace TownOfSushi
         {
             PlayerControl player = Helpers.PlayerById(targetId);
             if (player == null) return;
-            if (Lawyer.target == player && Lawyer.isProsecutor && Lawyer.lawyer != null && !Lawyer.lawyer.Data.IsDead) Lawyer.isProsecutor = false;
+            if (Lawyer.target == player && Lawyer.isProsecutor && Lawyer.Player != null && !Lawyer.Player.Data.IsDead) Lawyer.isProsecutor = false;
 
             if (!Jackal.canCreateSidekickFromImpostor && player.Data.Role.IsImpostor) 
             {
@@ -613,7 +632,7 @@ namespace TownOfSushi
                 bool wasSpy = Spy.spy != null && player == Spy.spy;
                 bool wasImpostor = player.Data.Role.IsImpostor;  // This can only be reached if impostors can be sidekicked.
                 FastDestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
-                if (player == Lawyer.lawyer && Lawyer.target != null)
+                if (player == Lawyer.Player && Lawyer.target != null)
                 {
                     Transform playerInfoTransform = Lawyer.target.cosmetics.nameText.transform.parent.FindChild("Info");
                     TMPro.TextMeshPro playerInfo = playerInfoTransform != null ? playerInfoTransform.GetComponent<TMPro.TextMeshPro>() : null;
@@ -650,21 +669,21 @@ namespace TownOfSushi
             if (player == null || !player.CanBeErased()) return;
 
             // Crewmate roles
-            if (player == Mayor.mayor) Mayor.ClearAndReload();
+            if (player == Mayor.Player) Mayor.ClearAndReload();
             if (player == Portalmaker.portalmaker) Portalmaker.ClearAndReload();
             if (player == Engineer.engineer) Engineer.ClearAndReload();
-            if (player == Sheriff.sheriff) Sheriff.ClearAndReload();
-            if (player == Lighter.lighter) Lighter.ClearAndReload();
-            if (player == Detective.detective) Detective.ClearAndReload();
-            if (player == TimeMaster.timeMaster) TimeMaster.ClearAndReload();
+            if (player == Sheriff.Player) Sheriff.ClearAndReload();
+            if (player == Lighter.Player) Lighter.ClearAndReload();
+            if (player == Detective.Player) Detective.ClearAndReload();
+            if (player == TimeMaster.Player) TimeMaster.ClearAndReload();
             if (player == Veteran.Player) Veteran.ClearAndReload();
-            if (player == Medic.medic) Medic.ClearAndReload();
+            if (player == Medic.Player) Medic.ClearAndReload();
             if (player == Shifter.shifter) Shifter.ClearAndReload();
             if (player == Mystic.Player) Mystic.ClearAndReload();
             if (player == Hacker.hacker) Hacker.ClearAndReload();
             if (player == Tracker.tracker) Tracker.ClearAndReload();
             if (player == Snitch.snitch) Snitch.ClearAndReload();
-            if (player == Swapper.swapper) Swapper.ClearAndReload();
+            if (player == Swapper.Player) Swapper.ClearAndReload();
             if (player == Spy.spy) Spy.ClearAndReload();
             if (player == SecurityGuard.securityGuard) SecurityGuard.ClearAndReload();
             if (player == Medium.medium) Medium.ClearAndReload();
@@ -706,14 +725,16 @@ namespace TownOfSushi
             if (player == Sidekick.sidekick) Sidekick.ClearAndReload();
             if (player == BountyHunter.bountyHunter) BountyHunter.ClearAndReload();
             if (player == Vulture.vulture) Vulture.ClearAndReload();
-            if (player == Lawyer.lawyer) Lawyer.ClearAndReload();
+            if (player == Lawyer.Player) Lawyer.ClearAndReload();
+            if (player == Romantic.Player) Romantic.ClearAndReload();
+            if (player == VengefulRomantic.Player) VengefulRomantic.ClearAndReload();
             if (player == Pursuer.pursuer) Pursuer.ClearAndReload();
             if (player == Thief.thief) Thief.ClearAndReload();
 
             // Modifier
             if (!ignoreModifier)
             {
-                if (player == Lovers.lover1 || player == Lovers.lover2) Lovers.ClearAndReload(); // The whole Lover couple is being erased
+                if (player == Lovers.Lover1 || player == Lovers.Lover2) Lovers.ClearAndReload(); // The whole Lover couple is being erased
                 if (Bait.bait.Any(x => x.PlayerId == player.PlayerId)) Bait.bait.RemoveAll(x => x.PlayerId == player.PlayerId);
                 if (global::TownOfSushi.Bloody.bloody.Any(x => x.PlayerId == player.PlayerId)) global::TownOfSushi.Bloody.bloody.RemoveAll(x => x.PlayerId == player.PlayerId);
                 if (AntiTeleport.antiTeleport.Any(x => x.PlayerId == player.PlayerId)) AntiTeleport.antiTeleport.RemoveAll(x => x.PlayerId == player.PlayerId);
@@ -909,9 +930,9 @@ namespace TownOfSushi
             Lawyer.target = Helpers.PlayerById(playerId);
         }
 
-        public static void LawyerPromotesToPursuer() 
+        public static void LawyerChangeRole() 
         {
-            PlayerControl player = Lawyer.lawyer;
+            PlayerControl player = Lawyer.Player;
             PlayerControl client = Lawyer.target;
             Lawyer.ClearAndReload(false);
 
@@ -920,6 +941,23 @@ namespace TownOfSushi
             if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId && client != null) 
             {
                     Transform playerInfoTransform = client.cosmetics.nameText.transform.parent.FindChild("Info");
+                    TMPro.TextMeshPro playerInfo = playerInfoTransform != null ? playerInfoTransform.GetComponent<TMPro.TextMeshPro>() : null;
+                    if (playerInfo != null) playerInfo.text = "";
+            }
+        }
+
+        public static void RomanticChangeRole() 
+        {
+            PlayerControl player = Romantic.Player;
+            PlayerControl target = Romantic.beloved;
+            Romantic.ClearAndReload(false);
+
+            VengefulRomantic.Player = player;
+            VengefulRomantic.Lover = target;
+
+            if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId && target != null) 
+            {
+                    Transform playerInfoTransform = target.cosmetics.nameText.transform.parent.FindChild("Info");
                     TMPro.TextMeshPro playerInfo = playerInfoTransform != null ? playerInfoTransform.GetComponent<TMPro.TextMeshPro>() : null;
                     if (playerInfo != null) playerInfo.text = "";
             }
@@ -933,20 +971,6 @@ namespace TownOfSushi
             if (Lawyer.target != null && dyingLoverPartner == Lawyer.target) Lawyer.targetWasGuessed = true;  // Lawyer shouldn't be exiled with the client for guesses
 
             PlayerControl guesser = Helpers.PlayerById(killerId);
-            bool lawyerDiedAdditionally = false;
-            if (Lawyer.lawyer != null && !Lawyer.isProsecutor && Lawyer.lawyer.PlayerId == killerId && Lawyer.target != null && Lawyer.target.PlayerId == dyingTargetId) 
-            {
-                // Lawyer guessed client.
-                if (PlayerControl.LocalPlayer == Lawyer.lawyer) 
-                {
-                    FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(Lawyer.lawyer.Data, Lawyer.lawyer.Data);
-                    if (MeetingHudPatch.guesserUI != null) MeetingHudPatch.guesserUIExitButton.OnClick.Invoke();
-                }
-                Lawyer.lawyer.Exiled();
-                lawyerDiedAdditionally = true;
-                GameHistory.OverrideDeathReasonAndKiller(Lawyer.lawyer, DeadPlayer.CustomDeathReason.LawyerSuicide, guesser);
-            }
-
             dyingTarget.Exiled();
             GameHistory.OverrideDeathReasonAndKiller(dyingTarget, DeadPlayer.CustomDeathReason.Guess, guesser);
             byte partnerId = dyingLoverPartner != null ? dyingLoverPartner.PlayerId : dyingTargetId;
@@ -957,7 +981,7 @@ namespace TownOfSushi
             {
                 foreach (PlayerVoteArea pva in MeetingHud.Instance.playerStates) 
                 {
-                    if (pva.TargetPlayerId == dyingTargetId || pva.TargetPlayerId == partnerId || lawyerDiedAdditionally && Lawyer.lawyer.PlayerId == pva.TargetPlayerId) 
+                    if (pva.TargetPlayerId == dyingTargetId || pva.TargetPlayerId == partnerId) 
                     {
                         pva.SetDead(pva.DidReport, true);
                         pva.Overlay.gameObject.SetActive(true);
@@ -965,7 +989,7 @@ namespace TownOfSushi
                     }
 
                     //Give players back their vote if target is shot dead
-                    if (pva.VotedFor != dyingTargetId && pva.VotedFor != partnerId && (!lawyerDiedAdditionally || Lawyer.lawyer.PlayerId != pva.VotedFor)) continue;
+                    if (pva.VotedFor != dyingTargetId && pva.VotedFor != partnerId) continue;
                     pva.UnsetVote();
                     var voteAreaPlayer = Helpers.PlayerById(pva.TargetPlayerId);
                     if (!voteAreaPlayer.AmOwner) continue;
@@ -1002,7 +1026,6 @@ namespace TownOfSushi
                         MeetingHudPatch.guesserUIExitButton.OnClick.Invoke();
                 }
             }
-
 
             PlayerControl guessedTarget = Helpers.PlayerById(guessedTargetId);
             if (PlayerControl.LocalPlayer.Data.IsDead && guessedTarget != null && guesser != null) 
@@ -1048,9 +1071,10 @@ namespace TownOfSushi
             PlayerControl target = Helpers.PlayerById(playerId);
             PlayerControl thief = Thief.thief;
             if (target == null) return;
-            if (target == Sheriff.sheriff) Sheriff.sheriff = thief;
+            if (target == Sheriff.Player) Sheriff.Player = thief;
             if (target == Glitch.Player) Glitch.Player = thief;
             if (target == SerialKiller.Player) SerialKiller.Player = thief;
+            if (target == VengefulRomantic.Player) VengefulRomantic.Player = thief;
             if (target == Werewolf.Player) Werewolf.Player = thief;
             if (target == Jackal.jackal)
             {
@@ -1094,7 +1118,7 @@ namespace TownOfSushi
                 RoleManager.Instance.SetRole(Thief.thief, RoleTypes.Impostor);
                 FastDestroyableSingleton<HudManager>.Instance.KillButton.SetCoolDown(Thief.thief.killTimer, GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown);
             }
-            if (Lawyer.lawyer != null && target == Lawyer.target)
+            if (Lawyer.Player != null && target == Lawyer.target)
                 Lawyer.target = thief;
             if (Thief.thief == PlayerControl.LocalPlayer) CustomButton.ResetAllCooldowns();
             Thief.ClearAndReload();
@@ -1113,10 +1137,10 @@ namespace TownOfSushi
 
         public static void TriggerTrap(byte playerId, byte trapId) 
         {
-            Trap.triggerTrap(playerId, trapId);
+            Trap.TriggerTrap(playerId, trapId);
         }
 
-        public static void SetGuessers (byte playerId) 
+        public static void SetGuessers(byte playerId)
         {
             PlayerControl target = Helpers.PlayerById(playerId);
             if (target == null) return;
@@ -1337,6 +1361,9 @@ namespace TownOfSushi
                 case (byte)CustomRPC.MedicSetShielded:
                     RPCProcedure.MedicSetShielded(reader.ReadByte());
                     break;
+                case (byte)CustomRPC.RomanticSetBeloved:
+                    RPCProcedure.RomanticSetBeloved(reader.ReadByte());
+                    break;
                 case (byte)CustomRPC.ShieldedMurderAttempt:
                     RPCProcedure.ShieldedMurderAttempt();
                     break;
@@ -1431,8 +1458,11 @@ namespace TownOfSushi
                 case (byte)CustomRPC.LawyerSetTarget:
                     RPCProcedure.LawyerSetTarget(reader.ReadByte()); 
                     break;
-                case (byte)CustomRPC.LawyerPromotesToPursuer:
-                    RPCProcedure.LawyerPromotesToPursuer();
+                case (byte)CustomRPC.LawyerChangeRole:
+                    RPCProcedure.LawyerChangeRole();
+                    break;
+                case (byte)CustomRPC.RomanticChangeRole:
+                    RPCProcedure.RomanticChangeRole();
                     break;
                 case (byte)CustomRPC.SetBlanked:
                     var pid = reader.ReadByte();

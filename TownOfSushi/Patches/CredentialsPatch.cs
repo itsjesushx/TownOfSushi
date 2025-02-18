@@ -10,11 +10,6 @@ namespace TownOfSushi.Patches
     {
         public static string FllCredentialsVersion = 
 $@"<size=130%><color=#B2FEFE>TownOfSushi</color></size> v{TownOfSushiPlugin.Version.ToString()}";
-public static string FullCredentials =
-$@"<size=60%>Created by <color=#B2FEFE>Jesushi</color>
-Emotionally Helped by <color=#B2FEFE>döll</color>
-Helped by <color=#B2FEFE>Cake</color>, <color=#B2FEFE>AlchlcDvl</color> & <color=#B2FEFE>50IQ</color>
-Originally Coded by <color=#B2FEFE>Eisbison</color> & <color=#B2FEFE>TheOtherRoles</color></size>";
     public static string MainScreenText =
 $@"Created by <color=#B2FEFE>Jesushi</color>
 <size=60%>Emotionally Helped by <color=#B2FEFE>döll</color>
@@ -39,7 +34,7 @@ Originally Coded by <color=#B2FEFE>Eisbison</color> & <color=#B2FEFE>TheOtherRol
                 }
                 else
                 {
-                    __instance.text.text = $"{FllCredentialsVersion}\n{FullCredentials}\n FPS: {FPS} {__instance.text.text}";
+                    __instance.text.text = $"{FllCredentialsVersion}\n FPS: {FPS} {__instance.text.text}";
                     position.DistanceFromEdge = new Vector3(0f, 0.1f, 0);
                 }
                 position.AdjustPosition();
@@ -89,9 +84,11 @@ Originally Coded by <color=#B2FEFE>Eisbison</color> & <color=#B2FEFE>TheOtherRol
                 if (renderer != null) 
                 {
                     float fadeDuration = 1f;
-                    instance.StartCoroutine(Effects.Lerp(fadeDuration, new Action<float>((p) => {
+                    instance.StartCoroutine(Effects.Lerp(fadeDuration, new Action<float>((p) => 
+                    {
                         renderer.color = new Color(1, 1, 1, 1 - p);
-                        if (p == 1) {
+                        if (p == 1) 
+                        {
                             renderer.sprite = bannerSprite;
                             instance.StartCoroutine(Effects.Lerp(fadeDuration, new Action<float>((p) => 
                             {

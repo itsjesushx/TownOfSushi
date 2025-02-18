@@ -81,8 +81,10 @@ namespace TownOfSushi.Patches
             if (SerialKiller.Player != null) notWinners.Add(SerialKiller.Player);
             if (Arsonist.arsonist != null) notWinners.Add(Arsonist.arsonist);
             if (Vulture.vulture != null) notWinners.Add(Vulture.vulture);
-            if (Lawyer.lawyer != null) notWinners.Add(Lawyer.lawyer);
+            if (Lawyer.Player != null) notWinners.Add(Lawyer.Player);
             if (Pursuer.pursuer != null) notWinners.Add(Pursuer.pursuer);
+            if (Romantic.Player != null) notWinners.Add(Romantic.Player);
+            if (VengefulRomantic.Player != null) notWinners.Add(VengefulRomantic.Player);
             if (Thief.thief != null) notWinners.Add(Thief.thief);
 
             notWinners.AddRange(Jackal.formerJackals);
@@ -100,10 +102,11 @@ namespace TownOfSushi.Patches
             bool wwWin = Werewolf.Player != null && gameOverReason == (GameOverReason)CustomGameOverReason.WerewolfWin;
             bool miniLose = Mini.mini != null && gameOverReason == (GameOverReason)CustomGameOverReason.MiniLose;
             bool SKWin = SerialKiller.Player != null && gameOverReason == (GameOverReason)CustomGameOverReason.SerialKillerWin;
+            bool RomanticWin = VengefulRomantic.Player != null && gameOverReason == (GameOverReason)CustomGameOverReason.VRomanticWin;
             bool loversWin = Lovers.ExistingAndAlive() && (gameOverReason == (GameOverReason)CustomGameOverReason.LoversWin || (GameManager.Instance.DidHumansWin(gameOverReason) && !Lovers.ExistingWithKiller())); // Either they win if they are among the last 3 players, or they win if they are both Crewmates and both alive and the Crew wins (Team Imp/Jackal Lovers can only win solo wins)
             bool teamJackalWin = gameOverReason == (GameOverReason)CustomGameOverReason.TeamJackalWin && ((Jackal.jackal != null && !Jackal.jackal.Data.IsDead) || (Sidekick.sidekick != null && !Sidekick.sidekick.Data.IsDead));
             bool vultureWin = Vulture.vulture != null && gameOverReason == (GameOverReason)CustomGameOverReason.VultureWin;
-            bool prosecutorWin = Lawyer.lawyer != null && gameOverReason == (GameOverReason)CustomGameOverReason.ProsecutorWin;
+            bool prosecutorWin = Lawyer.Player != null && gameOverReason == (GameOverReason)CustomGameOverReason.ProsecutorWin;
 
             // Mini lose
             if (miniLose) 
@@ -131,6 +134,15 @@ namespace TownOfSushi.Patches
                 CachedPlayerData wpd = new CachedPlayerData(Glitch.Player.Data);
                 EndGameResult.CachedWinners.Add(wpd);
                 AdditionalTempData.winCondition = WinCondition.GlitchWin;
+            }
+
+            // Vengeful Romantic win
+            else if (RomanticWin) 
+            {
+                EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
+                CachedPlayerData wpd = new CachedPlayerData(VengefulRomantic.Player.Data);
+                EndGameResult.CachedWinners.Add(wpd);
+                AdditionalTempData.winCondition = WinCondition.VRomanticWin;
             }
 
             // Werewolf win
@@ -173,7 +185,7 @@ namespace TownOfSushi.Patches
             else if (prosecutorWin) 
             {
                 EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
-                CachedPlayerData wpd = new CachedPlayerData(Lawyer.lawyer.Data);
+                CachedPlayerData wpd = new CachedPlayerData(Lawyer.Player.Data);
                 EndGameResult.CachedWinners.Add(wpd);
                 AdditionalTempData.winCondition = WinCondition.ProsecutorWin;
             }
@@ -189,11 +201,11 @@ namespace TownOfSushi.Patches
                     foreach (PlayerControl p in PlayerControl.AllPlayerControls) 
                     {
                         if (p == null) continue;
-                        if (p == Lovers.lover1 || p == Lovers.lover2)
+                        if (p == Lovers.Lover1 || p == Lovers.Lover2)
                             EndGameResult.CachedWinners.Add(new CachedPlayerData(p.Data));
                         else if (p == Pursuer.pursuer && !Pursuer.pursuer.Data.IsDead)
                             EndGameResult.CachedWinners.Add(new CachedPlayerData(p.Data));
-                        else if (p != Jester.jester && p != SerialKiller.Player && p != Jackal.jackal && p != Glitch.Player && p != Werewolf.Player && p != Sidekick.sidekick && p != Arsonist.arsonist && p != Vulture.vulture && !Jackal.formerJackals.Contains(p) && !p.Data.Role.IsImpostor)
+                        else if (p != Jester.jester && p != VengefulRomantic.Player && p != SerialKiller.Player && p != Jackal.jackal && p != Glitch.Player && p != Werewolf.Player && p != Sidekick.sidekick && p != Arsonist.arsonist && p != Vulture.vulture && !Jackal.formerJackals.Contains(p) && !p.Data.Role.IsImpostor)
                             EndGameResult.CachedWinners.Add(new CachedPlayerData(p.Data));
                     }
                 }
@@ -202,8 +214,8 @@ namespace TownOfSushi.Patches
                 {
                     AdditionalTempData.winCondition = WinCondition.LoversSoloWin;
                     EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
-                    EndGameResult.CachedWinners.Add(new CachedPlayerData(Lovers.lover1.Data));
-                    EndGameResult.CachedWinners.Add(new CachedPlayerData(Lovers.lover2.Data));
+                    EndGameResult.CachedWinners.Add(new CachedPlayerData(Lovers.Lover1.Data));
+                    EndGameResult.CachedWinners.Add(new CachedPlayerData(Lovers.Lover2.Data));
                 }
             }
 
@@ -232,22 +244,58 @@ namespace TownOfSushi.Patches
             }
 
             // Possible Additional winner: Lawyer
-            if (Lawyer.lawyer != null && Lawyer.target != null && (!Lawyer.target.Data.IsDead || Lawyer.target == Jester.jester) && !Pursuer.notAckedExiled && !Lawyer.isProsecutor) {
+            if (Lawyer.Player != null && Lawyer.target != null && (!Lawyer.target.Data.IsDead || Lawyer.target == Jester.jester) && !Pursuer.notAckedExiled && !Lawyer.isProsecutor) {
                 CachedPlayerData winningClient = null;
                 foreach (CachedPlayerData winner in EndGameResult.CachedWinners.GetFastEnumerator()) 
                 {
                     if (winner.PlayerName == Lawyer.target.Data.PlayerName)
                         winningClient = winner;
                 }
-                if (winningClient != null) { // The Lawyer wins if the client is winning (and alive, but if he wasn't the Lawyer shouldn't exist anymore)
-                    if (!EndGameResult.CachedWinners.ToArray().Any(x => x.PlayerName == Lawyer.lawyer.Data.PlayerName))
-                        EndGameResult.CachedWinners.Add(new CachedPlayerData(Lawyer.lawyer.Data));
+                if (winningClient != null) 
+                { // The Lawyer wins if the client is winning (and alive, but if he wasn't the Lawyer shouldn't exist anymore)
+                    if (!EndGameResult.CachedWinners.ToArray().Any(x => x.PlayerName == Lawyer.Player.Data.PlayerName))
+                        EndGameResult.CachedWinners.Add(new CachedPlayerData(Lawyer.Player.Data));
                     AdditionalTempData.additionalWinConditions.Add(WinCondition.AdditionalLawyerBonusWin); // The Lawyer wins together with the client
                 } 
             }
 
+            // Possible Additional winner: Romantic
+            if (Romantic.Player != null && Romantic.beloved != null && (!Romantic.beloved.Data.IsDead || Romantic.beloved == Jester.jester) && !VengefulRomantic.notAckedExiled) 
+            {
+                CachedPlayerData winningClient = null;
+                foreach (CachedPlayerData winner in EndGameResult.CachedWinners.GetFastEnumerator()) 
+                {
+                    if (winner.PlayerName == Romantic.beloved.Data.PlayerName)
+                        winningClient = winner;
+                }
+                if (winningClient != null) 
+                { // The Romantic wins if the beloved is winning (and alive, but if he wasn't the Romantic shouldn't exist anymore)
+                    if (!EndGameResult.CachedWinners.ToArray().Any(x => x.PlayerName == Romantic.Player.Data.PlayerName))
+                        EndGameResult.CachedWinners.Add(new CachedPlayerData(Romantic.Player.Data));
+                    AdditionalTempData.additionalWinConditions.Add(WinCondition.AdditionalRomanticBonusWin); // The Romantic wins together with the beloved
+                } 
+            }
+
+            // Possible Additional winner: Beloved
+            if (VengefulRomantic.Player != null && VengefulRomantic.Lover != null && !VengefulRomantic.notAckedExiled) 
+            {
+                CachedPlayerData winningClient = null;
+                foreach (CachedPlayerData winner in EndGameResult.CachedWinners.GetFastEnumerator()) 
+                {
+                    if (winner.PlayerName == VengefulRomantic.Lover.Data.PlayerName)
+                        winningClient = winner;
+                }
+                if (winningClient != null) 
+                { // The Romantic wins if the beloved is winning (and alive, but if he wasn't the Romantic shouldn't exist anymore)
+                    if (!EndGameResult.CachedWinners.ToArray().Any(x => x.PlayerName == VengefulRomantic.Player.Data.PlayerName))
+                        EndGameResult.CachedWinners.Add(new CachedPlayerData(VengefulRomantic.Player.Data));
+                    AdditionalTempData.additionalWinConditions.Add(WinCondition.AdditionalBelovedBonusWin); // The beloved wins together with the romantic
+                } 
+            }
+
             // Possible Additional winner: Pursuer
-            if (Pursuer.pursuer != null && !Pursuer.pursuer.Data.IsDead && !Pursuer.notAckedExiled && !EndGameResult.CachedWinners.ToArray().Any(x => x.IsImpostor)) {
+            if (Pursuer.pursuer != null && !Pursuer.pursuer.Data.IsDead && !Pursuer.notAckedExiled && !EndGameResult.CachedWinners.ToArray().Any(x => x.IsImpostor)) 
+            {
                 if (!EndGameResult.CachedWinners.ToArray().Any(x => x.PlayerName == Pursuer.pursuer.Data.PlayerName))
                     EndGameResult.CachedWinners.Add(new CachedPlayerData(Pursuer.pursuer.Data));
                 AdditionalTempData.additionalWinConditions.Add(WinCondition.AdditionalAlivePursuerWin);
@@ -355,7 +403,13 @@ namespace TownOfSushi.Patches
                 textRenderer.text = "Lovers Win";
                 textRenderer.color = Lovers.color;
                 __instance.BackgroundBar.material.SetColor("_Color", Lovers.color);
-            } 
+            }
+            else if (AdditionalTempData.winCondition == WinCondition.VRomanticWin) 
+            {
+                textRenderer.text = "Vengeful Romantic Wins";
+                textRenderer.color = Romantic.color;
+                __instance.BackgroundBar.material.SetColor("_Color", Romantic.color);
+            }
             else if (AdditionalTempData.winCondition == WinCondition.JackalWin) 
             {
                 textRenderer.text = "Jackals Win";
@@ -433,7 +487,16 @@ namespace TownOfSushi.Patches
                 if (cond == WinCondition.AdditionalLawyerBonusWin) 
                 {
                     textRenderer.text += $"\n{Helpers.ColorString(Lawyer.color, "The Lawyer wins with the client")}";
-                } else if (cond == WinCondition.AdditionalAlivePursuerWin) 
+                }
+                else if (cond == WinCondition.AdditionalRomanticBonusWin) 
+                {
+                    textRenderer.text += $"\n{Helpers.ColorString(Romantic.color, "The Romantic wins with their lover")}";
+                }
+                else if (cond == WinCondition.AdditionalBelovedBonusWin) 
+                {
+                    textRenderer.text += $"\n{Helpers.ColorString(Romantic.color, "The Beloved wins with their lover")}";
+                }
+                else if (cond == WinCondition.AdditionalAlivePursuerWin) 
                 {
                     textRenderer.text += $"\n{Helpers.ColorString(Pursuer.color, "The Pursuer survived")}";
                 }
@@ -525,6 +588,7 @@ namespace TownOfSushi.Patches
             if (CheckAndEndGameForJackalWin(__instance, statistics)) return false;
             if (CheckAndEndGameForGlitchWin(__instance, statistics)) return false;
             if (CheckAndEndGameForWerewolfWin(__instance, statistics)) return false;
+            if (CheckAndEndGameForRomanticWin(__instance, statistics)) return false;
             if (CheckAndEndGameForSerialKillerWin(__instance, statistics)) return false;
             if (CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
             if (CheckAndEndGameForCrewmateWin(__instance, statistics)) return false;
@@ -644,12 +708,32 @@ namespace TownOfSushi.Patches
             && statistics.GlitchAlive == 0
             && statistics.WerewolfAlive == 0
             && statistics.SerialKillerAlive == 0
+            && statistics.VengefulRomanticAlive == 0
             && statistics.CrewPowerAlive == 0
             && !(statistics.TeamJackalHasAliveLover 
             && statistics.TeamLoversAlive == 2)) 
             {
 
                 GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.TeamJackalWin, false);
+                return true;
+            }
+            return false;
+        }
+
+        private static bool CheckAndEndGameForRomanticWin(ShipStatus __instance, PlayerStatistics statistics) 
+        {
+            if (statistics.VengefulRomanticAlive >= statistics.TotalAlive - statistics.VengefulRomanticAlive
+            && statistics.TeamImpostorsAlive == 0
+            && statistics.GlitchAlive == 0
+            && statistics.WerewolfAlive == 0
+            && statistics.SerialKillerAlive == 0
+            && statistics.TeamJackalAlive == 0
+            && statistics.CrewPowerAlive == 0
+            && !(statistics.VengefulRomanticHasAliveLover 
+            && statistics.TeamLoversAlive == 2)) 
+            {
+
+                GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.VRomanticWin, false);
                 return true;
             }
             return false;
@@ -663,6 +747,7 @@ namespace TownOfSushi.Patches
             && statistics.TeamJackalAlive == 0
             && statistics.SerialKillerAlive == 0
             && statistics.CrewPowerAlive == 0
+            && statistics.VengefulRomanticAlive == 0
             && !(statistics.WerewolfAliveHasLover 
             && statistics.TeamLoversAlive == 2)) 
             {
@@ -681,6 +766,7 @@ namespace TownOfSushi.Patches
             && statistics.TeamJackalAlive == 0
             && statistics.WerewolfAlive == 0
             && statistics.GlitchAlive == 0
+            && statistics.VengefulRomanticAlive == 0
             && !(statistics.SerialKillerHasLover
             && statistics.TeamLoversAlive == 2)) 
             {
@@ -699,6 +785,7 @@ namespace TownOfSushi.Patches
             && statistics.TeamJackalAlive == 0
             && statistics.WerewolfAlive == 0
             && statistics.SerialKillerAlive == 0
+            && statistics.VengefulRomanticAlive == 0
             && !(statistics.GlitchHasLoverAlive
             && statistics.TeamLoversAlive == 2)) 
             {
@@ -717,6 +804,7 @@ namespace TownOfSushi.Patches
             && statistics.WerewolfAlive == 0
             && statistics.SerialKillerAlive == 0
             && statistics.CrewPowerAlive == 0
+            && statistics.VengefulRomanticAlive == 0
             && !(statistics.TeamImpostorHasAliveLover 
             && statistics.TeamLoversAlive == 2)) 
             {
@@ -745,6 +833,7 @@ namespace TownOfSushi.Patches
             if (statistics.TeamImpostorsAlive == 0
             && statistics.TeamJackalAlive == 0
             && statistics.SerialKillerAlive == 0
+            && statistics.VengefulRomanticAlive == 0
             && statistics.WerewolfAlive == 0
             && statistics.GlitchAlive == 0) 
             {
@@ -770,12 +859,14 @@ namespace TownOfSushi.Patches
         public int TeamJackalAlive {get;set;}
         public int GlitchAlive {get;set;}
         public int WerewolfAlive {get;set;}
+        public int VengefulRomanticAlive {get;set;}
         public int SerialKillerAlive {get;set;}
         public int CrewPowerAlive {get;set;}
         public int TeamLoversAlive {get;set;}
         public int TotalAlive {get;set;}
         public bool TeamImpostorHasAliveLover {get;set;}
         public bool TeamJackalHasAliveLover {get;set;}
+        public bool VengefulRomanticHasAliveLover {get;set;}
         public bool WerewolfAliveHasLover {get;set;}
         public bool GlitchHasLoverAlive {get;set;}
         public bool SerialKillerHasLover {get;set;}
@@ -787,7 +878,7 @@ namespace TownOfSushi.Patches
 
         private static bool IsLover(NetworkedPlayerInfo p) 
         {
-            return (Lovers.lover1 != null && Lovers.lover1.PlayerId == p.PlayerId) || (Lovers.lover2 != null && Lovers.lover2.PlayerId == p.PlayerId);
+            return (Lovers.Lover1 != null && Lovers.Lover1.PlayerId == p.PlayerId) || (Lovers.Lover2 != null && Lovers.Lover2.PlayerId == p.PlayerId);
         }
 
         private void GetPlayerCounts() 
@@ -795,12 +886,14 @@ namespace TownOfSushi.Patches
             int numJackalAlive = 0;
             int numGlitchAlive = 0;
             int numImpostorsAlive = 0;
+            int numVRomanticsAlive = 0;
             int numWerewolfAlive = 0;
             int numSerialKillerAlive = 0;
             int numCrewPowerAlive = 0;
             int numLoversAlive = 0;
             int numTotalAlive = 0;
             bool impLover = false;
+            bool RomanticLover = false;
             bool glitchLover = false;
             bool SKLover = false;
             bool jackalLover = false;
@@ -827,11 +920,16 @@ namespace TownOfSushi.Patches
                             numJackalAlive++;
                             if (lover) jackalLover = true;
                         }
-                        if (Sheriff.sheriff != null && Sheriff.sheriff.PlayerId == playerInfo.PlayerId) 
+                        if (VengefulRomantic.Player != null && VengefulRomantic.Player.PlayerId == playerInfo.PlayerId) 
+                        {
+                            numVRomanticsAlive++;
+                            if (lover) RomanticLover = true;
+                        }
+                        if (Sheriff.Player != null && Sheriff.Player.PlayerId == playerInfo.PlayerId) 
                         {
                             numCrewPowerAlive++;
                         }
-                        if (Mayor.mayor != null && Mayor.mayor.PlayerId == playerInfo.PlayerId) 
+                        if (Mayor.Player != null && Mayor.Player.PlayerId == playerInfo.PlayerId) 
                         {
                             numCrewPowerAlive++;
                         }
@@ -839,7 +937,7 @@ namespace TownOfSushi.Patches
                         {
                             numCrewPowerAlive++;
                         }
-                        if (Swapper.swapper != null && Swapper.charges > 0 && Swapper.swapper.PlayerId == playerInfo.PlayerId) 
+                        if (Swapper.Player != null && Swapper.charges > 0 && Swapper.Player.PlayerId == playerInfo.PlayerId) 
                         {
                             numCrewPowerAlive++;
                         }
@@ -869,6 +967,7 @@ namespace TownOfSushi.Patches
 
             TeamJackalAlive = numJackalAlive;
             GlitchAlive = numGlitchAlive;
+            VengefulRomanticAlive = numVRomanticsAlive;
             SerialKillerAlive = numSerialKillerAlive;
             WerewolfAlive = numWerewolfAlive;
             CrewPowerAlive = numCrewPowerAlive;
@@ -878,6 +977,7 @@ namespace TownOfSushi.Patches
             TeamImpostorHasAliveLover = impLover;
             TeamJackalHasAliveLover = jackalLover;
             GlitchHasLoverAlive = glitchLover;
+            VengefulRomanticHasAliveLover = RomanticLover;
             SerialKillerHasLover = SKLover;
             WerewolfAliveHasLover = WerewolfLover;
         }

@@ -153,7 +153,8 @@ namespace TownOfSushi.Patches
             }
         }
 
-        public static IEnumerator<WaitForSeconds> EndShowRole(IntroCutscene __instance) {
+        public static IEnumerator<WaitForSeconds> EndShowRole(IntroCutscene __instance) 
+        {
             yield return new WaitForSeconds(5f);
             __instance.YouAreText.gameObject.SetActive(false);
             __instance.RoleText.gameObject.SetActive(false);
@@ -213,7 +214,7 @@ namespace TownOfSushi.Patches
                     
                     else 
                     {
-                        PlayerControl otherLover = PlayerControl.LocalPlayer == Lovers.lover1 ? Lovers.lover2 : Lovers.lover1;
+                        PlayerControl otherLover = PlayerControl.LocalPlayer == Lovers.Lover1 ? Lovers.Lover2 : Lovers.Lover1;
                         __instance.RoleBlurbText.text += Helpers.ColorString(Lovers.color, $"\n♥ You are in love with {otherLover?.Data?.PlayerName ?? ""} ♥");
                     }
                 }

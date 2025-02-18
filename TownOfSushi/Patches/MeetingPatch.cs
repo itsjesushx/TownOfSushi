@@ -41,7 +41,7 @@ namespace TownOfSushi.Patches
                         if (player == null || player.Data == null || player.Data.IsDead || player.Data.Disconnected) continue;
 
                         int currentVotes;
-                        int additionalVotes = (Mayor.mayor != null && Mayor.mayor.PlayerId == playerVoteArea.TargetPlayerId && Mayor.voteTwice) ? 2 : 1; // Mayor vote
+                        int additionalVotes = (Mayor.Player != null && Mayor.Player.PlayerId == playerVoteArea.TargetPlayerId && Mayor.voteTwice) ? 2 : 1; // Mayor vote
                         if (dictionary.TryGetValue(playerVoteArea.VotedFor, out currentVotes))
                             dictionary[playerVoteArea.VotedFor] = currentVotes + additionalVotes;
                         else
@@ -49,7 +49,7 @@ namespace TownOfSushi.Patches
                     }
                 }
                 // Swapper swap votes
-                if (Swapper.swapper != null && !Swapper.swapper.Data.IsDead) 
+                if (Swapper.Player != null && !Swapper.Player.Data.IsDead) 
                 {
                     swapped1 = null;
                     swapped2 = null;
@@ -161,7 +161,7 @@ namespace TownOfSushi.Patches
                 var spriteRenderer = UnityEngine.Object.Instantiate<SpriteRenderer>(__instance.PlayerVotePrefab);
                 var showVoteColors = !GameManager.Instance.LogicOptions.GetAnonymousVotes() ||
                                       (PlayerControl.LocalPlayer.Data.IsDead && MapOptions.ghostsSeeVotes) || 
-                                      (Mayor.mayor != null && Mayor.mayor == PlayerControl.LocalPlayer && Mayor.canSeeVoteColors && TasksHandler.TaskInfo(PlayerControl.LocalPlayer.Data).Item1 >= Mayor.tasksNeededToSeeVoteColors);
+                                      (Mayor.Player != null && Mayor.Player == PlayerControl.LocalPlayer && Mayor.canSeeVoteColors && TasksHandler.TaskInfo(PlayerControl.LocalPlayer.Data).Item1 >= Mayor.tasksNeededToSeeVoteColors);
                 if (showVoteColors)
                 {
                     PlayerMaterial.SetColors(voterPlayer.DefaultOutfit.ColorId, spriteRenderer);
@@ -200,7 +200,7 @@ namespace TownOfSushi.Patches
                     if (playerVoteArea.TargetPlayerId == Swapper.playerId1) swapped1 = playerVoteArea;
                     if (playerVoteArea.TargetPlayerId == Swapper.playerId2) swapped2 = playerVoteArea;
                 }
-                bool doSwap = swapped1 != null && swapped2 != null && Swapper.swapper != null && !Swapper.swapper.Data.IsDead;
+                bool doSwap = swapped1 != null && swapped2 != null && Swapper.Player != null && !Swapper.Player.Data.IsDead;
                 if (doSwap) 
                 {
                     __instance.StartCoroutine(Effects.Slide3D(swapped1.transform, swapped1.transform.localPosition, swapped2.transform.localPosition, 1.5f));
@@ -241,7 +241,7 @@ namespace TownOfSushi.Patches
                         }
 
                         // Major vote, redo this iteration to place a second vote
-                        if (Mayor.mayor != null && voterState.VoterId == (sbyte)Mayor.mayor.PlayerId && !mayorFirstVoteDisplayed && Mayor.voteTwice) 
+                        if (Mayor.Player != null && voterState.VoterId == (sbyte)Mayor.Player.PlayerId && !mayorFirstVoteDisplayed && Mayor.voteTwice) 
                         {
                             mayorFirstVoteDisplayed = true;
                             j--;    
@@ -264,10 +264,12 @@ namespace TownOfSushi.Patches
                 // Lovers, Lawyer & Pursuer save next to be exiled, because RPC of ending game comes before RPC of exiled
                 Lovers.notAckedExiledIsLover = false;
                 Pursuer.notAckedExiled = false;
+                VengefulRomantic.notAckedExiled = false;
                 if (exiled != null) 
                 {
-                    Lovers.notAckedExiledIsLover = ((Lovers.lover1 != null && Lovers.lover1.PlayerId == exiled.PlayerId) || (Lovers.lover2 != null && Lovers.lover2.PlayerId == exiled.PlayerId));
-                    Pursuer.notAckedExiled = (Pursuer.pursuer != null && Pursuer.pursuer.PlayerId == exiled.PlayerId) || (Lawyer.lawyer != null && Lawyer.target != null && Lawyer.target.PlayerId == exiled.PlayerId && Lawyer.target != Jester.jester && !Lawyer.isProsecutor);
+                    Lovers.notAckedExiledIsLover = ((Lovers.Lover1 != null && Lovers.Lover1.PlayerId == exiled.PlayerId) || (Lovers.Lover2 != null && Lovers.Lover2.PlayerId == exiled.PlayerId));
+                    Pursuer.notAckedExiled = (Pursuer.pursuer != null && Pursuer.pursuer.PlayerId == exiled.PlayerId) || (Lawyer.Player != null && Lawyer.target != null && Lawyer.target.PlayerId == exiled.PlayerId && Lawyer.target != Jester.jester && !Lawyer.isProsecutor);
+                    VengefulRomantic.notAckedExiled = (VengefulRomantic.Player != null && VengefulRomantic.Player.PlayerId == exiled.PlayerId) || (Romantic.Player != null && Romantic.beloved != null && Romantic.beloved.PlayerId == exiled.PlayerId && Romantic.beloved != Jester.jester);
                 }
 
                 // Mini
@@ -359,7 +361,7 @@ namespace TownOfSushi.Patches
         public static void SwapperCheckAndReturnSwap(MeetingHud __instance, byte dyingPlayerId) 
         {
             // someone was guessed, Executed or dced in the meeting, check if this affects the swapper.
-            if (Swapper.swapper == null || __instance.state == MeetingHud.VoteStates.Results) return;
+            if (Swapper.Player == null || __instance.state == MeetingHud.VoteStates.Results) return;
 
             // reset swap.
             bool reset = false;
@@ -371,7 +373,7 @@ namespace TownOfSushi.Patches
             
 
             // Only for the swapper: Reset all the buttons and charges value to their original state.
-            if (PlayerControl.LocalPlayer != Swapper.swapper) return;
+            if (PlayerControl.LocalPlayer != Swapper.Player) return;
 
 
             // check if dying player was a selected player (but not confirmed yet)
@@ -386,7 +388,7 @@ namespace TownOfSushi.Patches
             for (int i = 0; i < selections.Length; i++) {
                 selections[i] = false;
                 PlayerVoteArea playerVoteArea = __instance.playerStates[i];
-                if (playerVoteArea.AmDead || (playerVoteArea.TargetPlayerId == Swapper.swapper.PlayerId && Swapper.canOnlySwapOthers)) continue;
+                if (playerVoteArea.AmDead || (playerVoteArea.TargetPlayerId == Swapper.Player.PlayerId && Swapper.canOnlySwapOthers)) continue;
                 renderers[i].color = Color.red;
                 Swapper.charges++;
                 int copyI = i;
@@ -398,11 +400,13 @@ namespace TownOfSushi.Patches
 
         }
 
-        static void MayorToggleVoteTwice(MeetingHud __instance) {
+        static void MayorToggleVoteTwice(MeetingHud __instance) 
+        {
             __instance.playerStates[0].Cancel();  // This will stop the underlying buttons of the template from showing up
-            if (__instance.state == MeetingHud.VoteStates.Results || Mayor.mayor.Data.IsDead) return;
-            if (Mayor.mayorChooseSingleVote == 1) { // Only accept changes until the mayor voted
-                var mayorPVA = __instance.playerStates.FirstOrDefault(x => x.TargetPlayerId == Mayor.mayor.PlayerId);
+            if (__instance.state == MeetingHud.VoteStates.Results || Mayor.Player.Data.IsDead) return;
+            if (Mayor.mayorChooseSingleVote == 1) 
+            { // Only accept changes until the mayor voted
+                var mayorPVA = __instance.playerStates.FirstOrDefault(x => x.TargetPlayerId == Mayor.Player.PlayerId);
                 if (mayorPVA != null && mayorPVA.DidVote) {
                     SoundEffectsManager.Play("fail");
                     return;
@@ -565,8 +569,8 @@ namespace TownOfSushi.Patches
         static void PopulateButtonsPostfix(MeetingHud __instance) 
         {
             // Add Swapper Buttons
-            bool addSwapperButtons = Swapper.swapper != null && PlayerControl.LocalPlayer == Swapper.swapper && !Swapper.swapper.Data.IsDead;
-            bool addMayorButton = Mayor.mayor != null && PlayerControl.LocalPlayer == Mayor.mayor && !Mayor.mayor.Data.IsDead && Mayor.mayorChooseSingleVote > 0;
+            bool addSwapperButtons = Swapper.Player != null && PlayerControl.LocalPlayer == Swapper.Player && !Swapper.Player.Data.IsDead;
+            bool addMayorButton = Mayor.Player != null && PlayerControl.LocalPlayer == Mayor.Player && !Mayor.Player.Data.IsDead && Mayor.mayorChooseSingleVote > 0;
             if (addSwapperButtons) {
                 selections = new bool[__instance.playerStates.Length];
                 renderers = new SpriteRenderer[__instance.playerStates.Length];
@@ -574,7 +578,7 @@ namespace TownOfSushi.Patches
 
                 for (int i = 0; i < __instance.playerStates.Length; i++) {
                     PlayerVoteArea playerVoteArea = __instance.playerStates[i];
-                    if (playerVoteArea.AmDead || (playerVoteArea.TargetPlayerId == Swapper.swapper.PlayerId && Swapper.canOnlySwapOthers)) continue;
+                    if (playerVoteArea.AmDead || (playerVoteArea.TargetPlayerId == Swapper.Player.PlayerId && Swapper.canOnlySwapOthers)) continue;
 
                     GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
                     GameObject checkbox = UnityEngine.Object.Instantiate(template);
@@ -821,7 +825,7 @@ namespace TownOfSushi.Patches
                 Snitch.playerRoomMap = new Dictionary<byte, byte>();
 
                 // Remove revealed traps
-                Trap.clearRevealedTraps();
+                Trap.ClearRevealedTraps();
 
                 // Reset zoomed out ghosts
                 Helpers.ToggleZoom(reset: true);

@@ -240,6 +240,11 @@ namespace TownOfSushi
         public static CustomOption mediumOneTimeUse;
         public static CustomOption mediumChanceAdditionalInfo;
 
+        public static CustomOption RomanticSpawnChance;
+        public static CustomOption RomanticKnowsRole;
+        public static CustomOption VengefulRomanticCooldown;
+        public static CustomOption VengefulRomanticCanUseVents;
+
         public static CustomOption lawyerSpawnRate;
         public static CustomOption lawyerIsProsecutorChance;
         public static CustomOption lawyerTargetCanBeJester;
@@ -521,6 +526,11 @@ namespace TownOfSushi
             pursuerCooldown = CustomOption.Create(356, Types.Neutral, "Pursuer Blank Cooldown", 30f, 5f, 60f, 2.5f, lawyerSpawnRate, format: "s");
             pursuerBlanksNumber = CustomOption.Create(357, Types.Neutral, "Pursuer Number Of Blanks", 5f, 1f, 20f, 1f, lawyerSpawnRate);
 
+            RomanticSpawnChance = CustomOption.Create(3501, Types.Neutral, ColorString(Romantic.color, "Romantic"), rates, null, true);
+            RomanticKnowsRole = CustomOption.Create(3551, Types.Neutral, "Romantic And Beloved Know Each Other's Role", false, RomanticSpawnChance);
+            VengefulRomanticCanUseVents = CustomOption.Create(3552, Types.Neutral, "Vengeful Romantic Can Use Vents", false, RomanticSpawnChance);
+            VengefulRomanticCooldown = CustomOption.Create(3553, Types.Neutral, "Vengeful Romantic Kill Cooldown", 30f, 10f, 60f, 2.5f, RomanticSpawnChance, format: "s");
+
             mayorSpawnRate = CustomOption.Create(80, Types.Crewmate, ColorString(Mayor.color, "Mayor"), rates, null, true);
             mayorCanSeeVoteColors = CustomOption.Create(81, Types.Crewmate, "Mayor Can See Vote Colors", false, mayorSpawnRate);
             mayorTasksNeededToSeeVoteColors = CustomOption.Create(82, Types.Crewmate, "Completed Tasks Needed To See Vote Colors", 5f, 0f, 20f, 1f, mayorCanSeeVoteColors);
@@ -747,6 +757,8 @@ namespace TownOfSushi
             blockedRolePairings.Add((byte)RoleId.Mini, new [] { (byte)RoleId.Spy});
             blockedRolePairings.Add((byte)RoleId.Vulture, new [] { (byte)RoleId.Cleaner});
             blockedRolePairings.Add((byte)RoleId.Cleaner, new [] { (byte)RoleId.Vulture});
+            blockedRolePairings.Add((byte)RoleId.Lover, new [] { (byte)RoleId.Romantic});
+            blockedRolePairings.Add((byte)RoleId.Romantic, new [] { (byte)RoleId.Lover});
             
         }
     }

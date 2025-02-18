@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TownOfSushi.Objects;
-
 using TownOfSushi.Utilities;
 using UnityEngine;
 
@@ -36,8 +35,10 @@ namespace TownOfSushi.Patches
 
 		public static Dictionary<string, GameObject> mapIcons = new();
 
-		public static void ClearAndReload() {
-			foreach (var mapIcon in mapIcons.Values) {
+		public static void ClearAndReload() 
+		{
+			foreach (var mapIcon in mapIcons.Values) 
+			{
 				mapIcon.Destroy();
 			}
 			mapIcons = new();
@@ -48,14 +49,18 @@ namespace TownOfSushi.Patches
 
 
 		[HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.FixedUpdate))]
-		static void Postfix(MapBehaviour __instance) {
-			if (__instance.infectedOverlay.gameObject.active && PlayerControl.LocalPlayer.Data.IsDead && CustomOptionHolder.deadImpsBlockSabotage.GetBool()) {
+		static void Postfix(MapBehaviour __instance) 
+		{
+			if (__instance.infectedOverlay.gameObject.active && PlayerControl.LocalPlayer.Data.IsDead && CustomOptionHolder.deadImpsBlockSabotage.GetBool()) 
+			{
 				__instance.Close();
 			}
 
 			__instance.HerePoint.transform.SetLocalZ(-2.1f);
-			if (Trapper.trapper != null && PlayerControl.LocalPlayer.PlayerId == Trapper.trapper.PlayerId) {
-				foreach (PlayerControl player in Trapper.playersOnMap) {
+			if (Trapper.trapper != null && PlayerControl.LocalPlayer.PlayerId == Trapper.trapper.PlayerId) 
+			{
+				foreach (PlayerControl player in Trapper.playersOnMap) 
+				{
 					if (herePoints.ContainsKey(player.PlayerId)) continue;
 					Vector3 v = Trap.trapPlayerIdMap[player.PlayerId].trap.transform.position;
 					v /= MapUtilities.CachedShipStatus.MapScale;
@@ -74,7 +79,9 @@ namespace TownOfSushi.Patches
 					UnityEngine.Object.Destroy(s.Value);
 					herePoints.Remove(s.Key);
 				}
-			} else if (Snitch.snitch != null && PlayerControl.LocalPlayer.PlayerId == Snitch.snitch.PlayerId && !Snitch.snitch.Data.IsDead && Snitch.mode != Snitch.Mode.Chat) {
+			} 
+			else if (Snitch.snitch != null && PlayerControl.LocalPlayer.PlayerId == Snitch.snitch.PlayerId && !Snitch.snitch.Data.IsDead && Snitch.mode != Snitch.Mode.Chat) 
+			{
 				var (playerCompleted, playerTotal) = TasksHandler.TaskInfo(Snitch.snitch.Data);
 				int numberOfTasks = playerTotal - playerCompleted;
 
@@ -90,7 +97,8 @@ namespace TownOfSushi.Patches
 							v /= MapUtilities.CachedShipStatus.MapScale;
 							v.x *= Mathf.Sign(MapUtilities.CachedShipStatus.transform.localScale.x);
 							v.z = -2.1f;
-							if (herePoints.ContainsKey(player.PlayerId)) {
+							if (herePoints.ContainsKey(player.PlayerId)) 
+							{
 								herePoints[player.PlayerId].transform.localPosition = v;
 								continue;
 							}
@@ -103,8 +111,11 @@ namespace TownOfSushi.Patches
 							player.CurrentOutfit.ColorId = colorId;
 							herePoints.Add(player.PlayerId, herePoint);
 						}
-					} else {
-						foreach (var s in herePoints) {
+					} 
+					else 
+					{
+						foreach (var s in herePoints) 
+						{
 							UnityEngine.Object.Destroy(s.Value);
 							herePoints.Remove(s.Key);
 						}
@@ -122,7 +133,8 @@ namespace TownOfSushi.Patches
                     v /= MapUtilities.CachedShipStatus.MapScale;
                     v.x *= Mathf.Sign(MapUtilities.CachedShipStatus.transform.localScale.x);
                     v.z = -2.1f;
-                    if (herePoints.TryGetValue(player.PlayerId, out _)) {
+                    if (herePoints.TryGetValue(player.PlayerId, out _)) 
+					{
                         herePoints[player.PlayerId].transform.localPosition = v;
 						herePoints[player.PlayerId].color = herePoints[player.PlayerId].color.SetAlpha(alpha);
                         continue;
@@ -147,10 +159,12 @@ namespace TownOfSushi.Patches
                     herePoints.Add(player.PlayerId, herePoint);
                 }
 			}
-			foreach (var vent in MapUtilities.CachedShipStatus.AllVents) {
+			foreach (var vent in MapUtilities.CachedShipStatus.AllVents) 
+			{
 				if ((vent.name.StartsWith("JackInThe") && !(PlayerControl.LocalPlayer == Trickster.trickster || PlayerControl.LocalPlayer.Data.IsDead))) continue; //for trickster vents
 
-				if (!TownOfSushiPlugin.ShowVentsOnMap.Value) {
+				if (!TownOfSushiPlugin.ShowVentsOnMap.Value) 
+				{
 					if (mapIcons.Count > 0) {
 						mapIcons.Values.Do((x) => x.Destroy());
 						mapIcons.Clear();
@@ -238,7 +252,8 @@ namespace TownOfSushi.Patches
 		{
 			if (VentNetworks.Count != 0) return;
 			
-			if (Helpers.IsMira()) {
+			if (Helpers.IsMira()) 
+			{
 				var vents = MapUtilities.CachedShipStatus.AllVents.Where(x => !x.name.Contains("JackInTheBoxVent_"));
 				VentNetworks.Add(vents.ToList());
 				return;

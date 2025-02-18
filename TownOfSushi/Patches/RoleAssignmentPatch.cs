@@ -125,6 +125,7 @@ namespace TownOfSushi.Patches
             neutralKSettings.Add((byte)RoleId.SerialKiller, CustomOptionHolder.SerialKillerSpawnRate.GetSelection());
 
             neutralSettings.Add((byte)RoleId.Jester, CustomOptionHolder.jesterSpawnRate.GetSelection());
+            neutralSettings.Add((byte)RoleId.Romantic, CustomOptionHolder.RomanticSpawnChance.GetSelection());
             neutralSettings.Add((byte)RoleId.Arsonist, CustomOptionHolder.arsonistSpawnRate.GetSelection());
             neutralSettings.Add((byte)RoleId.Vulture, CustomOptionHolder.vultureSpawnRate.GetSelection());
             neutralSettings.Add((byte)RoleId.Thief, CustomOptionHolder.thiefSpawnRate.GetSelection());
@@ -300,13 +301,13 @@ namespace TownOfSushi.Patches
         private static void AssignRoleTargets(RoleAssignmentData data) 
         {
             // Set Lawyer or Prosecutor Target
-            if (Lawyer.lawyer != null) 
+            if (Lawyer.Player != null) 
             {
                 var possibleTargets = new List<PlayerControl>();
                 if (!Lawyer.isProsecutor) 
                 { // Lawyer
                     foreach (PlayerControl p in PlayerControl.AllPlayerControls) {
-                        if (!p.Data.IsDead && !p.Data.Disconnected && p != Lovers.lover1 && p != Lovers.lover2 && (p.IsKiller() || (Lawyer.targetCanBeJester && p == Jester.jester)))
+                        if (!p.Data.IsDead && !p.Data.Disconnected && p != Lovers.Lover1 && p != Lovers.Lover2 && (p.IsKiller() || (Lawyer.targetCanBeJester && p == Jester.jester)))
                             possibleTargets.Add(p);
                     }
                 } 
@@ -314,16 +315,19 @@ namespace TownOfSushi.Patches
                 { // Prosecutor
                     foreach (PlayerControl p in PlayerControl.AllPlayerControls) 
                     {
-                        if (!p.Data.IsDead && !p.Data.Disconnected && p != Lovers.lover1 && p != Lovers.lover2 && p != Mini.mini && p.IsCrew() && p != Swapper.swapper)
+                        if (!p.Data.IsDead && !p.Data.Disconnected && p != Lovers.Lover1 && p != Lovers.Lover2 && p != Mini.mini && p.IsCrew() && p != Swapper.Player)
                             possibleTargets.Add(p);
                     }
                 }
                 
-                if (possibleTargets.Count == 0) {
-                    MessageWriter w = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.LawyerPromotesToPursuer, Hazel.SendOption.Reliable, -1);
+                if (possibleTargets.Count == 0) 
+                {
+                    MessageWriter w = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.LawyerChangeRole, Hazel.SendOption.Reliable, -1);
                     AmongUsClient.Instance.FinishRpcImmediately(w);
-                    RPCProcedure.LawyerPromotesToPursuer();
-                } else {
+                    RPCProcedure.LawyerChangeRole();
+                } 
+                else 
+                {
                     var target = possibleTargets[TownOfSushi.rnd.Next(0, possibleTargets.Count)];
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.LawyerSetTarget, Hazel.SendOption.Reliable, -1);
                     writer.Write(target.PlayerId);
@@ -371,7 +375,7 @@ namespace TownOfSushi.Patches
                 List<PlayerControl> impPlayer = new List<PlayerControl>(players);
                 List<PlayerControl> crewPlayer = new List<PlayerControl>(players);
                 impPlayer.RemoveAll(x => !x.Data.Role.IsImpostor);
-                crewPlayer.RemoveAll(x => x.Data.Role.IsImpostor || x == Lawyer.lawyer);
+                crewPlayer.RemoveAll(x => x.Data.Role.IsImpostor || x == Lawyer.Player);
 
                 if (isEvilLover) firstLoverId = SetModifierToRandomPlayer((byte)RoleId.Lover, impPlayer);
                 else firstLoverId = SetModifierToRandomPlayer((byte)RoleId.Lover, crewPlayer);

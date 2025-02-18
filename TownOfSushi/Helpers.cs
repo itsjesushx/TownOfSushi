@@ -395,7 +395,7 @@ namespace TownOfSushi
             else if (source == null || target == null) return true;
             else if (source == target) return false; // Player sees his own name
             else if (source.Data.Role.IsImpostor && (target.Data.Role.IsImpostor || target == Spy.spy || target == Sidekick.sidekick && Sidekick.wasTeamRed || target == Jackal.jackal && Jackal.wasTeamRed)) return false; // Members of team Impostors see the names of Impostors/Spies
-            else if ((source == Lovers.lover1 || source == Lovers.lover2) && (target == Lovers.lover1 || target == Lovers.lover2)) return false; // Members of team Lovers see the names of each other
+            else if ((source == Lovers.Lover1 || source == Lovers.Lover2) && (target == Lovers.Lover1 || target == Lovers.Lover2)) return false; // Members of team Lovers see the names of each other
             else if ((source == Jackal.jackal || source == Sidekick.sidekick) && (target == Jackal.jackal || target == Sidekick.sidekick || target == Jackal.fakeSidekick)) return false; // Members of team Jackal see the names of each other
             return true;
         }
@@ -412,7 +412,8 @@ namespace TownOfSushi
                 target.SetLook(target.Data.PlayerName, target.Data.DefaultOutfit.ColorId, target.Data.DefaultOutfit.HatId, target.Data.DefaultOutfit.VisorId, target.Data.DefaultOutfit.SkinId, target.Data.DefaultOutfit.PetId, enforceNightVisionUpdate);
         }
 
-        public static void SetLook(this PlayerControl target, String playerName, int colorId, string hatId, string visorId, string skinId, string petId, bool enforceNightVisionUpdate = true) {
+        public static void SetLook(this PlayerControl target, String playerName, int colorId, string hatId, string visorId, string skinId, string petId, bool enforceNightVisionUpdate = true) 
+        {
             target.RawSetColor(colorId);
             target.RawSetVisor(visorId, colorId);
             target.RawSetHat(hatId, colorId);
@@ -480,6 +481,8 @@ namespace TownOfSushi
             if (Engineer.engineer != null && Engineer.engineer == player)
                 roleCouldUse = true;
             else if (Jackal.canUseVents && Jackal.jackal != null && Jackal.jackal == player)
+                roleCouldUse = true;
+            else if (VengefulRomantic.CanUseVents && VengefulRomantic.Player != null && VengefulRomantic.Player == player)
                 roleCouldUse = true;
             else if (Werewolf.CanUseVents && Werewolf.Player != null && Werewolf.Player == player)
                 roleCouldUse = true;
@@ -562,7 +565,7 @@ namespace TownOfSushi
             }
 
             // Block Time Master with time shield kill
-            else if (TimeMaster.shieldActive && TimeMaster.timeMaster != null && TimeMaster.timeMaster == target) {
+            else if (TimeMaster.shieldActive && TimeMaster.Player != null && TimeMaster.Player == target) {
                 if (!blockRewind) { // Only rewind the attempt was not called because a meeting startet 
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(killer.NetId, (byte)CustomRPC.TimeMasterRewindTime, Hazel.SendOption.Reliable, -1);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -594,7 +597,7 @@ namespace TownOfSushi
 
             // Block Armored with armor kill
             
-            else if (CheckArmored(target, true, killer == PlayerControl.LocalPlayer, Sheriff.sheriff == null || killer.PlayerId != Sheriff.sheriff.PlayerId || !target.IsCrew() && Sheriff.canKillNeutrals || IsKiller(target))) 
+            else if (CheckArmored(target, true, killer == PlayerControl.LocalPlayer, Sheriff.Player == null || killer.PlayerId != Sheriff.Player.PlayerId || !target.IsCrew() && Sheriff.canKillNeutrals || IsKiller(target))) 
             {
                 return MurderAttemptResult.BlankKill;
             }
@@ -788,6 +791,7 @@ namespace TownOfSushi
                 || (Sidekick.sidekick != null && Sidekick.sidekick.PlayerId == player.PlayerId)
                 || (Glitch.Player != null && Glitch.Player.PlayerId == player.PlayerId)
                 || (Werewolf.Player != null && Werewolf.Player.PlayerId == player.PlayerId)
+                || (VengefulRomantic.Player != null && VengefulRomantic.Player.PlayerId == player.PlayerId)
                 || (SerialKiller.Player != null && SerialKiller.HasImpostorVision && SerialKiller.Player.PlayerId == player.PlayerId)
                 || (Spy.spy != null && Spy.spy.PlayerId == player.PlayerId && Spy.hasImpostorVision)
                 || (Jester.jester != null && Jester.jester.PlayerId == player.PlayerId && Jester.hasImpostorVision)

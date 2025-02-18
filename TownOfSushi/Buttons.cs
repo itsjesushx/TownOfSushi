@@ -36,12 +36,14 @@ namespace TownOfSushi
         public static CustomButton hackerAdminTableButton;
         private static CustomButton trackerTrackPlayerButton;
         private static CustomButton trackerTrackCorpsesButton;
+        private static CustomButton RomanticSetTargetButton;
         public static CustomButton vampireKillButton;
         public static CustomButton garlicButton;
         public static CustomButton jackalKillButton;
         public static CustomButton SerialKillerStabButton;
         public static CustomButton SerialKillerKillButton;
         public static CustomButton GlitchKillButton;
+        public static CustomButton RomanticKillButton;
         public static CustomButton WerewolfMaulButton;
         public static CustomButton sidekickKillButton;
         private static CustomButton jackalSidekickButton;
@@ -100,6 +102,7 @@ namespace TownOfSushi
             GlitchHackButton.MaxTimer = Glitch.HackCooldown;
             timeMasterShieldButton.MaxTimer = TimeMaster.cooldown;
             medicShieldButton.MaxTimer = 0f;
+            RomanticSetTargetButton.MaxTimer = 0f;
             VeteranAlertButton.MaxTimer = Veteran.Cooldown;
             SerialKillerStabButton.MaxTimer = SerialKiller.StabCooldown;
             SerialKillerKillButton.MaxTimer = SerialKiller.StabKillCooldown;
@@ -119,6 +122,7 @@ namespace TownOfSushi
             garlicButton.MaxTimer = 0f;
             jackalKillButton.MaxTimer = Jackal.cooldown;
             GlitchKillButton.MaxTimer = Glitch.KillCooldown;
+            RomanticKillButton.MaxTimer = VengefulRomantic.Cooldown;
             WerewolfMaulButton.MaxTimer = Werewolf.Cooldown;
             sidekickKillButton.MaxTimer = Sidekick.cooldown;
             jackalSidekickButton.MaxTimer = Jackal.createSidekickCooldown;
@@ -369,19 +373,19 @@ namespace TownOfSushi
             // Sheriff Kill
             sheriffKillButton = new CustomButton(
                 () => {
-                    if (Sheriff.currentTarget.CheckVeteranAlertKill()) return;
-                    MurderAttemptResult murderAttemptResult = Helpers.CheckMuderAttempt(Sheriff.sheriff, Sheriff.currentTarget);
+                    if (Sheriff.CurrentTarget.CheckVeteranAlertKill()) return;
+                    MurderAttemptResult murderAttemptResult = Helpers.CheckMuderAttempt(Sheriff.Player, Sheriff.CurrentTarget);
                     if (murderAttemptResult == MurderAttemptResult.SuppressKill) return;
 
                     if (murderAttemptResult == MurderAttemptResult.PerformKill) 
                     {
                         byte targetId = 0;
-                        if ((Sheriff.currentTarget.Data.Role.IsImpostor && (Sheriff.currentTarget != Mini.mini || Mini.IsGrownUp())) ||
-                            (Sheriff.spyCanDieToSheriff && Spy.spy == Sheriff.currentTarget) ||
-                            (Sheriff.canKillNeutrals && Helpers.IsNeutral(Sheriff.currentTarget)) ||
-                            (Helpers.IsNeutralKiller(Sheriff.currentTarget))) 
+                        if ((Sheriff.CurrentTarget.Data.Role.IsImpostor && (Sheriff.CurrentTarget != Mini.mini || Mini.IsGrownUp())) ||
+                            (Sheriff.spyCanDieToSheriff && Spy.spy == Sheriff.CurrentTarget) ||
+                            (Sheriff.canKillNeutrals && Helpers.IsNeutral(Sheriff.CurrentTarget)) ||
+                            (Helpers.IsNeutralKiller(Sheriff.CurrentTarget))) 
                             {
-                            targetId = Sheriff.currentTarget.PlayerId;
+                            targetId = Sheriff.CurrentTarget.PlayerId;
                         }
                         else 
                         {
@@ -389,21 +393,21 @@ namespace TownOfSushi
                         }
 
                         // Armored sheriff shot doesnt kill if backfired
-                        if (targetId == Sheriff.sheriff.PlayerId && Helpers.CheckArmored(Sheriff.sheriff, true, true))
+                        if (targetId == Sheriff.Player.PlayerId && Helpers.CheckArmored(Sheriff.Player, true, true))
                             return;
                         MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.UncheckedMurderPlayer, Hazel.SendOption.Reliable, -1);
-                        killWriter.Write(Sheriff.sheriff.Data.PlayerId);
+                        killWriter.Write(Sheriff.Player.Data.PlayerId);
                         killWriter.Write(targetId);
                         killWriter.Write(byte.MaxValue);
                         AmongUsClient.Instance.FinishRpcImmediately(killWriter);
-                        RPCProcedure.UncheckedMurderPlayer(Sheriff.sheriff.Data.PlayerId, targetId, Byte.MaxValue);
+                        RPCProcedure.UncheckedMurderPlayer(Sheriff.Player.Data.PlayerId, targetId, Byte.MaxValue);
                     }
 
                     sheriffKillButton.Timer = sheriffKillButton.MaxTimer;
-                    Sheriff.currentTarget = null;
+                    Sheriff.CurrentTarget = null;
                 },
-                () => { return Sheriff.sheriff != null && Sheriff.sheriff == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead; },
-                () => { return Sheriff.currentTarget && PlayerControl.LocalPlayer.CanMove; },
+                () => { return Sheriff.Player != null && Sheriff.Player == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead; },
+                () => { return Sheriff.CurrentTarget && PlayerControl.LocalPlayer.CanMove; },
                 () => { sheriffKillButton.Timer = sheriffKillButton.MaxTimer;},
                 __instance.KillButton.graphic.sprite,
                 CustomButton.ButtonPositions.upperRowRight,
@@ -414,12 +418,12 @@ namespace TownOfSushi
             // Glitch Hack
             GlitchHackButton = new CustomButton(
                 () => {
-                    if (Glitch.currentTarget.CheckVeteranAlertKill()) return;
+                    if (Glitch.CurrentTarget.CheckVeteranAlertKill()) return;
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.GlitchUsedHacks, Hazel.SendOption.Reliable, -1);
-                    writer.Write(Glitch.currentTarget.PlayerId);
+                    writer.Write(Glitch.CurrentTarget.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
-                    RPCProcedure.GlitchUsedHacks(Glitch.currentTarget.PlayerId);
-                    Glitch.currentTarget = null;
+                    RPCProcedure.GlitchUsedHacks(Glitch.CurrentTarget.PlayerId);
+                    Glitch.CurrentTarget = null;
                     GlitchHackButton.Timer = GlitchHackButton.MaxTimer;
 
                     SoundEffectsManager.Play("deputyHandcuff");
@@ -429,7 +433,7 @@ namespace TownOfSushi
                 () => 
                 {
                     if (GlitchButtonHacksText != null) GlitchButtonHacksText.text = $"{Glitch.remainingHacks}";
-                    return Glitch.Player != null && Glitch.Player == PlayerControl.LocalPlayer && Glitch.currentTarget && Glitch.remainingHacks > 0 && PlayerControl.LocalPlayer.CanMove;
+                    return Glitch.Player != null && Glitch.Player == PlayerControl.LocalPlayer && Glitch.CurrentTarget && Glitch.remainingHacks > 0 && PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { GlitchHackButton.Timer = GlitchHackButton.MaxTimer; },
                 Glitch.GetButtonSprite(),
@@ -452,7 +456,7 @@ namespace TownOfSushi
                     RPCProcedure.TimeMasterShield();
                     SoundEffectsManager.Play("timemasterShield");
                 },
-                () => { return TimeMaster.timeMaster != null && TimeMaster.timeMaster == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead; },
+                () => { return TimeMaster.Player != null && TimeMaster.Player == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead; },
                 () => { return PlayerControl.LocalPlayer.CanMove; },
                 () => {
                     timeMasterShieldButton.Timer = timeMasterShieldButton.MaxTimer;
@@ -514,14 +518,14 @@ namespace TownOfSushi
             SerialKillerKillButton = new CustomButton(
                 () => 
                 {
-                    if (SerialKiller.currentTarget.CheckVeteranAlertKill()) return;
-                    if (Helpers.CheckMurderAttemptAndKill(SerialKiller.Player, SerialKiller.currentTarget) == MurderAttemptResult.SuppressKill) return;
+                    if (SerialKiller.CurrentTarget.CheckVeteranAlertKill()) return;
+                    if (Helpers.CheckMurderAttemptAndKill(SerialKiller.Player, SerialKiller.CurrentTarget) == MurderAttemptResult.SuppressKill) return;
 
                     SerialKillerKillButton.Timer = SerialKillerKillButton.MaxTimer; 
-                    SerialKiller.currentTarget = null;
+                    SerialKiller.CurrentTarget = null;
                 },
                 () => { return SerialKiller.Player != null && SerialKiller.Player == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead && SerialKiller.Stabbing; },
-                () => { return SerialKiller.currentTarget && PlayerControl.LocalPlayer.CanMove; },
+                () => { return SerialKiller.CurrentTarget && PlayerControl.LocalPlayer.CanMove; },
                 () => { SerialKillerKillButton.Timer = SerialKillerKillButton.MaxTimer;},
                 __instance.KillButton.graphic.sprite,
                 CustomButton.ButtonPositions.upperRowRight,
@@ -569,16 +573,36 @@ namespace TownOfSushi
 
             // Glitch Kill
             GlitchKillButton = new CustomButton(
-                () => {
-                    if (Glitch.currentTarget.CheckVeteranAlertKill()) return;
-                    if (Helpers.CheckMurderAttemptAndKill(Glitch.Player, Glitch.currentTarget) == MurderAttemptResult.SuppressKill) return;
+                () => 
+                {
+                    if (Glitch.CurrentTarget.CheckVeteranAlertKill()) return;
+                    if (Helpers.CheckMurderAttemptAndKill(Glitch.Player, Glitch.CurrentTarget) == MurderAttemptResult.SuppressKill) return;
 
                     GlitchKillButton.Timer = GlitchKillButton.MaxTimer; 
-                    Glitch.currentTarget = null;
+                    Glitch.CurrentTarget = null;
                 },
                 () => { return Glitch.Player != null && Glitch.Player == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead; },
-                () => { return Glitch.currentTarget && PlayerControl.LocalPlayer.CanMove; },
+                () => { return Glitch.CurrentTarget && PlayerControl.LocalPlayer.CanMove; },
                 () => { GlitchKillButton.Timer = GlitchKillButton.MaxTimer;},
+                __instance.KillButton.graphic.sprite,
+                CustomButton.ButtonPositions.upperRowRight,
+                __instance,
+                KeyCode.Q
+            );
+
+            //Romantic
+            RomanticKillButton = new CustomButton(
+                () => 
+                {
+                    if (VengefulRomantic.CurrentTarget.CheckVeteranAlertKill()) return;
+                    if (Helpers.CheckMurderAttemptAndKill(Romantic.Player, VengefulRomantic.CurrentTarget) == MurderAttemptResult.SuppressKill) return;
+
+                    RomanticKillButton.Timer = RomanticKillButton.MaxTimer; 
+                    VengefulRomantic.CurrentTarget = null;
+                },
+                () => { return VengefulRomantic.Player != null && VengefulRomantic.Player == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead; },
+                () => { return VengefulRomantic.CurrentTarget && PlayerControl.LocalPlayer.CanMove; },
+                () => { RomanticKillButton.Timer = RomanticKillButton.MaxTimer;},
                 __instance.KillButton.graphic.sprite,
                 CustomButton.ButtonPositions.upperRowRight,
                 __instance,
@@ -589,20 +613,20 @@ namespace TownOfSushi
             WerewolfMaulButton = new CustomButton(
                 () => 
                 {
-                    if (Werewolf.currentTarget.CheckVeteranAlertKill()) return;
-                    if (Helpers.CheckMurderAttemptAndKill(Werewolf.Player, Werewolf.currentTarget) == MurderAttemptResult.SuppressKill) return;
+                    if (Werewolf.CurrentTarget.CheckVeteranAlertKill()) return;
+                    if (Helpers.CheckMurderAttemptAndKill(Werewolf.Player, Werewolf.CurrentTarget) == MurderAttemptResult.SuppressKill) return;
                     
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.WerewolfMaul, Hazel.SendOption.Reliable, -1);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                     RPCProcedure.WerewolfMaul();
                     WerewolfMaulButton.Timer = WerewolfMaulButton.MaxTimer; 
-                    Werewolf.currentTarget = null;
+                    Werewolf.CurrentTarget = null;
                 },
                 () => { return Werewolf.Player != null && Werewolf.Player == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead; },
-                () => { return Werewolf.currentTarget && PlayerControl.LocalPlayer.CanMove; },
+                () => { return Werewolf.CurrentTarget && PlayerControl.LocalPlayer.CanMove; },
                 () => { WerewolfMaulButton.Timer = WerewolfMaulButton.MaxTimer;},
                 Werewolf.GetButtonSprite(),
-                CustomButton.ButtonPositions.lowerRowRight,
+                CustomButton.ButtonPositions.upperRowRight,
                 __instance,
                 KeyCode.Q
             );
@@ -620,9 +644,9 @@ namespace TownOfSushi
                         Glitch.sampledTarget = null;
                         MimicButton.EffectDuration = Glitch.MimicDuration;
                         SoundEffectsManager.Play("morphlingMorph");
-                    } else if (Glitch.currentTarget != null) 
+                    } else if (Glitch.CurrentTarget != null) 
                     {
-                        Glitch.sampledTarget = Glitch.currentTarget;
+                        Glitch.sampledTarget = Glitch.CurrentTarget;
                         MimicButton.Sprite = Glitch.GetMorphSprite();
                         MimicButton.EffectDuration = 1f;
                         SoundEffectsManager.Play("morphlingSample");
@@ -632,7 +656,7 @@ namespace TownOfSushi
                     }
                 },
                 () => { return Glitch.Player != null && Glitch.Player == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead; },
-                () => { return (Glitch.currentTarget || Glitch.sampledTarget) && PlayerControl.LocalPlayer.CanMove && !Helpers.MushroomSabotageActive(); },
+                () => { return (Glitch.CurrentTarget || Glitch.sampledTarget) && PlayerControl.LocalPlayer.CanMove && !Helpers.MushroomSabotageActive(); },
                 () => { 
                     MimicButton.Timer = MimicButton.MaxTimer;
                     MimicButton.Sprite = Glitch.GetSampleSprite();
@@ -663,24 +687,49 @@ namespace TownOfSushi
 
             // Medic Shield
             medicShieldButton = new CustomButton(
-                () => {
+                () => 
+                {
                     medicShieldButton.Timer = 0f;
 
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, Medic.setShieldAfterMeeting ? (byte)CustomRPC.SetFutureShielded : (byte)CustomRPC.MedicSetShielded, Hazel.SendOption.Reliable, -1);
-                    writer.Write(Medic.currentTarget.PlayerId);
+                    writer.Write(Medic.CurrentTarget.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                     if (Medic.setShieldAfterMeeting)
-                        RPCProcedure.SetFutureShielded(Medic.currentTarget.PlayerId);
+                        RPCProcedure.SetFutureShielded(Medic.CurrentTarget.PlayerId);
                     else
-                        RPCProcedure.MedicSetShielded(Medic.currentTarget.PlayerId);
+                        RPCProcedure.MedicSetShielded(Medic.CurrentTarget.PlayerId);
                     Medic.meetingAfterShielding = false;
 
                     SoundEffectsManager.Play("medicShield");
                     },
-                () => { return Medic.medic != null && Medic.medic == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead; },
-                () => { return !Medic.usedShield && Medic.currentTarget && PlayerControl.LocalPlayer.CanMove; },
+                () => { return Medic.Player != null && Medic.Player == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead; },
+                () => { return !Medic.usedShield && Medic.CurrentTarget && PlayerControl.LocalPlayer.CanMove; },
                 () => {},
                 Medic.GetButtonSprite(),
+                CustomButton.ButtonPositions.lowerRowRight,
+                __instance,
+                KeyCode.F
+            );
+
+            // Romantic Romance
+            RomanticSetTargetButton = new CustomButton
+            (
+                () => 
+                {
+                    RomanticSetTargetButton.Timer = 0f;
+
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId,(byte)CustomRPC.RomanticSetBeloved, Hazel.SendOption.Reliable, -1);
+                    writer.Write(Romantic.CurrentTarget.PlayerId);
+                    AmongUsClient.Instance.FinishRpcImmediately(writer);
+                    
+                    RPCProcedure.RomanticSetBeloved(Romantic.CurrentTarget.PlayerId);
+
+                    SoundEffectsManager.Play("medicShield");
+                    },
+                () => { return Romantic.Player != null && !Romantic.HasLover && Romantic.Player == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead; },
+                () => { return !Romantic.HasLover && Romantic.CurrentTarget && PlayerControl.LocalPlayer.CanMove; },
+                () => {},
+                Romantic.GetButtonSprite(),
                 CustomButton.ButtonPositions.lowerRowRight,
                 __instance,
                 KeyCode.F
@@ -691,13 +740,13 @@ namespace TownOfSushi
             shifterShiftButton = new CustomButton(
                 () => {
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetFutureShifted, Hazel.SendOption.Reliable, -1);
-                    writer.Write(Shifter.currentTarget.PlayerId);
+                    writer.Write(Shifter.CurrentTarget.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
-                    RPCProcedure.SetFutureShifted(Shifter.currentTarget.PlayerId);
+                    RPCProcedure.SetFutureShifted(Shifter.CurrentTarget.PlayerId);
                     SoundEffectsManager.Play("shifterShift");
                 },
                 () => { return Shifter.shifter != null && Shifter.shifter == PlayerControl.LocalPlayer && Shifter.futureShift == null && !PlayerControl.LocalPlayer.Data.IsDead; },
-                () => { return Shifter.currentTarget && Shifter.futureShift == null && PlayerControl.LocalPlayer.CanMove; },
+                () => { return Shifter.CurrentTarget && Shifter.futureShift == null && PlayerControl.LocalPlayer.CanMove; },
                 () => { },
                 Shifter.GetButtonSprite(),
                 new Vector3(0, 1f, 0),
@@ -718,8 +767,8 @@ namespace TownOfSushi
                         Morphling.sampledTarget = null;
                         morphlingButton.EffectDuration = Morphling.duration;
                         SoundEffectsManager.Play("morphlingMorph");
-                    } else if (Morphling.currentTarget != null) {
-                        Morphling.sampledTarget = Morphling.currentTarget;
+                    } else if (Morphling.CurrentTarget != null) {
+                        Morphling.sampledTarget = Morphling.CurrentTarget;
                         morphlingButton.Sprite = Morphling.GetMorphSprite();
                         morphlingButton.EffectDuration = 1f;
                         SoundEffectsManager.Play("morphlingSample");
@@ -729,7 +778,7 @@ namespace TownOfSushi
                     }
                 },
                 () => { return Morphling.morphling != null && Morphling.morphling == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead; },
-                () => { return (Morphling.currentTarget || Morphling.sampledTarget) && PlayerControl.LocalPlayer.CanMove && !Helpers.MushroomSabotageActive(); },
+                () => { return (Morphling.CurrentTarget || Morphling.sampledTarget) && PlayerControl.LocalPlayer.CanMove && !Helpers.MushroomSabotageActive(); },
                 () => { 
                     morphlingButton.Timer = morphlingButton.MaxTimer;
                     morphlingButton.Sprite = Morphling.GetSampleSprite();
@@ -759,7 +808,7 @@ namespace TownOfSushi
             MysticButton = new CustomButton(
             () =>
             {
-                if (Mystic.currentTarget.CheckVeteranAlertKill()) return;
+                if (Mystic.CurrentTarget.CheckVeteranAlertKill()) return;
 
                 MysticButton.Timer = MysticButton.MaxTimer;
                 SoundEffectsManager.Play("knockKnock");
@@ -771,7 +820,7 @@ namespace TownOfSushi
            () => 
                 {
                     if (MysticChargesText != null) MysticChargesText.text = $"{Mystic.Charges}";
-                    return Mystic.Player != null && Mystic.Player == PlayerControl.LocalPlayer && Mystic.Charges > 0 && !Mystic.Investigated && Mystic.currentTarget != null && PlayerControl.LocalPlayer.CanMove;
+                    return Mystic.Player != null && Mystic.Player == PlayerControl.LocalPlayer && Mystic.Charges > 0 && !Mystic.Investigated && Mystic.CurrentTarget != null && PlayerControl.LocalPlayer.CanMove;
                 },
             () => { MysticButton.Timer = MysticButton.MaxTimer; },
             Mystic.GetButtonSprite(),
@@ -783,13 +832,13 @@ namespace TownOfSushi
             () =>
             {
                 MysticButton.Timer = MysticButton.MaxTimer;
-                var msg = Mystic.GetInfo(Mystic.currentTarget);
+                var msg = Mystic.GetInfo(Mystic.CurrentTarget);
                 FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, $"{msg}");
 
                 // Ghost Info
                 var writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId,
                     (byte)CustomRPC.ShareGhostInfo, SendOption.Reliable);
-                writer.Write(Mystic.currentTarget.PlayerId);
+                writer.Write(Mystic.CurrentTarget.PlayerId);
                 writer.Write((byte)GhostInfoTypes.MysticInfo);
                 writer.Write(msg);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -963,15 +1012,15 @@ namespace TownOfSushi
             trackerTrackPlayerButton = new CustomButton(
                 () => {
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.TrackerUsedTracker, Hazel.SendOption.Reliable, -1);
-                    writer.Write(Tracker.currentTarget.PlayerId);
+                    writer.Write(Tracker.CurrentTarget.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
-                    RPCProcedure.trackerUsedTracker(Tracker.currentTarget.PlayerId);
+                    RPCProcedure.trackerUsedTracker(Tracker.CurrentTarget.PlayerId);
                     SoundEffectsManager.Play("trackerTrackPlayer");
                 },
                 () => { return Tracker.tracker != null && Tracker.tracker == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead; },
-                () => { return PlayerControl.LocalPlayer.CanMove && Tracker.currentTarget != null && !Tracker.usedTracker; },
+                () => { return PlayerControl.LocalPlayer.CanMove && Tracker.CurrentTarget != null && !Tracker.usedTracker; },
                 () => { if (Tracker.resetTargetAfterMeeting) Tracker.ResetTracked();
-                        else if (Tracker.currentTarget != null && Tracker.currentTarget.Data.IsDead) Tracker.currentTarget = null; },
+                        else if (Tracker.CurrentTarget != null && Tracker.CurrentTarget.Data.IsDead) Tracker.CurrentTarget = null; },
                 Tracker.GetButtonSprite(),
                 CustomButton.ButtonPositions.lowerRowRight,
                 __instance,
@@ -1001,20 +1050,20 @@ namespace TownOfSushi
     
             vampireKillButton = new CustomButton(
                 () => {
-                    MurderAttemptResult murder = Helpers.CheckMuderAttempt(Vampire.vampire, Vampire.currentTarget);
+                    MurderAttemptResult murder = Helpers.CheckMuderAttempt(Vampire.vampire, Vampire.CurrentTarget);
                     if (murder == MurderAttemptResult.PerformKill) {
                         if (Vampire.targetNearGarlic) {
                             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.UncheckedMurderPlayer, Hazel.SendOption.Reliable, -1);
                             writer.Write(Vampire.vampire.PlayerId);
-                            writer.Write(Vampire.currentTarget.PlayerId);
+                            writer.Write(Vampire.CurrentTarget.PlayerId);
                             writer.Write(Byte.MaxValue);
                             AmongUsClient.Instance.FinishRpcImmediately(writer);
-                            RPCProcedure.UncheckedMurderPlayer(Vampire.vampire.PlayerId, Vampire.currentTarget.PlayerId, Byte.MaxValue);
+                            RPCProcedure.UncheckedMurderPlayer(Vampire.vampire.PlayerId, Vampire.CurrentTarget.PlayerId, Byte.MaxValue);
 
                             vampireKillButton.HasEffect = false; // Block effect on this click
                             vampireKillButton.Timer = vampireKillButton.MaxTimer;
                         } else {
-                            Vampire.bitten = Vampire.currentTarget;
+                            Vampire.bitten = Vampire.CurrentTarget;
                             // Notify players about bitten
                             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.VampireSetBitten, Hazel.SendOption.Reliable, -1);
                             writer.Write(Vampire.bitten.PlayerId);
@@ -1068,7 +1117,7 @@ namespace TownOfSushi
                         vampireKillButton.actionButton.graphic.sprite = Vampire.GetButtonSprite();
                         vampireKillButton.showButtonText = false;
                     }
-                    return Vampire.currentTarget != null && PlayerControl.LocalPlayer.CanMove && (!Vampire.targetNearGarlic || Vampire.canKillNearGarlics);
+                    return Vampire.CurrentTarget != null && PlayerControl.LocalPlayer.CanMove && (!Vampire.targetNearGarlic || Vampire.canKillNearGarlics);
                 },
                 () => {
                     vampireKillButton.Timer = vampireKillButton.MaxTimer;
@@ -1245,13 +1294,13 @@ namespace TownOfSushi
             jackalSidekickButton = new CustomButton(
                 () => {
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.JackalCreatesSidekick, Hazel.SendOption.Reliable, -1);
-                    writer.Write(Jackal.currentTarget.PlayerId);
+                    writer.Write(Jackal.CurrentTarget.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
-                    RPCProcedure.JackalCreatesSidekick(Jackal.currentTarget.PlayerId);
+                    RPCProcedure.JackalCreatesSidekick(Jackal.CurrentTarget.PlayerId);
                     SoundEffectsManager.Play("jackalSidekick");
                 },
                 () => { return Jackal.canCreateSidekick && Jackal.jackal != null && Jackal.jackal == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead; },
-                () => { return Jackal.canCreateSidekick && Jackal.currentTarget != null && PlayerControl.LocalPlayer.CanMove; },
+                () => { return Jackal.canCreateSidekick && Jackal.CurrentTarget != null && PlayerControl.LocalPlayer.CanMove; },
                 () => { jackalSidekickButton.Timer = jackalSidekickButton.MaxTimer;},
                 Jackal.getSidekickButtonSprite(),
                 CustomButton.ButtonPositions.lowerRowCenter,
@@ -1262,13 +1311,13 @@ namespace TownOfSushi
             // Jackal Kill
             jackalKillButton = new CustomButton(
                 () => {
-                    if (Helpers.CheckMurderAttemptAndKill(Jackal.jackal, Jackal.currentTarget) == MurderAttemptResult.SuppressKill) return;
+                    if (Helpers.CheckMurderAttemptAndKill(Jackal.jackal, Jackal.CurrentTarget) == MurderAttemptResult.SuppressKill) return;
 
                     jackalKillButton.Timer = jackalKillButton.MaxTimer; 
-                    Jackal.currentTarget = null;
+                    Jackal.CurrentTarget = null;
                 },
                 () => { return Jackal.jackal != null && Jackal.jackal == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead; },
-                () => { return Jackal.currentTarget && PlayerControl.LocalPlayer.CanMove; },
+                () => { return Jackal.CurrentTarget && PlayerControl.LocalPlayer.CanMove; },
                 () => { jackalKillButton.Timer = jackalKillButton.MaxTimer;},
                 __instance.KillButton.graphic.sprite,
                 CustomButton.ButtonPositions.upperRowRight,
@@ -1280,13 +1329,13 @@ namespace TownOfSushi
             sidekickKillButton = new CustomButton(
                 () => 
                 {
-                    if (Sidekick.currentTarget.CheckVeteranAlertKill()) return;
-                    if (Helpers.CheckMurderAttemptAndKill(Sidekick.sidekick, Sidekick.currentTarget) == MurderAttemptResult.SuppressKill) return;
+                    if (Sidekick.CurrentTarget.CheckVeteranAlertKill()) return;
+                    if (Helpers.CheckMurderAttemptAndKill(Sidekick.sidekick, Sidekick.CurrentTarget) == MurderAttemptResult.SuppressKill) return;
                     sidekickKillButton.Timer = sidekickKillButton.MaxTimer; 
-                    Sidekick.currentTarget = null;
+                    Sidekick.CurrentTarget = null;
                 },
                 () => { return Sidekick.canKill && Sidekick.sidekick != null && Sidekick.sidekick == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead; },
-                () => { return Sidekick.currentTarget && PlayerControl.LocalPlayer.CanMove; },
+                () => { return Sidekick.CurrentTarget && PlayerControl.LocalPlayer.CanMove; },
                 () => { sidekickKillButton.Timer = sidekickKillButton.MaxTimer;},
                 __instance.KillButton.graphic.sprite,
                 CustomButton.ButtonPositions.upperRowRight,
@@ -1320,18 +1369,18 @@ namespace TownOfSushi
             // Eraser erase button
             eraserButton = new CustomButton(
                 () => {
-                    if (Eraser.currentTarget.CheckVeteranAlertKill()) return;
+                    if (Eraser.CurrentTarget.CheckVeteranAlertKill()) return;
                     eraserButton.MaxTimer += 10;
                     eraserButton.Timer = eraserButton.MaxTimer;
 
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetFutureErased, Hazel.SendOption.Reliable, -1);
-                    writer.Write(Eraser.currentTarget.PlayerId);
+                    writer.Write(Eraser.CurrentTarget.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
-                    RPCProcedure.SetFutureErased(Eraser.currentTarget.PlayerId);
+                    RPCProcedure.SetFutureErased(Eraser.CurrentTarget.PlayerId);
                     SoundEffectsManager.Play("eraserErase");
                 },
                 () => { return Eraser.eraser != null && Eraser.eraser == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead; },
-                () => { return PlayerControl.LocalPlayer.CanMove && Eraser.currentTarget != null; },
+                () => { return PlayerControl.LocalPlayer.CanMove && Eraser.CurrentTarget != null; },
                 () => { eraserButton.Timer = eraserButton.MaxTimer;},
                 Eraser.GetButtonSprite(),
                 CustomButton.ButtonPositions.upperRowLeft,
@@ -1433,9 +1482,9 @@ namespace TownOfSushi
                 () => {
                     if (Warlock.curseVictim == null) 
                     {
-                        if (Warlock.currentTarget.CheckVeteranAlertKill()) return;
+                        if (Warlock.CurrentTarget.CheckVeteranAlertKill()) return;
                         // Apply Curse
-                        Warlock.curseVictim = Warlock.currentTarget;
+                        Warlock.curseVictim = Warlock.CurrentTarget;
                         warlockCurseButton.Sprite = Warlock.getCurseKillButtonSprite();
                         warlockCurseButton.Timer = 1f;
                         SoundEffectsManager.Play("warlockCurse");
@@ -1477,7 +1526,7 @@ namespace TownOfSushi
                     }
                 },
                 () => { return Warlock.warlock != null && Warlock.warlock == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead; },
-                () => { return ((Warlock.curseVictim == null && Warlock.currentTarget != null) || (Warlock.curseVictim != null && Warlock.curseVictimTarget != null)) && PlayerControl.LocalPlayer.CanMove; },
+                () => { return ((Warlock.curseVictim == null && Warlock.CurrentTarget != null) || (Warlock.curseVictim != null && Warlock.curseVictimTarget != null)) && PlayerControl.LocalPlayer.CanMove; },
                 () => { 
                     warlockCurseButton.Timer = warlockCurseButton.MaxTimer;
                     warlockCurseButton.Sprite = Warlock.getCurseButtonSprite();
@@ -1615,10 +1664,10 @@ namespace TownOfSushi
                         AmongUsClient.Instance.FinishRpcImmediately(winWriter);
                         RPCProcedure.ArsonistWin();
                         arsonistButton.HasEffect = false;
-                    } else if (Arsonist.currentTarget != null) 
+                    } else if (Arsonist.CurrentTarget != null) 
                     {
-                        if (Arsonist.currentTarget.CheckVeteranAlertKill()) return;
-                        Arsonist.douseTarget = Arsonist.currentTarget;
+                        if (Arsonist.CurrentTarget.CheckVeteranAlertKill()) return;
+                        Arsonist.douseTarget = Arsonist.CurrentTarget;
                         arsonistButton.HasEffect = true;
                         SoundEffectsManager.Play("arsonistDouse");
                     }
@@ -1628,13 +1677,13 @@ namespace TownOfSushi
                     bool dousedEveryoneAlive = Arsonist.dousedEveryoneAlive();
                     if (dousedEveryoneAlive) arsonistButton.actionButton.graphic.sprite = Arsonist.getIgniteSprite();
                     
-                    if (arsonistButton.isEffectActive && Arsonist.douseTarget != Arsonist.currentTarget) {
+                    if (arsonistButton.isEffectActive && Arsonist.douseTarget != Arsonist.CurrentTarget) {
                         Arsonist.douseTarget = null;
                         arsonistButton.Timer = 0f;
                         arsonistButton.isEffectActive = false;
                     }
 
-                    return PlayerControl.LocalPlayer.CanMove && (dousedEveryoneAlive || Arsonist.currentTarget != null);
+                    return PlayerControl.LocalPlayer.CanMove && (dousedEveryoneAlive || Arsonist.CurrentTarget != null);
                 },
                 () => {
                     arsonistButton.Timer = arsonistButton.MaxTimer;
@@ -1827,21 +1876,21 @@ namespace TownOfSushi
             // Witch Spell button
             witchSpellButton = new CustomButton(
                 () => {
-                    if (Witch.currentTarget != null) 
+                    if (Witch.CurrentTarget != null) 
                     {
-                        if (Witch.currentTarget.CheckVeteranAlertKill()) return;
-                        Witch.spellCastingTarget = Witch.currentTarget;
+                        if (Witch.CurrentTarget.CheckVeteranAlertKill()) return;
+                        Witch.spellCastingTarget = Witch.CurrentTarget;
                         SoundEffectsManager.Play("witchSpell");
                     }
                 },
                 () => { return Witch.witch != null && Witch.witch == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead; },
                 () => {
-                    if (witchSpellButton.isEffectActive && Witch.spellCastingTarget != Witch.currentTarget) {
+                    if (witchSpellButton.isEffectActive && Witch.spellCastingTarget != Witch.CurrentTarget) {
                         Witch.spellCastingTarget = null;
                         witchSpellButton.Timer = 0f;
                         witchSpellButton.isEffectActive = false;
                     }
-                    return PlayerControl.LocalPlayer.CanMove && Witch.currentTarget != null;
+                    return PlayerControl.LocalPlayer.CanMove && Witch.CurrentTarget != null;
                 },
                 () => {
                     witchSpellButton.Timer = witchSpellButton.MaxTimer;
@@ -1859,9 +1908,9 @@ namespace TownOfSushi
                     MurderAttemptResult attempt = Helpers.CheckMuderAttempt(Witch.witch, Witch.spellCastingTarget);
                     if (attempt == MurderAttemptResult.PerformKill) {
                         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetFutureSpelled, Hazel.SendOption.Reliable, -1);
-                        writer.Write(Witch.currentTarget.PlayerId);
+                        writer.Write(Witch.CurrentTarget.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
-                        RPCProcedure.SetFutureSpelled(Witch.currentTarget.PlayerId);
+                        RPCProcedure.SetFutureSpelled(Witch.CurrentTarget.PlayerId);
                     }
                     if (attempt == MurderAttemptResult.BlankKill || attempt == MurderAttemptResult.PerformKill) {
                         Witch.currentCooldownAddition += Witch.cooldownAddition;
@@ -1883,10 +1932,12 @@ namespace TownOfSushi
             ninjaButton = new CustomButton(
                 () => {
                     MessageWriter writer;
-                    if (Ninja.ninjaMarked != null) {
+                    if (Ninja.ninjaMarked != null) 
+                    {
                         // Murder attempt with teleport
                         MurderAttemptResult attempt = Helpers.CheckMuderAttempt(Ninja.ninja, Ninja.ninjaMarked);
-                        if (attempt == MurderAttemptResult.PerformKill) {
+                        if (attempt == MurderAttemptResult.PerformKill) 
+                        {
                             // Create first trace before killing
                             var pos = PlayerControl.LocalPlayer.transform.position;
                             byte[] buff = new byte[sizeof(float) * 2];
@@ -1905,19 +1956,17 @@ namespace TownOfSushi
                             RPCProcedure.SetInvisible(Ninja.ninja.PlayerId, byte.MinValue);
 
                             // Perform Kill
-                            if (Ninja.ninjaMarked.CheckVeteranAlertKill())
-                            {
 
-                                MessageWriter writer2 = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.UncheckedMurderPlayer, Hazel.SendOption.Reliable, -1);
-                                writer2.Write(PlayerControl.LocalPlayer.PlayerId);
-                                writer2.Write(Ninja.ninjaMarked.PlayerId);
-                                writer2.Write(byte.MaxValue);
-                                AmongUsClient.Instance.FinishRpcImmediately(writer2);
-                                if (SubmergedCompatibility.IsSubmerged) {
-                                        SubmergedCompatibility.ChangeFloor(Ninja.ninjaMarked.transform.localPosition.y > -7);
-                                }
-                                RPCProcedure.UncheckedMurderPlayer(PlayerControl.LocalPlayer.PlayerId, Ninja.ninjaMarked.PlayerId, byte.MaxValue);
+                            MessageWriter writer2 = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.UncheckedMurderPlayer, Hazel.SendOption.Reliable, -1);
+                            writer2.Write(PlayerControl.LocalPlayer.PlayerId);
+                            writer2.Write(Ninja.ninjaMarked.PlayerId);
+                            writer2.Write(byte.MaxValue);
+                            AmongUsClient.Instance.FinishRpcImmediately(writer2);
+                            if (SubmergedCompatibility.IsSubmerged) 
+                            {
+                                SubmergedCompatibility.ChangeFloor(Ninja.ninjaMarked.transform.localPosition.y > -7);
                             }
+                                RPCProcedure.UncheckedMurderPlayer(PlayerControl.LocalPlayer.PlayerId, Ninja.ninjaMarked.PlayerId, byte.MaxValue);
                             // Create Second trace after killing
                             pos = Ninja.ninjaMarked.transform.position;
                             buff = new byte[sizeof(float) * 2];
@@ -1930,19 +1979,21 @@ namespace TownOfSushi
                             RPCProcedure.PlaceNinjaTrace(buff);
                         }
 
-                        if (attempt == MurderAttemptResult.BlankKill || attempt == MurderAttemptResult.PerformKill) {
+                        if (attempt == MurderAttemptResult.BlankKill || attempt == MurderAttemptResult.PerformKill) 
+                        {
                             ninjaButton.Timer = ninjaButton.MaxTimer;
                             Ninja.ninja.killTimer = GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown;
-                        } else if (attempt == MurderAttemptResult.SuppressKill) {
+                        } 
+                        else if (attempt == MurderAttemptResult.SuppressKill) 
+                        {
                             ninjaButton.Timer = 0f;
                         }
                         Ninja.ninjaMarked = null;
                         return;
                     } 
-                    if (Ninja.currentTarget != null) 
+                    if (Ninja.CurrentTarget != null) 
                     {
-                        if (Ninja.currentTarget.CheckVeteranAlertKill()) return;
-                        Ninja.ninjaMarked = Ninja.currentTarget;
+                        Ninja.ninjaMarked = Ninja.CurrentTarget;
                         ninjaButton.Timer = 5f;
                         SoundEffectsManager.Play("warlockCurse");
 
@@ -1957,7 +2008,7 @@ namespace TownOfSushi
                 () => { return Ninja.ninja != null && Ninja.ninja == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead; },
                 () => {  // CouldUse
                     ninjaButton.Sprite = Ninja.ninjaMarked != null ? Ninja.getKillButtonSprite() : Ninja.getMarkButtonSprite(); 
-                    return (Ninja.currentTarget != null || Ninja.ninjaMarked != null && !TransportationToolPatches.isUsingTransportation(Ninja.ninjaMarked)) && PlayerControl.LocalPlayer.CanMove;
+                    return (Ninja.CurrentTarget != null || Ninja.ninjaMarked != null && !TransportationToolPatches.isUsingTransportation(Ninja.ninjaMarked)) && PlayerControl.LocalPlayer.CanMove;
                 },
                 () => {  // on meeting ends
                     ninjaButton.Timer = ninjaButton.MaxTimer;
@@ -1983,7 +2034,7 @@ namespace TownOfSushi
                    AmongUsClient.Instance.FinishRpcImmediately(writer);
                    mayorMeetingButton.Timer = 1f;
                },
-               () => { return Mayor.mayor != null && Mayor.mayor == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead && Mayor.meetingButton; },
+               () => { return Mayor.Player != null && Mayor.Player == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead && Mayor.meetingButton; },
                () => {
                    mayorMeetingButton.actionButton.OverrideText("Emergency ("+ Mayor.remoteMeetingsLeft + ")");
                    bool sabotageActive = false;
@@ -2038,7 +2089,7 @@ namespace TownOfSushi
             thiefKillButton = new CustomButton(
                 () => {
                     PlayerControl thief = Thief.thief;
-                    PlayerControl target = Thief.currentTarget;
+                    PlayerControl target = Thief.CurrentTarget;
                     var result = Helpers.CheckMuderAttempt(thief, target);
                     if (result == MurderAttemptResult.BlankKill) {
                         thiefKillButton.Timer = thiefKillButton.MaxTimer;
@@ -2074,7 +2125,7 @@ namespace TownOfSushi
                     }
                 },
                () => { return Thief.thief != null && PlayerControl.LocalPlayer == Thief.thief && !PlayerControl.LocalPlayer.Data.IsDead; },
-               () => { return Thief.currentTarget != null && PlayerControl.LocalPlayer.CanMove; },
+               () => { return Thief.CurrentTarget != null && PlayerControl.LocalPlayer.CanMove; },
                () => { thiefKillButton.Timer = thiefKillButton.MaxTimer; },
                __instance.KillButton.graphic.sprite,
                CustomButton.ButtonPositions.upperRowRight,

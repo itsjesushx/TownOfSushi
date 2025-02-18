@@ -1,3 +1,4 @@
+using Il2CppSystem.Runtime.ExceptionServices;
 using System;
 using System.Collections.Generic;
 using TMPro;
@@ -7,8 +8,7 @@ using static TownOfSushi.TownOfSushi;
 
 namespace TownOfSushi.Objects 
 {
-    public class CustomButton 
-    {
+    public class CustomButton {
         public static List<CustomButton> buttons = new List<CustomButton>();
         public ActionButton actionButton;
         public GameObject actionButtonGameObject;
@@ -37,8 +37,7 @@ namespace TownOfSushi.Objects
         public bool isHacked = false;
         private static readonly int Desat = Shader.PropertyToID("_Desat");
 
-        public static class ButtonPositions 
-        {
+        public static class ButtonPositions {
             public static readonly Vector3 lowerRowRight = new Vector3(-2f, -0.06f, 0);  // Not usable for imps beacuse of new button positions!
             public static readonly Vector3 lowerRowCenter = new Vector3(-3f, -0.06f, 0);
             public static readonly Vector3 lowerRowLeft = new Vector3(-4f, -0.06f, 0);
@@ -74,7 +73,7 @@ namespace TownOfSushi.Objects
             PassiveButton button = actionButton.GetComponent<PassiveButton>();
             this.showButtonText = (actionButtonRenderer.sprite == Sprite || buttonText != "");
             button.OnClick = new Button.ButtonClickedEvent();
-            button.OnClick.AddListener((UnityEngine.Events.UnityAction)OnClickEvent);
+            button.OnClick.AddListener((UnityEngine.Events.UnityAction)onClickEvent);
 
             SetActive(false);
         }
@@ -82,7 +81,7 @@ namespace TownOfSushi.Objects
         public CustomButton(Action OnClick, Func<bool> HasButton, Func<bool> CouldUse, Action OnMeetingEnds, Sprite Sprite, Vector3 PositionOffset, HudManager hudManager, KeyCode? hotkey, bool mirror = false, string buttonText = "")
         : this(OnClick, HasButton, CouldUse, OnMeetingEnds, Sprite, PositionOffset, hudManager, hotkey, false, 0f, () => {}, mirror, buttonText) { }
 
-        public void OnClickEvent()
+        public void onClickEvent()
         {
             if (this.Timer < 0f && HasButton() && CouldUse())
             {
@@ -92,11 +91,10 @@ namespace TownOfSushi.Objects
                 // Glitch skip onClickEvent if Hacked
                 if (Glitch.HackedKnows.ContainsKey(PlayerControl.LocalPlayer.PlayerId) && Glitch.HackedKnows[PlayerControl.LocalPlayer.PlayerId] > 0f) return;
 
-                if (this.HasEffect && !this.isEffectActive) 
-                {
+                if (this.HasEffect && !this.isEffectActive) {
                     this.GlitchTimer = this.EffectDuration;
                     this.Timer = this.EffectDuration;
-                    actionButton.cooldownTimerText.color = new Color(0f, 0.8f, 0f);
+                    actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
                     this.isEffectActive = true;
                 }
             }
@@ -119,8 +117,7 @@ namespace TownOfSushi.Objects
             }
         }
 
-        public static void MeetingEndedUpdate() 
-        {
+        public static void MeetingEndedUpdate() {
             buttons.RemoveAll(item => item.actionButton == null);
             for (int i = 0; i < buttons.Count; i++)
             {
@@ -176,15 +173,14 @@ namespace TownOfSushi.Objects
             }
             SetActive(hudManager.UseButton.isActiveAndEnabled || hudManager.PetButton.isActiveAndEnabled);
 
-            if (GlitchTimer >= 0) { // This had to be reordered, so that the Hacks do not stop the underlying timers from running
+            if (GlitchTimer >= 0) { // This had to be reordered, so that the handcuffs do not stop the underlying timers from running
                 if (HasEffect && isEffectActive)
                     GlitchTimer -= Time.deltaTime;
                 else if (!localPlayer.inVent && moveable)
                     GlitchTimer -= Time.deltaTime;
             }
 
-            if (GlitchTimer <= 0 && HasEffect && isEffectActive) 
-            {
+            if (GlitchTimer <= 0 && HasEffect && isEffectActive) {
                 isEffectActive = false;
                 actionButton.cooldownTimerText.color = Palette.EnabledColor;
                 OnEffectEnds();
@@ -197,13 +193,11 @@ namespace TownOfSushi.Objects
             }
 
             actionButtonRenderer.sprite = Sprite;
-            if (showButtonText && buttonText != "")
-            {
+            if (showButtonText && buttonText != ""){
                 actionButton.OverrideText(buttonText);
             }
             actionButtonLabelText.enabled = showButtonText; // Only show the text if it's a kill button
-            if (hudManager.UseButton != null) 
-            {
+            if (hudManager.UseButton != null) {
                 Vector3 pos = hudManager.UseButton.transform.localPosition;
                 if (mirror) {
                     float aspect = Camera.main.aspect;
@@ -213,8 +207,7 @@ namespace TownOfSushi.Objects
                 }
                 actionButton.transform.localPosition = pos + PositionOffset;
             }
-            if (CouldUse()) 
-            {
+            if (CouldUse()) {
                 actionButtonRenderer.color = actionButtonLabelText.color = Palette.EnabledColor;
                 actionButtonMat.SetFloat(Desat, 0f);
             } else {
@@ -238,14 +231,17 @@ namespace TownOfSushi.Objects
             actionButton.SetCoolDown(Timer, (HasEffect && isEffectActive) ? EffectDuration : MaxTimer);
 
             // Trigger OnClickEvent if the hotkey is being pressed down
-            if (hotkey.HasValue && Input.GetKeyDown(hotkey.Value)) OnClickEvent();
+            if (hotkey.HasValue && Input.GetKeyDown(hotkey.Value)) onClickEvent();
 
-            // Glitch disable the button and display Hacks instead...
-            if (Glitch.HackedPlayers.Contains(localPlayer.PlayerId)) {
-                OnClick = () => {
+            // Glitch disable the button and display Handcuffs instead...
+            if (Glitch.HackedPlayers.Contains(localPlayer.PlayerId)) 
+            {
+                OnClick = () =>
+                {
                     Glitch.SetHackedKnows();
                 };
-            } else // Reset.
+            } 
+            else // Reset.
             {
                 OnClick = InitialOnClick;
             }

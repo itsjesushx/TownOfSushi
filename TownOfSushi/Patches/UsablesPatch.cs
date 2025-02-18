@@ -87,7 +87,8 @@ namespace TownOfSushi.Patches {
     }
 
     [HarmonyPatch(typeof(VentButton), nameof(VentButton.DoClick))]
-    class VentButtonDoClickPatch {
+    class VentButtonDoClickPatch 
+    {
         static  bool Prefix(VentButton __instance) 
         {
             // Manually modifying the VentButton to use Vent.Use again in order to trigger the Vent.Use prefix patch
@@ -97,11 +98,14 @@ namespace TownOfSushi.Patches {
     }
 
     [HarmonyPatch(typeof(Vent), nameof(Vent.Use))]
-    public static class VentUsePatch {
-        public static bool Prefix(Vent __instance) {
+    public static class VentUsePatch 
+    {
+        public static bool Prefix(Vent __instance)
+        {
             if (GameOptionsManager.Instance.currentGameOptions.GameMode == GameModes.HideNSeek) return true;
             // Glitch Hack disables the vents
-            if (Glitch.HackedPlayers.Contains(PlayerControl.LocalPlayer.PlayerId)) {
+            if (Glitch.HackedPlayers.Contains(PlayerControl.LocalPlayer.PlayerId)) 
+            {
                 Glitch.SetHackedKnows();
                 return false;
             }
@@ -154,11 +158,14 @@ namespace TownOfSushi.Patches {
     }
 
     [HarmonyPatch(typeof(VentButton), nameof(VentButton.SetTarget))]
-    class VentButtonSetTargetPatch {
+    class VentButtonSetTargetPatch 
+    {
         static Sprite defaultVentSprite = null;
-        static void Postfix(VentButton __instance) {
+        static void Postfix(VentButton __instance) 
+        {
             // Trickster render special vent button
-            if (Trickster.trickster != null && Trickster.trickster == PlayerControl.LocalPlayer) {
+            if (Trickster.trickster != null && Trickster.trickster == PlayerControl.LocalPlayer) 
+            {
                 if (defaultVentSprite == null) defaultVentSprite = __instance.graphic.sprite;
                 bool isSpecialVent = __instance.currentTarget != null && __instance.currentTarget.gameObject != null && __instance.currentTarget.gameObject.name.StartsWith("JackInTheBoxVent_");
                 __instance.graphic.sprite = isSpecialVent ?  Trickster.getTricksterVentButtonSprite() : defaultVentSprite;
@@ -215,7 +222,8 @@ namespace TownOfSushi.Patches {
     }
 
     [HarmonyPatch(typeof(ReportButton), nameof(ReportButton.DoClick))]
-    class ReportButtonDoClickPatch {
+    class ReportButtonDoClickPatch 
+    {
         public static bool Prefix(ReportButton __instance) 
         {
             if (__instance.isActiveAndEnabled && Glitch.HackedPlayers.Contains(PlayerControl.LocalPlayer.PlayerId) && __instance.graphic.color == Palette.EnabledColor) Glitch.SetHackedKnows();
@@ -224,13 +232,15 @@ namespace TownOfSushi.Patches {
     }
 
     [HarmonyPatch(typeof(EmergencyMinigame), nameof(EmergencyMinigame.Update))]
-    class EmergencyMinigameUpdatePatch {
-        static void Postfix(EmergencyMinigame __instance) {
+    class EmergencyMinigameUpdatePatch 
+    {
+        static void Postfix(EmergencyMinigame __instance) 
+        {
             var CanCallEmergency = true;
             var statusText = "";
 
             // Deactivate emergency button for Swapper
-            if (Swapper.swapper != null && Swapper.swapper == PlayerControl.LocalPlayer && !Swapper.canCallEmergency) 
+            if (Swapper.Player != null && Swapper.Player == PlayerControl.LocalPlayer && !Swapper.canCallEmergency) 
             {
                 CanCallEmergency = false;
                 statusText = "The Swapper can't start an emergency meeting";
@@ -241,8 +251,13 @@ namespace TownOfSushi.Patches {
                 CanCallEmergency = false;
                 statusText = "The Jester can't start an emergency meeting";
             }
+            if (Glitch.HackedKnows.ContainsKey(PlayerControl.LocalPlayer.PlayerId))
+            {
+                CanCallEmergency = false;
+                statusText = "You are hacked. You can't start a meeting.";
+            }
             // Potentially deactivate emergency button for Lawyer/Prosecutor
-            if (Lawyer.lawyer != null && Lawyer.lawyer == PlayerControl.LocalPlayer && !Lawyer.canCallEmergency) 
+            if (Lawyer.Player != null && Lawyer.Player == PlayerControl.LocalPlayer && !Lawyer.canCallEmergency) 
             {
                 CanCallEmergency = false;
                 statusText = "The Lawyer can't start an emergency meeting";
@@ -270,7 +285,7 @@ namespace TownOfSushi.Patches {
             if (__instance.state == 1) {
                 int localRemaining = PlayerControl.LocalPlayer.RemainingEmergencies;
                 int teamRemaining = Mathf.Max(0, maxNumberOfMeetings - meetingsCount);
-                int remaining = Mathf.Min(localRemaining, (Mayor.mayor != null && Mayor.mayor == PlayerControl.LocalPlayer) ? 1 : teamRemaining);
+                int remaining = Mathf.Min(localRemaining, (Mayor.Player != null && Mayor.Player == PlayerControl.LocalPlayer) ? 1 : teamRemaining);
                 __instance.NumberText.text = $"{localRemaining.ToString()} and the ship has {teamRemaining.ToString()}";
                 __instance.ButtonActive = remaining > 0;
                 __instance.ClosedLid.gameObject.SetActive(!__instance.ButtonActive);
@@ -285,7 +300,7 @@ namespace TownOfSushi.Patches {
     public static class ConsoleCanUsePatch {
         public static bool Prefix(ref float __result, Console __instance, [HarmonyArgument(0)] NetworkedPlayerInfo pc, [HarmonyArgument(1)] out bool canUse, [HarmonyArgument(2)] out bool couldUse) {
             canUse = couldUse = false;
-            if (Swapper.swapper != null && Swapper.swapper == PlayerControl.LocalPlayer)
+            if (Swapper.Player != null && Swapper.Player == PlayerControl.LocalPlayer)
                 return !__instance.TaskTypes.Any(x => x == TaskTypes.FixLights || x == TaskTypes.FixComms);
             if (__instance.AllowImpostor) return true;
             if (!Helpers.HasFakeTasks(pc.Object)) return true;
@@ -298,7 +313,7 @@ namespace TownOfSushi.Patches {
     class CommsMinigameBeginPatch {
         static void Postfix(TuneRadioMinigame __instance) {
             // Block Swapper from fixing comms. Still looking for a better way to do this, but deleting the task doesn't seem like a viable option since then the camera, admin table, ... work while comms are out
-            if (Swapper.swapper != null && Swapper.swapper == PlayerControl.LocalPlayer) {
+            if (Swapper.Player != null && Swapper.Player == PlayerControl.LocalPlayer) {
                 __instance.Close();
             }
         }
@@ -308,7 +323,7 @@ namespace TownOfSushi.Patches {
     class LightsMinigameBeginPatch {
         static void Postfix(SwitchMinigame __instance) {
             // Block Swapper from fixing lights. One could also just delete the PlayerTask, but I wanted to do it the same way as with coms for now.
-            if (Swapper.swapper != null && Swapper.swapper == PlayerControl.LocalPlayer) {
+            if (Swapper.Player != null && Swapper.Player == PlayerControl.LocalPlayer) {
                 __instance.Close();
             }
         }

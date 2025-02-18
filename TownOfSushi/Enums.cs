@@ -34,6 +34,7 @@ namespace TownOfSushi
         SerialKiller,
         TimeMaster,
         Medic,
+        Romantic,
         Swapper,
         Mystic,
         Morphling,
@@ -46,6 +47,7 @@ namespace TownOfSushi
         Sidekick,
         Eraser,
         Spy,
+        VengefulRomantic,
         Trickster,
         Cleaner,
         Warlock,
@@ -138,8 +140,10 @@ namespace TownOfSushi
         SealVent,
         ArsonistWin,
         GuesserShoot,
+        RomanticSetBeloved,
         LawyerSetTarget,
-        LawyerPromotesToPursuer,
+        LawyerChangeRole,
+        RomanticChangeRole,
         SetBlanked,
         Bloody,
         SetFirstKill,
@@ -196,6 +200,7 @@ namespace TownOfSushi
         GlitchWin = 17,
         WerewolfWin = 18,
         SerialKillerWin = 19,
+        VRomanticWin = 20,
     }
 
     enum WinCondition 
@@ -209,10 +214,13 @@ namespace TownOfSushi
         ArsonistWin,
         VultureWin,
         AdditionalLawyerBonusWin,
+        AdditionalRomanticBonusWin,
         AdditionalAlivePursuerWin,
+        AdditionalBelovedBonusWin,
         ProsecutorWin,
         GlitchWin,
         WerewolfWin,
-        SerialKillerWin
+        SerialKillerWin,
+        VRomanticWin,
     }
 }

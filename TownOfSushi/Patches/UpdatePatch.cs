@@ -80,24 +80,24 @@ namespace TownOfSushi.Patches
 
             /*if (Jester.jester != null && Jester.jester == localPlayer)
                 setPlayerNameColor(Jester.jester, Jester.color);
-            else if (Mayor.mayor != null && Mayor.mayor == localPlayer)
-                setPlayerNameColor(Mayor.mayor, Mayor.color);
+            else if (Mayor.Player != null && Mayor.Player == localPlayer)
+                setPlayerNameColor(Mayor.Player, Mayor.color);
             else if (Engineer.engineer != null && Engineer.engineer == localPlayer)
                 setPlayerNameColor(Engineer.engineer, Engineer.color); else*/
            /*else if (Portalmaker.portalmaker != null && Portalmaker.portalmaker == localPlayer)
                 setPlayerNameColor(Portalmaker.portalmaker, Portalmaker.color);
-            else if (Lighter.lighter != null && Lighter.lighter == localPlayer)
-                setPlayerNameColor(Lighter.lighter, Lighter.color);
-            else if (Detective.detective != null && Detective.detective == localPlayer)
-                setPlayerNameColor(Detective.detective, Detective.color);
-            else if (TimeMaster.timeMaster != null && TimeMaster.timeMaster == localPlayer)
-                setPlayerNameColor(TimeMaster.timeMaster, TimeMaster.color);
-            else if (Medic.medic != null && Medic.medic == localPlayer)
-                setPlayerNameColor(Medic.medic, Medic.color);
+            else if (Lighter.Player != null && Lighter.Player == localPlayer)
+                setPlayerNameColor(Lighter.Player, Lighter.color);
+            else if (Detective.Player != null && Detective.Player == localPlayer)
+                setPlayerNameColor(Detective.Player, Detective.color);
+            else if (TimeMaster.Player != null && TimeMaster.Player == localPlayer)
+                setPlayerNameColor(TimeMaster.Player, TimeMaster.color);
+            else if (Medic.Player != null && Medic.Player == localPlayer)
+                setPlayerNameColor(Medic.Player, Medic.color);
             else if (Shifter.shifter != null && Shifter.shifter == localPlayer)
                 setPlayerNameColor(Shifter.shifter, Shifter.color);
-            else if (Swapper.swapper != null && Swapper.swapper == localPlayer)
-                setPlayerNameColor(Swapper.swapper, Swapper.color);
+            else if (Swapper.Player != null && Swapper.Player == localPlayer)
+                setPlayerNameColor(Swapper.Player, Swapper.color);
             else if (Mystic.Player != null && Mystic.Player == localPlayer)
                 setPlayerNameColor(Mystic.Player, Mystic.color);
             else if (Hacker.hacker != null && Hacker.hacker == localPlayer)
@@ -135,8 +135,8 @@ namespace TownOfSushi.Patches
                 setPlayerNameColor(Medium.medium, Medium.color);
             } else if (Trapper.trapper != null && Trapper.trapper == localPlayer) {
                 setPlayerNameColor(Trapper.trapper, Trapper.color);
-            } else if (Lawyer.lawyer != null && Lawyer.lawyer == localPlayer) {
-                setPlayerNameColor(Lawyer.lawyer, Lawyer.color);
+            } else if (Lawyer.Player != null && Lawyer.Player == localPlayer) {
+                setPlayerNameColor(Lawyer.Player, Lawyer.color);
             } else if (Pursuer.pursuer != null && Pursuer.pursuer == localPlayer) {
                 setPlayerNameColor(Pursuer.pursuer, Pursuer.color);
             }*/
@@ -190,20 +190,20 @@ namespace TownOfSushi.Patches
             }
 
             // Lovers
-            if (Lovers.lover1 != null && Lovers.lover2 != null && (Lovers.lover1 == PlayerControl.LocalPlayer || Lovers.lover2 == PlayerControl.LocalPlayer)) 
+            if (Lovers.Lover1 != null && Lovers.Lover2 != null && (Lovers.Lover1 == PlayerControl.LocalPlayer || Lovers.Lover2 == PlayerControl.LocalPlayer)) 
             {
                 string suffix = Helpers.ColorString(Lovers.color, " ♥");
-                Lovers.lover1.cosmetics.nameText.text += suffix;
-                Lovers.lover2.cosmetics.nameText.text += suffix;
+                Lovers.Lover1.cosmetics.nameText.text += suffix;
+                Lovers.Lover2.cosmetics.nameText.text += suffix;
 
                 if (MeetingHud.Instance != null)
                     foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
-                        if (Lovers.lover1.PlayerId == player.TargetPlayerId || Lovers.lover2.PlayerId == player.TargetPlayerId)
+                        if (Lovers.Lover1.PlayerId == player.TargetPlayerId || Lovers.Lover2.PlayerId == player.TargetPlayerId)
                             player.NameText.text += suffix;
             }
 
             // Lawyer or Prosecutor
-            if ((Lawyer.lawyer != null && Lawyer.target != null && Lawyer.lawyer == PlayerControl.LocalPlayer)) 
+            if ((Lawyer.Player != null && Lawyer.target != null && Lawyer.Player == PlayerControl.LocalPlayer)) 
             {
                 Color color = Lawyer.color;
                 PlayerControl target = Lawyer.target;
@@ -237,7 +237,7 @@ namespace TownOfSushi.Patches
             }
 
             // Add medic shield info:
-            if (MeetingHud.Instance != null && Medic.medic != null && Medic.shielded != null && Medic.ShieldVisible(Medic.shielded)) 
+            if (MeetingHud.Instance != null && Medic.Player != null && Medic.shielded != null && Medic.ShieldVisible(Medic.shielded)) 
             {
                 foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
                     if (player.TargetPlayerId == Medic.shielded.PlayerId) {
@@ -252,7 +252,7 @@ namespace TownOfSushi.Patches
         {
             if (Medic.shielded == null) return;
 
-            if (Medic.shielded.Data.IsDead || Medic.medic == null || Medic.medic.Data.IsDead) {
+            if (Medic.shielded.Data.IsDead || Medic.Player == null || Medic.Player.Data.IsDead) {
                 Medic.shielded = null;
             }
         }
@@ -281,7 +281,8 @@ namespace TownOfSushi.Patches
                 suffix = " <color=#FAD934FF>(" + Mini.ageOnMeetingStart + ")</color>";
 
             Mini.mini.cosmetics.nameText.text += suffix;
-            if (MeetingHud.Instance != null) {
+            if (MeetingHud.Instance != null) 
+            {
                 foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
                     if (player.NameText != null && Mini.mini.PlayerId == player.TargetPlayerId)
                         player.NameText.text += suffix;
@@ -326,12 +327,15 @@ namespace TownOfSushi.Patches
             if (GameOptionsManager.Instance.currentGameOptions.GameMode == GameModes.HideNSeek) return;
             if (Glitch.HackedKnows.ContainsKey(PlayerControl.LocalPlayer.PlayerId) && Glitch.HackedKnows[PlayerControl.LocalPlayer.PlayerId] > 0 || MeetingHud.Instance || Helpers.TwoPlayersAlive() && MapOptions.LimitAbilities) __instance.ImpostorVentButton.Hide();
             else if (PlayerControl.LocalPlayer.RoleCanUseVents() && !__instance.ImpostorVentButton.isActiveAndEnabled) __instance.ImpostorVentButton.Show();
-
         }
 
         static void UpdateUseButton(HudManager __instance) 
         {
             if (MeetingHud.Instance || Helpers.TwoPlayersAlive() && MapOptions.LimitAbilities) __instance.UseButton.Hide();
+        }
+        static void UpdatePetButton(HudManager __instance) 
+        {
+            if (Helpers.TwoPlayersAlive() && MapOptions.LimitAbilities) __instance.PetButton.Hide();
         }
 
         static void UpdateSabotageButton(HudManager __instance) 
@@ -371,6 +375,7 @@ namespace TownOfSushi.Patches
             // Meeting hide buttons if needed (used for the map usage, because closing the map would show buttons)
             UpdateSabotageButton(__instance);
             UpdateUseButton(__instance);
+            UpdatePetButton(__instance);
             UpdateMapButton(__instance);
             if (!MeetingHud.Instance) __instance.AbilityButton?.Update();
 
@@ -378,7 +383,8 @@ namespace TownOfSushi.Patches
             foreach (PlayerControl target in PlayerControl.AllPlayerControls) 
             {
                 var pet = target.GetPet();
-                if (pet != null) {
+                if (pet != null) 
+                {
                     pet.Visible = (PlayerControl.LocalPlayer.Data.IsDead && target.Data.IsDead || !target.Data.IsDead) && !target.inVent;
                 }
             }
