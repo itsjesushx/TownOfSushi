@@ -28,7 +28,7 @@ namespace TownOfSushi.Patches
             if (Medic.usedShield) Medic.meetingAfterShielding = true;  // Has to be after the setting of the shield
 
             // Shifter shift
-            if (Shifter.shifter != null && AmongUsClient.Instance.AmHost && Shifter.futureShift != null) 
+            if (Shifter.Player != null && AmongUsClient.Instance.AmHost && Shifter.futureShift != null) 
             { // We need to send the RPC from the host here, to make sure that the order of shifting and erasing is correct (for that reason the futureShifted and futureErased are being synced)
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShifterShift, Hazel.SendOption.Reliable, -1);
                 writer.Write(Shifter.futureShift.PlayerId);
@@ -38,7 +38,7 @@ namespace TownOfSushi.Patches
             Shifter.futureShift = null;
 
             // Eraser erase
-            if (Eraser.eraser != null && AmongUsClient.Instance.AmHost && Eraser.futureErased != null) 
+            if (Eraser.Player != null && AmongUsClient.Instance.AmHost && Eraser.futureErased != null) 
             {  // We need to send the RPC from the host here, to make sure that the order of shifting and erasing is correct (for that reason the futureShifted and futureErased are being synced)
                 foreach (PlayerControl target in Eraser.futureErased) 
                 {
@@ -100,14 +100,13 @@ namespace TownOfSushi.Patches
                         ReasonWriter.Write((byte)DeadPlayer.CustomDeathReason.WitchExile);
                         ReasonWriter.Write(Witch.witch.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(ReasonWriter);
-
                         GameHistory.OverrideDeathReasonAndKiller(target, DeadPlayer.CustomDeathReason.WitchExile, killer: Witch.witch);
                     }
                 }
             }
             Witch.futureSpelled = new List<PlayerControl>();
 
-            // SecurityGuard vents and cameras
+            // Vigilante vents and cameras
             var allCameras = MapUtilities.CachedShipStatus.AllCameras.ToList();
             MapOptions.camerasToAdd.ForEach(camera => 
             {
@@ -121,17 +120,17 @@ namespace TownOfSushi.Patches
             foreach (Vent vent in MapOptions.ventsToSeal) {
                 PowerTools.SpriteAnim animator = vent.GetComponent<PowerTools.SpriteAnim>();
                 vent.EnterVentAnim = vent.ExitVentAnim = null;
-                Sprite newSprite = animator == null ? SecurityGuard.getStaticVentSealedSprite() : SecurityGuard.getAnimatedVentSealedSprite();
+                Sprite newSprite = animator == null ? Vigilante.getStaticVentSealedSprite() : Vigilante.getAnimatedVentSealedSprite();
                 SpriteRenderer rend = vent.myRend;
                 if (Helpers.IsFungle()) {
-                    newSprite = SecurityGuard.getFungleVentSealedSprite();
+                    newSprite = Vigilante.getFungleVentSealedSprite();
                     rend = vent.transform.GetChild(3).GetComponent<SpriteRenderer>();
                     animator = vent.transform.GetChild(3).GetComponent<PowerTools.SpriteAnim>();
                 }
                 animator?.Stop();
                 rend.sprite = newSprite;
-                if (SubmergedCompatibility.IsSubmerged && vent.Id == 0) vent.myRend.sprite = SecurityGuard.getSubmergedCentralUpperSealedSprite();
-                if (SubmergedCompatibility.IsSubmerged && vent.Id == 14) vent.myRend.sprite = SecurityGuard.getSubmergedCentralLowerSealedSprite();
+                if (SubmergedCompatibility.IsSubmerged && vent.Id == 0) vent.myRend.sprite = Vigilante.getSubmergedCentralUpperSealedSprite();
+                if (SubmergedCompatibility.IsSubmerged && vent.Id == 14) vent.myRend.sprite = Vigilante.getSubmergedCentralLowerSealedSprite();
                 rend.color = Color.white;
                 vent.name = "SealedVent_" + vent.name;
             }
@@ -194,7 +193,7 @@ namespace TownOfSushi.Patches
                 Lawyer.triggerProsecutorWin = true;
 
             // Mini exile lose condition
-            else if (exiled != null && Mini.mini != null && Mini.mini.PlayerId == exiled.PlayerId && !Mini.IsGrownUp() && !Mini.mini.Data.Role.IsImpostor && !RoleInfo.GetRoleInfoForPlayer(Mini.mini).Any(x => x.FactionId == Factions.Neutral) && !RoleInfo.GetRoleInfoForPlayer(Mini.mini).Any(x => x.FactionId == Factions.NeutralKiller)) 
+            else if (exiled != null && Mini.Player != null && Mini.Player.PlayerId == exiled.PlayerId && !Mini.IsGrownUp() && !Mini.Player.Data.Role.IsImpostor && !RoleInfo.GetRoleInfoForPlayer(Mini.Player).Any(x => x.FactionId == Factions.Neutral) && !RoleInfo.GetRoleInfoForPlayer(Mini.Player).Any(x => x.FactionId == Factions.NeutralKiller)) 
             {
                 Mini.triggerMiniLose = true;
             }
@@ -209,15 +208,18 @@ namespace TownOfSushi.Patches
 
             Mystic.Investigated = false;
 
+            Oracle.Investigated = false;
+
             // Mini set adapted cooldown
-            if (Mini.mini != null && PlayerControl.LocalPlayer == Mini.mini && Mini.mini.Data.Role.IsImpostor) 
+            if (Mini.Player != null && PlayerControl.LocalPlayer == Mini.Player && Mini.Player.Data.Role.IsImpostor) 
             {
                 var multiplier = Mini.IsGrownUp() ? 0.66f : 2f;
-                Mini.mini.SetKillTimer(GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown * multiplier);
+                Mini.Player.SetKillTimer(GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown * multiplier);
             }
 
             // Mystic spawn souls
-            if (Mystic.deadBodyPositions != null && Mystic.Player != null && PlayerControl.LocalPlayer == Mystic.Player && (Mystic.mode == 0 || Mystic.mode == 2)) {
+            if (Mystic.deadBodyPositions != null && Mystic.Player != null && PlayerControl.LocalPlayer == Mystic.Player && (Mystic.mode == 0 || Mystic.mode == 2)) 
+            {
                 foreach (Vector3 pos in Mystic.deadBodyPositions) 
                 {
                     GameObject soul = new GameObject();
@@ -248,7 +250,7 @@ namespace TownOfSushi.Patches
             Tracker.deadBodyPositions = new List<Vector3>();
 
             // Arsonist deactivate dead poolable players
-            if (Arsonist.arsonist != null && Arsonist.arsonist == PlayerControl.LocalPlayer) 
+            if (Arsonist.Player != null && Arsonist.Player == PlayerControl.LocalPlayer) 
             {
                 int visibleCounter = 0;
                 Vector3 newBottomLeft = IntroCutsceneOnDestroyPatch.bottomLeft;
@@ -269,7 +271,7 @@ namespace TownOfSushi.Patches
             }
 
             // Force Bounty Hunter Bounty Update
-            if (BountyHunter.bountyHunter != null && BountyHunter.bountyHunter == PlayerControl.LocalPlayer)
+            if (BountyHunter.Player != null && BountyHunter.Player == PlayerControl.LocalPlayer)
                 BountyHunter.bountyUpdateTimer = 0f;
 
             // Medium spawn souls

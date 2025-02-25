@@ -37,7 +37,7 @@ namespace TownOfSushi.Patches {
                 if (hand != null) {
                     if (Camouflager.camouflageTimer <= 0 && !Helpers.MushroomSabotageActive()) 
                     {
-                        if (player == Morphling.morphling && Morphling.morphTimer > 0) 
+                        if (player == Morphling.Player && Morphling.morphTimer > 0) 
                         {
                             hand.SetPlayerColor(Morphling.morphTarget.CurrentOutfit, PlayerMaterial.MaskType.None, 1f);
                             // Also set hat color, cause the line destroys it...
@@ -73,7 +73,7 @@ namespace TownOfSushi.Patches {
             // Fix camo:
             var player = __instance.myPlayer;
             __instance.StartCoroutine(Effects.Lerp(5.0f, new System.Action<float>((p) => {
-                if (Camouflager.camouflageTimer <= 0 && !Helpers.MushroomSabotageActive() && player == Morphling.morphling && Morphling.morphTimer > 0.1f) {
+                if (Camouflager.camouflageTimer <= 0 && !Helpers.MushroomSabotageActive() && player == Morphling.Player && Morphling.morphTimer > 0.1f) {
                     player.RawSetHat(Morphling.morphTarget.Data.DefaultOutfit.HatId, Morphling.morphTarget.Data.DefaultOutfit.ColorId);
                 }
             })));

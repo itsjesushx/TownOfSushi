@@ -114,10 +114,10 @@ namespace TownOfSushi
                         Mayor.Player = player;
                         break;
                     case RoleId.Portalmaker:
-                        Portalmaker.portalmaker = player;
+                        Portalmaker.Player = player;
                         break;
                     case RoleId.Engineer:
-                        Engineer.engineer = player;
+                        Engineer.Player = player;
                         break;
                     case RoleId.Sheriff:
                         Sheriff.Player = player;
@@ -134,14 +134,17 @@ namespace TownOfSushi
                     case RoleId.Lighter:
                         Lighter.Player = player;
                         break;
+                    case RoleId.Oracle:
+                        Oracle.Player = player;
+                        break;
                     case RoleId.Godfather:
-                        Godfather.godfather = player;
+                        Godfather.Player = player;
                         break;
                     case RoleId.Mafioso:
                         Mafioso.mafioso = player;
                         break;
                     case RoleId.Janitor:
-                        Janitor.janitor = player;
+                        Janitor.Player = player;
                         break;
                     case RoleId.Detective:
                         Detective.Player = player;
@@ -156,7 +159,7 @@ namespace TownOfSushi
                         Medic.Player = player;
                         break;
                     case RoleId.Shifter:
-                        Shifter.shifter = player;
+                        Shifter.Player = player;
                         break;
                     case RoleId.Swapper:
                         Swapper.Player = player;
@@ -165,67 +168,67 @@ namespace TownOfSushi
                         Mystic.Player = player;
                         break;
                     case RoleId.Morphling:
-                        Morphling.morphling = player;
+                        Morphling.Player = player;
                         break;
                     case RoleId.Camouflager:
-                        Camouflager.camouflager = player;
+                        Camouflager.Player = player;
                         break;
                     case RoleId.SerialKiller:
                         SerialKiller.Player = player;
                         break;
                     case RoleId.Hacker:
-                        Hacker.hacker = player;
+                        Hacker.Player = player;
                         break;
                     case RoleId.Tracker:
-                        Tracker.tracker = player;
+                        Tracker.Player = player;
                         break;
                     case RoleId.Vampire:
-                        Vampire.vampire = player;
+                        Vampire.Player = player;
                         break;
                     case RoleId.Snitch:
-                        Snitch.snitch = player;
+                        Snitch.Player = player;
                         break;
                     case RoleId.Jackal:
-                        Jackal.jackal = player;
+                        Jackal.Player = player;
                         break;
                     case RoleId.Romantic:
                         Romantic.Player = player;
                         break;
                     case RoleId.Sidekick:
-                        Sidekick.sidekick = player;
+                        Sidekick.Player = player;
                         break;
                     case RoleId.Eraser:
-                        Eraser.eraser = player;
+                        Eraser.Player = player;
                         break;
                     case RoleId.Spy:
-                        Spy.spy = player;
+                        Spy.Player = player;
                         break;
                     case RoleId.Trickster:
                         Trickster.trickster = player;
                         break;
                     case RoleId.Cleaner:
-                        Cleaner.cleaner = player;
+                        Cleaner.Player = player;
                         break;
                     case RoleId.Warlock:
-                        Warlock.warlock = player;
+                        Warlock.Player = player;
                         break;
-                    case RoleId.SecurityGuard:
-                        SecurityGuard.securityGuard = player;
+                    case RoleId.Vigilante:
+                        Vigilante.Player = player;
                         break;
                     case RoleId.Arsonist:
-                        Arsonist.arsonist = player;
+                        Arsonist.Player = player;
                         break;
                     case RoleId.BountyHunter:
-                        BountyHunter.bountyHunter = player;
+                        BountyHunter.Player = player;
                         break;
                     case RoleId.Vulture:
-                        Vulture.vulture = player;
+                        Vulture.Player = player;
                         break;
                     case RoleId.Medium:
                         Medium.medium = player;
                         break;
                     case RoleId.Trapper:
-                        Trapper.trapper = player;
+                        Trapper.Player = player;
                         break;
                     case RoleId.Lawyer:
                         Lawyer.Player = player;
@@ -244,16 +247,17 @@ namespace TownOfSushi
                         Ninja.ninja = player;
                         break;
                     case RoleId.Thief:
-                        Thief.thief = player;
+                        Thief.Player = player;
                         break;
                     case RoleId.Yoyo:
-                        Yoyo.yoyo = player;
+                        Yoyo.Player = player;
                         break;
                     }
-                    if (AmongUsClient.Instance.AmHost && Helpers.RoleCanUseVents(player) && !player.Data.Role.IsImpostor) {
+                    if (AmongUsClient.Instance.AmHost && Helpers.RoleCanUseVents(player) && !player.Data.Role.IsImpostor) 
+                    {
                         player.RpcSetRole(RoleTypes.Engineer);
                         player.CoSetRole(RoleTypes.Engineer, true);
-                    }                   
+                    }
                 }
             }
         }
@@ -262,41 +266,41 @@ namespace TownOfSushi
             PlayerControl player = Helpers.PlayerById(playerId); 
             switch ((RoleId)modifierId) {
                 case RoleId.Bait:
-                    Bait.bait.Add(player);
+                    Bait.Players.Add(player);
                     break;
                 case RoleId.Lover:
                     if (flag == 0) Lovers.Lover1 = player;
                     else Lovers.Lover2 = player;
                     break;
                 case RoleId.Bloody:
-                    global::TownOfSushi.Bloody.bloody.Add(player);
+                    global::TownOfSushi.Bloody.Players.Add(player);
                     break;
                 case RoleId.AntiTeleport:
-                    AntiTeleport.antiTeleport.Add(player);
+                    AntiTeleport.Players.Add(player);
                     break;
                 case RoleId.Tiebreaker:
-                    Tiebreaker.tiebreaker = player;
+                    Tiebreaker.Player = player;
                     break;
                 case RoleId.Sunglasses:
-                    Sunglasses.sunglasses.Add(player);
+                    Sunglasses.Players.Add(player);
                     break;
                 case RoleId.Mini:
-                    Mini.mini = player;
+                    Mini.Player = player;
                     break;
                 case RoleId.Vip:
-                    Vip.vip.Add(player);
+                    Vip.Players.Add(player);
                     break;
                 case RoleId.Invert:
-                    Invert.invert.Add(player);
+                    Invert.Players.Add(player);
                     break;
                 case RoleId.Chameleon:
-                    Chameleon.chameleon.Add(player);
+                    Chameleon.Players.Add(player);
                     break;
                 case RoleId.Armored:
-                    Armored.armored = player;
+                    Armored.Player = player;
                     break;
                 case RoleId.Shifter:
-                    Shifter.shifter = player;
+                    Shifter.Player = player;
                     break;
             }
         }
@@ -394,7 +398,7 @@ namespace TownOfSushi
                     UnityEngine.Object.Destroy(array[i].gameObject);
                 }     
             }
-            if (Vulture.vulture != null && cleaningPlayerId == Vulture.vulture.PlayerId) 
+            if (Vulture.Player != null && cleaningPlayerId == Vulture.Player.PlayerId) 
             {
                 Vulture.eatenBodies++;
                 if (Vulture.eatenBodies == Vulture.vultureNumberToWin) 
@@ -471,27 +475,72 @@ namespace TownOfSushi
 
             foreach (var player in nearbyPlayers)
             {
-                if (Werewolf.Player == player || player.Data.IsDead || player == MapOptions.firstKillPlayer)
+                if (Werewolf.Player == player || player.Data.IsDead || player == Armored.Player && !Armored.isBrokenArmor || player == Medic.shielded || player == firstKillPlayer)
                     continue;
                     
-                if (Veteran.Player != null && Veteran.Player == player && Veteran.AlertActive)
-                {
-                    Helpers.CheckMurderAttemptAndKill(player, Werewolf.Player, showAnimation: false);
-                }
-                else
-                {
-                    Helpers.CheckMurderAttemptAndKill(Werewolf.Player, player, showAnimation: false);
-                }
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(player.NetId, (byte)CustomRPC.ShareGhostInfo, Hazel.SendOption.Reliable, -1);
-                writer.Write(player.PlayerId);
-                writer.Write((byte)GhostInfoTypes.DeathReasonAndKiller);
-                writer.Write(player.PlayerId);
-                writer.Write((byte)DeadPlayer.CustomDeathReason.Maul);
-                writer.Write(Werewolf.Player.PlayerId);
-                AmongUsClient.Instance.FinishRpcImmediately(writer);
+                Helpers.CheckMurderAttemptAndKill(Werewolf.Player, player, showAnimation: false);
+
+                MessageWriter ReasonWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareGhostInfo, Hazel.SendOption.Reliable, -1);
+                ReasonWriter.Write(PlayerControl.LocalPlayer.PlayerId);
+                ReasonWriter.Write((byte)GhostInfoTypes.DeathReasonAndKiller);
+                ReasonWriter.Write(player.PlayerId);
+                ReasonWriter.Write((byte)DeadPlayer.CustomDeathReason.Maul);
+                ReasonWriter.Write(Werewolf.Player.PlayerId);
+                AmongUsClient.Instance.FinishRpcImmediately(ReasonWriter);
                 OverrideDeathReasonAndKiller(player, DeadPlayer.CustomDeathReason.Maul, killer: Werewolf.Player);
             }
         }
+
+        public static void Confess(byte confessorId)
+        {
+            if (Oracle.Player == null || Oracle.Player.Data.IsDead) return;
+
+            Oracle.Confessor = Helpers.PlayerById(confessorId);
+            if (Oracle.Confessor == null) return;
+
+            RoleInfo roleInfo = RoleInfo.GetRoleInfoForPlayer(Oracle.Confessor, false).FirstOrDefault();
+            if (roleInfo == null) return;
+
+            bool showsCorrectFaction = UnityEngine.Random.RandomRangeInt(1, 101) <= Oracle.Accuracy;
+            Factions revealedFaction;
+
+            if (showsCorrectFaction)
+            {
+                // Reveal the actual faction
+                revealedFaction = roleInfo.FactionId;
+            }
+            else
+            {
+                // Get all possible factions
+                List<Factions> possibleFactions = new List<Factions> { Factions.Crewmate, Factions.Impostor, Factions.NeutralKiller };
+
+                // Remove the actual faction from the list so we never guess correctly
+                possibleFactions.Remove(roleInfo.FactionId);
+
+                // Choose a random incorrect faction
+                revealedFaction = possibleFactions[UnityEngine.Random.RandomRangeInt(0, possibleFactions.Count)];
+            }
+
+            // Save the revealed faction
+            Oracle.RevealedFaction = revealedFaction;
+
+            var results = Oracle.GetInfo(Oracle.Confessor);
+            FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(Oracle.Player, $"{results}");
+
+            // Send RPC to notify clients
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.Confess, SendOption.Reliable, -1);
+            writer.Write(Oracle.Confessor.PlayerId);
+            writer.Write((int)revealedFaction);
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
+
+            // Ghost Info
+            MessageWriter GhostInfoWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareGhostInfo, SendOption.Reliable);
+            GhostInfoWriter.Write(Oracle.Confessor.PlayerId);
+            GhostInfoWriter.Write((byte)GhostInfoTypes.OracleInfo);
+            GhostInfoWriter.Write(results);
+            AmongUsClient.Instance.FinishRpcImmediately(GhostInfoWriter);
+        }
+
 
         public static void ShieldedMurderAttempt() 
         {
@@ -506,7 +555,7 @@ namespace TownOfSushi
 
         public static void ShifterShift(byte targetId) 
         {
-            PlayerControl oldShifter = Shifter.shifter;
+            PlayerControl oldShifter = Shifter.Player;
             PlayerControl player = Helpers.PlayerById(targetId);
             if (player == null || oldShifter == null) return;
 
@@ -514,21 +563,21 @@ namespace TownOfSushi
             Shifter.ClearAndReload();
 
             // Suicide (exile) when impostor or impostor variants
-            if ((player.Data.Role.IsImpostor || Helpers.IsNeutral(player)) && !oldShifter.Data.IsDead) 
+            if ((!player.IsCrew()) && !oldShifter.Data.IsDead) 
             {
                 oldShifter.Exiled();
-                GameHistory.OverrideDeathReasonAndKiller(oldShifter, DeadPlayer.CustomDeathReason.Shift, player);
+                OverrideDeathReasonAndKiller(oldShifter, DeadPlayer.CustomDeathReason.Shift, player);
                 if (oldShifter == Lawyer.target && AmongUsClient.Instance.AmHost && Lawyer.Player != null) 
                 {
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.LawyerChangeRole, Hazel.SendOption.Reliable, -1);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
-                    RPCProcedure.LawyerChangeRole();
+                    LawyerChangeRole();
                 }
                 if (oldShifter == Romantic.beloved && AmongUsClient.Instance.AmHost && Romantic.Player != null) 
                 {
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RomanticChangeRole, Hazel.SendOption.Reliable, -1);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
-                    RPCProcedure.RomanticChangeRole();
+                    RomanticChangeRole();
                 }
                 return;
             }
@@ -551,12 +600,12 @@ namespace TownOfSushi
         public static void MorphlingMorph(byte playerId) 
         {
             PlayerControl target = Helpers.PlayerById(playerId);
-            if (Morphling.morphling == null || target == null) return;
+            if (Morphling.Player == null || target == null) return;
 
             Morphling.morphTimer = Morphling.duration;
             Morphling.morphTarget = target;
             if (Camouflager.camouflageTimer <= 0f)
-                Morphling.morphling.SetLook(target.Data.PlayerName, target.Data.DefaultOutfit.ColorId, target.Data.DefaultOutfit.HatId, target.Data.DefaultOutfit.VisorId, target.Data.DefaultOutfit.SkinId, target.Data.DefaultOutfit.PetId);
+                Morphling.Player.SetLook(target.Data.PlayerName, target.Data.DefaultOutfit.ColorId, target.Data.DefaultOutfit.HatId, target.Data.DefaultOutfit.VisorId, target.Data.DefaultOutfit.SkinId, target.Data.DefaultOutfit.PetId);
         }
 
         public static void GlitchMimic(byte playerId) 
@@ -572,7 +621,7 @@ namespace TownOfSushi
 
         public static void CamouflagerCamouflage() 
         {
-            if (Camouflager.camouflager == null) return;
+            if (Camouflager.Player == null) return;
 
             Camouflager.camouflageTimer = Camouflager.duration;
             if (Helpers.MushroomSabotageActive()) return; // Dont overwrite the fungle "camo"
@@ -587,7 +636,7 @@ namespace TownOfSushi
                 return;
             }
 
-            if (Vampire.vampire == null) return;
+            if (Vampire.Player == null) return;
             foreach (PlayerControl player in PlayerControl.AllPlayerControls) 
             {
                 if (player.PlayerId == targetId && !player.Data.IsDead) {
@@ -629,7 +678,7 @@ namespace TownOfSushi
             } 
             else 
             {
-                bool wasSpy = Spy.spy != null && player == Spy.spy;
+                bool wasSpy = Spy.Player != null && player == Spy.Player;
                 bool wasImpostor = player.Data.Role.IsImpostor;  // This can only be reached if impostors can be sidekicked.
                 FastDestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
                 if (player == Lawyer.Player && Lawyer.target != null)
@@ -639,7 +688,7 @@ namespace TownOfSushi
                     if (playerInfo != null) playerInfo.text = "";
                 }
                 ErasePlayerRoles(player.PlayerId, true);
-                Sidekick.sidekick = player;
+                Sidekick.Player = player;
                 if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId) PlayerControl.LocalPlayer.moveable = true;
                 if (wasSpy || wasImpostor) Sidekick.wasTeamRed = true;
                 Sidekick.wasSpy = wasSpy;
@@ -654,7 +703,7 @@ namespace TownOfSushi
         public static void SidekickPromotes() 
         {
             Jackal.removeCurrentJackal();
-            Jackal.jackal = Sidekick.sidekick;
+            Jackal.Player = Sidekick.Player;
             Jackal.canCreateSidekick = Jackal.jackalPromotedFromSidekickCanCreateSidekick;
             Jackal.wasTeamRed = Sidekick.wasTeamRed;
             Jackal.wasSpy = Sidekick.wasSpy;
@@ -670,50 +719,51 @@ namespace TownOfSushi
 
             // Crewmate roles
             if (player == Mayor.Player) Mayor.ClearAndReload();
-            if (player == Portalmaker.portalmaker) Portalmaker.ClearAndReload();
-            if (player == Engineer.engineer) Engineer.ClearAndReload();
+            if (player == Portalmaker.Player) Portalmaker.ClearAndReload();
+            if (player == Engineer.Player) Engineer.ClearAndReload();
             if (player == Sheriff.Player) Sheriff.ClearAndReload();
+            if (player == Oracle.Player) Oracle.ClearAndReload();
             if (player == Lighter.Player) Lighter.ClearAndReload();
             if (player == Detective.Player) Detective.ClearAndReload();
             if (player == TimeMaster.Player) TimeMaster.ClearAndReload();
             if (player == Veteran.Player) Veteran.ClearAndReload();
             if (player == Medic.Player) Medic.ClearAndReload();
-            if (player == Shifter.shifter) Shifter.ClearAndReload();
+            if (player == Shifter.Player) Shifter.ClearAndReload();
             if (player == Mystic.Player) Mystic.ClearAndReload();
-            if (player == Hacker.hacker) Hacker.ClearAndReload();
-            if (player == Tracker.tracker) Tracker.ClearAndReload();
-            if (player == Snitch.snitch) Snitch.ClearAndReload();
+            if (player == Hacker.Player) Hacker.ClearAndReload();
+            if (player == Tracker.Player) Tracker.ClearAndReload();
+            if (player == Snitch.Player) Snitch.ClearAndReload();
             if (player == Swapper.Player) Swapper.ClearAndReload();
-            if (player == Spy.spy) Spy.ClearAndReload();
-            if (player == SecurityGuard.securityGuard) SecurityGuard.ClearAndReload();
+            if (player == Spy.Player) Spy.ClearAndReload();
+            if (player == Vigilante.Player) Vigilante.ClearAndReload();
             if (player == Medium.medium) Medium.ClearAndReload();
-            if (player == Trapper.trapper) Trapper.ClearAndReload();
+            if (player == Trapper.Player) Trapper.ClearAndReload();
 
             // Impostor roles
-            if (player == Morphling.morphling) Morphling.ClearAndReload();
-            if (player == Camouflager.camouflager) Camouflager.ClearAndReload();
-            if (player == Godfather.godfather) Godfather.ClearAndReload();
+            if (player == Morphling.Player) Morphling.ClearAndReload();
+            if (player == Camouflager.Player) Camouflager.ClearAndReload();
+            if (player == Godfather.Player) Godfather.ClearAndReload();
             if (player == Mafioso.mafioso) Mafioso.ClearAndReload();
-            if (player == Janitor.janitor) Janitor.ClearAndReload();
-            if (player == Vampire.vampire) Vampire.ClearAndReload();
-            if (player == Eraser.eraser) Eraser.ClearAndReload();
+            if (player == Janitor.Player) Janitor.ClearAndReload();
+            if (player == Vampire.Player) Vampire.ClearAndReload();
+            if (player == Eraser.Player) Eraser.ClearAndReload();
             if (player == Trickster.trickster) Trickster.ClearAndReload();
-            if (player == Cleaner.cleaner) Cleaner.ClearAndReload();
-            if (player == Warlock.warlock) Warlock.ClearAndReload();
+            if (player == Cleaner.Player) Cleaner.ClearAndReload();
+            if (player == Warlock.Player) Warlock.ClearAndReload();
             if (player == Witch.witch) Witch.ClearAndReload();
             if (player == Ninja.ninja) Ninja.ClearAndReload();
-            if (player == Yoyo.yoyo) Yoyo.ClearAndReload();
+            if (player == Yoyo.Player) Yoyo.ClearAndReload();
 
             // Other roles
             if (player == Jester.jester) Jester.ClearAndReload();
             if (player == Glitch.Player) Glitch.ClearAndReload();
             if (player == Werewolf.Player) Werewolf.ClearAndReload();
             if (player == SerialKiller.Player) SerialKiller.ClearAndReload();
-            if (player == Arsonist.arsonist) Arsonist.ClearAndReload();
+            if (player == Arsonist.Player) Arsonist.ClearAndReload();
             if (Guesser.IsGuesser(player.PlayerId)) Guesser.Clear(player.PlayerId);
-            if (player == Jackal.jackal) 
+            if (player == Jackal.Player) 
             { // Promote Sidekick and hence override the the Jackal or erase Jackal
-                if (Sidekick.promotesToJackal && Sidekick.sidekick != null && !Sidekick.sidekick.Data.IsDead) 
+                if (Sidekick.promotesToJackal && Sidekick.Player != null && !Sidekick.Player.Data.IsDead) 
                 {
                     SidekickPromotes();
                 }
@@ -722,29 +772,29 @@ namespace TownOfSushi
                     Jackal.ClearAndReload();
                 }
             }
-            if (player == Sidekick.sidekick) Sidekick.ClearAndReload();
-            if (player == BountyHunter.bountyHunter) BountyHunter.ClearAndReload();
-            if (player == Vulture.vulture) Vulture.ClearAndReload();
+            if (player == Sidekick.Player) Sidekick.ClearAndReload();
+            if (player == BountyHunter.Player) BountyHunter.ClearAndReload();
+            if (player == Vulture.Player) Vulture.ClearAndReload();
             if (player == Lawyer.Player) Lawyer.ClearAndReload();
             if (player == Romantic.Player) Romantic.ClearAndReload();
             if (player == VengefulRomantic.Player) VengefulRomantic.ClearAndReload();
             if (player == Pursuer.pursuer) Pursuer.ClearAndReload();
-            if (player == Thief.thief) Thief.ClearAndReload();
+            if (player == Thief.Player) Thief.ClearAndReload();
 
             // Modifier
             if (!ignoreModifier)
             {
                 if (player == Lovers.Lover1 || player == Lovers.Lover2) Lovers.ClearAndReload(); // The whole Lover couple is being erased
-                if (Bait.bait.Any(x => x.PlayerId == player.PlayerId)) Bait.bait.RemoveAll(x => x.PlayerId == player.PlayerId);
-                if (global::TownOfSushi.Bloody.bloody.Any(x => x.PlayerId == player.PlayerId)) global::TownOfSushi.Bloody.bloody.RemoveAll(x => x.PlayerId == player.PlayerId);
-                if (AntiTeleport.antiTeleport.Any(x => x.PlayerId == player.PlayerId)) AntiTeleport.antiTeleport.RemoveAll(x => x.PlayerId == player.PlayerId);
-                if (Sunglasses.sunglasses.Any(x => x.PlayerId == player.PlayerId)) Sunglasses.sunglasses.RemoveAll(x => x.PlayerId == player.PlayerId);
-                if (player == Tiebreaker.tiebreaker) Tiebreaker.ClearAndReload();
-                if (player == Mini.mini) Mini.ClearAndReload();
-                if (Vip.vip.Any(x => x.PlayerId == player.PlayerId)) Vip.vip.RemoveAll(x => x.PlayerId == player.PlayerId);
-                if (Invert.invert.Any(x => x.PlayerId == player.PlayerId)) Invert.invert.RemoveAll(x => x.PlayerId == player.PlayerId);
-                if (Chameleon.chameleon.Any(x => x.PlayerId == player.PlayerId)) Chameleon.chameleon.RemoveAll(x => x.PlayerId == player.PlayerId);
-                if (player == Armored.armored) Armored.ClearAndReload();
+                if (Bait.Players.Any(x => x.PlayerId == player.PlayerId)) Bait.Players.RemoveAll(x => x.PlayerId == player.PlayerId);
+                if (global::TownOfSushi.Bloody.Players.Any(x => x.PlayerId == player.PlayerId)) global::TownOfSushi.Bloody.Players.RemoveAll(x => x.PlayerId == player.PlayerId);
+                if (AntiTeleport.Players.Any(x => x.PlayerId == player.PlayerId)) AntiTeleport.Players.RemoveAll(x => x.PlayerId == player.PlayerId);
+                if (Sunglasses.Players.Any(x => x.PlayerId == player.PlayerId)) Sunglasses.Players.RemoveAll(x => x.PlayerId == player.PlayerId);
+                if (player == Tiebreaker.Player) Tiebreaker.ClearAndReload();
+                if (player == Mini.Player) Mini.ClearAndReload();
+                if (Vip.Players.Any(x => x.PlayerId == player.PlayerId)) Vip.Players.RemoveAll(x => x.PlayerId == player.PlayerId);
+                if (Invert.Players.Any(x => x.PlayerId == player.PlayerId)) Invert.Players.RemoveAll(x => x.PlayerId == player.PlayerId);
+                if (Chameleon.Players.Any(x => x.PlayerId == player.PlayerId)) Chameleon.Players.RemoveAll(x => x.PlayerId == player.PlayerId);
+                if (player == Armored.Player) Armored.ClearAndReload();
             }
         }
 
@@ -850,8 +900,8 @@ namespace TownOfSushi
             var referenceCamera = UnityEngine.Object.FindObjectOfType<SurvCamera>(); 
             if (referenceCamera == null) return; // Mira HQ
 
-            SecurityGuard.remainingScrews -= SecurityGuard.camPrice;
-            SecurityGuard.placedCameras++;
+            Vigilante.remainingScrews -= Vigilante.camPrice;
+            Vigilante.placedCameras++;
 
             Vector3 position = Vector3.zero;
             position.x = BitConverter.ToSingle(buff, 0*sizeof(float));
@@ -859,7 +909,7 @@ namespace TownOfSushi
 
             var camera = UnityEngine.Object.Instantiate<SurvCamera>(referenceCamera);
             camera.transform.position = new Vector3(position.x, position.y, referenceCamera.transform.position.z - 1f);
-            camera.CamName = $"Security Camera {SecurityGuard.placedCameras}";
+            camera.CamName = $"Security Camera {Vigilante.placedCameras}";
             camera.Offset = new Vector3(0f, 0f, camera.Offset.z);
             if (GameOptionsManager.Instance.currentNormalGameOptions.MapId == 2 || GameOptionsManager.Instance.currentNormalGameOptions.MapId == 4) camera.transform.localRotation = new Quaternion(0, 0, 1, 1); // Polus and Airship 
 
@@ -874,7 +924,7 @@ namespace TownOfSushi
             }
 
 
-            if (PlayerControl.LocalPlayer == SecurityGuard.securityGuard) 
+            if (PlayerControl.LocalPlayer == Vigilante.Player) 
             {
                 camera.gameObject.SetActive(true);
                 camera.gameObject.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.5f);
@@ -889,22 +939,22 @@ namespace TownOfSushi
             Vent vent = MapUtilities.CachedShipStatus.AllVents.FirstOrDefault((x) => x != null && x.Id == ventId);
             if (vent == null) return;
 
-            SecurityGuard.remainingScrews -= SecurityGuard.ventPrice;
-            if (PlayerControl.LocalPlayer == SecurityGuard.securityGuard) {
+            Vigilante.remainingScrews -= Vigilante.ventPrice;
+            if (PlayerControl.LocalPlayer == Vigilante.Player) {
                 PowerTools.SpriteAnim animator = vent.GetComponent<PowerTools.SpriteAnim>(); 
                 
                 vent.EnterVentAnim = vent.ExitVentAnim = null;
-                Sprite newSprite = animator == null ? SecurityGuard.getStaticVentSealedSprite() : SecurityGuard.getAnimatedVentSealedSprite();
+                Sprite newSprite = animator == null ? Vigilante.getStaticVentSealedSprite() : Vigilante.getAnimatedVentSealedSprite();
                 SpriteRenderer rend = vent.myRend;
                 if (Helpers.IsFungle()) {
-                    newSprite = SecurityGuard.getFungleVentSealedSprite();
+                    newSprite = Vigilante.getFungleVentSealedSprite();
                     rend = vent.transform.GetChild(3).GetComponent<SpriteRenderer>();
                     animator = vent.transform.GetChild(3).GetComponent<PowerTools.SpriteAnim>();
                 }
                 animator?.Stop();
                 rend.sprite = newSprite;
-                if (SubmergedCompatibility.IsSubmerged && vent.Id == 0) vent.myRend.sprite = SecurityGuard.getSubmergedCentralUpperSealedSprite();
-                if (SubmergedCompatibility.IsSubmerged && vent.Id == 14) vent.myRend.sprite = SecurityGuard.getSubmergedCentralLowerSealedSprite();
+                if (SubmergedCompatibility.IsSubmerged && vent.Id == 0) vent.myRend.sprite = Vigilante.getSubmergedCentralUpperSealedSprite();
+                if (SubmergedCompatibility.IsSubmerged && vent.Id == 14) vent.myRend.sprite = Vigilante.getSubmergedCentralLowerSealedSprite();
                 rend.color = new Color(1f, 1f, 1f, 0.5f);
                 vent.name = "FutureSealedVent_" + vent.name;
             }
@@ -917,10 +967,10 @@ namespace TownOfSushi
             Arsonist.triggerArsonistWin = true;
             foreach (PlayerControl p in PlayerControl.AllPlayerControls) 
             {
-                if (p != Arsonist.arsonist && !p.Data.IsDead) 
+                if (p != Arsonist.Player && !p.Data.IsDead) 
                 {
                     p.Exiled();
-                    OverrideDeathReasonAndKiller(p, DeadPlayer.CustomDeathReason.Arson, Arsonist.arsonist);
+                    OverrideDeathReasonAndKiller(p, DeadPlayer.CustomDeathReason.Arson, Arsonist.Player);
                 }
             }
         }
@@ -1069,36 +1119,36 @@ namespace TownOfSushi
         public static void ThiefStealsRole(byte playerId) 
         {
             PlayerControl target = Helpers.PlayerById(playerId);
-            PlayerControl thief = Thief.thief;
+            PlayerControl thief = Thief.Player;
             if (target == null) return;
             if (target == Sheriff.Player) Sheriff.Player = thief;
             if (target == Glitch.Player) Glitch.Player = thief;
             if (target == SerialKiller.Player) SerialKiller.Player = thief;
             if (target == VengefulRomantic.Player) VengefulRomantic.Player = thief;
             if (target == Werewolf.Player) Werewolf.Player = thief;
-            if (target == Jackal.jackal)
+            if (target == Jackal.Player)
             {
-                Jackal.jackal = thief;
+                Jackal.Player = thief;
                 Jackal.formerJackals.Add(target);
             }
-            if (target == Sidekick.sidekick) 
+            if (target == Sidekick.Player) 
             {
-                Sidekick.sidekick = thief;
+                Sidekick.Player = thief;
                 Jackal.formerJackals.Add(target);
                 if (CustomOptionHolder.GuesserSidekickIsAlwaysGuesser.GetBool() && !HandleGuesser.IsGuesser(thief.PlayerId))
                     SetGuessers(thief.PlayerId);
             }
-            if (target == Godfather.godfather) Godfather.godfather = thief;
+            if (target == Godfather.Player) Godfather.Player = thief;
             if (target == Mafioso.mafioso) Mafioso.mafioso = thief;
-            if (target == Janitor.janitor) Janitor.janitor = thief;
-            if (target == Morphling.morphling) Morphling.morphling = thief;
-            if (target == Camouflager.camouflager) Camouflager.camouflager = thief;
-            if (target == Vampire.vampire) Vampire.vampire = thief;
-            if (target == Eraser.eraser) Eraser.eraser = thief;
+            if (target == Janitor.Player) Janitor.Player = thief;
+            if (target == Morphling.Player) Morphling.Player = thief;
+            if (target == Camouflager.Player) Camouflager.Player = thief;
+            if (target == Vampire.Player) Vampire.Player = thief;
+            if (target == Eraser.Player) Eraser.Player = thief;
             if (target == Trickster.trickster) Trickster.trickster = thief;
-            if (target == Cleaner.cleaner) Cleaner.cleaner = thief;
-            if (target == Warlock.warlock) Warlock.warlock = thief;
-            if (target == BountyHunter.bountyHunter) BountyHunter.bountyHunter = thief;
+            if (target == Cleaner.Player) Cleaner.Player = thief;
+            if (target == Warlock.Player) Warlock.Player = thief;
+            if (target == BountyHunter.Player) BountyHunter.Player = thief;
             if (target == Witch.witch) 
             {
                 Witch.witch = thief;
@@ -1109,25 +1159,25 @@ namespace TownOfSushi
                     Witch.futureSpelled.RemoveAll(x => x.PlayerId == thief.PlayerId);
             }
             if (target == Ninja.ninja) Ninja.ninja = thief;
-            if (target == Yoyo.yoyo) {
-                Yoyo.yoyo = thief;
+            if (target == Yoyo.Player) {
+                Yoyo.Player = thief;
                 Yoyo.markedLocation = null;
             }
             if (target.Data.Role.IsImpostor) 
             {
-                RoleManager.Instance.SetRole(Thief.thief, RoleTypes.Impostor);
-                FastDestroyableSingleton<HudManager>.Instance.KillButton.SetCoolDown(Thief.thief.killTimer, GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown);
+                RoleManager.Instance.SetRole(Thief.Player, RoleTypes.Impostor);
+                FastDestroyableSingleton<HudManager>.Instance.KillButton.SetCoolDown(Thief.Player.killTimer, GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown);
             }
             if (Lawyer.Player != null && target == Lawyer.target)
                 Lawyer.target = thief;
-            if (Thief.thief == PlayerControl.LocalPlayer) CustomButton.ResetAllCooldowns();
+            if (Thief.Player == PlayerControl.LocalPlayer) CustomButton.ResetAllCooldowns();
             Thief.ClearAndReload();
             Thief.formerThief = thief;  // After ClearAndReload, else it would get reset...
         }
         
         public static void SetTrap(byte[] buff) 
         {
-            if (Trapper.trapper == null) return;
+            if (Trapper.Player == null) return;
             Trapper.charges -= 1;
             Vector3 position = Vector3.zero;
             position.x = BitConverter.ToSingle(buff, 0 * sizeof(float));
@@ -1181,6 +1231,11 @@ namespace TownOfSushi
 		             if (Helpers.ShouldShowGhostInfo())
                     	FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sender, mysticInfo);
                     break;
+                case GhostInfoTypes.OracleInfo:
+                    string oracleInfo = reader.ReadString();
+		             if (Helpers.ShouldShowGhostInfo())
+                    	FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sender, oracleInfo);
+                    break;
                 case GhostInfoTypes.DetectiveOrMedicInfo:
                     string detectiveInfo = reader.ReadString();
                     if (Helpers.ShouldShowGhostInfo())
@@ -1206,7 +1261,7 @@ namespace TownOfSushi
 
         public static void YoyoMarkLocation(byte[] buff) 
         {
-            if (Yoyo.yoyo == null) return;
+            if (Yoyo.Player == null) return;
             Vector3 position = Vector3.zero;
             position.x = BitConverter.ToSingle(buff, 0 * sizeof(float));
             position.y = BitConverter.ToSingle(buff, 1 * sizeof(float));
@@ -1216,9 +1271,9 @@ namespace TownOfSushi
 
         public static void YoyoBlink(bool isFirstJump, byte[] buff) 
         {
-            if (Yoyo.yoyo == null || Yoyo.markedLocation == null) return;
+            if (Yoyo.Player == null || Yoyo.markedLocation == null) return;
             var markedPos = (Vector3)Yoyo.markedLocation;
-            Yoyo.yoyo.NetTransform.SnapTo(markedPos);
+            Yoyo.Player.NetTransform.SnapTo(markedPos);
 
             var markedSilhouette = Silhouette.silhouettes.FirstOrDefault(s => s.gameObject.transform.position.x == markedPos.x && s.gameObject.transform.position.y == markedPos.y);
             if (markedSilhouette != null)
@@ -1235,17 +1290,17 @@ namespace TownOfSushi
                 new Silhouette(position, 5, true);
                 Yoyo.markedLocation = null;
             }
-            if (Chameleon.chameleon.Any(x => x.PlayerId == Yoyo.yoyo.PlayerId)) // Make the Yoyo visible if chameleon!
-                Chameleon.lastMoved[Yoyo.yoyo.PlayerId] = Time.time;            
+            if (Chameleon.Players.Any(x => x.PlayerId == Yoyo.Player.PlayerId)) // Make the Yoyo visible if chameleon!
+                Chameleon.lastMoved[Yoyo.Player.PlayerId] = Time.time;            
         }
 
         public static void BreakArmor() 
         {
-            if (Armored.armored == null || Armored.isBrokenArmor) return;
+            if (Armored.Player == null || Armored.isBrokenArmor) return;
             Armored.isBrokenArmor = true;
             if (PlayerControl.LocalPlayer.Data.IsDead) 
             {
-                Armored.armored.ShowFailedMurder();
+                Armored.Player.ShowFailedMurder();
             }
         }
     }
@@ -1369,6 +1424,23 @@ namespace TownOfSushi
                     break;
                 case (byte)CustomRPC.ShifterShift:
                     RPCProcedure.ShifterShift(reader.ReadByte());
+                    break;
+                case (byte)CustomRPC.Confess:
+                    byte confessorId = reader.ReadByte();
+                    Oracle.Confessor = Helpers.PlayerById(confessorId);
+                    if (Oracle.Confessor == null) break; // Ensure the confessor exists
+                    // Read the revealed faction from the RPC
+                    int factionId = reader.ReadInt32();
+                    // Map the received integer to the correct Factions enum
+                    if (Enum.IsDefined(typeof(Factions), factionId))
+                    {
+                        Oracle.RevealedFaction = (Factions)factionId;
+                    }
+                    else
+                    {
+                        TownOfSushiPlugin.Logger.LogError($"Invalid faction ID received: {factionId}");
+                        Oracle.RevealedFaction = Factions.Other; // Default to Other in case of error
+                    }
                     break;
                 case (byte)CustomRPC.SwapperSwap:
                     byte playerId1 = reader.ReadByte();

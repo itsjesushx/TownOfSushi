@@ -42,7 +42,7 @@ namespace TownOfSushi.Patches
                     MapOptions.playerIcons[p.PlayerId] = player;
                     player.gameObject.SetActive(false);
 
-                    if (PlayerControl.LocalPlayer == Arsonist.arsonist && p != Arsonist.arsonist) 
+                    if (PlayerControl.LocalPlayer == Arsonist.Player && p != Arsonist.Player) 
                     {
                         player.transform.localPosition = bottomLeft + new Vector3(-0.25f, -0.25f, 0) + Vector3.right * playerCounter++ * 0.35f;
                         player.transform.localScale = Vector3.one * 0.2f;
@@ -59,7 +59,7 @@ namespace TownOfSushi.Patches
             }
 
             // Force Bounty Hunter to load a new Bounty when the Intro is over
-            if (BountyHunter.bounty != null && PlayerControl.LocalPlayer == BountyHunter.bountyHunter) 
+            if (BountyHunter.bounty != null && PlayerControl.LocalPlayer == BountyHunter.Player) 
             {
                 BountyHunter.bountyUpdateTimer = 0f;
                 if (FastDestroyableSingleton<HudManager>.Instance != null) 
@@ -118,7 +118,8 @@ namespace TownOfSushi.Patches
     [HarmonyPatch]
     class IntroPatch 
     {
-        public static void SetupIntroTeamIcons(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam) {
+        public static void SetupIntroTeamIcons(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam) 
+        {
             // Intro solo teams
             if (PlayerControl.LocalPlayer.IsNeutral() || PlayerControl.LocalPlayer.IsNeutralKiller()) 
             {
@@ -128,19 +129,22 @@ namespace TownOfSushi.Patches
             }
 
             // Add the Spy to the Impostor team (for the Impostors)
-            if (Spy.spy != null && PlayerControl.LocalPlayer.Data.Role.IsImpostor) {
+            if (Spy.Player != null && PlayerControl.LocalPlayer.Data.Role.IsImpostor) 
+            {
                 List<PlayerControl> players = PlayerControl.AllPlayerControls.ToArray().ToList().OrderBy(x => Guid.NewGuid()).ToList();
                 var fakeImpostorTeam = new Il2CppSystem.Collections.Generic.List<PlayerControl>(); // The local player always has to be the first one in the list (to be displayed in the center)
                 fakeImpostorTeam.Add(PlayerControl.LocalPlayer);
-                foreach (PlayerControl p in players) {
-                    if (PlayerControl.LocalPlayer != p && (p == Spy.spy || p.Data.Role.IsImpostor))
+                foreach (PlayerControl p in players) 
+                {
+                    if (PlayerControl.LocalPlayer != p && (p == Spy.Player || p.Data.Role.IsImpostor))
                         fakeImpostorTeam.Add(p);
                 }
                 yourTeam = fakeImpostorTeam;
             }
         }
 
-        public static void SetupIntroTeam(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam) {
+        public static void SetupIntroTeam(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam) 
+        {
             List<RoleInfo> infos = RoleInfo.GetRoleInfoForPlayer(PlayerControl.LocalPlayer);
             RoleInfo roleInfo = infos.Where(info => info.FactionId != Factions.Modifier).FirstOrDefault();
             if (roleInfo == null) return;
@@ -164,8 +168,10 @@ namespace TownOfSushi.Patches
         }
 
         [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.CreatePlayer))]
-        class CreatePlayerPatch {
-            public static void Postfix(IntroCutscene __instance, bool impostorPositioning, ref PoolablePlayer __result) {
+        class CreatePlayerPatch 
+        {
+            public static void Postfix(IntroCutscene __instance, bool impostorPositioning, ref PoolablePlayer __result) 
+            {
                 if (impostorPositioning) __result.SetNameColor(Palette.ImpostorRed);
             }
         }
@@ -219,9 +225,11 @@ namespace TownOfSushi.Patches
                     }
                 }
             }
-            public static bool Prefix(IntroCutscene __instance) {
+            public static bool Prefix(IntroCutscene __instance) 
+            {
                 seed = rnd.Next(5000);
-                FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(1f, new Action<float>((p) => {
+                FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(1f, new Action<float>((p) => 
+                {
                     SetRoleTexts(__instance);
                 })));
                 return true;
@@ -229,23 +237,29 @@ namespace TownOfSushi.Patches
         }
 
         [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginCrewmate))]
-        class BeginCrewmatePatch {
-            public static void Prefix(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> teamToDisplay) {
+        class BeginCrewmatePatch 
+        {
+            public static void Prefix(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> teamToDisplay) 
+            {
                 SetupIntroTeamIcons(__instance, ref teamToDisplay);
             }
 
-            public static void Postfix(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> teamToDisplay) {
+            public static void Postfix(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> teamToDisplay) 
+            {
                 SetupIntroTeam(__instance, ref teamToDisplay);
             }
         }
 
         [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginImpostor))]
-        class BeginImpostorPatch {
-            public static void Prefix(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam) {
+        class BeginImpostorPatch 
+        {
+            public static void Prefix(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam) 
+            {
                 SetupIntroTeamIcons(__instance, ref yourTeam);
             }
 
-            public static void Postfix(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam) {
+            public static void Postfix(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam) 
+            {
                 SetupIntroTeam(__instance, ref yourTeam);
             }
         }

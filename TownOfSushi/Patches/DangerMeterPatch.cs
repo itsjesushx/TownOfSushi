@@ -12,7 +12,7 @@ namespace TownOfSushi.Patches
         [HarmonyPrefix]
         public static void Prefix(DangerMeter __instance, ref Color color) 
         {
-            if (PlayerControl.LocalPlayer != Tracker.tracker) return;
+            if (PlayerControl.LocalPlayer != Tracker.Player) return;
             if (__instance == HudManager.Instance.DangerMeter) return;
 
             color = color.SetAlpha(0.5f);

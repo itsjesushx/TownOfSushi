@@ -76,8 +76,6 @@ namespace TownOfSushi
             enableHorseMode = TownOfSushiPlugin.EnableHorseMode.Value;
             ShowVentsOnMap = TownOfSushiPlugin.ShowVentsOnMap.Value;
             ShowChatNotifications = TownOfSushiPlugin.ShowChatNotifications.Value;
-
-            //Patches.ShouldAlwaysHorseAround.isHorseMode = TownOfSushiPlugin.EnableHorseMode.Value;
         }
     }
 }

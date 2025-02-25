@@ -101,8 +101,8 @@ namespace TownOfSushi.Patches
                         Tiebreaker.isTiebreak = false;
                         int maxVoteValue = self.Values.Max();
                         PlayerVoteArea tb = null;
-                        if (Tiebreaker.tiebreaker != null)
-                            tb = __instance.playerStates.ToArray().FirstOrDefault(x => x.TargetPlayerId == Tiebreaker.tiebreaker.PlayerId);
+                        if (Tiebreaker.Player != null)
+                            tb = __instance.playerStates.ToArray().FirstOrDefault(x => x.TargetPlayerId == Tiebreaker.Player.PlayerId);
                         bool isTiebreakerSkip = tb == null || tb.VotedFor == 253;
                         if (tb != null && tb.AmDead) isTiebreakerSkip = true;
 
@@ -126,7 +126,7 @@ namespace TownOfSushi.Patches
                             VotedForId = playerVoteArea.VotedFor
                         };
 
-                        if (Tiebreaker.tiebreaker == null || playerVoteArea.TargetPlayerId != Tiebreaker.tiebreaker.PlayerId) continue;
+                        if (Tiebreaker.Player == null || playerVoteArea.TargetPlayerId != Tiebreaker.Player.PlayerId) continue;
 
                         byte tiebreakerVote = playerVoteArea.VotedFor;
                         if (swapped1 != null && swapped2 != null) 
@@ -276,7 +276,7 @@ namespace TownOfSushi.Patches
                 if (!Mini.isGrowingUpInMeeting) Mini.timeOfGrowthStart = Mini.timeOfGrowthStart.Add(DateTime.UtcNow.Subtract(Mini.timeOfMeetingStart)).AddSeconds(10);
 
                 // Snitch
-                if (Snitch.snitch != null && !Snitch.needsUpdate && Snitch.snitch.Data.IsDead && Snitch.text != null) 
+                if (Snitch.Player != null && !Snitch.needsUpdate && Snitch.Player.Data.IsDead && Snitch.text != null) 
                 {
                     UnityEngine.Object.Destroy(Snitch.text);
                 }
@@ -377,7 +377,8 @@ namespace TownOfSushi.Patches
 
 
             // check if dying player was a selected player (but not confirmed yet)
-            for (int i = 0; i < __instance.playerStates.Count; i++) {
+            for (int i = 0; i < __instance.playerStates.Count; i++) 
+            {
                 reset = reset || selections[i] && __instance.playerStates[i].TargetPlayerId == dyingPlayerId;
                 if (reset) break;
             }
@@ -385,7 +386,8 @@ namespace TownOfSushi.Patches
             if (!reset) return;
 
 
-            for (int i = 0; i < selections.Length; i++) {
+            for (int i = 0; i < selections.Length; i++) 
+            {
                 selections[i] = false;
                 PlayerVoteArea playerVoteArea = __instance.playerStates[i];
                 if (playerVoteArea.AmDead || (playerVoteArea.TargetPlayerId == Swapper.Player.PlayerId && Swapper.canOnlySwapOthers)) continue;
@@ -481,8 +483,8 @@ namespace TownOfSushi.Patches
                 if (roleInfo.roleId == RoleId.Spy && roleData.impostors.Count <= 1) continue;
                 if (roleInfo.roleId == RoleId.Prosecutor && (CustomOptionHolder.lawyerIsProsecutorChance.GetSelection() == 0 || CustomOptionHolder.lawyerSpawnRate.GetSelection() == 0)) continue;
                 if (roleInfo.roleId == RoleId.Lawyer && (CustomOptionHolder.lawyerIsProsecutorChance.GetSelection() == 10 || CustomOptionHolder.lawyerSpawnRate.GetSelection() == 0)) continue;
-                if (Snitch.snitch != null && HandleGuesser.guesserCantGuessSnitch) {
-                    var (playerCompleted, playerTotal) = TasksHandler.TaskInfo(Snitch.snitch.Data);
+                if (Snitch.Player != null && HandleGuesser.guesserCantGuessSnitch) {
+                    var (playerCompleted, playerTotal) = TasksHandler.TaskInfo(Snitch.Player.Data);
                     int numberOfLeftTasks = playerTotal - playerCompleted;
                     if (numberOfLeftTasks <= 0 && roleInfo.roleId == RoleId.Snitch) continue;
                 }
@@ -517,7 +519,8 @@ namespace TownOfSushi.Patches
                         if (!(__instance.state == MeetingHud.VoteStates.Voted || __instance.state == MeetingHud.VoteStates.NotVoted) || focusedTarget == null || HandleGuesser.RemainingShots(PlayerControl.LocalPlayer.PlayerId) <= 0 ) return;
 
                         if (!HandleGuesser.killsThroughShield && focusedTarget == Medic.shielded) 
-                        { // Depending on the options, shooting the shielded player will not allow the guess, notifiy everyone about the kill attempt and close the window
+                        {
+                        // Depending on the options, shooting the shielded player will not allow the guess, notifiy everyone about the kill attempt and close the window
                             __instance.playerStates.ToList().ForEach(x => x.gameObject.SetActive(true)); 
                             UnityEngine.Object.Destroy(container.gameObject);
 
@@ -630,16 +633,20 @@ namespace TownOfSushi.Patches
                 meetingExtraButtonParent.localScale = new Vector3(0.55f, 0.55f, 1f);
                 meetingExtraButtonLabel.alignment = TMPro.TextAlignmentOptions.Center;
                 meetingExtraButtonLabel.transform.localPosition = new Vector3(0, 0, meetingExtraButtonLabel.transform.localPosition.z);
-                if (addSwapperButtons) {
+                if (addSwapperButtons) 
+                {
                     meetingExtraButtonLabel.transform.localScale *= 1.7f;
                     meetingExtraButtonLabel.text = Helpers.ColorString(Color.red, "Confirm Swap");
-                } else if (addMayorButton) {
+                } 
+                else if (addMayorButton) 
+                {
                     meetingExtraButtonLabel.transform.localScale = new Vector3(meetingExtraButtonLabel.transform.localScale.x * 1.5f, meetingExtraButtonLabel.transform.localScale.x * 1.7f, meetingExtraButtonLabel.transform.localScale.x * 1.7f);
                     meetingExtraButtonLabel.text = Helpers.ColorString(Mayor.color, "Double Vote: " + (Mayor.voteTwice ? Helpers.ColorString(Color.green, "On ") : Helpers.ColorString(Color.red, "Off")));
                 }
                 PassiveButton passiveButton = meetingExtraButton.GetComponent<PassiveButton>();
                 passiveButton.OnClick.RemoveAllListeners();
-                if (!PlayerControl.LocalPlayer.Data.IsDead) {
+                if (!PlayerControl.LocalPlayer.Data.IsDead) 
+                {
                     if (addSwapperButtons)
                         passiveButton.OnClick.AddListener((Action)(() => SwapperConfirm(__instance)));
                     else if (addMayorButton)
@@ -683,7 +690,7 @@ namespace TownOfSushi.Patches
                 {
                     PlayerVoteArea playerVoteArea = __instance.playerStates[i];
                     if (playerVoteArea.AmDead || playerVoteArea.TargetPlayerId == PlayerControl.LocalPlayer.PlayerId) continue;
-                    if (PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer == Eraser.eraser && Eraser.alreadyErased.Contains(playerVoteArea.TargetPlayerId)) continue;
+                    if (PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer == Eraser.Player && Eraser.alreadyErased.Contains(playerVoteArea.TargetPlayerId)) continue;
                     if (PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.IsCrew() && playerCompleted < HandleGuesser.tasksToUnlock) continue;
 
                     GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
@@ -701,7 +708,8 @@ namespace TownOfSushi.Patches
         }
 
         [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.ServerStart))]
-        class MeetingServerStartPatch {
+        class MeetingServerStartPatch 
+        {
             static void Postfix(MeetingHud __instance)
             {
                 PopulateButtonsPostfix(__instance);
@@ -709,25 +717,29 @@ namespace TownOfSushi.Patches
         }
 
         [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Deserialize))]
-        class MeetingDeserializePatch {
+        class MeetingDeserializePatch 
+        {
             static void Postfix(MeetingHud __instance, [HarmonyArgument(0)]MessageReader reader, [HarmonyArgument(1)]bool initialState)
             {
                 // Add swapper buttons
-                if (initialState) {
+                if (initialState) 
+                {
                     PopulateButtonsPostfix(__instance);
                 }
             }
         }
 
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.StartMeeting))]
-        class StartMeetingPatch {
-            public static void Prefix(PlayerControl __instance, [HarmonyArgument(0)]NetworkedPlayerInfo meetingTarget) {
+        class StartMeetingPatch 
+        {
+            public static void Prefix(PlayerControl __instance, [HarmonyArgument(0)]NetworkedPlayerInfo meetingTarget) 
+            {
                 RoomTracker roomTracker = FastDestroyableSingleton<HudManager>.Instance?.roomTracker;
                 byte roomId = Byte.MinValue;
                 if (roomTracker != null && roomTracker.LastRoom != null) {
                     roomId = (byte)roomTracker.LastRoom?.RoomId;
                 }
-                if (Snitch.snitch != null && roomTracker != null) {
+                if (Snitch.Player != null && roomTracker != null) {
                     MessageWriter roomWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareRoom, Hazel.SendOption.Reliable, -1);
                     roomWriter.Write(PlayerControl.LocalPlayer.PlayerId);
                     roomWriter.Write(roomId);
@@ -738,7 +750,7 @@ namespace TownOfSushi.Patches
                 Bait.active = new Dictionary<DeadPlayer, float>();
                 // Save AntiTeleport position, if the player is able to move (i.e. not on a ladder or a gap thingy)
                 if (PlayerControl.LocalPlayer.MyPhysics.enabled && (PlayerControl.LocalPlayer.moveable || PlayerControl.LocalPlayer.inVent
-                    || HudManagerStartPatch.hackerVitalsButton.isEffectActive || HudManagerStartPatch.hackerAdminTableButton.isEffectActive || HudManagerStartPatch.securityGuardCamButton.isEffectActive
+                    || HudManagerStartPatch.hackerVitalsButton.isEffectActive || HudManagerStartPatch.hackerAdminTableButton.isEffectActive || HudManagerStartPatch.VigilanteCamButton.isEffectActive
                     || Portal.isTeleporting && Portal.teleportedPlayers.Last().playerId == PlayerControl.LocalPlayer.PlayerId)) {
                     if (!PlayerControl.LocalPlayer.inMovingPlat)
                         AntiTeleport.position = PlayerControl.LocalPlayer.transform.position;
@@ -758,7 +770,7 @@ namespace TownOfSushi.Patches
 
 
                 // Add Portal info into Portalmaker Chat:
-                if (Portalmaker.portalmaker != null && (PlayerControl.LocalPlayer == Portalmaker.portalmaker || Helpers.ShouldShowGhostInfo()) && !Portalmaker.portalmaker.Data.IsDead) {
+                if (Portalmaker.Player != null && (PlayerControl.LocalPlayer == Portalmaker.Player || Helpers.ShouldShowGhostInfo()) && !Portalmaker.Player.Data.IsDead) {
                     if (Portal.teleportedPlayers.Count > 0) {
                         string msg = "Portal Log:\n";
                         foreach (var entry in Portal.teleportedPlayers) {
@@ -766,36 +778,39 @@ namespace TownOfSushi.Patches
                             msg += Portalmaker.logShowsTime ? $"{(int)timeBeforeMeeting}s ago: " : "";
                             msg = msg + $"{entry.name} used the teleporter\n";
                         }
-                        FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(Portalmaker.portalmaker, $"{msg}");
+                        FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(Portalmaker.Player, $"{msg}");
                     }
                 }
 
                 // Add trapped Info into Trapper chat
-                if (Trapper.trapper != null && (PlayerControl.LocalPlayer == Trapper.trapper || Helpers.ShouldShowGhostInfo()) && !Trapper.trapper.Data.IsDead) {
+                if (Trapper.Player != null && (PlayerControl.LocalPlayer == Trapper.Player || Helpers.ShouldShowGhostInfo()) && !Trapper.Player.Data.IsDead) 
+                {
                     if (Trap.traps.Any(x => x.revealed))
-                        FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(Trapper.trapper, "Trap Logs:");
-                    foreach (Trap trap in Trap.traps) {
+                        FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(Trapper.Player, "Trap Logs:");
+                    foreach (Trap trap in Trap.traps) 
+                    {
                         if (!trap.revealed) continue;
                         string message = $"Trap {trap.instanceId}: \n";
                         trap.trappedPlayer = trap.trappedPlayer.OrderBy(x => rnd.Next()).ToList();
-                        foreach (PlayerControl p in trap.trappedPlayer) {
+                        foreach (PlayerControl p in trap.trappedPlayer) 
+                        {
                             if (Trapper.infoType == 0) message += RoleInfo.GetRolesString(p, false, false, true) + "\n";
                             else if (Trapper.infoType == 1) 
                             {
-                                if (Helpers.IsNeutral(p) || p.Data.Role.IsImpostor) message += "Evil Role \n";
+                                if (!p.IsCrew()) message += "Evil Role \n";
                                 else message += "Good Role \n";
                             }
                             else message += p.Data.PlayerName + "\n";
                         }
-                        FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(Trapper.trapper, $"{message}");
+                        FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(Trapper.Player, $"{message}");
                     }
                 }
 
                 // Add Snitch info
                 string output = "";
 
-                if (Snitch.snitch != null && Snitch.mode != Snitch.Mode.Map && (PlayerControl.LocalPlayer == Snitch.snitch || Helpers.ShouldShowGhostInfo()) && !Snitch.snitch.Data.IsDead) {
-                    var (playerCompleted, playerTotal) = TasksHandler.TaskInfo(Snitch.snitch.Data);
+                if (Snitch.Player != null && Snitch.mode != Snitch.Mode.Map && (PlayerControl.LocalPlayer == Snitch.Player || Helpers.ShouldShowGhostInfo()) && !Snitch.Player.Data.IsDead) {
+                    var (playerCompleted, playerTotal) = TasksHandler.TaskInfo(Snitch.Player.Data);
                     int numberOfTasks = playerTotal - playerCompleted;
                     if (numberOfTasks == 0) {
                         output = $"Bad alive roles in game: \n \n";
@@ -813,7 +828,7 @@ namespace TownOfSushi.Patches
                                     }
                                     output += "- " + RoleInfo.GetRolesString(p, false, false, true) + ", was last seen " + roomName + "\n";
                                 }
-                                FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(Snitch.snitch, $"{output}");
+                                FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(Snitch.Player, $"{output}");
                             }
                         })));
                     }
@@ -855,16 +870,17 @@ namespace TownOfSushi.Patches
 
         [HarmonyPrefix]
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.StartMeeting))]
-        public static void MeetingHudIntroPrefix() {
+        public static void MeetingHudIntroPrefix() 
+        {
             EventUtility.MeetingStartsUpdate();
         }
 
         [HarmonyPatch]
-        public class ShowHost {
+        public class ShowHost 
+        {
             private static TextMeshPro Text = null;
             [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
             [HarmonyPostfix]
-
             public static void Setup(MeetingHud __instance)
             {
                 if (AmongUsClient.Instance.NetworkMode != NetworkModes.OnlineGame) return;
@@ -879,14 +895,15 @@ namespace TownOfSushi.Patches
             [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Update))]
             [HarmonyPostfix]
 
-            public static void Postfix(MeetingHud __instance) {
+            public static void Postfix(MeetingHud __instance) 
+            {
                 var host = GameData.Instance.GetHost();
 
                 if (host != null)
                 {
                     PlayerMaterial.SetColors(host.DefaultOutfit.ColorId, __instance.HostIcon);
                     if (Text == null) Text = __instance.ProceedButton.gameObject.GetComponentInChildren<TextMeshPro>();
-                    Text.text = $"host: {host.PlayerName}";
+                    Text.text = $"LOBBY HOST: {host.PlayerName}";
                 }
             }
         }

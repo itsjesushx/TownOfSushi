@@ -41,7 +41,7 @@ namespace TownOfSushi.Objects
             var trapRenderer = trap.AddComponent<SpriteRenderer>();
             trapRenderer.sprite = GetTrapSprite();
             trap.SetActive(false);
-            if (PlayerControl.LocalPlayer.PlayerId == Trapper.trapper.PlayerId  || PlayerControl.LocalPlayer.Data.IsDead) trap.SetActive(true);
+            if (PlayerControl.LocalPlayer.PlayerId == Trapper.Player.PlayerId  || PlayerControl.LocalPlayer.Data.IsDead) trap.SetActive(true);
             trapRenderer.color = Color.white * new Vector4(1, 1, 1, 0.5f);
             this.instanceId = ++instanceCounter;
             traps.Add(this);
@@ -80,12 +80,12 @@ namespace TownOfSushi.Objects
         {
             Trap t = traps.FirstOrDefault(x => x.instanceId == (int)trapId);
             PlayerControl player = Helpers.PlayerById(playerId);
-            if (Trapper.trapper == null || t == null || player == null) return;
-            bool localIsTrapper = PlayerControl.LocalPlayer.PlayerId == Trapper.trapper.PlayerId;
+            if (Trapper.Player == null || t == null || player == null) return;
+            bool localIsTrapper = PlayerControl.LocalPlayer.PlayerId == Trapper.Player.PlayerId;
             if (!trapPlayerIdMap.ContainsKey(playerId)) trapPlayerIdMap.Add(playerId, t);
             t.usedCount ++;
             t.triggerable = false;
-            if (playerId == PlayerControl.LocalPlayer.PlayerId || playerId == Trapper.trapper.PlayerId) 
+            if (playerId == PlayerControl.LocalPlayer.PlayerId || playerId == Trapper.Player.PlayerId) 
             {
                 t.trap.SetActive(true);
                 SoundEffectsManager.Play("trapperTrap");
@@ -117,7 +117,7 @@ namespace TownOfSushi.Objects
 
         public static void Update() 
         {
-            if (Trapper.trapper == null) return;
+            if (Trapper.Player == null) return;
             var player = PlayerControl.LocalPlayer;
             Vent vent = MapUtilities.CachedShipStatus.AllVents[0];
             float closestDistance = float.MaxValue;
@@ -136,7 +136,7 @@ namespace TownOfSushi.Objects
                     target = trap;
                 }
             }
-            if (target != null && player.PlayerId != Trapper.trapper.PlayerId && !player.Data.IsDead) 
+            if (target != null && player.PlayerId != Trapper.Player.PlayerId && !player.Data.IsDead) 
             {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.TriggerTrap, Hazel.SendOption.Reliable, -1);
                 writer.Write(player.PlayerId);
@@ -146,7 +146,7 @@ namespace TownOfSushi.Objects
             }
 
 
-            if (!player.Data.IsDead || player.PlayerId == Trapper.trapper.PlayerId) return;
+            if (!player.Data.IsDead || player.PlayerId == Trapper.Player.PlayerId) return;
             foreach (Trap trap in traps) 
             {
                 if (!trap.trap.active) trap.trap.SetActive(true);

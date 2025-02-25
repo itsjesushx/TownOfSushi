@@ -8,7 +8,8 @@ using static TownOfSushi.TownOfSushi;
 
 namespace TownOfSushi.Objects 
 {
-    public class CustomButton {
+    public class CustomButton 
+    {
         public static List<CustomButton> buttons = new List<CustomButton>();
         public ActionButton actionButton;
         public GameObject actionButtonGameObject;
@@ -37,7 +38,8 @@ namespace TownOfSushi.Objects
         public bool isHacked = false;
         private static readonly int Desat = Shader.PropertyToID("_Desat");
 
-        public static class ButtonPositions {
+        public static class ButtonPositions 
+        {
             public static readonly Vector3 lowerRowRight = new Vector3(-2f, -0.06f, 0);  // Not usable for imps beacuse of new button positions!
             public static readonly Vector3 lowerRowCenter = new Vector3(-3f, -0.06f, 0);
             public static readonly Vector3 lowerRowLeft = new Vector3(-4f, -0.06f, 0);
@@ -91,7 +93,8 @@ namespace TownOfSushi.Objects
                 // Glitch skip onClickEvent if Hacked
                 if (Glitch.HackedKnows.ContainsKey(PlayerControl.LocalPlayer.PlayerId) && Glitch.HackedKnows[PlayerControl.LocalPlayer.PlayerId] > 0f) return;
 
-                if (this.HasEffect && !this.isEffectActive) {
+                if (this.HasEffect && !this.isEffectActive) 
+                {
                     this.GlitchTimer = this.EffectDuration;
                     this.Timer = this.EffectDuration;
                     actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
@@ -173,7 +176,8 @@ namespace TownOfSushi.Objects
             }
             SetActive(hudManager.UseButton.isActiveAndEnabled || hudManager.PetButton.isActiveAndEnabled);
 
-            if (GlitchTimer >= 0) { // This had to be reordered, so that the handcuffs do not stop the underlying timers from running
+            if (GlitchTimer >= 0) 
+            { // This had to be reordered, so that the hacks do not stop the underlying timers from running
                 if (HasEffect && isEffectActive)
                     GlitchTimer -= Time.deltaTime;
                 else if (!localPlayer.inVent && moveable)
@@ -222,7 +226,8 @@ namespace TownOfSushi.Objects
                     Timer -= Time.deltaTime;
             }
             
-            if (Timer <= 0 && HasEffect && isEffectActive) {
+            if (Timer <= 0 && HasEffect && isEffectActive) 
+            {
                 isEffectActive = false;
                 actionButton.cooldownTimerText.color = Palette.EnabledColor;
                 OnEffectEnds();
@@ -233,7 +238,7 @@ namespace TownOfSushi.Objects
             // Trigger OnClickEvent if the hotkey is being pressed down
             if (hotkey.HasValue && Input.GetKeyDown(hotkey.Value)) onClickEvent();
 
-            // Glitch disable the button and display Handcuffs instead...
+            // Glitch disable the button and display Hack instead...
             if (Glitch.HackedPlayers.Contains(localPlayer.PlayerId)) 
             {
                 OnClick = () =>

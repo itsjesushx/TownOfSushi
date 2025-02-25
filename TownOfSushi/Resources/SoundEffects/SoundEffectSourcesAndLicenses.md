@@ -28,9 +28,9 @@
 |tricksterUseBoxVent | |[rubber duck -CsG-.wav](https://freesound.org/people/csaszi/sounds/350917/) | CC0 1.0 |
 |warlockCurse | | [Buffer Spell](https://freesound.org/people/deleted_user_3277771/sounds/176741/ ) | CC0 1.0 |
 |warlockKill | (already has a sound) |-|-|
-|securityGuardPlaceCam | combined | [drilling a screw into wood.wav](https://freesound.org/people/chewiesmissus/sounds/244242/ ) + [hammer v3.wav](https://freesound.org/people/blukotek/sounds/337814/ ) | CC0 1.0 both|
-|securityGuardSealVent | same as securityGuardPlaceCam |-|-|
-|securityGuardCam | (already has a sound) |-|-|
+|VigilantePlaceCam | combined | [drilling a screw into wood.wav](https://freesound.org/people/chewiesmissus/sounds/244242/ ) + [hammer v3.wav](https://freesound.org/people/blukotek/sounds/337814/ ) | CC0 1.0 both|
+|VigilanteSealVent | same as VigilantePlaceCam |-|-|
+|VigilanteCam | (already has a sound) |-|-|
 |arsonistDouse | | [Water Pouring Out of Bucket](https://freesound.org/people/Breviceps/sounds/508178/ )| CC0 1.0 |
 |vultureEat | combined | [Vulture](https://freesound.org/people/AntumDeluge/sounds/188041/ ) + [Eating Crisps](https://freesound.org/people/Sethroph/sounds/334209/ )| CC0 1.0 both| |
 |mediumAsk| |[ghost_sounds.wav](https://freesound.org/people/fishwithfeathers/sounds/177768/ )| CC0 1.0|

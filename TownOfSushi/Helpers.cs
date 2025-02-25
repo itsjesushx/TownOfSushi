@@ -147,7 +147,7 @@ namespace TownOfSushi
         public static void HandleVampireBiteOnBodyReport() 
         {
             // Murder the bitten player and reset bitten (regardless whether the kill was successful or not)
-            Helpers.CheckMurderAttemptAndKill(Vampire.vampire, Vampire.bitten, true, false);
+            Helpers.CheckMurderAttemptAndKill(Vampire.Player, Vampire.bitten, true, false);
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.VampireSetBitten, Hazel.SendOption.Reliable, -1);
             writer.Write(byte.MaxValue);
             writer.Write(byte.MaxValue);
@@ -254,7 +254,7 @@ namespace TownOfSushi
 
         public static bool HasFakeTasks(this PlayerControl player) 
         {
-            return player == Jester.jester || player.IsNeutralKiller() || player == Arsonist.arsonist || player == Vulture.vulture;
+            return player == Jester.jester || player == Romantic.Player || player.IsNeutralKiller() || player == Arsonist.Player || player == Vulture.Player;
         }
         
 
@@ -394,9 +394,9 @@ namespace TownOfSushi
             else if (!MapOptions.hidePlayerNames) return false; // All names are visible
             else if (source == null || target == null) return true;
             else if (source == target) return false; // Player sees his own name
-            else if (source.Data.Role.IsImpostor && (target.Data.Role.IsImpostor || target == Spy.spy || target == Sidekick.sidekick && Sidekick.wasTeamRed || target == Jackal.jackal && Jackal.wasTeamRed)) return false; // Members of team Impostors see the names of Impostors/Spies
+            else if (source.Data.Role.IsImpostor && (target.Data.Role.IsImpostor || target == Spy.Player || target == Sidekick.Player && Sidekick.wasTeamRed || target == Jackal.Player && Jackal.wasTeamRed)) return false; // Members of team Impostors see the names of Impostors/Spies
             else if ((source == Lovers.Lover1 || source == Lovers.Lover2) && (target == Lovers.Lover1 || target == Lovers.Lover2)) return false; // Members of team Lovers see the names of each other
-            else if ((source == Jackal.jackal || source == Sidekick.sidekick) && (target == Jackal.jackal || target == Sidekick.sidekick || target == Jackal.fakeSidekick)) return false; // Members of team Jackal see the names of each other
+            else if ((source == Jackal.Player || source == Sidekick.Player) && (target == Jackal.Player || target == Sidekick.Player || target == Jackal.fakeSidekick)) return false; // Members of team Jackal see the names of each other
             return true;
         }
 
@@ -478,31 +478,31 @@ namespace TownOfSushi
         public static bool RoleCanUseVents(this PlayerControl player) 
         {
             bool roleCouldUse = false;
-            if (Engineer.engineer != null && Engineer.engineer == player)
+            if (Engineer.Player != null && Engineer.Player == player)
                 roleCouldUse = true;
-            else if (Jackal.canUseVents && Jackal.jackal != null && Jackal.jackal == player)
+            else if (Jackal.canUseVents && Jackal.Player != null && Jackal.Player == player)
                 roleCouldUse = true;
             else if (VengefulRomantic.CanUseVents && VengefulRomantic.Player != null && VengefulRomantic.Player == player)
                 roleCouldUse = true;
             else if (Werewolf.CanUseVents && Werewolf.Player != null && Werewolf.Player == player)
                 roleCouldUse = true;
-            else if (Sidekick.canUseVents && Sidekick.sidekick != null && Sidekick.sidekick == player)
+            else if (Sidekick.canUseVents && Sidekick.Player != null && Sidekick.Player == player)
                 roleCouldUse = true;
-            else if (Spy.canEnterVents && Spy.spy != null && Spy.spy == player)
+            else if (Spy.canEnterVents && Spy.Player != null && Spy.Player == player)
                 roleCouldUse = true;
             else if (SerialKiller.CanUseVents && SerialKiller.Player != null && SerialKiller.Player == player)
                 roleCouldUse = true;
             else if (Glitch.canEnterVents && Glitch.Player != null && Glitch.Player == player)
                 roleCouldUse = true;
-            else if (Vulture.canUseVents && Vulture.vulture != null && Vulture.vulture == player)
+            else if (Vulture.canUseVents && Vulture.Player != null && Vulture.Player == player)
                 roleCouldUse = true;
-            else if (Thief.canUseVents &&  Thief.thief != null && Thief.thief == player)
+            else if (Thief.canUseVents &&  Thief.Player != null && Thief.Player == player)
                 roleCouldUse = true;
             else if (player.Data?.Role != null && player.Data.Role.CanVent)  
             {
-                if (Janitor.janitor != null && Janitor.janitor == PlayerControl.LocalPlayer)
+                if (Janitor.Player != null && Janitor.Player == PlayerControl.LocalPlayer)
                     roleCouldUse = false;
-                else if (Mafioso.mafioso != null && Mafioso.mafioso == PlayerControl.LocalPlayer && Godfather.godfather != null && !Godfather.godfather.Data.IsDead)
+                else if (Mafioso.mafioso != null && Mafioso.mafioso == PlayerControl.LocalPlayer && Godfather.Player != null && !Godfather.Player.Data.IsDead)
                     roleCouldUse = false;
                 else
                     roleCouldUse = true;
@@ -510,15 +510,17 @@ namespace TownOfSushi
             return roleCouldUse;
         }
 
-        public static bool CheckArmored(PlayerControl target, bool breakShield, bool showShield, bool additionalCondition = true) 
+        public static bool CheckArmored(PlayerControl target, bool breakShield, bool showShield, bool additionalCondition = true)
         {
-            if (target != null && Armored.armored != null && Armored.armored == target && !Armored.isBrokenArmor && additionalCondition) {
-                if (breakShield) {
+            if (target != null && Armored.Player != null && Armored.Player == target && !Armored.isBrokenArmor && additionalCondition) {
+                if (breakShield) 
+                {
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.BreakArmor, Hazel.SendOption.Reliable, -1);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                     RPCProcedure.BreakArmor();
                 }
-                if (showShield) {
+                if (showShield) 
+                {
                     target.ShowFailedMurder();
                 }
                 return true;
@@ -559,7 +561,7 @@ namespace TownOfSushi
             }
 
             // Block impostor not fully grown mini kill
-            else if (Mini.mini != null && target == Mini.mini && !Mini.IsGrownUp()) 
+            else if (Mini.Player != null && target == Mini.Player && !Mini.IsGrownUp()) 
             {
                 return MurderAttemptResult.SuppressKill;
             }
@@ -602,7 +604,7 @@ namespace TownOfSushi
                 return MurderAttemptResult.BlankKill;
             }
             
-            if (TransportationToolPatches.isUsingTransportation(target) && !blockRewind && killer == Vampire.vampire) 
+            if (TransportationToolPatches.isUsingTransportation(target) && !blockRewind && killer == Vampire.Player) 
             {
                 return MurderAttemptResult.DelayVampireKill;
             } 
@@ -671,11 +673,20 @@ namespace TownOfSushi
             List<PlayerControl> team = new List<PlayerControl>();
             foreach(PlayerControl p in PlayerControl.AllPlayerControls) {
                 if (player.Data.Role.IsImpostor && p.Data.Role.IsImpostor && player.PlayerId != p.PlayerId && team.All(x => x.PlayerId != p.PlayerId)) team.Add(p);
-                else if (player == Jackal.jackal && p == Sidekick.sidekick) team.Add(p); 
-                else if (player == Sidekick.sidekick && p == Jackal.jackal) team.Add(p);
+                else if (player == Jackal.Player && p == Sidekick.Player) team.Add(p); 
+                else if (player == Sidekick.Player && p == Jackal.Player) team.Add(p);
             }
             
             return team;
+        }
+
+        public static void Shuffle<T>(this List<T> list)
+        {
+            for (var i = list.Count - 1; i > 0; --i)
+            {
+                var j = UnityEngine.Random.Range(0, i + 1);
+                (list[i], list[j]) = (list[j], list[i]);
+            }
         }
 
         public static bool IsWinner(this string playerName)
@@ -714,6 +725,13 @@ namespace TownOfSushi
             RoleInfo roleInfo = RoleInfo.GetRoleInfoForPlayer(player, false).FirstOrDefault();
             if (roleInfo != null)
                 return roleInfo.FactionId == Factions.Crewmate;
+            return false;
+        }
+        public static bool IsImp(this PlayerControl player) 
+        {
+            RoleInfo roleInfo = RoleInfo.GetRoleInfoForPlayer(player, false).FirstOrDefault();
+            if (roleInfo != null)
+                return roleInfo.FactionId == Factions.Impostor;
             return false;
         }
         public static bool CheckVeteranAlertKill(this PlayerControl target)
@@ -787,15 +805,15 @@ namespace TownOfSushi
         public static bool HasImpVision(NetworkedPlayerInfo player) 
         {
             return player.Role.IsImpostor
-                || Jackal.jackal != null && Jackal.jackal.PlayerId == player.PlayerId || Jackal.formerJackals.Any(x => x.PlayerId == player.PlayerId)
-                || (Sidekick.sidekick != null && Sidekick.sidekick.PlayerId == player.PlayerId)
+                || Jackal.Player != null && Jackal.Player.PlayerId == player.PlayerId || Jackal.formerJackals.Any(x => x.PlayerId == player.PlayerId)
+                || (Sidekick.Player != null && Sidekick.Player.PlayerId == player.PlayerId)
                 || (Glitch.Player != null && Glitch.Player.PlayerId == player.PlayerId)
                 || (Werewolf.Player != null && Werewolf.Player.PlayerId == player.PlayerId)
                 || (VengefulRomantic.Player != null && VengefulRomantic.Player.PlayerId == player.PlayerId)
                 || (SerialKiller.Player != null && SerialKiller.HasImpostorVision && SerialKiller.Player.PlayerId == player.PlayerId)
-                || (Spy.spy != null && Spy.spy.PlayerId == player.PlayerId && Spy.hasImpostorVision)
+                || (Spy.Player != null && Spy.Player.PlayerId == player.PlayerId && Spy.hasImpostorVision)
                 || (Jester.jester != null && Jester.jester.PlayerId == player.PlayerId && Jester.hasImpostorVision)
-                || (Thief.thief != null && Thief.thief.PlayerId == player.PlayerId && Thief.hasImpostorVision);
+                || (Thief.Player != null && Thief.Player.PlayerId == player.PlayerId && Thief.hasImpostorVision);
         }
         
         public static object TryCast(this Il2CppObjectBase self, Type type)

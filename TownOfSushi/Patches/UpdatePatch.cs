@@ -13,7 +13,8 @@ namespace TownOfSushi.Patches
     class HudManagerUpdatePatch
     {
         private static Dictionary<byte, (string name, Color color)> TagColorDict = new();
-        static void ResetNameTagsAndColors() {
+        static void ResetNameTagsAndColors() 
+        {
             var localPlayer = PlayerControl.LocalPlayer;
             var myData = PlayerControl.LocalPlayer.Data;
             var amImpostor = myData.Role.IsImpostor;
@@ -34,7 +35,7 @@ namespace TownOfSushi.Patches
                 if (player)
                 {
                     var playerName = text;
-                    if (morphTimerNotUp && morphTargetNotNull && Morphling.morphling == player) playerName = Morphling.morphTarget.Data.PlayerName;
+                    if (morphTimerNotUp && morphTargetNotNull && Morphling.Player == player) playerName = Morphling.morphTarget.Data.PlayerName;
                     if (glitchTimerNotUp && glitchTargetNotNull && Glitch.Player == player) playerName = Glitch.MimicTarget.Data.PlayerName;
                     var nameText = player.cosmetics.nameText;
                 
@@ -72,121 +73,89 @@ namespace TownOfSushi.Patches
                         player.NameText.color = color;
         }
 
+        static void UpdateOracle(MeetingHud __instance)
+        {
+            foreach (var player in PlayerControl.AllPlayerControls)
+            {
+                foreach (var state in __instance.playerStates)
+                {
+                    if (player.PlayerId != state.TargetPlayerId) continue;
+                    if (player == Oracle.Confessor)
+                    {
+                        if (Oracle.RevealedFaction == Factions.Crewmate) state.NameText.text = state.NameText.text + $" <size=60%>(<color=#00FFFFFF>{Oracle.Accuracy}% Crew</color>) </size>";
+                        else if (Oracle.RevealedFaction == Factions.Impostor) state.NameText.text = state.NameText.text + $" <size=60%>(<color=#FF0000FF>{Oracle.Accuracy}% Imp</color>) </size>";
+                        else state.NameText.text = state.NameText.text + $" <size=60%>(<color=#808080FF>{Oracle.Accuracy}% Neut</color>) </size>";
+                    }
+                }
+            }
+        }
+
         static void SetNameColors() 
         {
             var localPlayer = PlayerControl.LocalPlayer;
             var localRole = RoleInfo.GetRoleInfoForPlayer(localPlayer, false).FirstOrDefault();
             SetPlayerNameColor(localPlayer, localRole.color);
-
-            /*if (Jester.jester != null && Jester.jester == localPlayer)
-                setPlayerNameColor(Jester.jester, Jester.color);
-            else if (Mayor.Player != null && Mayor.Player == localPlayer)
-                setPlayerNameColor(Mayor.Player, Mayor.color);
-            else if (Engineer.engineer != null && Engineer.engineer == localPlayer)
-                setPlayerNameColor(Engineer.engineer, Engineer.color); else*/
-           /*else if (Portalmaker.portalmaker != null && Portalmaker.portalmaker == localPlayer)
-                setPlayerNameColor(Portalmaker.portalmaker, Portalmaker.color);
-            else if (Lighter.Player != null && Lighter.Player == localPlayer)
-                setPlayerNameColor(Lighter.Player, Lighter.color);
-            else if (Detective.Player != null && Detective.Player == localPlayer)
-                setPlayerNameColor(Detective.Player, Detective.color);
-            else if (TimeMaster.Player != null && TimeMaster.Player == localPlayer)
-                setPlayerNameColor(TimeMaster.Player, TimeMaster.color);
-            else if (Medic.Player != null && Medic.Player == localPlayer)
-                setPlayerNameColor(Medic.Player, Medic.color);
-            else if (Shifter.shifter != null && Shifter.shifter == localPlayer)
-                setPlayerNameColor(Shifter.shifter, Shifter.color);
-            else if (Swapper.Player != null && Swapper.Player == localPlayer)
-                setPlayerNameColor(Swapper.Player, Swapper.color);
-            else if (Mystic.Player != null && Mystic.Player == localPlayer)
-                setPlayerNameColor(Mystic.Player, Mystic.color);
-            else if (Hacker.hacker != null && Hacker.hacker == localPlayer)
-                setPlayerNameColor(Hacker.hacker, Hacker.color);
-            else if (Tracker.tracker != null && Tracker.tracker == localPlayer)
-                setPlayerNameColor(Tracker.tracker, Tracker.color);
-            else if (Snitch.snitch != null && Snitch.snitch == localPlayer)
-                setPlayerNameColor(Snitch.snitch, Snitch.color);*/
-            if (Jackal.jackal != null && Jackal.jackal == localPlayer) 
+            if (Jackal.Player != null && Jackal.Player == localPlayer) 
             {
                 // Jackal can see his sidekick
-                SetPlayerNameColor(Jackal.jackal, Jackal.color);
-                if (Sidekick.sidekick != null) 
+                SetPlayerNameColor(Jackal.Player, Jackal.color);
+                if (Sidekick.Player != null) 
                 {
-                    SetPlayerNameColor(Sidekick.sidekick, Jackal.color);
+                    SetPlayerNameColor(Sidekick.Player, Jackal.color);
                 }
                 if (Jackal.fakeSidekick != null) 
                 {
                     SetPlayerNameColor(Jackal.fakeSidekick, Jackal.color);
                 }
             }
-            /*else if (Spy.spy != null && Spy.spy == localPlayer) {
-                setPlayerNameColor(Spy.spy, Spy.color);
-            } else if (SecurityGuard.securityGuard != null && SecurityGuard.securityGuard == localPlayer) {
-                setPlayerNameColor(SecurityGuard.securityGuard, SecurityGuard.color);
-            } else if (Arsonist.arsonist != null && Arsonist.arsonist == localPlayer) {
-                setPlayerNameColor(Arsonist.arsonist, Arsonist.color);
-            } else if (Guesser.niceGuesser != null && Guesser.niceGuesser == localPlayer) {
-                setPlayerNameColor(Guesser.niceGuesser, Guesser.color);
-            } else if (Guesser.evilGuesser != null && Guesser.evilGuesser == localPlayer) {
-                setPlayerNameColor(Guesser.evilGuesser, Palette.ImpostorRed);
-            } else if (Vulture.vulture != null && Vulture.vulture == localPlayer) {
-                setPlayerNameColor(Vulture.vulture, Vulture.color);
-            } else if (Medium.medium != null && Medium.medium == localPlayer) {
-                setPlayerNameColor(Medium.medium, Medium.color);
-            } else if (Trapper.trapper != null && Trapper.trapper == localPlayer) {
-                setPlayerNameColor(Trapper.trapper, Trapper.color);
-            } else if (Lawyer.Player != null && Lawyer.Player == localPlayer) {
-                setPlayerNameColor(Lawyer.Player, Lawyer.color);
-            } else if (Pursuer.pursuer != null && Pursuer.pursuer == localPlayer) {
-                setPlayerNameColor(Pursuer.pursuer, Pursuer.color);
-            }*/
 
             // No else if here, as a Lover of team Jackal needs the colors
-            if (Sidekick.sidekick != null && Sidekick.sidekick == localPlayer) 
+            if (Sidekick.Player != null && Sidekick.Player == localPlayer) 
             {
                 // Sidekick can see the jackal
-                SetPlayerNameColor(Sidekick.sidekick, Sidekick.color);
-                if (Jackal.jackal != null) {
-                    SetPlayerNameColor(Jackal.jackal, Jackal.color);
+                SetPlayerNameColor(Sidekick.Player, Sidekick.color);
+                if (Jackal.Player != null) {
+                    SetPlayerNameColor(Jackal.Player, Jackal.color);
                 }
             }
 
             // No else if here, as the Impostors need the Spy name to be colored
-            if (Spy.spy != null && localPlayer.Data.Role.IsImpostor) {
-                SetPlayerNameColor(Spy.spy, Spy.color);
+            if (Spy.Player != null && localPlayer.Data.Role.IsImpostor) {
+                SetPlayerNameColor(Spy.Player, Spy.color);
             }
-            if (Sidekick.sidekick != null && Sidekick.wasTeamRed && localPlayer.Data.Role.IsImpostor) 
+            if (Sidekick.Player != null && Sidekick.wasTeamRed && localPlayer.Data.Role.IsImpostor) 
             {
-                SetPlayerNameColor(Sidekick.sidekick, Spy.color);
+                SetPlayerNameColor(Sidekick.Player, Spy.color);
             }
-            if (Jackal.jackal != null && Jackal.wasTeamRed && localPlayer.Data.Role.IsImpostor) 
+            if (Jackal.Player != null && Jackal.wasTeamRed && localPlayer.Data.Role.IsImpostor) 
             {
-                SetPlayerNameColor(Jackal.jackal, Spy.color);
+                SetPlayerNameColor(Jackal.Player, Spy.color);
             }
 
             // Crewmate roles with no changes: Mini
             // Impostor roles with no changes: Morphling, Camouflager, Vampire, Godfather, Eraser, Janitor, Cleaner, Warlock, BountyHunter,  Witch and Mafioso
         }
 
-        static void setNameTags() {
+        static void SetNameTags() 
+        {
             // Mafia
             if (PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.Data.Role.IsImpostor) 
             {
                 foreach (PlayerControl player in PlayerControl.AllPlayerControls)
-                    if (Godfather.godfather != null && Godfather.godfather == player)
+                    if (Godfather.Player != null && Godfather.Player == player)
                             player.cosmetics.nameText.text = player.Data.PlayerName + " (G)";
                     else if (Mafioso.mafioso != null && Mafioso.mafioso == player)
                             player.cosmetics.nameText.text = player.Data.PlayerName + " (M)";
-                    else if (Janitor.janitor != null && Janitor.janitor == player)
+                    else if (Janitor.Player != null && Janitor.Player == player)
                             player.cosmetics.nameText.text = player.Data.PlayerName + " (J)";
                 if (MeetingHud.Instance != null)
                     foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
-                        if (Godfather.godfather != null && Godfather.godfather.PlayerId == player.TargetPlayerId)
-                            player.NameText.text = Godfather.godfather.Data.PlayerName + " (G)";
+                        if (Godfather.Player != null && Godfather.Player.PlayerId == player.TargetPlayerId)
+                            player.NameText.text = Godfather.Player.Data.PlayerName + " (G)";
                         else if (Mafioso.mafioso != null && Mafioso.mafioso.PlayerId == player.TargetPlayerId)
                             player.NameText.text = Mafioso.mafioso.Data.PlayerName + " (M)";
-                        else if (Janitor.janitor != null && Janitor.janitor.PlayerId == player.TargetPlayerId)
-                            player.NameText.text = Janitor.janitor.Data.PlayerName + " (J)";
+                        else if (Janitor.Player != null && Janitor.Player.PlayerId == player.TargetPlayerId)
+                            player.NameText.text = Janitor.Player.Data.PlayerName + " (J)";
             }
 
             // Lovers
@@ -240,7 +209,8 @@ namespace TownOfSushi.Patches
             if (MeetingHud.Instance != null && Medic.Player != null && Medic.shielded != null && Medic.ShieldVisible(Medic.shielded)) 
             {
                 foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
-                    if (player.TargetPlayerId == Medic.shielded.PlayerId) {
+                    if (player.TargetPlayerId == Medic.shielded.PlayerId) 
+                    {
                         player.NameText.text = Helpers.ColorString(Medic.color, "[") + player.NameText.text + Helpers.ColorString(Medic.color, "]");
                         // player.HighlightedFX.color = Medic.color;
                         // player.HighlightedFX.enabled = true;
@@ -252,8 +222,13 @@ namespace TownOfSushi.Patches
         {
             if (Medic.shielded == null) return;
 
-            if (Medic.shielded.Data.IsDead || Medic.Player == null || Medic.Player.Data.IsDead) {
+            if (Medic.shielded.Data.IsDead || Medic.Player == null || Medic.Player.Data.IsDead) 
+            {
                 Medic.shielded = null;
+            }
+            else if (Medic.Player.Data.IsDead) 
+            {
+                Medic.shielded.ShowFailedMurder();
             }
         }
 
@@ -270,7 +245,7 @@ namespace TownOfSushi.Patches
 
         public static void MiniUpdate() 
         {
-            if (Mini.mini == null || Camouflager.camouflageTimer > 0f || Helpers.MushroomSabotageActive() || Mini.mini == Morphling.morphling && Morphling.morphTimer > 0f || Mini.mini == Glitch.Player && Glitch.MimicTimer > 0f || Mini.mini == Ninja.ninja && Ninja.isInvisble || SurveillanceMinigamePatch.nightVisionIsActive) return;
+            if (Mini.Player == null || Camouflager.camouflageTimer > 0f || Helpers.MushroomSabotageActive() || Mini.Player == Morphling.Player && Morphling.morphTimer > 0f || Mini.Player == Glitch.Player && Glitch.MimicTimer > 0f || Mini.Player == Ninja.ninja && Ninja.isInvisble || SurveillanceMinigamePatch.nightVisionIsActive) return;
                 
             float growingProgress = Mini.GrowingProgress();
             float scale = growingProgress * 0.35f + 0.35f;
@@ -280,17 +255,17 @@ namespace TownOfSushi.Patches
             if (!Mini.isGrowingUpInMeeting && MeetingHud.Instance != null && Mini.ageOnMeetingStart != 0 && !(Mini.ageOnMeetingStart >= 18))
                 suffix = " <color=#FAD934FF>(" + Mini.ageOnMeetingStart + ")</color>";
 
-            Mini.mini.cosmetics.nameText.text += suffix;
+            Mini.Player.cosmetics.nameText.text += suffix;
             if (MeetingHud.Instance != null) 
             {
                 foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
-                    if (player.NameText != null && Mini.mini.PlayerId == player.TargetPlayerId)
+                    if (player.NameText != null && Mini.Player.PlayerId == player.TargetPlayerId)
                         player.NameText.text += suffix;
             }
 
-            if (Morphling.morphling != null && Morphling.morphTarget == Mini.mini && Morphling.morphTimer > 0f)
-                Morphling.morphling.cosmetics.nameText.text += suffix;
-            if (Glitch.Player != null && Glitch.MimicTarget == Mini.mini && Glitch.MimicTimer > 0f)
+            if (Morphling.Player != null && Morphling.morphTarget == Mini.Player && Morphling.morphTimer > 0f)
+                Morphling.Player.cosmetics.nameText.text += suffix;
+            if (Glitch.Player != null && Glitch.MimicTarget == Mini.Player && Glitch.MimicTimer > 0f)
                 Glitch.Player.cosmetics.nameText.text += suffix;
         }
 
@@ -302,11 +277,11 @@ namespace TownOfSushi.Patches
                 return;
             }
             bool enabled = true;
-            if (Vampire.vampire != null && Vampire.vampire == PlayerControl.LocalPlayer)
+            if (Vampire.Player != null && Vampire.Player == PlayerControl.LocalPlayer)
                 enabled = false;
-            else if (Mafioso.mafioso != null && Mafioso.mafioso == PlayerControl.LocalPlayer && Godfather.godfather != null && !Godfather.godfather.Data.IsDead)
+            else if (Mafioso.mafioso != null && Mafioso.mafioso == PlayerControl.LocalPlayer && Godfather.Player != null && !Godfather.Player.Data.IsDead)
                 enabled = false;
-            else if (Janitor.janitor != null && Janitor.janitor == PlayerControl.LocalPlayer)
+            else if (Janitor.Player != null && Janitor.Player == PlayerControl.LocalPlayer)
                 enabled = false;
             
             if (enabled) __instance.KillButton.Show();
@@ -331,11 +306,7 @@ namespace TownOfSushi.Patches
 
         static void UpdateUseButton(HudManager __instance) 
         {
-            if (MeetingHud.Instance || Helpers.TwoPlayersAlive() && MapOptions.LimitAbilities) __instance.UseButton.Hide();
-        }
-        static void UpdatePetButton(HudManager __instance) 
-        {
-            if (Helpers.TwoPlayersAlive() && MapOptions.LimitAbilities) __instance.PetButton.Hide();
+            if (MeetingHud.Instance) __instance.UseButton.Hide();
         }
 
         static void UpdateSabotageButton(HudManager __instance) 
@@ -346,7 +317,7 @@ namespace TownOfSushi.Patches
 
         static void UpdateMapButton(HudManager __instance) 
         {
-            if (Trapper.trapper == null || !(PlayerControl.LocalPlayer.PlayerId == Trapper.trapper.PlayerId) || __instance == null || __instance.MapButton.HeldButtonSprite == null) return;
+            if (Trapper.Player == null || !(PlayerControl.LocalPlayer.PlayerId == Trapper.Player.PlayerId) || __instance == null || __instance.MapButton.HeldButtonSprite == null) return;
             __instance.MapButton.HeldButtonSprite.color = Trapper.playersOnMap.Any() ? Trapper.color : Color.white;
         }
 
@@ -360,10 +331,13 @@ namespace TownOfSushi.Patches
             ResetNameTagsAndColors();
             SetNameColors();
             UpdateShielded();
-            setNameTags();
+            SetNameTags();
 
             // Impostors
             UpdateImpostorKillButton(__instance);
+
+            if (Oracle.Player.Data.IsDead || Oracle.Confessor == null) UpdateOracle(MeetingHud.Instance);
+
             // Timer updates
             TimerUpdate();
             // Mini
@@ -375,7 +349,6 @@ namespace TownOfSushi.Patches
             // Meeting hide buttons if needed (used for the map usage, because closing the map would show buttons)
             UpdateSabotageButton(__instance);
             UpdateUseButton(__instance);
-            UpdatePetButton(__instance);
             UpdateMapButton(__instance);
             if (!MeetingHud.Instance) __instance.AbilityButton?.Update();
 

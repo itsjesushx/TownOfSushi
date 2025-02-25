@@ -68,7 +68,7 @@ namespace TownOfSushi.Patches
         public static void UpdatePostfix(HauntMenuMinigame __instance) 
         {
             if (GameOptionsManager.Instance.currentGameOptions.GameMode != GameModes.Normal) return;
-            if (PlayerControl.LocalPlayer.Data.Role.IsImpostor && Vampire.vampire != PlayerControl.LocalPlayer)
+            if (PlayerControl.LocalPlayer.Data.Role.IsImpostor && Vampire.Player != PlayerControl.LocalPlayer)
                 __instance.gameObject.transform.localPosition = new UnityEngine.Vector3(-6f, -1.1f, __instance.gameObject.transform.localPosition.z);
             return;
         }

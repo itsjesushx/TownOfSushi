@@ -30,7 +30,8 @@ using System;
 using TownOfSushi.Utilities;
 using UnityEngine.Events;
 
-namespace TownOfSushi.Patches {
+namespace TownOfSushi.Patches 
+{
     [HarmonyPatch(typeof(RegionMenu), nameof(RegionMenu.Open))]
     public static class RegionMenuOpenPatch
     {
@@ -38,19 +39,23 @@ namespace TownOfSushi.Patches {
         private static TextBoxTMP portField;
         private static GameObject serverWarning;
 
-        public static void Postfix(RegionMenu __instance) {
+        public static void Postfix(RegionMenu __instance) 
+        {
             if (!__instance.TryCast<RegionMenu>()) return;
             bool isCustomRegion = FastDestroyableSingleton<ServerManager>.Instance.CurrentRegion.Name == "Custom";
             if (!isCustomRegion)
             {
-                if (ipField != null && ipField.gameObject != null) {
+                if (ipField != null && ipField.gameObject != null) 
+                {
                     ipField.gameObject.SetActive(false);
 
                 }
-                if (portField != null && portField.gameObject != null) {
+                if (portField != null && portField.gameObject != null) 
+                {
                     portField.gameObject.SetActive(false);
                 }
-            } else
+            } 
+            else
             {
                 if (ipField != null && ipField.gameObject != null)
                 {
@@ -64,15 +69,18 @@ namespace TownOfSushi.Patches {
             }
             var template = FastDestroyableSingleton<JoinGameButton>.Instance;
             var joinGameButtons = GameObject.FindObjectsOfType<JoinGameButton>();
-            foreach (var t in joinGameButtons) {  // The correct button has a background, the other 2 dont
-                if (t.GameIdText != null && t.GameIdText.Background != null) {
+            foreach (var t in joinGameButtons) 
+            {  // The correct button has a background, the other 2 dont
+                if (t.GameIdText != null && t.GameIdText.Background != null) 
+                {
                     template = t;
                     break;
                 }
             }
             if (template == null || template.GameIdText == null) return;
 
-            if (ipField == null || ipField.gameObject == null) {
+            if (ipField == null || ipField.gameObject == null) 
+            {
                 ipField = UnityEngine.Object.Instantiate(template.GameIdText, __instance.transform);
                 ipField.gameObject.name = "IpTextBox";
                 var arrow = ipField.transform.FindChild("arrowEnter");
@@ -84,7 +92,8 @@ namespace TownOfSushi.Patches {
                 ipField.AllowSymbols = true;
                 ipField.ForceUppercase = false;
                 ipField.SetText(TownOfSushiPlugin.Ip.Value);
-                __instance.StartCoroutine(Effects.Lerp(0.1f, new Action<float>((p) => {
+                __instance.StartCoroutine(Effects.Lerp(0.1f, new Action<float>((p) => 
+                {
                     ipField.outputText.SetText(TownOfSushiPlugin.Ip.Value);
                     ipField.SetText(TownOfSushiPlugin.Ip.Value);
                 })));
@@ -105,7 +114,8 @@ namespace TownOfSushi.Patches {
                 }
             }
 
-            if (portField == null || portField.gameObject == null) {
+            if (portField == null || portField.gameObject == null) 
+            {
                 portField = UnityEngine.Object.Instantiate(template.GameIdText, __instance.transform);
                 portField.gameObject.name = "PortTextBox";
                 var arrow = portField.transform.FindChild("arrowEnter");
@@ -143,14 +153,16 @@ namespace TownOfSushi.Patches {
                 }
             }
 
-            if (serverWarning == null) {
+            if (serverWarning == null) 
+            {
                 var tmplt = __instance.ButtonPool.activeChildren[^1] ;
                 serverWarning = new GameObject("serverWarning");  // GameObject.Instantiate(tmplt.transform.GetChild(0).gameObject, tmplt.transform);
                 var comp = serverWarning.AddComponent<TMPro.TextMeshPro>();  // serverWarning.GetComponent<TMPro.TextMeshPro>();
                 //serverWarning.transform.SetParent(tmplt.transform, true);
                 comp.fontSize = 0.2f;
                 serverWarning.transform.position = new Vector3(5f, 1f, -200f);
-                __instance.StartCoroutine(Effects.Lerp(0.1f, new Action<float>((p) => {
+                __instance.StartCoroutine(Effects.Lerp(0.1f, new Action<float>((p) => 
+                {
                     comp.text = Helpers.ColorString(Color.red, "Vanilla Servers Are Currently Not Compatible With TOS");
                     serverWarning.transform.position = new Vector3(0f, 1f, -200f);
                 })));
@@ -162,11 +174,13 @@ namespace TownOfSushi.Patches {
 
     [HarmonyPatch(typeof(RegionMenu), nameof(RegionMenu.ChooseOption))]
     public static class RegionMenuChooseOptionPatch {
-        public static bool Prefix(RegionMenu __instance, IRegionInfo region) {
+        public static bool Prefix(RegionMenu __instance, IRegionInfo region) 
+        {
             if (region.Name != "Custom" || FastDestroyableSingleton<ServerManager>.Instance.CurrentRegion.Name == "Custom") return true;
             DestroyableSingleton<ServerManager>.Instance.SetRegion(region);
             __instance.RegionText.text = "Custom";
-            foreach (var Button in __instance.ButtonPool.activeChildren) {
+            foreach (var Button in __instance.ButtonPool.activeChildren)
+            {
                 ServerListButton serverListButton = Button.TryCast<ServerListButton>();
                 if (serverListButton != null) serverListButton.SetSelected(serverListButton.Text.text == "Custom");
             }

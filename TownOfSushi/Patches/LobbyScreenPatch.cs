@@ -5,10 +5,12 @@ using InnerNet;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
-namespace TownOfSushi.Patches {
+namespace TownOfSushi.Patches 
+{
     [HarmonyPatch]
 
-    public sealed class LobbyJoinBind {
+    public sealed class LobbyJoinBind 
+    {
         static int GameId;
 
         static GameObject LobbyText;
@@ -23,8 +25,10 @@ namespace TownOfSushi.Patches {
         [HarmonyPatch(typeof(MMOnlineManager), nameof(MMOnlineManager.Start))]
         [HarmonyPostfix]
 
-        public static void Postfix() {
-            if (!LobbyText) {
+        public static void Postfix() 
+        {
+            if (!LobbyText) 
+            {
                 LobbyText = new("lobbycode");
                 var comp = LobbyText.AddComponent<TMPro.TextMeshPro>();
                 comp.fontSize = 2.5f;

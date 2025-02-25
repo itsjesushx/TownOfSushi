@@ -30,7 +30,7 @@ Even more roles are coming soon. :)
 | [Ninja](#ninja) | [Snitch](#snitch) |  |  |
 | [Yo-Yo](#yoyo)  | [Spy](#spy) |  |  |
 | | [Portalmaker](#portalmaker) |  |  |
-| | [Security Guard](#security-guard) |  |  |
+| | [Vigilante](#vigilante) |  |  |
 |  | [Medium](#medium) |  |  |
 |  |  |  |  |
 |  | |  |  |
@@ -1011,30 +1011,30 @@ The Portalmaker can teleport themself to their placed portals from anywhere if t
 | Can Port To Portal From Everywhere | -
 -----------------------
 
-## Security Guard
+## Vigilante
 ### **Team: Crewmates**
-The Security Guard is a Crewmate that has a certain number of screws that they can use for either sealing vents or for placing new cameras.\
-Placing a new camera and sealing vents takes a configurable amount of screws. The total number of screws that a Security Guard has can also be configured.\
+The Vigilante is a Crewmate that has a certain number of screws that they can use for either sealing vents or for placing new cameras.\
+Placing a new camera and sealing vents takes a configurable amount of screws. The total number of screws that a Vigilante has can also be configured.\
 The new camera will be visible after the next meeting and accessible by everyone.\
 The vents will be sealed after the next meeting, players can't enter or exit sealed vents, but they can still "move to them" underground.
 
 **NOTE:**
 - Trickster boxes can't be sealed
-- The Security Guard can't place cameras on MiraHQ
+- The Vigilante can't place cameras on MiraHQ
 - The remaining number of screws can be seen above their special button.
 - On Skeld the four cameras will be replaced every 3 seconds (with the next four cameras). You can also navigate manually using the arrow keys
-- Security Guard can access mobile cameras after placing all screws
-- While accessing the mobile cameras, the Security Guard is not able to move
+- Vigilante can access mobile cameras after placing all screws
+- While accessing the mobile cameras, the Vigilante is not able to move
 
 ### Game Options
 | Name | Description
 |----------|:-------------:|
-| Security Guard Spawn Chance |
-| Security Guard Cooldown |
-| Security Guard Number Of Screws | The number of screws that a Security Guard can use in a game
+| Vigilante Spawn Chance |
+| Vigilante Cooldown |
+| Vigilante Number Of Screws | The number of screws that a Vigilante can use in a game
 | Number Of Screws Per Cam | The number of screws it takes to place a camera
 | Number Of Screws Per Vent | The number of screws it takes to seal a vent
-| Security Guard Duration | -
+| Vigilante Duration | -
 | Gadget Max Charges | -
 | Number Of Tasks Needed For Recharging | -
 | Can't Move During Cam Duration | -

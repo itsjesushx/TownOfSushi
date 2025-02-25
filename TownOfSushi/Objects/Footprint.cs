@@ -91,7 +91,7 @@ namespace TownOfSushi.Objects
                 {
                     color = Palette.PlayerColors[6];
                 } 
-                else if (activeFootprint.Owner == Morphling.morphling && Morphling.morphTimer > 0 && Morphling.morphTarget && Morphling.morphTarget.Data != null) 
+                else if (activeFootprint.Owner == Morphling.Player && Morphling.morphTimer > 0 && Morphling.morphTarget && Morphling.morphTarget.Data != null) 
                 {
                     color = Palette.PlayerColors[Morphling.morphTarget.Data.DefaultOutfit.ColorId];
                 } 

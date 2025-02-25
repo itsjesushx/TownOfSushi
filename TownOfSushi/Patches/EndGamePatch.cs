@@ -74,18 +74,18 @@ namespace TownOfSushi.Patches
             // Remove Jester, Arsonist, Vulture, Jackal, former Jackals and Sidekick from winners (if they win, they'll be readded)
             List<PlayerControl> notWinners = new List<PlayerControl>();
             if (Jester.jester != null) notWinners.Add(Jester.jester);
-            if (Sidekick.sidekick != null) notWinners.Add(Sidekick.sidekick);
-            if (Jackal.jackal != null) notWinners.Add(Jackal.jackal);
+            if (Sidekick.Player != null) notWinners.Add(Sidekick.Player);
+            if (Jackal.Player != null) notWinners.Add(Jackal.Player);
             if (Glitch.Player != null) notWinners.Add(Glitch.Player);
             if (Werewolf.Player != null) notWinners.Add(Werewolf.Player);
             if (SerialKiller.Player != null) notWinners.Add(SerialKiller.Player);
-            if (Arsonist.arsonist != null) notWinners.Add(Arsonist.arsonist);
-            if (Vulture.vulture != null) notWinners.Add(Vulture.vulture);
+            if (Arsonist.Player != null) notWinners.Add(Arsonist.Player);
+            if (Vulture.Player != null) notWinners.Add(Vulture.Player);
             if (Lawyer.Player != null) notWinners.Add(Lawyer.Player);
             if (Pursuer.pursuer != null) notWinners.Add(Pursuer.pursuer);
             if (Romantic.Player != null) notWinners.Add(Romantic.Player);
             if (VengefulRomantic.Player != null) notWinners.Add(VengefulRomantic.Player);
-            if (Thief.thief != null) notWinners.Add(Thief.thief);
+            if (Thief.Player != null) notWinners.Add(Thief.Player);
 
             notWinners.AddRange(Jackal.formerJackals);
 
@@ -97,22 +97,22 @@ namespace TownOfSushi.Patches
             foreach (var winner in winnersToRemove) EndGameResult.CachedWinners.Remove(winner);
 
             bool jesterWin = Jester.jester != null && gameOverReason == (GameOverReason)CustomGameOverReason.JesterWin;
-            bool arsonistWin = Arsonist.arsonist != null && gameOverReason == (GameOverReason)CustomGameOverReason.ArsonistWin;
+            bool arsonistWin = Arsonist.Player != null && gameOverReason == (GameOverReason)CustomGameOverReason.ArsonistWin;
             bool glitchWin = Glitch.Player != null && gameOverReason == (GameOverReason)CustomGameOverReason.GlitchWin;
             bool wwWin = Werewolf.Player != null && gameOverReason == (GameOverReason)CustomGameOverReason.WerewolfWin;
-            bool miniLose = Mini.mini != null && gameOverReason == (GameOverReason)CustomGameOverReason.MiniLose;
+            bool miniLose = Mini.Player != null && gameOverReason == (GameOverReason)CustomGameOverReason.MiniLose;
             bool SKWin = SerialKiller.Player != null && gameOverReason == (GameOverReason)CustomGameOverReason.SerialKillerWin;
             bool RomanticWin = VengefulRomantic.Player != null && gameOverReason == (GameOverReason)CustomGameOverReason.VRomanticWin;
             bool loversWin = Lovers.ExistingAndAlive() && (gameOverReason == (GameOverReason)CustomGameOverReason.LoversWin || (GameManager.Instance.DidHumansWin(gameOverReason) && !Lovers.ExistingWithKiller())); // Either they win if they are among the last 3 players, or they win if they are both Crewmates and both alive and the Crew wins (Team Imp/Jackal Lovers can only win solo wins)
-            bool teamJackalWin = gameOverReason == (GameOverReason)CustomGameOverReason.TeamJackalWin && ((Jackal.jackal != null && !Jackal.jackal.Data.IsDead) || (Sidekick.sidekick != null && !Sidekick.sidekick.Data.IsDead));
-            bool vultureWin = Vulture.vulture != null && gameOverReason == (GameOverReason)CustomGameOverReason.VultureWin;
+            bool teamJackalWin = gameOverReason == (GameOverReason)CustomGameOverReason.TeamJackalWin && ((Jackal.Player != null && !Jackal.Player.Data.IsDead) || (Sidekick.Player != null && !Sidekick.Player.Data.IsDead));
+            bool vultureWin = Vulture.Player != null && gameOverReason == (GameOverReason)CustomGameOverReason.VultureWin;
             bool prosecutorWin = Lawyer.Player != null && gameOverReason == (GameOverReason)CustomGameOverReason.ProsecutorWin;
 
             // Mini lose
             if (miniLose) 
             {
                 EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
-                CachedPlayerData wpd = new CachedPlayerData(Mini.mini.Data);
+                CachedPlayerData wpd = new CachedPlayerData(Mini.Player.Data);
                 wpd.IsYou = false; // If "no one is the Mini", it will display the Mini, but also show defeat to everyone
                 EndGameResult.CachedWinners.Add(wpd);
                 AdditionalTempData.winCondition = WinCondition.MiniLose;
@@ -167,7 +167,7 @@ namespace TownOfSushi.Patches
             else if (arsonistWin) 
             {
                 EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
-                CachedPlayerData wpd = new CachedPlayerData(Arsonist.arsonist.Data);
+                CachedPlayerData wpd = new CachedPlayerData(Arsonist.Player.Data);
                 EndGameResult.CachedWinners.Add(wpd);
                 AdditionalTempData.winCondition = WinCondition.ArsonistWin;
             }
@@ -176,7 +176,7 @@ namespace TownOfSushi.Patches
             else if (vultureWin) 
             {
                 EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
-                CachedPlayerData wpd = new CachedPlayerData(Vulture.vulture.Data);
+                CachedPlayerData wpd = new CachedPlayerData(Vulture.Player.Data);
                 EndGameResult.CachedWinners.Add(wpd);
                 AdditionalTempData.winCondition = WinCondition.VultureWin;
             }
@@ -205,7 +205,7 @@ namespace TownOfSushi.Patches
                             EndGameResult.CachedWinners.Add(new CachedPlayerData(p.Data));
                         else if (p == Pursuer.pursuer && !Pursuer.pursuer.Data.IsDead)
                             EndGameResult.CachedWinners.Add(new CachedPlayerData(p.Data));
-                        else if (p != Jester.jester && p != VengefulRomantic.Player && p != SerialKiller.Player && p != Jackal.jackal && p != Glitch.Player && p != Werewolf.Player && p != Sidekick.sidekick && p != Arsonist.arsonist && p != Vulture.vulture && !Jackal.formerJackals.Contains(p) && !p.Data.Role.IsImpostor)
+                        else if (p != Jester.jester && p != VengefulRomantic.Player && p != SerialKiller.Player && p != Jackal.Player && p != Glitch.Player && p != Werewolf.Player && p != Sidekick.Player && p != Arsonist.Player && p != Vulture.Player && !Jackal.formerJackals.Contains(p) && !p.Data.Role.IsImpostor)
                             EndGameResult.CachedWinners.Add(new CachedPlayerData(p.Data));
                     }
                 }
@@ -225,13 +225,13 @@ namespace TownOfSushi.Patches
                 // Jackal wins if nobody except jackal is alive
                 AdditionalTempData.winCondition = WinCondition.JackalWin;
                 EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
-                CachedPlayerData wpd = new CachedPlayerData(Jackal.jackal.Data);
+                CachedPlayerData wpd = new CachedPlayerData(Jackal.Player.Data);
                 wpd.IsImpostor = false;
                 EndGameResult.CachedWinners.Add(wpd);
                 // If there is a sidekick. The sidekick also wins
-                if (Sidekick.sidekick != null) 
+                if (Sidekick.Player != null) 
                 {
-                    CachedPlayerData wpdSidekick = new CachedPlayerData(Sidekick.sidekick.Data);
+                    CachedPlayerData wpdSidekick = new CachedPlayerData(Sidekick.Player.Data);
                     wpdSidekick.IsImpostor = false;
                     EndGameResult.CachedWinners.Add(wpdSidekick);
                 }
@@ -445,7 +445,7 @@ namespace TownOfSushi.Patches
                 switch (OnGameEndPatch.gameOverReason) 
                 {
                     case GameOverReason.ImpostorDisconnect:
-                        textRenderer.text = "Last Crewmate Disconnected";
+                        textRenderer.text = "Crewmates Disconnected";
                         textRenderer.color = Palette.ImpostorRed;
                         __instance.BackgroundBar.material.SetColor("_Color", Palette.ImpostorRed);
                         break;
@@ -502,7 +502,7 @@ namespace TownOfSushi.Patches
                 }
             }
 
-            if (MapOptions.showRoleSummary) 
+            if (MapOptions.showRoleSummary)
             {
                 var position = Camera.main.ViewportToWorldPoint(new Vector3(0f, 1f, Camera.main.nearClipPlane));
                 GameObject roleSummary = UnityEngine.Object.Instantiate(__instance.WinText.gameObject);
@@ -915,7 +915,7 @@ namespace TownOfSushi.Patches
                             numImpostorsAlive++;
                             if (lover) impLover = true;
                         }
-                        if (Jackal.jackal != null && Jackal.jackal.PlayerId == playerInfo.PlayerId) 
+                        if (Jackal.Player != null && Jackal.Player.PlayerId == playerInfo.PlayerId) 
                         {
                             numJackalAlive++;
                             if (lover) jackalLover = true;
@@ -941,7 +941,7 @@ namespace TownOfSushi.Patches
                         {
                             numCrewPowerAlive++;
                         }
-                        if (Sidekick.sidekick != null && Sidekick.sidekick.PlayerId == playerInfo.PlayerId) 
+                        if (Sidekick.Player != null && Sidekick.Player.PlayerId == playerInfo.PlayerId) 
                         {
                             numJackalAlive++;
                             if (lover) jackalLover = true;

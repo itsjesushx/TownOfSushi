@@ -219,7 +219,7 @@ namespace TownOfSushi.Patches
 
                 foreach (var player in PlayerControl.AllPlayerControls)
                 {
-                    if (player.Data.Disconnected || player.Data.IsDead /*-|| player.Is(ModifierEnum.Lazy)*/)
+                    if (player.Data.Disconnected || player.Data.IsDead)
                         continue;
                         
                     var map = GameOptionsManager.Instance.currentNormalGameOptions.MapId;
@@ -487,7 +487,7 @@ namespace TownOfSushi.Patches
 
                 foreach (var player in PlayerControl.AllPlayerControls)
                 {
-                    if (player.Data.Disconnected || player.Data.IsDead || AntiTeleport.antiTeleport.FindAll(x => x.PlayerId == PlayerControl.LocalPlayer.PlayerId).Count > 0)
+                    if (player.Data.Disconnected || player.Data.IsDead || AntiTeleport.Players.FindAll(x => x.PlayerId == player.PlayerId).Count > 0)
                         continue;
 
                     var map = GameOptionsManager.Instance.currentNormalGameOptions.MapId;

@@ -8,8 +8,6 @@ namespace TownOfSushi.Patches
     [HarmonyPatch]
     public static class CredentialsPatch 
     {
-        public static string FllCredentialsVersion = 
-$@"<size=130%><color=#B2FEFE>TownOfSushi</color></size> v{TownOfSushiPlugin.Version.ToString()}";
     public static string MainScreenText =
 $@"Created by <color=#B2FEFE>Jesushi</color>
 <size=60%>Emotionally Helped by <color=#B2FEFE>döll</color>
@@ -22,22 +20,10 @@ Originally Coded by <color=#B2FEFE>Eisbison</color> & <color=#B2FEFE>TheOtherRol
             private static float DeltaTime;
             static void Postfix(PingTracker __instance)
             {
-                __instance.text.alignment = TextAlignmentOptions.Top;
-                var position = __instance.GetComponent<AspectPosition>();
                 DeltaTime += (Time.deltaTime - DeltaTime) * 0.1f;
                 var FPS = Mathf.Round(1f / DeltaTime);
-                position.Alignment = AspectPosition.EdgeAlignments.Top;
-                if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started) 
-                {
-                    __instance.text.text = $"<size=130%><color=#B2FEFE>TownOfSushi</color></size> v{TownOfSushiPlugin.Version.ToString()} \n FPS: {FPS} " + __instance.text.text;
-                    position.DistanceFromEdge = new Vector3(1.5f, 0.11f, 0);
-                }
-                else
-                {
-                    __instance.text.text = $"{FllCredentialsVersion}\n FPS: {FPS} {__instance.text.text}";
-                    position.DistanceFromEdge = new Vector3(0f, 0.1f, 0);
-                }
-                position.AdjustPosition();
+                __instance.text.text = $"{__instance.text.text} \n FPS: {FPS}";
+                __instance.text.color = new Color32(178, 254, 254, 255);
             }
         }
         
@@ -46,8 +32,6 @@ Originally Coded by <color=#B2FEFE>Eisbison</color> & <color=#B2FEFE>TheOtherRol
         {
             public static SpriteRenderer renderer;
             public static Sprite bannerSprite;
-            public static Sprite horseBannerSprite;
-            public static Sprite banner2Sprite;
             private static PingTracker instance;
 
             static void Postfix(PingTracker __instance) 
@@ -74,8 +58,6 @@ Originally Coded by <color=#B2FEFE>Eisbison</color> & <color=#B2FEFE>TheOtherRol
             public static void LoadSprites() 
             {
                 if (bannerSprite == null) bannerSprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.TownOfSushiBanner.png", 130f);
-                if (banner2Sprite == null) banner2Sprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.TownOfSushiBanner.png", 300f);
-                if (horseBannerSprite == null) horseBannerSprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.TownOfSushiBanner.png", 300f);
             }
 
             public static void UpdateSprite() 

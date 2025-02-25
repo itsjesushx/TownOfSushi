@@ -57,7 +57,7 @@ namespace TownOfSushi.Patches
 			}
 
 			__instance.HerePoint.transform.SetLocalZ(-2.1f);
-			if (Trapper.trapper != null && PlayerControl.LocalPlayer.PlayerId == Trapper.trapper.PlayerId) 
+			if (Trapper.Player != null && PlayerControl.LocalPlayer.PlayerId == Trapper.Player.PlayerId) 
 			{
 				foreach (PlayerControl player in Trapper.playersOnMap) 
 				{
@@ -80,9 +80,9 @@ namespace TownOfSushi.Patches
 					herePoints.Remove(s.Key);
 				}
 			} 
-			else if (Snitch.snitch != null && PlayerControl.LocalPlayer.PlayerId == Snitch.snitch.PlayerId && !Snitch.snitch.Data.IsDead && Snitch.mode != Snitch.Mode.Chat) 
+			else if (Snitch.Player != null && PlayerControl.LocalPlayer.PlayerId == Snitch.Player.PlayerId && !Snitch.Player.Data.IsDead && Snitch.mode != Snitch.Mode.Chat) 
 			{
-				var (playerCompleted, playerTotal) = TasksHandler.TaskInfo(Snitch.snitch.Data);
+				var (playerCompleted, playerTotal) = TasksHandler.TaskInfo(Snitch.Player.Data);
 				int numberOfTasks = playerTotal - playerCompleted;
 
 				if (numberOfTasks == 0) {
@@ -125,7 +125,8 @@ namespace TownOfSushi.Patches
 
 			// Show location of all players on the map for ghosts!
 			if (PlayerControl.LocalPlayer.Data.IsDead && (!PlayerControl.LocalPlayer.Data.Role.IsImpostor || CustomOptionHolder.deadImpsBlockSabotage.GetBool())) {
-				foreach (PlayerControl player in PlayerControl.AllPlayerControls) {
+				foreach (PlayerControl player in PlayerControl.AllPlayerControls) 
+				{
                     if (player == PlayerControl.LocalPlayer)
                         continue;
                     var alpha = player.Data.IsDead ? 0.25f : 1f;

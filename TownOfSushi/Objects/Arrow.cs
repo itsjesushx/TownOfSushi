@@ -59,9 +59,9 @@ namespace TownOfSushi.Objects
                 var backgroundrend = Tracker.DangerMeterParent.transform.GetChild(0).GetChild(0).GetComponent<SpriteRenderer>();
                 backgroundrend.color = backgroundrend.color.SetAlpha(0.5f);
             }
-            Tracker.DangerMeterParent.SetActive(MeetingHud.Instance == null && LobbyBehaviour.Instance == null && !Tracker.tracker.Data.IsDead && Tracker.tracked != null);
-            Tracker.Meter.gameObject.SetActive(MeetingHud.Instance == null && LobbyBehaviour.Instance == null && !Tracker.tracker.Data.IsDead && Tracker.tracked != null);
-            if (Tracker.tracker.Data.IsDead) return;
+            Tracker.DangerMeterParent.SetActive(MeetingHud.Instance == null && LobbyBehaviour.Instance == null && !Tracker.Player.Data.IsDead && Tracker.tracked != null);
+            Tracker.Meter.gameObject.SetActive(MeetingHud.Instance == null && LobbyBehaviour.Instance == null && !Tracker.Player.Data.IsDead && Tracker.tracked != null);
+            if (Tracker.Player.Data.IsDead) return;
             if (Tracker.tracked == null) {
                 Tracker.Meter.SetDangerValue(0, 0);
                 return;
@@ -71,7 +71,7 @@ namespace TownOfSushi.Objects
             float dangerLevel1;
             float dangerLevel2;
 
-            float sqrMagnitude = (position - Tracker.tracker.transform.position).sqrMagnitude;
+            float sqrMagnitude = (position - Tracker.Player.transform.position).sqrMagnitude;
             if (sqrMagnitude < (55 * GameOptionsManager.Instance.currentNormalGameOptions.PlayerSpeedMod) && num > sqrMagnitude)
             {
                 num = sqrMagnitude;

@@ -51,7 +51,7 @@ namespace TownOfSushi.Objects
             bool flip = playerControl.cosmetics.currentBodySprite.BodySprite.flipX; // use the original player control here, not the morhpTarget.
             firstPortal.animationFgRenderer.flipX = flip;
             secondPortal.animationFgRenderer.flipX = flip;
-            if (Morphling.morphling != null && Morphling.morphTimer > 0) playerControl = Morphling.morphTarget;  // Will output info of morph-target instead
+            if (Morphling.Player != null && Morphling.morphTimer > 0) playerControl = Morphling.morphTarget;  // Will output info of morph-target instead
             if (Glitch.Player != null && Glitch.MimicTimer > 0) playerControl = Glitch.MimicTarget;  // Will output info of Mimic-target instead
             string playerNameDisplay = Portalmaker.logOnlyHasColors ? "A player (" + (Helpers.IsLighterColor(playerControl) ? "L" : "D") + ")" : playerControl.Data.PlayerName;
 
@@ -107,7 +107,7 @@ namespace TownOfSushi.Objects
             animationFgRenderer.material = FastDestroyableSingleton<HatManager>.Instance.PlayerMaterial;
 
             // Only render the inactive portals for the Portalmaker
-            bool playerSees = PlayerControl.LocalPlayer == Portalmaker.portalmaker  || PlayerControl.LocalPlayer.Data.IsDead;
+            bool playerSees = PlayerControl.LocalPlayer == Portalmaker.Player  || PlayerControl.LocalPlayer.Data.IsDead;
             portalGameObject.SetActive(playerSees);
             portalFgAnimationGameObject.SetActive(true);
 

@@ -114,7 +114,7 @@ namespace TownOfSushi.Patches {
             bool canUse;
             bool couldUse;
             __instance.CanUse(PlayerControl.LocalPlayer.Data, out canUse, out couldUse);
-            bool canMoveInVents = PlayerControl.LocalPlayer != Spy.spy && !Trapper.playersOnMap.Contains(PlayerControl.LocalPlayer);
+            bool canMoveInVents = PlayerControl.LocalPlayer != Spy.Player && !Trapper.playersOnMap.Contains(PlayerControl.LocalPlayer);
             if (!canUse) return false; // No need to execute the native method as using is disallowed anyways
 
             bool isEnter = !PlayerControl.LocalPlayer.inVent;
@@ -168,7 +168,7 @@ namespace TownOfSushi.Patches {
             {
                 if (defaultVentSprite == null) defaultVentSprite = __instance.graphic.sprite;
                 bool isSpecialVent = __instance.currentTarget != null && __instance.currentTarget.gameObject != null && __instance.currentTarget.gameObject.name.StartsWith("JackInTheBoxVent_");
-                __instance.graphic.sprite = isSpecialVent ?  Trickster.getTricksterVentButtonSprite() : defaultVentSprite;
+                __instance.graphic.sprite = isSpecialVent ?  Trickster.GetTricksterVentButtonSprite() : defaultVentSprite;
                 __instance.buttonLabelText.enabled = !isSpecialVent;
             }
         }
@@ -192,12 +192,12 @@ namespace TownOfSushi.Patches {
                 if (res == MurderAttemptResult.BlankKill) 
                 {
                     PlayerControl.LocalPlayer.killTimer = GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown;
-                    if (PlayerControl.LocalPlayer == Cleaner.cleaner)
-                        Cleaner.cleaner.killTimer = HudManagerStartPatch.cleanerCleanButton.Timer = HudManagerStartPatch.cleanerCleanButton.MaxTimer;
-                    else if (PlayerControl.LocalPlayer == Warlock.warlock)
-                        Warlock.warlock.killTimer = HudManagerStartPatch.warlockCurseButton.Timer = HudManagerStartPatch.warlockCurseButton.MaxTimer;
-                    else if (PlayerControl.LocalPlayer == Mini.mini && Mini.mini.Data.Role.IsImpostor)
-                        Mini.mini.SetKillTimer(GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown * (Mini.IsGrownUp() ? 0.66f : 2f));
+                    if (PlayerControl.LocalPlayer == Cleaner.Player)
+                        Cleaner.Player.killTimer = HudManagerStartPatch.cleanerCleanButton.Timer = HudManagerStartPatch.cleanerCleanButton.MaxTimer;
+                    else if (PlayerControl.LocalPlayer == Warlock.Player)
+                        Warlock.Player.killTimer = HudManagerStartPatch.warlockCurseButton.Timer = HudManagerStartPatch.warlockCurseButton.MaxTimer;
+                    else if (PlayerControl.LocalPlayer == Mini.Player && Mini.Player.Data.Role.IsImpostor)
+                        Mini.Player.SetKillTimer(GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown * (Mini.IsGrownUp() ? 0.66f : 2f));
                     else if (PlayerControl.LocalPlayer == Witch.witch)
                         Witch.witch.killTimer = HudManagerStartPatch.witchSpellButton.Timer = HudManagerStartPatch.witchSpellButton.MaxTimer;
                     else if (PlayerControl.LocalPlayer == Ninja.ninja)
@@ -210,12 +210,15 @@ namespace TownOfSushi.Patches {
     }
 
     [HarmonyPatch(typeof(SabotageButton), nameof(SabotageButton.Refresh))]
-    class SabotageButtonRefreshPatch {
-        static void Postfix() {
+    class SabotageButtonRefreshPatch 
+    {
+        static void Postfix() 
+        {
             // Mafia disable sabotage button for Janitor and sometimes for Mafioso
-            bool blockSabotageJanitor = (Janitor.janitor != null && Janitor.janitor == PlayerControl.LocalPlayer);
-            bool blockSabotageMafioso = (Mafioso.mafioso != null && Mafioso.mafioso == PlayerControl.LocalPlayer && Godfather.godfather != null && !Godfather.godfather.Data.IsDead);
-            if (blockSabotageJanitor || blockSabotageMafioso) {
+            bool blockSabotageJanitor = Janitor.Player != null && Janitor.Player == PlayerControl.LocalPlayer;
+            bool blockSabotageMafioso = Mafioso.mafioso != null && Mafioso.mafioso == PlayerControl.LocalPlayer && Godfather.Player != null && !Godfather.Player.Data.IsDead;
+            if (blockSabotageJanitor || blockSabotageMafioso) 
+            {
                 FastDestroyableSingleton<HudManager>.Instance.SabotageButton.SetDisabled();
             }
         }
@@ -239,6 +242,12 @@ namespace TownOfSushi.Patches {
             var CanCallEmergency = true;
             var statusText = "";
 
+            if (Glitch.HackedKnows.ContainsKey(PlayerControl.LocalPlayer.PlayerId) && Glitch.HackedKnows[PlayerControl.LocalPlayer.PlayerId] > 0f)
+            {
+                CanCallEmergency = false;
+                statusText = "You are hacked. You can't start a meeting.";
+            }
+
             // Deactivate emergency button for Swapper
             if (Swapper.Player != null && Swapper.Player == PlayerControl.LocalPlayer && !Swapper.canCallEmergency) 
             {
@@ -250,11 +259,6 @@ namespace TownOfSushi.Patches {
             {
                 CanCallEmergency = false;
                 statusText = "The Jester can't start an emergency meeting";
-            }
-            if (Glitch.HackedKnows.ContainsKey(PlayerControl.LocalPlayer.PlayerId))
-            {
-                CanCallEmergency = false;
-                statusText = "You are hacked. You can't start a meeting.";
             }
             // Potentially deactivate emergency button for Lawyer/Prosecutor
             if (Lawyer.Player != null && Lawyer.Player == PlayerControl.LocalPlayer && !Lawyer.canCallEmergency) 
@@ -336,7 +340,7 @@ namespace TownOfSushi.Patches {
         [HarmonyPatch(typeof(VitalsMinigame), nameof(VitalsMinigame.Begin))]
         class VitalsMinigameStartPatch {
             static void Postfix(VitalsMinigame __instance) {
-                if (Hacker.hacker != null && PlayerControl.LocalPlayer == Hacker.hacker) {
+                if (Hacker.Player != null && PlayerControl.LocalPlayer == Hacker.Player) {
                     hackerTexts = new List<TMPro.TextMeshPro>();
                     foreach (VitalsPanel panel in __instance.vitals) {
                         TMPro.TextMeshPro text = UnityEngine.Object.Instantiate(__instance.SabText, panel.transform);
@@ -364,7 +368,7 @@ namespace TownOfSushi.Patches {
             static void Postfix(VitalsMinigame __instance) {
                 // Hacker show time since death
                 
-                if (Hacker.hacker != null && Hacker.hacker == PlayerControl.LocalPlayer && Hacker.hackerTimer > 0) {
+                if (Hacker.Player != null && Hacker.Player == PlayerControl.LocalPlayer && Hacker.hackerTimer > 0) {
                     for (int k = 0; k < __instance.vitals.Length; k++) {
                         VitalsPanel vitalsPanel = __instance.vitals[k];
                         NetworkedPlayerInfo player = vitalsPanel.PlayerInfo;
@@ -490,7 +494,7 @@ namespace TownOfSushi.Patches {
             private static Material newMat;
             static void Postfix(CounterArea __instance) {
                 // Hacker display saved colors on the admin panel
-                bool showHackerInfo = Hacker.hacker != null && Hacker.hacker == PlayerControl.LocalPlayer && Hacker.hackerTimer > 0;
+                bool showHackerInfo = Hacker.Player != null && Hacker.Player == PlayerControl.LocalPlayer && Hacker.hackerTimer > 0;
                 if (players.ContainsKey(__instance.RoomType)) {
                     List<Color> colors = players[__instance.RoomType];
                     int i = -1;
@@ -536,7 +540,7 @@ namespace TownOfSushi.Patches {
         [HarmonyPatch(typeof(SurveillanceMinigame), nameof(SurveillanceMinigame.Begin))]
         class SurveillanceMinigameBeginPatch {
             public static void Postfix(SurveillanceMinigame __instance) {
-                // Add securityGuard cameras
+                // Add Vigilante cameras
                 page = 0;
                 timer = 0;
                 if (MapUtilities.CachedShipStatus.AllCameras.Length > 4 && __instance.FilteredRooms.Length > 0) {
@@ -558,7 +562,7 @@ namespace TownOfSushi.Patches {
         [HarmonyPatch(typeof(SurveillanceMinigame), nameof(SurveillanceMinigame.Update))]
         class SurveillanceMinigameUpdatePatch {
             public static bool Prefix(SurveillanceMinigame __instance) {
-                // Update normal and securityGuard cameras
+                // Update normal and Vigilante cameras
                 timer += Time.deltaTime;
                 int numberOfPages = Mathf.CeilToInt(MapUtilities.CachedShipStatus.AllCameras.Length / 4f);
 
@@ -717,10 +721,10 @@ namespace TownOfSushi.Patches {
                     {
                         pc.SetLook("", 6, "", "", "", "", false);
                     } 
-                    else if (pc == Morphling.morphling && Morphling.morphTimer > 0) 
+                    else if (pc == Morphling.Player && Morphling.morphTimer > 0) 
                     {
                         PlayerControl target = Morphling.morphTarget;
-                        Morphling.morphling.SetLook(target.Data.PlayerName, target.Data.DefaultOutfit.ColorId, target.Data.DefaultOutfit.HatId, target.Data.DefaultOutfit.VisorId, target.Data.DefaultOutfit.SkinId, target.Data.DefaultOutfit.PetId, false);
+                        Morphling.Player.SetLook(target.Data.PlayerName, target.Data.DefaultOutfit.ColorId, target.Data.DefaultOutfit.HatId, target.Data.DefaultOutfit.VisorId, target.Data.DefaultOutfit.SkinId, target.Data.DefaultOutfit.PetId, false);
                     }
                     else if (pc == Glitch.Player && Glitch.MimicTimer > 0) 
                     {

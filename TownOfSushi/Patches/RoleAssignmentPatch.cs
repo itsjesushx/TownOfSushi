@@ -144,6 +144,7 @@ namespace TownOfSushi.Patches
             crewSettings.Add((byte)RoleId.Detective, CustomOptionHolder.detectiveSpawnRate.GetSelection());
             crewSettings.Add((byte)RoleId.TimeMaster, CustomOptionHolder.timeMasterSpawnRate.GetSelection());
             crewSettings.Add((byte)RoleId.Medic, CustomOptionHolder.medicSpawnRate.GetSelection());
+            crewSettings.Add((byte)RoleId.Oracle, CustomOptionHolder.OracleSpawnRate.GetSelection());
             crewSettings.Add((byte)RoleId.Swapper,CustomOptionHolder.swapperSpawnRate.GetSelection());
             crewSettings.Add((byte)RoleId.Mystic, CustomOptionHolder.MysticSpawnRate.GetSelection());
             crewSettings.Add((byte)RoleId.Hacker, CustomOptionHolder.hackerSpawnRate.GetSelection());
@@ -158,7 +159,7 @@ namespace TownOfSushi.Patches
                 // Only add Cleaner if more than 1 impostor as the Cleaner role is otherwise useless
                 impSettings.Add((byte)RoleId.Cleaner, CustomOptionHolder.cleanerSpawnRate.GetSelection());
             }
-            crewSettings.Add((byte)RoleId.SecurityGuard, CustomOptionHolder.securityGuardSpawnRate.GetSelection());
+            crewSettings.Add((byte)RoleId.Vigilante, CustomOptionHolder.VigilanteSpawnRate.GetSelection());
 
             return new RoleAssignmentData 
             {
@@ -315,7 +316,7 @@ namespace TownOfSushi.Patches
                 { // Prosecutor
                     foreach (PlayerControl p in PlayerControl.AllPlayerControls) 
                     {
-                        if (!p.Data.IsDead && !p.Data.Disconnected && p != Lovers.Lover1 && p != Lovers.Lover2 && p != Mini.mini && p.IsCrew() && p != Swapper.Player)
+                        if (!p.Data.IsDead && !p.Data.Disconnected && p != Lovers.Lover1 && p != Lovers.Lover2 && p != Mini.Player && p.IsCrew() && p != Swapper.Player)
                             possibleTargets.Add(p);
                     }
                 }
@@ -490,7 +491,7 @@ namespace TownOfSushi.Patches
             if (modifiers.Contains(RoleId.Shifter)) 
             {
                 var crewPlayerShifter = new List<PlayerControl>(crewPlayer);
-                crewPlayerShifter.RemoveAll(x => x == Spy.spy);
+                crewPlayerShifter.RemoveAll(x => x == Spy.Player);
                 playerId = SetModifierToRandomPlayer((byte)RoleId.Shifter, crewPlayerShifter);
                 crewPlayer.RemoveAll(x => x.PlayerId == playerId);
                 playerList.RemoveAll(x => x.PlayerId == playerId);

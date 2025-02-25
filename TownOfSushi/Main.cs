@@ -119,8 +119,7 @@ namespace TownOfSushi
             ServerManager.DefaultRegions = new Il2CppReferenceArray<IRegionInfo>(new IRegionInfo[0]);
             UpdateRegions();
 
-            // Reactor Credits (future use?)
-            // Reactor.Utilities.ReactorCredits.Register("TownOfSushi", VersionString, betaDays > 0, location => location == Reactor.Utilities.ReactorCredits.Location.PingTracker);
+            Reactor.Utilities.ReactorCredits.Register("TownOfSushi", VersionString, true, location => location == Reactor.Utilities.ReactorCredits.Location.PingTracker);
 
             DebugMode = Config.Bind("Custom", "Enable Debug Mode", "false");
             Harmony.PatchAll();

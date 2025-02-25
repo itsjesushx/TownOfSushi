@@ -44,7 +44,7 @@ namespace TownOfSushi.Objects
 
             renderer.color = renderer.color.SetAlpha(Yoyo.SilhouetteVisibility);
 
-            bool visible = visibleForEveryOne || PlayerControl.LocalPlayer == Yoyo.yoyo || PlayerControl.LocalPlayer.Data.IsDead;
+            bool visible = visibleForEveryOne || PlayerControl.LocalPlayer == Yoyo.Player || PlayerControl.LocalPlayer.Data.IsDead;
 
             gameObject.SetActive(visible);
             silhouettes.Add(this);
@@ -62,7 +62,7 @@ namespace TownOfSushi.Objects
             foreach (Silhouette current in new List<Silhouette>(silhouettes)) 
             {
                 current.timeRemaining -= Time.fixedDeltaTime;
-                bool visible = current.visibleForEveryOne || PlayerControl.LocalPlayer == Yoyo.yoyo || PlayerControl.LocalPlayer.Data.IsDead;
+                bool visible = current.visibleForEveryOne || PlayerControl.LocalPlayer == Yoyo.Player || PlayerControl.LocalPlayer.Data.IsDead;
                 current.gameObject.SetActive(visible);
 
                 if (visible && current.timeRemaining > 0 && current.timeRemaining < 0.5) 

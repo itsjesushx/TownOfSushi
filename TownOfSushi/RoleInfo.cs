@@ -67,7 +67,7 @@ namespace TownOfSushi
         public readonly static RoleInfo tracker = new("Tracker", Tracker.color, "Track the <color=#FF1919FF>Impostors</color> down", "Track the Impostors down", RoleId.Tracker, Factions.Crewmate, $"The Tracker is able to track the movements of other players. The Arrow's color will be the tracked players color. The arrow will update the position of the player every {Tracker.updateIntervall} seconds. The Arrows will reset depending on settings after each meeting. They can track dead bodies depending on settings as well.");
         public readonly static RoleInfo snitch = new("Snitch", Snitch.color, "Finish your tasks to find the <color=#FF1919FF>Impostors</color>", "Finish your tasks", RoleId.Snitch, Factions.Crewmate, "The Snitch has to finish tasks to be able to see the killers or evil players in game.");
         public readonly static RoleInfo spy = new("Spy", Spy.color, "Confuse the <color=#FF1919FF>Impostors</color>", "Confuse the Impostors", RoleId.Spy, Factions.Crewmate, "The Spy appears as another Impostor when there's more than 2 Impostors, they may vent or be able to die by the Sheriff, your job is to confuse the impostors into killing themselves.");
-        public readonly static RoleInfo securityGuard = new("Security Guard", SecurityGuard.color, "Seal vents and place cameras", "Seal vents and place cameras", RoleId.SecurityGuard, Factions.Crewmate, "The Security Guard is a Crewmate that has a certain number of screws that they can use for either sealing vents or for placing new cameras. bPlacing a new camera and sealing vents takes a configurable amount of screws. The total number of screws that a Security Guard has can also be configured. The new camera will be visible after the next meeting and accessible by everyone. The vents will be sealed after the next meeting, players can't enter or exit sealed vents, but they can still move to them underground.");
+        public readonly static RoleInfo vigilante = new("Vigilante", Vigilante.color, "Seal vents and place cameras", "Seal vents and place cameras", RoleId.Vigilante, Factions.Crewmate, "The Vigilante is a Crewmate that has a certain number of screws that they can use for either sealing vents or for placing new cameras. bPlacing a new camera and sealing vents takes a configurable amount of screws. The total number of screws that a Vigilante has can also be configured. The new camera will be visible after the next meeting and accessible by everyone. The vents will be sealed after the next meeting, players can't enter or exit sealed vents, but they can still move to them underground.");
         public readonly static RoleInfo mayor = new("Mayor", Mayor.color, "Your vote counts twice", "Your vote counts twice", RoleId.Mayor, Factions.Crewmate, "The Mayor leads the Crewmates by having a vote that counts twice. The Mayor can always use their meeting, even if the maximum number of meetings was reached. The Mayor has a portable Meeting Button, depending on the options. The Mayor can see the vote colors after completing a configurable amount of tasks, depending on the options. The Mayor has the option to vote with only one vote instead of two (via a button in the meeting screen), depending on the settings.");
         public readonly static RoleInfo portalmaker = new("Portalmaker", Portalmaker.color, "You can create portals", "You can create portals", RoleId.Portalmaker, Factions.Crewmate, "The Portalmaker is a Crewmate that can place two portals on the map. These two portals are connected to each other. Those portals will be visible after the next meeting and can be used by everyone. Additionally to that, the Portalmaker gets information about who used the portals and when in the chat during each meeting, depending on the options. The Portalmaker can teleport themself to their placed portals from anywhere if the setting is enabled.");
         public readonly static RoleInfo veteran = new("Veteran", Veteran.color, "Alert to murder whoever touches you", "Alert to kill the <color=#FF1919FF>Impostors</color>", RoleId.Veteran, Factions.Crewmate, $"The Veteran is able to alert, Alerting makes the Veteran Unkillable and will kill anyone who interacts with them. At the start of the game the Veteran can alert a maximum of " + Veteran.Charges + " times.");
@@ -78,6 +78,7 @@ namespace TownOfSushi
         public readonly static RoleInfo timeMaster = new("Time Master", TimeMaster.color, "Save yourself with your time shield", "Use your time shield", RoleId.TimeMaster, Factions.Crewmate, "The Time Master has a time shield which they can activate. The time shield remains active for a configurable amount of time. If a player tries to kill the Time Master while the time shield is active, the kill won't happen and the time will rewind for a set amount of time. The kill cooldown of the killer won't be reset, so the Time Master has to make sure that the game won't result in the same situation. The Time Master won't be affected by the rewind.");
         public readonly static RoleInfo medic = new("Medic", Medic.color, "Protect someone with your shield", "Protect other players", RoleId.Medic, Factions.Crewmate, "The Medic can shield (highlighted by an outline around the player) one player per game, which makes the player unkillable. The shield is also shown in the meeting as brackets around the shielded player's name. The shielded player can still be voted out and might also be an Impostor. If set in the options, the shielded player and/or the Medic will get a red flash on their screen if someone (Impostor, Sheriff, ...) tried to murder them. If the Medic dies, the shield disappears with them. The Sheriff will not die if they try to kill a shielded Crewmate and won't perform a kill if they try to kill a shielded Impostor. Depending on the options, guesses from the Guesser will be blocked by the shield and the shielded player/medic might be notified. The Medic's other feature shows when they report a corpse: they will see how long ago the player died.");
         public readonly static RoleInfo swapper = new("Swapper", Swapper.color, "Swap votes to exile the <color=#FF1919FF>Impostors</color>", "Swap votes", RoleId.Swapper, Factions.Crewmate, "During meetings the Swapper can exchange votes that two people get (i.e. all votes that player A got will be given to player B and vice versa). Because of the Swapper's strength in meetings, they might not start emergency meetings and can't fix lights and comms. The Swapper now has initial swap charges and can recharge those charges after completing a configurable amount of tasks.");
+        public readonly static RoleInfo oracle = new("Oracle", Oracle.color, "Make the <color=#FF1919FF>Impostors</color> confess their sins", "Get another player to confess on your passing", RoleId.Swapper, Factions.Crewmate, $"The Oracle can compel another player to confess their secrets upon death. The oracle will get information about 3 players being possibly evil each meeting. The Oracle can only make a player confess once per meeting. When the Oracle dies, the player they made confess will be reveal their faction with a probability of {Oracle.Accuracy}% to be right.");
         public readonly static RoleInfo mystic = new("Mystic", Mystic.color, "You will see players die", "You will see players die", RoleId.Mystic, Factions.Crewmate, "The Mystic gets a list of the possible roles that the examined player can be in meetings. The Mystic has more abilities (one can activate one of them or both in the options). The Mystic sees the souls of players that died a round earlier, the souls slowly fade away. The Mystic gets a blue flash on their screen, if a player dies somewhere on the map.");
 
         #endregion
@@ -87,6 +88,7 @@ namespace TownOfSushi
         public readonly static RoleInfo sidekick = new("Sidekick", Sidekick.color, "Help your Jackal to kill everyone", "Help your Jackal to kill everyone", RoleId.Sidekick, Factions.NeutralKiller, "Gets assigned to a player during the game by the Create Sidekick Action of the Jackal and joins the Jackal in their quest to eliminate all other players. Upon the death of the Jackal (depending on the options), they might get promoted to Jackal themself and potentially even assign a Sidekick of their own.");
         public readonly static RoleInfo serialKiller = new("Serial Killer", SerialKiller.color, "Stab to make everyone die", "Murder everyone when stabbing", RoleId.SerialKiller, Factions.NeutralKiller, "The Serial Killer is a Neutral role with its own win condition. Although the Serial Killer has a kill button, they can't use it unless they are stabbing. Once the Serial Killer rampages they gain Impostor vision and the ability to kill. However, unlike most killers their kill cooldown is really short. The Serial Killer needs to be the last killer alive to win the game.");
         public readonly static RoleInfo glitch = new("Glitch", Glitch.color, "Hack, Kill and Mimic your <color=#FF1919FF>enemies</color>", "Hack, Kill and Mimic your <color=#FF1919FF>enemies</color>", RoleId.Glitch, Factions.NeutralKiller, "Glitch is a Neutral role with its own win condition. Glitch's aim is to kill everyone and be the last person standing. Glitch can Hack players, resulting in them being unable to report bodies and do tasks. Hacking prevents the hacked player from doing anything but walk around the map. This role cannot spawn on Fungle. Glitch can Mimic someone, which results in them looking exactly like the other person.");
+        public readonly static RoleInfo vromantic = new("Vengeful Romantic", Romantic.color, "", "Avenge your lover", RoleId.VengefulRomantic, Factions.NeutralKiller, "As the Vengeful Romantic you were once a Romantic with a lover, but they died somehow. Now you are mad for revenge and will murder everyone in order to avenge your lover, if you win your dead lover also does.");
         public readonly static RoleInfo werewolf = new("Werewolf", Werewolf.color, "Maul and eliminate your <color=#FF1919FF>enemies</color>", "Maul to eliminate your <color=#FF1919FF>enemies</color>", RoleId.Werewolf, Factions.NeutralKiller, "The Werewolf can kill all players within a certain radius.");
 
         #endregion
@@ -130,6 +132,7 @@ namespace TownOfSushi
             jester,
             arsonist,
             serialKiller,
+            oracle,
             jackal,
             sidekick,
             vulture,
@@ -138,6 +141,7 @@ namespace TownOfSushi
             thief,
             prosecutor,
             crewmate,
+            vromantic,
             mayor,
             portalmaker,
             engineer,
@@ -154,7 +158,7 @@ namespace TownOfSushi
             tracker,
             snitch,
             spy,
-            securityGuard,
+            vigilante,
             bait,
             medium,
             trapper,
@@ -181,19 +185,19 @@ namespace TownOfSushi
                 // after dead modifier
                 if (!CustomOptionHolder.modifiersAreHidden.GetBool() || PlayerControl.LocalPlayer.Data.IsDead || AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Ended)
                 {
-                    if (Bait.bait.Any(x => x.PlayerId == p.PlayerId)) infos.Add(bait);
-                    if (Bloody.bloody.Any(x => x.PlayerId == p.PlayerId)) infos.Add(bloody);
-                    if (Vip.vip.Any(x => x.PlayerId == p.PlayerId)) infos.Add(vip);
+                    if (Bait.Players.Any(x => x.PlayerId == p.PlayerId)) infos.Add(bait);
+                    if (Bloody.Players.Any(x => x.PlayerId == p.PlayerId)) infos.Add(bloody);
+                    if (Vip.Players.Any(x => x.PlayerId == p.PlayerId)) infos.Add(vip);
                 }
                 if (p == Lovers.Lover1 || p == Lovers.Lover2) infos.Add(lover);
-                if (p == Tiebreaker.tiebreaker) infos.Add(tiebreaker);
-                if (AntiTeleport.antiTeleport.Any(x => x.PlayerId == p.PlayerId)) infos.Add(antiTeleport);
-                if (Sunglasses.sunglasses.Any(x => x.PlayerId == p.PlayerId)) infos.Add(sunglasses);
-                if (p == Mini.mini) infos.Add(mini);
-                if (Invert.invert.Any(x => x.PlayerId == p.PlayerId)) infos.Add(invert);
-                if (Chameleon.chameleon.Any(x => x.PlayerId == p.PlayerId)) infos.Add(chameleon);
-                if (p == Armored.armored) infos.Add(armored);
-                if (p == Shifter.shifter) infos.Add(shifter);
+                if (p == Tiebreaker.Player) infos.Add(tiebreaker);
+                if (AntiTeleport.Players.Any(x => x.PlayerId == p.PlayerId)) infos.Add(antiTeleport);
+                if (Sunglasses.Players.Any(x => x.PlayerId == p.PlayerId)) infos.Add(sunglasses);
+                if (p == Mini.Player) infos.Add(mini);
+                if (Invert.Players.Any(x => x.PlayerId == p.PlayerId)) infos.Add(invert);
+                if (Chameleon.Players.Any(x => x.PlayerId == p.PlayerId)) infos.Add(chameleon);
+                if (p == Armored.Player) infos.Add(armored);
+                if (p == Shifter.Player) infos.Add(shifter);
             }
 
             int count = infos.Count;  // Save count after modifiers are added so that the role count can be checked
@@ -201,49 +205,51 @@ namespace TownOfSushi
             // Special roles
             if (p == Jester.jester) infos.Add(jester);
             if (p == Mayor.Player) infos.Add(mayor);
-            if (p == Portalmaker.portalmaker) infos.Add(portalmaker);
-            if (p == Engineer.engineer) infos.Add(engineer);
+            if (p == Portalmaker.Player) infos.Add(portalmaker);
+            if (p == Engineer.Player) infos.Add(engineer);
             if (p == Sheriff.Player) infos.Add(sheriff);
             if (p == Romantic.Player) infos.Add(romantic);
+            if (p == VengefulRomantic.Player) infos.Add(vromantic);
             if (p == Glitch.Player) infos.Add(glitch);
             if (p == SerialKiller.Player) infos.Add(serialKiller);
+            if (p == Oracle.Player) infos.Add(oracle);
             if (p == Werewolf.Player) infos.Add(werewolf);
             if (p == Veteran.Player) infos.Add(veteran);
             if (p == Lighter.Player) infos.Add(lighter);
-            if (p == Godfather.godfather) infos.Add(godfather);
+            if (p == Godfather.Player) infos.Add(godfather);
             if (p == Mafioso.mafioso) infos.Add(mafioso);
-            if (p == Janitor.janitor) infos.Add(janitor);
-            if (p == Morphling.morphling) infos.Add(morphling);
-            if (p == Camouflager.camouflager) infos.Add(camouflager);
-            if (p == Vampire.vampire) infos.Add(vampire);
-            if (p == Eraser.eraser) infos.Add(eraser);
+            if (p == Janitor.Player) infos.Add(janitor);
+            if (p == Morphling.Player) infos.Add(morphling);
+            if (p == Camouflager.Player) infos.Add(camouflager);
+            if (p == Vampire.Player) infos.Add(vampire);
+            if (p == Eraser.Player) infos.Add(eraser);
             if (p == Trickster.trickster) infos.Add(trickster);
-            if (p == Cleaner.cleaner) infos.Add(cleaner);
-            if (p == Warlock.warlock) infos.Add(warlock);
+            if (p == Cleaner.Player) infos.Add(cleaner);
+            if (p == Warlock.Player) infos.Add(warlock);
             if (p == Witch.witch) infos.Add(witch);
             if (p == Ninja.ninja) infos.Add(ninja);
-            if (p == Yoyo.yoyo) infos.Add(yoyo);
+            if (p == Yoyo.Player) infos.Add(yoyo);
             if (p == Detective.Player) infos.Add(detective);
             if (p == TimeMaster.Player) infos.Add(timeMaster);
             if (p == Medic.Player) infos.Add(medic);
             if (p == Swapper.Player) infos.Add(swapper);
             if (p == Mystic.Player) infos.Add(mystic);
-            if (p == Hacker.hacker) infos.Add(hacker);
-            if (p == Tracker.tracker) infos.Add(tracker);
-            if (p == Snitch.snitch) infos.Add(snitch);
-            if (p == Jackal.jackal || (Jackal.formerJackals != null && Jackal.formerJackals.Any(x => x.PlayerId == p.PlayerId))) infos.Add(jackal);
-            if (p == Sidekick.sidekick) infos.Add(sidekick);
-            if (p == Spy.spy) infos.Add(spy);
-            if (p == SecurityGuard.securityGuard) infos.Add(securityGuard);
-            if (p == Arsonist.arsonist) infos.Add(arsonist);
-            if (p == BountyHunter.bountyHunter) infos.Add(bountyHunter);
-            if (p == Vulture.vulture) infos.Add(vulture);
+            if (p == Hacker.Player) infos.Add(hacker);
+            if (p == Tracker.Player) infos.Add(tracker);
+            if (p == Snitch.Player) infos.Add(snitch);
+            if (p == Jackal.Player || (Jackal.formerJackals != null && Jackal.formerJackals.Any(x => x.PlayerId == p.PlayerId))) infos.Add(jackal);
+            if (p == Sidekick.Player) infos.Add(sidekick);
+            if (p == Spy.Player) infos.Add(spy);
+            if (p == Vigilante.Player) infos.Add(vigilante);
+            if (p == Arsonist.Player) infos.Add(arsonist);
+            if (p == BountyHunter.Player) infos.Add(bountyHunter);
+            if (p == Vulture.Player) infos.Add(vulture);
             if (p == Medium.medium) infos.Add(medium);
             if (p == Lawyer.Player && !Lawyer.isProsecutor) infos.Add(lawyer);
             if (p == Lawyer.Player && Lawyer.isProsecutor) infos.Add(prosecutor);
-            if (p == Trapper.trapper) infos.Add(trapper);
+            if (p == Trapper.Player) infos.Add(trapper);
             if (p == Pursuer.pursuer) infos.Add(pursuer);
-            if (p == Thief.thief) infos.Add(thief);
+            if (p == Thief.Player) infos.Add(thief);
 
             // Default roles (just impostor, just crewmate, or hunter / hunted for hide n seek, prop hunt prop ...
             if (infos.Count == count) 
@@ -275,15 +281,15 @@ namespace TownOfSushi
 
             if (!suppressGhostInfo && p != null) 
             {
-                if (p == Shifter.shifter && (PlayerControl.LocalPlayer == Shifter.shifter || Helpers.ShouldShowGhostInfo()) && Shifter.futureShift != null)
+                if (p == Shifter.Player && (PlayerControl.LocalPlayer == Shifter.Player || Helpers.ShouldShowGhostInfo()) && Shifter.futureShift != null)
                     roleName += Helpers.ColorString(Color.yellow, " ← " + Shifter.futureShift.Data.PlayerName);
-                if (p == Vulture.vulture && (PlayerControl.LocalPlayer == Vulture.vulture || Helpers.ShouldShowGhostInfo()))
+                if (p == Vulture.Player && (PlayerControl.LocalPlayer == Vulture.Player || Helpers.ShouldShowGhostInfo()))
                     roleName = roleName + Helpers.ColorString(Vulture.color, $" ({Vulture.vultureNumberToWin - Vulture.eatenBodies} left)");
                 if (Helpers.ShouldShowGhostInfo()) 
                 {
                     if (Eraser.futureErased.Contains(p))
                         roleName = Helpers.ColorString(Color.gray, "(Erased) ") + roleName;
-                    if (Vampire.vampire != null && !Vampire.vampire.Data.IsDead && Vampire.bitten == p && !p.Data.IsDead)
+                    if (Vampire.Player != null && !Vampire.Player.Data.IsDead && Vampire.bitten == p && !p.Data.IsDead)
                         roleName = Helpers.ColorString(Vampire.color, $"(Bitten {(int)HudManagerStartPatch.vampireKillButton.Timer + 1}) ") + roleName;
                     if (Glitch.HackedPlayers.Contains(p.PlayerId))
                         roleName = Helpers.ColorString(Color.gray, "(Hacked) ") + roleName;
@@ -301,8 +307,8 @@ namespace TownOfSushi
                         roleName = Helpers.ColorString(BountyHunter.color, "(Bounty) ") + roleName;
                     if (Arsonist.dousedPlayers.Contains(p))
                         roleName = Helpers.ColorString(Arsonist.color, "♨ ") + roleName;
-                    if (p == Arsonist.arsonist)
-                        roleName = roleName + Helpers.ColorString(Arsonist.color, $" ({PlayerControl.AllPlayerControls.ToArray().Count(x => { return x != Arsonist.arsonist && !x.Data.IsDead && !x.Data.Disconnected && !Arsonist.dousedPlayers.Any(y => y.PlayerId == x.PlayerId); })} left)");
+                    if (p == Arsonist.Player)
+                        roleName = roleName + Helpers.ColorString(Arsonist.color, $" ({PlayerControl.AllPlayerControls.ToArray().Count(x => { return x != Arsonist.Player && !x.Data.IsDead && !x.Data.Disconnected && !Arsonist.dousedPlayers.Any(y => y.PlayerId == x.PlayerId); })} left)");
                     if (p == Jackal.fakeSidekick)
                         roleName = Helpers.ColorString(Sidekick.color, $" (Fake SK)") + roleName;
 
