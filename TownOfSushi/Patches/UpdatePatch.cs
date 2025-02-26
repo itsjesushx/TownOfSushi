@@ -336,7 +336,7 @@ namespace TownOfSushi.Patches
             // Impostors
             UpdateImpostorKillButton(__instance);
 
-            if (Oracle.Player.Data.IsDead || Oracle.Confessor == null) UpdateOracle(MeetingHud.Instance);
+            if (Oracle.Player != null && Oracle.Player.Data.IsDead && Oracle.Confessor != null) UpdateOracle(MeetingHud.Instance);
 
             // Timer updates
             TimerUpdate();

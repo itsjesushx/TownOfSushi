@@ -79,38 +79,6 @@ namespace TownOfSushi
             return null;
         }
 
-        /* This function has been removed from TOS because we switched to assetbundles for compressed audio. leaving it here for reference - Gendelo
-        public static AudioClip loadAudioClipFromResources(string path, string clipName = "UNNAMED_TOR_AUDIO_CLIP") {
-
-            // must be "raw (headerless) 2-channel signed 32 bit pcm (le) 48kHz" (can e.g. use Audacity® to export )
-            try {
-                Assembly assembly = Assembly.GetExecutingAssembly();
-                Stream stream = assembly.GetManifestResourceStream(path);
-                var byteAudio = new byte[stream.Length];
-                _ = stream.Read(byteAudio, 0, (int)stream.Length);
-                float[] samples = new float[byteAudio.Length / 4]; // 4 bytes per sample
-                int offset;
-                for (int i = 0; i < samples.Length; i++) {
-                    offset = i * 4;
-                    samples[i] = (float)BitConverter.ToInt32(byteAudio, offset) / Int32.MaxValue;
-                }
-                int channels = 2;
-                int sampleRate = 48000;
-                AudioClip audioClip = AudioClip.Create(clipName, samples.Length / 2, channels, sampleRate, false);
-                audioClip.hideFlags |= HideFlags.HideAndDontSave | HideFlags.DontSaveInEditor;
-                audioClip.SetData(samples, 0);
-                return audioClip;
-            } catch {
-                System.Console.WriteLine("Error loading AudioClip from resources: " + path);
-            }
-            return null;
-
-            // Usage example:
-            //AudioClip exampleClip = Helpers.loadAudioClipFromResources("TownOfSushi.Resources.exampleClip.raw");
-            //if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(exampleClip, false, 0.8f);
-            
-        }*/
-
         public static string ReadTextFromResources(string path) 
         {
             Assembly assembly = Assembly.GetExecutingAssembly();

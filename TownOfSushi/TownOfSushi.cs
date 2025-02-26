@@ -347,14 +347,14 @@ namespace TownOfSushi
             public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.Hack.png", 115f);
+                buttonSprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.Hack.png", 110f);
                 return buttonSprite;
             }
 
             public static Sprite GetHackedButtonSprite()
             {
                 if (HackedSprite) return HackedSprite;
-                HackedSprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.Hack.png", 115f);
+                HackedSprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.Hack.png", 110f);
                 return HackedSprite;
             }
             public static Sprite GetSampleSprite() 

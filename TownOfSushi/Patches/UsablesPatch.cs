@@ -235,6 +235,20 @@ namespace TownOfSushi.Patches {
     }
 
     [HarmonyPatch(typeof(EmergencyMinigame), nameof(EmergencyMinigame.Update))]
+    class EmergencyMiniGameHackedPlayersUpdate
+    {
+        public static bool Prefix(EmergencyMinigame __instance)
+        {
+            if (Glitch.HackedPlayers.Contains(PlayerControl.LocalPlayer.PlayerId))
+            {
+                Glitch.SetHackedKnows();
+                return false; // Prevent the emergency minigame from updating
+            }
+            return true; // Allow the emergency minigame to update
+        }
+    }
+
+    [HarmonyPatch(typeof(EmergencyMinigame), nameof(EmergencyMinigame.Update))]
     class EmergencyMinigameUpdatePatch 
     {
         static void Postfix(EmergencyMinigame __instance) 
@@ -286,7 +300,8 @@ namespace TownOfSushi.Patches {
             }
 
             // Handle max number of meetings
-            if (__instance.state == 1) {
+            if (__instance.state == 1) 
+            {
                 int localRemaining = PlayerControl.LocalPlayer.RemainingEmergencies;
                 int teamRemaining = Mathf.Max(0, maxNumberOfMeetings - meetingsCount);
                 int remaining = Mathf.Min(localRemaining, (Mayor.Player != null && Mayor.Player == PlayerControl.LocalPlayer) ? 1 : teamRemaining);

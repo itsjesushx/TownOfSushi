@@ -479,7 +479,7 @@ namespace TownOfSushi
             GlitchSpawnRate = CustomOption.Create(103, Types.NeutralKiller, ColorString(Glitch.color, "Glitch"), 0f, 0f, 100f, 10f, null, true, format: "%");
             GlitchCanUseVents = CustomOption.Create(10512, Types.NeutralKiller, "Glitch Can Use Vents", false, GlitchSpawnRate);
             GlitchKillCooldowm = CustomOption.Create(10511, Types.NeutralKiller, "Kill Cooldown", 30f, 10f, 60f, 2.5f, GlitchSpawnRate, format: "s");
-            GlitchNumberOfHacks = CustomOption.Create(104, Types.NeutralKiller, "Number Of Hacks", 3f, 1f, 10f, 1f, GlitchSpawnRate, format: "s");
+            GlitchNumberOfHacks = CustomOption.Create(104, Types.NeutralKiller, "Number Of Hacks", 3f, 1f, 10f, 1f, GlitchSpawnRate);
             GlitchHackCooldown = CustomOption.Create(105, Types.NeutralKiller, "Hack Cooldown", 30f, 10f, 60f, 2.5f, GlitchSpawnRate, format: "s");
             GlitchHackDuration = CustomOption.Create(106, Types.NeutralKiller, "Hack Duration", 15f, 5f, 60f, 2.5f, GlitchSpawnRate, format: "s");
             GlitchMimicCooldown = CustomOption.Create(105212, Types.NeutralKiller, "Mimic Cooldown", 30f, 10f, 60f, 2.5f, GlitchSpawnRate, format: "s");
