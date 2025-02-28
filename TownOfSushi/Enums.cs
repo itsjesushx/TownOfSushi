@@ -25,6 +25,7 @@ namespace TownOfSushi
         Oracle,
         Engineer,
         Sheriff,
+        Juggernaut,
         Glitch,
         Lighter,
         Godfather,
@@ -204,6 +205,7 @@ namespace TownOfSushi
         WerewolfWin = 18,
         SerialKillerWin = 19,
         VRomanticWin = 20,
+        JuggernautWin = 21,
     }
 
     enum WinCondition 
@@ -225,5 +227,6 @@ namespace TownOfSushi
         WerewolfWin,
         SerialKillerWin,
         VRomanticWin,
+        JuggernautWin
     }
 }

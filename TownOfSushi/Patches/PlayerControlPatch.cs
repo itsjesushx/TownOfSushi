@@ -288,6 +288,15 @@ namespace TownOfSushi.Patches {
             SetPlayerOutline(Jackal.CurrentTarget, Jackal.color);
         }
 
+        static void JuggernautSetTarget()
+        {
+            if (Juggernaut.Player == null || Juggernaut.Player != PlayerControl.LocalPlayer) return;
+            var untargetablePlayers = new List<PlayerControl>();
+            if (Mini.Player != null && !Mini.IsGrownUp()) untargetablePlayers.Add(Mini.Player); // Exclude Juggernaut from targeting the Mini unless it has grown up
+            Juggernaut.CurrentTarget = SetTarget(untargetablePlayers: untargetablePlayers);
+            SetPlayerOutline(Juggernaut.CurrentTarget, Juggernaut.color);
+        }
+
         static void SerialKillerSetTarget() 
         {
             if (SerialKiller.Player == null || SerialKiller.Player != PlayerControl.LocalPlayer) return;
@@ -1144,6 +1153,8 @@ namespace TownOfSushi.Patches {
                 MorphlingSetTarget();
                 // Medic
                 MedicSetTarget();
+                //Juggernaut
+                JuggernautSetTarget();
                 //Romantic
                 RomanticSetTarget();
                 VengefulRomanticSetTarget();

@@ -20,6 +20,7 @@ using Il2CppSystem.Text;
 using Reactor.Networking.Attributes;
 using AmongUs.Data;
 using TownOfSushi.Modules.CustomHats;
+using Reactor.Utilities;
 
 namespace TownOfSushi
 {
@@ -119,7 +120,7 @@ namespace TownOfSushi
             ServerManager.DefaultRegions = new Il2CppReferenceArray<IRegionInfo>(new IRegionInfo[0]);
             UpdateRegions();
 
-            Reactor.Utilities.ReactorCredits.Register("TownOfSushi", VersionString, true, location => location == Reactor.Utilities.ReactorCredits.Location.PingTracker);
+           ReactorCredits.Register<TownOfSushiPlugin>(ReactorCredits.AlwaysShow);
 
             DebugMode = Config.Bind("Custom", "Enable Debug Mode", "false");
             Harmony.PatchAll();

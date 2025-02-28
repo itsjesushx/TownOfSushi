@@ -14,18 +14,6 @@ $@"Created by <color=#B2FEFE>Jesushi</color>
 Helped by <color=#B2FEFE>Cake</color>, <color=#B2FEFE>AlchlcDvl</color> & <color=#B2FEFE>50IQ</color>
 Originally Coded by <color=#B2FEFE>Eisbison</color> & <color=#B2FEFE>TheOtherRoles</color></size>";
 
-        [HarmonyPatch(typeof(PingTracker), nameof(PingTracker.Update))]
-        internal static class PingTrackerPatch
-        {
-            private static float DeltaTime;
-            static void Postfix(PingTracker __instance)
-            {
-                DeltaTime += (Time.deltaTime - DeltaTime) * 0.1f;
-                var FPS = Mathf.Round(1f / DeltaTime);
-                __instance.text.text = $"{__instance.text.text} \n FPS: {FPS}";
-                __instance.text.color = new Color32(178, 254, 254, 255);
-            }
-        }
         
         [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start))]
         public static class LogoPatch

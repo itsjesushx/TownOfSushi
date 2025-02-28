@@ -120,17 +120,17 @@ namespace TownOfSushi.Patches
             foreach (Vent vent in MapOptions.ventsToSeal) {
                 PowerTools.SpriteAnim animator = vent.GetComponent<PowerTools.SpriteAnim>();
                 vent.EnterVentAnim = vent.ExitVentAnim = null;
-                Sprite newSprite = animator == null ? Vigilante.getStaticVentSealedSprite() : Vigilante.getAnimatedVentSealedSprite();
+                Sprite newSprite = animator == null ? Vigilante.GetStaticVentSealedSprite() : Vigilante.getAnimatedVentSealedSprite();
                 SpriteRenderer rend = vent.myRend;
                 if (Helpers.IsFungle()) {
-                    newSprite = Vigilante.getFungleVentSealedSprite();
+                    newSprite = Vigilante.GetFungleVentSealedSprite();
                     rend = vent.transform.GetChild(3).GetComponent<SpriteRenderer>();
                     animator = vent.transform.GetChild(3).GetComponent<PowerTools.SpriteAnim>();
                 }
                 animator?.Stop();
                 rend.sprite = newSprite;
-                if (SubmergedCompatibility.IsSubmerged && vent.Id == 0) vent.myRend.sprite = Vigilante.getSubmergedCentralUpperSealedSprite();
-                if (SubmergedCompatibility.IsSubmerged && vent.Id == 14) vent.myRend.sprite = Vigilante.getSubmergedCentralLowerSealedSprite();
+                if (SubmergedCompatibility.IsSubmerged && vent.Id == 0) vent.myRend.sprite = Vigilante.GetSubmergedCentralUpperSealedSprite();
+                if (SubmergedCompatibility.IsSubmerged && vent.Id == 14) vent.myRend.sprite = Vigilante.GetSubmergedCentralLowerSealedSprite();
                 rend.color = Color.white;
                 vent.name = "SealedVent_" + vent.name;
             }

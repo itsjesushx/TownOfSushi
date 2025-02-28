@@ -1,22 +1,20 @@
-using InnerNet;
-using Reactor.Utilities.Extensions;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
-using TownOfSushi.Utilities;
 using UnityEngine;
 using static TownOfSushi.TownOfSushi;
 
 namespace TownOfSushi.Objects 
 {
-    public class FootprintHolder : MonoBehaviour {
+    public class FootprintHolder : MonoBehaviour 
+    {
         static FootprintHolder() => ClassInjector.RegisterTypeInIl2Cpp<FootprintHolder>();
 
         public FootprintHolder(IntPtr ptr) : base(ptr) { }
 
         private static FootprintHolder _instance;
-        public static FootprintHolder Instance {
+        public static FootprintHolder Instance 
+        {
             get => _instance ? _instance : _instance = new GameObject("FootprintHolder").AddComponent<FootprintHolder>();
             set => _instance = value;
 
@@ -28,7 +26,8 @@ namespace TownOfSushi.Objects
         private static bool AnonymousFootprints => TownOfSushi.Detective.anonymousFootprints;
         private static float FootprintDuration => TownOfSushi.Detective.footprintDuration;
 
-        private class Footprint {
+        private class Footprint 
+        {
             public GameObject GameObject;
             public Transform Transform;
             public SpriteRenderer Renderer;
@@ -36,7 +35,8 @@ namespace TownOfSushi.Objects
             public NetworkedPlayerInfo Data;
             public float Lifetime;
 
-            public Footprint() {
+            public Footprint() 
+            {
                 GameObject = new("Footprint") { layer = 8 };
                 Transform = GameObject.transform;
                 Renderer = GameObject.AddComponent<SpriteRenderer>();
@@ -53,8 +53,10 @@ namespace TownOfSushi.Objects
         private readonly List<Footprint> _toRemove = new();
 
         [HideFromIl2Cpp]
-        public void MakeFootprint(PlayerControl player) {
-            if (!_pool.TryTake(out var print)) {
+        public void MakeFootprint(PlayerControl player) 
+        {
+            if (!_pool.TryTake(out var print)) 
+            {
                 print = new();
             }
 
@@ -71,17 +73,21 @@ namespace TownOfSushi.Objects
 
         private static float updateDt = 0.10f;
 
-        private void Start() {
+        private void Start() 
+        {
             InvokeRepeating(nameof(FootprintUpdate), updateDt, updateDt);
         }
 
-        private void FootprintUpdate() {
+        private void FootprintUpdate() 
+        {
             var dt = updateDt;
             _toRemove.Clear();
-            foreach (var activeFootprint in _activeFootprints) {
+            foreach (var activeFootprint in _activeFootprints) 
+            {
                 var p = activeFootprint.Lifetime / FootprintDuration;
 
-                if (activeFootprint.Lifetime <= 0) {
+                if (activeFootprint.Lifetime <= 0) 
+                {
                     _toRemove.Add(activeFootprint);
                     continue;
                 }

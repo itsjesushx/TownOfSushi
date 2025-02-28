@@ -85,6 +85,7 @@ namespace TownOfSushi
 
         #region Neutral Killers
         public readonly static RoleInfo jackal = new("Jackal", Jackal.color, "Kill all Crewmates and <color=#FF1919FF>Impostors</color> to win", "Kill everyone", RoleId.Jackal, Factions.NeutralKiller, "The Jackal is part of an extra team, that tries to eliminate all the other players. The Jackal has no tasks and can kill Impostors, Crewmates and Neutrals. The Jackal (if allowed by the options) can select another player to be their Sidekick. Creating a Sidekick removes all tasks of the Sidekick and adds them to the team Jackal. The Sidekick loses their current role (except if they're a Lover, then they play in two teams). The Create Sidekick Action may only be used once per Jackal or once per game (depending on the options). The Jackal can also promote Impostors to be their Sidekick, but depending on the options the Impostor will either really turn into the Sidekick and leave the team Impostors or they will just look like the Sidekick to the Jackal and remain as they were. Also if a Spy or Impostor gets sidekicked, they still will appear red to the Impostors.");
+        public readonly static RoleInfo juggernaut = new("Juggernaut", Juggernaut.color, "Kill all your <color=#FF1919FF>Enemies</color> to win", "Each kill makes you more dangerous", RoleId.Juggernaut, Factions.NeutralKiller, "The Juggernaut is a Neutral role with its own win condition. The Juggernaut's special ability is that their kill cooldown reduces with each kill. This means in theory the Juggernaut can have a 0 second kill cooldown!. The Juggernaut needs to be the last killer alive to win the game.");
         public readonly static RoleInfo sidekick = new("Sidekick", Sidekick.color, "Help your Jackal to kill everyone", "Help your Jackal to kill everyone", RoleId.Sidekick, Factions.NeutralKiller, "Gets assigned to a player during the game by the Create Sidekick Action of the Jackal and joins the Jackal in their quest to eliminate all other players. Upon the death of the Jackal (depending on the options), they might get promoted to Jackal themself and potentially even assign a Sidekick of their own.");
         public readonly static RoleInfo serialKiller = new("Serial Killer", SerialKiller.color, "Stab to make everyone die", "Murder everyone when stabbing", RoleId.SerialKiller, Factions.NeutralKiller, "The Serial Killer is a Neutral role with its own win condition. Although the Serial Killer has a kill button, they can't use it unless they are stabbing. Once the Serial Killer rampages they gain Impostor vision and the ability to kill. However, unlike most killers their kill cooldown is really short. The Serial Killer needs to be the last killer alive to win the game.");
         public readonly static RoleInfo glitch = new("Glitch", Glitch.color, "Hack, Kill and Mimic your <color=#FF1919FF>enemies</color>", "Hack, Kill and Mimic your <color=#FF1919FF>enemies</color>", RoleId.Glitch, Factions.NeutralKiller, "Glitch is a Neutral role with its own win condition. Glitch's aim is to kill everyone and be the last person standing. Glitch can Hack players, resulting in them being unable to report bodies and do tasks. Hacking prevents the hacked player from doing anything but walk around the map. Glitch can Mimic someone, which results in them looking exactly like the other person.");
@@ -138,6 +139,7 @@ namespace TownOfSushi
             vulture,
             pursuer,
             lawyer,
+            juggernaut,
             thief,
             prosecutor,
             crewmate,
@@ -209,6 +211,7 @@ namespace TownOfSushi
             if (p == Engineer.Player) infos.Add(engineer);
             if (p == Sheriff.Player) infos.Add(sheriff);
             if (p == Romantic.Player) infos.Add(romantic);
+            if (p == Juggernaut.Player) infos.Add(juggernaut);
             if (p == VengefulRomantic.Player) infos.Add(vromantic);
             if (p == Glitch.Player) infos.Add(glitch);
             if (p == SerialKiller.Player) infos.Add(serialKiller);

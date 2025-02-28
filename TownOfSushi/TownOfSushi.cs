@@ -40,6 +40,7 @@ namespace TownOfSushi
             Morphling.ClearAndReload();
             Camouflager.ClearAndReload();
             Hacker.ClearAndReload();
+            Juggernaut.ClearAndReload();
             Tracker.ClearAndReload();
             Vampire.ClearAndReload();
             Snitch.ClearAndReload();
@@ -626,9 +627,7 @@ namespace TownOfSushi
 
         public static bool ExistingWithKiller() 
         {
-            return Existing() && (Lover1 == Jackal.Player     || Lover2 == Jackal.Player
-                               || Lover1 == Sidekick.Player || Lover2 == Sidekick.Player
-                               || Lover1.Data.Role.IsImpostor      || Lover2.Data.Role.IsImpostor);
+            return Existing() && (Lover1.IsNeutralKiller() || Lover2.IsNeutralKiller() || Lover1.Data.Role.IsImpostor || Lover2.Data.Role.IsImpostor);
         }
 
         public static bool HasAliveKillingLover(this PlayerControl player) 
@@ -1203,7 +1202,8 @@ namespace TownOfSushi
         }
     }
 
-    public static class Eraser {
+    public static class Eraser 
+    {
         public static PlayerControl Player;
         public static Color color = Palette.ImpostorRed;
 
@@ -1319,7 +1319,8 @@ namespace TownOfSushi
         }
     }
 
-    public static class Warlock {
+    public static class Warlock 
+    {
 
         public static PlayerControl Player;
         public static Color color = Palette.ImpostorRed;
@@ -1369,7 +1370,8 @@ namespace TownOfSushi
         }
     }
 
-    public static class Vigilante {
+    public static class Vigilante 
+    {
         public static PlayerControl Player;
         public static Color color = new Color32(195, 178, 95, byte.MaxValue);
 
@@ -1389,14 +1391,16 @@ namespace TownOfSushi
         public static Minigame minigame = null;
 
         private static Sprite closeVentButtonSprite;
-        public static Sprite getCloseVentButtonSprite() {
+        public static Sprite GetCloseVentButtonSprite() 
+        {
             if (closeVentButtonSprite) return closeVentButtonSprite;
             closeVentButtonSprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.CloseVentButton.png", 115f);
             return closeVentButtonSprite;
         }
 
         private static Sprite placeCameraButtonSprite;
-        public static Sprite getPlaceCameraButtonSprite() {
+        public static Sprite GetPlaceCameraButtonSprite() 
+        {
             if (placeCameraButtonSprite) return placeCameraButtonSprite;
             placeCameraButtonSprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.PlaceCameraButton.png", 115f);
             return placeCameraButtonSprite;
@@ -1404,10 +1408,12 @@ namespace TownOfSushi
 
         private static Sprite animatedVentSealedSprite;
         private static float lastPPU;
-        public static Sprite getAnimatedVentSealedSprite() {
+        public static Sprite getAnimatedVentSealedSprite() 
+        {
             float ppu = 185f;
             if (SubmergedCompatibility.IsSubmerged) ppu = 120f;
-            if (lastPPU != ppu) {
+            if (lastPPU != ppu) 
+            {
                 animatedVentSealedSprite = null;
                 lastPPU = ppu;
             }
@@ -1417,14 +1423,16 @@ namespace TownOfSushi
         }
 
         private static Sprite staticVentSealedSprite;
-        public static Sprite getStaticVentSealedSprite() {
+        public static Sprite GetStaticVentSealedSprite() 
+        {
             if (staticVentSealedSprite) return staticVentSealedSprite;
             staticVentSealedSprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.StaticVentSealed.png", 160f);
             return staticVentSealedSprite;
         }
 
         private static Sprite fungleVentSealedSprite;
-        public static Sprite getFungleVentSealedSprite() {
+        public static Sprite GetFungleVentSealedSprite() 
+        {
             if (fungleVentSealedSprite) return fungleVentSealedSprite;
             fungleVentSealedSprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.FungleVentSealed.png", 160f);
             return fungleVentSealedSprite;
@@ -1432,34 +1440,39 @@ namespace TownOfSushi
 
 
         private static Sprite submergedCentralUpperVentSealedSprite;
-        public static Sprite getSubmergedCentralUpperSealedSprite() {
+        public static Sprite GetSubmergedCentralUpperSealedSprite() 
+        {
             if (submergedCentralUpperVentSealedSprite) return submergedCentralUpperVentSealedSprite;
             submergedCentralUpperVentSealedSprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.CentralUpperBlocked.png", 145f);
             return submergedCentralUpperVentSealedSprite;
         }
 
         private static Sprite submergedCentralLowerVentSealedSprite;
-        public static Sprite getSubmergedCentralLowerSealedSprite() {
+        public static Sprite GetSubmergedCentralLowerSealedSprite() 
+        {
             if (submergedCentralLowerVentSealedSprite) return submergedCentralLowerVentSealedSprite;
             submergedCentralLowerVentSealedSprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.CentralLowerBlocked.png", 145f);
             return submergedCentralLowerVentSealedSprite;
         }
 
         private static Sprite camSprite;
-        public static Sprite getCamSprite() {
+        public static Sprite GetCamSprite() 
+        {
             if (camSprite) return camSprite;
             camSprite = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.CamsButton].Image;
             return camSprite;
         }
 
         private static Sprite logSprite;
-        public static Sprite getLogSprite() {
+        public static Sprite GetLogSprite() 
+        {
             if (logSprite) return logSprite;
             logSprite = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.DoorLogsButton].Image;
             return logSprite;
         }
 
-        public static void ClearAndReload() {
+        public static void ClearAndReload() 
+        {
             Player = null;
             ventTarget = null;
             minigame = null;
@@ -1477,7 +1490,8 @@ namespace TownOfSushi
         }
     }
 
-    public static class Arsonist {
+    public static class Arsonist 
+    {
         public static PlayerControl Player;
         public static Color color = new Color32(238, 112, 46, byte.MaxValue);
 
@@ -1490,20 +1504,23 @@ namespace TownOfSushi
         public static List<PlayerControl> dousedPlayers = new List<PlayerControl>();
 
         private static Sprite douseSprite;
-        public static Sprite getDouseSprite() {
+        public static Sprite GetDouseSprite() 
+        {
             if (douseSprite) return douseSprite;
             douseSprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.DouseButton.png", 115f);
             return douseSprite;
         }
 
         private static Sprite igniteSprite;
-        public static Sprite getIgniteSprite() {
+        public static Sprite GetIgniteSprite() 
+        {
             if (igniteSprite) return igniteSprite;
             igniteSprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.IgniteButton.png", 115f);
             return igniteSprite;
         }
 
-        public static bool dousedEveryoneAlive() {
+        public static bool DousedEveryoneAlive() 
+        {
             return PlayerControl.AllPlayerControls.ToArray().All(x => { return x == Arsonist.Player || x.Data.IsDead || x.Data.Disconnected || Arsonist.dousedPlayers.Any(y => y.PlayerId == x.PlayerId); });
         }
 
@@ -1564,7 +1581,8 @@ namespace TownOfSushi
         }
     }
 
-    public static class Vulture {
+    public static class Vulture 
+    {
         public static PlayerControl Player;
         public static Color color = new Color32(139, 69, 19, byte.MaxValue);
         public static List<Arrow> localArrows = new List<Arrow>();
@@ -1575,7 +1593,8 @@ namespace TownOfSushi
         public static bool canUseVents = true;
         public static bool showArrows = true;
         private static Sprite buttonSprite;
-        public static Sprite GetButtonSprite() {
+        public static Sprite GetButtonSprite() 
+        {
             if (buttonSprite) return buttonSprite;
             buttonSprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.VultureButton.png", 115f);
             return buttonSprite;
@@ -1590,12 +1609,36 @@ namespace TownOfSushi
             triggerVultureWin = false;
             canUseVents = CustomOptionHolder.vultureCanUseVents.GetBool();
             showArrows = CustomOptionHolder.vultureShowArrows.GetBool();
-            if (localArrows != null) {
+            if (localArrows != null) 
+            {
                 foreach (Arrow arrow in localArrows)
                     if (arrow?.arrow != null)
                         UnityEngine.Object.Destroy(arrow.arrow);
             }
             localArrows = new List<Arrow>();
+        }
+    }
+
+    public static class Juggernaut
+    {
+        public static PlayerControl Player;
+        public static PlayerControl CurrentTarget;
+        public static float Cooldown = 30f;
+        public static bool CanUseVents;
+        public static Color  color = new Color32(140, 0, 77, byte.MaxValue);
+        public static float ReducedCooldown = 5f;
+        public static void FixCooldown()
+        {
+            Cooldown -= ReducedCooldown;
+            if (Cooldown <= 0f) Cooldown = 0f;
+        }
+        public static void ClearAndReload()
+        {
+            Player = null;
+            CurrentTarget = null;
+            Cooldown = CustomOptionHolder.JuggernautCooldown.GetFloat();
+            CanUseVents = CustomOptionHolder.JuggernautCanUseVents.GetBool();
+            ReducedCooldown = CustomOptionHolder.JuggernautReducedCooldown.GetFloat();
         }
     }
 

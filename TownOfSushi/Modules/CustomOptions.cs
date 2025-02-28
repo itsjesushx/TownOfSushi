@@ -1438,18 +1438,18 @@ namespace TownOfSushi {
 
             if (!toggleZoomButton || !toggleZoomButtonObject) 
             {
-            // add a special button for settings viewing:
-            toggleZoomButtonObject = GameObject.Instantiate(__instance.MapButton.gameObject, __instance.MapButton.transform.parent);
-            toggleZoomButtonObject.transform.localPosition = __instance.MapButton.transform.localPosition + new Vector3(-0.8f, -1.25f, -500f);
-            toggleZoomButtonObject.name = "TOGGLEZOOMBUTTON";
-            SpriteRenderer tZrenderer = toggleZoomButtonObject.transform.Find("Inactive").GetComponent<SpriteRenderer>();
-            SpriteRenderer tZArenderer = toggleZoomButtonObject.transform.Find("Active").GetComponent<SpriteRenderer>();
-            toggleZoomButtonObject.transform.Find("Background").localPosition = Vector3.zero;
-            tZrenderer.sprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.Minus_Button.png", 100f);
-            tZArenderer.sprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.Minus_ButtonActive.png", 100);
-            toggleZoomButton = toggleZoomButtonObject.GetComponent<PassiveButton>();
-            toggleZoomButton.OnClick.RemoveAllListeners();
-            toggleZoomButton.OnClick.AddListener((Action)(() => Helpers.ToggleZoom()));
+                // add a special button for settings viewing:
+                toggleZoomButtonObject = GameObject.Instantiate(__instance.MapButton.gameObject, __instance.MapButton.transform.parent);
+                toggleZoomButtonObject.transform.localPosition = __instance.MapButton.transform.localPosition + new Vector3(-0.8f, -1.25f, -500f);
+                toggleZoomButtonObject.name = "TOGGLEZOOMBUTTON";
+                SpriteRenderer tZrenderer = toggleZoomButtonObject.transform.Find("Inactive").GetComponent<SpriteRenderer>();
+                SpriteRenderer tZArenderer = toggleZoomButtonObject.transform.Find("Active").GetComponent<SpriteRenderer>();
+                toggleZoomButtonObject.transform.Find("Background").localPosition = Vector3.zero;
+                tZrenderer.sprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.Minus_Button.png", 100f);
+                tZArenderer.sprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.Minus_ButtonActive.png", 100);
+                toggleZoomButton = toggleZoomButtonObject.GetComponent<PassiveButton>();
+                toggleZoomButton.OnClick.RemoveAllListeners();
+                toggleZoomButton.OnClick.AddListener((Action)(() => Helpers.ToggleZoom()));
             }
             var (playerCompleted, playerTotal) = TasksHandler.TaskInfo(PlayerControl.LocalPlayer.Data);
             int numberOfLeftTasks = playerTotal - playerCompleted;

@@ -236,7 +236,8 @@ namespace TownOfSushi
             return PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.Data.IsDead && MapOptions.ghostsSeeInformation || AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Ended;
         }
 
-        public static void ClearAllTasks(this PlayerControl player) {
+        public static void ClearAllTasks(this PlayerControl player) 
+        {
             if (player == null) return;
             foreach (var playerTask in player.myTasks.GetFastEnumerator())
             {
@@ -455,6 +456,8 @@ namespace TownOfSushi
             else if (Werewolf.CanUseVents && Werewolf.Player != null && Werewolf.Player == player)
                 roleCouldUse = true;
             else if (Sidekick.canUseVents && Sidekick.Player != null && Sidekick.Player == player)
+                roleCouldUse = true;
+            else if (Juggernaut.CanUseVents && Juggernaut.Player != null && Juggernaut.Player == player)
                 roleCouldUse = true;
             else if (Spy.canEnterVents && Spy.Player != null && Spy.Player == player)
                 roleCouldUse = true;
@@ -777,6 +780,7 @@ namespace TownOfSushi
                 || (Sidekick.Player != null && Sidekick.Player.PlayerId == player.PlayerId)
                 || (Glitch.Player != null && Glitch.Player.PlayerId == player.PlayerId)
                 || (Werewolf.Player != null && Werewolf.Player.PlayerId == player.PlayerId)
+                || (Juggernaut.Player != null && Juggernaut.Player.PlayerId == player.PlayerId)
                 || (VengefulRomantic.Player != null && VengefulRomantic.Player.PlayerId == player.PlayerId)
                 || (SerialKiller.Player != null && SerialKiller.HasImpostorVision && SerialKiller.Player.PlayerId == player.PlayerId)
                 || (Spy.Player != null && Spy.Player.PlayerId == player.PlayerId && Spy.hasImpostorVision)

@@ -167,6 +167,9 @@ namespace TownOfSushi
                     case RoleId.Mystic:
                         Mystic.Player = player;
                         break;
+                    case RoleId.Juggernaut:
+                        Juggernaut.Player = player;
+                        break;
                     case RoleId.Morphling:
                         Morphling.Player = player;
                         break;
@@ -944,17 +947,17 @@ namespace TownOfSushi
                 PowerTools.SpriteAnim animator = vent.GetComponent<PowerTools.SpriteAnim>(); 
                 
                 vent.EnterVentAnim = vent.ExitVentAnim = null;
-                Sprite newSprite = animator == null ? Vigilante.getStaticVentSealedSprite() : Vigilante.getAnimatedVentSealedSprite();
+                Sprite newSprite = animator == null ? Vigilante.GetStaticVentSealedSprite() : Vigilante.getAnimatedVentSealedSprite();
                 SpriteRenderer rend = vent.myRend;
                 if (Helpers.IsFungle()) {
-                    newSprite = Vigilante.getFungleVentSealedSprite();
+                    newSprite = Vigilante.GetFungleVentSealedSprite();
                     rend = vent.transform.GetChild(3).GetComponent<SpriteRenderer>();
                     animator = vent.transform.GetChild(3).GetComponent<PowerTools.SpriteAnim>();
                 }
                 animator?.Stop();
                 rend.sprite = newSprite;
-                if (SubmergedCompatibility.IsSubmerged && vent.Id == 0) vent.myRend.sprite = Vigilante.getSubmergedCentralUpperSealedSprite();
-                if (SubmergedCompatibility.IsSubmerged && vent.Id == 14) vent.myRend.sprite = Vigilante.getSubmergedCentralLowerSealedSprite();
+                if (SubmergedCompatibility.IsSubmerged && vent.Id == 0) vent.myRend.sprite = Vigilante.GetSubmergedCentralUpperSealedSprite();
+                if (SubmergedCompatibility.IsSubmerged && vent.Id == 14) vent.myRend.sprite = Vigilante.GetSubmergedCentralLowerSealedSprite();
                 rend.color = new Color(1f, 1f, 1f, 0.5f);
                 vent.name = "FutureSealedVent_" + vent.name;
             }

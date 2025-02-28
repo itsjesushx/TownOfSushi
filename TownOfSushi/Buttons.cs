@@ -40,6 +40,7 @@ namespace TownOfSushi
         private static CustomButton RomanticSetTargetButton;
         public static CustomButton vampireKillButton;
         public static CustomButton garlicButton;
+        public static CustomButton JuggernautKillButton;
         public static CustomButton jackalKillButton;
         public static CustomButton SerialKillerStabButton;
         public static CustomButton SerialKillerKillButton;
@@ -127,6 +128,7 @@ namespace TownOfSushi
             GlitchKillButton.MaxTimer = Glitch.KillCooldown;
             RomanticKillButton.MaxTimer = VengefulRomantic.Cooldown;
             WerewolfMaulButton.MaxTimer = Werewolf.Cooldown;
+            JuggernautKillButton.MaxTimer = Juggernaut.Cooldown;
             sidekickKillButton.MaxTimer = Sidekick.cooldown;
             jackalSidekickButton.MaxTimer = Jackal.createSidekickCooldown;
             eraserButton.MaxTimer = Eraser.cooldown;
@@ -589,6 +591,36 @@ namespace TownOfSushi
                 () => { GlitchKillButton.Timer = GlitchKillButton.MaxTimer;},
                 __instance.KillButton.graphic.sprite,
                 CustomButton.ButtonPositions.upperRowRight,
+                __instance,
+                KeyCode.Q
+            );
+
+            // Juggernaut Kill
+            JuggernautKillButton = new CustomButton(
+                () =>
+                {
+                    if (Juggernaut.CurrentTarget.CheckVeteranAlertKill()) return;
+                    if (Helpers.CheckMurderAttemptAndKill(Juggernaut.Player, Juggernaut.CurrentTarget) == MurderAttemptResult.SuppressKill) return;
+                    if (JuggernautKillButton.MaxTimer >= 0f)
+                    {
+                        Juggernaut.FixCooldown();
+                        JuggernautKillButton.MaxTimer = Juggernaut.Cooldown;
+                    }
+
+                    JuggernautKillButton.Timer = JuggernautKillButton.MaxTimer;
+                    Juggernaut.CurrentTarget = null;
+                },
+                () =>
+                {
+                    return Juggernaut.Player != null && Juggernaut.Player == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead;
+                },
+                () =>
+                {
+                    return Juggernaut.CurrentTarget && PlayerControl.LocalPlayer.CanMove;
+                },
+                () => { JuggernautKillButton.Timer = JuggernautKillButton.MaxTimer; },
+                __instance.KillButton.graphic.sprite,
+                new Vector3(0, 1f, 0),
                 __instance,
                 KeyCode.Q
             );
@@ -1613,7 +1645,7 @@ namespace TownOfSushi
                 },
                 () => { return Vigilante.Player != null && Vigilante.Player == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead && Vigilante.remainingScrews >= Mathf.Min(Vigilante.ventPrice, Vigilante.camPrice); },
                 () => {
-                    VigilanteButton.actionButton.graphic.sprite = (Vigilante.ventTarget == null && !Helpers.IsMira() && !Helpers.IsFungle() && !SubmergedCompatibility.IsSubmerged) ? Vigilante.getPlaceCameraButtonSprite() : Vigilante.getCloseVentButtonSprite(); 
+                    VigilanteButton.actionButton.graphic.sprite = (Vigilante.ventTarget == null && !Helpers.IsMira() && !Helpers.IsFungle() && !SubmergedCompatibility.IsSubmerged) ? Vigilante.GetPlaceCameraButtonSprite() : Vigilante.GetCloseVentButtonSprite(); 
                     if (VigilanteButtonScrewsText != null) VigilanteButtonScrewsText.text = $"{Vigilante.remainingScrews}/{Vigilante.totalScrews}";
 
                     if (Vigilante.ventTarget != null)
@@ -1621,7 +1653,7 @@ namespace TownOfSushi
                     return !Helpers.IsMira() && !Helpers.IsFungle() && !SubmergedCompatibility.IsSubmerged && Vigilante.remainingScrews >= Vigilante.camPrice && PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { VigilanteButton.Timer = VigilanteButton.MaxTimer; },
-                Vigilante.getPlaceCameraButtonSprite(),
+                Vigilante.GetPlaceCameraButtonSprite(),
                 CustomButton.ButtonPositions.lowerRowRight,
                 __instance,
                 KeyCode.F
@@ -1669,7 +1701,7 @@ namespace TownOfSushi
                 },
                 () => {
                     if (VigilanteChargesText != null) VigilanteChargesText.text = $"{Vigilante.charges} / {Vigilante.maxCharges}";
-                    VigilanteCamButton.actionButton.graphic.sprite = Helpers.IsMira() ? Vigilante.getLogSprite() : Vigilante.getCamSprite();
+                    VigilanteCamButton.actionButton.graphic.sprite = Helpers.IsMira() ? Vigilante.GetLogSprite() : Vigilante.GetCamSprite();
                     VigilanteCamButton.actionButton.OverrideText(Helpers.IsMira() ? "DOORLOG" : "SECURITY");
                     return PlayerControl.LocalPlayer.CanMove && Vigilante.charges > 0;
                 },
@@ -1678,7 +1710,7 @@ namespace TownOfSushi
                     VigilanteCamButton.isEffectActive = false;
                     VigilanteCamButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
                 },
-                Vigilante.getCamSprite(),
+                Vigilante.GetCamSprite(),
                 CustomButton.ButtonPositions.lowerRowRight,
                 __instance,
                 KeyCode.Q,
@@ -1706,7 +1738,7 @@ namespace TownOfSushi
             arsonistButton = new CustomButton(
                 () => 
                 {
-                    bool dousedEveryoneAlive = Arsonist.dousedEveryoneAlive();
+                    bool dousedEveryoneAlive = Arsonist.DousedEveryoneAlive();
                     if (dousedEveryoneAlive) {
                         MessageWriter winWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ArsonistWin, Hazel.SendOption.Reliable, -1);
                         AmongUsClient.Instance.FinishRpcImmediately(winWriter);
@@ -1722,8 +1754,8 @@ namespace TownOfSushi
                 },
                 () => { return Arsonist.Player != null && Arsonist.Player == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead; },
                 () => {
-                    bool dousedEveryoneAlive = Arsonist.dousedEveryoneAlive();
-                    if (dousedEveryoneAlive) arsonistButton.actionButton.graphic.sprite = Arsonist.getIgniteSprite();
+                    bool dousedEveryoneAlive = Arsonist.DousedEveryoneAlive();
+                    if (dousedEveryoneAlive) arsonistButton.actionButton.graphic.sprite = Arsonist.GetIgniteSprite();
                     
                     if (arsonistButton.isEffectActive && Arsonist.douseTarget != Arsonist.CurrentTarget) {
                         Arsonist.douseTarget = null;
@@ -1738,7 +1770,7 @@ namespace TownOfSushi
                     arsonistButton.isEffectActive = false;
                     Arsonist.douseTarget = null;
                 },
-                Arsonist.getDouseSprite(),
+                Arsonist.GetDouseSprite(),
                 CustomButton.ButtonPositions.lowerRowRight,
                 __instance,
                 KeyCode.F,
@@ -1747,7 +1779,7 @@ namespace TownOfSushi
                 () => {
                     if (Arsonist.douseTarget != null) Arsonist.dousedPlayers.Add(Arsonist.douseTarget);
                     
-                    arsonistButton.Timer = Arsonist.dousedEveryoneAlive() ? 0 : arsonistButton.MaxTimer;
+                    arsonistButton.Timer = Arsonist.DousedEveryoneAlive() ? 0 : arsonistButton.MaxTimer;
 
                     foreach (PlayerControl p in Arsonist.dousedPlayers) {
                         if (MapOptions.playerIcons.ContainsKey(p.PlayerId)) {

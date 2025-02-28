@@ -63,7 +63,7 @@ namespace TownOfSushi.Patches
                 var (tasksCompleted, tasksTotal) = TasksHandler.TaskInfo(playerControl.Data);
                 bool isGuesser = HandleGuesser.IsGuesser(playerControl.PlayerId);
                 int? killCount = GameHistory.deadPlayers.FindAll(x => x.killerIfExisting != null && x.killerIfExisting.PlayerId == playerControl.PlayerId).Count;
-                if (killCount == 0 && !(new List<RoleInfo>() { RoleInfo.sheriff, RoleInfo.jackal, RoleInfo.sidekick, RoleInfo.thief }.Contains(RoleInfo.GetRoleInfoForPlayer(playerControl, false).FirstOrDefault()) || playerControl.Data.Role.IsImpostor)) 
+                if (killCount == 0 && !(new List<RoleInfo>() { RoleInfo.sheriff, RoleInfo.veteran, RoleInfo.thief }.Contains(RoleInfo.GetRoleInfoForPlayer(playerControl, false).FirstOrDefault()) || playerControl.IsNeutralKiller() || playerControl.Data.Role.IsImpostor)) 
                 {
                     killCount = null;
                 }
@@ -84,6 +84,7 @@ namespace TownOfSushi.Patches
             if (Lawyer.Player != null) notWinners.Add(Lawyer.Player);
             if (Pursuer.pursuer != null) notWinners.Add(Pursuer.pursuer);
             if (Romantic.Player != null) notWinners.Add(Romantic.Player);
+            if (Juggernaut.Player != null) notWinners.Add(Juggernaut.Player);
             if (VengefulRomantic.Player != null) notWinners.Add(VengefulRomantic.Player);
             if (Thief.Player != null) notWinners.Add(Thief.Player);
 
@@ -103,6 +104,7 @@ namespace TownOfSushi.Patches
             bool miniLose = Mini.Player != null && gameOverReason == (GameOverReason)CustomGameOverReason.MiniLose;
             bool SKWin = SerialKiller.Player != null && gameOverReason == (GameOverReason)CustomGameOverReason.SerialKillerWin;
             bool RomanticWin = VengefulRomantic.Player != null && gameOverReason == (GameOverReason)CustomGameOverReason.VRomanticWin;
+            bool JuggernautWin = Juggernaut.Player != null && gameOverReason == (GameOverReason)CustomGameOverReason.JuggernautWin;
             bool loversWin = Lovers.ExistingAndAlive() && (gameOverReason == (GameOverReason)CustomGameOverReason.LoversWin || (GameManager.Instance.DidHumansWin(gameOverReason) && !Lovers.ExistingWithKiller())); // Either they win if they are among the last 3 players, or they win if they are both Crewmates and both alive and the Crew wins (Team Imp/Jackal Lovers can only win solo wins)
             bool teamJackalWin = gameOverReason == (GameOverReason)CustomGameOverReason.TeamJackalWin && ((Jackal.Player != null && !Jackal.Player.Data.IsDead) || (Sidekick.Player != null && !Sidekick.Player.Data.IsDead));
             bool vultureWin = Vulture.Player != null && gameOverReason == (GameOverReason)CustomGameOverReason.VultureWin;
@@ -152,6 +154,15 @@ namespace TownOfSushi.Patches
                 CachedPlayerData wpd = new CachedPlayerData(Werewolf.Player.Data);
                 EndGameResult.CachedWinners.Add(wpd);
                 AdditionalTempData.winCondition = WinCondition.WerewolfWin;
+            }
+
+            // Jugg win
+            else if (JuggernautWin) 
+            {
+                EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
+                CachedPlayerData wpd = new CachedPlayerData(Juggernaut.Player.Data);
+                EndGameResult.CachedWinners.Add(wpd);
+                AdditionalTempData.winCondition = WinCondition.JuggernautWin;
             }
 
             // Serial Killer win
@@ -205,7 +216,7 @@ namespace TownOfSushi.Patches
                             EndGameResult.CachedWinners.Add(new CachedPlayerData(p.Data));
                         else if (p == Pursuer.pursuer && !Pursuer.pursuer.Data.IsDead)
                             EndGameResult.CachedWinners.Add(new CachedPlayerData(p.Data));
-                        else if (p != Jester.jester && p != VengefulRomantic.Player && p != SerialKiller.Player && p != Jackal.Player && p != Glitch.Player && p != Werewolf.Player && p != Sidekick.Player && p != Arsonist.Player && p != Vulture.Player && !Jackal.formerJackals.Contains(p) && !p.Data.Role.IsImpostor)
+                        else if (p.IsCrew())
                             EndGameResult.CachedWinners.Add(new CachedPlayerData(p.Data));
                     }
                 }
@@ -398,9 +409,15 @@ namespace TownOfSushi.Patches
                 textRenderer.color = Lovers.color;
                 __instance.BackgroundBar.material.SetColor("_Color", Lovers.color);
             } 
+            else if (AdditionalTempData.winCondition == WinCondition.JuggernautWin) 
+            {
+                textRenderer.text = "Juggernaut Wins";
+                textRenderer.color = Juggernaut.color;
+                __instance.BackgroundBar.material.SetColor("_Color", Juggernaut.color);
+            }
             else if (AdditionalTempData.winCondition == WinCondition.LoversSoloWin) 
             {
-                textRenderer.text = "Lovers Win";
+                textRenderer.text = "Love Couple Wins";
                 textRenderer.color = Lovers.color;
                 __instance.BackgroundBar.material.SetColor("_Color", Lovers.color);
             }
@@ -439,7 +456,7 @@ namespace TownOfSushi.Patches
                 textRenderer.text = "Mini died";
                 textRenderer.color = Mini.color;
                 __instance.BackgroundBar.material.SetColor("_Color", Mini.color);
-            } 
+            }
             else if (AdditionalTempData.winCondition == WinCondition.Default) 
             {
                 switch (OnGameEndPatch.gameOverReason) 
@@ -574,7 +591,7 @@ namespace TownOfSushi.Patches
         public static bool Prefix(ShipStatus __instance) 
         {
             if (!GameData.Instance) return false;
-            if (DestroyableSingleton<TutorialManager>.InstanceExists) // InstanceExists | Don't check Custom Criteria when in Tutorial
+            if (DestroyableSingleton<TutorialManager>.InstanceExists)
                 return true;
             var statistics = new PlayerStatistics(__instance);
             if (CheckAndEndGameForMiniLose(__instance)) return false;
@@ -590,6 +607,7 @@ namespace TownOfSushi.Patches
             if (CheckAndEndGameForWerewolfWin(__instance, statistics)) return false;
             if (CheckAndEndGameForRomanticWin(__instance, statistics)) return false;
             if (CheckAndEndGameForSerialKillerWin(__instance, statistics)) return false;
+            if (CheckAndEndGameForJuggernautWin(__instance, statistics)) return false;
             if (CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
             if (CheckAndEndGameForCrewmateWin(__instance, statistics)) return false;
             return false;
@@ -710,11 +728,32 @@ namespace TownOfSushi.Patches
             && statistics.SerialKillerAlive == 0
             && statistics.VengefulRomanticAlive == 0
             && statistics.CrewPowerAlive == 0
+            && statistics.JuggernautAlive == 0
             && !(statistics.TeamJackalHasAliveLover 
             && statistics.TeamLoversAlive == 2)) 
             {
 
                 GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.TeamJackalWin, false);
+                return true;
+            }
+            return false;
+        }
+
+        private static bool CheckAndEndGameForJuggernautWin(ShipStatus __instance, PlayerStatistics statistics) 
+        {
+            if (statistics.JuggernautAlive >= statistics.TotalAlive - statistics.JuggernautAlive
+            && statistics.TeamImpostorsAlive == 0
+            && statistics.GlitchAlive == 0
+            && statistics.WerewolfAlive == 0
+            && statistics.SerialKillerAlive == 0
+            && statistics.VengefulRomanticAlive == 0
+            && statistics.CrewPowerAlive == 0
+            && statistics.TeamJackalAlive == 0
+            && !(statistics.JuggernautHasAliveLover 
+            && statistics.TeamLoversAlive == 2)) 
+            {
+
+                GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.JuggernautWin, false);
                 return true;
             }
             return false;
@@ -728,6 +767,7 @@ namespace TownOfSushi.Patches
             && statistics.WerewolfAlive == 0
             && statistics.SerialKillerAlive == 0
             && statistics.TeamJackalAlive == 0
+            && statistics.JuggernautAlive == 0
             && statistics.CrewPowerAlive == 0
             && !(statistics.VengefulRomanticHasAliveLover 
             && statistics.TeamLoversAlive == 2)) 
@@ -747,6 +787,7 @@ namespace TownOfSushi.Patches
             && statistics.TeamJackalAlive == 0
             && statistics.SerialKillerAlive == 0
             && statistics.CrewPowerAlive == 0
+            && statistics.JuggernautAlive == 0
             && statistics.VengefulRomanticAlive == 0
             && !(statistics.WerewolfAliveHasLover 
             && statistics.TeamLoversAlive == 2)) 
@@ -766,6 +807,7 @@ namespace TownOfSushi.Patches
             && statistics.TeamJackalAlive == 0
             && statistics.WerewolfAlive == 0
             && statistics.GlitchAlive == 0
+            && statistics.JuggernautAlive == 0
             && statistics.VengefulRomanticAlive == 0
             && !(statistics.SerialKillerHasLover
             && statistics.TeamLoversAlive == 2)) 
@@ -785,6 +827,7 @@ namespace TownOfSushi.Patches
             && statistics.TeamJackalAlive == 0
             && statistics.WerewolfAlive == 0
             && statistics.SerialKillerAlive == 0
+            && statistics.JuggernautAlive == 0
             && statistics.VengefulRomanticAlive == 0
             && !(statistics.GlitchHasLoverAlive
             && statistics.TeamLoversAlive == 2)) 
@@ -805,6 +848,7 @@ namespace TownOfSushi.Patches
             && statistics.SerialKillerAlive == 0
             && statistics.CrewPowerAlive == 0
             && statistics.VengefulRomanticAlive == 0
+            && statistics.JuggernautAlive == 0
             && !(statistics.TeamImpostorHasAliveLover 
             && statistics.TeamLoversAlive == 2)) 
             {
@@ -834,6 +878,7 @@ namespace TownOfSushi.Patches
             && statistics.TeamJackalAlive == 0
             && statistics.SerialKillerAlive == 0
             && statistics.VengefulRomanticAlive == 0
+            && statistics.JuggernautAlive == 0
             && statistics.WerewolfAlive == 0
             && statistics.GlitchAlive == 0) 
             {
@@ -861,6 +906,7 @@ namespace TownOfSushi.Patches
         public int WerewolfAlive {get;set;}
         public int VengefulRomanticAlive {get;set;}
         public int SerialKillerAlive {get;set;}
+        public int JuggernautAlive {get;set;}
         public int CrewPowerAlive {get;set;}
         public int TeamLoversAlive {get;set;}
         public int TotalAlive {get;set;}
@@ -869,6 +915,7 @@ namespace TownOfSushi.Patches
         public bool VengefulRomanticHasAliveLover {get;set;}
         public bool WerewolfAliveHasLover {get;set;}
         public bool GlitchHasLoverAlive {get;set;}
+        public bool JuggernautHasAliveLover {get;set;}
         public bool SerialKillerHasLover {get;set;}
 
         public PlayerStatistics(ShipStatus __instance) 
@@ -886,6 +933,7 @@ namespace TownOfSushi.Patches
             int numJackalAlive = 0;
             int numGlitchAlive = 0;
             int numImpostorsAlive = 0;
+            int numJuggAlive = 0;
             int numVRomanticsAlive = 0;
             int numWerewolfAlive = 0;
             int numSerialKillerAlive = 0;
@@ -897,6 +945,7 @@ namespace TownOfSushi.Patches
             bool glitchLover = false;
             bool SKLover = false;
             bool jackalLover = false;
+            bool JuggLover = false;
             bool WerewolfLover = false;
 
             foreach (var playerInfo in GameData.Instance.AllPlayers.GetFastEnumerator())
@@ -924,6 +973,11 @@ namespace TownOfSushi.Patches
                         {
                             numVRomanticsAlive++;
                             if (lover) RomanticLover = true;
+                        }
+                        if (Juggernaut.Player != null && Juggernaut.Player.PlayerId == playerInfo.PlayerId) 
+                        {
+                            numJuggAlive++;
+                            if (lover) JuggLover = true;
                         }
                         if (Sheriff.Player != null && Sheriff.Player.PlayerId == playerInfo.PlayerId) 
                         {
@@ -966,6 +1020,7 @@ namespace TownOfSushi.Patches
             }
 
             TeamJackalAlive = numJackalAlive;
+            JuggernautAlive = numJuggAlive;
             GlitchAlive = numGlitchAlive;
             VengefulRomanticAlive = numVRomanticsAlive;
             SerialKillerAlive = numSerialKillerAlive;
@@ -979,6 +1034,7 @@ namespace TownOfSushi.Patches
             GlitchHasLoverAlive = glitchLover;
             VengefulRomanticHasAliveLover = RomanticLover;
             SerialKillerHasLover = SKLover;
+            JuggernautHasAliveLover = JuggLover;
             WerewolfAliveHasLover = WerewolfLover;
         }
     }

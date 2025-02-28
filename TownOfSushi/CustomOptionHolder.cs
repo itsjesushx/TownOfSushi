@@ -124,6 +124,11 @@ namespace TownOfSushi
         public static CustomOption sheriffCooldown;
         public static CustomOption sheriffCanKillNeutrals;
 
+        public static CustomOption JuggernautSpawnRate;
+        public static CustomOption JuggernautCooldown;
+        public static CustomOption JuggernautReducedCooldown;
+        public static CustomOption JuggernautCanUseVents;
+
         public static CustomOption SerialKillerSpawnRate;
         public static CustomOption SerialKillerStabCooldown;
         public static CustomOption SerialKillerStabDuration;
@@ -502,6 +507,11 @@ namespace TownOfSushi
             sidekickCanSabotageLights = CustomOption.Create(432, Types.NeutralKiller, "Sidekick Can Sabotage Lights", true, jackalCanCreateSidekick);
             jackalPromotedFromSidekickCanCreateSidekick = CustomOption.Create(228, Types.NeutralKiller, "Jackals Promoted From Sidekick Can Create A Sidekick", true, sidekickPromotesToJackal);
             jackalCanCreateSidekickFromImpostor = CustomOption.Create(229, Types.NeutralKiller, "Jackals Can Sidekick Impostors", true, jackalCanCreateSidekick);
+
+            JuggernautSpawnRate = CustomOption.Create(872, Types.NeutralKiller, ColorString(Juggernaut.color, "Juggernaut"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            JuggernautCooldown = CustomOption.Create(882, Types.NeutralKiller, "Initial Juggernaut Cooldown", 25f, 10f, 60f, 2.5f, JuggernautSpawnRate, format: "s");
+            JuggernautReducedCooldown = CustomOption.Create(892, Types.NeutralKiller, "Juggernaut Reduced Cooldown Per Kill", 5f, 2.5f, 10f, 2.5f, JuggernautSpawnRate, format: "s");
+            JuggernautCanUseVents = CustomOption.Create(902, Types.NeutralKiller, "Juggernaut Can Use Vents", false, JuggernautSpawnRate);
 
             SerialKillerSpawnRate = CustomOption.Create(2291, Types.NeutralKiller, ColorString(SerialKiller.color, "Serial Killer"), 0f, 0f, 100f, 10f, null, true, format: "%");
             SerialKillerStabCooldown = CustomOption.Create(2211, Types.NeutralKiller, "Serial Killer Stab Cooldown", 25f, 10f, 60f, 2.5f, SerialKillerSpawnRate, format: "s");
