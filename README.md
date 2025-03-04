@@ -4,9 +4,7 @@
 
 This mod is not affiliated with Among Us or Innersloth LLC, and the content contained therein is not endorsed or otherwise sponsored by Innersloth LLC. Portions of the materials contained herein are property of Innersloth LLC. © Innersloth LLC.</p>
 <p align="center">
-  To other mod devs: for usage of our code, please read and respect the <a href="#license">license</a></p>
-
-[![Discord](./Images/TOR_server.png)](https://discord.gg/CBhjFw6Wqb)
+  To other mod devs: for usage of the code, please read and respect the <a href="#license">license</a></p>
 
 # Town Of Sushi
 
@@ -212,8 +210,6 @@ Here are a few instructions, on how to create a custom hat:
     - This texture will be rendered in front of the player, when they're climbing.
     - The name of the texture needs to follow the pattern `hatname_climb.png`.
 - **Testing:** You can test your hat design by putting all the files in the `\TheOtherHats\Test` subfolder of your mod folder. Then whenever you start a Freeplay game, you and all the dummies will be wearing the new hat. You don't need to restart Among Us if you change the hat files, just exit and reenter the Freeplay mode.
-
-- **Submission:** If you got a hat design, you can submit it on our [Discord server](https://discord.gg/77RkMJHWsM). We'll look at all the hats and add all the good ones to the game.
 
 # Colors
 Note: Lighter and Darker colors are no longer based on the players color. Instead they are assigned alternatingly, s.t. they are always balanced in a lobby.
@@ -1499,4 +1495,4 @@ itsjesushx/TownOfSushi is licensed under the
 Permissions of this strong copyleft license are conditioned on making available **complete source code of licensed works and modifications**, which include larger works using a licensed work, under the same license. Copyright and license notices must be preserved. Contributors provide an express grant of patent rights.
 
 # Bugs, suggestions and requests
-If you found any bugs, have an idea for a new role or any other request, join our [Discord server](https://discord.gg/CBhjFw6Wqb).
+If you found any bugs, have an idea for a new role or any other request, open an issue!

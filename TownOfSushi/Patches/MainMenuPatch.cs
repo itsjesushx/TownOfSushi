@@ -30,18 +30,18 @@ namespace TownOfSushi.Modules
 
 
 
-            var buttonDiscord = UnityEngine.Object.Instantiate(template, template.transform.parent);
-            buttonDiscord.transform.localScale = new Vector3(0.42f, 0.84f, 0.84f);
-            buttonDiscord.GetComponent<AspectPosition>().anchorPoint = new Vector2(0.542f, 0.5f);
+            var buttonGithub = UnityEngine.Object.Instantiate(template, template.transform.parent);
+            buttonGithub.transform.localScale = new Vector3(0.42f, 0.84f, 0.84f);
+            buttonGithub.GetComponent<AspectPosition>().anchorPoint = new Vector2(0.542f, 0.5f);
 
-            var textDiscord = buttonDiscord.transform.GetComponentInChildren<TMPro.TMP_Text>();
+            var textGithub = buttonGithub.transform.GetComponentInChildren<TMPro.TMP_Text>();
             __instance.StartCoroutine(Effects.Lerp(0.5f, new System.Action<float>((p) => {
-                textDiscord.SetText("TOS Discord");
+                textGithub.SetText("TOS Github");
             })));
-            PassiveButton passiveButtonDiscord = buttonDiscord.GetComponent<PassiveButton>();
+            PassiveButton passiveButtonGithub = buttonGithub.GetComponent<PassiveButton>();
             
-            passiveButtonDiscord.OnClick = new Button.ButtonClickedEvent();
-            passiveButtonDiscord.OnClick.AddListener((System.Action)(() => Application.OpenURL("https://discord.gg/77RkMJHWsM")));
+            passiveButtonGithub.OnClick = new Button.ButtonClickedEvent();
+            passiveButtonGithub.OnClick.AddListener((System.Action)(() => Application.OpenURL("https://github.com/itsjesushx/TownOfSushi")));
 
 
             
@@ -76,6 +76,7 @@ namespace TownOfSushi.Modules
 
 ";
                 creditsString += $@"<size=60%> Other Credits & Resources:
+TownOfUs-Reactivated - Added many roles and features from the mod.
 OxygenFilter - For the versions v2.3.0 to v2.6.1, we were using the OxygenFilter for automatic deobfuscation
 Reactor - The framework used for all versions before v2.0.0, and again since 4.2.0
 BepInEx - Used to hook game functions
