@@ -80,6 +80,7 @@ namespace TownOfSushi
             Invert.ClearAndReload();
             Chameleon.ClearAndReload();
             Armored.ClearAndReload();
+            Sleuth.ClearAndReload();
             HandleGuesser.ClearAndReload();
 
            Modules.BetterMaps.BetterPolus.ClearAndReload();
@@ -1876,7 +1877,7 @@ namespace TownOfSushi
                         condition = "killer" + (count == 1 ? "" : "s");
                         break;
                     case 1:
-                        count = alivePlayersList.Where(Helpers.RoleCanUseVents).Count();
+                        count = alivePlayersList.Where(Helpers.IsVenter).Count();
                         condition = "player" + (count == 1 ? "" : "s") + " who can use vents";
                         break;
                     case 2:
@@ -2232,6 +2233,17 @@ namespace TownOfSushi
     }
 
     // Modifier
+
+    public static class Sleuth
+    {
+        public static List<byte> Reported = new List<byte>();
+        public static List<PlayerControl> Players = new List<PlayerControl>();
+        public static void ClearAndReload()
+        {
+            Reported = new List<byte>();
+            Players = new List<PlayerControl>();
+        }
+    }
     public static class Bait 
     {
         public static List<PlayerControl> Players = new List<PlayerControl>();

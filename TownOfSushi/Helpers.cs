@@ -444,41 +444,41 @@ namespace TownOfSushi
                 if (p == 1f) messageText.gameObject.Destroy();
             })));
         }
-        public static bool RoleCanUseVents(this PlayerControl player) 
+        public static bool IsVenter(this PlayerControl player) 
         {
-            bool roleCouldUse = false;
+            bool isVenter = false;
             if (Engineer.Player != null && Engineer.Player == player)
-                roleCouldUse = true;
+                isVenter = true;
             else if (Jackal.canUseVents && Jackal.Player != null && Jackal.Player == player)
-                roleCouldUse = true;
+                isVenter = true;
             else if (VengefulRomantic.CanUseVents && VengefulRomantic.Player != null && VengefulRomantic.Player == player)
-                roleCouldUse = true;
+                isVenter = true;
             else if (Werewolf.CanUseVents && Werewolf.Player != null && Werewolf.Player == player)
-                roleCouldUse = true;
+                isVenter = true;
             else if (Sidekick.canUseVents && Sidekick.Player != null && Sidekick.Player == player)
-                roleCouldUse = true;
+                isVenter = true;
             else if (Juggernaut.CanUseVents && Juggernaut.Player != null && Juggernaut.Player == player)
-                roleCouldUse = true;
+                isVenter = true;
             else if (Spy.canEnterVents && Spy.Player != null && Spy.Player == player)
-                roleCouldUse = true;
+                isVenter = true;
             else if (SerialKiller.CanUseVents && SerialKiller.Player != null && SerialKiller.Player == player)
-                roleCouldUse = true;
+                isVenter = true;
             else if (Glitch.canEnterVents && Glitch.Player != null && Glitch.Player == player)
-                roleCouldUse = true;
+                isVenter = true;
             else if (Vulture.canUseVents && Vulture.Player != null && Vulture.Player == player)
-                roleCouldUse = true;
+                isVenter = true;
             else if (Thief.canUseVents &&  Thief.Player != null && Thief.Player == player)
-                roleCouldUse = true;
+                isVenter = true;
             else if (player.Data?.Role != null && player.Data.Role.CanVent)  
             {
                 if (Janitor.Player != null && Janitor.Player == PlayerControl.LocalPlayer)
-                    roleCouldUse = false;
+                    isVenter = false;
                 else if (Mafioso.mafioso != null && Mafioso.mafioso == PlayerControl.LocalPlayer && Godfather.Player != null && !Godfather.Player.Data.IsDead)
-                    roleCouldUse = false;
+                    isVenter = false;
                 else
-                    roleCouldUse = true;
+                    isVenter = true;
             }
-            return roleCouldUse;
+            return isVenter;
         }
 
         public static bool CheckArmored(PlayerControl target, bool breakShield, bool showShield, bool additionalCondition = true)
@@ -578,7 +578,7 @@ namespace TownOfSushi
             if (TransportationToolPatches.isUsingTransportation(target) && !blockRewind && killer == Vampire.Player) 
             {
                 return MurderAttemptResult.DelayVampireKill;
-            } 
+            }
             else if (TransportationToolPatches.isUsingTransportation(target)) return MurderAttemptResult.SuppressKill;
             return MurderAttemptResult.PerformKill;
         }

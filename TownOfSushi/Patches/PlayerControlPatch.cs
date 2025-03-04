@@ -579,7 +579,9 @@ namespace TownOfSushi.Patches {
 
                 p.cosmetics.nameText.transform.parent.SetLocalZ(-0.0001f);  // This moves both the name AND the colorblindtext behind objects (if the player is behind the object), like the rock on polus
 
-                if ((Lawyer.lawyerKnowsRole && PlayerControl.LocalPlayer == Lawyer.Player && p == Lawyer.target) || (Romantic.RomanticKnowsRole && PlayerControl.LocalPlayer == Romantic.Player && p == Romantic.beloved) || (Romantic.RomanticKnowsRole && PlayerControl.LocalPlayer == Romantic.beloved && p == Romantic.Player) ||p == PlayerControl.LocalPlayer || PlayerControl.LocalPlayer.Data.IsDead) 
+                if ((Lawyer.lawyerKnowsRole && PlayerControl.LocalPlayer == Lawyer.Player && p == Lawyer.target) || (Romantic.RomanticKnowsRole && PlayerControl.LocalPlayer == Romantic.Player && p == Romantic.beloved) || (Romantic.RomanticKnowsRole && PlayerControl.LocalPlayer == Romantic.beloved && p == Romantic.Player) 
+                || p == PlayerControl.LocalPlayer 
+                || (Sleuth.Players.Any(x => x.PlayerId == PlayerControl.LocalPlayer.PlayerId) && Sleuth.Reported.Contains(p.PlayerId)) || PlayerControl.LocalPlayer.Data.IsDead) 
                 {
                     Transform playerInfoTransform = p.cosmetics.nameText.transform.parent.FindChild("Info");
                     TMPro.TextMeshPro playerInfo = playerInfoTransform != null ? playerInfoTransform.GetComponent<TMPro.TextMeshPro>() : null;
@@ -593,7 +595,8 @@ namespace TownOfSushi.Patches {
     
                     Transform meetingInfoTransform = playerVoteArea != null ? playerVoteArea.NameText.transform.parent.FindChild("Info") : null;
                     TMPro.TextMeshPro meetingInfo = meetingInfoTransform != null ? meetingInfoTransform.GetComponent<TMPro.TextMeshPro>() : null;
-                    if (meetingInfo == null && playerVoteArea != null) {
+                    if (meetingInfo == null && playerVoteArea != null) 
+                    {
                         meetingInfo = UnityEngine.Object.Instantiate(playerVoteArea.NameText, playerVoteArea.NameText.transform.parent);
                         meetingInfo.transform.localPosition += Vector3.down * 0.2f;
                         meetingInfo.fontSize *= 0.60f;
@@ -1287,20 +1290,26 @@ namespace TownOfSushi.Patches {
             // Medic or Detective report
             bool isMedicReport = Medic.Player != null && Medic.Player == PlayerControl.LocalPlayer && __instance.PlayerId == Medic.Player.PlayerId;
             bool isDetectiveReport = Detective.Player != null && Detective.Player == PlayerControl.LocalPlayer && __instance.PlayerId == Detective.Player.PlayerId;
+            bool IsSleuthReport = Sleuth.Players.FindAll(x => x.PlayerId == PlayerControl.LocalPlayer.PlayerId && __instance.PlayerId == PlayerControl.LocalPlayer.PlayerId).Count > 0;
+
+            DeadPlayer deadPlayer = deadPlayers?.Where(x => x.player?.PlayerId == target?.PlayerId)?.FirstOrDefault();
             if (isMedicReport || isDetectiveReport)
             {
-                DeadPlayer deadPlayer = deadPlayers?.Where(x => x.player?.PlayerId == target?.PlayerId)?.FirstOrDefault();
-
                 if (deadPlayer != null && deadPlayer.killerIfExisting != null) {
                     float timeSinceDeath = ((float)(DateTime.UtcNow - deadPlayer.timeOfDeath).TotalMilliseconds);
                     string msg = "";
 
-                    if (isMedicReport) {
+                    if (isMedicReport) 
+                    {
                         msg = $"Body Report: Killed {Math.Round(timeSinceDeath / 1000)}s ago!";
-                    } else if (isDetectiveReport) {
-                        if (timeSinceDeath < Detective.reportNameDuration * 1000) {
+                    } else if (isDetectiveReport) 
+                    {
+                        if (timeSinceDeath < Detective.reportNameDuration * 1000) 
+                        {
                             msg =  $"Body Report: The killer appears to be {deadPlayer.killerIfExisting.Data.PlayerName}!";
-                        } else if (timeSinceDeath < Detective.reportColorDuration * 1000) {
+                        } 
+                        else if (timeSinceDeath < Detective.reportColorDuration * 1000) 
+                        {
                             var typeOfColor = Helpers.IsLighterColor(deadPlayer.killerIfExisting) ? "lighter" : "darker";
                             msg =  $"Body Report: The killer appears to be a {typeOfColor} color!";
                         } else {
@@ -1327,7 +1336,11 @@ namespace TownOfSushi.Patches {
                         }
                     }
                 }
-            }  
+            }
+            if (IsSleuthReport)
+            {
+                Sleuth.Reported.Add(deadPlayer.player.PlayerId);
+            }
         }
     }
 

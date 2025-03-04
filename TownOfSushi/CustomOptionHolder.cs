@@ -322,6 +322,9 @@ namespace TownOfSushi
         public static CustomOption modifierMiniGrowingUpDuration;
         public static CustomOption modifierMiniGrowingUpInMeeting;
 
+        public static CustomOption ModifierSleuth;
+        public static CustomOption ModifierSleuthQuantity;
+
         public static CustomOption modifierVip;
         public static CustomOption modifierVipQuantity;
         public static CustomOption modifierVipShowColor;
@@ -690,6 +693,9 @@ namespace TownOfSushi
             modifierAntiTeleport = CustomOption.Create(1010, Types.Modifier, ColorString(Color.yellow, "Anti Teleport"), 0f, 0f, 100f, 10f, null, true, format: "%");
             modifierAntiTeleportQuantity = CustomOption.Create(1011, Types.Modifier, ColorString(Color.yellow, "Anti Teleport Quantity"), ratesModifier, modifierAntiTeleport);
 
+            ModifierSleuth = CustomOption.Create(1005, Types.Modifier, ColorString(Color.yellow, "Sleuth"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            ModifierSleuthQuantity = CustomOption.Create(1006, Types.Modifier, ColorString(Color.yellow, "Sleuth Quantity"), ratesModifier, ModifierSleuth);
+
             modifierTieBreaker = CustomOption.Create(1020, Types.Modifier, ColorString(Color.yellow, "Tie Breaker"), 0f, 0f, 100f, 10f, null, true, format: "%");
 
             modifierBait = CustomOption.Create(1030, Types.Modifier, ColorString(Color.yellow, "Bait"), 0f, 0f, 100f, 10f, null, true, format: "%");
@@ -731,16 +737,16 @@ namespace TownOfSushi
 
             // Guesser Gamemode (2000 - 2999)
             GuesserCrewNumber = CustomOption.Create(2001, Types.Modifier, ColorString(Palette.CrewmateBlue, "Number of Crew Guessers"), 15f, 0f, 15f, 1f, null, true, heading: "Guesser Ability Settings");
-            GuesserNeutralNumber = CustomOption.Create(2002, Types.Modifier, ColorString(Color.gray, "Number of Neutral Guessers"), 15f, 0f, 15f, 1f, null);
-            GuesserImpNumber = CustomOption.Create(2003, Types.Modifier, ColorString(Palette.ImpostorRed, "Number of Impostor Guessers"), 15f, 0f, 15f, 1f, null);
-            GuesserSidekickIsAlwaysGuesser = CustomOption.Create(2012, Types.Modifier, "Sidekick Is Always Guesser", false, null);
-            GuesserHaveModifier = CustomOption.Create(2004, Types.Modifier, "Guessers Can Have A Modifier", true, null, true, heading: "General Guesser Settings");
-            GuesserNumberOfShots = CustomOption.Create(2005, Types.Modifier, "Guesser Number Of Shots", 3f, 1f, 15f, 1f, null);
-            GuesserHasMultipleShotsPerMeeting = CustomOption.Create(2006, Types.Modifier, "Guesser Can Shoot Multiple Times Per Meeting", false, null);
-            GuesserCrewGuesserNumberOfTasks = CustomOption.Create(2013, Types.Modifier, "Number Of Tasks Needed To Unlock Shooting\nFor Crew Guesser", 0f, 0f, 15f, 1f, null);
-            GuesserKillsThroughShield = CustomOption.Create(2008, Types.Modifier, "Guesses Ignore The Medic Shield", true, null);
-            GuesserEvilCanKillSpy = CustomOption.Create(2009, Types.Modifier, "Evil Guesser Can Guess The Spy", true, null);
-            GuesserCantGuessSnitchIfTaksDone = CustomOption.Create(2010, Types.Modifier, "Guesser Can't Guess Snitch When Tasks Completed", true, null);
+            GuesserNeutralNumber = CustomOption.Create(2002, Types.Modifier, ColorString(Color.gray, "Number of Neutral Guessers"), 15f, 0f, 15f, 1f, GuesserCrewNumber);
+            GuesserImpNumber = CustomOption.Create(2003, Types.Modifier, ColorString(Palette.ImpostorRed, "Number of Impostor Guessers"), 15f, 0f, 15f, 1f, GuesserCrewNumber);
+            GuesserSidekickIsAlwaysGuesser = CustomOption.Create(2012, Types.Modifier, "Sidekick Is Always Guesser", false, GuesserCrewNumber);
+            GuesserHaveModifier = CustomOption.Create(2004, Types.Modifier, "Guessers Can Have A Modifier", true, GuesserCrewNumber);
+            GuesserNumberOfShots = CustomOption.Create(2005, Types.Modifier, "Guesser Number Of Shots", 3f, 1f, 15f, 1f, GuesserCrewNumber);
+            GuesserHasMultipleShotsPerMeeting = CustomOption.Create(2006, Types.Modifier, "Guesser Can Shoot Multiple Times Per Meeting", false, GuesserCrewNumber);
+            GuesserCrewGuesserNumberOfTasks = CustomOption.Create(2013, Types.Modifier, "Number Of Tasks Needed To Unlock Shooting\nFor Crew Guesser", 0f, 0f, 15f, 1f, GuesserCrewNumber);
+            GuesserKillsThroughShield = CustomOption.Create(2008, Types.Modifier, "Guesses Ignore The Medic Shield", true, GuesserCrewNumber);
+            GuesserEvilCanKillSpy = CustomOption.Create(2009, Types.Modifier, "Evil Guesser Can Guess The Spy", true, GuesserCrewNumber);
+            GuesserCantGuessSnitchIfTaksDone = CustomOption.Create(2010, Types.Modifier, "Guesser Can't Guess Snitch When Tasks Completed", true, GuesserCrewNumber);
 
             // Other options
             maxNumberOfMeetings = CustomOption.Create(3, Types.General, "Number Of Meetings (excluding Mayor meeting)", 10, 0, 15, 1, null, true, heading: "Gameplay Settings");

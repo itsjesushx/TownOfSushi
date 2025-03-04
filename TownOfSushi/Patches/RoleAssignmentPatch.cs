@@ -362,6 +362,7 @@ namespace TownOfSushi.Patches
                 RoleId.Bait,
                 RoleId.Bloody,
                 RoleId.AntiTeleport,
+                RoleId.Sleuth,
                 RoleId.Sunglasses,
                 RoleId.Vip,
                 RoleId.Invert,
@@ -556,6 +557,10 @@ namespace TownOfSushi.Patches
                 case RoleId.Chameleon:
                     selection = CustomOptionHolder.modifierChameleon.GetSelection();
                     if (multiplyQuantity) selection *= CustomOptionHolder.modifierChameleonQuantity.getQuantity();
+                    break;
+                case RoleId.Sleuth:
+                    selection = CustomOptionHolder.ModifierSleuth.GetSelection();
+                    if (multiplyQuantity) selection *= CustomOptionHolder.ModifierSleuthQuantity.getQuantity();
                     break;
                 case RoleId.Armored:
                     selection = CustomOptionHolder.modifierArmored.GetSelection();

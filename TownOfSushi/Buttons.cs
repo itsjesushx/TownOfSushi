@@ -227,7 +227,7 @@ namespace TownOfSushi
                 // Kill Button if enabled for the Role
                 if (FastDestroyableSingleton<HudManager>.Instance.KillButton.isActiveAndEnabled) AddReplacementHackedButton(arsonistButton, CustomButton.ButtonPositions.upperRowRight, couldUse: () => { return FastDestroyableSingleton<HudManager>.Instance.KillButton.currentTarget != null; });
                 // Vent Button if enabled
-                if (PlayerControl.LocalPlayer.RoleCanUseVents()) AddReplacementHackedButton(arsonistButton, CustomButton.ButtonPositions.upperRowCenter, couldUse: () => { return FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton.currentTarget != null; });
+                if (PlayerControl.LocalPlayer.IsVenter()) AddReplacementHackedButton(arsonistButton, CustomButton.ButtonPositions.upperRowCenter, couldUse: () => { return FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton.currentTarget != null; });
                 // Report Button
                 AddReplacementHackedButton(arsonistButton, (!PlayerControl.LocalPlayer.Data.Role.IsImpostor) ? new Vector3(-1f, -0.06f, 0): CustomButton.ButtonPositions.lowerRowRight, () => { return FastDestroyableSingleton<HudManager>.Instance.ReportButton.graphic.color == Palette.EnabledColor; });
             }

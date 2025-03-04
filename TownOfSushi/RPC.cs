@@ -256,7 +256,7 @@ namespace TownOfSushi
                         Yoyo.Player = player;
                         break;
                     }
-                    if (AmongUsClient.Instance.AmHost && Helpers.RoleCanUseVents(player) && !player.Data.Role.IsImpostor) 
+                    if (AmongUsClient.Instance.AmHost && player.IsVenter() && !player.Data.Role.IsImpostor) 
                     {
                         player.RpcSetRole(RoleTypes.Engineer);
                         player.CoSetRole(RoleTypes.Engineer, true);
@@ -280,6 +280,9 @@ namespace TownOfSushi
                     break;
                 case RoleId.AntiTeleport:
                     AntiTeleport.Players.Add(player);
+                    break;
+                case RoleId.Sleuth:
+                    Sleuth.Players.Add(player);
                     break;
                 case RoleId.Tiebreaker:
                     Tiebreaker.Player = player;
@@ -791,6 +794,7 @@ namespace TownOfSushi
                 if (Bait.Players.Any(x => x.PlayerId == player.PlayerId)) Bait.Players.RemoveAll(x => x.PlayerId == player.PlayerId);
                 if (global::TownOfSushi.Bloody.Players.Any(x => x.PlayerId == player.PlayerId)) global::TownOfSushi.Bloody.Players.RemoveAll(x => x.PlayerId == player.PlayerId);
                 if (AntiTeleport.Players.Any(x => x.PlayerId == player.PlayerId)) AntiTeleport.Players.RemoveAll(x => x.PlayerId == player.PlayerId);
+                if (Sleuth.Players.Any(x => x.PlayerId == player.PlayerId)) Sleuth.Players.RemoveAll(x => x.PlayerId == player.PlayerId);
                 if (Sunglasses.Players.Any(x => x.PlayerId == player.PlayerId)) Sunglasses.Players.RemoveAll(x => x.PlayerId == player.PlayerId);
                 if (player == Tiebreaker.Player) Tiebreaker.ClearAndReload();
                 if (player == Mini.Player) Mini.ClearAndReload();

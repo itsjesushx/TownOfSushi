@@ -24,7 +24,7 @@ namespace TownOfSushi.Patches {
             float num = float.MaxValue;
             PlayerControl @object = pc.Object;
 
-            bool roleCouldUse = @object.RoleCanUseVents();
+            bool roleCouldUse = @object.IsVenter();
 
             if (__instance.name.StartsWith("SealedVent_")) {
                 canUse = couldUse = false;
@@ -151,7 +151,7 @@ namespace TownOfSushi.Patches {
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
     class VentButtonVisibilityPatch {
         static void Postfix(PlayerControl __instance) {
-            if (__instance.AmOwner && __instance.RoleCanUseVents() && FastDestroyableSingleton<HudManager>.Instance.ReportButton.isActiveAndEnabled) {
+            if (__instance.AmOwner && __instance.IsVenter() && FastDestroyableSingleton<HudManager>.Instance.ReportButton.isActiveAndEnabled) {
                 FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton.Show();
             }
         }

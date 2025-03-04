@@ -67,6 +67,7 @@ namespace TownOfSushi
         Ninja,
         Thief,
         Yoyo,
+        Miner,
         Crewmate,
         Impostor,
         // Modifier ---
@@ -74,6 +75,7 @@ namespace TownOfSushi
         Bait,
         Bloody,
         AntiTeleport,
+        Sleuth,
         Tiebreaker,
         Sunglasses,
         Mini,

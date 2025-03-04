@@ -100,6 +100,7 @@ namespace TownOfSushi
         public readonly static RoleInfo tiebreaker = new("Tiebreaker", Color.yellow, "Your vote breaks the tie", "Break the tie", RoleId.Tiebreaker, Factions.Modifier, "");
         public readonly static RoleInfo bait = new("Bait", Color.yellow, "Bait your enemies", "Bait your enemies", RoleId.Bait, Factions.Modifier, "");
         public readonly static RoleInfo sunglasses = new("Sunglasses", Color.yellow, "You got the sunglasses", "Your vision is reduced", RoleId.Sunglasses, Factions.Modifier, "");
+        public readonly static RoleInfo sleuth = new("Sleuth", Color.yellow, "Learn from your reports", "Get to know the role of who you report", RoleId.Sleuth, Factions.Modifier, "");
         public readonly static RoleInfo lover = new("Lover", Lovers.color, $"You are in love", $"You are in love", RoleId.Lover, Factions.Modifier, "");
         public readonly static RoleInfo mini = new("Mini", Color.yellow, "No one will harm you until you grow up", "No one will harm you", RoleId.Mini, Factions.Modifier, "");
         public readonly static RoleInfo vip = new("VIP", Color.yellow, "You are the VIP", "Everyone is notified when you die", RoleId.Vip, Factions.Modifier, "");
@@ -138,6 +139,7 @@ namespace TownOfSushi
             sidekick,
             vulture,
             pursuer,
+            sleuth,
             lawyer,
             juggernaut,
             thief,
@@ -194,6 +196,7 @@ namespace TownOfSushi
                 if (p == Lovers.Lover1 || p == Lovers.Lover2) infos.Add(lover);
                 if (p == Tiebreaker.Player) infos.Add(tiebreaker);
                 if (AntiTeleport.Players.Any(x => x.PlayerId == p.PlayerId)) infos.Add(antiTeleport);
+                if (Sleuth.Players.Any(x => x.PlayerId == p.PlayerId)) infos.Add(sleuth);
                 if (Sunglasses.Players.Any(x => x.PlayerId == p.PlayerId)) infos.Add(sunglasses);
                 if (p == Mini.Player) infos.Add(mini);
                 if (Invert.Players.Any(x => x.PlayerId == p.PlayerId)) infos.Add(invert);

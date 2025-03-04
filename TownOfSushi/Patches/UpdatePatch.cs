@@ -301,7 +301,7 @@ namespace TownOfSushi.Patches
         {
             if (GameOptionsManager.Instance.currentGameOptions.GameMode == GameModes.HideNSeek) return;
             if (Glitch.HackedKnows.ContainsKey(PlayerControl.LocalPlayer.PlayerId) && Glitch.HackedKnows[PlayerControl.LocalPlayer.PlayerId] > 0 || MeetingHud.Instance || Helpers.TwoPlayersAlive() && MapOptions.LimitAbilities) __instance.ImpostorVentButton.Hide();
-            else if (PlayerControl.LocalPlayer.RoleCanUseVents() && !__instance.ImpostorVentButton.isActiveAndEnabled) __instance.ImpostorVentButton.Show();
+            else if (PlayerControl.LocalPlayer.IsVenter() && !__instance.ImpostorVentButton.isActiveAndEnabled) __instance.ImpostorVentButton.Show();
         }
 
         static void UpdateUseButton(HudManager __instance) 

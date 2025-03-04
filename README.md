@@ -25,17 +25,18 @@ Even more roles are coming soon. :)
 | [Trickster](#trickster) | [Medic](#medic) | [Pursuer](#pursuer) | [VIP](#vip) |
 | [Cleaner](#cleaner) | [Swapper](#swapper) | [Thief](#thief) | [Invert](#invert) |
 | [Warlock](#warlock) | [Mystic](#mystic) | [Glitch](#glitch)    | [Chameleon](#chameleon) |
-| [Bounty Hunter](#bounty-hunter) | [Hacker](#hacker) |  | [Shifter](#shifter)
-| [Witch](#witch) | [Tracker](#tracker) || [Armored](#armored) |
-| [Ninja](#ninja) | [Snitch](#snitch) |  |  |
-| [Yo-Yo](#yoyo)  | [Spy](#spy) |  |  |
+| [Bounty Hunter](#bounty-hunter) | [Hacker](#hacker) | [Juggernaut](#Juggernaut)   | [Shifter](#shifter)
+| [Witch](#witch) | [Tracker](#tracker) | [Serial Killer](#serial-killer)  | [Armored](#armored) |
+| [Ninja](#ninja) | [Snitch](#snitch) | [Romantic](#romantic)   |  [Sleuth](#sleuth)  |
+| [Yo-Yo](#yoyo)  | [Spy](#spy) | [Werewolf](#werewolf)   |  |
 | | [Portalmaker](#portalmaker) |  |  |
 | | [Vigilante](#vigilante) |  |  |
 |  | [Medium](#medium) |  |  |
-|  |  |  |  |
-|  | |  |  |
+|  |[Veteran](#veteran)    |  |  |
+|  |[Oracle](#oracle)   |  |  |
 
 The [Role Assignment](#role-assignment) section explains how the roles are being distributed among the players.
+If you want to learn how the new killers work, go to [Neutral Killers guide](#neutral-killers) to see it.
 
 # Releases  
 | Among Us - Version| Mod Version | Link |
@@ -237,7 +238,7 @@ Note: Changing the settings to Hacker: 20%, Tracker: 60% would statistically res
 
 
 ## Mafia
-### **Team: Impostors**
+### **Faction: Impostors**
 The Mafia are a group of three Impostors.\
 The Godfather works like a normal Impostor.\
 The Mafioso is an Impostor who cannot kill until the Godfather is dead.\
@@ -254,7 +255,7 @@ The Janitor is an Impostor who cannot kill, but they can hide dead bodies instea
 -----------------------
 
 ## Morphling
-### **Team: Impostors**
+### **Faction: Impostors**
 The Morphling is an Impostor which can additionally scan the appearance of a player.\
 After an arbitrary time they can take on that appearance for a set duration which can be changed in the options.\
 \
@@ -275,7 +276,7 @@ After an arbitrary time they can take on that appearance for a set duration whic
 -----------------------
 
 ## Camouflager
-### **Team: Impostors**
+### **Faction: Impostors**
 The Camouflager is an Impostor which can additionally activate a camouflage mode.\
 The camouflage mode lasts for 10s and while it is active, all player names/pets/hats\
 are hidden and all players have the same color.\
@@ -296,7 +297,7 @@ are hidden and all players have the same color.\
 -----------------------
 
 ## Vampire
-### **Team: Impostors**
+### **Faction: Impostors**
 The Vampire is an Impostor, that can bite other player. Bitten players die after a configurable amount of time.\
 If the Vampire spawn chance is greater 0 (even if there is no Vampire in the game), all players can place one garlic.\
 If a victim is near a garlic, the "Bite Button" turns into the default "Kill Button" and the Vampire can only perform a normal kill.\
@@ -318,7 +319,7 @@ If a victim is near a garlic, the "Bite Button" turns into the default "Kill But
 -----------------------
 
 ## Eraser
-### **Team: Impostors**
+### **Faction: Impostors**
 The Eraser is an Impostor that can erase the role of every player.\
 The targeted players will lose their role after the meeting right before a player is exiled.\
 After every erase, the cooldown increases by 10 seconds.\
@@ -340,7 +341,7 @@ Depending on the options they can also erase them (Impostors will lose their spe
 -----------------------
 
 ## Trickster
-### **Team: Impostors**
+### **Faction: Impostors**
 The Trickster is an Impostor that can place 3 jack-in-the-boxes that are invisible at first to other players.\
 If the Trickster has placed all of their boxes they will be converted into a vent network usable only by the Trickster themself, but the boxes are revealed to the others.\
 If the boxes are converted to a vent network, the Trickster gains a new ability "Lights out" to limit the visibility of Non-Impostors, that cannot be fixed by other players. Lights are automatically restored after a while.\
@@ -358,7 +359,7 @@ If the boxes are converted to a vent network, the Trickster gains a new ability 
 -----------------------
 
 ## Cleaner
-### **Team: Impostors**
+### **Faction: Impostors**
 The Cleaner is an Impostor who has the ability to clean up dead bodies.\
 \
 **NOTE:**
@@ -373,7 +374,7 @@ The Cleaner is an Impostor who has the ability to clean up dead bodies.\
 -----------------------
 
 ## Warlock
-### **Team: Impostors**
+### **Faction: Impostors**
 The Warlock is an Impostor, that can curse another player (the cursed player doesn't get notified).\
 If the cursed person stands next to another player, the Warlock is able to kill that player (no matter how far away they are).\
 Performing a kill with the help of a cursed player, will lift the curse and it will result in the Warlock being unable to move for a configurable amount of time.\
@@ -393,7 +394,7 @@ The Warlock can still perform normal kills, but the two buttons share the same c
 -----------------------
 
 ## Bounty Hunter
-### **Team: Impostors**
+### **Faction: Impostors**
 The Bounty Hunter is an Impostor, that continuously get bounties (the targeted player doesn't get notified).\
 The target of the Bounty Hunter swaps after every meeting and after a configurable amount of time.\
 If the Bounty Hunter kills their target, their kill cooldown will be a lot less than usual.\
@@ -416,7 +417,7 @@ Depending on the options, there'll be an arrow pointing towards the current targ
 -----------------------
 
 ## Witch
-### **Team: Impostors**
+### **Faction: Impostors**
 The Witch is an Impostor who has the ability to cast a spell on other players.\
 During the next meeting, the spellbound player will be highlighted and they'll die right after the meeting.\
 There are multiple options listed down below with which you can configure to fit your taste.\
@@ -441,7 +442,7 @@ Depending on the options you can choose whether voting the Witch out will save a
 -----------------------
 
 ## Ninja
-### **Team: Impostors**
+### **Faction: Impostors**
 The Ninja is an Impostor who has the ability to kill another player all over the map.\
 You can mark a player with your ability and by using the ability again, you jump to the position of the marked player and kill it.\
 Depending on the options you know where your marked player is.\
@@ -468,7 +469,7 @@ When performing a ninja ability kill, the ninja can be invisible for some second
 -----------------------
 
 ## YoYo
-### **Team: Impostors**
+### **Faction: Impostors**
 The Yo-Yo is an Impostor who has the ability mark a position and later blink (teleport) to this position.\
 After the initial blink, the Yo-Yo has a fixed amount of time (option) to do whatever they want, before automatically blinking back to the starting point of the first blink.\
 Each blink leaves behind a silhouette with configurable transparency. The silhouette is very hard to see.\
@@ -493,7 +494,7 @@ The Yo-Yo may also have access to a mobile admin table, depending on the setting
 -----------------------
 
 ## Guesser
-### **Team: Crewmates or Impostors**
+### **Faction: Crewmates, Neutral Killers, or Impostors**
 The Guesser can be a Crewmate or an Impostor (depending on the settings).\
 The Guesser can shoot players during the meeting, by guessing its role. If the guess is wrong, the Guesser dies instead.\
 You can select how many players can be shot per game and if multiple players can be shot during a single meeting.\
@@ -521,7 +522,7 @@ Depending on the options, the Guesser can't guess the shielded player and depend
 -----------------------
 
 ## Jester
-### **Team: Neutral**
+### **Faction: Neutral (Evil)**
 The Jester does not have any tasks. They win the game as a solo, if they get voted out during a meeting.
 
 ### Game Options
@@ -533,7 +534,7 @@ The Jester does not have any tasks. They win the game as a solo, if they get vot
 -----------------------
 
 ## Arsonist
-### **Team: Neutral**
+### **Faction: Neutral (Evil)**
 The Arsonist does not have any tasks, they have to win the game as a solo.\
 The Arsonist can douse other players by pressing the douse button and remaining next to the player for a few seconds.\
 If the player that the Arsonist douses walks out of range, the cooldown will reset to 0.\
@@ -547,8 +548,33 @@ After dousing everyone alive the Arsonist can ignite all the players which resul
 | Arsonist Douse Duration | The time it takes to douse a player
 -----------------------
 
+## Neutral Killers
+The Neutral Killers enable multiple new outcomes of the game, listing some examples here:
+- The Impostors could be eliminated and then the crew plays against any Neutral Killer.
+- The Crew could be eliminated, then a Neutral Killer fight against the Impostors (The Crew can still make a task win in this scenario)
+
+The priority of each Neutral Killer win condition is the following:
+1. Crewmate Mini lose by vote
+2. Any Neutral Evil Win
+3. Team Impostor wins by sabotage
+4. Team Crew wins by tasks (also possible if the whole Crew is dead)
+5. Lovers among the last three players win
+6. Any Neutral Killer wins by outnumbering (When the Neutral Killer contains an equal or greater amount of players than the Crew and there are 0 Impostors left and no the same Neutral Killer contains no Lover)
+7. Team Impostor wins by outnumbering (When the team Impostors contains an equal or greater amount of players than the Crew and there are 0 players are Neutral Killers and team Impostors contains no Lover)
+8. Team Crew wins by outnumbering (When there is no player is a Neutral Killer and the team Impostors left)
+
+**NOTE:**
+- The Neutral Killers may be killed by a Sheriff.
+- A Neutral Killer cannot target the Mini (excluding Glitch), while it's growing up. After that they can kill it or interact with them.
+- The Crew can still win, even if all of their members are dead, if they finish their tasks fast enough (That's why converting the last Crewmate with tasks left into a Sidekick results in a task win for the crew.)
+
+If both Impostors and Neutral Killers are in the game, the game continues even if all Crewmates are dead. Crewmates may still win in this case by completing their tasks. Neutral Killers and Impostor have to kill each other.
+
+-----------------------
+
 ## Jackal
 ### **Team: Jackal**
+### **Faction: Neutral (Killing)**
 The Jackal is part of an extra team, that tries to eliminate all the other players.\
 The Jackal has no tasks and can kill Impostors, Crewmates and Neutrals.\
 The Jackal (if allowed by the options) can select another player to be their Sidekick.
@@ -557,48 +583,27 @@ The "Create Sidekick Action" may only be used once per Jackal or once per game (
 The Jackal can also promote Impostors to be their Sidekick, but depending on the options the Impostor will either really turn into the Sidekick and leave the team Impostors or they will just look like the Sidekick to the Jackal and remain as they were.\
 Also if a Spy or Impostor gets sidekicked, they still will appear red to the Impostors.
 
-The team Jackal enables multiple new outcomes of the game, listing some examples here:
-- The Impostors could be eliminated and then the crew plays against the team Jackal.
-- The Crew could be eliminated, then the Team Jackal fight against the Impostors (The Crew can still make a task win in this scenario)
-
-The priority of the win conditions is the following:
-1. Jester wins by vote (even as Mini)
-2. Crewmate Mini lose by vote
-3. Arsonist win
-4. Team Impostor wins by sabotage
-5. Team Crew wins by tasks (also possible if the whole Crew is dead)
-6. Lovers among the last three players win
-7. Team Jackal wins by outnumbering (When the team Jackal contains an equal or greater amount of players than the Crew and there are 0 Impostors left and team Jackal contains no Lover)
-8. Team Impostor wins by outnumbering (When the team Impostors contains an equal or greater amount of players than the Crew and there are 0 players of the team Jackal left and team Impostors contains no Lover)
-9. Team Crew wins by outnumbering (When there is no player of the team Jackal and the team Impostors left)
-
-**NOTE:**
-- The Jackal (and their Sidekick) may be killed by a Sheriff.
-- A Jackal cannot target the Mini, while it's growing up. After that they can kill it or select it as its Sidekick.
-- The Crew can still win, even if all of their members are dead, if they finish their tasks fast enough (That's why converting the last Crewmate with tasks left into a Sidekick results in a task win for the crew.)
-
-If both Impostors and Jackals are in the game, the game continues even if all Crewmates are dead. Crewmates may still win in this case by completing their tasks. Jackal and Impostor have to kill each other.
-
 ### Game Options
 | Name | Description
 |----------|:-------------:|
 | Jackal Spawn Chance | -
-| Jackal/Sidekick Kill Cooldown | Kill Cooldown
-| Jackal Create Sidekick Cooldown | Cooldown before a Sidekick can be created
-| Jackal Can Use Vents | Yes/No
-| Jackal Can Sabotage Lights | Yes/No
-| Jackal Can Create A Sidekick | Yes/No
-| Sidekick Gets Promoted To Jackal On Jackal Death | Yes/No
-| Sidekick Can Kill | Yes/No
-| Sidekick Can Vent | Yes/No
-| Sidekick Can Sabotage Lights | Yes/No
-| Jackals Promoted From Sidekick Can Create A Sidekick | Yes/No (to prevent the Jackal team from growing)
-| Jackals Can Make An Impostor To His Sidekick | Yes/No (to prevent a Jackal from turning an Impostor into a Sidekick, if they use the ability on an Impostor they see the Impostor as Sidekick, but the Impostor isn't converted to Sidekick. If this option is set to "No" Jackal and Sidekick can kill each other.)
+| Jackal/Sidekick Kill Cooldown | Kill Cooldown |
+| Jackal Create Sidekick Cooldown | Cooldown before a Sidekick can be created |
+| Jackal Can Use Vents | Yes/No |
+| Jackal Can Sabotage Lights | Yes/No |
+| Jackal Can Create A Sidekick | Yes/No |
+| Sidekick Gets Promoted To Jackal On Jackal Death | Yes/No |
+| Sidekick Can Kill | Yes/No |
+| Sidekick Can Vent | Yes/No |
+| Sidekick Can Sabotage Lights | Yes/No |
+| Jackals Promoted From Sidekick Can Create A Sidekick | Yes/No (to prevent the Jackal team from growing) |
+| Jackals Can Make An Impostor To His Sidekick | Yes/No (to prevent a Jackal from turning an Impostor into a Sidekick, if they use the ability on an Impostor they see the Impostor as Sidekick, but the Impostor isn't converted to Sidekick. If this option is set to "No" Jackal and Sidekick can kill each other.) |
 | Jackal And Sidekick Have Impostor Vision | -
 -----------------------
 
 ## Sidekick
 ### **Team: Jackal**
+### **Faction: Neutral (Killing)**
 Gets assigned to a player during the game by the "Create Sidekick Action" of the Jackal and joins the Jackal in their quest to eliminate all other players.\
 Upon the death of the Jackal (depending on the options), they might get promoted to Jackal themself and potentially even assign a Sidekick of their own.\
 \
@@ -616,8 +621,81 @@ Upon the death of the Jackal (depending on the options), they might get promoted
 | Sidekick Can Use Vents | Yes/No |
 -----------------------
 
+## Juggernaut
+### **Faction: Neutral (Killing)**
+
+The Juggernaut is a Neutral role with its own win condition.\
+The Juggernaut's special ability is that their kill cooldown reduces with each kill.\
+This means in theory the Juggernaut can have a 0 second kill cooldown!\
+The Juggernaut needs to be the last killer alive to win the game.
+### Game Options
+| Name | Description
+|----------|:-------------:|
+| Juggernaut Spawn Chance  | -
+| Juggernaut Kill Cooldown | -
+| Reduced Kill Cooldown Per Kill | -
+| Juggernaut can Vent | Whether the Juggernaut can Vent | Yes / No
+
+-----------------------
+
+## Glitch
+### **Faction: Neutral (Killing)**
+
+Glitch is a Neutral role with its own win condition.\
+Glitch's aim is to kill everyone and be the last person standing.\
+Glitch can Hack players, resulting in them being unable to report bodies and do tasks.\
+Hacking prevents the hacked player from doing anything but walk around the map.\
+This role cannot spawn on Fungle.\
+Glitch can Mimic someone, which results in them looking exactly like the other person.
+
+### Game Options
+| Name | Description
+|----------|:-------------:|
+| Glitch Spawn Chance | -
+| Mimic Cooldown | -
+| Mimic Duration | -
+| Hack Cooldown | -
+| Hack Duration | -
+| Glitch Kill Cooldow | -
+| Glitch can Vent | Whether Glitch can Vent | Yes / No
+
+-----------------------
+
+## Werewolf
+### **Faction: Neutral (Killing)**
+
+The Werewolf can kill all players within a certain radius.
+
+### Game Options
+
+| Name | Description
+|------|-------------|
+| Werewolf Spawn Chance | -
+| Maul Cooldown | -
+| Maul Radius | How far must a player be to survive a Werewolf's attack  | -
+| Werewolf Can Vent | Toggles the Werewolf's ability to vent | Yes / No
+-----------------------
+
+## Serial Killer
+### **Faction: Neutral (Killing)**
+
+The Serial Killer is a Neutral role with its own win condition.\
+Although the Serial Killer has a kill button, they can't use it unless they are stabbing.\
+Once the Serial Killer rampages they gain Impostor vision and the ability to kill.\
+However, unlike most killers their kill cooldown is really short.\
+The Serial Killer needs to be the last killer alive to win the game.
+### Game Options
+| Name | Description 
+|----------|:-------------:|
+| Serial Killer Spawn Chance | -
+| Stab Cooldown | -
+| Stab Duration | -
+| Stab Kill Cooldown | -
+| Serial Killer can Vent when Stabbing | Yes / No
+-----------------------
+
 ## Vulture
-### **Team: Neutral**
+### **Faction: Neutral**
 The Vulture does not have any tasks, they have to win the game as a solo.\
 The Vulture is a neutral role that must eat a specified number of corpses (depending on the options) in order to win.\
 Depending on the options, when a player dies, the Vulture gets an arrow pointing to the corpse.\
@@ -630,14 +708,14 @@ If there is a Vulture in the game, there can't be a Cleaner.
 | Name | Description |
 |----------|:-------------:|
 | Vulture Spawn Chance | -
-| Vulture Countdown | -
+| Vulture Eat Cooldown | -
 | Number Of Corpses Needed To Be Eaten | Corpes needed to be eaten to win the game
 | Vulture Can Use Vents | -
 | Show Arrows Pointing Towards The Corpes | -
 -----------------------
 
 ## Lawyer
-### **Team: Neutral**
+### **Faction: Neutral**
 The Lawyer is a neutral role that has a client.\
 The client might be an Impostor or Jackal which is no Lover.\
 Depending on the options, the client can also be a Jester.\
@@ -668,7 +746,7 @@ How the Lawyer wins:
 -----------------------
 
 ## Prosecutor
-### **Team: Neutral**
+### **Faction: Neutral**
 The Prosecutor is a neutral role that resembles the Lawyer. The Prosecutor has a client who is a Crewmate.\
 The Prosecutor needs their client to be voted out in order to win the game.\
 The Prosecutor's client doesn't know that they are their client.\
@@ -684,7 +762,7 @@ If the Prosecutor's client dies, the Prosecutor changes their role and becomes t
 - If the Prosecutor dies before their client, they will lose all their tasks and will get the overview immediately.
 
 ## Pursuer
-### **Team: Neutral**
+### **Faction: Neutral**
 The Pursuer is still a neutral role, but has a different goal to win the game; they have to be alive when the game ends and the Crew wins.\
 In order to achieve this goal, the Pursuer has an ability called "Blank", where they can fill a killer's (this also includes the Sheriff) weapon with a blank. So, if the killer attempts to kill someone, the killer will miss their target, and their cooldowns will be triggered as usual.\
 If the killer fires the "Blank", shields (e.g. Medic shield or Time Master shield) will not be triggered.\
@@ -698,7 +776,7 @@ The Pursuer has tasks (which can already be done while being a Lawyer/Prosecutor
 -----------------------
 
 ## Thief
-### **Team: Neutral**
+### **Faction: Neutral**
 The Thief has to kill another killer (Impostor, Jackal/Sidekick and if enabled Sheriff)
 in order to have a win condition.\
 If the Thief doesn't kill another killer they will lose the game.\
@@ -725,7 +803,7 @@ the Sheriff. While the Thief hasn't fired, their tasks do not count towards the 
 -----------------------
 
 ## Mayor
-### **Team: Crewmates**
+### **Faction: Crewmates**
 The Mayor leads the Crewmates by having a vote that counts twice.\
 The Mayor can always use their meeting, even if the maximum number of meetings was reached.\
 The Mayor has a portable Meeting Button, depending on the options.\
@@ -742,8 +820,42 @@ The Mayor has the option to vote with only one vote instead of two (via a button
 | Mayor Can Choose Single Vote | Off, On (Before Voting), On (Until Meeting Ends)
 -----------------------
 
+## Veteran
+### **Faction: Crewmates**
+
+The Veteran is a Crewmate that can go on alert.\
+When the Veteran is on alert, anyone, whether crew, neutral or impostor, if they interact with the Veteran, they die.
+### Game Options
+| Name | Description
+|----------|:-------------:|
+| Veteran Spawn Chance | -
+| Alert Cooldown | -
+| Alert Duration | -
+| Starting Number of Alert Charges | -
+| Maximum Number of Tasks Needed To Recharge | -
+
+-----------------------
+
+## Oracle
+### **Faction: Crewmates**
+The Oracle is a Crewmate that can get another player to confess information to them.\
+The Oracle has 2 abilities, the first is that when they die, the person confessin to them will reveal their alignment.\
+The second, is that every meeting the Oracle receives a confession about who might be evil.\
+### Game Options
+| Name | Description
+|----------|:-------------:|
+| Oracle Spawn Chance | -
+| Confess Cooldown | -
+| Reveal Accuracy | -
+| Neutral Benign show up as Evil | -
+| Neutral Evil show up as Evil | -
+| Neutral Killing show up as Evil | -
+
+-----------------------
+
+
 ## Engineer
-### **Team: Crewmates**
+### **Faction: Crewmates**
 The Engineer (if alive) can fix a certain amount of sabotages per game from anywhere on the map.\
 The Engineer can use vents.\
 If the Engineer is inside a vent, depending on the options the members of the team Jackal/Impostors will see a blue outline around all vents on the map (in order to warn them).\
@@ -761,7 +873,7 @@ If the Engineer is inside a vent, depending on the options the members of the te
 -----------------------
 
 ## Sheriff
-### **Team: Crewmates**
+### **Faction: Crewmates**
 The Sheriff has the ability to kill Impostors or Neutral roles if enabled.\
 If they try to kill a Crewmate, they die instead.\
 \
@@ -777,7 +889,7 @@ If they try to kill a Crewmate, they die instead.\
 | Sheriff Can Kill Neutrals | -
 -----------------------
 ## Lighter
-### **Team: Crewmates**
+### **Faction: Crewmates**
 The Lighter has a different vision than everyone else depending on the settings.\
 Their vision looks like a flashlight cone which can be moved around (known from the Hide'n'Seek mode).
 
@@ -791,7 +903,7 @@ Their vision looks like a flashlight cone which can be moved around (known from 
 -----------------------
 
 ## Detective
-### **Team: Crewmates**
+### **Faction: Crewmates**
 The Detective can see footprints that other players leave behind.\
 The Detective's other feature shows when they report a corpse: they receive clues about the killer's identity. The type of information they get is based on the time it took them to find the corpse.
 
@@ -812,7 +924,7 @@ The Detective's other feature shows when they report a corpse: they receive clue
 -----------------------
 
 ## Time Master
-### **Team: Crewmates**
+### **Faction: Crewmates**
 The Time Master has a time shield which they can activate. The time shield remains active for a configurable amount of time.\
 If a player tries to kill the Time Master while the time shield is active, the kill won't happen and the
 time will rewind for a set amount of time.\
@@ -837,7 +949,7 @@ The Time Master won't be affected by the rewind.
 -----------------------
 
 ## Medic
-### **Team: Crewmates**
+### **Faction: Crewmates**
 The Medic can shield (highlighted by an outline around the player) one player per game, which makes the player unkillable.\ The shield is also shown in the meeting as brackets around the shielded player's name.
 The shielded player can still be voted out and might also be an Impostor.\
 If set in the options, the shielded player and/or the Medic will get a red flash on their screen if someone (Impostor, Sheriff, ...) tried to murder them.\
@@ -862,7 +974,7 @@ The Medic's other feature shows when they report a corpse: they will see how lon
 -----------------------
 
 ## Swapper
-### **Team: Crewmates**
+### **Faction: Crewmates**
 During meetings the Swapper can exchange votes that two people get (i.e. all votes
 that player A got will be given to player B and vice versa).\
 Because of the Swapper's strength in meetings, they might not start emergency meetings and can't fix lights and comms.\
@@ -883,10 +995,11 @@ The Swapper now has initial swap charges and can recharge those charges after co
 -----------------------
 
 ## Mystic
-### **Team: Crewmates**
+### **Faction: Crewmates**
 The Mystic has Multiple abilities (one can activate one of them or both in the options).\
 The Mystic sees the souls of players that died a round earlier, the souls slowly fade away.\
-The Mystic gets a blue flash on their screen, if a player dies somewhere on the map.
+The Mystic gets a blue flash on their screen, if a player dies somewhere on the map.\
+The Mystic can also interact with players to investigate about their role, once upon a meeting starts, the Mystic gets a list of possible roles their target can be.
 
 ### Game Options
 | Name | Description |
@@ -895,10 +1008,12 @@ The Mystic gets a blue flash on their screen, if a player dies somewhere on the 
 | Mystic Mode | Options: Show death flash and souls, show death flash, show souls
 | Mystic Limit Soul Duration | Toggle if souls should turn invisible after a while
 | Mystic Soul Duration | Sets how long it will take the souls to turn invisible after a meeting
+| Starting Charges Amount | -
+| Investigate Cooldown | -
 -----------------------
 
 ## Hacker
-### **Team: Crewmates**
+### **Faction: Crewmates**
 If the Hacker activates the "Hacker mode", the Hacker gets more information than others from the admin table and vitals for a set duration.\
 Otherwise they see the same information as everyone else.\
 **Admin table:** The Hacker can see the colors (or color types) of the players on the table.\
@@ -923,7 +1038,7 @@ While accessing those mobile gadgets, the Hacker is not able to move.
 -----------------------
 
 ## Tracker
-### **Team: Crewmates**
+### **Faction: Crewmates**
 The Tracker can select one player to track. Depending on the options the Tracker can track a different person after each meeting or the Tracker tracks the same person for the whole game.\
 An arrow points to the last tracked position of the player.\
 The arrow updates its position every few seconds (configurable).\
@@ -946,7 +1061,7 @@ Depending on the options, the Tracker has another ability: They can track all co
 -----------------------
 
 ## Snitch
-### **Team: Crewmates**
+### **Faction: Crewmates**
 When the Snitch finishes all their tasks, they will get information in chat of the last location of all killers when the meeting starts.\
 When the Snitch only has a configurable amount of tasks left, it will be revealed that there is a Snitch in the game with a text on evil player's screens.
 
@@ -964,7 +1079,7 @@ When the Snitch only has a configurable amount of tasks left, it will be reveale
 -----------------------
 
 ## Spy
-### **Team: Crewmates**
+### **Faction: Crewmates**
 The Spy is a Crewmate, which has no special abilities.\
 The Spy looks like an additional Impostor to the Impostors, they can't tell the difference.\
 There are two possibilities (depending on the set options):
@@ -986,7 +1101,7 @@ You can set whether the Sheriff can kill the Spy or not (in order to keep the li
 -----------------------
 
 ## Portalmaker
-### **Team: Crewmates**
+### **Faction: Crewmates**
 The Portalmaker is a Crewmate that can place two portals on the map.\
 These two portals are connected to each other.\
 Those portals will be visible after the next meeting and can be used by everyone.\
@@ -1012,7 +1127,7 @@ The Portalmaker can teleport themself to their placed portals from anywhere if t
 -----------------------
 
 ## Vigilante
-### **Team: Crewmates**
+### **Faction: Crewmates**
 The Vigilante is a Crewmate that has a certain number of screws that they can use for either sealing vents or for placing new cameras.\
 Placing a new camera and sealing vents takes a configurable amount of screws. The total number of screws that a Vigilante has can also be configured.\
 The new camera will be visible after the next meeting and accessible by everyone.\
@@ -1041,7 +1156,7 @@ The vents will be sealed after the next meeting, players can't enter or exit sea
 -----------------------
 
 ## Medium
-### **Team: Crewmates**
+### **Faction: Crewmates**
 The medium is a crewmate who can ask the souls of dead players for information. Like the Mystic, the medium will see the souls of the players who have died (after the next meeting) and can question them. They then gets random information about the soul or the killer in the chat. The souls only stay for one round, i.e. until the next meeting. Depending on the options, the souls can only be questioned once and then disappear.
 \
 **Questions:**
@@ -1081,7 +1196,7 @@ The souls will always prefer to answer with the role specific information first!
 -----------------------
 
 ## Trapper
-### **Team: Crewmates**
+### **Faction: Crewmates**
 The Trapper is a crewmate which can set up traps to trap player and gain information from them.\
 The traps will stuck player for x-seconds (depends on the setting) and reveal information in chat
 about their "Role", if they are a "Good/Evil Role" or their "Name".\
