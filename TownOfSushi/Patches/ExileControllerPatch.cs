@@ -52,7 +52,7 @@ namespace TownOfSushi.Patches
             Eraser.futureErased = new List<PlayerControl>();
 
             // Trickster boxes
-            if (Trickster.trickster != null && JackInTheBox.HasJackInTheBoxLimitReached()) 
+            if (Trickster.Player != null && JackInTheBox.HasJackInTheBoxLimitReached()) 
             {
                 JackInTheBox.ConvertToVents();
             }
@@ -198,7 +198,7 @@ namespace TownOfSushi.Patches
                 Mini.triggerMiniLose = true;
             }
             // Jester win condition
-            else if (exiled != null && Jester.jester != null && Jester.jester.PlayerId == exiled.PlayerId) 
+            else if (exiled != null && Jester.Player != null && Jester.Player.PlayerId == exiled.PlayerId) 
             {
                 Jester.triggerJesterWin = true;
             }
@@ -347,7 +347,7 @@ namespace TownOfSushi.Patches
                     // Hide number of remaining impostors on Jester win
                     if (id == StringNames.ImpostorsRemainP || id == StringNames.ImpostorsRemainS) 
                     {
-                        if (Jester.jester != null && player.PlayerId == Jester.jester.PlayerId) __result = "";
+                        if (Jester.Player != null && player.PlayerId == Jester.Player.PlayerId) __result = "";
                     }
                     if (Tiebreaker.isTiebreak) __result += " (Tiebreaker)";
                     Tiebreaker.isTiebreak = false;

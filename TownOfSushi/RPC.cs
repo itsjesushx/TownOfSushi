@@ -108,7 +108,7 @@ namespace TownOfSushi
                     switch ((RoleId)roleId) 
                     {
                     case RoleId.Jester:
-                        Jester.jester = player;
+                        Jester.Player = player;
                         break;
                     case RoleId.Mayor:
                         Mayor.Player = player;
@@ -140,8 +140,11 @@ namespace TownOfSushi
                     case RoleId.Godfather:
                         Godfather.Player = player;
                         break;
+                    case RoleId.Amnesiac:
+                        Amnesiac.Player = player;
+                        break;
                     case RoleId.Mafioso:
-                        Mafioso.mafioso = player;
+                        Mafioso.Player = player;
                         break;
                     case RoleId.Janitor:
                         Janitor.Player = player;
@@ -207,7 +210,7 @@ namespace TownOfSushi
                         Spy.Player = player;
                         break;
                     case RoleId.Trickster:
-                        Trickster.trickster = player;
+                        Trickster.Player = player;
                         break;
                     case RoleId.Cleaner:
                         Cleaner.Player = player;
@@ -749,11 +752,11 @@ namespace TownOfSushi
             if (player == Morphling.Player) Morphling.ClearAndReload();
             if (player == Camouflager.Player) Camouflager.ClearAndReload();
             if (player == Godfather.Player) Godfather.ClearAndReload();
-            if (player == Mafioso.mafioso) Mafioso.ClearAndReload();
+            if (player == Mafioso.Player) Mafioso.ClearAndReload();
             if (player == Janitor.Player) Janitor.ClearAndReload();
             if (player == Vampire.Player) Vampire.ClearAndReload();
             if (player == Eraser.Player) Eraser.ClearAndReload();
-            if (player == Trickster.trickster) Trickster.ClearAndReload();
+            if (player == Trickster.Player) Trickster.ClearAndReload();
             if (player == Cleaner.Player) Cleaner.ClearAndReload();
             if (player == Warlock.Player) Warlock.ClearAndReload();
             if (player == Witch.witch) Witch.ClearAndReload();
@@ -761,7 +764,7 @@ namespace TownOfSushi
             if (player == Yoyo.Player) Yoyo.ClearAndReload();
 
             // Other roles
-            if (player == Jester.jester) Jester.ClearAndReload();
+            if (player == Jester.Player) Jester.ClearAndReload();
             if (player == Glitch.Player) Glitch.ClearAndReload();
             if (player == Werewolf.Player) Werewolf.ClearAndReload();
             if (player == SerialKiller.Player) SerialKiller.ClearAndReload();
@@ -1122,6 +1125,375 @@ namespace TownOfSushi
         {
             Tiebreaker.isTiebreak = true;
         }
+        public static void AmnesiacRemember(byte targetId)
+        {
+            PlayerControl target = Helpers.PlayerById(targetId);
+            PlayerControl AmnesiacPlayer = Amnesiac.Player;
+            if (target == null || AmnesiacPlayer == null) return;
+            List<RoleInfo> targetInfo = RoleInfo.GetRoleInfoForPlayer(target);
+            RoleInfo roleInfo = targetInfo.Where(info => info.FactionId != Factions.Modifier).FirstOrDefault();
+            switch (roleInfo.roleId)
+            {
+                case RoleId.Crewmate:
+                    Amnesiac.ClearAndReload();
+                    break;
+                case RoleId.Impostor:
+                    Helpers.BecomeImpostor(Amnesiac.Player);
+                    Amnesiac.ClearAndReload();
+                    break;
+                case RoleId.Jester:
+                    Jester.ClearAndReload();
+                    Jester.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    Amnesiac.Player = target;
+                    break;
+
+                case RoleId.Werewolf:
+                    Werewolf.ClearAndReload();
+                    Werewolf.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    Amnesiac.Player = target;
+                    break;
+
+                case RoleId.Prosecutor:
+                    Lawyer.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    Amnesiac.Player = target;
+                    break;
+
+                case RoleId.Mayor:
+                    Mayor.ClearAndReload();
+                    Mayor.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    break;
+
+                case RoleId.Portalmaker:
+                    Portalmaker.ClearAndReload();
+                    Portalmaker.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    break;
+
+                case RoleId.Engineer:
+                    Engineer.ClearAndReload();
+                    Engineer.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    break;
+
+                case RoleId.Sheriff:
+                    Sheriff.ClearAndReload();
+                    Sheriff.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    break;
+
+                case RoleId.Lighter:
+                    Lighter.ClearAndReload();
+                    Lighter.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    break;
+
+                case RoleId.Godfather:
+                    Helpers.BecomeImpostor(Amnesiac.Player);
+                    Godfather.ClearAndReload();
+                    Amnesiac.ClearAndReload();
+                    break;
+
+                case RoleId.Mafioso:
+                    Helpers.BecomeImpostor(Amnesiac.Player);
+                    Mafioso.ClearAndReload();
+                    Amnesiac.ClearAndReload();
+                    break;
+
+                case RoleId.Janitor:
+                    Helpers.BecomeImpostor(Amnesiac.Player);
+                    Janitor.ClearAndReload();
+                    Amnesiac.ClearAndReload();
+                    break;
+
+                case RoleId.Detective:
+                    Detective.ClearAndReload();
+                    Detective.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    break;
+
+                case RoleId.TimeMaster:
+                    TimeMaster.ClearAndReload();
+                    TimeMaster.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    break;
+
+                case RoleId.Veteran:
+                    Veteran.ClearAndReload();
+                    Veteran.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    break;
+
+                case RoleId.Medic:
+                    Medic.ClearAndReload();
+                    Medic.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    break;
+
+                case RoleId.Shifter:
+                    Shifter.ClearAndReload();
+                    Shifter.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    break;
+
+                case RoleId.Swapper:
+                    Swapper.ClearAndReload();
+                    Swapper.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    break;
+
+                case RoleId.Mystic:
+                    Mystic.ClearAndReload();
+                    Mystic.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    break;
+
+                case RoleId.Morphling:
+                    Helpers.BecomeImpostor(Amnesiac.Player);
+                    Morphling.ClearAndReload();
+                    Morphling.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    break;
+
+                case RoleId.Yoyo:
+                    Helpers.BecomeImpostor(Amnesiac.Player);
+                    Yoyo.ClearAndReload();
+                    Yoyo.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    break;
+
+                case RoleId.Camouflager:
+                    Helpers.BecomeImpostor(Amnesiac.Player);
+                    Camouflager.ClearAndReload();
+                    Camouflager.Player = AmnesiacPlayer;
+                   Amnesiac.ClearAndReload();
+                    break;
+
+                case RoleId.Hacker:
+                    Hacker.ClearAndReload();
+                    Hacker.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    break;
+
+                case RoleId.Tracker:
+                    Tracker.ClearAndReload();
+                    Tracker.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    break;
+
+                case RoleId.Vampire:
+                    Helpers.BecomeImpostor(Amnesiac.Player);
+                    Vampire.ClearAndReload();
+                    Vampire.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    break;
+
+                case RoleId.Snitch:
+                    Snitch.ClearAndReload();
+                    Snitch.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    break;
+                
+                case RoleId.Glitch:
+                    Glitch.ClearAndReload();
+                    Glitch.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    break;
+                
+                case RoleId.SerialKiller:
+                    SerialKiller.ClearAndReload();
+                    SerialKiller.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    break;
+                
+                case RoleId.Juggernaut:
+                    Juggernaut.ClearAndReload();
+                    Juggernaut.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    break;
+                
+                case RoleId.Oracle:
+                    Oracle.ClearAndReload();
+                    Oracle.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    break;
+                
+                case RoleId.Romantic:
+                    Romantic.ClearAndReload();
+                    Romantic.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    break;
+
+                case RoleId.Jackal:
+                    Jackal.Player = AmnesiacPlayer;
+                    Jackal.formerJackals.Add(target);
+                    Amnesiac.ClearAndReload();
+                    break;
+
+                case RoleId.Sidekick:
+                    Jackal.formerJackals.Add(target);
+                    Sidekick.ClearAndReload();
+                    Sidekick.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    break;
+
+                case RoleId.Eraser:
+                    Helpers.BecomeImpostor(Amnesiac.Player);
+                    Eraser.ClearAndReload();
+                    Eraser.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    break;
+
+                case RoleId.Spy:
+                    Spy.ClearAndReload();
+                    Spy.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    break;
+
+                case RoleId.Trickster:
+                    Helpers.BecomeImpostor(Amnesiac.Player);
+                    Trickster.ClearAndReload();
+                    Trickster.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    break;
+
+                case RoleId.Cleaner:
+                    Helpers.BecomeImpostor(Amnesiac.Player);
+                    Cleaner.ClearAndReload();
+                    Cleaner.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    break;
+
+                case RoleId.Warlock:
+                    Helpers.BecomeImpostor(Amnesiac.Player);
+                    Warlock.ClearAndReload();
+                    Warlock.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    break;
+
+                case RoleId.Vigilante:
+                    Vigilante.ClearAndReload();
+                    Vigilante.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    break;
+
+                case RoleId.Arsonist:
+                    Arsonist.ClearAndReload();
+                    Arsonist.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    Amnesiac.Player = target;
+
+                    if (PlayerControl.LocalPlayer == Arsonist.Player)
+                    {
+                        int playerCounter = 0;
+                        Vector3 bottomLeft = new(-FastDestroyableSingleton<HudManager>.Instance.UseButton.transform.localPosition.x, FastDestroyableSingleton<HudManager>.Instance.UseButton.transform.localPosition.y, FastDestroyableSingleton<HudManager>.Instance.UseButton.transform.localPosition.z);
+                        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                        {
+                            if (playerIcons.ContainsKey(p.PlayerId) && p != Arsonist.Player)
+                            {
+                                //Arsonist.poolIcons.Add(p);
+                                if (Arsonist.dousedPlayers.Contains(p))
+                                {
+                                    playerIcons[p.PlayerId].SetSemiTransparent(false);
+                                }
+                                else
+                                {
+                                    playerIcons[p.PlayerId].SetSemiTransparent(true);
+                                }
+
+                            playerIcons[p.PlayerId].transform.localPosition = bottomLeft + new Vector3(-0.25f, -0.25f, 0) + (Vector3.right * playerCounter++ * 0.35f);
+                            playerIcons[p.PlayerId].transform.localScale = Vector3.one * 0.2f;
+                            playerIcons[p.PlayerId].gameObject.SetActive(true);
+                        }
+                    }
+                }
+                    break;
+
+                case RoleId.BountyHunter:
+                    Helpers.BecomeImpostor(Amnesiac.Player);
+                    BountyHunter.ClearAndReload();
+                    BountyHunter.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+
+                    BountyHunter.bountyUpdateTimer = 0f;
+                    if (PlayerControl.LocalPlayer == BountyHunter.Player)
+                    {
+                        Vector3 bottomLeft = new Vector3(-FastDestroyableSingleton<HudManager>.Instance.UseButton.transform.localPosition.x, FastDestroyableSingleton<HudManager>.Instance.UseButton.transform.localPosition.y, FastDestroyableSingleton<HudManager>.Instance.UseButton.transform.localPosition.z) + new Vector3(-0.25f, 1f, 0);
+                        BountyHunter.cooldownText = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText, FastDestroyableSingleton<HudManager>.Instance.transform);
+                        BountyHunter.cooldownText.alignment = TMPro.TextAlignmentOptions.Center;
+                        BountyHunter.cooldownText.transform.localPosition = bottomLeft + new Vector3(0f, -1f, -1f);
+                        BountyHunter.cooldownText.gameObject.SetActive(true);
+
+                        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                        {
+                            if (playerIcons.ContainsKey(p.PlayerId))
+                            {
+                                playerIcons[p.PlayerId].SetSemiTransparent(false);
+                                playerIcons[p.PlayerId].transform.localPosition = bottomLeft + new Vector3(0f, -1f, 0);
+                                playerIcons[p.PlayerId].transform.localScale = Vector3.one * 0.4f;
+                                playerIcons[p.PlayerId].gameObject.SetActive(false);
+                            }
+                        }
+                    }
+                    break;
+
+                case RoleId.Vulture:
+                    Vulture.ClearAndReload();
+                    Vulture.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    Amnesiac.Player = target;
+                    break;
+
+                case RoleId.Medium:
+                    Medium.ClearAndReload();
+                    Medium.medium = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    break;
+
+                case RoleId.Lawyer:
+                    Lawyer.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    Amnesiac.Player = target;
+                    break;
+
+                case RoleId.Pursuer:
+                    Pursuer.ClearAndReload();
+                    Pursuer.pursuer = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    Amnesiac.Player = target;
+                    break;
+
+                case RoleId.Witch:
+                    Helpers.BecomeImpostor(Amnesiac.Player);
+                    Witch.ClearAndReload();
+                    Witch.witch = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    break;
+
+                case RoleId.Thief:
+                    Thief.ClearAndReload();
+                    Thief.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    Amnesiac.Player = target;
+                    break;
+
+                case RoleId.Trapper:
+                    Trapper.ClearAndReload();
+                    Trapper.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    break;
+
+                case RoleId.Ninja:
+                    Helpers.BecomeImpostor(Amnesiac.Player);
+                    Ninja.ClearAndReload();
+                    Ninja.ninja = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    break;
+            }
+        }
 
         public static void ThiefStealsRole(byte playerId) 
         {
@@ -1146,13 +1518,13 @@ namespace TownOfSushi
                     SetGuessers(thief.PlayerId);
             }
             if (target == Godfather.Player) Godfather.Player = thief;
-            if (target == Mafioso.mafioso) Mafioso.mafioso = thief;
+            if (target == Mafioso.Player) Mafioso.Player = thief;
             if (target == Janitor.Player) Janitor.Player = thief;
             if (target == Morphling.Player) Morphling.Player = thief;
             if (target == Camouflager.Player) Camouflager.Player = thief;
             if (target == Vampire.Player) Vampire.Player = thief;
             if (target == Eraser.Player) Eraser.Player = thief;
-            if (target == Trickster.trickster) Trickster.trickster = thief;
+            if (target == Trickster.Player) Trickster.Player = thief;
             if (target == Cleaner.Player) Cleaner.Player = thief;
             if (target == Warlock.Player) Warlock.Player = thief;
             if (target == BountyHunter.Player) BountyHunter.Player = thief;

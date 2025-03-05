@@ -73,7 +73,7 @@ namespace TownOfSushi.Patches
 
             // Remove Jester, Arsonist, Vulture, Jackal, former Jackals and Sidekick from winners (if they win, they'll be readded)
             List<PlayerControl> notWinners = new List<PlayerControl>();
-            if (Jester.jester != null) notWinners.Add(Jester.jester);
+            if (Jester.Player != null) notWinners.Add(Jester.Player);
             if (Sidekick.Player != null) notWinners.Add(Sidekick.Player);
             if (Jackal.Player != null) notWinners.Add(Jackal.Player);
             if (Glitch.Player != null) notWinners.Add(Glitch.Player);
@@ -97,7 +97,7 @@ namespace TownOfSushi.Patches
             }
             foreach (var winner in winnersToRemove) EndGameResult.CachedWinners.Remove(winner);
 
-            bool jesterWin = Jester.jester != null && gameOverReason == (GameOverReason)CustomGameOverReason.JesterWin;
+            bool jesterWin = Jester.Player != null && gameOverReason == (GameOverReason)CustomGameOverReason.JesterWin;
             bool arsonistWin = Arsonist.Player != null && gameOverReason == (GameOverReason)CustomGameOverReason.ArsonistWin;
             bool glitchWin = Glitch.Player != null && gameOverReason == (GameOverReason)CustomGameOverReason.GlitchWin;
             bool wwWin = Werewolf.Player != null && gameOverReason == (GameOverReason)CustomGameOverReason.WerewolfWin;
@@ -124,7 +124,7 @@ namespace TownOfSushi.Patches
             else if (jesterWin) 
             {
                 EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
-                CachedPlayerData wpd = new CachedPlayerData(Jester.jester.Data);
+                CachedPlayerData wpd = new CachedPlayerData(Jester.Player.Data);
                 EndGameResult.CachedWinners.Add(wpd);
                 AdditionalTempData.winCondition = WinCondition.JesterWin;
             }
@@ -255,7 +255,7 @@ namespace TownOfSushi.Patches
             }
 
             // Possible Additional winner: Lawyer
-            if (Lawyer.Player != null && Lawyer.target != null && (!Lawyer.target.Data.IsDead || Lawyer.target == Jester.jester) && !Pursuer.notAckedExiled && !Lawyer.isProsecutor) {
+            if (Lawyer.Player != null && Lawyer.target != null && (!Lawyer.target.Data.IsDead || Lawyer.target == Jester.Player) && !Pursuer.notAckedExiled && !Lawyer.isProsecutor) {
                 CachedPlayerData winningClient = null;
                 foreach (CachedPlayerData winner in EndGameResult.CachedWinners.GetFastEnumerator()) 
                 {
@@ -271,7 +271,7 @@ namespace TownOfSushi.Patches
             }
 
             // Possible Additional winner: Romantic
-            if (Romantic.Player != null && Romantic.beloved != null && (!Romantic.beloved.Data.IsDead || Romantic.beloved == Jester.jester) && !VengefulRomantic.notAckedExiled) 
+            if (Romantic.Player != null && Romantic.beloved != null && (!Romantic.beloved.Data.IsDead || Romantic.beloved == Jester.Player) && !VengefulRomantic.notAckedExiled) 
             {
                 CachedPlayerData winningClient = null;
                 foreach (CachedPlayerData winner in EndGameResult.CachedWinners.GetFastEnumerator()) 
@@ -381,25 +381,25 @@ namespace TownOfSushi.Patches
 
             if (AdditionalTempData.winCondition == WinCondition.JesterWin) 
             {
-                textRenderer.text = "Jester Wins";
+                textRenderer.text = "Jester Wins!";
                 textRenderer.color = Jester.color;
                 __instance.BackgroundBar.material.SetColor("_Color", Jester.color);
             } 
             else if (AdditionalTempData.winCondition == WinCondition.ArsonistWin) 
             {
-                textRenderer.text = "Arsonist Wins";
+                textRenderer.text = "Arsonist Wins!";
                 textRenderer.color = Arsonist.color;
                 __instance.BackgroundBar.material.SetColor("_Color", Arsonist.color);
             }
             else if (AdditionalTempData.winCondition == WinCondition.VultureWin) 
             {
-                textRenderer.text = "Vulture Wins";
+                textRenderer.text = "Vulture Wins!";
                 textRenderer.color = Vulture.color;
                 __instance.BackgroundBar.material.SetColor("_Color", Vulture.color);
             }
             else if (AdditionalTempData.winCondition == WinCondition.ProsecutorWin) 
             {
-                textRenderer.text = "Prosecutor Wins";
+                textRenderer.text = "Prosecutor Wins!";
                 textRenderer.color = Lawyer.color;
                 __instance.BackgroundBar.material.SetColor("_Color", Lawyer.color);
             }
@@ -411,19 +411,19 @@ namespace TownOfSushi.Patches
             } 
             else if (AdditionalTempData.winCondition == WinCondition.JuggernautWin) 
             {
-                textRenderer.text = "Juggernaut Wins";
+                textRenderer.text = "Juggernaut Wins!";
                 textRenderer.color = Juggernaut.color;
                 __instance.BackgroundBar.material.SetColor("_Color", Juggernaut.color);
             }
             else if (AdditionalTempData.winCondition == WinCondition.LoversSoloWin) 
             {
-                textRenderer.text = "Love Couple Wins";
+                textRenderer.text = "Love Couple Wins!";
                 textRenderer.color = Lovers.color;
                 __instance.BackgroundBar.material.SetColor("_Color", Lovers.color);
             }
             else if (AdditionalTempData.winCondition == WinCondition.VRomanticWin) 
             {
-                textRenderer.text = "Vengeful Romantic Wins";
+                textRenderer.text = "Vengeful Romantic Wins!";
                 textRenderer.color = Romantic.color;
                 __instance.BackgroundBar.material.SetColor("_Color", Romantic.color);
             }
@@ -435,25 +435,25 @@ namespace TownOfSushi.Patches
             }
             else if (AdditionalTempData.winCondition == WinCondition.GlitchWin) 
             {
-                textRenderer.text = "The Glitch Wins";
+                textRenderer.text = "The Glitch Wins!";
                 textRenderer.color = Glitch.color;
                 __instance.BackgroundBar.material.SetColor("_Color", Glitch.color);
             }
             else if (AdditionalTempData.winCondition == WinCondition.SerialKillerWin) 
             {
-                textRenderer.text = "Serial Kille Wins";
+                textRenderer.text = "Serial Kille Wins!";
                 textRenderer.color = SerialKiller.color;
                 __instance.BackgroundBar.material.SetColor("_Color", SerialKiller.color);
             }
             else if (AdditionalTempData.winCondition == WinCondition.WerewolfWin) 
             {
-                textRenderer.text = "Werewolf Wins";
+                textRenderer.text = "Werewolf Wins!";
                 textRenderer.color = Werewolf.color;
                 __instance.BackgroundBar.material.SetColor("_Color", Werewolf.color);
             }
             else if (AdditionalTempData.winCondition == WinCondition.MiniLose) 
             {
-                textRenderer.text = "Mini died";
+                textRenderer.text = "Mini died. Everyone lost!";
                 textRenderer.color = Mini.color;
                 __instance.BackgroundBar.material.SetColor("_Color", Mini.color);
             }
@@ -462,17 +462,17 @@ namespace TownOfSushi.Patches
                 switch (OnGameEndPatch.gameOverReason) 
                 {
                     case GameOverReason.ImpostorDisconnect:
-                        textRenderer.text = "Crewmates Disconnected";
+                        textRenderer.text = "Crewmates Disconnected. Impostors Win!";
                         textRenderer.color = Palette.ImpostorRed;
                         __instance.BackgroundBar.material.SetColor("_Color", Palette.ImpostorRed);
                         break;
                     case GameOverReason.ImpostorByKill:
-                        textRenderer.text = "Impostors Win";
+                        textRenderer.text = "Impostors Win!";
                         textRenderer.color = Palette.ImpostorRed;
                         __instance.BackgroundBar.material.SetColor("_Color", Palette.ImpostorRed);
                         break;
                     case GameOverReason.ImpostorBySabotage:
-                        textRenderer.text = "Impostors Win";
+                        textRenderer.text = "Impostors Win!";
                         textRenderer.color = Palette.ImpostorRed;
                         __instance.BackgroundBar.material.SetColor("_Color", Palette.ImpostorRed);
                         break;
@@ -482,17 +482,17 @@ namespace TownOfSushi.Patches
                         __instance.BackgroundBar.material.SetColor("_Color", Palette.ImpostorRed);
                         break;
                     case GameOverReason.HumansByTask:
-                        textRenderer.text = "Crewmates Win";
+                        textRenderer.text = "Crewmates Win!";
                         textRenderer.color = Palette.CrewmateBlue;
                         __instance.BackgroundBar.material.SetColor("_Color", Palette.CrewmateBlue);
                         break;
                     case GameOverReason.HumansDisconnect:
-                        textRenderer.text = "Impostors Disconnected";
+                        textRenderer.text = "Impostors Disconnected. Crewmates Win!";
                         textRenderer.color = Palette.CrewmateBlue;
                         __instance.BackgroundBar.material.SetColor("_Color", Palette.CrewmateBlue);
                         break;
                     case GameOverReason.HumansByVote:
-                        textRenderer.text = "Crewmates Win";
+                        textRenderer.text = "Crewmates Win!";
                         textRenderer.color = Palette.CrewmateBlue;
                         __instance.BackgroundBar.material.SetColor("_Color", Palette.CrewmateBlue);
                         break;
@@ -503,19 +503,19 @@ namespace TownOfSushi.Patches
             {
                 if (cond == WinCondition.AdditionalLawyerBonusWin) 
                 {
-                    textRenderer.text += $"\n{Helpers.ColorString(Lawyer.color, "The Lawyer wins with the client")}";
+                    textRenderer.text += $"\n{Helpers.ColorString(Lawyer.color, "The Lawyer wins with the client.")}";
                 }
                 else if (cond == WinCondition.AdditionalRomanticBonusWin) 
                 {
-                    textRenderer.text += $"\n{Helpers.ColorString(Romantic.color, "The Romantic wins with their lover")}";
+                    textRenderer.text += $"\n{Helpers.ColorString(Romantic.color, "The Romantic wins with their lover.")}";
                 }
                 else if (cond == WinCondition.AdditionalBelovedBonusWin) 
                 {
-                    textRenderer.text += $"\n{Helpers.ColorString(Romantic.color, "The Beloved wins with their lover")}";
+                    textRenderer.text += $"\n{Helpers.ColorString(Romantic.color, "The Beloved wins with their lover.")}";
                 }
                 else if (cond == WinCondition.AdditionalAlivePursuerWin) 
                 {
-                    textRenderer.text += $"\n{Helpers.ColorString(Pursuer.color, "The Pursuer survived")}";
+                    textRenderer.text += $"\n{Helpers.ColorString(Pursuer.color, "The Pursuer is alive. They also win!")}";
                 }
             }
 
@@ -675,7 +675,8 @@ namespace TownOfSushi.Patches
             {
                 systemType2 = MapUtilities.Systems.ContainsKey(SystemTypes.Laboratory) ? MapUtilities.Systems[SystemTypes.Laboratory] : null;
             }
-            if (systemType2 != null) {
+            if (systemType2 != null) 
+            {
                 ICriticalSabotage criticalSystem = systemType2.TryCast<ICriticalSabotage>();
                 if (criticalSystem != null && criticalSystem.Countdown < 0f) 
                 {

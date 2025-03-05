@@ -35,6 +35,7 @@ namespace TownOfSushi
         private static CustomButton hackerButton;
         public static CustomButton hackerVitalsButton;
         public static CustomButton hackerAdminTableButton;
+        private static CustomButton AmnesiacButton;
         private static CustomButton trackerTrackPlayerButton;
         private static CustomButton trackerTrackCorpsesButton;
         private static CustomButton RomanticSetTargetButton;
@@ -111,6 +112,7 @@ namespace TownOfSushi
             SerialKillerStabButton.MaxTimer = SerialKiller.StabCooldown;
             SerialKillerKillButton.MaxTimer = SerialKiller.StabKillCooldown;
             shifterShiftButton.MaxTimer = 0f;
+            AmnesiacButton.MaxTimer = 0f;
             morphlingButton.MaxTimer = Morphling.cooldown;
             MimicButton.MaxTimer = Glitch.MimicCooldown;
             camouflagerButton.MaxTimer = Camouflager.cooldown;
@@ -518,6 +520,41 @@ namespace TownOfSushi
                     SerialKiller.HasImpostorVision = false; 
                 }
             );
+
+            AmnesiacButton = new CustomButton(
+            () =>
+            {
+                foreach (Collider2D Collider2D in Physics2D.OverlapCircleAll(PlayerControl.LocalPlayer.GetTruePosition(), PlayerControl.LocalPlayer.MaxReportDistance, Constants.PlayersOnlyMask))
+                {
+                    if (Collider2D.tag == "DeadBody")
+                    {
+                        DeadBody component = Collider2D.GetComponent<DeadBody>();
+                        if (component && !component.Reported)
+                        {
+                            Vector2 truePosition = PlayerControl.LocalPlayer.GetTruePosition();
+                            Vector2 truePosition2 = component.TruePosition;
+                            if (Vector2.Distance(truePosition2, truePosition) <= PlayerControl.LocalPlayer.MaxReportDistance && PlayerControl.LocalPlayer.CanMove && !PhysicsHelpers.AnythingBetween(truePosition, truePosition2, Constants.ShipAndObjectsMask, false))
+                            {
+                                NetworkedPlayerInfo playerInfo = GameData.Instance.GetPlayerById(component.ParentId);
+
+                                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.AmnesiacRemember, SendOption.Reliable, -1);
+                                writer.Write(playerInfo.PlayerId);
+                                AmongUsClient.Instance.FinishRpcImmediately(writer);
+                                RPCProcedure.AmnesiacRemember(playerInfo.PlayerId);
+                                break;
+                            }
+                        }
+                    }
+                }
+            },
+            () => { return Amnesiac.Player != null && Amnesiac.Player == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead; },
+            () => { return __instance.ReportButton.graphic.color == Palette.EnabledColor && PlayerControl.LocalPlayer.CanMove; },
+            () => { AmnesiacButton.Timer = 0f; },
+            Amnesiac.GetButtonSprite(),
+            CustomButton.ButtonPositions.lowerRowRight,
+            __instance,
+            KeyCode.F
+        );
 
              // Serial Killer Kill
             SerialKillerKillButton = new CustomButton(
@@ -1483,7 +1520,7 @@ namespace TownOfSushi
                     RPCProcedure.PlaceJackInTheBox(buff);
                     SoundEffectsManager.Play("tricksterPlaceBox");
                 },
-                () => { return Trickster.trickster != null && Trickster.trickster == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead && !JackInTheBox.HasJackInTheBoxLimitReached(); },
+                () => { return Trickster.Player != null && Trickster.Player == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead && !JackInTheBox.HasJackInTheBoxLimitReached(); },
                 () => { return PlayerControl.LocalPlayer.CanMove && !JackInTheBox.HasJackInTheBoxLimitReached(); },
                 () => { placeJackInTheBoxButton.Timer = placeJackInTheBoxButton.MaxTimer;},
                 Trickster.GetPlaceBoxButtonSprite(),
@@ -1499,7 +1536,7 @@ namespace TownOfSushi
                     RPCProcedure.LightsOut();
                     SoundEffectsManager.Play("lighterLight");
                 },
-                () => { return Trickster.trickster != null && Trickster.trickster == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead
+                () => { return Trickster.Player != null && Trickster.Player == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead
                                                            && JackInTheBox.HasJackInTheBoxLimitReached() && JackInTheBox.boxesConvertedToVents; },
                 () => { return PlayerControl.LocalPlayer.CanMove && JackInTheBox.HasJackInTheBoxLimitReached() && JackInTheBox.boxesConvertedToVents; },
                 () => { 
@@ -2090,7 +2127,7 @@ namespace TownOfSushi
                 () => { return Ninja.ninja != null && Ninja.ninja == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead; },
                 () => {  // CouldUse
                     ninjaButton.Sprite = Ninja.ninjaMarked != null ? Ninja.getKillButtonSprite() : Ninja.getMarkButtonSprite(); 
-                    return (Ninja.CurrentTarget != null || Ninja.ninjaMarked != null && !TransportationToolPatches.isUsingTransportation(Ninja.ninjaMarked)) && PlayerControl.LocalPlayer.CanMove;
+                    return (Ninja.CurrentTarget != null || Ninja.ninjaMarked != null && !TransportationToolPatches.IsUsingTransportation(Ninja.ninjaMarked)) && PlayerControl.LocalPlayer.CanMove;
                 },
                 () => {  // on meeting ends
                     ninjaButton.Timer = ninjaButton.MaxTimer;
@@ -2280,7 +2317,7 @@ namespace TownOfSushi
                 false,
                 Yoyo.blinkDuration,
                 () => {
-                    if (TransportationToolPatches.isUsingTransportation(Yoyo.Player)) 
+                    if (TransportationToolPatches.IsUsingTransportation(Yoyo.Player)) 
                     {
                         yoyoButton.Timer = 0.5f;
                         yoyoButton.GlitchTimer = 0.5f;

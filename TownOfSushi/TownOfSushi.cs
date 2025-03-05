@@ -56,6 +56,7 @@ namespace TownOfSushi
             SerialKiller.ClearAndReload();
             Arsonist.ClearAndReload();
             BountyHunter.ClearAndReload();
+            Amnesiac.ClearAndReload();
             Vulture.ClearAndReload();
             Medium.ClearAndReload();
             Oracle.ClearAndReload();
@@ -88,15 +89,18 @@ namespace TownOfSushi
 
         public static class Jester 
         {
-            public static PlayerControl jester;
+            public static PlayerControl Player;
             public static Color color = new Color32(236, 98, 165, byte.MaxValue);
             public static bool triggerJesterWin = false;
             public static bool canCallEmergency = true;
             public static bool hasImpostorVision = false;
-
+            public static bool CanUseVents;
+            public static bool CanMoveInVents;
             public static void ClearAndReload() 
             {
-                jester = null;
+                Player = null;
+                CanUseVents = CustomOptionHolder.jesterCanHideInVents.GetBool();
+                CanMoveInVents = CustomOptionHolder.jesterCanMoveInVents.GetBool();
                 triggerJesterWin = false;
                 canCallEmergency = CustomOptionHolder.jesterCanCallEmergency.GetBool();
                 hasImpostorVision = CustomOptionHolder.jesterHasImpostorVision.GetBool();
@@ -193,8 +197,34 @@ namespace TownOfSushi
                 logShowsTime = CustomOptionHolder.portalmakerLogHasTime.GetBool();
                 canPortalFromAnywhere = CustomOptionHolder.portalmakerCanPortalFromAnywhere.GetBool();
             }
+        }
 
-
+        public static class Amnesiac
+        {
+            public static PlayerControl Player;
+            public static Color color = new Color32(34, 255, 255, byte.MaxValue);
+            public static List<Arrow> AmnesiacArrows = new List<Arrow>();
+            public static bool Remembered;
+            private static Sprite ButtonSprite;
+            public static bool ShowArrows = true;
+            public static Sprite GetButtonSprite()
+            {
+                if (ButtonSprite) return ButtonSprite;
+                ButtonSprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.Remember.png", 115f);
+                return ButtonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                Player = null;
+                Remembered = false;
+                ShowArrows = CustomOptionHolder.AmnesiacHasArrows.GetBool();
+                if (AmnesiacArrows != null) 
+                {
+                    foreach (Arrow arrow in AmnesiacArrows)
+                        if (arrow?.arrow != null)
+                            UnityEngine.Object.Destroy(arrow.arrow);
+                }
+            }
         }
 
         public static class Mayor 
@@ -272,12 +302,12 @@ namespace TownOfSushi
 
         public static class Mafioso 
         {
-            public static PlayerControl mafioso;
+            public static PlayerControl Player;
             public static Color color = Palette.ImpostorRed;
 
             public static void ClearAndReload() 
             {
-                mafioso = null;
+                Player = null;
             }
         }
 
@@ -1254,7 +1284,7 @@ namespace TownOfSushi
 
     public static class Trickster 
     {
-        public static PlayerControl trickster;
+        public static PlayerControl Player;
         public static Color color = Palette.ImpostorRed;
         public static float placeBoxCooldown = 30f;
         public static float lightsOutCooldown = 30f;
@@ -1288,7 +1318,7 @@ namespace TownOfSushi
 
         public static void ClearAndReload() 
         {
-            trickster = null;
+            Player = null;
             lightsOutTimer = 0f;
             placeBoxCooldown = CustomOptionHolder.tricksterPlaceBoxCooldown.GetFloat();
             lightsOutCooldown = CustomOptionHolder.tricksterLightsOutCooldown.GetFloat();
@@ -1669,7 +1699,7 @@ namespace TownOfSushi
         {
             string msg = "";
 
-            var neutralEvilRoles = new List<PlayerControl> { Jester.jester, Vulture.Player, Arsonist.Player };
+            var neutralEvilRoles = new List<PlayerControl> { Jester.Player, Vulture.Player, Arsonist.Player };
             if (Lawyer.isProsecutor) neutralEvilRoles.Add(Lawyer.Player);
 
             var neutralBenignRoles = new List<PlayerControl> { Romantic.Player, Thief.Player };

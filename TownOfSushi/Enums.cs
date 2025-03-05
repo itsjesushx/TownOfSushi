@@ -67,7 +67,7 @@ namespace TownOfSushi
         Ninja,
         Thief,
         Yoyo,
-        Miner,
+        Amnesiac,
         Crewmate,
         Impostor,
         // Modifier ---
@@ -117,6 +117,7 @@ namespace TownOfSushi
         ShieldedMurderAttempt,
         GlitchMimic,
         VeteranAlert,
+        AmnesiacRemember,
         Confess,
         VeterenAlertKill,
         TimeMasterShield,

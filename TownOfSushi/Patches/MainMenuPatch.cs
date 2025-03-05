@@ -64,7 +64,8 @@ namespace TownOfSushi.Modules
                 // do stuff
                 if (popUp != null) Object.Destroy(popUp);
                 var popUpTemplate = Object.FindObjectOfType<AnnouncementPopUp>(true);
-                if (popUpTemplate == null) {
+                if (popUpTemplate == null) 
+                {
                     TownOfSushiPlugin.Logger.LogError("couldnt show credits, popUp is null");
                     return;
                 }

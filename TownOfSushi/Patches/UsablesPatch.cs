@@ -60,7 +60,7 @@ namespace TownOfSushi.Patches {
 
             var usableDistance = __instance.UsableDistance;
             if (__instance.name.StartsWith("JackInTheBoxVent_")) {
-                if(Trickster.trickster != PlayerControl.LocalPlayer) {
+                if(Trickster.Player != PlayerControl.LocalPlayer) {
                     // Only the Trickster can use the Jack-In-The-Boxes!
                     canUse = false;
                     couldUse = false;
@@ -114,12 +114,16 @@ namespace TownOfSushi.Patches {
             bool canUse;
             bool couldUse;
             __instance.CanUse(PlayerControl.LocalPlayer.Data, out canUse, out couldUse);
-            bool canMoveInVents = PlayerControl.LocalPlayer != Spy.Player && !Trapper.playersOnMap.Contains(PlayerControl.LocalPlayer);
+            
+            bool JesterCanMove = PlayerControl.LocalPlayer == Jester.Player && Jester.CanMoveInVents;
+            bool canMoveInVents = PlayerControl.LocalPlayer != Spy.Player && !JesterCanMove && !Trapper.playersOnMap.Contains(PlayerControl.LocalPlayer);
+            
             if (!canUse) return false; // No need to execute the native method as using is disallowed anyways
 
             bool isEnter = !PlayerControl.LocalPlayer.inVent;
             
-            if (__instance.name.StartsWith("JackInTheBoxVent_")) {
+            if (__instance.name.StartsWith("JackInTheBoxVent_")) 
+            {
                 __instance.SetButtons(isEnter && canMoveInVents);
                 MessageWriter writer = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.UseUncheckedVent, Hazel.SendOption.Reliable);
                 writer.WritePacked(__instance.Id);
@@ -151,7 +155,8 @@ namespace TownOfSushi.Patches {
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
     class VentButtonVisibilityPatch {
         static void Postfix(PlayerControl __instance) {
-            if (__instance.AmOwner && __instance.IsVenter() && FastDestroyableSingleton<HudManager>.Instance.ReportButton.isActiveAndEnabled) {
+            if (__instance.AmOwner && __instance.IsVenter() && FastDestroyableSingleton<HudManager>.Instance.ReportButton.isActiveAndEnabled) 
+            {
                 FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton.Show();
             }
         }
@@ -164,7 +169,7 @@ namespace TownOfSushi.Patches {
         static void Postfix(VentButton __instance) 
         {
             // Trickster render special vent button
-            if (Trickster.trickster != null && Trickster.trickster == PlayerControl.LocalPlayer) 
+            if (Trickster.Player != null && Trickster.Player == PlayerControl.LocalPlayer) 
             {
                 if (defaultVentSprite == null) defaultVentSprite = __instance.graphic.sprite;
                 bool isSpecialVent = __instance.currentTarget != null && __instance.currentTarget.gameObject != null && __instance.currentTarget.gameObject.name.StartsWith("JackInTheBoxVent_");
@@ -216,7 +221,7 @@ namespace TownOfSushi.Patches {
         {
             // Mafia disable sabotage button for Janitor and sometimes for Mafioso
             bool blockSabotageJanitor = Janitor.Player != null && Janitor.Player == PlayerControl.LocalPlayer;
-            bool blockSabotageMafioso = Mafioso.mafioso != null && Mafioso.mafioso == PlayerControl.LocalPlayer && Godfather.Player != null && !Godfather.Player.Data.IsDead;
+            bool blockSabotageMafioso = Mafioso.Player != null && Mafioso.Player == PlayerControl.LocalPlayer && Godfather.Player != null && !Godfather.Player.Data.IsDead;
             if (blockSabotageJanitor || blockSabotageMafioso) 
             {
                 FastDestroyableSingleton<HudManager>.Instance.SabotageButton.SetDisabled();
@@ -269,7 +274,7 @@ namespace TownOfSushi.Patches {
                 statusText = "The Swapper can't start an emergency meeting";
             }
             // Potentially deactivate emergency button for Jester
-            if (Jester.jester != null && Jester.jester == PlayerControl.LocalPlayer && !Jester.canCallEmergency) 
+            if (Jester.Player != null && Jester.Player == PlayerControl.LocalPlayer && !Jester.canCallEmergency) 
             {
                 CanCallEmergency = false;
                 statusText = "The Jester can't start an emergency meeting";

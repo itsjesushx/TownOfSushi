@@ -31,7 +31,7 @@ namespace TownOfSushi.Patches {
             }
 
             // If there is a Trickster with their ability active
-            else if (Trickster.trickster != null && Trickster.lightsOutTimer > 0f) {
+            else if (Trickster.Player != null && Trickster.lightsOutTimer > 0f) {
                 float lerpValue = 1f;
                 if (Trickster.lightsOutDuration - Trickster.lightsOutTimer < 0.5f) {
                     lerpValue = Mathf.Clamp01((Trickster.lightsOutDuration - Trickster.lightsOutTimer) * 2);

@@ -37,6 +37,24 @@ namespace TownOfSushi
             return null;
         }
 
+        //taken from town of us:
+        public static void BecomeImpostor(PlayerControl player)
+        {
+            player.Data.Role.TeamType = RoleTeamTypes.Impostor;
+            RoleManager.Instance.SetRole(player, RoleTypes.Impostor);
+            player.SetKillTimer(GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown);
+
+            System.Console.WriteLine("PROOF I AM IMP VANILLA ROLE: " + player.Data.Role.IsImpostor);
+
+            foreach (var player2 in PlayerControl.AllPlayerControls)
+            {
+                if (player2.Data.Role.IsImpostor && PlayerControl.LocalPlayer.Data.Role.IsImpostor)
+                {
+                    player.cosmetics.nameText.color = Palette.ImpostorRed;
+                }
+            }
+        }
+
         public static unsafe Texture2D LoadTextureFromResources(string path) 
         {
             try 
@@ -222,7 +240,7 @@ namespace TownOfSushi
 
         public static bool HasFakeTasks(this PlayerControl player) 
         {
-            return player == Jester.jester || player == Romantic.Player || player.IsNeutralKiller() || player == Arsonist.Player || player == Vulture.Player;
+            return player == Jester.Player || player == Amnesiac.Player || player == Romantic.Player || player.IsNeutralKiller() || player == Arsonist.Player || player == Vulture.Player;
         }
         
 
@@ -455,6 +473,8 @@ namespace TownOfSushi
                 isVenter = true;
             else if (Werewolf.CanUseVents && Werewolf.Player != null && Werewolf.Player == player)
                 isVenter = true;
+            else if (Jester.CanUseVents && Jester.Player != null && Jester.Player == player)
+                isVenter = true;
             else if (Sidekick.canUseVents && Sidekick.Player != null && Sidekick.Player == player)
                 isVenter = true;
             else if (Juggernaut.CanUseVents && Juggernaut.Player != null && Juggernaut.Player == player)
@@ -473,7 +493,7 @@ namespace TownOfSushi
             {
                 if (Janitor.Player != null && Janitor.Player == PlayerControl.LocalPlayer)
                     isVenter = false;
-                else if (Mafioso.mafioso != null && Mafioso.mafioso == PlayerControl.LocalPlayer && Godfather.Player != null && !Godfather.Player.Data.IsDead)
+                else if (Mafioso.Player!= null && Mafioso.Player== PlayerControl.LocalPlayer && Godfather.Player != null && !Godfather.Player.Data.IsDead)
                     isVenter = false;
                 else
                     isVenter = true;
@@ -575,11 +595,11 @@ namespace TownOfSushi
                 return MurderAttemptResult.BlankKill;
             }
             
-            if (TransportationToolPatches.isUsingTransportation(target) && !blockRewind && killer == Vampire.Player) 
+            if (TransportationToolPatches.IsUsingTransportation(target) && !blockRewind && killer == Vampire.Player) 
             {
                 return MurderAttemptResult.DelayVampireKill;
             }
-            else if (TransportationToolPatches.isUsingTransportation(target)) return MurderAttemptResult.SuppressKill;
+            else if (TransportationToolPatches.IsUsingTransportation(target)) return MurderAttemptResult.SuppressKill;
             return MurderAttemptResult.PerformKill;
         }
 
@@ -611,7 +631,7 @@ namespace TownOfSushi
                 HudManager.Instance.StartCoroutine(Effects.Lerp(10f, new Action<float>((p) => 
                 {
 
-                    if (!TransportationToolPatches.isUsingTransportation(target) && Vampire.bitten != null) 
+                    if (!TransportationToolPatches.IsUsingTransportation(target) && Vampire.bitten != null) 
                     {
                         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.VampireSetBitten, Hazel.SendOption.Reliable, -1);
                         writer.Write(byte.MaxValue);
@@ -784,7 +804,7 @@ namespace TownOfSushi
                 || (VengefulRomantic.Player != null && VengefulRomantic.Player.PlayerId == player.PlayerId)
                 || (SerialKiller.Player != null && SerialKiller.HasImpostorVision && SerialKiller.Player.PlayerId == player.PlayerId)
                 || (Spy.Player != null && Spy.Player.PlayerId == player.PlayerId && Spy.hasImpostorVision)
-                || (Jester.jester != null && Jester.jester.PlayerId == player.PlayerId && Jester.hasImpostorVision)
+                || (Jester.Player != null && Jester.Player.PlayerId == player.PlayerId && Jester.hasImpostorVision)
                 || (Thief.Player != null && Thief.Player.PlayerId == player.PlayerId && Thief.hasImpostorVision);
         }
         

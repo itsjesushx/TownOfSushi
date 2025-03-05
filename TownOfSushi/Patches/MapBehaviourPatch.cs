@@ -162,7 +162,7 @@ namespace TownOfSushi.Patches
 			}
 			foreach (var vent in MapUtilities.CachedShipStatus.AllVents) 
 			{
-				if ((vent.name.StartsWith("JackInThe") && !(PlayerControl.LocalPlayer == Trickster.trickster || PlayerControl.LocalPlayer.Data.IsDead))) continue; //for trickster vents
+				if ((vent.name.StartsWith("JackInThe") && !(PlayerControl.LocalPlayer == Trickster.Player || PlayerControl.LocalPlayer.Data.IsDead))) continue; //for trickster vents
 
 				if (!TownOfSushiPlugin.ShowVentsOnMap.Value) 
 				{

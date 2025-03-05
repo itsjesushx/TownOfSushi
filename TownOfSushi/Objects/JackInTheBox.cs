@@ -83,7 +83,7 @@ namespace TownOfSushi.Objects
             vent.name = "JackInTheBoxVent_" + vent.Id;
 
             // Only render the box for the Trickster and for Ghosts
-            var showBoxToLocalPlayer = PlayerControl.LocalPlayer == Trickster.trickster || PlayerControl.LocalPlayer.Data.IsDead;
+            var showBoxToLocalPlayer = PlayerControl.LocalPlayer == Trickster.Player || PlayerControl.LocalPlayer.Data.IsDead;
             gameObject.SetActive(showBoxToLocalPlayer);
 
             AllJackInTheBoxes.Add(this);
@@ -94,7 +94,7 @@ namespace TownOfSushi.Objects
             if (boxesConvertedToVents == true) return;
             foreach (var box in AllJackInTheBoxes) 
             {
-                var showBoxToLocalPlayer = PlayerControl.LocalPlayer == Trickster.trickster || PlayerControl.LocalPlayer.Data.IsDead;
+                var showBoxToLocalPlayer = PlayerControl.LocalPlayer == Trickster.Player || PlayerControl.LocalPlayer.Data.IsDead;
                 box.gameObject.SetActive(showBoxToLocalPlayer);
             }
         }

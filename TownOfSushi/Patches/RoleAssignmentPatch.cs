@@ -129,6 +129,7 @@ namespace TownOfSushi.Patches
             neutralSettings.Add((byte)RoleId.Romantic, CustomOptionHolder.RomanticSpawnChance.GetSelection());
             neutralSettings.Add((byte)RoleId.Arsonist, CustomOptionHolder.arsonistSpawnRate.GetSelection());
             neutralSettings.Add((byte)RoleId.Vulture, CustomOptionHolder.vultureSpawnRate.GetSelection());
+            neutralSettings.Add((byte)RoleId.Amnesiac, CustomOptionHolder.AmnesiacSpawnRate.GetSelection());
             neutralSettings.Add((byte)RoleId.Thief, CustomOptionHolder.thiefSpawnRate.GetSelection());
 
             if (rnd.Next(1, 101) <= CustomOptionHolder.lawyerIsProsecutorChance.GetSelection() * 10) // Lawyer or Prosecutor
@@ -309,7 +310,7 @@ namespace TownOfSushi.Patches
                 if (!Lawyer.isProsecutor) 
                 { // Lawyer
                     foreach (PlayerControl p in PlayerControl.AllPlayerControls) {
-                        if (!p.Data.IsDead && !p.Data.Disconnected && p != Lovers.Lover1 && p != Lovers.Lover2 && (p.IsKiller() || (Lawyer.targetCanBeJester && p == Jester.jester)))
+                        if (!p.Data.IsDead && !p.Data.Disconnected && p != Lovers.Lover1 && p != Lovers.Lover2 && (p.IsKiller() || (Lawyer.targetCanBeJester && p == Jester.Player)))
                             possibleTargets.Add(p);
                     }
                 } 

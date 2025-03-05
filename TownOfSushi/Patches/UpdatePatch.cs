@@ -144,7 +144,7 @@ namespace TownOfSushi.Patches
                 foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                     if (Godfather.Player != null && Godfather.Player == player)
                             player.cosmetics.nameText.text = player.Data.PlayerName + " (G)";
-                    else if (Mafioso.mafioso != null && Mafioso.mafioso == player)
+                    else if (Mafioso.Player != null && Mafioso.Player == player)
                             player.cosmetics.nameText.text = player.Data.PlayerName + " (M)";
                     else if (Janitor.Player != null && Janitor.Player == player)
                             player.cosmetics.nameText.text = player.Data.PlayerName + " (J)";
@@ -152,8 +152,8 @@ namespace TownOfSushi.Patches
                     foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
                         if (Godfather.Player != null && Godfather.Player.PlayerId == player.TargetPlayerId)
                             player.NameText.text = Godfather.Player.Data.PlayerName + " (G)";
-                        else if (Mafioso.mafioso != null && Mafioso.mafioso.PlayerId == player.TargetPlayerId)
-                            player.NameText.text = Mafioso.mafioso.Data.PlayerName + " (M)";
+                        else if (Mafioso.Player != null && Mafioso.Player.PlayerId == player.TargetPlayerId)
+                            player.NameText.text = Mafioso.Player.Data.PlayerName + " (M)";
                         else if (Janitor.Player != null && Janitor.Player.PlayerId == player.TargetPlayerId)
                             player.NameText.text = Janitor.Player.Data.PlayerName + " (J)";
             }
@@ -279,7 +279,7 @@ namespace TownOfSushi.Patches
             bool enabled = true;
             if (Vampire.Player != null && Vampire.Player == PlayerControl.LocalPlayer)
                 enabled = false;
-            else if (Mafioso.mafioso != null && Mafioso.mafioso == PlayerControl.LocalPlayer && Godfather.Player != null && !Godfather.Player.Data.IsDead)
+            else if (Mafioso.Player != null && Mafioso.Player == PlayerControl.LocalPlayer && Godfather.Player != null && !Godfather.Player.Data.IsDead)
                 enabled = false;
             else if (Janitor.Player != null && Janitor.Player == PlayerControl.LocalPlayer)
                 enabled = false;
@@ -300,6 +300,7 @@ namespace TownOfSushi.Patches
         static void UpdateVentButton(HudManager __instance)
         {
             if (GameOptionsManager.Instance.currentGameOptions.GameMode == GameModes.HideNSeek) return;
+            if (PlayerControl.LocalPlayer == Vampire.Player) __instance.ImpostorVentButton.Show();
             if (Glitch.HackedKnows.ContainsKey(PlayerControl.LocalPlayer.PlayerId) && Glitch.HackedKnows[PlayerControl.LocalPlayer.PlayerId] > 0 || MeetingHud.Instance || Helpers.TwoPlayersAlive() && MapOptions.LimitAbilities) __instance.ImpostorVentButton.Hide();
             else if (PlayerControl.LocalPlayer.IsVenter() && !__instance.ImpostorVentButton.isActiveAndEnabled) __instance.ImpostorVentButton.Show();
         }
@@ -370,7 +371,7 @@ namespace TownOfSushi.Patches
         public static bool Prefix(DeadBody __instance) 
         {
             if (GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek) return false;
-            if (Helpers.TwoPlayersAlive() && MapOptions.LimitAbilities)  return false;
+            if (Helpers.TwoPlayersAlive() && MapOptions.LimitAbilities  || Glitch.HackedKnows.ContainsKey(PlayerControl.LocalPlayer.PlayerId) && Glitch.HackedKnows[PlayerControl.LocalPlayer.PlayerId] > 0f)  return false;
             return true;
         }
     }

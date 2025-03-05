@@ -13,7 +13,8 @@ namespace TownOfSushi.Patches {
                 typeof(Il2CppReferenceArray<Il2CppSystem.Object>)
             })]
         public static bool Prefix(TranslationController __instance, StringNames id, ref string __result) {
-            if ((int)id < 6000) {
+            if ((int)id < 6000) 
+            {
                 return true;
             }
             string ourString = "";

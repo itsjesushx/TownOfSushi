@@ -34,6 +34,7 @@ namespace TownOfSushi
         public readonly static RoleInfo arsonist = new("Arsonist", Arsonist.color, "Let them burn", "Let them burn", RoleId.Arsonist, Factions.Neutral, "The Arsonist needs to spread gasoline on every single player to win.");
         public readonly static RoleInfo vulture = new("Vulture", Vulture.color, "Eat corpses to win", "Eat dead bodies", RoleId.Vulture, Factions.Neutral, $"The goal of the Vulture is to eat {Vulture.vultureNumberToWin - Vulture.eatenBodies} dead bodies to win.");
         public readonly static RoleInfo lawyer = new("Lawyer", Lawyer.color, "Defend your client", "Defend your client", RoleId.Lawyer, Factions.Neutral, "The Lawyer's duty is to prevent their client from getting ejected, if they get voted out, you suicide, if they are killed, you become a Pursuer.");
+        public readonly static RoleInfo amnesiac = new("Amnesiac", Amnesiac.color, "Gain an identity from a corpse", "Find a dead body to remember a role", RoleId.Amnesiac, Factions.Neutral, "The Amnesiac has to find a dead body in order to gain a role as they are roleless at the begining. Once you find a body you can remember who you were and you will get the corpse's role. You may have arrows pointing to bodies depending on settings.");
         public readonly static RoleInfo prosecutor = new("Prosecutor", Lawyer.color, "Vote out your target", "Vote out your target", RoleId.Prosecutor, Factions.Neutral, "The Prosecutor is the opposite of a Lawyer, they are also given a target, but instead of protecting them, you have to make them look guilty. If they are voted out you win. If they die you become a Pursuer.");
         public readonly static RoleInfo pursuer = new("Pursuer", Pursuer.color, "Blank the Impostors", "Blank the Impostors", RoleId.Pursuer, Factions.Neutral, "As the Pursuer you were either a Lawyer, Romantic or Prosecutor which target die. All you have to do is stay alive to win, you may also blank players to prevent them from killing.");
         public readonly static RoleInfo romantic = new("Romantic", Romantic.color, "Create a lover to win with you", "Create, protect and assist your lover", RoleId.Romantic, Factions.Neutral, "As the Romantic, you must pick a player to love, working together to ensure both of your survival. If your target dies, you will become a Pursuer.");
@@ -138,6 +139,7 @@ namespace TownOfSushi
             jackal,
             sidekick,
             vulture,
+            amnesiac,
             pursuer,
             sleuth,
             lawyer,
@@ -208,7 +210,7 @@ namespace TownOfSushi
             int count = infos.Count;  // Save count after modifiers are added so that the role count can be checked
 
             // Special roles
-            if (p == Jester.jester) infos.Add(jester);
+            if (p == Jester.Player) infos.Add(jester);
             if (p == Mayor.Player) infos.Add(mayor);
             if (p == Portalmaker.Player) infos.Add(portalmaker);
             if (p == Engineer.Player) infos.Add(engineer);
@@ -223,18 +225,19 @@ namespace TownOfSushi
             if (p == Veteran.Player) infos.Add(veteran);
             if (p == Lighter.Player) infos.Add(lighter);
             if (p == Godfather.Player) infos.Add(godfather);
-            if (p == Mafioso.mafioso) infos.Add(mafioso);
+            if (p == Mafioso.Player) infos.Add(mafioso);
             if (p == Janitor.Player) infos.Add(janitor);
             if (p == Morphling.Player) infos.Add(morphling);
             if (p == Camouflager.Player) infos.Add(camouflager);
             if (p == Vampire.Player) infos.Add(vampire);
             if (p == Eraser.Player) infos.Add(eraser);
-            if (p == Trickster.trickster) infos.Add(trickster);
+            if (p == Trickster.Player) infos.Add(trickster);
             if (p == Cleaner.Player) infos.Add(cleaner);
             if (p == Warlock.Player) infos.Add(warlock);
             if (p == Witch.witch) infos.Add(witch);
             if (p == Ninja.ninja) infos.Add(ninja);
             if (p == Yoyo.Player) infos.Add(yoyo);
+            if (p == Amnesiac.Player) infos.Add(amnesiac);
             if (p == Detective.Player) infos.Add(detective);
             if (p == TimeMaster.Player) infos.Add(timeMaster);
             if (p == Medic.Player) infos.Add(medic);
@@ -275,6 +278,11 @@ namespace TownOfSushi
             roleName = String.Join(" ", GetRoleInfoForPlayer(p, showModifier).Select(x => useColors ? Helpers.ColorString(x.color, x.name) : x.name).ToArray());
             if (Lawyer.target != null && p.PlayerId == Lawyer.target.PlayerId && PlayerControl.LocalPlayer != Lawyer.target) 
                 roleName += (useColors ? Helpers.ColorString(Pursuer.color, " §") : " §");
+            if (Romantic.beloved != null && p.PlayerId == Romantic.beloved.PlayerId && PlayerControl.LocalPlayer != Romantic.beloved) 
+                roleName += useColors ? Helpers.ColorString(Romantic.color, " ♥") : " ♥";
+            if (VengefulRomantic.Lover != null && p.PlayerId == VengefulRomantic.Lover.PlayerId && PlayerControl.LocalPlayer != VengefulRomantic.Lover) 
+                roleName += useColors ? Helpers.ColorString(Romantic.color, " ♥") : " ♥";
+
             if (HandleGuesser.IsGuesser(p.PlayerId)) 
             {
                 int remainingShots = HandleGuesser.RemainingShots(p.PlayerId);
@@ -316,7 +324,7 @@ namespace TownOfSushi
                     if (p == Arsonist.Player)
                         roleName = roleName + Helpers.ColorString(Arsonist.color, $" ({PlayerControl.AllPlayerControls.ToArray().Count(x => { return x != Arsonist.Player && !x.Data.IsDead && !x.Data.Disconnected && !Arsonist.dousedPlayers.Any(y => y.PlayerId == x.PlayerId); })} left)");
                     if (p == Jackal.fakeSidekick)
-                        roleName = Helpers.ColorString(Sidekick.color, $" (Fake SK)") + roleName;
+                        roleName = Helpers.ColorString(Sidekick.color, $" (Fake Sidekick)") + roleName;
 
                     // Death Reason on Ghosts
                     if (p.Data.IsDead) {
@@ -343,13 +351,13 @@ namespace TownOfSushi
                                     break;
                                 case DeadPlayer.CustomDeathReason.Execute:
                                     if (deadPlayer.killerIfExisting.Data.PlayerName == p.Data.PlayerName)
-                                        deathReasonString = $" - Failed Execute";
+                                        deathReasonString = $" - Failed Execution";
                                     else
                                     deathReasonString = $" - Executed by {Helpers.ColorString(killerColor, deadPlayer.killerIfExisting.Data.PlayerName)}";
                                     break;
                                 case DeadPlayer.CustomDeathReason.Guess:
                                     if (deadPlayer.killerIfExisting.Data.PlayerName == p.Data.PlayerName)
-                                        deathReasonString = $" - Failed Guess Attempt";
+                                        deathReasonString = $" - Failed Guessing";
                                     else
                                         deathReasonString = $" - Guessed by {Helpers.ColorString(killerColor, deadPlayer.killerIfExisting.Data.PlayerName)}";
                                     break;

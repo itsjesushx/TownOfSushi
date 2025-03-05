@@ -809,10 +809,43 @@ namespace TownOfSushi.Patches {
             }
         }
 
+        static void AmnesiacUpdate() 
+        {
+            if (Amnesiac.Player == null || PlayerControl.LocalPlayer != Amnesiac.Player || Amnesiac.AmnesiacArrows == null || !Amnesiac.ShowArrows) return;
+            if (Amnesiac.Player.Data.IsDead) 
+            {
+                foreach (Arrow arrow in Amnesiac.AmnesiacArrows) UnityEngine.Object.Destroy(arrow.arrow);
+                Amnesiac.AmnesiacArrows = new List<Arrow>();
+                return;
+            }
+
+            DeadBody[] deadBodies = UnityEngine.Object.FindObjectsOfType<DeadBody>();
+            bool arrowUpdate = Amnesiac.AmnesiacArrows.Count != deadBodies.Count();
+            int index = 0;
+
+            if (arrowUpdate) 
+            {
+                foreach (Arrow arrow in Amnesiac.AmnesiacArrows) UnityEngine.Object.Destroy(arrow.arrow);
+                Amnesiac.AmnesiacArrows = new List<Arrow>();
+            }
+
+            foreach (DeadBody db in deadBodies) 
+            {
+                if (arrowUpdate) 
+                {
+                    Amnesiac.AmnesiacArrows.Add(new Arrow(Color.blue));
+                    Amnesiac.AmnesiacArrows[index].arrow.SetActive(true);
+                }
+                if (Amnesiac.AmnesiacArrows[index] != null) Amnesiac.AmnesiacArrows[index].Update(db.transform.position);
+                index++;
+            }
+        }
+
         static void VultureUpdate() 
         {
             if (Vulture.Player == null || PlayerControl.LocalPlayer != Vulture.Player || Vulture.localArrows == null || !Vulture.showArrows) return;
-            if (Vulture.Player.Data.IsDead) {
+            if (Vulture.Player.Data.IsDead) 
+            {
                 foreach (Arrow arrow in Vulture.localArrows) UnityEngine.Object.Destroy(arrow.arrow);
                 Vulture.localArrows = new List<Arrow>();
                 return;
@@ -1213,6 +1246,8 @@ namespace TownOfSushi.Patches {
                 BountyHunterUpdate();
                 // Vulture
                 VultureUpdate();
+                // Amnesiac
+                AmnesiacUpdate();
                 // Medium
                 MediumSetTarget();
                 // Morphling and Camouflager
@@ -1589,7 +1624,7 @@ namespace TownOfSushi.Patches {
 
             if (Romantic.Player != null && !Romantic.Player.Data.IsDead && __instance == Romantic.beloved) 
             {
-                if (AmongUsClient.Instance.AmHost && (Romantic.beloved != Jester.jester))
+                if (AmongUsClient.Instance.AmHost && (Romantic.beloved != Jester.Player))
                 {
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RomanticChangeRole, Hazel.SendOption.Reliable, -1);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -1601,7 +1636,7 @@ namespace TownOfSushi.Patches {
             if (Lawyer.Player != null && __instance == Lawyer.target) 
             {
                 PlayerControl lawyer = Lawyer.Player;
-                if (AmongUsClient.Instance.AmHost && ((Lawyer.target != Jester.jester && !Lawyer.isProsecutor) || Lawyer.targetWasGuessed)) 
+                if (AmongUsClient.Instance.AmHost && ((Lawyer.target != Jester.Player && !Lawyer.isProsecutor) || Lawyer.targetWasGuessed)) 
                 {
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.LawyerChangeRole, Hazel.SendOption.Reliable, -1);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);

@@ -56,6 +56,8 @@ namespace TownOfSushi
         public static CustomOption jesterSpawnRate;
         public static CustomOption jesterCanCallEmergency;
         public static CustomOption jesterHasImpostorVision;
+        public static CustomOption jesterCanHideInVents;
+        public static CustomOption jesterCanMoveInVents;
 
         public static CustomOption arsonistSpawnRate;
         public static CustomOption arsonistCooldown;
@@ -317,6 +319,9 @@ namespace TownOfSushi
         public static CustomOption modifierSunglasses;
         public static CustomOption modifierSunglassesQuantity;
         public static CustomOption modifierSunglassesVision;
+
+        public static CustomOption AmnesiacSpawnRate;
+        public static CustomOption AmnesiacHasArrows;
         
         public static CustomOption modifierMini;
         public static CustomOption modifierMiniGrowingUpDuration;
@@ -525,6 +530,8 @@ namespace TownOfSushi
             jesterSpawnRate = CustomOption.Create(60, Types.Neutral, ColorString(Jester.color, "Jester"), 0f, 0f, 100f, 10f, null, true, format: "%");
             jesterCanCallEmergency = CustomOption.Create(61, Types.Neutral, "Jester Can Call Emergency Meeting", true, jesterSpawnRate);
             jesterHasImpostorVision = CustomOption.Create(62, Types.Neutral, "Jester Has Impostor Vision", false, jesterSpawnRate);
+            jesterCanHideInVents = CustomOption.Create(6211, Types.Neutral, "Jester Can Hide In Vents", false, jesterSpawnRate);
+            jesterCanMoveInVents = CustomOption.Create(6222, Types.Neutral, "Jester Can Switch Between Vents", false, jesterCanHideInVents);
 
             arsonistSpawnRate = CustomOption.Create(290, Types.Neutral, ColorString(Arsonist.color, "Arsonist"), 0f, 0f, 100f, 10f, null, true, format: "%");
             arsonistCooldown = CustomOption.Create(291, Types.Neutral, "Arsonist Cooldown", 12.5f, 2.5f, 60f, 2.5f, arsonistSpawnRate, format: "s");
@@ -535,6 +542,9 @@ namespace TownOfSushi
             vultureNumberToWin = CustomOption.Create(342, Types.Neutral, "Number Of Corpses Needed To Be Eaten", 4f, 1f, 10f, 1f, vultureSpawnRate);
             vultureCanUseVents = CustomOption.Create(343, Types.Neutral, "Vulture Can Use Vents", true, vultureSpawnRate);
             vultureShowArrows = CustomOption.Create(344, Types.Neutral, "Show Arrows Pointing Towards The Corpses", true, vultureSpawnRate);
+
+            AmnesiacSpawnRate = CustomOption.Create(3521, Types.Neutral, ColorString(Amnesiac.color, "Amnesiac"), 0f, 0f, 100f, 10f, null, true, format: "%");
+            AmnesiacHasArrows = CustomOption.Create(3522, Types.Neutral, "Amnesiac Has Arrows Pointing To Corpses", false, AmnesiacSpawnRate);
 
             RomanticSpawnChance = CustomOption.Create(3501, Types.Neutral, ColorString(Romantic.color, "Romantic"), 0f, 0f, 100f, 10f, null, true, format: "%");
             RomanticKnowsRole = CustomOption.Create(3551, Types.Neutral, "Romantic And Beloved Know Each Other's Role", false, RomanticSpawnChance);
