@@ -547,7 +547,7 @@ After dousing everyone alive the Arsonist can ignite all the players which resul
 ## Neutral Killers
 The Neutral Killers enable multiple new outcomes of the game, listing some examples here:
 - The Impostors could be eliminated and then the crew plays against any Neutral Killer.
-- The Crew could be eliminated, then a Neutral Killer fight against the Impostors (The Crew can still make a task win in this scenario)
+- The Crew could be eliminated, then any alive Neutral Killer fight against the Impostors (or against another Neutral Killer, or a Crewmate Power role) (The Crew can still make a task win in this scenario)
 
 The priority of each Neutral Killer win condition is the following:
 1. Crewmate Mini lose by vote
@@ -555,8 +555,8 @@ The priority of each Neutral Killer win condition is the following:
 3. Team Impostor wins by sabotage
 4. Team Crew wins by tasks (also possible if the whole Crew is dead)
 5. Lovers among the last three players win
-6. Any Neutral Killer wins by outnumbering (When the Neutral Killer contains an equal or greater amount of players than the Crew and there are 0 Impostors left and no the same Neutral Killer contains no Lover)
-7. Team Impostor wins by outnumbering (When the team Impostors contains an equal or greater amount of players than the Crew and there are 0 players are Neutral Killers and team Impostors contains no Lover)
+6. Any Neutral Killer wins by outnumbering (When the Neutral Killer contains an equal or greater amount of players than the Crew and there are 0 Impostors left, and no other Neutral killers are alive and the same Neutral Killer contains no Lover)
+7. Team Impostor wins by outnumbering (When the team Impostors contains an equal or greater amount of players than the Crew and there are 0 Neutral Killers and team Impostors contains no Lover)
 8. Team Crew wins by outnumbering (When there is no player is a Neutral Killer and the team Impostors left)
 
 **NOTE:**
@@ -564,7 +564,7 @@ The priority of each Neutral Killer win condition is the following:
 - A Neutral Killer cannot target the Mini (excluding Glitch), while it's growing up. After that they can kill it or interact with them.
 - The Crew can still win, even if all of their members are dead, if they finish their tasks fast enough (That's why converting the last Crewmate with tasks left into a Sidekick results in a task win for the crew.)
 
-If both Impostors and Neutral Killers are in the game, the game continues even if all Crewmates are dead. Crewmates may still win in this case by completing their tasks. Neutral Killers and Impostor have to kill each other.
+If Impostors and multiple Neutral Killers are in the game, the game continues even if all Crewmates are dead. Crewmates may still win in this case by completing their tasks. Each Neutral Killer and Impostor have to kill each other.
 
 -----------------------
 
