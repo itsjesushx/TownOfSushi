@@ -8,10 +8,14 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 
 # Town Of Sushi
 
-**Town Of Sushi** is a mod for [Among Us](https://store.steampowered.com/app/945360/Among_Us) which adds many new roles, new [Settings](#settings) and new [Custom Hats](#custom-hats) to the game.
-Even more roles are coming soon. :)
+**Special thanks to [TheOtherRoles](https://github.com/TheOtherRolesAU/TheOtherRoles) for providing the mod's codebase!**
 
-| Impostor | Crewmate | Neutral | Modifier |
+**Town Of Sushi** is an [Among Us](https://store.steampowered.com/app/945360/Among_Us) that uses [TheOtherRoles](https://github.com/TheOtherRolesAU/TheOtherRoles) as the codebase, which adds many new roles, new [Settings](#settings) and new [Custom Hats](#custom-hats) to the game.
+Even more roles are coming soon.
+
+**Roles & Modifiers List:**
+
+| Impostor Roles | Crewmate Roles | Neutral Roles | Modifiers |
 |----------|-------------|-----------------|----------------|
 | [Godfather (Mafia)](#mafia) | [Mayor](#mayor) | [Jester](#jester) | [Bloody](#bloody) |
 | [Mafioso (Mafia)](#mafia) | [Engineer](#engineer) | [Arsonist](#arsonist) | [Anti Teleport](#anti-teleport) |
@@ -37,7 +41,7 @@ The [Role Assignment](#role-assignment) section explains how the roles are being
 If you want to learn how the new killers work, go to [Neutral Killers guide](#neutral-killers) to see it.
 
 # Releases  
-| Among Us - Version| Mod Version | Link |
+| Among Us - Version| Town Of Sushi Version | Link |
 |----------|-------------|-----------------|
 | V2024.10.29s & V2024.10.29e | v2.5.0 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/v2.5.0/TOS.v2.5.0.zip) |
 | V2024.10.29s & V2024.10.29e | v2.2.0 | Not available anymore |
@@ -110,6 +114,7 @@ docker run -d -p 22023:22023/udp --env IMPOSTOR_AntiCheatEnabled=false --env IMP
 
 
 # Credits & Resources
+Thanks to TheOtherRoles for the codebase!
 Thanks to miniduikboot & GD for hosting modded servers (and so much more)
 
 [OxygenFilter](https://github.com/NuclearPowered/Reactor.OxygenFilter) - For all the versions between v2.3.0 and v2.6.1, we were using the OxygenFilter for automatic deobfuscation\
@@ -148,6 +153,9 @@ The mod adds a few new settings to Among Us (in addition to the role settings):
 - **Allow Parallel MedBay Scans:** Allows players to perform their MedBay scans at the same time.
 - **Shield Last Game First Kill** The first killed player of the previous round will be shielded for all players visible until the first meeting.
 - **Finish Tasks Before Haunting Or Zooming Out ** The zoom out function as well as haunting will be hidden for the player until all their tasks are finished
+- **Disable MedbayWalk Animation:** Disables the visual walk that a player makes when they start to walk to the scanner.
+- **Enable Better Skeld Vent Improvements:** Enable this to drastically change
+- **Enable Better Polus Features:** Using better polus plugin, but its built inside the mod.
 - **Admin Table Shows Dead Bodies**
 - **Cams Switch To Night Vision If Lights Are Off**  No colors and cosmetics can be seen on the cameras when the lights are off. Mini can be spottet!
 - **Impostor Vision Ignores Night Vision Cams**
@@ -210,7 +218,7 @@ Here are a few instructions, on how to create a custom hat:
   - `Climb texture (optional)`:
     - This texture will be rendered in front of the player, when they're climbing.
     - The name of the texture needs to follow the pattern `hatname_climb.png`.
-- **Testing:** You can test your hat design by putting all the files in the `\TheOtherHats\Test` subfolder of your mod folder. Then whenever you start a Freeplay game, you and all the dummies will be wearing the new hat. You don't need to restart Among Us if you change the hat files, just exit and reenter the Freeplay mode.
+- **Testing:** You can test your hat design by putting all the files in the `\SushiAssets\Test` subfolder of your mod folder. Then whenever you start a Freeplay game, you and all the dummies will be wearing the new hat. You don't need to restart Among Us if you change the hat files, just exit and reenter the Freeplay mode.
 
 # Colors
 Note: Lighter and Darker colors are no longer based on the players color. Instead they are assigned alternatingly, s.t. they are always balanced in a lobby.
