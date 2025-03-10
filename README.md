@@ -144,6 +144,7 @@ The mod adds a few new settings to Among Us (in addition to the role settings):
 - **Any Player Can Stop The Start:** If turned off, only the host can stop the game start. If on, all players can do it. Non-hosts stopping the start will send a chat message indicating who stopped it.
 - **Number of Crewmates:** The number of Crewmate roles can be set inside a lobby.
 - **Number of Neutrals:** The number of Neutral roles can be set inside a lobby.
+- **Number of Neutral Killers:** The number of Neutral Killing roles can be set inside a lobby.
 - **Number of Impostors:** The number of Impostor roles can be set inside a lobby.
 - **Number of Modifiers:** The number of Modifiers can be set inside a lobby.
 - **Map:** The map can be changed inside a lobby.
@@ -566,7 +567,7 @@ The priority of each Neutral Killer win condition is the following:
 5. Lovers among the last three players win
 6. Any Neutral Killer wins by outnumbering (When the Neutral Killer contains an equal or greater amount of players than the Crew and there are 0 Impostors left, and no other Neutral killers are alive and the same Neutral Killer contains no Lover)
 7. Team Impostor wins by outnumbering (When the team Impostors contains an equal or greater amount of players than the Crew and there are 0 Neutral Killers and team Impostors contains no Lover)
-8. Team Crew wins by outnumbering (When there is no player is a Neutral Killer and the team Impostors left)
+8. Team Crew wins by outnumbering (When there is no player that is a Neutral Killer and the team Impostors left)
 
 **NOTE:**
 - The Neutral Killers may be killed by a Sheriff.
