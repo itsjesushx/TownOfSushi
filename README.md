@@ -39,6 +39,7 @@ If you want to learn how the new killers work, go to [Neutral Killers guide](#ne
 # Releases  
 | Among Us - Version| Mod Version | Link |
 |----------|-------------|-----------------|
+| V2024.10.29s & V2024.10.29e | v2.5.0 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/v2.5.0/TOS.v2.5.0.zip) |
 | V2024.10.29s & V2024.10.29e | v2.2.0 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/v2.2.0/TOS.v2.2.0.zip) |
 | V2024.10.29s & V2024.10.29e | v2.0.0 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/v2.0.0/TOS.v2.0.0.zip) |
 | V2024.10.29s & V2024.10.29e | v1.6.0 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/v1.6.0/TOS.v1.6.0.zip) |
