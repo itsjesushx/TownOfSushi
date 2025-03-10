@@ -1783,6 +1783,9 @@ namespace TownOfSushi
                 case (byte)CustomRPC.TimeMasterRewindTime:
                     RPCProcedure.TimeMasterRewindTime();
                     break;
+                case (byte)CustomRPC.AmnesiacRemember:
+                    RPCProcedure.AmnesiacRemember(reader.ReadByte());
+                    break;
                 case (byte)CustomRPC.TimeMasterShield:
                     RPCProcedure.TimeMasterShield();
                     break;

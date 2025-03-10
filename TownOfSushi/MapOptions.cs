@@ -24,6 +24,7 @@ namespace TownOfSushi
         public static bool ShowChatNotifications = true;
         public static bool SkeldVentImprovements = false;
         public static bool LimitAbilities = true;
+        public static bool DisableMedbayAnimation = true;
 
         public static bool BPVitalsLab = false;
         public static bool BPVentImprovements = false;
@@ -54,6 +55,7 @@ namespace TownOfSushi
             shieldFirstKill = CustomOptionHolder.shieldFirstKill.GetBool();
             SkeldVentImprovements = CustomOptionHolder.SkeldVentImprovements.GetBool();
             LimitAbilities = CustomOptionHolder.LimitAbilities.GetBool();
+            DisableMedbayAnimation = CustomOptionHolder.DisableMedbayAnimation.GetBool();
 
             BPVitalsLab = CustomOptionHolder.BPVitalsLab.GetBool();
             BPWifiChartCourseSwap = CustomOptionHolder.BPWifiChartCourseSwap.GetBool();

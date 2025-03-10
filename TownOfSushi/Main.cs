@@ -153,9 +153,12 @@ namespace TownOfSushi
         }
     }
     [HarmonyPatch(typeof(ChatController), nameof(ChatController.Awake))]
-    public static class ChatControllerAwakePatch {
-        private static void Prefix() {
-            if (!EOSManager.Instance.isKWSMinor) {
+    public static class ChatControllerAwakePatch 
+    {
+        private static void Prefix() 
+        {
+            if (!EOSManager.Instance.isKWSMinor) 
+            {
                 DataManager.Settings.Multiplayer.ChatMode = InnerNet.QuickChatModes.FreeChatOrQuickChat;
             }
         }
@@ -180,24 +183,6 @@ namespace TownOfSushi
             }
             string enteredHash = builder.ToString();
             if (enteredHash != passwordHash) return;
-
-
-            // Spawn dummys
-            /*if (Input.GetKeyDown(KeyCode.F)) {
-                var playerControl = UnityEngine.Object.Instantiate(AmongUsClient.Instance.PlayerPrefab);
-                var i = playerControl.PlayerId = (byte) GameData.Instance.GetAvailableId();
-
-                bots.Add(playerControl);
-                GameData.Instance.AddPlayer(playerControl, new InnerNet.ClientData(0));
-                AmongUsClient.Instance.Spawn(playerControl, -2, InnerNet.SpawnFlags.None);
-                
-                playerControl.transform.position = PlayerControl.LocalPlayer.transform.position;
-                playerControl.GetComponent<DummyBehaviour>().enabled = true;
-                playerControl.NetTransform.enabled = false;
-                playerControl.SetName(RandomString(10));
-                playerControl.SetColor((byte) random.Next(Palette.PlayerColors.Length));
-                playerControl.Data.RpcSetTasks(new byte[0]);
-            }*/
 
             // Terminate round
             if(Input.GetKeyDown(KeyCode.L)) {

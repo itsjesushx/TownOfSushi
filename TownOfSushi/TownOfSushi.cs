@@ -224,6 +224,7 @@ namespace TownOfSushi
                         if (arrow?.arrow != null)
                             UnityEngine.Object.Destroy(arrow.arrow);
                 }
+                AmnesiacArrows = new List<Arrow>();
             }
         }
 

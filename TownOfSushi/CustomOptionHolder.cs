@@ -368,6 +368,8 @@ namespace TownOfSushi
         public static CustomOption BPVentImprovements;
         public static CustomOption BPColdTempDeathValley;
 
+        public static CustomOption DisableMedbayAnimation;
+
 
         public static CustomOption dynamicMap;
         public static CustomOption dynamicMapEnableSkeld;
@@ -760,6 +762,7 @@ namespace TownOfSushi
 
             // Other options
             maxNumberOfMeetings = CustomOption.Create(3, Types.General, "Number Of Meetings (excluding Mayor meeting)", 10, 0, 15, 1, null, true, heading: "Gameplay Settings");
+            DisableMedbayAnimation = CustomOption.Create(3131, Types.General, "Disable Medbay Walk Animation", true);
             LimitAbilities = CustomOption.Create(1321, Types.General, "Limit Player Abilities When 2 Players Are Left Alive", true);
             anyPlayerCanStopStart = CustomOption.Create(2, Types.General, ColorString(new Color(204f / 255f, 204f / 255f, 0, 1f), "Any Player Can Stop The Start"), false, null, false);
             blockSkippingInEmergencyMeetings = CustomOption.Create(4, Types.General, "Block Skipping In Emergency Meetings", false);
@@ -770,11 +773,11 @@ namespace TownOfSushi
             shieldFirstKill = CustomOption.Create(8, Types.General, "Shield Last Game First Kill", false);
             finishTasksBeforeHauntingOrZoomingOut = CustomOption.Create(9, Types.General, "Finish Tasks Before Haunting Or Zooming Out", true);
             deadImpsBlockSabotage = CustomOption.Create(13, Types.General, "Block Dead Impostor From Sabotaging", false, null, false);
+
             camsNightVision = CustomOption.Create(11, Types.General, "Cams Switch To Night Vision If Lights Are Off", false, null, true, heading: "Night Vision Cams");
             camsNoNightVisionIfImpVision = CustomOption.Create(12, Types.General, "Impostor Vision Ignores Night Vision Cams", false, camsNightVision, false);
 
             SkeldVentImprovements = CustomOption.Create(3313, Types.General, "Enable Vent Improvements", 10, 0, 15, 1, null, true, heading: "Better Skeld Settings");
-
 
             EnableBetterPolus = CustomOption.Create(3314, Types.General, "Enable Better Polus", false, null, true, heading: "Better Polus Settings");
             BPVentImprovements = CustomOption.Create(3315, Types.General, "Enable Vent Layout", false, EnableBetterPolus);
