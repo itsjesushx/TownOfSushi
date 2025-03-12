@@ -31,11 +31,12 @@ Even more roles are coming soon.
 | [Witch](#witch) | [Tracker](#tracker) | [Serial Killer](#serial-killer)  | [Armored](#armored) |
 | [Ninja](#ninja) | [Snitch](#snitch) | [Romantic](#romantic)   |  [Sleuth](#sleuth)  |
 | [Yo-Yo](#yoyo)  | [Spy](#spy) | [Werewolf](#werewolf)   |  |
-| | [Portalmaker](#portalmaker) |  |  |
+| | [Portalmaker](#portalmaker) | [Amnesiac](#amnesiac) |  |
 | | [Vigilante](#vigilante) |  |  |
 |  | [Medium](#medium) |  |  |
 |  |[Veteran](#veteran)    |  |  |
-|  |[Oracle](#oracle)   |  |  |
+|  |[Oracle](#oracle) |  |  |
+|  |[Crusader](#crusader) |  |  |
 
 The [Role Assignment](#role-assignment) section explains how the roles are being distributed among the players.
 If you want to learn how the new killers work, go to [Neutral Killers guide](#neutral-killers) to see it.
@@ -701,7 +702,7 @@ The Serial Killer needs to be the last killer alive to win the game.
 -----------------------
 
 ## Vulture
-### **Faction: Neutral**
+### **Faction: Neutral (Evil)**
 The Vulture does not have any tasks, they have to win the game as a solo.\
 The Vulture is a neutral role that must eat a specified number of corpses (depending on the options) in order to win.\
 Depending on the options, when a player dies, the Vulture gets an arrow pointing to the corpse.\
@@ -720,8 +721,36 @@ If there is a Vulture in the game, there can't be a Cleaner.
 | Show Arrows Pointing Towards The Corpes | -
 -----------------------
 
+## Romantic
+### **Faction: Neutral (Benign)**
+The Romantic is a Neutral role which can select a player to be their beloved.\
+The romantic wins with the beloved as long as they win as well.
+
+### Game Options
+| Name | Description |
+|----------|:-------------:|
+| Romantic Spawn Chance | - |
+| Pick Cooldown | - |
+
+-----------------------
+
+## Amnesiac
+### **Team: Neutral (Benign)**
+The Amnesiac is a Neutral role with no win condition.
+They have zero tasks and are essentially roleless.
+However, they can remember a role by finding a dead player.
+Once they remember their role, they go on to try win with their new win condition.
+
+### Game Options
+| Name | Description |
+|----------|:-------------:|
+| Amnesiac Spawn Chance | -
+| Amnesiac Gets Arrows Pointing Towards Dead Bodies | Yes / No
+
+-----------------------
+
 ## Lawyer
-### **Faction: Neutral**
+### **Faction: Neutral (Benign)**
 The Lawyer is a neutral role that has a client.\
 The client might be an Impostor or Jackal which is no Lover.\
 Depending on the options, the client can also be a Jester.\
@@ -752,7 +781,7 @@ How the Lawyer wins:
 -----------------------
 
 ## Prosecutor
-### **Faction: Neutral**
+### **Faction: Neutral (Evil)**
 The Prosecutor is a neutral role that resembles the Lawyer. The Prosecutor has a client who is a Crewmate.\
 The Prosecutor needs their client to be voted out in order to win the game.\
 The Prosecutor's client doesn't know that they are their client.\
@@ -768,7 +797,7 @@ If the Prosecutor's client dies, the Prosecutor changes their role and becomes t
 - If the Prosecutor dies before their client, they will lose all their tasks and will get the overview immediately.
 
 ## Pursuer
-### **Faction: Neutral**
+### **Faction: Neutral (Benign)**
 The Pursuer is still a neutral role, but has a different goal to win the game; they have to be alive when the game ends and the Crew wins.\
 In order to achieve this goal, the Pursuer has an ability called "Blank", where they can fill a killer's (this also includes the Sheriff) weapon with a blank. So, if the killer attempts to kill someone, the killer will miss their target, and their cooldowns will be triggered as usual.\
 If the killer fires the "Blank", shields (e.g. Medic shield or Time Master shield) will not be triggered.\
@@ -782,7 +811,7 @@ The Pursuer has tasks (which can already be done while being a Lawyer/Prosecutor
 -----------------------
 
 ## Thief
-### **Faction: Neutral**
+### **Faction: Neutral (Benign)**
 The Thief has to kill another killer (Impostor, Jackal/Sidekick and if enabled Sheriff)
 in order to have a win condition.\
 If the Thief doesn't kill another killer they will lose the game.\
@@ -840,6 +869,21 @@ When the Veteran is on alert, anyone, whether crew, neutral or impostor, if they
 | Starting Number of Alert Charges | -
 | Maximum Number of Tasks Needed To Recharge | -
 
+-----------------------
+
+## Crusader
+### **Faction: Crewmates**
+The Crusader is a Crewmate that can fortify other players.\
+Fortified players cannot be interacted with.\
+If someone tries to interact with a fortified player,\
+Both the Crusader and the interactor receive an alert.\
+If the Fortified person gets a kill attempt, they will kill the attemper.
+
+### Game Options
+| Name | Description 
+|----------|:-------------:|
+| Crusader Spawn Chance | -
+| Fortify Cooldown | -
 -----------------------
 
 ## Oracle
@@ -1294,6 +1338,17 @@ There can be more than one Bait.
 | Bait Report Delay Min | -
 | Bait Report Delay Max | -
 | Warn The Killer With A Flash | -
+-----------------------
+
+## Sleuth
+The Sleuth is a crewmate who gains knowledge from reporting dead bodies.
+During meetings the Sleuth can see the roles of all players in which they've reported.
+### Game Options
+| Name | Description
+|----------|:-------------:|
+| Sleuth Spawn Chance | -
+| Sleuth Quantity | -
+
 -----------------------
 
 ## Lovers

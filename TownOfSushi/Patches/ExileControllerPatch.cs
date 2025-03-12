@@ -208,6 +208,9 @@ namespace TownOfSushi.Patches
 
             Mystic.Investigated = false;
 
+            Crusader.FortifiedPlayer = null;
+            Crusader.Fortified = false;
+
             Oracle.Investigated = false;
 
             // Mini set adapted cooldown

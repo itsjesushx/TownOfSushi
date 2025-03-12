@@ -151,6 +151,7 @@ namespace TownOfSushi.Patches
             crewSettings.Add((byte)RoleId.Mystic, CustomOptionHolder.MysticSpawnRate.GetSelection());
             crewSettings.Add((byte)RoleId.Hacker, CustomOptionHolder.hackerSpawnRate.GetSelection());
             crewSettings.Add((byte)RoleId.Tracker, CustomOptionHolder.trackerSpawnRate.GetSelection());
+            crewSettings.Add((byte)RoleId.Crusader, CustomOptionHolder.CrusaderSpawnRate.GetSelection());
             crewSettings.Add((byte)RoleId.Snitch, CustomOptionHolder.snitchSpawnRate.GetSelection());
             crewSettings.Add((byte)RoleId.Medium, CustomOptionHolder.mediumSpawnRate.GetSelection());
             crewSettings.Add((byte)RoleId.Trapper, CustomOptionHolder.trapperSpawnRate.GetSelection());

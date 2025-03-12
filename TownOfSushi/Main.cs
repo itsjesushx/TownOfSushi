@@ -32,7 +32,7 @@ namespace TownOfSushi
     public class TownOfSushiPlugin : BasePlugin
     {
         public const string Id = "me.itsjesushx.TownOfSushi";
-        public const string VersionString = "2.5.0";
+        public const string VersionString = "2.7.0";
         public static Version Version = Version.Parse(VersionString);
         internal static BepInEx.Logging.ManualLogSource Logger;
          

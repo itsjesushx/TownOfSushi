@@ -476,6 +476,7 @@ namespace TownOfSushi.Patches
                 RoleManagerSelectRolesPatch.RoleAssignmentData roleData = RoleManagerSelectRolesPatch.getRoleAssignmentData();
                 if (roleData.neutralSettings.ContainsKey((byte)roleInfo.roleId) && roleData.neutralSettings[(byte)roleInfo.roleId] == 0) continue;
                 else if (roleData.impSettings.ContainsKey((byte)roleInfo.roleId) && roleData.impSettings[(byte)roleInfo.roleId] == 0) continue;
+                else if (roleData.neutralKSettings.ContainsKey((byte)roleInfo.roleId) && roleData.neutralKSettings[(byte)roleInfo.roleId] == 0) continue;
                 else if (roleData.crewSettings.ContainsKey((byte)roleInfo.roleId) && roleData.crewSettings[(byte)roleInfo.roleId] == 0) continue;
                 else if (new List<RoleId>() { RoleId.Janitor, RoleId.Godfather, RoleId.Mafioso }.Contains(roleInfo.roleId) && (CustomOptionHolder.mafiaSpawnRate.GetSelection() == 0 || GameOptionsManager.Instance.currentGameOptions.NumImpostors < 3)) continue;
                 else if (roleInfo.roleId == RoleId.Sidekick && (!CustomOptionHolder.jackalCanCreateSidekick.GetBool() || CustomOptionHolder.jackalSpawnRate.GetSelection() == 0)) continue;
@@ -520,13 +521,26 @@ namespace TownOfSushi.Patches
 
                         if (!HandleGuesser.killsThroughShield && focusedTarget == Medic.shielded) 
                         {
-                        // Depending on the options, shooting the shielded player will not allow the guess, notifiy everyone about the kill attempt and close the window
+                            // Depending on the options, shooting the shielded player will not allow the guess, notifiy everyone about the kill attempt and close the window
                             __instance.playerStates.ToList().ForEach(x => x.gameObject.SetActive(true)); 
                             UnityEngine.Object.Destroy(container.gameObject);
 
                             MessageWriter murderAttemptWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShieldedMurderAttempt, Hazel.SendOption.Reliable, -1);
                             AmongUsClient.Instance.FinishRpcImmediately(murderAttemptWriter);
                             RPCProcedure.ShieldedMurderAttempt();
+                            SoundEffectsManager.Play("fail");
+                            return;
+                        }
+
+                        if (focusedTarget == Crusader.FortifiedPlayer) 
+                        {
+                            // Shooting the fortified player will not allow the guess, notifiy everyone about the kill attempt and close the window
+                            __instance.playerStates.ToList().ForEach(x => x.gameObject.SetActive(true)); 
+                            UnityEngine.Object.Destroy(container.gameObject);
+
+                            MessageWriter murderAttemptWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.FortifiedMurderAttempt, Hazel.SendOption.Reliable, -1);
+                            AmongUsClient.Instance.FinishRpcImmediately(murderAttemptWriter);
+                            RPCProcedure.FortifiedMurderAttempt();
                             SoundEffectsManager.Play("fail");
                             return;
                         }

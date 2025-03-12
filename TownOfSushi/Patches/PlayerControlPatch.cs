@@ -166,6 +166,13 @@ namespace TownOfSushi.Patches {
             if (!Medic.usedShield) SetPlayerOutline(Medic.CurrentTarget, Medic.shieldedColor);
         }
 
+        static void CrusaderSetTarget() 
+        {
+            if (Crusader.Player == null || Crusader.Player != PlayerControl.LocalPlayer) return;
+            Crusader.CurrentTarget = SetTarget();
+            if (!Crusader.Fortified) SetPlayerOutline(Crusader.CurrentTarget, Crusader.color);
+        }
+
         static void RomanticSetTarget()
         {
             if (Romantic.Player == null || Romantic.Player != PlayerControl.LocalPlayer) return;
@@ -186,7 +193,6 @@ namespace TownOfSushi.Patches {
             Mystic.CurrentTarget = SetTarget();
             SetPlayerOutline(Mystic.CurrentTarget, Mystic.color);
         }
-
 
         static void MorphlingSetTarget() 
         {
@@ -1189,6 +1195,8 @@ namespace TownOfSushi.Patches {
                 MorphlingSetTarget();
                 // Medic
                 MedicSetTarget();
+                // Crusader
+                CrusaderSetTarget();
                 //Juggernaut
                 JuggernautSetTarget();
                 //Romantic

@@ -245,6 +245,11 @@ namespace TownOfSushi
         public static CustomOption mediumOneTimeUse;
         public static CustomOption mediumChanceAdditionalInfo;
 
+        public static CustomOption CrusaderSpawnRate;
+        public static CustomOption CrusaderCooldown;
+        public static CustomOption CrusaderCharges;
+        public static CustomOption CrusaderRechargeTasksNumber;
+
         public static CustomOption RomanticSpawnChance;
         public static CustomOption RomanticKnowsRole;
         public static CustomOption VengefulRomanticCooldown;
@@ -582,6 +587,11 @@ namespace TownOfSushi
             lighterModeLightsOnVision = CustomOption.Create(111, Types.Crewmate, "Vision On Lights On", 1.5f, 0.25f, 5f, 0.25f, lighterSpawnRate);
             lighterModeLightsOffVision = CustomOption.Create(112, Types.Crewmate, "Vision On Lights Off", 0.5f, 0.25f, 5f, 0.25f, lighterSpawnRate);
             lighterFlashlightWidth = CustomOption.Create(113, Types.Crewmate, "Flashlight Width", 0.3f, 0.1f, 1f, 0.1f, lighterSpawnRate);
+
+            CrusaderSpawnRate = CustomOption.Create(1201, Types.Crewmate, ColorString(Crusader.color, "Crusader"), 0f, 0f, 100f, 10f, null, true, Format: "%");
+            CrusaderCooldown = CustomOption.Create(1211, Types.Crewmate, "Crusader Cooldown", 30f, 10f, 60f, 2.5f, CrusaderSpawnRate, Format: "s");
+            CrusaderCharges = CustomOption.Create(1212, Types.Crewmate, "Initial Fortify Charges", 1f, 0f, 5f, 1f, CrusaderSpawnRate);
+            CrusaderRechargeTasksNumber = CustomOption.Create(1213, Types.Crewmate, "Number Of Tasks The Crusader Needs For Recharging", 2f, 1f, 10f, 1f, CrusaderSpawnRate);
 
             OracleSpawnRate = CustomOption.Create(5512, Types.Crewmate, ColorString(Oracle.color, "Oracle"), 0f, 0f, 100f, 10f, null, true, Format: "%");
             ConfessCooldown = CustomOption.Create(5612, Types.Crewmate, "Oracle Cooldown", 25f, 10f, 60f, 2.5f, OracleSpawnRate, Format: "s");

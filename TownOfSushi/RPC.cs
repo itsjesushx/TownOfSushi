@@ -161,8 +161,8 @@ namespace TownOfSushi
                     case RoleId.Medic:
                         Medic.Player = player;
                         break;
-                    case RoleId.Shifter:
-                        Shifter.Player = player;
+                    case RoleId.Crusader:
+                        Crusader.Player = player;
                         break;
                     case RoleId.Swapper:
                         Swapper.Player = player;
@@ -500,6 +500,13 @@ namespace TownOfSushi
             }
         }
 
+        public static void Fortify(byte fortifiedId)
+        {
+            Crusader.Fortified = true;
+            Crusader.Charges--;
+            Crusader.FortifiedPlayer = Helpers.PlayerById(fortifiedId);
+        }
+
         public static void Confess(byte confessorId)
         {
             if (Oracle.Player == null || Oracle.Player.Data.IsDead) return;
@@ -560,6 +567,13 @@ namespace TownOfSushi
             bool isMedicAndShow = Medic.Player == PlayerControl.LocalPlayer && Medic.showAttemptToMedic;
 
             if (isShieldedAndShow || isMedicAndShow || Helpers.ShouldShowGhostInfo()) Helpers.ShowFlash(Palette.ImpostorRed, duration: 0.5f, "Failed Murder Attempt on Shielded Player");
+        }
+
+        public static void FortifiedMurderAttempt() 
+        {
+            if (Crusader.FortifiedPlayer == null || Crusader.Player == null) return;
+
+            if (Crusader.FortifiedPlayer == PlayerControl.LocalPlayer || Crusader.Player == PlayerControl.LocalPlayer || Helpers.ShouldShowGhostInfo()) Helpers.ShowFlash(Palette.ImpostorRed, duration: 0.5f, "Failed Murder Attempt on Fortified Player");
         }
 
         public static void ShifterShift(byte targetId) 
@@ -1798,11 +1812,17 @@ namespace TownOfSushi
                 case (byte)CustomRPC.MedicSetShielded:
                     RPCProcedure.MedicSetShielded(reader.ReadByte());
                     break;
+                case (byte)CustomRPC.Fortify:
+                    RPCProcedure.Fortify(reader.ReadByte());
+                    break;
                 case (byte)CustomRPC.RomanticSetBeloved:
                     RPCProcedure.RomanticSetBeloved(reader.ReadByte());
                     break;
                 case (byte)CustomRPC.ShieldedMurderAttempt:
                     RPCProcedure.ShieldedMurderAttempt();
+                    break;
+                case (byte)CustomRPC.FortifiedMurderAttempt:
+                    RPCProcedure.FortifiedMurderAttempt();
                     break;
                 case (byte)CustomRPC.ShifterShift:
                     RPCProcedure.ShifterShift(reader.ReadByte());

@@ -544,12 +544,23 @@ namespace TownOfSushi
             }
 
             // Block impostor shielded kill
-            if (!ignoreMedic && Medic.shielded != null && Medic.shielded == target) {
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(killer.NetId, (byte)CustomRPC.ShieldedMurderAttempt, Hazel.SendOption.Reliable, -1);
+            if (!ignoreMedic && Medic.shielded != null && Medic.shielded == target) 
+            {
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(killer.NetId, (byte)CustomRPC.ShieldedMurderAttempt, SendOption.Reliable, -1);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
                 RPCProcedure.ShieldedMurderAttempt();
                 SoundEffectsManager.Play("fail");
                 return MurderAttemptResult.SuppressKill;
+            }
+
+            // murder whoever tries to kill the fortified player.
+            if (!ignoreMedic && Crusader.FortifiedPlayer != null && Crusader.FortifiedPlayer == target) 
+            {
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(killer.NetId, (byte)CustomRPC.FortifiedMurderAttempt, SendOption.Reliable, -1);
+                AmongUsClient.Instance.FinishRpcImmediately(writer);
+                RPCProcedure.FortifiedMurderAttempt();
+                SoundEffectsManager.Play("fail");
+                return MurderAttemptResult.MirrorKill;
             }
 
             // Block impostor not fully grown mini kill
@@ -737,6 +748,11 @@ namespace TownOfSushi
                 RPCProcedure.VeterenAlertKill(PlayerControl.LocalPlayer.PlayerId);
             }
             return CanKill;
+        }
+
+        public static bool CheckFortifiedPlayer(this PlayerControl target)
+        {            
+            return Crusader.FortifiedPlayer == target && !Crusader.Player.Data.IsDead;
         }
 
         public static bool IsKiller(this PlayerControl player) 

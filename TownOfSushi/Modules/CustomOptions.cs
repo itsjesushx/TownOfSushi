@@ -670,11 +670,13 @@ namespace TownOfSushi
             copyButtonActiveRenderer.sprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.CopyActive.png", 100f);
             copyButtonPassive.OnClick.RemoveAllListeners();
             copyButtonPassive.OnClick = new UnityEngine.UI.Button.ButtonClickedEvent();
-            copyButtonPassive.OnClick.AddListener((System.Action)(() => {
+            copyButtonPassive.OnClick.AddListener((System.Action)(() => 
+            {
                 copyToClipboard();
                 copyButtonRenderer.color = Color.green;
                 copyButtonActiveRenderer.color = Color.green;
-                __instance.StartCoroutine(Effects.Lerp(1f, new System.Action<float>((p) => {
+                __instance.StartCoroutine(Effects.Lerp(1f, new System.Action<float>((p) => 
+                {
                     if (p > 0.95) {
                         copyButtonRenderer.color = Color.white;
                         copyButtonActiveRenderer.color = Color.white;
@@ -697,7 +699,8 @@ namespace TownOfSushi
                 pasteButtonRenderer.color = success == 3 ? Color.green : success == 0 ? Color.red : Color.yellow;
                 pasteButtonActiveRenderer.color = success == 3 ? Color.green : success == 0 ? Color.red : Color.yellow;
                 __instance.StartCoroutine(Effects.Lerp(1f, new System.Action<float>((p) => {
-                    if (p > 0.95) {
+                    if (p > 0.95) 
+                    {
                         pasteButtonRenderer.color = Color.white;
                         pasteButtonActiveRenderer.color = Color.white;
                     }

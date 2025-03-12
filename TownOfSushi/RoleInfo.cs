@@ -47,7 +47,7 @@ namespace TownOfSushi
         public readonly static RoleInfo janitor = new("Janitor", Janitor.color, "Work with the <color=#FF1919FF>Mafia</color> by hiding dead bodies", "Hide dead bodies", RoleId.Janitor, Factions.Impostor, "The Janitor is an Impostor who cannot kill, but they can hide dead bodies instead.");
         public readonly static RoleInfo morphling = new("Morphling", Morphling.color, "Change your look to not get caught", "Change your look", RoleId.Morphling, Factions.Impostor, $"The Morphling can morph into the form of their fellow Crewmates, morphing changes the Morphling's look to make them not look sus. The morphling can only morph into a crewmate once every {Morphling.cooldown} seconds and lasts for {Morphling.duration} seconds.");
         public readonly static RoleInfo camouflager = new("Camouflager", Camouflager.color, "Camouflage and kill the Crewmates", "Hide among others", RoleId.Camouflager, Factions.Impostor, $"The Camouflager can turn everyone gray making nobody knows who is who for {Camouflager.duration} seconds every {Camouflager.cooldown}s.");
-        public readonly static RoleInfo vampire = new("Vampire", Vampire.color, "Kill the Crewmates with your bites", "Bite your enemies", RoleId.Vampire, Factions.Impostor,  $"The Vampire can bite a player every {Vampire.cooldown} seconds, after {Vampire.delay} seconds the player die. Players with protection can't be killed by the poisoner. If the poisoner is alive in the last 4, they will directly kill instead of poisoning.");
+        public readonly static RoleInfo vampire = new("Vampire", Vampire.color, "Kill the Crewmates with your bites", "Bite your enemies", RoleId.Vampire, Factions.Impostor,  $"The Vampire can bite a player every {Vampire.cooldown} seconds, after {Vampire.delay} seconds the player die. Players with protection can't be killed by the Vampire. If the Vampire is alive in the last 4, they will directly kill instead of bitting.");
         public readonly static RoleInfo eraser = new("Eraser", Eraser.color, "Kill the Crewmates and erase their roles", "Erase the roles of your enemies", RoleId.Eraser, Factions.Impostor, "The Eraser can delete player's role for the rest of the game, making them become regular crewmate. They may be able to erase Neutral killers depending on settings.");
         public readonly static RoleInfo trickster = new("Trickster", Trickster.color, "Use your jack-in-the-boxes to surprise others", "Surprise your enemies", RoleId.Trickster, Factions.Impostor, "The trickster can place boxes around the map which works like a vent, only the Trickster may use them. They can also manually sabotage lights, at any time, with any sabotage on but lights.");
         public readonly static RoleInfo cleaner = new("Cleaner", Cleaner.color, "Kill everyone and leave no traces", "Clean up dead bodies", RoleId.Cleaner, Factions.Impostor, "The Cleaner is an Impostor that can clean up bodies. Both their Kill and Clean ability have a shared cooldown, meaning they have to choose which one they want to use.");
@@ -67,6 +67,7 @@ namespace TownOfSushi
         public readonly static RoleInfo hacker = new("Hacker", Hacker.color, "Hack systems to find the <color=#FF1919FF>Impostors</color>", "Hack to find the Impostors", RoleId.Hacker, Factions.Crewmate, "If the Hacker activates the Hacker mode, the Hacker gets more information than others from the admin table and vitals for a set duration. Otherwise they see the same information as everyone else. The Hacker can see the colors (or color types) of the players on the table. They can also see how long dead players have been dead for. The Hacker can access his mobile gadgets (vitals & admin table), with a maximum of charges (uses) and a configurable amount of tasks needed to recharge.");
         public readonly static RoleInfo tracker = new("Tracker", Tracker.color, "Track the <color=#FF1919FF>Impostors</color> down", "Track the Impostors down", RoleId.Tracker, Factions.Crewmate, $"The Tracker is able to track the movements of other players. The Arrow's color will be the tracked players color. The arrow will update the position of the player every {Tracker.updateIntervall} seconds. The Arrows will reset depending on settings after each meeting. They can track dead bodies depending on settings as well.");
         public readonly static RoleInfo snitch = new("Snitch", Snitch.color, "Finish your tasks to find the <color=#FF1919FF>Impostors</color>", "Finish your tasks", RoleId.Snitch, Factions.Crewmate, "The Snitch has to finish tasks to be able to see the killers or evil players in game.");
+        public readonly static RoleInfo crusader = new("Crusader", Crusader.color, "Fortify a Crewmate to Eliminate the <color=#FF1919FF>Impostors</color>", "Fortify a Crewmate", RoleId.Crusader, Factions.Crewmate, "The Crusader can fortify a player in order to protect them from being touched. If somebody tries to kill the fortified player the killer will die. If a non killing role interacts with them, nothing will happen. The Crusader can Fortify one player per round.");
         public readonly static RoleInfo spy = new("Spy", Spy.color, "Confuse the <color=#FF1919FF>Impostors</color>", "Confuse the Impostors", RoleId.Spy, Factions.Crewmate, "The Spy appears as another Impostor when there's more than 2 Impostors, they may vent or be able to die by the Sheriff, your job is to confuse the impostors into killing themselves.");
         public readonly static RoleInfo vigilante = new("Vigilante", Vigilante.color, "Seal vents and place cameras", "Seal vents and place cameras", RoleId.Vigilante, Factions.Crewmate, "The Vigilante is a Crewmate that has a certain number of screws that they can use for either sealing vents or for placing new cameras. bPlacing a new camera and sealing vents takes a configurable amount of screws. The total number of screws that a Vigilante has can also be configured. The new camera will be visible after the next meeting and accessible by everyone. The vents will be sealed after the next meeting, players can't enter or exit sealed vents, but they can still move to them underground.");
         public readonly static RoleInfo mayor = new("Mayor", Mayor.color, "Your vote counts twice", "Your vote counts twice", RoleId.Mayor, Factions.Crewmate, "The Mayor leads the Crewmates by having a vote that counts twice. The Mayor can always use their meeting, even if the maximum number of meetings was reached. The Mayor has a portable Meeting Button, depending on the options. The Mayor can see the vote colors after completing a configurable amount of tasks, depending on the options. The Mayor has the option to vote with only one vote instead of two (via a button in the meeting screen), depending on the settings.");
@@ -97,7 +98,7 @@ namespace TownOfSushi
 
         #region Modifiers
         public readonly static RoleInfo bloody = new("Bloody", Color.yellow, "Your killer leaves a bloody trail", "Your killer leaves a bloody trail", RoleId.Bloody, Factions.Modifier, "");
-        public readonly static RoleInfo antiTeleport = new("Anti tp", Color.yellow, "You will not get teleported", "You will not get teleported", RoleId.AntiTeleport, Factions.Modifier, "");
+        public readonly static RoleInfo antiTeleport = new("Anti Teleport", Color.yellow, "You will not get teleported", "You will not get teleported", RoleId.AntiTeleport, Factions.Modifier, "");
         public readonly static RoleInfo tiebreaker = new("Tiebreaker", Color.yellow, "Your vote breaks the tie", "Break the tie", RoleId.Tiebreaker, Factions.Modifier, "");
         public readonly static RoleInfo bait = new("Bait", Color.yellow, "Bait your enemies", "Bait your enemies", RoleId.Bait, Factions.Modifier, "");
         public readonly static RoleInfo sunglasses = new("Sunglasses", Color.yellow, "You got the sunglasses", "Your vision is reduced", RoleId.Sunglasses, Factions.Modifier, "");
@@ -127,6 +128,7 @@ namespace TownOfSushi
             romantic,
             warlock,
             bountyHunter,
+            crusader,
             witch,
             ninja,
             werewolf,
@@ -217,6 +219,7 @@ namespace TownOfSushi
             if (p == Sheriff.Player) infos.Add(sheriff);
             if (p == Romantic.Player) infos.Add(romantic);
             if (p == Juggernaut.Player) infos.Add(juggernaut);
+            if (p == Crusader.Player) infos.Add(crusader);
             if (p == VengefulRomantic.Player) infos.Add(vromantic);
             if (p == Glitch.Player) infos.Add(glitch);
             if (p == SerialKiller.Player) infos.Add(serialKiller);
@@ -313,6 +316,8 @@ namespace TownOfSushi
                         roleName = Helpers.ColorString(Warlock.color, "(Cursed) ") + roleName;
                     if (p == Ninja.ninjaMarked)
                         roleName = Helpers.ColorString(Ninja.color, "(Marked) ") + roleName;
+                    if (p == Crusader.FortifiedPlayer)
+                        roleName = Helpers.ColorString(Crusader.color, "(Fortified) ") + roleName;
                     if (Pursuer.blankedList.Contains(p) && !p.Data.IsDead)
                         roleName = Helpers.ColorString(Pursuer.color, "(Blanked) ") + roleName;
                     if (Witch.futureSpelled.Contains(p) && !MeetingHud.Instance) // This is already displayed in meetings!

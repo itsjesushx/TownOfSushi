@@ -60,6 +60,7 @@ namespace TownOfSushi
             Vulture.ClearAndReload();
             Medium.ClearAndReload();
             Oracle.ClearAndReload();
+            Crusader.ClearAnndReload();
             Lawyer.ClearAndReload();
             Pursuer.ClearAndReload();
             Witch.ClearAndReload();
@@ -752,7 +753,7 @@ namespace TownOfSushi
                 else if (roleInfo.roleId == RoleId.Lawyer || roleInfo.roleId == RoleId.TimeMaster || roleInfo.roleId == RoleId.Vigilante ||
                 roleInfo.roleId == RoleId.Medic || roleInfo.roleId == RoleId.Mafioso || roleInfo.roleId == RoleId.Pursuer || roleInfo.roleId == RoleId.Romantic)
                 {
-                    message =  "I'm scared. I'm going to hide myself or others! \n\n(Medic, Romantic, Vigilante, Lawyer, Time Master, Mafioso or Pursuer)";
+                    message =  "I'm scared. I'm going to hide and protect myself or others! \n\n(Medic, Romantic, Vigilante, Lawyer, Time Master, Mafioso or Pursuer)";
                 }
                 
                 else if (roleInfo.roleId == RoleId.Arsonist || roleInfo.roleId == RoleId.Camouflager || roleInfo.roleId == RoleId.Portalmaker ||
@@ -800,6 +801,36 @@ namespace TownOfSushi
             Charges = Mathf.RoundToInt(CustomOptionHolder.MysticCharges.GetFloat());
             rechargeTasksNumber = Mathf.RoundToInt(CustomOptionHolder.MysticRechargeTasksNumber.GetFloat());
             rechargedTasks = Mathf.RoundToInt(CustomOptionHolder.MysticRechargeTasksNumber.GetFloat());
+        }
+    }
+    public static class Crusader
+    {
+        public static PlayerControl Player;
+        public static Color color = new Color32(255, 134, 69, byte.MaxValue);
+        public static PlayerControl CurrentTarget;
+        public static bool Fortified;
+        public static float Cooldown;
+        public static PlayerControl FortifiedPlayer;
+        private static Sprite ButtonSprite;
+        public static Sprite GetButtonSprite() 
+        {
+            if (ButtonSprite) return ButtonSprite;
+            ButtonSprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.Fortify.png", 115f);
+            return ButtonSprite;
+        }
+        public static int Charges;
+        public static int rechargeTasksNumber;
+        public static int rechargedTasks;
+        public static void ClearAnndReload()
+        {
+            Player = null;
+            CurrentTarget = null;
+            Fortified = false;
+            Cooldown = CustomOptionHolder.CrusaderCooldown.GetFloat();
+            FortifiedPlayer = null;
+            Charges = Mathf.RoundToInt(CustomOptionHolder.CrusaderCharges.GetFloat());
+            rechargeTasksNumber = Mathf.RoundToInt(CustomOptionHolder.CrusaderRechargeTasksNumber.GetFloat());
+            rechargedTasks = Mathf.RoundToInt(CustomOptionHolder.CrusaderRechargeTasksNumber.GetFloat());
         }
     }
 
@@ -2572,7 +2603,12 @@ namespace TownOfSushi
             {
                 if (repeat) ShiftRole(player2, player1, false);
                 Medic.Player = player1;
-            } 
+            }
+            else if (Crusader.Player != null && Crusader.Player == player2) 
+            {
+                if (repeat) ShiftRole(player2, player1, false);
+                Crusader.Player = player1;
+            }
             else if (Swapper.Player != null && Swapper.Player == player2) 
             {
                 if (repeat) ShiftRole(player2, player1, false);
