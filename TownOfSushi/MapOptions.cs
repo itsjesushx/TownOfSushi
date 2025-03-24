@@ -11,6 +11,7 @@ namespace TownOfSushi
         public static bool noVoteIsSelfVote = false;
         public static bool hidePlayerNames = false;
         public static bool ghostsSeeRoles = true;
+        public static bool DisableLobbyMusic = true;
         public static bool ghostsSeeModifier = true;
         public static bool ghostsSeeInformation = true;
         public static bool ghostsSeeVotes = true;
@@ -73,6 +74,7 @@ namespace TownOfSushi
             ghostsSeeInformation = TownOfSushiPlugin.GhostsSeeInformation.Value;
             ghostsSeeVotes = TownOfSushiPlugin.GhostsSeeVotes.Value;
             showRoleSummary = TownOfSushiPlugin.ShowRoleSummary.Value;
+            DisableLobbyMusic = TownOfSushiPlugin.DisableLobbyMusic.Value;
             showLighterDarker = TownOfSushiPlugin.ShowLighterDarker.Value;
             enableSoundEffects = TownOfSushiPlugin.EnableSoundEffects.Value;
             enableHorseMode = TownOfSushiPlugin.EnableHorseMode.Value;

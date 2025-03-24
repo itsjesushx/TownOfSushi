@@ -48,6 +48,7 @@ namespace TownOfSushi
         public static ConfigEntry<bool> GhostsSeeVotes{ get; set; }
         public static ConfigEntry<bool> ShowRoleSummary { get; set; }
         public static ConfigEntry<bool> ShowLighterDarker { get; set; }
+        public static ConfigEntry<bool> DisableLobbyMusic { get; set; }
         public static ConfigEntry<bool> EnableSoundEffects { get; set; }
         public static ConfigEntry<bool> EnableHorseMode { get; set; }
         public static ConfigEntry<bool> ShowVentsOnMap { get; set; }
@@ -105,6 +106,7 @@ namespace TownOfSushi
             GhostsSeeRoles = Config.Bind("Custom", "Ghosts See Roles", true);
             GhostsSeeModifier = Config.Bind("Custom", "Ghosts See Modifier", true);
             GhostsSeeVotes = Config.Bind("Custom", "Ghosts See Votes", true);
+            DisableLobbyMusic = Config.Bind("Custom", "Disable Lobby Music", true);
             ShowRoleSummary = Config.Bind("Custom", "Show Role Summary", true);
             ShowLighterDarker = Config.Bind("Custom", "Show Lighter / Darker", true);
             EnableSoundEffects = Config.Bind("Custom", "Enable Sound Effects", true);
