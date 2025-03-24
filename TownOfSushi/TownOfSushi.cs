@@ -677,7 +677,7 @@ namespace TownOfSushi
             Lover1 = null;
             Lover2 = null;
             notAckedExiledIsLover = false;
-            bothDie = CustomOptionHolder.modifierLoverBothDie.GetBool();
+            bothDie = CustomOptionHolder.modifierLoverBothDie.GetBool() && !(Lover1 == Pestilence.Player || Lover2 == Pestilence.Player);
             enableChat = CustomOptionHolder.modifierLoverEnableChat.GetBool();
         }
 

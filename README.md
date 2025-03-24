@@ -32,8 +32,8 @@ Even more roles are coming soon.
 | [Ninja](#ninja) | [Snitch](#snitch) | [Romantic](#romantic)   |  [Sleuth](#sleuth)  |
 | [Yo-Yo](#yoyo)  | [Spy](#spy) | [Werewolf](#werewolf)   |  |
 | | [Portalmaker](#portalmaker) | [Amnesiac](#amnesiac) |  |
-| | [Vigilante](#vigilante) |  |  |
-|  | [Medium](#medium) |  |  |
+| | [Vigilante](#vigilante) |  [Plaguebearer](#plaguebearer) |  |
+|  | [Medium](#medium) | [Pestilence](#plaguebearer)  |  |
 |  |[Veteran](#veteran)    |  |  |
 |  |[Oracle](#oracle) |  |  |
 |  |[Crusader](#crusader) |  |  |
@@ -699,6 +699,25 @@ The Serial Killer needs to be the last killer alive to win the game.
 | Stab Duration | -
 | Stab Kill Cooldown | -
 | Serial Killer can Vent when Stabbing | Yes / No
+-----------------------
+
+## Plaguebearer
+### **Faction: Neutral (Killing)**
+
+The Plaguebearer is a Neutral role with its own win condition, as well as an ability to transform into another role.\
+The Plaguebearer has one ability, which allows them to infect other players.\
+Once infected, the infected player can go and infect other players via interacting with them.\
+Once all players are infected, the Plaguebearer becomes Pestilence.\
+The Pestilence is a unkillable force which can only be killed by being voted out, even their lover dying won't kill them.\
+The Plaguebearer or Pestilence needs to be the last killer alive to win the game.
+### Game Options
+| Name | Description |
+|----------|:-------------:|
+| Plaguebearer Spawn Chance | -
+| Infect Cooldown | -
+| Pestilence Kill Cooldown | -
+| Pestilence can Vent | Yes / No
+
 -----------------------
 
 ## Vulture
