@@ -57,7 +57,7 @@ namespace TownOfSushi.Objects
 
             int colorId = playerControl.Data.DefaultOutfit.ColorId;
 
-            if (Camouflager.camouflageTimer > 0 || Helpers.MushroomSabotageActive()) 
+            if (Camouflager.CamouflageTimer > 0 || Helpers.MushroomSabotageActive()) 
             {
                 playerNameDisplay = "A camouflaged player";
                 colorId = 6;

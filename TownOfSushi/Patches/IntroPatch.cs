@@ -147,10 +147,18 @@ namespace TownOfSushi.Patches
         {
             List<RoleInfo> infos = RoleInfo.GetRoleInfoForPlayer(PlayerControl.LocalPlayer);
             RoleInfo roleInfo = infos.Where(info => info.FactionId != Factions.Modifier).FirstOrDefault();
+            var neutralColor = new Color32(76, 84, 78, 255);
             if (roleInfo == null) return;
+            /*if (roleInfo == null || roleInfo == RoleInfo.crewmate) 
+            {
+                if (Modules.RoleDraft.isEnabled && CustomOptionHolder.neutralRolesCountMax.GetSelection() > 0) 
+                {
+                    __instance.TeamTitle.text = "<size=60%>Crewmate" + Helpers.ColorString(Color.white, " / ") + Helpers.ColorString(neutralColor, "Neutral") + "</size>";
+                }
+                return;
+            }*/
             if (roleInfo.FactionId == Factions.Neutral || roleInfo.FactionId == Factions.NeutralKiller) 
             {
-                var neutralColor = new Color32(76, 84, 78, 255);
                 __instance.BackgroundBar.material.color = neutralColor;
                 __instance.TeamTitle.text = "Neutral";
                 __instance.TeamTitle.color = neutralColor;
@@ -195,9 +203,9 @@ namespace TownOfSushi.Patches
                     
                     if (roleInfo.FactionId == Factions.NeutralKiller) roleInfos.RemoveAll(x => x.FactionId != Factions.NeutralKiller);
                    
-                    if (roleInfo.color == Palette.ImpostorRed) roleInfos.RemoveAll(x => x.color != Palette.ImpostorRed);
+                    if (roleInfo.Color == Palette.ImpostorRed) roleInfos.RemoveAll(x => x.Color != Palette.ImpostorRed);
                     
-                    if (roleInfo.FactionId != Factions.Neutral && roleInfo.color != Palette.ImpostorRed) roleInfos.RemoveAll(x => x.color == Palette.ImpostorRed || x.FactionId == Factions.Neutral);
+                    if (roleInfo.FactionId != Factions.Neutral && roleInfo.Color != Palette.ImpostorRed) roleInfos.RemoveAll(x => x.Color == Palette.ImpostorRed || x.FactionId == Factions.Neutral);
 
                     if (roleInfo.FactionId != Factions.NeutralKiller) roleInfos.RemoveAll(x => x.FactionId == Factions.NeutralKiller);
                     var rnd = new System.Random(seed);
@@ -207,21 +215,21 @@ namespace TownOfSushi.Patches
                 __instance.RoleBlurbText.text = "";
                 if (roleInfo != null) 
                 {
-                    __instance.RoleText.text = roleInfo.name;
-                    __instance.YouAreText.color = roleInfo.color;
-                    __instance.RoleText.color = roleInfo.color;
-                    __instance.RoleBlurbText.text = roleInfo.introDescription;
-                    __instance.RoleBlurbText.color = roleInfo.color;
+                    __instance.RoleText.text = roleInfo.Name;
+                    __instance.YouAreText.color = roleInfo.Color;
+                    __instance.RoleText.color = roleInfo.Color;
+                    __instance.RoleBlurbText.text = roleInfo.IntroDescription;
+                    __instance.RoleBlurbText.color = roleInfo.Color;
                 }
                 if (modifierInfo != null) 
                 {
-                    if (modifierInfo.roleId != RoleId.Lover)
-                        __instance.RoleBlurbText.text += Helpers.ColorString(modifierInfo.color, $"\n{modifierInfo.introDescription}");
+                    if (modifierInfo.RoleId != RoleId.Lover)
+                        __instance.RoleBlurbText.text += Helpers.ColorString(modifierInfo.Color, $"\n{modifierInfo.IntroDescription}");
                     
                     else 
                     {
                         PlayerControl otherLover = PlayerControl.LocalPlayer == Lovers.Lover1 ? Lovers.Lover2 : Lovers.Lover1;
-                        __instance.RoleBlurbText.text += Helpers.ColorString(Lovers.color, $"\n♥ You are in love with {otherLover?.Data?.PlayerName ?? ""} ♥");
+                        __instance.RoleBlurbText.text += Helpers.ColorString(Lovers.Color, $"\n♥ You are in love with {otherLover?.Data?.PlayerName ?? ""} ♥");
                     }
                 }
             }

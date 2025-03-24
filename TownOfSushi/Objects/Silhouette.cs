@@ -23,9 +23,9 @@ namespace TownOfSushi.Objects
             return SilhouetteSprite;
         }
 
-        public Silhouette(Vector3 p, float duration = 1f, bool visibleForEveryOne = true)
+        public Silhouette(Vector3 p, float Duration = 1f, bool visibleForEveryOne = true)
         {
-            if (duration <= 0f) 
+            if (Duration <= 0f) 
             {
                 permanent = true;
             }
@@ -40,7 +40,7 @@ namespace TownOfSushi.Objects
             renderer = gameObject.AddComponent<SpriteRenderer>();
             renderer.sprite = GetSilhouetteSprite();
 
-            timeRemaining = duration;
+            timeRemaining = Duration;
 
             renderer.color = renderer.color.SetAlpha(Yoyo.SilhouetteVisibility);
 

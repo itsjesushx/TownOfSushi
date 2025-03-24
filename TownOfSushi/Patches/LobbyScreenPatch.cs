@@ -8,17 +8,16 @@ using UnityEngine;
 namespace TownOfSushi.Patches 
 {
     [HarmonyPatch]
-
     public sealed class LobbyJoinBind 
     {
         static int GameId;
-
         static GameObject LobbyText;
 
         [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.JoinGame))]
         [HarmonyPostfix]
 
-        public static void Postfix(InnerNetClient __instance) {
+        public static void Postfix(InnerNetClient __instance) 
+        {
             GameId = __instance.GameId;
         }
 
@@ -40,7 +39,8 @@ namespace TownOfSushi.Patches
         [HarmonyPatch(typeof(MMOnlineManager), nameof(MMOnlineManager.Update))]
         [HarmonyPostfix]
 
-        public static void Postfix(MMOnlineManager __instance) {
+        public static void Postfix(MMOnlineManager __instance) 
+        {
 
             string code2 = GUIUtility.systemCopyBuffer;
 
@@ -55,16 +55,18 @@ namespace TownOfSushi.Patches
 
             if (LobbyText) {
                 LobbyText.GetComponent<TMPro.TextMeshPro>().text = "";
-                if (GameId != 0 && GameId != 32) {
+                if (GameId != 0 && GameId != 32) 
+                {
                     string code = GameCode.IntToGameName(GameId);
-                    if (code != "") {
+                    if (code != "") 
+                    {
                         code = DataManager.Settings.Gameplay.StreamerMode ? "****" : code;
-                        LobbyText.GetComponent<TMPro.TextMeshPro>().text = $"Prev Lobby: {code}   [LShift]";
+                        LobbyText.GetComponent<TMPro.TextMeshPro>().text = $"Prev Lobby: {code}   [Left Shift]";
 
                     }
                 }
                 if (code2 != "") {
-                    LobbyText.GetComponent<TMPro.TextMeshPro>().text += $"\nClipboard: {code2Disp}  [RShift]";
+                    LobbyText.GetComponent<TMPro.TextMeshPro>().text += $"\nClipboard: {code2Disp}  [Right Shift]";
                 }
             }
         }

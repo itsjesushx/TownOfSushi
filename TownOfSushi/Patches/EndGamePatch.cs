@@ -87,6 +87,8 @@ namespace TownOfSushi.Patches
             if (Juggernaut.Player != null) notWinners.Add(Juggernaut.Player);
             if (VengefulRomantic.Player != null) notWinners.Add(VengefulRomantic.Player);
             if (Thief.Player != null) notWinners.Add(Thief.Player);
+            if (Plaguebearer.Player != null) notWinners.Add(Plaguebearer.Player);
+            if (Pestilence.Player != null) notWinners.Add(Pestilence.Player);
 
             notWinners.AddRange(Jackal.formerJackals);
 
@@ -109,6 +111,8 @@ namespace TownOfSushi.Patches
             bool teamJackalWin = gameOverReason == (GameOverReason)CustomGameOverReason.TeamJackalWin && ((Jackal.Player != null && !Jackal.Player.Data.IsDead) || (Sidekick.Player != null && !Sidekick.Player.Data.IsDead));
             bool vultureWin = Vulture.Player != null && gameOverReason == (GameOverReason)CustomGameOverReason.VultureWin;
             bool prosecutorWin = Lawyer.Player != null && gameOverReason == (GameOverReason)CustomGameOverReason.ProsecutorWin;
+            bool PlaguebearerWin = Plaguebearer.Player != null && gameOverReason == (GameOverReason)CustomGameOverReason.PlaguebearerWin;
+            bool PestilenceWin = Pestilence.Player != null && gameOverReason == (GameOverReason)CustomGameOverReason.PestilenceWin;
 
             // Mini lose
             if (miniLose) 
@@ -145,6 +149,24 @@ namespace TownOfSushi.Patches
                 CachedPlayerData wpd = new CachedPlayerData(VengefulRomantic.Player.Data);
                 EndGameResult.CachedWinners.Add(wpd);
                 AdditionalTempData.winCondition = WinCondition.VRomanticWin;
+            }
+
+            // Plaguebearer Win
+            else if (PlaguebearerWin) 
+            {
+                EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
+                CachedPlayerData wpd = new CachedPlayerData(Plaguebearer.Player.Data);
+                EndGameResult.CachedWinners.Add(wpd);
+                AdditionalTempData.winCondition = WinCondition.PlaguebearerWin;
+            }
+
+            // Pestilence Win
+            else if (PestilenceWin) 
+            {
+                EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
+                CachedPlayerData wpd = new CachedPlayerData(Pestilence.Player.Data);
+                EndGameResult.CachedWinners.Add(wpd);
+                AdditionalTempData.winCondition = WinCondition.PestilenceWin;
             }
 
             // Werewolf win
@@ -368,7 +390,7 @@ namespace TownOfSushi.Patches
                 {
                     if (data.PlayerName != CachedPlayerData2.PlayerName) continue;
                     var roles = 
-                    poolablePlayer.cosmetics.nameText.text += $"\n{string.Join("\n", data.Roles.Select(x => Helpers.ColorString(x.color, x.name)))}";
+                    poolablePlayer.cosmetics.nameText.text += $"\n{string.Join("\n", data.Roles.Select(x => Helpers.ColorString(x.Color, x.Name)))}";
                 }
             }
 
@@ -382,80 +404,92 @@ namespace TownOfSushi.Patches
             if (AdditionalTempData.winCondition == WinCondition.JesterWin) 
             {
                 textRenderer.text = "Jester Wins!";
-                textRenderer.color = Jester.color;
-                __instance.BackgroundBar.material.SetColor("_Color", Jester.color);
+                textRenderer.color = Jester.Color;
+                __instance.BackgroundBar.material.SetColor("_Color", Jester.Color);
             } 
             else if (AdditionalTempData.winCondition == WinCondition.ArsonistWin) 
             {
                 textRenderer.text = "Arsonist Wins!";
-                textRenderer.color = Arsonist.color;
-                __instance.BackgroundBar.material.SetColor("_Color", Arsonist.color);
+                textRenderer.color = Arsonist.Color;
+                __instance.BackgroundBar.material.SetColor("_Color", Arsonist.Color);
+            }
+            else if (AdditionalTempData.winCondition == WinCondition.PlaguebearerWin) 
+            {
+                textRenderer.text = "Plaguebearer Wins!";
+                textRenderer.color = Plaguebearer.Color;
+                __instance.BackgroundBar.material.SetColor("_Color", Plaguebearer.Color);
+            }
+            else if (AdditionalTempData.winCondition == WinCondition.PestilenceWin)
+            {
+                textRenderer.text = "Pestilence Wins!";
+                textRenderer.color = Pestilence.Color;
+                __instance.BackgroundBar.material.SetColor("_Color", Pestilence.Color);
             }
             else if (AdditionalTempData.winCondition == WinCondition.VultureWin) 
             {
                 textRenderer.text = "Vulture Wins!";
-                textRenderer.color = Vulture.color;
-                __instance.BackgroundBar.material.SetColor("_Color", Vulture.color);
+                textRenderer.color = Vulture.Color;
+                __instance.BackgroundBar.material.SetColor("_Color", Vulture.Color);
             }
             else if (AdditionalTempData.winCondition == WinCondition.ProsecutorWin) 
             {
                 textRenderer.text = "Prosecutor Wins!";
-                textRenderer.color = Lawyer.color;
-                __instance.BackgroundBar.material.SetColor("_Color", Lawyer.color);
+                textRenderer.color = Lawyer.Color;
+                __instance.BackgroundBar.material.SetColor("_Color", Lawyer.Color);
             }
             else if (AdditionalTempData.winCondition == WinCondition.LoversTeamWin) 
             {
-                textRenderer.text = "Lovers And Crewmates Win";
-                textRenderer.color = Lovers.color;
-                __instance.BackgroundBar.material.SetColor("_Color", Lovers.color);
+                textRenderer.text = "Lovers And Crewmates Win!";
+                textRenderer.color = Lovers.Color;
+                __instance.BackgroundBar.material.SetColor("_Color", Lovers.Color);
             } 
             else if (AdditionalTempData.winCondition == WinCondition.JuggernautWin) 
             {
                 textRenderer.text = "Juggernaut Wins!";
-                textRenderer.color = Juggernaut.color;
-                __instance.BackgroundBar.material.SetColor("_Color", Juggernaut.color);
+                textRenderer.color = Juggernaut.Color;
+                __instance.BackgroundBar.material.SetColor("_Color", Juggernaut.Color);
             }
             else if (AdditionalTempData.winCondition == WinCondition.LoversSoloWin) 
             {
                 textRenderer.text = "Love Couple Wins!";
-                textRenderer.color = Lovers.color;
-                __instance.BackgroundBar.material.SetColor("_Color", Lovers.color);
+                textRenderer.color = Lovers.Color;
+                __instance.BackgroundBar.material.SetColor("_Color", Lovers.Color);
             }
             else if (AdditionalTempData.winCondition == WinCondition.VRomanticWin) 
             {
                 textRenderer.text = "Vengeful Romantic Wins!";
-                textRenderer.color = Romantic.color;
-                __instance.BackgroundBar.material.SetColor("_Color", Romantic.color);
+                textRenderer.color = Romantic.Color;
+                __instance.BackgroundBar.material.SetColor("_Color", Romantic.Color);
             }
             else if (AdditionalTempData.winCondition == WinCondition.JackalWin) 
             {
-                textRenderer.text = "Jackals Win";
-                textRenderer.color = Jackal.color;
-                __instance.BackgroundBar.material.SetColor("_Color", Jackal.color);
+                textRenderer.text = "The Team Jackal Win!";
+                textRenderer.color = Jackal.Color;
+                __instance.BackgroundBar.material.SetColor("_Color", Jackal.Color);
             }
             else if (AdditionalTempData.winCondition == WinCondition.GlitchWin) 
             {
                 textRenderer.text = "The Glitch Wins!";
-                textRenderer.color = Glitch.color;
-                __instance.BackgroundBar.material.SetColor("_Color", Glitch.color);
+                textRenderer.color = Glitch.Color;
+                __instance.BackgroundBar.material.SetColor("_Color", Glitch.Color);
             }
             else if (AdditionalTempData.winCondition == WinCondition.SerialKillerWin) 
             {
                 textRenderer.text = "Serial Kille Wins!";
-                textRenderer.color = SerialKiller.color;
-                __instance.BackgroundBar.material.SetColor("_Color", SerialKiller.color);
+                textRenderer.color = SerialKiller.Color;
+                __instance.BackgroundBar.material.SetColor("_Color", SerialKiller.Color);
             }
             else if (AdditionalTempData.winCondition == WinCondition.WerewolfWin) 
             {
                 textRenderer.text = "Werewolf Wins!";
-                textRenderer.color = Werewolf.color;
-                __instance.BackgroundBar.material.SetColor("_Color", Werewolf.color);
+                textRenderer.color = Werewolf.Color;
+                __instance.BackgroundBar.material.SetColor("_Color", Werewolf.Color);
             }
             else if (AdditionalTempData.winCondition == WinCondition.MiniLose) 
             {
                 textRenderer.text = "Mini died. Everyone lost!";
-                textRenderer.color = Mini.color;
-                __instance.BackgroundBar.material.SetColor("_Color", Mini.color);
+                textRenderer.color = Mini.Color;
+                __instance.BackgroundBar.material.SetColor("_Color", Mini.Color);
             }
             else if (AdditionalTempData.winCondition == WinCondition.Default) 
             {
@@ -477,7 +511,7 @@ namespace TownOfSushi.Patches
                         __instance.BackgroundBar.material.SetColor("_Color", Palette.ImpostorRed);
                         break;
                     case GameOverReason.ImpostorByVote:
-                        textRenderer.text = "Impostors Win";
+                        textRenderer.text = "Impostors Win!";
                         textRenderer.color = Palette.ImpostorRed;
                         __instance.BackgroundBar.material.SetColor("_Color", Palette.ImpostorRed);
                         break;
@@ -503,19 +537,19 @@ namespace TownOfSushi.Patches
             {
                 if (cond == WinCondition.AdditionalLawyerBonusWin) 
                 {
-                    textRenderer.text += $"\n{Helpers.ColorString(Lawyer.color, "The Lawyer wins with the client.")}";
+                    textRenderer.text += $"\n{Helpers.ColorString(Lawyer.Color, "The Lawyer wins with the client.")}";
                 }
                 else if (cond == WinCondition.AdditionalRomanticBonusWin) 
                 {
-                    textRenderer.text += $"\n{Helpers.ColorString(Romantic.color, "The Romantic wins with their lover.")}";
+                    textRenderer.text += $"\n{Helpers.ColorString(Romantic.Color, "The Romantic wins with their lover.")}";
                 }
                 else if (cond == WinCondition.AdditionalBelovedBonusWin) 
                 {
-                    textRenderer.text += $"\n{Helpers.ColorString(Romantic.color, "The Beloved wins with their lover.")}";
+                    textRenderer.text += $"\n{Helpers.ColorString(Romantic.Color, "The Beloved wins with their lover.")}";
                 }
                 else if (cond == WinCondition.AdditionalAlivePursuerWin) 
                 {
-                    textRenderer.text += $"\n{Helpers.ColorString(Pursuer.color, "The Pursuer is alive. They also win!")}";
+                    textRenderer.text += $"\n{Helpers.ColorString(Pursuer.Color, "The Pursuer is alive. They also win!")}";
                 }
             }
 
@@ -535,8 +569,8 @@ namespace TownOfSushi.Patches
 
                 roleSummaryText.AppendLine("<size=125%><u><b>Game Stats</b></u>:</size>");
                 roleSummaryText.AppendLine();
-                winnersText.AppendLine("<size=105%><color=#00FF00FF><b>★ - Winners - ★</b></color></size>");
-                losersText.AppendLine("<size=105%><color=#FF0000FF><b>◆ - Losers - ◆</b></color></size>");
+                winnersText.AppendLine("<size=105%><color=#00FF00FF><b>★ - Winner List - ★</b></color></size>");
+                losersText.AppendLine("<size=105%><color=#FF0000FF><b>◆ - Loser List - ◆</b></color></size>");
 
                 foreach(var data in AdditionalTempData.playerRoles) 
                 {
@@ -580,6 +614,7 @@ namespace TownOfSushi.Patches
                 roleSummaryTextMesh.fontSize = 1f;
                 roleSummaryTextMesh.text = $"{roleSummaryText}";
                 roleSummaryTextMesh.GetComponent<RectTransform>().anchoredPosition = new(position.x + 3.5f, position.y - 0.1f);
+                Helpers.PreviousEndGameSummary = $"<size=110%>{roleSummaryText.ToString()}</size>";
             }
             AdditionalTempData.Clear();
         }
@@ -604,6 +639,8 @@ namespace TownOfSushi.Patches
             if (CheckAndEndGameForLoverWin(__instance, statistics)) return false;
             if (CheckAndEndGameForJackalWin(__instance, statistics)) return false;
             if (CheckAndEndGameForGlitchWin(__instance, statistics)) return false;
+            if (CheckAndEndGameForPestilenceWin(__instance, statistics)) return false;
+            if (CheckAndEndGameForPlaguebearerWin(__instance, statistics)) return false;
             if (CheckAndEndGameForWerewolfWin(__instance, statistics)) return false;
             if (CheckAndEndGameForRomanticWin(__instance, statistics)) return false;
             if (CheckAndEndGameForSerialKillerWin(__instance, statistics)) return false;
@@ -615,7 +652,7 @@ namespace TownOfSushi.Patches
 
         private static bool CheckAndEndGameForMiniLose(ShipStatus __instance) 
         {
-            if (Mini.triggerMiniLose) 
+            if (Mini.IsMiniLose) 
             {
                 GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.MiniLose, false);
                 return true;
@@ -625,7 +662,7 @@ namespace TownOfSushi.Patches
 
         private static bool CheckAndEndGameForJesterWin(ShipStatus __instance) 
         {
-            if (Jester.triggerJesterWin) 
+            if (Jester.IsJesterWin) 
             {
 
                 GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.JesterWin, false);
@@ -636,9 +673,8 @@ namespace TownOfSushi.Patches
 
         private static bool CheckAndEndGameForArsonistWin(ShipStatus __instance) 
         {
-            if (Arsonist.triggerArsonistWin) 
+            if (Arsonist.IsArsonistWin) 
             {
-
                 GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.ArsonistWin, false);
                 return true;
             }
@@ -647,9 +683,8 @@ namespace TownOfSushi.Patches
 
         private static bool CheckAndEndGameForVultureWin(ShipStatus __instance) 
         {
-            if (Vulture.triggerVultureWin) 
+            if (Vulture.IsVultureWin) 
             {
-
                 GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.VultureWin, false);
                 return true;
             }
@@ -701,9 +736,8 @@ namespace TownOfSushi.Patches
 
         private static bool CheckAndEndGameForProsecutorWin(ShipStatus __instance) 
         {
-            if (Lawyer.triggerProsecutorWin) 
+            if (Lawyer.IsProsecutorWin) 
             {
-
                 GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.ProsecutorWin, false);
                 return true;
             }
@@ -712,8 +746,8 @@ namespace TownOfSushi.Patches
 
         private static bool CheckAndEndGameForLoverWin(ShipStatus __instance, PlayerStatistics statistics) 
         {
-            if (statistics.TeamLoversAlive == 2 && statistics.TotalAlive <= 3) {
-
+            if (statistics.TeamLoversAlive == 2 && statistics.TotalAlive <= 3) 
+            {
                 GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.LoversWin, false);
                 return true;
             }
@@ -728,13 +762,54 @@ namespace TownOfSushi.Patches
             && statistics.WerewolfAlive == 0
             && statistics.SerialKillerAlive == 0
             && statistics.VengefulRomanticAlive == 0
+            && statistics.PestilenceAlive == 0
+            && statistics.PlaguebearerAlive == 0
             && statistics.CrewPowerAlive == 0
             && statistics.JuggernautAlive == 0
             && !(statistics.TeamJackalHasAliveLover 
             && statistics.TeamLoversAlive == 2)) 
             {
-
                 GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.TeamJackalWin, false);
+                return true;
+            }
+            return false;
+        }
+
+        private static bool CheckAndEndGameForPestilenceWin(ShipStatus __instance, PlayerStatistics statistics) 
+        {
+            if (statistics.PestilenceAlive >= statistics.TotalAlive - statistics.PestilenceAlive
+            && statistics.TeamImpostorsAlive == 0
+            && statistics.GlitchAlive == 0
+            && statistics.WerewolfAlive == 0
+            && statistics.TeamJackalAlive == 0
+            && statistics.SerialKillerAlive == 0
+            && statistics.VengefulRomanticAlive == 0
+            && statistics.CrewPowerAlive == 0
+            && statistics.JuggernautAlive == 0
+            && !(statistics.PestilenceAliveHasLover 
+            && statistics.TeamLoversAlive == 2)) 
+            {
+                GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.PestilenceWin, false);
+                return true;
+            }
+            return false;
+        }
+
+        private static bool CheckAndEndGameForPlaguebearerWin(ShipStatus __instance, PlayerStatistics statistics)
+        {
+            if (statistics.PlaguebearerAlive >= statistics.TotalAlive - statistics.PlaguebearerAlive
+            && statistics.TeamImpostorsAlive == 0
+            && statistics.GlitchAlive == 0
+            && statistics.WerewolfAlive == 0
+            && statistics.TeamJackalAlive == 0
+            && statistics.SerialKillerAlive == 0
+            && statistics.VengefulRomanticAlive == 0
+            && statistics.CrewPowerAlive == 0
+            && statistics.JuggernautAlive == 0
+            && !(statistics.PlaguebearerAliveHasLover 
+            && statistics.TeamLoversAlive == 2)) 
+            {
+                GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.PlaguebearerWin, false);
                 return true;
             }
             return false;
@@ -748,6 +823,8 @@ namespace TownOfSushi.Patches
             && statistics.WerewolfAlive == 0
             && statistics.SerialKillerAlive == 0
             && statistics.VengefulRomanticAlive == 0
+            && statistics.PestilenceAlive == 0
+            && statistics.PlaguebearerAlive == 0
             && statistics.CrewPowerAlive == 0
             && statistics.TeamJackalAlive == 0
             && !(statistics.JuggernautHasAliveLover 
@@ -766,6 +843,8 @@ namespace TownOfSushi.Patches
             && statistics.TeamImpostorsAlive == 0
             && statistics.GlitchAlive == 0
             && statistics.WerewolfAlive == 0
+            && statistics.PestilenceAlive == 0
+            && statistics.PlaguebearerAlive == 0
             && statistics.SerialKillerAlive == 0
             && statistics.TeamJackalAlive == 0
             && statistics.JuggernautAlive == 0
@@ -788,6 +867,8 @@ namespace TownOfSushi.Patches
             && statistics.TeamJackalAlive == 0
             && statistics.SerialKillerAlive == 0
             && statistics.CrewPowerAlive == 0
+            && statistics.PestilenceAlive == 0
+            && statistics.PlaguebearerAlive == 0
             && statistics.JuggernautAlive == 0
             && statistics.VengefulRomanticAlive == 0
             && !(statistics.WerewolfAliveHasLover 
@@ -808,6 +889,8 @@ namespace TownOfSushi.Patches
             && statistics.TeamJackalAlive == 0
             && statistics.WerewolfAlive == 0
             && statistics.GlitchAlive == 0
+            && statistics.PestilenceAlive == 0
+            && statistics.PlaguebearerAlive == 0
             && statistics.JuggernautAlive == 0
             && statistics.VengefulRomanticAlive == 0
             && !(statistics.SerialKillerHasLover
@@ -828,6 +911,8 @@ namespace TownOfSushi.Patches
             && statistics.TeamJackalAlive == 0
             && statistics.WerewolfAlive == 0
             && statistics.SerialKillerAlive == 0
+            && statistics.PestilenceAlive == 0
+            && statistics.PlaguebearerAlive == 0
             && statistics.JuggernautAlive == 0
             && statistics.VengefulRomanticAlive == 0
             && !(statistics.GlitchHasLoverAlive
@@ -847,13 +932,14 @@ namespace TownOfSushi.Patches
             && statistics.GlitchAlive == 0
             && statistics.WerewolfAlive == 0
             && statistics.SerialKillerAlive == 0
+            && statistics.PestilenceAlive == 0
+            && statistics.PlaguebearerAlive == 0
             && statistics.CrewPowerAlive == 0
             && statistics.VengefulRomanticAlive == 0
             && statistics.JuggernautAlive == 0
             && !(statistics.TeamImpostorHasAliveLover 
             && statistics.TeamLoversAlive == 2)) 
             {
-
                 GameOverReason endReason;
                 switch (GameData.LastDeathReason) 
                 {
@@ -879,20 +965,20 @@ namespace TownOfSushi.Patches
             && statistics.TeamJackalAlive == 0
             && statistics.SerialKillerAlive == 0
             && statistics.VengefulRomanticAlive == 0
+            && statistics.PestilenceAlive == 0
+            && statistics.PlaguebearerAlive == 0
             && statistics.JuggernautAlive == 0
             && statistics.WerewolfAlive == 0
             && statistics.GlitchAlive == 0) 
             {
-
                 GameManager.Instance.RpcEndGame(GameOverReason.HumansByVote, false);
                 return true;
             }
             return false;
         }
 
-        private static void EndGameForSabotage(ShipStatus __instance) 
+        private static void EndGameForSabotage(ShipStatus __instance)
         {
-            //__instance.enabled = false;
             GameManager.Instance.RpcEndGame(GameOverReason.ImpostorBySabotage, false);
             return;
         }
@@ -904,6 +990,8 @@ namespace TownOfSushi.Patches
         public int TeamImpostorsAlive {get;set;}
         public int TeamJackalAlive {get;set;}
         public int GlitchAlive {get;set;}
+        public int PlaguebearerAlive {get;set;}
+        public int PestilenceAlive {get;set;}
         public int WerewolfAlive {get;set;}
         public int VengefulRomanticAlive {get;set;}
         public int SerialKillerAlive {get;set;}
@@ -915,6 +1003,8 @@ namespace TownOfSushi.Patches
         public bool TeamJackalHasAliveLover {get;set;}
         public bool VengefulRomanticHasAliveLover {get;set;}
         public bool WerewolfAliveHasLover {get;set;}
+        public bool PestilenceAliveHasLover {get;set;}
+        public bool PlaguebearerAliveHasLover {get;set;}
         public bool GlitchHasLoverAlive {get;set;}
         public bool JuggernautHasAliveLover {get;set;}
         public bool SerialKillerHasLover {get;set;}
@@ -934,6 +1024,8 @@ namespace TownOfSushi.Patches
             int numJackalAlive = 0;
             int numGlitchAlive = 0;
             int numImpostorsAlive = 0;
+            int numberPestiAlive = 0;
+            int numberPlagueAlive = 0;
             int numJuggAlive = 0;
             int numVRomanticsAlive = 0;
             int numWerewolfAlive = 0;
@@ -944,6 +1036,8 @@ namespace TownOfSushi.Patches
             bool impLover = false;
             bool RomanticLover = false;
             bool glitchLover = false;
+            bool PbLover = false;
+            bool PestilenceLover = false;
             bool SKLover = false;
             bool jackalLover = false;
             bool JuggLover = false;
@@ -979,6 +1073,16 @@ namespace TownOfSushi.Patches
                         {
                             numJuggAlive++;
                             if (lover) JuggLover = true;
+                        }
+                        if (Pestilence.Player != null && Pestilence.Player.PlayerId == playerInfo.PlayerId) 
+                        {
+                            numberPestiAlive++;
+                            if (lover) PestilenceLover = true;
+                        }
+                        if (Plaguebearer.Player != null && Plaguebearer.Player.PlayerId == playerInfo.PlayerId) 
+                        {
+                            numberPlagueAlive++;
+                            if (lover) PbLover = true;
                         }
                         if (Sheriff.Player != null && Sheriff.Player.PlayerId == playerInfo.PlayerId) 
                         {
@@ -1022,6 +1126,8 @@ namespace TownOfSushi.Patches
 
             TeamJackalAlive = numJackalAlive;
             JuggernautAlive = numJuggAlive;
+            PlaguebearerAlive = numberPlagueAlive;
+            PestilenceAlive = numberPestiAlive;
             GlitchAlive = numGlitchAlive;
             VengefulRomanticAlive = numVRomanticsAlive;
             SerialKillerAlive = numSerialKillerAlive;
@@ -1033,6 +1139,8 @@ namespace TownOfSushi.Patches
             TeamImpostorHasAliveLover = impLover;
             TeamJackalHasAliveLover = jackalLover;
             GlitchHasLoverAlive = glitchLover;
+            PlaguebearerAliveHasLover = PbLover;
+            PestilenceAliveHasLover = PestilenceLover;
             VengefulRomanticHasAliveLover = RomanticLover;
             SerialKillerHasLover = SKLover;
             JuggernautHasAliveLover = JuggLover;

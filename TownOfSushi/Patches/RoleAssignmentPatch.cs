@@ -52,7 +52,7 @@ namespace TownOfSushi.Patches
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ResetVaribles, Hazel.SendOption.Reliable, -1);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
             RPCProcedure.ResetVariables();
-            if (GameOptionsManager.Instance.currentGameOptions.GameMode == GameModes.HideNSeek) return; // Don't assign Roles in Hide N Seek
+            if (GameOptionsManager.Instance.currentGameOptions.GameMode == GameModes.HideNSeek /*|| Modules.RoleDraft.isEnabled*/) return; // Don't assign Roles in Hide N Seek
             AssignRoles();
         }
 
@@ -120,6 +120,7 @@ namespace TownOfSushi.Patches
             impSettings.Add((byte)RoleId.Yoyo, CustomOptionHolder.yoyoSpawnRate.GetSelection());
 
             neutralKSettings.Add((byte)RoleId.Jackal, CustomOptionHolder.jackalSpawnRate.GetSelection());
+            neutralKSettings.Add((byte)RoleId.Plaguebearer, CustomOptionHolder.PlaguebearerSpawnRate.GetSelection());
             neutralKSettings.Add((byte)RoleId.Glitch, CustomOptionHolder.GlitchSpawnRate.GetSelection());
             neutralKSettings.Add((byte)RoleId.Werewolf, CustomOptionHolder.WerewolfSpawnRate.GetSelection());
             neutralKSettings.Add((byte)RoleId.Juggernaut, CustomOptionHolder.JuggernautSpawnRate.GetSelection());
@@ -223,7 +224,8 @@ namespace TownOfSushi.Patches
                 SetRoleToRandomPlayer(rolesToAssign[roleType][index], players);
                 rolesToAssign[roleType].RemoveAt(index);
 
-                if (CustomOptionHolder.blockedRolePairings.ContainsKey(roleId)) {
+                if (CustomOptionHolder.blockedRolePairings.ContainsKey(roleId)) 
+                {
                     foreach(var blockedRoleId in CustomOptionHolder.blockedRolePairings[roleId]) 
                     {
                         // Set chance for the blocked roles to 0 for chances less than 100%
@@ -302,7 +304,7 @@ namespace TownOfSushi.Patches
             }
         }
 
-        private static void AssignRoleTargets(RoleAssignmentData data) 
+        public static void AssignRoleTargets(RoleAssignmentData data) 
         {
             // Set Lawyer or Prosecutor Target
             if (Lawyer.Player != null) 
@@ -341,7 +343,7 @@ namespace TownOfSushi.Patches
             }
         }
 
-        private static void AssignModifiers() 
+        public static void AssignModifiers() 
         {
             var modifierMin = CustomOptionHolder.modifiersCountMin.GetSelection();
             var modifierMax = CustomOptionHolder.modifiersCountMax.GetSelection();
@@ -418,7 +420,7 @@ namespace TownOfSushi.Patches
             AssignModifiersToPlayers(chanceModifierToAssign, players, modifierCount); // Assign chance modifier
         }
 
-        private static void AssignGuessers() 
+        public static void AssignGuessers() 
         {
             List<PlayerControl> impPlayer = PlayerControl.AllPlayerControls.ToArray().ToList().OrderBy(x => Guid.NewGuid()).ToList();
             List<PlayerControl> neutralPlayer = PlayerControl.AllPlayerControls.ToArray().ToList().OrderBy(x => Guid.NewGuid()).ToList();
@@ -525,7 +527,8 @@ namespace TownOfSushi.Patches
         private static int GetSelectionForRoleId(RoleId roleId, bool multiplyQuantity = false) 
         {
             int selection = 0;
-            switch (roleId) {
+            switch (roleId) 
+            {
                 case RoleId.Lover:
                     selection = CustomOptionHolder.modifierLover.GetSelection(); break;
                 case RoleId.Tiebreaker:

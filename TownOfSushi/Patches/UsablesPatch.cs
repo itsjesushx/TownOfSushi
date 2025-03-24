@@ -202,7 +202,7 @@ namespace TownOfSushi.Patches {
                     else if (PlayerControl.LocalPlayer == Warlock.Player)
                         Warlock.Player.killTimer = HudManagerStartPatch.warlockCurseButton.Timer = HudManagerStartPatch.warlockCurseButton.MaxTimer;
                     else if (PlayerControl.LocalPlayer == Mini.Player && Mini.Player.Data.Role.IsImpostor)
-                        Mini.Player.SetKillTimer(GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown * (Mini.IsGrownUp() ? 0.66f : 2f));
+                        Mini.Player.SetKillTimer(GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown * (Mini.IsGrownUp ? 0.66f : 2f));
                     else if (PlayerControl.LocalPlayer == Witch.witch)
                         Witch.witch.killTimer = HudManagerStartPatch.witchSpellButton.Timer = HudManagerStartPatch.witchSpellButton.MaxTimer;
                     else if (PlayerControl.LocalPlayer == Ninja.ninja)
@@ -737,7 +737,7 @@ namespace TownOfSushi.Patches {
                 nightVisionIsActive = false;
                 foreach (PlayerControl pc in PlayerControl.AllPlayerControls) 
                 {
-                    if (Camouflager.camouflageTimer > 0) 
+                    if (Camouflager.CamouflageTimer > 0) 
                     {
                         pc.SetLook("", 6, "", "", "", "", false);
                     } 

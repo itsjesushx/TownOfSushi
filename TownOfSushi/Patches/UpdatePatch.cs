@@ -94,18 +94,18 @@ namespace TownOfSushi.Patches
         {
             var localPlayer = PlayerControl.LocalPlayer;
             var localRole = RoleInfo.GetRoleInfoForPlayer(localPlayer, false).FirstOrDefault();
-            SetPlayerNameColor(localPlayer, localRole.color);
+            SetPlayerNameColor(localPlayer, localRole.Color);
             if (Jackal.Player != null && Jackal.Player == localPlayer) 
             {
                 // Jackal can see his sidekick
-                SetPlayerNameColor(Jackal.Player, Jackal.color);
+                SetPlayerNameColor(Jackal.Player, Jackal.Color);
                 if (Sidekick.Player != null) 
                 {
-                    SetPlayerNameColor(Sidekick.Player, Jackal.color);
+                    SetPlayerNameColor(Sidekick.Player, Jackal.Color);
                 }
                 if (Jackal.fakeSidekick != null) 
                 {
-                    SetPlayerNameColor(Jackal.fakeSidekick, Jackal.color);
+                    SetPlayerNameColor(Jackal.fakeSidekick, Jackal.Color);
                 }
             }
 
@@ -113,23 +113,24 @@ namespace TownOfSushi.Patches
             if (Sidekick.Player != null && Sidekick.Player == localPlayer) 
             {
                 // Sidekick can see the jackal
-                SetPlayerNameColor(Sidekick.Player, Sidekick.color);
+                SetPlayerNameColor(Sidekick.Player, Sidekick.Color);
                 if (Jackal.Player != null) {
-                    SetPlayerNameColor(Jackal.Player, Jackal.color);
+                    SetPlayerNameColor(Jackal.Player, Jackal.Color);
                 }
             }
 
             // No else if here, as the Impostors need the Spy name to be colored
-            if (Spy.Player != null && localPlayer.Data.Role.IsImpostor) {
-                SetPlayerNameColor(Spy.Player, Spy.color);
+            if (Spy.Player != null && localPlayer.Data.Role.IsImpostor) 
+            {
+                SetPlayerNameColor(Spy.Player, Spy.Color);
             }
             if (Sidekick.Player != null && Sidekick.wasTeamRed && localPlayer.Data.Role.IsImpostor) 
             {
-                SetPlayerNameColor(Sidekick.Player, Spy.color);
+                SetPlayerNameColor(Sidekick.Player, Spy.Color);
             }
             if (Jackal.Player != null && Jackal.wasTeamRed && localPlayer.Data.Role.IsImpostor) 
             {
-                SetPlayerNameColor(Jackal.Player, Spy.color);
+                SetPlayerNameColor(Jackal.Player, Spy.Color);
             }
 
             // Crewmate roles with no changes: Mini
@@ -161,7 +162,7 @@ namespace TownOfSushi.Patches
             // Lovers
             if (Lovers.Lover1 != null && Lovers.Lover2 != null && (Lovers.Lover1 == PlayerControl.LocalPlayer || Lovers.Lover2 == PlayerControl.LocalPlayer)) 
             {
-                string suffix = Helpers.ColorString(Lovers.color, " ♥");
+                string suffix = Helpers.ColorString(Lovers.Color, " ♥");
                 Lovers.Lover1.cosmetics.nameText.text += suffix;
                 Lovers.Lover2.cosmetics.nameText.text += suffix;
 
@@ -171,10 +172,34 @@ namespace TownOfSushi.Patches
                             player.NameText.text += suffix;
             }
 
+            // Plaguebearer infected players
+            if (Plaguebearer.Player != null && Plaguebearer.Player == PlayerControl.LocalPlayer) 
+            {
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                {
+                    if (Plaguebearer.InfectedPlayers.Contains(player))
+                    {
+                        string suffix = Helpers.ColorString(Plaguebearer.Color, " ♨");
+                        player.cosmetics.nameText.text += suffix;
+
+                        if (MeetingHud.Instance != null)
+                        {
+                            foreach (PlayerVoteArea voteArea in MeetingHud.Instance.playerStates)
+                            {
+                                if (voteArea.TargetPlayerId == player.PlayerId)
+                                {
+                                    voteArea.NameText.text += suffix;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
             // Lawyer or Prosecutor
             if ((Lawyer.Player != null && Lawyer.target != null && Lawyer.Player == PlayerControl.LocalPlayer)) 
             {
-                Color color = Lawyer.color;
+                Color color = Lawyer.Color;
                 PlayerControl target = Lawyer.target;
                 string suffix = Helpers.ColorString(color, " §");
                 target.cosmetics.nameText.text += suffix;
@@ -188,7 +213,7 @@ namespace TownOfSushi.Patches
             // Former Thief
             if (Thief.formerThief != null && (Thief.formerThief == PlayerControl.LocalPlayer || PlayerControl.LocalPlayer.Data.IsDead)) 
             {
-                string suffix = Helpers.ColorString(Thief.color, " $");
+                string suffix = Helpers.ColorString(Thief.Color, " $");
                 Thief.formerThief.cosmetics.nameText.text += suffix;
                 if (MeetingHud.Instance != null)
                     foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
@@ -211,8 +236,8 @@ namespace TownOfSushi.Patches
                 foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
                     if (player.TargetPlayerId == Medic.shielded.PlayerId) 
                     {
-                        player.NameText.text = Helpers.ColorString(Medic.color, "[") + player.NameText.text + Helpers.ColorString(Medic.color, "]");
-                        // player.HighlightedFX.color = Medic.color;
+                        player.NameText.text = Helpers.ColorString(Medic.Color, "[") + player.NameText.text + Helpers.ColorString(Medic.Color, "]");
+                        // player.HighlightedFX.color = Medic.Color;
                         // player.HighlightedFX.enabled = true;
                     }
             }
@@ -245,7 +270,7 @@ namespace TownOfSushi.Patches
 
         public static void MiniUpdate() 
         {
-            if (Mini.Player == null || Camouflager.camouflageTimer > 0f || Helpers.MushroomSabotageActive() || Mini.Player == Morphling.Player && Morphling.morphTimer > 0f || Mini.Player == Glitch.Player && Glitch.MimicTimer > 0f || Mini.Player == Ninja.ninja && Ninja.isInvisble || SurveillanceMinigamePatch.nightVisionIsActive) return;
+            if (Mini.Player == null || Camouflager.CamouflageTimer > 0f || Helpers.MushroomSabotageActive() || Mini.Player == Morphling.Player && Morphling.morphTimer > 0f || Mini.Player == Glitch.Player && Glitch.MimicTimer > 0f || Mini.Player == Ninja.ninja && Ninja.isInvisble || SurveillanceMinigamePatch.nightVisionIsActive) return;
                 
             float growingProgress = Mini.GrowingProgress();
             float scale = growingProgress * 0.35f + 0.35f;
@@ -319,7 +344,7 @@ namespace TownOfSushi.Patches
         static void UpdateMapButton(HudManager __instance) 
         {
             if (Trapper.Player == null || !(PlayerControl.LocalPlayer.PlayerId == Trapper.Player.PlayerId) || __instance == null || __instance.MapButton.HeldButtonSprite == null) return;
-            __instance.MapButton.HeldButtonSprite.color = Trapper.playersOnMap.Any() ? Trapper.color : Color.white;
+            __instance.MapButton.HeldButtonSprite.color = Trapper.playersOnMap.Any() ? Trapper.Color : Color.white;
         }
 
         static void Postfix(HudManager __instance)

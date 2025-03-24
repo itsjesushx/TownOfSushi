@@ -39,10 +39,11 @@ namespace TownOfSushi
         public string Format;
         public Action onChange = null;
         public string heading = "";
+        public bool invertedParent;
 
         // Option creation
 
-        public CustomOption(int id, CustomOptionType type, string name,  System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, Action onChange = null, string heading = "", string Format = "") 
+        public CustomOption(int id, CustomOptionType type, string name,  System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, Action onChange = null, string heading = "", string Format = "", bool invertedParent = false) 
         {
             this.id = id;
             this.name = parent == null ? name : "- " + name;
@@ -55,6 +56,7 @@ namespace TownOfSushi
             this.onChange = onChange;
             this.heading = heading;
             this.Format = Format;
+            this.invertedParent = invertedParent;
             selection = 0;
             if (id != 0) 
             {
@@ -64,22 +66,22 @@ namespace TownOfSushi
             options.Add(this);
         }
 
-        public static CustomOption Create(int id, CustomOptionType type, string name, string[] selections, CustomOption parent = null, bool isHeader = false, Action onChange = null, string heading = "") 
+        public static CustomOption Create(int id, CustomOptionType type, string name, string[] selections, CustomOption parent = null, bool isHeader = false, Action onChange = null, string heading = "", bool invertedParent = false) 
         {
-            return new CustomOption(id, type, name, selections, "", parent, isHeader, onChange, heading);
+            return new CustomOption(id, type, name, selections, "", parent, isHeader, onChange, heading, "", invertedParent);
         }
 
-        public static CustomOption Create(int id, CustomOptionType type, string name, float defaultValue, float min, float max, float step, CustomOption parent = null, bool isHeader = false, Action onChange = null, string heading = "", string Format = "") 
+        public static CustomOption Create(int id, CustomOptionType type, string name, float defaultValue, float min, float max, float step, CustomOption parent = null, bool isHeader = false, Action onChange = null, string heading = "", string Format = "", bool invertedParent = false) 
         {
             List<object> selections = new();
             for (float s = min; s <= max; s += step)
                 selections.Add(s);
-            return new CustomOption(id, type, name, selections.ToArray(), defaultValue, parent, isHeader, onChange, heading, Format);
+            return new CustomOption(id, type, name, selections.ToArray(), defaultValue, parent, isHeader, onChange, heading, Format, invertedParent);
         }
 
-        public static CustomOption Create(int id, CustomOptionType type, string name, bool defaultValue, CustomOption parent = null, bool isHeader = false, Action onChange = null, string heading = "") 
+        public static CustomOption Create(int id, CustomOptionType type, string name, bool defaultValue, CustomOption parent = null, bool isHeader = false, Action onChange = null, string heading = "", bool invertedParent = false) 
         {
-            return new CustomOption(id, type, name, new string[]{"Off", "On"}, defaultValue ? "On" : "Off", parent, isHeader, onChange, heading);
+            return new CustomOption(id, type, name, new string[]{"Off", "On"}, defaultValue ? "On" : "Off", parent, isHeader, onChange, heading, "", invertedParent);
         }
 
         // Static behaviour
@@ -100,6 +102,18 @@ namespace TownOfSushi
                 {
                     stringOption.oldValue = stringOption.Value = option.selection;
                     stringOption.ValueText.text = $"{option.selections[option.selection].ToString()}{option.Format}";
+                }
+            }
+            // make sure to reload all tabs, even the ones in the background, because they might have changed when the preset was switched!
+            if (AmongUsClient.Instance?.AmHost == true) 
+            {
+                foreach (var entry in GameOptionsMenuStartPatch.currentGOMs) 
+                {
+                    CustomOptionType optionType = (CustomOptionType)entry.Key;
+                    GameOptionsMenu gom = entry.Value;
+                    if (gom != null) {
+                        GameOptionsMenuStartPatch.UpdateGameOptionsMenu(optionType, gom);
+                    }
                 }
             }
         }
@@ -463,7 +477,8 @@ namespace TownOfSushi
 
             float num = 1.44f;
             int i = 0;
-            int singles = 0;
+            int singles = 1;
+            int numBonus = 0;
             int headers = 0;
             int lines = 0;
             var curType = CustomOptionType.Modifier;
@@ -473,7 +488,11 @@ namespace TownOfSushi
                 if (option.isHeader && (int)optionType != 99 || (int)optionType == 99 && curType != option.type) 
                 {
                     curType = option.type;
-                    if (i != 0) num -= 0.59f;
+                    if (i != 0) 
+                    {
+                        num -= 0.85f;
+                        numBonus++;
+                    }
                     if (i % 2 != 0) singles++;
                     headers++; // for header
                     CategoryHeaderMasked categoryHeaderMasked = UnityEngine.Object.Instantiate<CategoryHeaderMasked>(__instance.categoryHeaderOrigin);
@@ -488,7 +507,7 @@ namespace TownOfSushi
                     categoryHeaderMasked.transform.localScale = Vector3.one;
                     categoryHeaderMasked.transform.localPosition = new Vector3(-9.77f, num, -2f);
                     __instance.settingsInfo.Add(categoryHeaderMasked.gameObject);
-                    num -= 0.85f;
+                    num -= 1.05f;
                     i = 0;
                 } 
                 else if (option.parent != null && (option.parent.selection == 0 || option.parent.parent != null && option.parent.parent.selection == 0)) continue;  // Hides options, for which the parent is disabled!
@@ -505,7 +524,7 @@ namespace TownOfSushi
                     num2 = -8.95f;
                     if (i > 0) 
                     {
-                        num -= 0.59f;
+                        num -= 0.85f;
                     }
                 } 
                 else 
@@ -532,8 +551,8 @@ namespace TownOfSushi
 
                 i++;
             }
-            float actual_spacing = (headers * 0.85f + lines * 0.59f) / (headers + lines);
-            __instance.scrollBar.CalculateAndSetYBounds((float)(__instance.settingsInfo.Count + singles * 2 + headers), 2f, 6f, actual_spacing);
+            float actual_spacing = (headers * 1.05f + lines * 0.85f) / (headers + lines) * 1.01f;
+            __instance.scrollBar.CalculateAndSetYBounds((float)(__instance.settingsInfo.Count + singles * 2 + headers), 2f, 5f, actual_spacing);
 
         }
 
@@ -634,6 +653,7 @@ namespace TownOfSushi
     {
         public static List<GameObject> currentTabs = new();
         public static List<PassiveButton> currentButtons = new();
+        public static Dictionary<byte, GameOptionsMenu> currentGOMs = new();
 
         public static void Postfix(GameSettingMenu __instance) 
         {
@@ -641,6 +661,7 @@ namespace TownOfSushi
             currentButtons.ForEach(x => x?.Destroy());
             currentTabs = new();
             currentButtons = new();
+            currentGOMs.Clear();
 
             if (GameOptionsManager.Instance.currentGameOptions.GameMode == GameModes.HideNSeek) return;
 
@@ -723,7 +744,8 @@ namespace TownOfSushi
                     categoryHeaderMasked.transform.localScale = Vector3.one * 0.63f;
                     categoryHeaderMasked.transform.localPosition = new Vector3(-0.903f, num, -2f);
                     num -= 0.63f;
-                } else if (option.parent != null && (option.parent.selection == 0 || option.parent.parent != null && option.parent.parent.selection == 0)) continue;  // Hides options, for which the parent is disabled!
+                } else if (option.parent != null && (option.parent.selection == 0 && !option.invertedParent || option.parent.parent != null && option.parent.parent.selection == 0 && !option.parent.invertedParent)) continue;  // Hides options, for which the parent is disabled!
+                else if (option.parent != null && option.parent.selection != 0 && option.invertedParent) continue;
                 OptionBehaviour optionBehaviour = UnityEngine.Object.Instantiate<StringOption>(menu.stringOptionOrigin, Vector3.zero, Quaternion.identity, menu.settingsContainer);
                 optionBehaviour.transform.localPosition = new Vector3(0.952f, num, -2f);
                 optionBehaviour.SetClickMask(menu.ButtonClickMask);
@@ -818,6 +840,7 @@ namespace TownOfSushi
 
             currentTabs.Add(torSettingsTab);
             torSettingsTab.SetActive(false);
+            currentGOMs.Add((byte)optionType, torSettingsGOM);
         }
 
         public static void UpdateGameOptionsMenu(CustomOptionType optionType, GameOptionsMenu torSettingsGOM) 
@@ -982,11 +1005,11 @@ namespace TownOfSushi
                     if (type == CustomOptionType.Modifier) line += BuildModifierExtras(option);
                     sb.AppendLine(line);
                 }
-                else if (option.parent.GetSelection() > 0) {
+                else if (option.parent.GetSelection() > 0 || option.invertedParent && option.parent.GetSelection() == 0) {
                     if (option.id == 224) //Sidekick
-                        sb.AppendLine($"- {Helpers.ColorString(Sidekick.color, "Sidekick")}: {option.selections[option.selection].ToString()}");
+                        sb.AppendLine($"- {Helpers.ColorString(Sidekick.Color, "Sidekick")}: {option.selections[option.selection].ToString()}");
                     else if (option.id == 358) //Prosecutor
-                        sb.AppendLine($"- {Helpers.ColorString(Lawyer.color, "Prosecutor")}: {option.selections[option.selection].ToString()}");
+                        sb.AppendLine($"- {Helpers.ColorString(Lawyer.Color, "Prosecutor")}: {option.selections[option.selection].ToString()}");
                 }
             }
             if (headerOnly) return sb.ToString();
@@ -996,7 +1019,7 @@ namespace TownOfSushi
             {
                 if (option.parent != null) 
                 {
-                    bool isIrrelevant = option.parent.GetSelection() == 0 || (option.parent.parent != null && option.parent.parent.GetSelection() == 0);
+                    bool isIrrelevant = (option.parent.GetSelection() == 0 && !option.invertedParent) || (option.parent.parent != null && option.parent.parent.GetSelection() == 0 && !option.parent.invertedParent);
 
                     Color c = isIrrelevant ? Color.grey : Color.white;  // No use for now
                     if (isIrrelevant) continue;
@@ -1193,7 +1216,7 @@ namespace TownOfSushi
             return true;
         }
 
-        public static void addKillDistance()
+        public static void AddKillDistance()
         {
             GameOptionsData.KillDistances = new(new float[] { 0.5f, 1f, 1.8f, 2.5f });
             GameOptionsData.KillDistanceStrings = new(new string[] { "Very Short", "Short", "Medium", "Long" });
@@ -1201,7 +1224,8 @@ namespace TownOfSushi
 
         [HarmonyPatch(typeof(StringGameSetting), nameof(StringGameSetting.GetValueString))]
         [HarmonyPrefix]
-        public static bool AjdustStringForViewPanel(StringGameSetting __instance, float value, ref string __result) {
+        public static bool AjdustStringForViewPanel(StringGameSetting __instance, float value, ref string __result) 
+        {
             if (__instance.OptionName != Int32OptionNames.KillDistance) return true;
             __result = GameOptionsData.KillDistanceStrings[(int)value];
             return false;
@@ -1252,6 +1276,8 @@ namespace TownOfSushi
             }
             if (Input.GetKeyDown(KeyCode.F1) && !LobbyBehaviour.Instance)
                 HudManagerUpdate.ToggleSettings(HudManager.Instance);
+            if (Input.GetKeyDown(KeyCode.F2) && LobbyBehaviour.Instance)
+                HudManagerUpdate.ToggleSummary(HudManager.Instance);
             if (TownOfSushiPlugin.optionsPage >= GameOptionsDataPatch.maxPage) TownOfSushiPlugin.optionsPage = 0;
         }
     }
@@ -1272,7 +1298,8 @@ namespace TownOfSushi
         private static float lastAspect;
         private static bool setLastPosition = false;
 
-        public static void Prefix(HudManager __instance) {
+        public static void Prefix(HudManager __instance) 
+        {
             if (GameSettings?.transform == null) return;
 
             // Sets the MinX position to the left edge of the screen + 0.1 units
@@ -1377,6 +1404,11 @@ namespace TownOfSushi
         public static void OpenSettings(HudManager __instance) 
         {
             if (__instance.FullScreen == null || MapBehaviour.Instance && MapBehaviour.Instance.IsOpen) return;
+            
+            if (summaryTMP) 
+            {
+                CloseSummary();
+            }
             settingsBackground = GameObject.Instantiate(__instance.FullScreen.gameObject, __instance.transform);
             settingsBackground.SetActive(true);
             var renderer = settingsBackground.GetComponent<SpriteRenderer>();
@@ -1405,12 +1437,59 @@ namespace TownOfSushi
             if (settingsTMPs[0]) CloseSettings();
             else OpenSettings(__instance);
         }
+        [HarmonyPrefix]
+        public static void Prefix3(HudManager __instance) {
+            if (!summaryTMP) return;
+            summaryTMP.text = Helpers.PreviousEndGameSummary;
+
+            summaryTMP.transform.localPosition = new Vector3(- 3 * 1.2f, 2.2f, -500f);
+
+        }
+
+        private static TMPro.TextMeshPro summaryTMP = null;
+        private static GameObject summaryBackground;
+        public static void OpenSummary(HudManager __instance) 
+        {
+            if (__instance.FullScreen == null || MapBehaviour.Instance && MapBehaviour.Instance.IsOpen || Helpers.PreviousEndGameSummary.IsNullOrWhiteSpace()) return;
+            if (settingsTMPs[0]) {
+                CloseSettings();
+            }
+            summaryBackground = GameObject.Instantiate(__instance.FullScreen.gameObject, __instance.transform);
+            summaryBackground.SetActive(true);
+            var renderer = summaryBackground.GetComponent<SpriteRenderer>();
+            renderer.color = new Color(0.2f, 0.2f, 0.2f, 0.9f);
+            renderer.enabled = true;
+
+
+            summaryTMP = GameObject.Instantiate(__instance.KillButton.cooldownTimerText, __instance.transform);
+            summaryTMP.alignment = TMPro.TextAlignmentOptions.TopLeft;
+            summaryTMP.enableWordWrapping = false;
+            summaryTMP.transform.localScale = Vector3.one * 0.3f; 
+            summaryTMP.gameObject.SetActive(true);
+
+        }
+
+        public static void CloseSummary() 
+        {
+            summaryTMP?.gameObject.Destroy();
+            summaryTMP = null;
+            if (summaryBackground) summaryBackground.Destroy();
+        }
+
+        public static void ToggleSummary(HudManager __instance) 
+        {
+            if (summaryTMP) CloseSummary();
+            else OpenSummary(__instance);
+        }
 
         static PassiveButton toggleSettingsButton;
         static GameObject toggleSettingsButtonObject;
 
         static PassiveButton toggleRoleInfo;
         static GameObject toggleRoleInfoButtonObject;
+
+        static PassiveButton toggleSummaryButton;
+        static GameObject toggleSummaryButtonObject;
 
         static GameObject toggleZoomButtonObject;
         static PassiveButton toggleZoomButton;
@@ -1478,6 +1557,39 @@ namespace TownOfSushi
             toggleZoomButtonObject.SetActive(zoomButtonActive);
             var posOffset = Helpers.zoomOutStatus ? new Vector3(-1.27f, -7.92f, -52f) : new Vector3(0, -1.6f, -52f);
             toggleZoomButtonObject.transform.localPosition = HudManager.Instance.MapButton.transform.localPosition + posOffset;
+        }
+
+        [HarmonyPostfix]
+        public static void Postfix2(HudManager __instance) 
+        {
+            if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started) 
+            {
+                if (toggleSummaryButtonObject != null) 
+                {
+                    toggleSummaryButtonObject.SetActive(false);
+                    toggleSummaryButtonObject.Destroy();
+                    toggleSummaryButton.Destroy();
+                }
+                return;
+            }
+            if (!toggleSummaryButton || !toggleSummaryButtonObject) 
+            {
+                // add a special button for settings viewing:
+                toggleSummaryButtonObject = GameObject.Instantiate(__instance.MapButton.gameObject, __instance.MapButton.transform.parent);
+                toggleSummaryButtonObject.transform.localPosition = __instance.MapButton.transform.localPosition + new Vector3(0, -1.25f, -500f);
+                toggleSummaryButtonObject.name = "TOGGLESUMMARYSBUTTON";
+                SpriteRenderer renderer = toggleSummaryButtonObject.transform.Find("Inactive").GetComponent<SpriteRenderer>();
+                SpriteRenderer rendererActive = toggleSummaryButtonObject.transform.Find("Active").GetComponent<SpriteRenderer>();
+                toggleSummaryButtonObject.transform.Find("Background").localPosition = Vector3.zero;
+                renderer.sprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.Endscreen.png", 100f);
+                rendererActive.sprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.EndscreenActive.png", 100f);
+                toggleSummaryButton = toggleSummaryButtonObject.GetComponent<PassiveButton>();
+                toggleSummaryButton.OnClick.RemoveAllListeners();
+                toggleSummaryButton.OnClick.AddListener((Action)(() => ToggleSummary(__instance)));
+            }
+            toggleSummaryButtonObject.SetActive(__instance.SettingsButton.gameObject.active && LobbyBehaviour.Instance && !Helpers.PreviousEndGameSummary.IsNullOrWhiteSpace() && GameOptionsManager.Instance.currentGameOptions.GameMode != GameModes.HideNSeek 
+                && AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started);
+            toggleSummaryButtonObject.transform.localPosition = __instance.SettingsButton.transform.localPosition + new Vector3(-1.45f, 0.03f, -500f);
         }
     }
 }

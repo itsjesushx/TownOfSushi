@@ -180,20 +180,22 @@ namespace TownOfSushi
             }
         }
 
+        public static string PreviousEndGameSummary = "";
+
         internal static string GetRoleString(RoleInfo roleInfo)
         {
-            if (roleInfo.name == "Jackal") 
+            if (roleInfo.Name == "Jackal") 
             {
                 var getSidekickText = Jackal.canCreateSidekick ? " and recruit a Sidekick" : "";
-                return ColorString(roleInfo.color, $"{roleInfo.name}: Kill everyone{getSidekickText}");  
+                return ColorString(roleInfo.Color, $"{roleInfo.Name}: Kill everyone{getSidekickText}");  
             }
 
-            if (roleInfo.name == "Invert") 
+            if (roleInfo.Name == "Invert") 
             {
-                return ColorString(roleInfo.color, $"{roleInfo.name}: {roleInfo.shortDescription} ({Invert.meetings})");
+                return ColorString(roleInfo.Color, $"{roleInfo.Name}: {roleInfo.ShortDescription} ({Invert.meetings})");
             }
             
-            return ColorString(roleInfo.color, $"{roleInfo.name}: {roleInfo.shortDescription}");
+            return ColorString(roleInfo.Color, $"{roleInfo.Name}: {roleInfo.ShortDescription}");
         }
 
         public static bool IsD(byte playerId) 
@@ -376,7 +378,7 @@ namespace TownOfSushi
 
         public static bool HidePlayerName(PlayerControl source, PlayerControl target) 
         {
-            if (Camouflager.camouflageTimer > 0f || Helpers.MushroomSabotageActive()) return true; // No names are visible
+            if (Camouflager.CamouflageTimer > 0f || Helpers.MushroomSabotageActive()) return true; // No names are visible
             if (Patches.SurveillanceMinigamePatch.nightVisionIsActive) return true;
             else if (Ninja.isInvisble && Ninja.ninja == target) return true;
             else if (!MapOptions.hidePlayerNames) return false; // All names are visible
@@ -437,7 +439,7 @@ namespace TownOfSushi
             Chameleon.Update();  // so that morphling and camo wont make the chameleons visible
         }
 
-        public static void ShowFlash(Color color, float duration=1f, string message="") 
+        public static void ShowFlash(Color color, float Duration=1f, string message="") 
         {
             if (FastDestroyableSingleton<HudManager>.Instance == null || FastDestroyableSingleton<HudManager>.Instance.FullScreen == null) return;
             FastDestroyableSingleton<HudManager>.Instance.FullScreen.gameObject.SetActive(true);
@@ -449,7 +451,7 @@ namespace TownOfSushi
             messageText.transform.localScale = Vector3.one * 0.5f;
             messageText.transform.localPosition += new Vector3(0f, 2f, -69f);
             messageText.gameObject.SetActive(true);
-            FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(duration, new Action<float>((p) => {
+            FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(Duration, new Action<float>((p) => {
                 var renderer = FastDestroyableSingleton<HudManager>.Instance.FullScreen;
 
                 if (p < 0.5) {
@@ -471,6 +473,8 @@ namespace TownOfSushi
             else if (Jackal.canUseVents && Jackal.Player != null && Jackal.Player == player)
                 isVenter = true;
             else if (VengefulRomantic.CanUseVents && VengefulRomantic.Player != null && VengefulRomantic.Player == player)
+                isVenter = true;
+            else if (Pestilence.CanUseVents && Pestilence.Player != null && Pestilence.Player == player)
                 isVenter = true;
             else if (Werewolf.CanUseVents && Werewolf.Player != null && Werewolf.Player == player)
                 isVenter = true;
@@ -554,7 +558,7 @@ namespace TownOfSushi
             }
 
             // murder whoever tries to kill the fortified player.
-            if (!ignoreMedic && Crusader.FortifiedPlayer != null && Crusader.FortifiedPlayer == target) 
+            if (Crusader.FortifiedPlayer != null && Crusader.FortifiedPlayer == target && Crusader.Player != null && !Crusader.Player.Data.IsDead) 
             {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(killer.NetId, (byte)CustomRPC.FortifiedMurderAttempt, SendOption.Reliable, -1);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -564,7 +568,7 @@ namespace TownOfSushi
             }
 
             // Block impostor not fully grown mini kill
-            else if (Mini.Player != null && target == Mini.Player && !Mini.IsGrownUp()) 
+            else if (Mini.Player != null && target == Mini.Player && !Mini.IsGrownUp) 
             {
                 return MurderAttemptResult.SuppressKill;
             }
@@ -589,6 +593,18 @@ namespace TownOfSushi
 
             //Veteran with alert active
             else if (Veteran.Player != null && Veteran.AlertActive && Veteran.Player == target) 
+            {
+                if (Medic.shielded != null && Medic.shielded == target)
+                {
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(killer.NetId, (byte)CustomRPC.ShieldedMurderAttempt, SendOption.Reliable, -1);
+                    writer.Write(target.PlayerId);
+                    AmongUsClient.Instance.FinishRpcImmediately(writer);
+                    RPCProcedure.ShieldedMurderAttempt();
+                }
+                return MurderAttemptResult.MirrorKill;
+            }
+
+            else if (Pestilence.Player != null && Pestilence.Player == target)
             {
                 if (Medic.shielded != null && Medic.shielded == target)
                 {
@@ -767,8 +783,8 @@ namespace TownOfSushi
                 if (role == null) return;
                 
                 var stringb = new StringBuilder();
-                stringb.Append(ColorString(roleInfo.color, $"{roleInfo.name} Description:\n"));
-                stringb.Append(ColorString(roleInfo.color, $"{roleInfo.RoleDescription}\n\n"));
+                stringb.Append(ColorString(roleInfo.Color, $"{roleInfo.Name} Description:\n"));
+                stringb.Append(ColorString(roleInfo.Color, $"{roleInfo.RoleDescription}\n\n"));
                 
                 FastDestroyableSingleton<HudManager>.Instance.ShowPopUp(stringb.ToString());
                 SoundEffectsManager.Play("knockKnock");
@@ -818,6 +834,7 @@ namespace TownOfSushi
                 || (Glitch.Player != null && Glitch.Player.PlayerId == player.PlayerId)
                 || (Werewolf.Player != null && Werewolf.Player.PlayerId == player.PlayerId)
                 || (Juggernaut.Player != null && Juggernaut.Player.PlayerId == player.PlayerId)
+                || (Pestilence.Player != null && Pestilence.Player.PlayerId == player.PlayerId)
                 || (VengefulRomantic.Player != null && VengefulRomantic.Player.PlayerId == player.PlayerId)
                 || (SerialKiller.Player != null && SerialKiller.HasImpostorVision && SerialKiller.Player.PlayerId == player.PlayerId)
                 || (Spy.Player != null && Spy.Player.PlayerId == player.PlayerId && Spy.hasImpostorVision)

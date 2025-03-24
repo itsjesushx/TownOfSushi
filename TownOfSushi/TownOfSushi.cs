@@ -50,6 +50,7 @@ namespace TownOfSushi
             Spy.ClearAndReload();
             Trickster.ClearAndReload();
             Cleaner.ClearAndReload();
+            Pestilence.ClearAndReload();
             Warlock.ClearAndReload();
             Veteran.ClearAndReload();
             Vigilante.ClearAndReload();
@@ -60,7 +61,8 @@ namespace TownOfSushi
             Vulture.ClearAndReload();
             Medium.ClearAndReload();
             Oracle.ClearAndReload();
-            Crusader.ClearAnndReload();
+            Crusader.ClearAndReload();
+            Plaguebearer.ClearAndReload();
             Lawyer.ClearAndReload();
             Pursuer.ClearAndReload();
             Witch.ClearAndReload();
@@ -91,8 +93,8 @@ namespace TownOfSushi
         public static class Jester 
         {
             public static PlayerControl Player;
-            public static Color color = new Color32(236, 98, 165, byte.MaxValue);
-            public static bool triggerJesterWin = false;
+            public static Color Color = new Color32(236, 98, 165, byte.MaxValue);
+            public static bool IsJesterWin = false;
             public static bool canCallEmergency = true;
             public static bool hasImpostorVision = false;
             public static bool CanUseVents;
@@ -102,7 +104,7 @@ namespace TownOfSushi
                 Player = null;
                 CanUseVents = CustomOptionHolder.jesterCanHideInVents.GetBool();
                 CanMoveInVents = CustomOptionHolder.jesterCanMoveInVents.GetBool();
-                triggerJesterWin = false;
+                IsJesterWin = false;
                 canCallEmergency = CustomOptionHolder.jesterCanCallEmergency.GetBool();
                 hasImpostorVision = CustomOptionHolder.jesterHasImpostorVision.GetBool();
             }
@@ -112,7 +114,7 @@ namespace TownOfSushi
             public static PlayerControl Player;
             public static PlayerControl CurrentTarget;
             public static bool HasImpostorVision;
-            public static Color color = new Color32(51, 110, 255, byte.MaxValue);           
+            public static Color Color = new Color32(51, 110, 255, byte.MaxValue);           
             public static float StabCooldown;
             public static float StabDuration;
             public static float StabKillCooldown;
@@ -141,9 +143,9 @@ namespace TownOfSushi
         public static class Portalmaker 
         {
             public static PlayerControl Player;
-            public static Color color = new Color32(69, 69, 169, byte.MaxValue);
+            public static Color Color = new Color32(69, 69, 169, byte.MaxValue);
 
-            public static float cooldown;
+            public static float Cooldown;
             public static float usePortalCooldown;
             public static bool logOnlyHasColors;
             public static bool logShowsTime;
@@ -192,7 +194,7 @@ namespace TownOfSushi
             public static void ClearAndReload() 
             {
                 Player = null;
-                cooldown = CustomOptionHolder.portalmakerCooldown.GetFloat();
+                Cooldown = CustomOptionHolder.portalmakerCooldown.GetFloat();
                 usePortalCooldown = CustomOptionHolder.portalmakerUsePortalCooldown.GetFloat();
                 logOnlyHasColors = CustomOptionHolder.portalmakerLogOnlyColorType.GetBool();
                 logShowsTime = CustomOptionHolder.portalmakerLogHasTime.GetBool();
@@ -203,7 +205,7 @@ namespace TownOfSushi
         public static class Amnesiac
         {
             public static PlayerControl Player;
-            public static Color color = new Color32(34, 255, 255, byte.MaxValue);
+            public static Color Color = new Color32(34, 255, 255, byte.MaxValue);
             public static List<Arrow> AmnesiacArrows = new List<Arrow>();
             public static bool Remembered;
             private static Sprite ButtonSprite;
@@ -232,7 +234,7 @@ namespace TownOfSushi
         public static class Mayor 
         {
             public static PlayerControl Player;
-            public static Color color = new Color32(32, 77, 66, byte.MaxValue);
+            public static Color Color = new Color32(32, 77, 66, byte.MaxValue);
             public static Minigame emergency = null;
             public static Sprite emergencySprite = null;
             public static int remoteMeetingsLeft = 1;
@@ -268,7 +270,7 @@ namespace TownOfSushi
         public static class Engineer 
         {
             public static PlayerControl Player;
-            public static Color color = new Color32(0, 40, 245, byte.MaxValue);
+            public static Color Color = new Color32(0, 40, 245, byte.MaxValue);
 
             public static int remainingFixes = 1;           
             public static bool highlightForImpostors = true;
@@ -294,7 +296,7 @@ namespace TownOfSushi
         public static class Godfather 
         {
             public static PlayerControl Player;
-            public static Color color = Palette.ImpostorRed;
+            public static Color Color = Palette.ImpostorRed;
 
             public static void ClearAndReload() 
             {
@@ -305,7 +307,7 @@ namespace TownOfSushi
         public static class Mafioso 
         {
             public static PlayerControl Player;
-            public static Color color = Palette.ImpostorRed;
+            public static Color Color = Palette.ImpostorRed;
 
             public static void ClearAndReload() 
             {
@@ -317,9 +319,9 @@ namespace TownOfSushi
         public static class Janitor 
         {
             public static PlayerControl Player;
-            public static Color color = Palette.ImpostorRed;
+            public static Color Color = Palette.ImpostorRed;
 
-            public static float cooldown = 30f;
+            public static float Cooldown = 30f;
 
             private static Sprite buttonSprite;
             public static Sprite GetButtonSprite()
@@ -332,15 +334,15 @@ namespace TownOfSushi
             public static void ClearAndReload() 
             {
                 Player = null;
-                cooldown = CustomOptionHolder.janitorCooldown.GetFloat();
+                Cooldown = CustomOptionHolder.janitorCooldown.GetFloat();
             }
         }
 
         public static class Sheriff 
         {
             public static PlayerControl Player;
-            public static Color color = new Color32(248, 205, 70, byte.MaxValue);
-            public static float cooldown = 30f;
+            public static Color Color = new Color32(248, 205, 70, byte.MaxValue);
+            public static float Cooldown = 30f;
             public static bool canKillNeutrals = false;
             public static bool spyCanDieToSheriff = false;
 
@@ -349,7 +351,7 @@ namespace TownOfSushi
             {
                 Player = null;
                 CurrentTarget = null;
-                cooldown = CustomOptionHolder.sheriffCooldown.GetFloat();
+                Cooldown = CustomOptionHolder.sheriffCooldown.GetFloat();
                 canKillNeutrals = CustomOptionHolder.sheriffCanKillNeutrals.GetBool();
                 spyCanDieToSheriff = CustomOptionHolder.spyCanDieToSheriff.GetBool();
             }
@@ -358,7 +360,7 @@ namespace TownOfSushi
         public static class Glitch
         {
             public static PlayerControl Player;
-            public static Color color = Color.green;
+            public static Color Color = Color.green;
             public static PlayerControl CurrentTarget;
             public static bool canEnterVents;
             public static float KillCooldown;
@@ -463,7 +465,7 @@ namespace TownOfSushi
         public static class Lighter 
         {
             public static PlayerControl Player;
-            public static Color color = new Color32(238, 229, 190, byte.MaxValue);
+            public static Color Color = new Color32(238, 229, 190, byte.MaxValue);
             
             public static float lighterModeLightsOnVision = 2f;
             public static float lighterModeLightsOffVision = 0.75f;
@@ -481,7 +483,7 @@ namespace TownOfSushi
         public static class Detective 
         {
             public static PlayerControl Player;
-            public static Color color = new Color32(45, 106, 165, byte.MaxValue);
+            public static Color Color = new Color32(45, 106, 165, byte.MaxValue);
 
             public static float footprintIntervall = 1f;
             public static float footprintDuration = 1f;
@@ -506,12 +508,12 @@ namespace TownOfSushi
     public static class TimeMaster 
     {
         public static PlayerControl Player;
-        public static Color color = new Color32(112, 142, 239, byte.MaxValue);
+        public static Color Color = new Color32(112, 142, 239, byte.MaxValue);
 
         public static bool reviveDuringRewind = false;
         public static float rewindTime = 3f;
         public static float shieldDuration = 3f;
-        public static float cooldown = 30f;
+        public static float Cooldown = 30f;
 
         public static bool shieldActive = false;
         public static bool isRewinding = false;
@@ -531,7 +533,7 @@ namespace TownOfSushi
             shieldActive = false;
             rewindTime = CustomOptionHolder.timeMasterRewindTime.GetFloat();
             shieldDuration = CustomOptionHolder.timeMasterShieldDuration.GetFloat();
-            cooldown = CustomOptionHolder.timeMasterCooldown.GetFloat();
+            Cooldown = CustomOptionHolder.timeMasterCooldown.GetFloat();
         }
     }
 
@@ -541,7 +543,7 @@ namespace TownOfSushi
         public static PlayerControl shielded;
         public static PlayerControl futureShielded;
         
-        public static Color color = new Color32(126, 251, 194, byte.MaxValue);
+        public static Color Color = new Color32(126, 251, 194, byte.MaxValue);
         public static bool usedShield;
 
         public static int showShielded = 0;
@@ -598,7 +600,7 @@ namespace TownOfSushi
     public static class Swapper 
     {
         public static PlayerControl Player;
-        public static Color color = new Color32(134, 55, 86, byte.MaxValue);
+        public static Color Color = new Color32(134, 55, 86, byte.MaxValue);
         private static Sprite spriteCheck;
         public static bool canCallEmergency = false;
         public static bool canOnlySwapOthers = false;
@@ -633,7 +635,7 @@ namespace TownOfSushi
     {
         public static PlayerControl Lover1;
         public static PlayerControl Lover2;
-        public static Color color = new Color32(232, 57, 185, byte.MaxValue);
+        public static Color Color = new Color32(232, 57, 185, byte.MaxValue);
 
         public static bool bothDie = true;
         public static bool enableChat = true;
@@ -695,7 +697,7 @@ namespace TownOfSushi
     {
         public static bool Investigated;
         public static PlayerControl Player;
-        public static Color color = new Color32(77, 154, 230, byte.MaxValue);
+        public static Color Color = new Color32(77, 154, 230, byte.MaxValue);
         public static List<Vector3> deadBodyPositions = new List<Vector3>();
         public static PlayerControl CurrentTarget;
         public static float Cooldown;
@@ -719,50 +721,50 @@ namespace TownOfSushi
             foreach (RoleInfo roleInfo in role) 
             {
 
-                if (roleInfo.roleId == RoleId.Jester || roleInfo.roleId == RoleId.Prosecutor 
-                ||roleInfo.roleId == RoleId.Mayor || roleInfo.roleId == RoleId.Ninja 
-                ||roleInfo.roleId == RoleId.Swapper || roleInfo.roleId == RoleId.Spy)
+                if (roleInfo.RoleId == RoleId.Jester || roleInfo.RoleId == RoleId.Prosecutor 
+                ||roleInfo.RoleId == RoleId.Mayor || roleInfo.RoleId == RoleId.Ninja 
+                ||roleInfo.RoleId == RoleId.Swapper || roleInfo.RoleId == RoleId.Spy)
                 {
                     message =  "They will never know that I have a trick up my sleeve! \n\n(Jester, Mayor, Prosecutor, Ninja or Swapper)";
                 }
 
-                else if (roleInfo.roleId == RoleId.Witch || roleInfo.roleId == RoleId.Tracker && !Tracker.canTrackCorpses ||
-                roleInfo.roleId == RoleId.Trapper || roleInfo.roleId == RoleId.Detective ||roleInfo.roleId == RoleId.Hacker)
+                else if (roleInfo.RoleId == RoleId.Witch || roleInfo.RoleId == RoleId.Tracker && !Tracker.canTrackCorpses ||
+                roleInfo.RoleId == RoleId.Trapper || roleInfo.RoleId == RoleId.Detective ||roleInfo.RoleId == RoleId.Hacker)
                 {
                     message =  "Hmm, this player must be bad, but I can't share my info or I will be guessed! \n\n(Witch, Tracker, Trapper, Hacker or Detective)";
                 }
                 
-                else if (roleInfo.roleId == RoleId.Morphling || roleInfo.roleId == RoleId.Medium ||
-                roleInfo.roleId == RoleId.Glitch || roleInfo.roleId == RoleId.Engineer || roleInfo.roleId == RoleId.Snitch)
+                else if (roleInfo.RoleId == RoleId.Morphling || roleInfo.RoleId == RoleId.Medium ||
+                roleInfo.RoleId == RoleId.Glitch || roleInfo.RoleId == RoleId.Engineer || roleInfo.RoleId == RoleId.Snitch)
                 {
                     message =  "Why is everything in my reality so weird looking?! \n\n(Glitch, Morphling, Snitch, Medium or Engineer)";
                 }
                 
-                else if (roleInfo.roleId == RoleId.Vulture || roleInfo.roleId == RoleId.Tracker && Tracker.canTrackCorpses ||
-                roleInfo.roleId == RoleId.Cleaner || roleInfo.roleId == RoleId.Janitor)
+                else if (roleInfo.RoleId == RoleId.Vulture || roleInfo.RoleId == RoleId.Tracker && Tracker.canTrackCorpses ||
+                roleInfo.RoleId == RoleId.Cleaner || roleInfo.RoleId == RoleId.Janitor)
                 {
                     message =  "BODIES?? WHERE?! I NEED ONE NOW! \n\n(Cleaner, Vulture, Tracker or Janitor)";
                 }
 
-                else if (roleInfo.roleId == RoleId.Sheriff ||  roleInfo.roleId == RoleId.Godfather || roleInfo.roleId == RoleId.Veteran || roleInfo.roleId == RoleId.BountyHunter || 
-                roleInfo.roleId == RoleId.Warlock || roleInfo.roleId == RoleId.Vampire ||roleInfo.roleId == RoleId.Sidekick || roleInfo.roleId == RoleId.Jackal)
+                else if (roleInfo.RoleId == RoleId.Sheriff ||  roleInfo.RoleId == RoleId.Godfather || roleInfo.RoleId == RoleId.Veteran || roleInfo.RoleId == RoleId.BountyHunter || 
+                roleInfo.RoleId == RoleId.Warlock || roleInfo.RoleId == RoleId.Vampire ||roleInfo.RoleId == RoleId.Sidekick || roleInfo.RoleId == RoleId.Jackal)
                 {
                     message =  "I've been nearby too many kills! They must think I'm evil. \n\n(Sheriff, Warlock, Jackal, Sidekick, Godfather, Bounty Hunter, Vampire or Veteran)";
                 }
                     
-                else if (roleInfo.roleId == RoleId.Lawyer || roleInfo.roleId == RoleId.TimeMaster || roleInfo.roleId == RoleId.Vigilante ||
-                roleInfo.roleId == RoleId.Medic || roleInfo.roleId == RoleId.Mafioso || roleInfo.roleId == RoleId.Pursuer || roleInfo.roleId == RoleId.Romantic)
+                else if (roleInfo.RoleId == RoleId.Lawyer || roleInfo.RoleId == RoleId.TimeMaster || roleInfo.RoleId == RoleId.Vigilante ||
+                roleInfo.RoleId == RoleId.Medic || roleInfo.RoleId == RoleId.Crusader || roleInfo.RoleId == RoleId.Mafioso || roleInfo.RoleId == RoleId.Pursuer || roleInfo.RoleId == RoleId.Romantic)
                 {
-                    message =  "I'm scared. I'm going to hide and protect myself or others! \n\n(Medic, Romantic, Vigilante, Lawyer, Time Master, Mafioso or Pursuer)";
+                    message =  "I'm scared. I'm going to hide and protect myself or others! \n\n(Medic, Crusader, Romantic, Vigilante, Lawyer, Time Master, Mafioso or Pursuer)";
                 }
                 
-                else if (roleInfo.roleId == RoleId.Arsonist || roleInfo.roleId == RoleId.Camouflager || roleInfo.roleId == RoleId.Portalmaker ||
-                roleInfo.roleId == RoleId.Thief ||  roleInfo.roleId == RoleId.Lighter || roleInfo.roleId == RoleId.Trickster)
+                else if (roleInfo.RoleId == RoleId.Arsonist || roleInfo.RoleId == RoleId.Camouflager || roleInfo.RoleId == RoleId.Portalmaker ||
+                roleInfo.RoleId == RoleId.Thief ||  roleInfo.RoleId == RoleId.Lighter || roleInfo.RoleId == RoleId.Trickster)
                 {
                     message =  "I love playing among the group! \n\n(Portalmaker, Lighter, Arsonist, Camouflager, Thief or Trickster)";
                 }
                     
-                else if (roleInfo.roleId == RoleId.Crewmate || roleInfo.roleId == RoleId.Impostor)
+                else if (roleInfo.RoleId == RoleId.Crewmate || roleInfo.RoleId == RoleId.Impostor)
                 {
                     message =  "I'm roleless. this sucks! \n\n(Plain Impostor or Crewmate)";
                 }
@@ -806,7 +808,7 @@ namespace TownOfSushi
     public static class Crusader
     {
         public static PlayerControl Player;
-        public static Color color = new Color32(255, 134, 69, byte.MaxValue);
+        public static Color Color = new Color32(255, 134, 69, byte.MaxValue);
         public static PlayerControl CurrentTarget;
         public static bool Fortified;
         public static float Cooldown;
@@ -821,7 +823,7 @@ namespace TownOfSushi
         public static int Charges;
         public static int rechargeTasksNumber;
         public static int rechargedTasks;
-        public static void ClearAnndReload()
+        public static void ClearAndReload()
         {
             Player = null;
             CurrentTarget = null;
@@ -837,11 +839,11 @@ namespace TownOfSushi
     public static class Morphling 
     {
         public static PlayerControl Player;
-        public static Color color = Palette.ImpostorRed;
+        public static Color Color = Palette.ImpostorRed;
         private static Sprite sampleSprite;
         private static Sprite morphSprite;
-        public static float cooldown = 30f;
-        public static float duration = 10f;
+        public static float Cooldown = 30f;
+        public static float Duration = 10f;
         public static PlayerControl sampledTarget;
         public static PlayerControl morphTarget;
         public static float morphTimer = 0f;
@@ -863,8 +865,8 @@ namespace TownOfSushi
             sampledTarget = null;
             morphTarget = null;
             morphTimer = 0f;
-            cooldown = CustomOptionHolder.morphlingCooldown.GetFloat();
-            duration = CustomOptionHolder.morphlingDuration.GetFloat();
+            Cooldown = CustomOptionHolder.morphlingCooldown.GetFloat();
+            Duration = CustomOptionHolder.morphlingDuration.GetFloat();
         }
 
         public static Sprite GetSampleSprite() 
@@ -885,11 +887,11 @@ namespace TownOfSushi
     public static class Camouflager 
     {
         public static PlayerControl Player;
-        public static Color color = Palette.ImpostorRed;
+        public static Color Color = Palette.ImpostorRed;
     
-        public static float cooldown = 30f;
-        public static float duration = 10f;
-        public static float camouflageTimer = 0f;
+        public static float Cooldown = 30f;
+        public static float Duration = 10f;
+        public static float CamouflageTimer = 0f;
 
         private static Sprite ButtonSprite;
         public static Sprite GetButtonSprite() 
@@ -901,7 +903,7 @@ namespace TownOfSushi
 
         public static void ResetCamouflage() 
         {
-            camouflageTimer = 0f;
+            CamouflageTimer = 0f;
             foreach (PlayerControl p in PlayerControl.AllPlayerControls) 
             {
                 if (p == Ninja.ninja && Ninja.isInvisble)
@@ -914,9 +916,9 @@ namespace TownOfSushi
         {
             ResetCamouflage();
             Player = null;
-            camouflageTimer = 0f;
-            cooldown = CustomOptionHolder.camouflagerCooldown.GetFloat();
-            duration = CustomOptionHolder.camouflagerDuration.GetFloat();
+            CamouflageTimer = 0f;
+            Cooldown = CustomOptionHolder.camouflagerCooldown.GetFloat();
+            Duration = CustomOptionHolder.camouflagerDuration.GetFloat();
         }
     }
 
@@ -925,10 +927,10 @@ namespace TownOfSushi
         public static PlayerControl Player;
         public static Minigame vitals = null;
         public static Minigame doorLog = null;
-        public static Color color = new Color32(117, 250, 76, byte.MaxValue);
+        public static Color Color = new Color32(117, 250, 76, byte.MaxValue);
 
-        public static float cooldown = 30f;
-        public static float duration = 10f;
+        public static float Cooldown = 30f;
+        public static float Duration = 10f;
         public static float toolsNumber = 5f;
         public static bool onlyColorType = false;
         public static float hackerTimer = 0f;
@@ -983,8 +985,8 @@ namespace TownOfSushi
             doorLog = null;
             hackerTimer = 0f;
             adminSprite = null;
-            cooldown = CustomOptionHolder.hackerCooldown.GetFloat();
-            duration = CustomOptionHolder.hackerHackeringDuration.GetFloat();
+            Cooldown = CustomOptionHolder.hackerCooldown.GetFloat();
+            Duration = CustomOptionHolder.hackerHackeringDuration.GetFloat();
             onlyColorType = CustomOptionHolder.hackerOnlyColorType.GetBool();
             toolsNumber = CustomOptionHolder.hackerToolsNumber.GetFloat();
             rechargeTasksNumber = Mathf.RoundToInt(CustomOptionHolder.hackerRechargeTasksNumber.GetFloat());
@@ -998,7 +1000,7 @@ namespace TownOfSushi
     public static class Tracker 
     {
         public static PlayerControl Player;
-        public static Color color = new Color32(100, 58, 220, byte.MaxValue);
+        public static Color Color = new Color32(100, 58, 220, byte.MaxValue);
         public static List<Arrow> localArrows = new();
 
         public static float updateIntervall = 5f;
@@ -1073,10 +1075,10 @@ namespace TownOfSushi
     public static class Vampire 
     {
         public static PlayerControl Player;
-        public static Color color = Palette.ImpostorRed;
+        public static Color Color = Palette.ImpostorRed;
 
         public static float delay = 10f;
-        public static float cooldown = 30f;
+        public static float Cooldown = 30f;
         public static bool canKillNearGarlics = true;
         public static bool localPlacedGarlic = false;
         public static bool garlicsActive = true;
@@ -1110,7 +1112,7 @@ namespace TownOfSushi
             CurrentTarget = null;
             garlicsActive = CustomOptionHolder.vampireSpawnRate.GetSelection() > 0;
             delay = CustomOptionHolder.vampireKillDelay.GetFloat();
-            cooldown = CustomOptionHolder.vampireCooldown.GetFloat();
+            Cooldown = CustomOptionHolder.vampireCooldown.GetFloat();
             canKillNearGarlics = CustomOptionHolder.vampireCanKillNearGarlics.GetBool();
         }
     }
@@ -1118,7 +1120,7 @@ namespace TownOfSushi
     public static class Snitch 
     {
         public static PlayerControl Player;
-        public static Color color = new Color32(184, 251, 79, byte.MaxValue);
+        public static Color Color = new Color32(184, 251, 79, byte.MaxValue);
         public enum Mode 
         {
             Chat = 0,
@@ -1158,7 +1160,7 @@ namespace TownOfSushi
     public static class Veteran
     {
         public static PlayerControl Player;
-        public static Color color = new Color32(153, 128, 64, byte.MaxValue);
+        public static Color Color = new Color32(153, 128, 64, byte.MaxValue);
         public static float Cooldown;
         public static float Duration;
         public static bool AlertActive;
@@ -1186,12 +1188,12 @@ namespace TownOfSushi
 
     public static class Jackal {
         public static PlayerControl Player;
-        public static Color color = new Color32(0, 180, 235, byte.MaxValue);
+        public static Color Color = new Color32(0, 180, 235, byte.MaxValue);
         public static PlayerControl fakeSidekick;
         public static PlayerControl CurrentTarget;
         public static List<PlayerControl> formerJackals = new List<PlayerControl>();
         
-        public static float cooldown = 30f;
+        public static float Cooldown = 30f;
         public static float createSidekickCooldown = 30f;
         public static bool canUseVents = true;
         public static bool canCreateSidekick = true;
@@ -1214,7 +1216,7 @@ namespace TownOfSushi
             Player = null;
             CurrentTarget = null;
             fakeSidekick = null;
-            cooldown = CustomOptionHolder.jackalKillCooldown.GetFloat();
+            Cooldown = CustomOptionHolder.jackalKillCooldown.GetFloat();
             createSidekickCooldown = CustomOptionHolder.jackalCreateSidekickCooldown.GetFloat();
         }
 
@@ -1223,7 +1225,7 @@ namespace TownOfSushi
             Player = null;
             CurrentTarget = null;
             fakeSidekick = null;
-            cooldown = CustomOptionHolder.jackalKillCooldown.GetFloat();
+            Cooldown = CustomOptionHolder.jackalKillCooldown.GetFloat();
             createSidekickCooldown = CustomOptionHolder.jackalCreateSidekickCooldown.GetFloat();
             canUseVents = CustomOptionHolder.jackalCanUseVents.GetBool();
             canCreateSidekick = CustomOptionHolder.jackalCanCreateSidekick.GetBool();
@@ -1236,9 +1238,75 @@ namespace TownOfSushi
         
     }
 
-    public static class Sidekick {
+    public static class Pestilence
+    {
         public static PlayerControl Player;
-        public static Color color = new Color32(0, 180, 235, byte.MaxValue);
+        public static Color Color = new Color32(66, 66, 66, byte.MaxValue);
+        public static PlayerControl CurrentTarget;
+        public static float Cooldown = 30f;
+        public static bool CanUseVents;
+        public static void ClearAndReload()
+        {
+            Player = null;
+            Cooldown = CustomOptionHolder.PestilenceCooldown.GetFloat();
+            CurrentTarget = null;
+            CanUseVents = CustomOptionHolder.PestilenceCanUseVents.GetBool();
+        }
+    }
+
+    public static class Plaguebearer
+    {
+        public static PlayerControl Player;
+        public static PlayerControl InfectTarget;
+        public static Color Color = new Color32(230, 255, 179, byte.MaxValue);
+        public static PlayerControl CurrentTarget;
+        public static float Cooldown = 30f;
+        public static List<PlayerControl> InfectedPlayers = new List<PlayerControl>();
+        public static bool InfectedveryoneAlive() 
+        {
+            return PlayerControl.AllPlayerControls.ToArray().All(x => { return x == Player || x.Data.IsDead || x.Data.Disconnected || InfectedPlayers.Any(y => y.PlayerId == x.PlayerId); });
+        }
+        public static void RpcSpreadInfection(PlayerControl source, PlayerControl target)
+        {
+            new WaitForSeconds(1f);
+            SpreadInfection(source, target);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.Infect, Hazel.SendOption.Reliable, -1);
+            writer.Write(Player.PlayerId);
+            writer.Write(source.PlayerId);
+            writer.Write(target.PlayerId);
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
+        }
+        private static Sprite ButtonSprite;
+        public static Sprite GetButtonSprite() 
+        {
+            if (ButtonSprite) return ButtonSprite;
+            ButtonSprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.Infect.png", 115f);
+            return ButtonSprite;
+        }
+        public static bool IsInfected(PlayerControl target) => InfectedPlayers.Contains(target);
+        public static void SpreadInfection(PlayerControl source, PlayerControl target)
+        {
+            if (InfectedPlayers.Contains(source) && !InfectedPlayers.Contains(target)) InfectedPlayers.Add(target);
+            else if (InfectedPlayers.Contains(target) && !InfectedPlayers.Contains(source)) InfectedPlayers.Add(source);
+        }
+        public static void ClearAndReload()
+        {
+            Player = null;
+            Cooldown = CustomOptionHolder.PlaguebearerCooldown.GetFloat();
+            CurrentTarget = null;
+            InfectedPlayers = new List<PlayerControl>();
+            InfectTarget = null;
+            foreach (PoolablePlayer p in MapOptions.playerIcons.Values) 
+            {
+                if (p != null && p.gameObject != null) p.gameObject.SetActive(false);
+            }
+        }
+    }
+
+    public static class Sidekick 
+    {
+        public static PlayerControl Player;
+        public static Color Color = new Color32(0, 180, 235, byte.MaxValue);
 
         public static PlayerControl CurrentTarget;
 
@@ -1246,7 +1314,7 @@ namespace TownOfSushi
         public static bool wasImpostor;
         public static bool wasSpy;
 
-        public static float cooldown = 30f;
+        public static float Cooldown = 30f;
         public static bool canUseVents = true;
         public static bool canKill = true;
         public static bool promotesToJackal = true;
@@ -1256,7 +1324,7 @@ namespace TownOfSushi
         {
             Player = null;
             CurrentTarget = null;
-            cooldown = CustomOptionHolder.jackalKillCooldown.GetFloat();
+            Cooldown = CustomOptionHolder.jackalKillCooldown.GetFloat();
             canUseVents = CustomOptionHolder.sidekickCanUseVents.GetBool();
             canKill = CustomOptionHolder.sidekickCanKill.GetBool();
             promotesToJackal = CustomOptionHolder.sidekickPromotesToJackal.GetBool();
@@ -1268,13 +1336,13 @@ namespace TownOfSushi
     public static class Eraser 
     {
         public static PlayerControl Player;
-        public static Color color = Palette.ImpostorRed;
+        public static Color Color = Palette.ImpostorRed;
 
         public static List<byte> alreadyErased = new List<byte>();
 
         public static List<PlayerControl> futureErased = new List<PlayerControl>();
         public static PlayerControl CurrentTarget;
-        public static float cooldown = 30f;
+        public static float Cooldown = 30f;
         public static bool canEraseAnyone = false; 
 
         private static Sprite ButtonSprite;
@@ -1290,7 +1358,7 @@ namespace TownOfSushi
             Player = null;
             futureErased = new List<PlayerControl>();
             CurrentTarget = null;
-            cooldown = CustomOptionHolder.eraserCooldown.GetFloat();
+            Cooldown = CustomOptionHolder.eraserCooldown.GetFloat();
             canEraseAnyone = CustomOptionHolder.eraserCanEraseAnyone.GetBool();
             alreadyErased = new List<byte>();
         }
@@ -1299,7 +1367,7 @@ namespace TownOfSushi
     public static class Spy 
     {
         public static PlayerControl Player;
-        public static Color color = Palette.ImpostorRed;
+        public static Color Color = Palette.ImpostorRed;
 
         public static bool impostorsCanKillAnyone = true;
         public static bool canEnterVents = false;
@@ -1317,7 +1385,7 @@ namespace TownOfSushi
     public static class Trickster 
     {
         public static PlayerControl Player;
-        public static Color color = Palette.ImpostorRed;
+        public static Color Color = Palette.ImpostorRed;
         public static float placeBoxCooldown = 30f;
         public static float lightsOutCooldown = 30f;
         public static float lightsOutDuration = 10f;
@@ -1363,9 +1431,9 @@ namespace TownOfSushi
     public static class Cleaner 
     {
         public static PlayerControl Player;
-        public static Color color = Palette.ImpostorRed;
+        public static Color Color = Palette.ImpostorRed;
 
-        public static float cooldown = 30f;
+        public static float Cooldown = 30f;
 
         private static Sprite buttonSprite;
         public static Sprite GetButtonSprite() 
@@ -1378,7 +1446,7 @@ namespace TownOfSushi
         public static void ClearAndReload() 
         {
             Player = null;
-            cooldown = CustomOptionHolder.cleanerCooldown.GetFloat();
+            Cooldown = CustomOptionHolder.cleanerCooldown.GetFloat();
         }
     }
 
@@ -1386,13 +1454,13 @@ namespace TownOfSushi
     {
 
         public static PlayerControl Player;
-        public static Color color = Palette.ImpostorRed;
+        public static Color Color = Palette.ImpostorRed;
 
         public static PlayerControl CurrentTarget;
         public static PlayerControl curseVictim;
         public static PlayerControl curseVictimTarget;
 
-        public static float cooldown = 30f;
+        public static float Cooldown = 30f;
         public static float rootTime = 5f;
 
         private static Sprite curseButtonSprite;
@@ -1418,7 +1486,7 @@ namespace TownOfSushi
             CurrentTarget = null;
             curseVictim = null;
             curseVictimTarget = null;
-            cooldown = CustomOptionHolder.warlockCooldown.GetFloat();
+            Cooldown = CustomOptionHolder.warlockCooldown.GetFloat();
             rootTime = CustomOptionHolder.warlockRootTime.GetFloat();
         }
 
@@ -1436,15 +1504,15 @@ namespace TownOfSushi
     public static class Vigilante 
     {
         public static PlayerControl Player;
-        public static Color color = new Color32(195, 178, 95, byte.MaxValue);
+        public static Color Color = new Color32(195, 178, 95, byte.MaxValue);
 
-        public static float cooldown = 30f;
+        public static float Cooldown = 30f;
         public static int remainingScrews = 7;
         public static int totalScrews = 7;
         public static int ventPrice = 1;
         public static int camPrice = 2;
         public static int placedCameras = 0;
-        public static float duration = 10f;
+        public static float Duration = 10f;
         public static int maxCharges = 5;
         public static int rechargeTasksNumber = 3;
         public static int rechargedTasks = 3;
@@ -1539,13 +1607,13 @@ namespace TownOfSushi
             Player = null;
             ventTarget = null;
             minigame = null;
-            duration = CustomOptionHolder.VigilanteCamDuration.GetFloat();
+            Duration = CustomOptionHolder.VigilanteCamDuration.GetFloat();
             maxCharges = Mathf.RoundToInt(CustomOptionHolder.VigilanteCamMaxCharges.GetFloat());
             rechargeTasksNumber = Mathf.RoundToInt(CustomOptionHolder.VigilanteCamRechargeTasksNumber.GetFloat());
             rechargedTasks = Mathf.RoundToInt(CustomOptionHolder.VigilanteCamRechargeTasksNumber.GetFloat());
             charges = Mathf.RoundToInt(CustomOptionHolder.VigilanteCamMaxCharges.GetFloat()) /2;
             placedCameras = 0;
-            cooldown = CustomOptionHolder.VigilanteCooldown.GetFloat();
+            Cooldown = CustomOptionHolder.VigilanteCooldown.GetFloat();
             totalScrews = remainingScrews = Mathf.RoundToInt(CustomOptionHolder.VigilanteTotalScrews.GetFloat());
             camPrice = Mathf.RoundToInt(CustomOptionHolder.VigilanteCamPrice.GetFloat());
             ventPrice = Mathf.RoundToInt(CustomOptionHolder.VigilanteVentPrice.GetFloat());
@@ -1556,11 +1624,11 @@ namespace TownOfSushi
     public static class Arsonist 
     {
         public static PlayerControl Player;
-        public static Color color = new Color32(238, 112, 46, byte.MaxValue);
+        public static Color Color = new Color32(238, 112, 46, byte.MaxValue);
 
-        public static float cooldown = 30f;
-        public static float duration = 3f;
-        public static bool triggerArsonistWin = false;
+        public static float Cooldown = 30f;
+        public static float Duration = 3f;
+        public static bool IsArsonistWin = false;
 
         public static PlayerControl CurrentTarget;
         public static PlayerControl douseTarget;
@@ -1592,20 +1660,21 @@ namespace TownOfSushi
             Player = null;
             CurrentTarget = null;
             douseTarget = null; 
-            triggerArsonistWin = false;
+            IsArsonistWin = false;
             dousedPlayers = new List<PlayerControl>();
-            foreach (PoolablePlayer p in MapOptions.playerIcons.Values) {
+            foreach (PoolablePlayer p in MapOptions.playerIcons.Values) 
+            {
                 if (p != null && p.gameObject != null) p.gameObject.SetActive(false);
             }
-            cooldown = CustomOptionHolder.arsonistCooldown.GetFloat();
-            duration = CustomOptionHolder.arsonistDuration.GetFloat();
+            Cooldown = CustomOptionHolder.arsonistCooldown.GetFloat();
+            Duration = CustomOptionHolder.arsonistDuration.GetFloat();
         }
     }
 
     public static class BountyHunter 
     {
         public static PlayerControl Player;
-        public static Color color = Palette.ImpostorRed;
+        public static Color Color = Palette.ImpostorRed;
 
         public static Arrow arrow;
         public static float bountyDuration = 30f;
@@ -1621,7 +1690,7 @@ namespace TownOfSushi
 
         public static void ClearAndReload() 
         {
-            arrow = new Arrow(color);
+            arrow = new Arrow(Color);
             Player = null;
             bounty = null;
             arrowUpdateTimer = 0f;
@@ -1647,12 +1716,12 @@ namespace TownOfSushi
     public static class Vulture 
     {
         public static PlayerControl Player;
-        public static Color color = new Color32(139, 69, 19, byte.MaxValue);
+        public static Color Color = new Color32(139, 69, 19, byte.MaxValue);
         public static List<Arrow> localArrows = new List<Arrow>();
-        public static float cooldown = 30f;
+        public static float Cooldown = 30f;
         public static int vultureNumberToWin = 4;
         public static int eatenBodies = 0;
-        public static bool triggerVultureWin = false;
+        public static bool IsVultureWin = false;
         public static bool canUseVents = true;
         public static bool showArrows = true;
         private static Sprite buttonSprite;
@@ -1668,8 +1737,8 @@ namespace TownOfSushi
             Player = null;
             vultureNumberToWin = Mathf.RoundToInt(CustomOptionHolder.vultureNumberToWin.GetFloat());
             eatenBodies = 0;
-            cooldown = CustomOptionHolder.vultureCooldown.GetFloat();
-            triggerVultureWin = false;
+            Cooldown = CustomOptionHolder.vultureCooldown.GetFloat();
+            IsVultureWin = false;
             canUseVents = CustomOptionHolder.vultureCanUseVents.GetBool();
             showArrows = CustomOptionHolder.vultureShowArrows.GetBool();
             if (localArrows != null) 
@@ -1688,7 +1757,7 @@ namespace TownOfSushi
         public static PlayerControl CurrentTarget;
         public static float Cooldown = 30f;
         public static bool CanUseVents;
-        public static Color  color = new Color32(140, 0, 77, byte.MaxValue);
+        public static Color Color = new Color32(140, 0, 77, byte.MaxValue);
         public static float ReducedCooldown = 5f;
         public static void FixCooldown()
         {
@@ -1707,7 +1776,7 @@ namespace TownOfSushi
 
     public static class Oracle
     {
-        public static Color color = new Color32(52, 79, 235, byte.MaxValue);
+        public static Color Color = new Color32(52, 79, 235, byte.MaxValue);
         public static PlayerControl Player;
         public static PlayerControl Confessor;
         public static PlayerControl CurrentTarget;
@@ -1803,14 +1872,14 @@ namespace TownOfSushi
         public static PlayerControl medium;
         public static DeadPlayer target;
         public static DeadPlayer soulTarget;
-        public static Color color = new Color32(98, 120, 115, byte.MaxValue);
+        public static Color Color = new Color32(98, 120, 115, byte.MaxValue);
         public static List<Tuple<DeadPlayer, Vector3>> deadBodies = new List<Tuple<DeadPlayer, Vector3>>();
         public static List<Tuple<DeadPlayer, Vector3>> futureDeadBodies = new List<Tuple<DeadPlayer, Vector3>>();
         public static List<SpriteRenderer> souls = new List<SpriteRenderer>();
         public static DateTime meetingStartTime = DateTime.UtcNow;
 
-        public static float cooldown = 30f;
-        public static float duration = 3f;
+        public static float Cooldown = 30f;
+        public static float Duration = 3f;
         public static bool oneTimeUse = false;
         public static float chanceAdditionalInfo = 0f;
 
@@ -1850,8 +1919,8 @@ namespace TownOfSushi
             futureDeadBodies = new List<Tuple<DeadPlayer, Vector3>>();
             souls = new List<SpriteRenderer>();
             meetingStartTime = DateTime.UtcNow;
-            cooldown = CustomOptionHolder.mediumCooldown.GetFloat();
-            duration = CustomOptionHolder.mediumDuration.GetFloat();
+            Cooldown = CustomOptionHolder.mediumCooldown.GetFloat();
+            Duration = CustomOptionHolder.mediumDuration.GetFloat();
             oneTimeUse = CustomOptionHolder.mediumOneTimeUse.GetBool();
             chanceAdditionalInfo = CustomOptionHolder.mediumChanceAdditionalInfo.GetSelection() / 10f;
         }
@@ -1960,8 +2029,8 @@ namespace TownOfSushi
     {
         public static PlayerControl Player;
         public static PlayerControl target;
-        public static Color color = new Color32(134, 153, 25, byte.MaxValue);
-        public static bool triggerProsecutorWin = false;
+        public static Color Color = new Color32(134, 153, 25, byte.MaxValue);
+        public static bool IsProsecutorWin = false;
         public static bool isProsecutor = false;
         public static bool canCallEmergency = true;
         public static float vision = 1f;
@@ -1977,7 +2046,7 @@ namespace TownOfSushi
                 targetWasGuessed = false;
             }
             isProsecutor = false;
-            triggerProsecutorWin = false;
+            IsProsecutorWin = false;
             vision = CustomOptionHolder.lawyerVision.GetFloat();
             lawyerKnowsRole = CustomOptionHolder.lawyerKnowsRole.GetBool();
             targetCanBeJester = CustomOptionHolder.lawyerTargetCanBeJester.GetBool();
@@ -2008,7 +2077,7 @@ namespace TownOfSushi
         public static PlayerControl beloved;
         public static bool HasLover;
         public static PlayerControl CurrentTarget;
-        public static Color color = new Color32(255, 102, 204, byte.MaxValue);
+        public static Color Color = new Color32(255, 102, 204, byte.MaxValue);
         public static bool RomanticKnowsRole = false;
         private static Sprite ButtonSprite;
         public static Sprite GetButtonSprite() 
@@ -2033,13 +2102,13 @@ namespace TownOfSushi
     {        
         public static PlayerControl pursuer;
         public static PlayerControl target;
-        public static Color color = Lawyer.color;
+        public static Color Color = Lawyer.Color;
         public static List<PlayerControl> blankedList = new List<PlayerControl>();
         public static int blanks = 0;
         public static Sprite blank;
         public static bool notAckedExiled = false;
 
-        public static float cooldown = 30f;
+        public static float Cooldown = 30f;
         public static int blanksNumber = 5;
 
         public static Sprite getTargetSprite() {
@@ -2056,19 +2125,19 @@ namespace TownOfSushi
             blanks = 0;
             notAckedExiled = false;
 
-            cooldown = CustomOptionHolder.pursuerCooldown.GetFloat();
+            Cooldown = CustomOptionHolder.pursuerCooldown.GetFloat();
             blanksNumber = Mathf.RoundToInt(CustomOptionHolder.pursuerBlanksNumber.GetFloat());
         }
     }
 
     public static class Witch {
         public static PlayerControl witch;
-        public static Color color = Palette.ImpostorRed;
+        public static Color Color = Palette.ImpostorRed;
 
         public static List<PlayerControl> futureSpelled = new List<PlayerControl>();
         public static PlayerControl CurrentTarget;
         public static PlayerControl spellCastingTarget;
-        public static float cooldown = 30f;
+        public static float Cooldown = 30f;
         public static float spellCastingDuration = 2f;
         public static float cooldownAddition = 10f;
         public static float currentCooldownAddition = 0f;
@@ -2095,7 +2164,7 @@ namespace TownOfSushi
             witch = null;
             futureSpelled = new List<PlayerControl>();
             CurrentTarget = spellCastingTarget = null;
-            cooldown = CustomOptionHolder.witchCooldown.GetFloat();
+            Cooldown = CustomOptionHolder.witchCooldown.GetFloat();
             cooldownAddition = CustomOptionHolder.witchAdditionalCooldown.GetFloat();
             currentCooldownAddition = 0f;
             canSpellAnyone = CustomOptionHolder.witchCanSpellAnyone.GetBool();
@@ -2107,11 +2176,11 @@ namespace TownOfSushi
 
     public static class Ninja {
         public static PlayerControl ninja;
-        public static Color color = Palette.ImpostorRed;
+        public static Color Color = Palette.ImpostorRed;
 
         public static PlayerControl ninjaMarked;
         public static PlayerControl CurrentTarget;
-        public static float cooldown = 30f;
+        public static float Cooldown = 30f;
         public static float traceTime = 1f;
         public static bool knowsTargetLocation = false;
         public static float invisibleDuration = 5f;
@@ -2136,7 +2205,7 @@ namespace TownOfSushi
         public static void ClearAndReload() {
             ninja = null;
             CurrentTarget = ninjaMarked = null;
-            cooldown = CustomOptionHolder.ninjaCooldown.GetFloat();
+            Cooldown = CustomOptionHolder.ninjaCooldown.GetFloat();
             knowsTargetLocation = CustomOptionHolder.ninjaKnowsTargetLocation.GetBool();
             traceTime = CustomOptionHolder.ninjaTraceTime.GetFloat();
             invisibleDuration = CustomOptionHolder.ninjaInvisibleDuration.GetFloat();
@@ -2150,11 +2219,11 @@ namespace TownOfSushi
 
     public static class Thief {
         public static PlayerControl Player;
-        public static Color color = new Color32(71, 99, 45, Byte.MaxValue);
+        public static Color Color = new Color32(71, 99, 45, Byte.MaxValue);
         public static PlayerControl CurrentTarget;
         public static PlayerControl formerThief;
 
-        public static float cooldown = 30f;
+        public static float Cooldown = 30f;
 
         public static bool suicideFlag = false;  // Used as a flag for suicide
 
@@ -2169,7 +2238,7 @@ namespace TownOfSushi
             CurrentTarget = null;
             formerThief = null;
             hasImpostorVision = CustomOptionHolder.thiefHasImpVision.GetBool();
-            cooldown = CustomOptionHolder.thiefCooldown.GetFloat();
+            Cooldown = CustomOptionHolder.thiefCooldown.GetFloat();
             canUseVents = CustomOptionHolder.thiefCanUseVents.GetBool();
             canKillSheriff = CustomOptionHolder.thiefCanKillSheriff.GetBool();
         }
@@ -2183,9 +2252,9 @@ namespace TownOfSushi
         public static class Trapper 
         {
         public static PlayerControl Player;
-        public static Color color = new Color32(110, 57, 105, byte.MaxValue);
+        public static Color Color = new Color32(110, 57, 105, byte.MaxValue);
 
-        public static float cooldown = 30f;
+        public static float Cooldown = 30f;
         public static int maxCharges = 5;
         public static int rechargeTasksNumber = 3;
         public static int rechargedTasks = 3;
@@ -2208,7 +2277,7 @@ namespace TownOfSushi
         public static void ClearAndReload() 
         {
             Player = null;
-            cooldown = CustomOptionHolder.trapperCooldown.GetFloat();
+            Cooldown = CustomOptionHolder.trapperCooldown.GetFloat();
             maxCharges = Mathf.RoundToInt(CustomOptionHolder.trapperMaxCharges.GetFloat());
             rechargeTasksNumber = Mathf.RoundToInt(CustomOptionHolder.trapperRechargeTasksNumber.GetFloat());
             rechargedTasks = Mathf.RoundToInt(CustomOptionHolder.trapperRechargeTasksNumber.GetFloat());
@@ -2223,7 +2292,7 @@ namespace TownOfSushi
 
     public static class Werewolf
     {
-        public static Color color = new Color32(168, 102, 41, byte.MaxValue);
+        public static Color Color = new Color32(168, 102, 41, byte.MaxValue);
         public static PlayerControl Player;
         public static PlayerControl CurrentTarget;
         public static float Cooldown;
@@ -2249,7 +2318,7 @@ namespace TownOfSushi
     public static class Yoyo 
     {
         public static PlayerControl Player = null;
-        public static Color color = Palette.ImpostorRed;
+        public static Color Color = Palette.ImpostorRed;
 
         public static float blinkDuration = 0;
         public static float markCooldown = 0;
@@ -2310,7 +2379,7 @@ namespace TownOfSushi
     {
         public static List<PlayerControl> Players = new List<PlayerControl>();
         public static Dictionary<DeadPlayer, float> active = new Dictionary<DeadPlayer, float>();
-        public static Color color = new Color32(0, 247, 255, byte.MaxValue);
+        public static Color Color = new Color32(0, 247, 255, byte.MaxValue);
 
         public static float reportDelayMin = 0f;
         public static float reportDelayMax = 0f;
@@ -2332,14 +2401,14 @@ namespace TownOfSushi
         public static List<PlayerControl> Players = new List<PlayerControl>();
         public static Dictionary<byte, float> active = new Dictionary<byte, float>();
         public static Dictionary<byte, byte> bloodyKillerMap = new Dictionary<byte, byte>();
-        public static float duration = 5f;
+        public static float Duration = 5f;
 
         public static void ClearAndReload() 
         {
             Players = new List<PlayerControl>();
             active = new Dictionary<byte, float>();
             bloodyKillerMap = new Dictionary<byte, byte>();
-            duration = CustomOptionHolder.modifierBloodyDuration.GetFloat();
+            Duration = CustomOptionHolder.modifierBloodyDuration.GetFloat();
         }
     }
 
@@ -2394,7 +2463,7 @@ namespace TownOfSushi
     public static class Mini 
     {
         public static PlayerControl Player;
-        public static Color color = Color.yellow;
+        public static Color Color = Color.yellow;
         public const float defaultColliderRadius = 0.2233912f;
         public const float defaultColliderOffset = 0.3636057f;
 
@@ -2403,12 +2472,12 @@ namespace TownOfSushi
         public static DateTime timeOfGrowthStart = DateTime.UtcNow;
         public static DateTime timeOfMeetingStart = DateTime.UtcNow;
         public static float ageOnMeetingStart = 0f;
-        public static bool triggerMiniLose = false;
+        public static bool IsMiniLose = false;
 
         public static void ClearAndReload() 
         {
             Player = null;
-            triggerMiniLose = false;
+            IsMiniLose = false;
             growingUpDuration = CustomOptionHolder.modifierMiniGrowingUpDuration.GetFloat();
             isGrowingUpInMeeting = CustomOptionHolder.modifierMiniGrowingUpInMeeting.GetBool();
             timeOfGrowthStart = DateTime.UtcNow;
@@ -2420,11 +2489,7 @@ namespace TownOfSushi
             return Mathf.Clamp(timeSinceStart / (growingUpDuration * 1000), 0f, 1f);
         }
 
-        public static bool IsGrownUp() 
-        {
-            return GrowingProgress() == 1f;
-        }
-
+        public static bool IsGrownUp => GrowingProgress() == 1f;
     }
     public static class Vip 
     {

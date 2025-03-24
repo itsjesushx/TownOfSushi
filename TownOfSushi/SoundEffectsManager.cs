@@ -46,14 +46,14 @@ namespace TownOfSushi
         }
 
 
-        public static void Play(string path, float volume=0.8f, bool loop = false)
+        public static void Play(string path, float volume=0.8f, bool loop = false, bool musicChannel = false)
         {
             if (!MapOptions.enableSoundEffects) return;
             AudioClip clipToPlay = Get(path);
             Stop(path);
             if (Constants.ShouldPlaySfx() && clipToPlay != null) 
             {
-                AudioSource source = SoundManager.Instance.PlaySound(clipToPlay, false, volume);
+                AudioSource source = SoundManager.Instance.PlaySound(clipToPlay, false, volume, audioMixer: musicChannel ? SoundManager.Instance.MusicChannel : null);
                 source.loop = loop;
             }
         }

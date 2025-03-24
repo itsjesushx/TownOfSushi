@@ -20,7 +20,7 @@ namespace TownOfSushi.Objects
             return TraceSprite;
         }
 
-        public NinjaTrace(Vector2 p, float duration=1f) 
+        public NinjaTrace(Vector2 p, float Duration=1f) 
         {
             trace = new GameObject("NinjaTrace");
             trace.AddSubmergedComponent(SubmergedCompatibility.Classes.ElevatorMover);
@@ -32,7 +32,7 @@ namespace TownOfSushi.Objects
             var traceRenderer = trace.AddComponent<SpriteRenderer>();
             traceRenderer.sprite = GetTraceSprite();
 
-            timeRemaining = duration;
+            timeRemaining = Duration;
 
             // display the ninjas color in the trace
             float colorDuration = CustomOptionHolder.ninjaTraceColorTime.GetFloat();
@@ -40,7 +40,7 @@ namespace TownOfSushi.Objects
                 Color c = Palette.PlayerColors[(int)Ninja.ninja.Data.DefaultOutfit.ColorId];
                 if (Helpers.IsLighterColor(Ninja.ninja)) c = Color.white;
                 else c = Palette.PlayerColors[6];
-                //if (Camouflager.camouflageTimer > 0) {
+                //if (Camouflager.CamouflageTimer > 0) {
                 //    c = Palette.PlayerColors[6];
                 //}
 
@@ -52,12 +52,12 @@ namespace TownOfSushi.Objects
             })));
 
             float fadeOutDuration = 1f;
-            if (fadeOutDuration > duration) fadeOutDuration = 0.5f * duration;
-            FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(duration, new Action<float>((p) => {
+            if (fadeOutDuration > Duration) fadeOutDuration = 0.5f * Duration;
+            FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(Duration, new Action<float>((p) => {
                 float interP = 0f;
-                if (p < (duration - fadeOutDuration) / duration)
+                if (p < (Duration - fadeOutDuration) / Duration)
                     interP = 0f;
-                else interP = (p * duration + fadeOutDuration - duration) / fadeOutDuration;
+                else interP = (p * Duration + fadeOutDuration - Duration) / fadeOutDuration;
                 if (traceRenderer) traceRenderer.color = new Color(traceRenderer.color.r, traceRenderer.color.g, traceRenderer.color.b, Mathf.Clamp01(1 - interP));
             })));
 

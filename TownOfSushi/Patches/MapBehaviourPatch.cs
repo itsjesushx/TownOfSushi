@@ -18,8 +18,8 @@ namespace TownOfSushi.Patches
 			var role = RoleInfo.GetRoleInfoForPlayer(PlayerControl.LocalPlayer);
 			foreach (RoleInfo roleInfo in role)
 			{
-				__instance.ColorControl.baseColor = roleInfo.color;
-				__instance.ColorControl.SetColor(roleInfo.color);
+				__instance.ColorControl.baseColor = roleInfo.Color;
+				__instance.ColorControl.SetColor(roleInfo.Color);
 			}
         }
     }

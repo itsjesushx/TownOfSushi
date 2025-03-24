@@ -141,7 +141,11 @@ namespace TownOfSushi.Patches
                         startButtonText.fontSizeMax = startButtonText.fontSize;
                         startButtonText.gameObject.transform.localPosition = Vector3.zero;
                         PassiveButton startButtonPassiveButton = copiedStartButton.GetComponent<PassiveButton>();
-                        void StopStartFunc() {
+                        void StopStartFunc() 
+                        {
+                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.StopStart, Hazel.SendOption.Reliable, -1);
+                            writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                            AmongUsClient.Instance.FinishRpcImmediately(writer);
                             __instance.ResetStartState();
                             copiedStartButton.Destroy();
                             startingTimer = 0;
@@ -200,13 +204,15 @@ namespace TownOfSushi.Patches
                         startButtonText.gameObject.transform.localPosition = Vector3.zero;
                         PassiveButton startButtonPassiveButton = copiedStartButton.GetComponent<PassiveButton>();
 
-                        void StopStartFunc() {
-                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.StopStart, Hazel.SendOption.Reliable, AmongUsClient.Instance.HostId);
+                        void StopStartFunc() 
+                        {
+                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.StopStart, Hazel.SendOption.Reliable, -1);
                             writer.Write(PlayerControl.LocalPlayer.PlayerId);
                             AmongUsClient.Instance.FinishRpcImmediately(writer);
                             copiedStartButton.Destroy();
                             __instance.GameStartText.text = String.Empty;
                             startingTimer = 0;
+                            SoundManager.Instance.StopSound(GameStartManager.Instance.gameStartSound);
                         }
                         startButtonPassiveButton.OnClick.AddListener((Action)(() => StopStartFunc()));
                         __instance.StartCoroutine(Effects.Lerp(.1f, new System.Action<float>((p) => {

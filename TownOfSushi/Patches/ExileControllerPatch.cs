@@ -190,17 +190,17 @@ namespace TownOfSushi.Patches
         {
             // Prosecutor win condition
             if (exiled != null && Lawyer.Player != null && Lawyer.target != null && Lawyer.isProsecutor && Lawyer.target.PlayerId == exiled.PlayerId && !Lawyer.Player.Data.IsDead)
-                Lawyer.triggerProsecutorWin = true;
+                Lawyer.IsProsecutorWin = true;
 
             // Mini exile lose condition
-            else if (exiled != null && Mini.Player != null && Mini.Player.PlayerId == exiled.PlayerId && !Mini.IsGrownUp() && !Mini.Player.Data.Role.IsImpostor && !RoleInfo.GetRoleInfoForPlayer(Mini.Player).Any(x => x.FactionId == Factions.Neutral) && !RoleInfo.GetRoleInfoForPlayer(Mini.Player).Any(x => x.FactionId == Factions.NeutralKiller)) 
+            else if (exiled != null && Mini.Player != null && Mini.Player.PlayerId == exiled.PlayerId && !Mini.IsGrownUp && !Mini.Player.Data.Role.IsImpostor && !RoleInfo.GetRoleInfoForPlayer(Mini.Player).Any(x => x.FactionId == Factions.Neutral) && !RoleInfo.GetRoleInfoForPlayer(Mini.Player).Any(x => x.FactionId == Factions.NeutralKiller)) 
             {
-                Mini.triggerMiniLose = true;
+                Mini.IsMiniLose = true;
             }
             // Jester win condition
             else if (exiled != null && Jester.Player != null && Jester.Player.PlayerId == exiled.PlayerId) 
             {
-                Jester.triggerJesterWin = true;
+                Jester.IsJesterWin = true;
             }
 
             // Reset custom button timers where necessary
@@ -213,10 +213,10 @@ namespace TownOfSushi.Patches
 
             Oracle.Investigated = false;
 
-            // Mini set adapted cooldown
+            // Mini set adapted Cooldown
             if (Mini.Player != null && PlayerControl.LocalPlayer == Mini.Player && Mini.Player.Data.Role.IsImpostor) 
             {
-                var multiplier = Mini.IsGrownUp() ? 0.66f : 2f;
+                var multiplier = Mini.IsGrownUp ? 0.66f : 2f;
                 Mini.Player.SetKillTimer(GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown * multiplier);
             }
 
@@ -345,14 +345,14 @@ namespace TownOfSushi.Patches
                     if (player == null) return;
                     // Exile role text
                     if (id == StringNames.ExileTextPN || id == StringNames.ExileTextSN || id == StringNames.ExileTextPP || id == StringNames.ExileTextSP) {
-                        __result = player.Data.PlayerName + " was The " + String.Join(" ", RoleInfo.GetRoleInfoForPlayer(player, false).Select(x => x.name).ToArray());
+                        __result = player.Data.PlayerName + " was The " + String.Join(" ", RoleInfo.GetRoleInfoForPlayer(player, false).Select(x => x.Name).ToArray());
                     }
                     // Hide number of remaining impostors on Jester win
                     if (id == StringNames.ImpostorsRemainP || id == StringNames.ImpostorsRemainS) 
                     {
                         if (Jester.Player != null && player.PlayerId == Jester.Player.PlayerId) __result = "";
                     }
-                    if (Tiebreaker.isTiebreak) __result += " (Tiebreaker)";
+                    if (Tiebreaker.isTiebreak) __result += " (Tiebreaker Vote)";
                     Tiebreaker.isTiebreak = false;
                 }
             } 

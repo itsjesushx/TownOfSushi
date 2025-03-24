@@ -17,7 +17,7 @@ namespace TownOfSushi.Patches
             if (GameOptionsManager.Instance.currentGameOptions.GameMode != GameModes.Normal) return;
             var target = __instance.HauntTarget;
             var roleInfo = RoleInfo.GetRoleInfoForPlayer(target, false);
-            string roleString = (roleInfo.Count > 0 && MapOptions.ghostsSeeRoles) ? roleInfo[0].name : "";
+            string roleString = (roleInfo.Count > 0 && MapOptions.ghostsSeeRoles) ? roleInfo[0].Name : "";
             if (__instance.HauntTarget.Data.IsDead) 
             {
                 __instance.FilterText.text = roleString + " Ghost";

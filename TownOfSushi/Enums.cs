@@ -60,6 +60,8 @@ namespace TownOfSushi
         BountyHunter,
         Vulture,
         Medium,
+        Pestilence,
+        Plaguebearer,
         Trapper,
         Lawyer,
         Prosecutor,
@@ -112,10 +114,12 @@ namespace TownOfSushi
 
         EngineerFixLights = 120,
         EngineerFixSubmergedOxygen,
+        Infect,
         EngineerUsedRepair,
         CleanBody,
         MedicSetShielded,
         StopFortifiedInteraction,
+        TurnPestilence,
         ShieldedMurderAttempt,
         GlitchMimic,
         VeteranAlert,
@@ -126,6 +130,8 @@ namespace TownOfSushi
         TimeMasterShield,
         TimeMasterRewindTime,
         FortifiedMurderAttempt,
+        DraftModePickOrder,
+        DraftModePick,
         ShifterShift,
         SwapperSwap,
         MorphlingMorph,
@@ -213,6 +219,8 @@ namespace TownOfSushi
         SerialKillerWin = 19,
         VRomanticWin = 20,
         JuggernautWin = 21,
+        PestilenceWin = 22,
+        PlaguebearerWin = 23,
     }
 
     enum WinCondition 
@@ -234,6 +242,8 @@ namespace TownOfSushi
         WerewolfWin,
         SerialKillerWin,
         VRomanticWin,
-        JuggernautWin
+        JuggernautWin,
+        PestilenceWin,
+        PlaguebearerWin,
     }
 }

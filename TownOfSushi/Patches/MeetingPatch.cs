@@ -331,7 +331,8 @@ namespace TownOfSushi.Patches
 
             PlayerVoteArea firstPlayer = null;
             PlayerVoteArea secondPlayer = null;
-            for (int A = 0; A < selections.Length; A++) {
+            for (int A = 0; A < selections.Length; A++) 
+            {
                 if (selections[A]) {
                     if (firstPlayer == null) {
                         firstPlayer = __instance.playerStates[A];
@@ -421,7 +422,7 @@ namespace TownOfSushi.Patches
             writer.Write(Mayor.voteTwice);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
 
-            meetingExtraButtonLabel.text = Helpers.ColorString(Mayor.color, "Double Vote: " + (Mayor.voteTwice ? Helpers.ColorString(Color.green, "On ") : Helpers.ColorString(Color.red, "Off")));
+            meetingExtraButtonLabel.text = Helpers.ColorString(Mayor.Color, "Double Vote: " + (Mayor.voteTwice ? Helpers.ColorString(Color.green, "On ") : Helpers.ColorString(Color.red, "Off")));
         }
 
         public static GameObject guesserUI;
@@ -470,24 +471,25 @@ namespace TownOfSushi.Patches
             foreach (RoleInfo roleInfo in RoleInfo.allRoleInfos) 
             {
                 var guesserRole = RoleInfo.GetRoleInfoForPlayer(PlayerControl.LocalPlayer, false).FirstOrDefault();
-                if (roleInfo.FactionId == Factions.Modifier || roleInfo.roleId == guesserRole.roleId) continue; // Not guessable roles & modifier
-                if (PlayerControl.LocalPlayer.Data.Role.IsImpostor && !HandleGuesser.evilGuesserCanGuessSpy && roleInfo.roleId == RoleId.Spy) continue;
+                if (roleInfo.FactionId == Factions.Modifier || roleInfo.RoleId == guesserRole.RoleId) continue; // Not guessable roles & modifier
+                if (PlayerControl.LocalPlayer.Data.Role.IsImpostor && !HandleGuesser.evilGuesserCanGuessSpy && roleInfo.RoleId == RoleId.Spy) continue;
                 // remove all roles that cannot spawn due to the settings from the ui.
                 RoleManagerSelectRolesPatch.RoleAssignmentData roleData = RoleManagerSelectRolesPatch.getRoleAssignmentData();
-                if (roleData.neutralSettings.ContainsKey((byte)roleInfo.roleId) && roleData.neutralSettings[(byte)roleInfo.roleId] == 0) continue;
-                else if (roleData.impSettings.ContainsKey((byte)roleInfo.roleId) && roleData.impSettings[(byte)roleInfo.roleId] == 0) continue;
-                else if (roleData.neutralKSettings.ContainsKey((byte)roleInfo.roleId) && roleData.neutralKSettings[(byte)roleInfo.roleId] == 0) continue;
-                else if (roleData.crewSettings.ContainsKey((byte)roleInfo.roleId) && roleData.crewSettings[(byte)roleInfo.roleId] == 0) continue;
-                else if (new List<RoleId>() { RoleId.Janitor, RoleId.Godfather, RoleId.Mafioso }.Contains(roleInfo.roleId) && (CustomOptionHolder.mafiaSpawnRate.GetSelection() == 0 || GameOptionsManager.Instance.currentGameOptions.NumImpostors < 3)) continue;
-                else if (roleInfo.roleId == RoleId.Sidekick && (!CustomOptionHolder.jackalCanCreateSidekick.GetBool() || CustomOptionHolder.jackalSpawnRate.GetSelection() == 0)) continue;
-                if (roleInfo.roleId == RoleId.Pursuer && CustomOptionHolder.lawyerSpawnRate.GetSelection() == 0) continue;
-                if (roleInfo.roleId == RoleId.Spy && roleData.impostors.Count <= 1) continue;
-                if (roleInfo.roleId == RoleId.Prosecutor && (CustomOptionHolder.lawyerIsProsecutorChance.GetSelection() == 0 || CustomOptionHolder.lawyerSpawnRate.GetSelection() == 0)) continue;
-                if (roleInfo.roleId == RoleId.Lawyer && (CustomOptionHolder.lawyerIsProsecutorChance.GetSelection() == 10 || CustomOptionHolder.lawyerSpawnRate.GetSelection() == 0)) continue;
+                if (roleData.neutralSettings.ContainsKey((byte)roleInfo.RoleId) && roleData.neutralSettings[(byte)roleInfo.RoleId] == 0) continue;
+                else if (roleData.impSettings.ContainsKey((byte)roleInfo.RoleId) && roleData.impSettings[(byte)roleInfo.RoleId] == 0) continue;
+                else if (roleData.neutralKSettings.ContainsKey((byte)roleInfo.RoleId) && roleData.neutralKSettings[(byte)roleInfo.RoleId] == 0) continue;
+                else if (roleData.crewSettings.ContainsKey((byte)roleInfo.RoleId) && roleData.crewSettings[(byte)roleInfo.RoleId] == 0) continue;
+                else if (new List<RoleId>() { RoleId.Janitor, RoleId.Godfather, RoleId.Mafioso }.Contains(roleInfo.RoleId) && (CustomOptionHolder.mafiaSpawnRate.GetSelection() == 0 || GameOptionsManager.Instance.currentGameOptions.NumImpostors < 3)) continue;
+                else if (roleInfo.RoleId == RoleId.Sidekick && (!CustomOptionHolder.jackalCanCreateSidekick.GetBool() || CustomOptionHolder.jackalSpawnRate.GetSelection() == 0)) continue;
+                else if (roleInfo.RoleId == RoleId.Pestilence) continue;
+                if (roleInfo.RoleId == RoleId.Pursuer && CustomOptionHolder.lawyerSpawnRate.GetSelection() == 0) continue;
+                if (roleInfo.RoleId == RoleId.Spy && roleData.impostors.Count <= 1) continue;
+                if (roleInfo.RoleId == RoleId.Prosecutor && (CustomOptionHolder.lawyerIsProsecutorChance.GetSelection() == 0 || CustomOptionHolder.lawyerSpawnRate.GetSelection() == 0)) continue;
+                if (roleInfo.RoleId == RoleId.Lawyer && (CustomOptionHolder.lawyerIsProsecutorChance.GetSelection() == 10 || CustomOptionHolder.lawyerSpawnRate.GetSelection() == 0)) continue;
                 if (Snitch.Player != null && HandleGuesser.guesserCantGuessSnitch) {
                     var (playerCompleted, playerTotal) = TasksHandler.TaskInfo(Snitch.Player.Data);
                     int numberOfLeftTasks = playerTotal - playerCompleted;
-                    if (numberOfLeftTasks <= 0 && roleInfo.roleId == RoleId.Snitch) continue;
+                    if (numberOfLeftTasks <= 0 && roleInfo.RoleId == RoleId.Snitch) continue;
                 }
 
                 Transform buttonParent = (new GameObject()).transform;
@@ -500,7 +502,7 @@ namespace TownOfSushi.Patches
                 int row = i/5, col = i%5;
                 buttonParent.localPosition = new Vector3(-3.47f + 1.75f * col, 1.5f - 0.45f * row, -5);
                 buttonParent.localScale = new Vector3(0.55f, 0.55f, 1f);
-                label.text = Helpers.ColorString(roleInfo.color, roleInfo.name);
+                label.text = Helpers.ColorString(roleInfo.Color, roleInfo.Name);
                 label.alignment = TMPro.TextAlignmentOptions.Center;
                 label.transform.localPosition = new Vector3(0, 0, label.transform.localPosition.z);
                 label.transform.localScale *= 1.7f;
@@ -563,9 +565,9 @@ namespace TownOfSushi.Patches
                         writer.Write(PlayerControl.LocalPlayer.PlayerId);
                         writer.Write(dyingTarget.PlayerId);
                         writer.Write(focusedTarget.PlayerId);
-                        writer.Write((byte)roleInfo.roleId);
+                        writer.Write((byte)roleInfo.RoleId);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
-                        RPCProcedure.GuesserShoot(PlayerControl.LocalPlayer.PlayerId, dyingTarget.PlayerId, focusedTarget.PlayerId, (byte)roleInfo.roleId);
+                        RPCProcedure.GuesserShoot(PlayerControl.LocalPlayer.PlayerId, dyingTarget.PlayerId, focusedTarget.PlayerId, (byte)roleInfo.RoleId);
                     }
                 }));
 
@@ -588,7 +590,8 @@ namespace TownOfSushi.Patches
             // Add Swapper Buttons
             bool addSwapperButtons = Swapper.Player != null && PlayerControl.LocalPlayer == Swapper.Player && !Swapper.Player.Data.IsDead;
             bool addMayorButton = Mayor.Player != null && PlayerControl.LocalPlayer == Mayor.Player && !Mayor.Player.Data.IsDead && Mayor.mayorChooseSingleVote > 0;
-            if (addSwapperButtons) {
+            if (addSwapperButtons) 
+            {
                 selections = new bool[__instance.playerStates.Length];
                 renderers = new SpriteRenderer[__instance.playerStates.Length];
                 swapperButtonList = new PassiveButton[__instance.playerStates.Length];
@@ -655,7 +658,7 @@ namespace TownOfSushi.Patches
                 else if (addMayorButton) 
                 {
                     meetingExtraButtonLabel.transform.localScale = new Vector3(meetingExtraButtonLabel.transform.localScale.x * 1.5f, meetingExtraButtonLabel.transform.localScale.x * 1.7f, meetingExtraButtonLabel.transform.localScale.x * 1.7f);
-                    meetingExtraButtonLabel.text = Helpers.ColorString(Mayor.color, "Double Vote: " + (Mayor.voteTwice ? Helpers.ColorString(Color.green, "On ") : Helpers.ColorString(Color.red, "Off")));
+                    meetingExtraButtonLabel.text = Helpers.ColorString(Mayor.Color, "Double Vote: " + (Mayor.voteTwice ? Helpers.ColorString(Color.green, "On ") : Helpers.ColorString(Color.red, "Off")));
                 }
                 PassiveButton passiveButton = meetingExtraButton.GetComponent<PassiveButton>();
                 passiveButton.OnClick.RemoveAllListeners();

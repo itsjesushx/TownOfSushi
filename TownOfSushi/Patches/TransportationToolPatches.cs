@@ -37,7 +37,7 @@ namespace TownOfSushi.Patches
                 __instance.playerIdHands.TryGetValue(player.PlayerId, out hand);
                 if (hand != null) 
                 {
-                    if (Camouflager.camouflageTimer <= 0 && !Helpers.MushroomSabotageActive()) 
+                    if (Camouflager.CamouflageTimer <= 0 && !Helpers.MushroomSabotageActive()) 
                     {
                         if (player == Morphling.Player && Morphling.morphTimer > 0) 
                         {
@@ -51,7 +51,7 @@ namespace TownOfSushi.Patches
                             // Also set hat color, cause the line destroys it...
                             player.RawSetHat(Glitch.MimicTarget.Data.DefaultOutfit.HatId, Glitch.MimicTarget.Data.DefaultOutfit.ColorId);
                         }
-                        else 
+                        else
                         {
                             hand.SetPlayerColor(player.CurrentOutfit, PlayerMaterial.MaskType.None, 1f);
                         }
@@ -80,11 +80,11 @@ namespace TownOfSushi.Patches
             var player = __instance.myPlayer;
             __instance.StartCoroutine(Effects.Lerp(5.0f, new System.Action<float>((p) => 
             {
-                if (Camouflager.camouflageTimer <= 0 && !Helpers.MushroomSabotageActive() && player == Morphling.Player && Morphling.morphTimer > 0.1f) 
+                if (Camouflager.CamouflageTimer <= 0 && !Helpers.MushroomSabotageActive() && player == Morphling.Player && Morphling.morphTimer > 0.1f) 
                 {
                     player.RawSetHat(Morphling.morphTarget.Data.DefaultOutfit.HatId, Morphling.morphTarget.Data.DefaultOutfit.ColorId);
                 }
-                else if (Camouflager.camouflageTimer <= 0 && !Helpers.MushroomSabotageActive() && player == Glitch.Player && Glitch.MimicTimer > 0.1f) 
+                else if (Camouflager.CamouflageTimer <= 0 && !Helpers.MushroomSabotageActive() && player == Glitch.Player && Glitch.MimicTimer > 0.1f) 
                 {
                     player.RawSetHat(Glitch.MimicTarget.Data.DefaultOutfit.HatId, Glitch.MimicTarget.Data.DefaultOutfit.ColorId);
                 }

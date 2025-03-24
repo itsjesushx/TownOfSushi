@@ -138,7 +138,7 @@ namespace TownOfSushi
 
             EventUtility.Load();
             SubmergedCompatibility.Initialize();
-            AddToKillDistanceSetting.addKillDistance();
+            AddToKillDistanceSetting.AddKillDistance();
             Logger.LogInfo("Loading TOS completed!");
         }
     }

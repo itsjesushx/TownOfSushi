@@ -149,6 +149,12 @@ namespace TownOfSushi
                     case RoleId.Janitor:
                         Janitor.Player = player;
                         break;
+                    case RoleId.Plaguebearer:
+                        Plaguebearer.Player = player;
+                        break;
+                    case RoleId.Pestilence:
+                        Pestilence.Player = player;
+                        break;
                     case RoleId.Detective:
                         Detective.Player = player;
                         break;
@@ -388,7 +394,7 @@ namespace TownOfSushi
             Engineer.remainingFixes--;
             if (Helpers.ShouldShowGhostInfo()) 
             {
-                Helpers.ShowFlash(Engineer.color, 0.5f, "Engineer Fix"); ;
+                Helpers.ShowFlash(Engineer.Color, 0.5f, "Engineer Fix"); ;
             }
         }
 
@@ -412,7 +418,7 @@ namespace TownOfSushi
                 Vulture.eatenBodies++;
                 if (Vulture.eatenBodies == Vulture.vultureNumberToWin) 
                 {
-                    Vulture.triggerVultureWin = true;
+                    Vulture.IsVultureWin = true;
                 }
             }
         }
@@ -566,14 +572,14 @@ namespace TownOfSushi
             isShieldedAndShow = isShieldedAndShow && (Medic.meetingAfterShielding || !Medic.showShieldAfterMeeting);  // Dont show attempt, if shield is not shown yet
             bool isMedicAndShow = Medic.Player == PlayerControl.LocalPlayer && Medic.showAttemptToMedic;
 
-            if (isShieldedAndShow || isMedicAndShow || Helpers.ShouldShowGhostInfo()) Helpers.ShowFlash(Palette.ImpostorRed, duration: 0.5f, "Failed Murder Attempt on Shielded Player");
+            if (isShieldedAndShow || isMedicAndShow || Helpers.ShouldShowGhostInfo()) Helpers.ShowFlash(Palette.ImpostorRed, Duration: 0.5f, "Failed Murder Attempt on Shielded Player");
         }
 
         public static void FortifiedMurderAttempt() 
         {
             if (Crusader.FortifiedPlayer == null || Crusader.Player == null) return;
 
-            if (Crusader.FortifiedPlayer == PlayerControl.LocalPlayer || Crusader.Player == PlayerControl.LocalPlayer || Helpers.ShouldShowGhostInfo()) Helpers.ShowFlash(Palette.ImpostorRed, duration: 0.5f, "Failed Murder Attempt on Fortified Player");
+            if (Crusader.FortifiedPlayer == PlayerControl.LocalPlayer || Crusader.Player == PlayerControl.LocalPlayer || Helpers.ShouldShowGhostInfo()) Helpers.ShowFlash(Palette.ImpostorRed, Duration: 0.5f, "Murder Attempt on Fortified Player");
         }
 
         public static void ShifterShift(byte targetId) 
@@ -625,9 +631,9 @@ namespace TownOfSushi
             PlayerControl target = Helpers.PlayerById(playerId);
             if (Morphling.Player == null || target == null) return;
 
-            Morphling.morphTimer = Morphling.duration;
+            Morphling.morphTimer = Morphling.Duration;
             Morphling.morphTarget = target;
-            if (Camouflager.camouflageTimer <= 0f)
+            if (Camouflager.CamouflageTimer <= 0f)
                 Morphling.Player.SetLook(target.Data.PlayerName, target.Data.DefaultOutfit.ColorId, target.Data.DefaultOutfit.HatId, target.Data.DefaultOutfit.VisorId, target.Data.DefaultOutfit.SkinId, target.Data.DefaultOutfit.PetId);
         }
 
@@ -638,7 +644,7 @@ namespace TownOfSushi
 
             Glitch.MimicTimer = Glitch.MimicDuration;
             Glitch.MimicTarget = target;
-            if (Camouflager.camouflageTimer <= 0f)
+            if (Camouflager.CamouflageTimer <= 0f)
                 Glitch.Player.SetLook(target.Data.PlayerName, target.Data.DefaultOutfit.ColorId, target.Data.DefaultOutfit.HatId, target.Data.DefaultOutfit.VisorId, target.Data.DefaultOutfit.SkinId, target.Data.DefaultOutfit.PetId);
         }
 
@@ -646,7 +652,7 @@ namespace TownOfSushi
         {
             if (Camouflager.Player == null) return;
 
-            Camouflager.camouflageTimer = Camouflager.duration;
+            Camouflager.CamouflageTimer = Camouflager.Duration;
             if (Helpers.MushroomSabotageActive()) return; // Dont overwrite the fungle "camo"
             foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                 player.SetLook("", 6, "", "", "", "");
@@ -781,6 +787,8 @@ namespace TownOfSushi
             if (player == Jester.Player) Jester.ClearAndReload();
             if (player == Glitch.Player) Glitch.ClearAndReload();
             if (player == Werewolf.Player) Werewolf.ClearAndReload();
+            if (player == Plaguebearer.Player) Plaguebearer.ClearAndReload();
+            if (player == Pestilence.Player) Pestilence.ClearAndReload();
             if (player == SerialKiller.Player) SerialKiller.ClearAndReload();
             if (player == Arsonist.Player) Arsonist.ClearAndReload();
             if (Guesser.IsGuesser(player.PlayerId)) Guesser.Clear(player.PlayerId);
@@ -873,7 +881,7 @@ namespace TownOfSushi
                 target.cosmetics.colorBlindText.gameObject.SetActive(DataManager.Settings.Accessibility.ColorBlindMode);
                 target.cosmetics.colorBlindText.color = target.cosmetics.colorBlindText.color.SetAlpha(1f);
 
-                if (Camouflager.camouflageTimer <= 0 && !Helpers.MushroomSabotageActive()) target.SetDefaultLook();
+                if (Camouflager.CamouflageTimer <= 0 && !Helpers.MushroomSabotageActive()) target.SetDefaultLook();
                 Ninja.isInvisble = false;
                 return;
             }
@@ -988,7 +996,7 @@ namespace TownOfSushi
 
         public static void ArsonistWin() 
         {
-            Arsonist.triggerArsonistWin = true;
+            Arsonist.IsArsonistWin = true;
             foreach (PlayerControl p in PlayerControl.AllPlayerControls) 
             {
                 if (p != Arsonist.Player && !p.Data.IsDead) 
@@ -1017,6 +1025,19 @@ namespace TownOfSushi
                     Transform playerInfoTransform = client.cosmetics.nameText.transform.parent.FindChild("Info");
                     TMPro.TextMeshPro playerInfo = playerInfoTransform != null ? playerInfoTransform.GetComponent<TMPro.TextMeshPro>() : null;
                     if (playerInfo != null) playerInfo.text = "";
+            }
+        }
+
+        public static void TurnPestilence() 
+        {
+            PlayerControl player = Plaguebearer.Player;
+            Plaguebearer.ClearAndReload();
+
+            Pestilence.Player = player;
+            if (player == PlayerControl.LocalPlayer)
+            {
+                Helpers.ShowFlash(Pestilence.Color, 2.5f);
+                SoundManager.Instance.PlaySound(ShipStatus.Instance.SabotageSound, false, 1f, null);
             }
         }
 
@@ -1104,8 +1125,8 @@ namespace TownOfSushi
             PlayerControl guessedTarget = Helpers.PlayerById(guessedTargetId);
             if (PlayerControl.LocalPlayer.Data.IsDead && guessedTarget != null && guesser != null) 
             {
-                RoleInfo roleInfo = RoleInfo.allRoleInfos.FirstOrDefault(x => (byte)x.roleId == guessedRoleId);
-                string msg = $"{guesser.Data.PlayerName} guessed the role {roleInfo?.name ?? ""} for {guessedTarget.Data.PlayerName}!";
+                RoleInfo roleInfo = RoleInfo.allRoleInfos.FirstOrDefault(x => (byte)x.RoleId == guessedRoleId);
+                string msg = $"{guesser.Data.PlayerName} guessed the role {roleInfo?.Name ?? ""} for {guessedTarget.Data.PlayerName}!";
                 if (AmongUsClient.Instance.AmClient && FastDestroyableSingleton<HudManager>.Instance)
                     FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(guesser, msg);
                 if (msg.IndexOf("who", StringComparison.OrdinalIgnoreCase) >= 0)
@@ -1124,7 +1145,7 @@ namespace TownOfSushi
         public static void Bloody(byte killerPlayerId, byte bloodyPlayerId) 
         {
             if (global::TownOfSushi.Bloody.active.ContainsKey(killerPlayerId)) return;
-            global::TownOfSushi.Bloody.active.Add(killerPlayerId, global::TownOfSushi.Bloody.duration);
+            global::TownOfSushi.Bloody.active.Add(killerPlayerId, global::TownOfSushi.Bloody.Duration);
             global::TownOfSushi.Bloody.bloodyKillerMap.Add(killerPlayerId, bloodyPlayerId);
         }
 
@@ -1146,7 +1167,7 @@ namespace TownOfSushi
             if (target == null || AmnesiacPlayer == null) return;
             List<RoleInfo> targetInfo = RoleInfo.GetRoleInfoForPlayer(target);
             RoleInfo roleInfo = targetInfo.Where(info => info.FactionId != Factions.Modifier).FirstOrDefault();
-            switch (roleInfo.roleId)
+            switch (roleInfo.RoleId)
             {
                 case RoleId.Crewmate:
                     Amnesiac.ClearAndReload();
@@ -1184,6 +1205,12 @@ namespace TownOfSushi
                 case RoleId.Portalmaker:
                     Portalmaker.ClearAndReload();
                     Portalmaker.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    break;
+                
+                case RoleId.Crusader:
+                    Crusader.ClearAndReload();
+                    Crusader.Player = AmnesiacPlayer;
                     Amnesiac.ClearAndReload();
                     break;
 
@@ -1250,6 +1277,18 @@ namespace TownOfSushi
                 case RoleId.Shifter:
                     Shifter.ClearAndReload();
                     Shifter.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    break;
+
+                case RoleId.Plaguebearer:
+                    Plaguebearer.ClearAndReload();
+                    Plaguebearer.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    break;
+                
+                case RoleId.Pestilence:
+                    Pestilence.ClearAndReload();
+                    Pestilence.Player = AmnesiacPlayer;
                     Amnesiac.ClearAndReload();
                     break;
 
@@ -1519,6 +1558,8 @@ namespace TownOfSushi
             if (target == SerialKiller.Player) SerialKiller.Player = thief;
             if (target == VengefulRomantic.Player) VengefulRomantic.Player = thief;
             if (target == Werewolf.Player) Werewolf.Player = thief;
+            if (target == Plaguebearer.Player) Plaguebearer.Player = thief;
+            if (target == Pestilence.Player) Pestilence.Player = thief;
             if (target == Jackal.Player)
             {
                 Jackal.Player = thief;
@@ -1726,6 +1767,12 @@ namespace TownOfSushi
                     byte playerId = reader.ReadByte();
                     RPCProcedure.SetRole(roleId, playerId);
                     break;
+               /* case (byte)CustomRPC.DraftModePickOrder:
+                    Modules.RoleDraft.ReceivePickOrder(reader.ReadByte(), reader);
+                    break;
+                case (byte)CustomRPC.DraftModePick:
+                    Modules.RoleDraft.ReceivePick(reader.ReadByte(), reader.ReadByte());
+                    break;*/
                 case (byte)CustomRPC.SetModifier:
                     byte modifierId = reader.ReadByte();
                     byte pId = reader.ReadByte();
@@ -1820,6 +1867,9 @@ namespace TownOfSushi
                     break;
                 case (byte)CustomRPC.ShieldedMurderAttempt:
                     RPCProcedure.ShieldedMurderAttempt();
+                    break;
+                case (byte)CustomRPC.Infect:
+                    Plaguebearer.SpreadInfection(Helpers.PlayerById(reader.ReadByte()), Helpers.PlayerById(reader.ReadByte()));
                     break;
                 case (byte)CustomRPC.FortifiedMurderAttempt:
                     RPCProcedure.FortifiedMurderAttempt();
@@ -1937,6 +1987,9 @@ namespace TownOfSushi
                     break;
                 case (byte)CustomRPC.RomanticChangeRole:
                     RPCProcedure.RomanticChangeRole();
+                    break;
+                case (byte)CustomRPC.TurnPestilence:
+                    RPCProcedure.TurnPestilence();
                     break;
                 case (byte)CustomRPC.SetBlanked:
                     var pid = reader.ReadByte();

@@ -11,18 +11,18 @@ namespace TownOfSushi.Modules.CustomHats;
 
 public class HatsLoader : MonoBehaviour
 {
-    private bool isRunning;
+    private bool IsRunning;
 
     public void FetchHats()
     {
-        if (isRunning) return;
+        if (IsRunning) return;
         this.StartCoroutine(CoFetchHats());
     }
 
     [HideFromIl2Cpp]
     private IEnumerator CoFetchHats()
     {
-        isRunning = true;
+        IsRunning = true;
         var www = new UnityWebRequest();
         www.SetMethod(UnityWebRequest.UnityWebRequestMethod.Get);
         TownOfSushiPlugin.Logger.LogMessage($"Download manifest at: {RepositoryUrl}/{ManifestFileName}");
@@ -61,7 +61,7 @@ public class HatsLoader : MonoBehaviour
             yield return CoDownloadHatAsset(fileName);
         }
 
-        isRunning = false;
+        IsRunning = false;
     }
 
     private static IEnumerator CoDownloadHatAsset(string fileName)

@@ -10,7 +10,7 @@ namespace TownOfSushi.Modules.CustomHats.Patches;
 [HarmonyPatch(typeof(HatManager))]
 internal static class HatManagerPatches
 {
-    private static bool isRunning;
+    private static bool IsRunning;
     private static bool isLoaded;
     private static List<HatData> allHats;
         
@@ -18,8 +18,8 @@ internal static class HatManagerPatches
     [HarmonyPrefix]
     private static void GetHatByIdPrefix(HatManager __instance)
     {
-        if (isRunning || isLoaded) return;
-        isRunning = true;
+        if (IsRunning || isLoaded) return;
+        IsRunning = true;
         // Maybe we can use lock keyword to ensure simultaneous list manipulations ?
         allHats = __instance.allHats.ToList();
         var cache = CustomHatManager.UnregisteredHats.Clone();
@@ -46,6 +46,6 @@ internal static class HatManagerPatches
     [HarmonyPostfix]
     private static void GetHatByIdPostfix()
     {
-        isRunning = false;
+        IsRunning = false;
     }
 }

@@ -93,7 +93,7 @@ namespace TownOfSushi.Objects
                 }
 
                 Color color;
-                if (AnonymousFootprints || Camouflager.camouflageTimer > 0 || Helpers.MushroomSabotageActive()) 
+                if (AnonymousFootprints || Camouflager.CamouflageTimer > 0 || Helpers.MushroomSabotageActive()) 
                 {
                     color = Palette.PlayerColors[6];
                 } 

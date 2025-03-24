@@ -52,14 +52,14 @@ namespace TownOfSushi.Patches {
             return result;
         }
 
-        static void SetPlayerOutline(PlayerControl target, Color color) 
+        static void SetPlayerOutline(PlayerControl target, Color Color) 
         {
             if (target == null || target.cosmetics?.currentBodySprite?.BodySprite == null) return;
 
-            color = color.SetAlpha(Chameleon.Visibility(target.PlayerId));
+            Color = Color.SetAlpha(Chameleon.Visibility(target.PlayerId));
 
             target.cosmetics.currentBodySprite.BodySprite.material.SetFloat("_Outline", 1f);
-            target.cosmetics.currentBodySprite.BodySprite.material.SetColor("_OutlineColor", color);
+            target.cosmetics.currentBodySprite.BodySprite.material.SetColor("_OutlineColor", Color);
         }
 
         // Update functions
@@ -72,24 +72,24 @@ namespace TownOfSushi.Patches {
                 bool isMorphedMorphling = target == Morphling.Player && Morphling.morphTarget != null && Morphling.morphTimer > 0f;
                 bool isMimicGlitch = target == Glitch.Player && Glitch.MimicTarget != null && Glitch.MimicTimer > 0f;
                 bool hasVisibleShield = false;
-                Color color = Medic.shieldedColor;
-                if (Camouflager.camouflageTimer <= 0f && !Helpers.MushroomSabotageActive() && Medic.ShieldVisible(target))
+                Color Color = Medic.shieldedColor;
+                if (Camouflager.CamouflageTimer <= 0f && !Helpers.MushroomSabotageActive() && Medic.ShieldVisible(target))
                     hasVisibleShield = true;
 
-                if (Camouflager.camouflageTimer <= 0f && !Helpers.MushroomSabotageActive() && MapOptions.firstKillPlayer != null && MapOptions.shieldFirstKill && ((target == MapOptions.firstKillPlayer && !isMorphedMorphling && !isMimicGlitch) || (isMorphedMorphling && Morphling.morphTarget == MapOptions.firstKillPlayer) || (isMimicGlitch && Glitch.MimicTarget == MapOptions.firstKillPlayer))) 
+                if (Camouflager.CamouflageTimer <= 0f && !Helpers.MushroomSabotageActive() && MapOptions.firstKillPlayer != null && MapOptions.shieldFirstKill && ((target == MapOptions.firstKillPlayer && !isMorphedMorphling && !isMimicGlitch) || (isMorphedMorphling && Morphling.morphTarget == MapOptions.firstKillPlayer) || (isMimicGlitch && Glitch.MimicTarget == MapOptions.firstKillPlayer))) 
                 {
                     hasVisibleShield = true;
-                    color = Color.blue;
+                    Color = Color.blue;
                 }
 
                 if (PlayerControl.LocalPlayer.Data.IsDead && Armored.Player != null && target == Armored.Player && !Armored.isBrokenArmor && !hasVisibleShield) {
                     hasVisibleShield = true;
-                    color = Color.yellow;
+                    Color = Color.yellow;
                 }
 
                 if (hasVisibleShield) {
                 target.cosmetics.currentBodySprite.BodySprite.material.SetFloat("_Outline", 1f);
-                target.cosmetics.currentBodySprite.BodySprite.material.SetColor("_OutlineColor", color);
+                target.cosmetics.currentBodySprite.BodySprite.material.SetColor("_OutlineColor", Color);
                 }
                 else {
                     target.cosmetics.currentBodySprite.BodySprite.material.SetFloat("_Outline", 0f);
@@ -170,14 +170,14 @@ namespace TownOfSushi.Patches {
         {
             if (Crusader.Player == null || Crusader.Player != PlayerControl.LocalPlayer) return;
             Crusader.CurrentTarget = SetTarget();
-            if (!Crusader.Fortified) SetPlayerOutline(Crusader.CurrentTarget, Crusader.color);
+            if (!Crusader.Fortified) SetPlayerOutline(Crusader.CurrentTarget, Crusader.Color);
         }
 
         static void RomanticSetTarget()
         {
             if (Romantic.Player == null || Romantic.Player != PlayerControl.LocalPlayer) return;
             Romantic.CurrentTarget = SetTarget();
-            if (!Romantic.HasLover) SetPlayerOutline(Romantic.CurrentTarget, Romantic.color);
+            if (!Romantic.HasLover) SetPlayerOutline(Romantic.CurrentTarget, Romantic.Color);
         }
 
         static void ShifterSetTarget() 
@@ -191,42 +191,69 @@ namespace TownOfSushi.Patches {
         {
             if (Mystic.Player == null || Mystic.Player != PlayerControl.LocalPlayer) return;
             Mystic.CurrentTarget = SetTarget();
-            SetPlayerOutline(Mystic.CurrentTarget, Mystic.color);
+            SetPlayerOutline(Mystic.CurrentTarget, Mystic.Color);
         }
 
         static void MorphlingSetTarget() 
         {
             if (Morphling.Player == null || Morphling.Player != PlayerControl.LocalPlayer) return;
             Morphling.CurrentTarget = SetTarget();
-            SetPlayerOutline(Morphling.CurrentTarget, Morphling.color);
+            SetPlayerOutline(Morphling.CurrentTarget, Morphling.Color);
+        }
+
+        public static void PlaguebearerSetTarget() 
+        {
+            if (Plaguebearer.Player == null || Plaguebearer.Player != PlayerControl.LocalPlayer) return;
+            List<PlayerControl> untargetables;
+            if (Plaguebearer.CurrentTarget != null)
+            {
+                untargetables = new();
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                {
+                    if (player.PlayerId != Plaguebearer.CurrentTarget.PlayerId)
+                    {
+                        untargetables.Add(player);
+                    }
+                }
+            }
+            else untargetables = Plaguebearer.InfectedPlayers;
+            Plaguebearer.CurrentTarget = SetTarget(untargetablePlayers: untargetables);
+            if (Plaguebearer.CurrentTarget != null) SetPlayerOutline(Plaguebearer.CurrentTarget, Plaguebearer.Color);
+        }
+
+        static void PestilenceSetTarget() 
+        {
+            if (Pestilence.Player == null || Pestilence.Player != PlayerControl.LocalPlayer) return;
+            Pestilence.CurrentTarget = SetTarget();
+            SetPlayerOutline(Pestilence.CurrentTarget, Pestilence.Color);
         }
 
         static void SheriffSetTarget() 
         {
             if (Sheriff.Player == null || Sheriff.Player != PlayerControl.LocalPlayer) return;
             Sheriff.CurrentTarget = SetTarget();
-            SetPlayerOutline(Sheriff.CurrentTarget, Sheriff.color);
+            SetPlayerOutline(Sheriff.CurrentTarget, Sheriff.Color);
         }
 
         static void GlitchSetTarget()
         {
             if (Glitch.Player == null || Glitch.Player != PlayerControl.LocalPlayer) return;
             Glitch.CurrentTarget = SetTarget();
-            SetPlayerOutline(Glitch.CurrentTarget, Glitch.color);
+            SetPlayerOutline(Glitch.CurrentTarget, Glitch.Color);
         }
 
         static void VengefulRomanticSetTarget()
         {
             if (VengefulRomantic.Player == null || VengefulRomantic.Player != PlayerControl.LocalPlayer) return;
             VengefulRomantic.CurrentTarget = SetTarget();
-            SetPlayerOutline(VengefulRomantic.CurrentTarget, Romantic.color);
+            SetPlayerOutline(VengefulRomantic.CurrentTarget, Romantic.Color);
         }
 
         static void TrackerSetTarget() 
         {
             if (Tracker.Player == null || Tracker.Player != PlayerControl.LocalPlayer) return;
             Tracker.CurrentTarget = SetTarget();
-            if (!Tracker.usedTracker) SetPlayerOutline(Tracker.CurrentTarget, Tracker.color);
+            if (!Tracker.usedTracker) SetPlayerOutline(Tracker.CurrentTarget, Tracker.Color);
         }
 
         static void DetectiveUpdateFootPrints() 
@@ -277,7 +304,7 @@ namespace TownOfSushi.Patches {
             }
             Vampire.targetNearGarlic = targetNearGarlic;
             Vampire.CurrentTarget = target;
-            SetPlayerOutline(Vampire.CurrentTarget, Vampire.color);
+            SetPlayerOutline(Vampire.CurrentTarget, Vampire.Color);
         }
 
         static void JackalSetTarget() 
@@ -289,45 +316,45 @@ namespace TownOfSushi.Patches {
                 // Only exclude sidekick from beeing targeted if the jackal can create sidekicks from impostors
                 if (Sidekick.Player != null) untargetablePlayers.Add(Sidekick.Player);
             }
-            if (Mini.Player != null && !Mini.IsGrownUp()) untargetablePlayers.Add(Mini.Player); // Exclude Jackal from targeting the Mini unless it has grown up
+            if (Mini.Player != null && !Mini.IsGrownUp) untargetablePlayers.Add(Mini.Player); // Exclude Jackal from targeting the Mini unless it has grown up
             Jackal.CurrentTarget = SetTarget(untargetablePlayers: untargetablePlayers);
-            SetPlayerOutline(Jackal.CurrentTarget, Jackal.color);
+            SetPlayerOutline(Jackal.CurrentTarget, Jackal.Color);
         }
 
         static void JuggernautSetTarget()
         {
             if (Juggernaut.Player == null || Juggernaut.Player != PlayerControl.LocalPlayer) return;
             var untargetablePlayers = new List<PlayerControl>();
-            if (Mini.Player != null && !Mini.IsGrownUp()) untargetablePlayers.Add(Mini.Player); // Exclude Juggernaut from targeting the Mini unless it has grown up
+            if (Mini.Player != null && !Mini.IsGrownUp) untargetablePlayers.Add(Mini.Player); // Exclude Juggernaut from targeting the Mini unless it has grown up
             Juggernaut.CurrentTarget = SetTarget(untargetablePlayers: untargetablePlayers);
-            SetPlayerOutline(Juggernaut.CurrentTarget, Juggernaut.color);
+            SetPlayerOutline(Juggernaut.CurrentTarget, Juggernaut.Color);
         }
 
         static void SerialKillerSetTarget() 
         {
             if (SerialKiller.Player == null || SerialKiller.Player != PlayerControl.LocalPlayer) return;
             var untargetablePlayers = new List<PlayerControl>();
-            if (Mini.Player != null && !Mini.IsGrownUp()) untargetablePlayers.Add(Mini.Player); // Exclude Serial Killer from targeting the Mini unless it has grown up
+            if (Mini.Player != null && !Mini.IsGrownUp) untargetablePlayers.Add(Mini.Player); // Exclude Serial Killer from targeting the Mini unless it has grown up
             SerialKiller.CurrentTarget = SetTarget(untargetablePlayers: untargetablePlayers);
-            SetPlayerOutline(SerialKiller.CurrentTarget, SerialKiller.color);
+            SetPlayerOutline(SerialKiller.CurrentTarget, SerialKiller.Color);
         }
 
         static void WerewolfSetTarget() 
         {
             if (Werewolf.Player == null || Werewolf.Player != PlayerControl.LocalPlayer) return;
             var untargetablePlayers = new List<PlayerControl>();
-            if (Mini.Player != null && !Mini.IsGrownUp()) untargetablePlayers.Add(Mini.Player); // Exclude Werewolf from targeting the Mini unless it has grown up
+            if (Mini.Player != null && !Mini.IsGrownUp) untargetablePlayers.Add(Mini.Player); // Exclude Werewolf from targeting the Mini unless it has grown up
             Werewolf.CurrentTarget = SetTarget(untargetablePlayers: untargetablePlayers);
-            SetPlayerOutline(Werewolf.CurrentTarget, Werewolf.color);
+            SetPlayerOutline(Werewolf.CurrentTarget, Werewolf.Color);
         }
 
         static void SidekickSetTarget() {
             if (Sidekick.Player == null || Sidekick.Player != PlayerControl.LocalPlayer) return;
             var untargetablePlayers = new List<PlayerControl>();
             if (Jackal.Player != null) untargetablePlayers.Add(Jackal.Player);
-            if (Mini.Player != null && !Mini.IsGrownUp()) untargetablePlayers.Add(Mini.Player); // Exclude Sidekick from targeting the Mini unless it has grown up
+            if (Mini.Player != null && !Mini.IsGrownUp) untargetablePlayers.Add(Mini.Player); // Exclude Sidekick from targeting the Mini unless it has grown up
             Sidekick.CurrentTarget = SetTarget(untargetablePlayers: untargetablePlayers);
-            if (Sidekick.canKill) SetPlayerOutline(Sidekick.CurrentTarget, Sidekick.color);
+            if (Sidekick.canKill) SetPlayerOutline(Sidekick.CurrentTarget, Sidekick.Color);
         }
 
         static void SidekickCheckPromotion() {
@@ -349,7 +376,7 @@ namespace TownOfSushi.Patches {
             if (Sidekick.wasTeamRed) untargetables.Add(Sidekick.Player);
             if (Jackal.wasTeamRed) untargetables.Add(Jackal.Player);
             Eraser.CurrentTarget = SetTarget(onlyCrewmates: !Eraser.canEraseAnyone, untargetablePlayers: Eraser.canEraseAnyone ? new List<PlayerControl>() : untargetables);
-            SetPlayerOutline(Eraser.CurrentTarget, Eraser.color);
+            SetPlayerOutline(Eraser.CurrentTarget, Eraser.Color);
         }
 
         static void GlitchUpdate()
@@ -381,7 +408,7 @@ namespace TownOfSushi.Patches {
                         if (vent?.myRend?.material != null) {
                             if (Engineer.Player != null && Engineer.Player.inVent) {
                                 vent.myRend.material.SetFloat("_Outline", 1f);
-                                vent.myRend.material.SetColor("_OutlineColor", Engineer.color);
+                                vent.myRend.material.SetColor("_OutlineColor", Engineer.Color);
                             }
                             else if (vent.myRend.material.GetColor("_AddColor") != Color.red) {
                                 vent.myRend.material.SetFloat("_Outline", 0);
@@ -424,11 +451,11 @@ namespace TownOfSushi.Patches {
             }
             if (Warlock.curseVictim == null) {
                 Warlock.CurrentTarget = SetTarget();
-                SetPlayerOutline(Warlock.CurrentTarget, Warlock.color);
+                SetPlayerOutline(Warlock.CurrentTarget, Warlock.Color);
             }
             else {
                 Warlock.curseVictimTarget = SetTarget(targetingPlayer: Warlock.curseVictim);
-                SetPlayerOutline(Warlock.curseVictimTarget, Warlock.color);
+                SetPlayerOutline(Warlock.curseVictimTarget, Warlock.Color);
             }
         }
 
@@ -520,7 +547,7 @@ namespace TownOfSushi.Patches {
                 }
                 foreach (Vector3 position in Tracker.deadBodyPositions) {
                     if (arrowsCountChanged) {
-                        Tracker.localArrows.Add(new Arrow(Tracker.color));
+                        Tracker.localArrows.Add(new Arrow(Tracker.Color));
                         Tracker.localArrows[index].arrow.SetActive(true);
                     }
                     if (Tracker.localArrows[index] != null) Tracker.localArrows[index].Update(position);
@@ -542,7 +569,7 @@ namespace TownOfSushi.Patches {
             collider.offset = Mini.defaultColliderOffset * Vector2.down;
 
             // Set adapted player size to Mini, Glitch and Morphling
-            if (Mini.Player == null || Camouflager.camouflageTimer > 0f || Helpers.MushroomSabotageActive()  || Mini.Player == Morphling.Player && Morphling.morphTimer > 0 || Mini.Player == Glitch.Player && Glitch.MimicTimer > 0) return;
+            if (Mini.Player == null || Camouflager.CamouflageTimer > 0f || Helpers.MushroomSabotageActive()  || Mini.Player == Morphling.Player && Morphling.morphTimer > 0 || Mini.Player == Glitch.Player && Glitch.MimicTimer > 0) return;
 
             float growingProgress = Mini.GrowingProgress();
             float scale = growingProgress * 0.35f + 0.35f;
@@ -591,7 +618,8 @@ namespace TownOfSushi.Patches {
                 {
                     Transform playerInfoTransform = p.cosmetics.nameText.transform.parent.FindChild("Info");
                     TMPro.TextMeshPro playerInfo = playerInfoTransform != null ? playerInfoTransform.GetComponent<TMPro.TextMeshPro>() : null;
-                    if (playerInfo == null) {
+                    if (playerInfo == null) 
+                    {
                         playerInfo = UnityEngine.Object.Instantiate(p.cosmetics.nameText, p.cosmetics.nameText.transform.parent);
                         playerInfo.transform.localPosition += Vector3.up * 0.225f;
                         playerInfo.fontSize *= 0.75f;
@@ -627,7 +655,7 @@ namespace TownOfSushi.Patches {
                     {
                         if (p.Data.IsDead) roleNames = roleText;
                         playerInfoText = $"{roleNames}";
-                        if (p == Swapper.Player) playerInfoText = $"{roleNames}" + Helpers.ColorString(Swapper.color, $" ({Swapper.charges})");
+                        if (p == Swapper.Player) playerInfoText = $"{roleNames}" + Helpers.ColorString(Swapper.Color, $" ({Swapper.charges})");
                         if (HudManager.Instance.TaskPanel != null) 
                         {
                             TMPro.TextMeshPro tabText = HudManager.Instance.TaskPanel.tab.transform.FindChild("TabText_TMP").GetComponent<TMPro.TextMeshPro>();
@@ -705,7 +733,7 @@ namespace TownOfSushi.Patches {
             }
             else untargetables = Arsonist.dousedPlayers;
             Arsonist.CurrentTarget = SetTarget(untargetablePlayers: untargetables);
-            if (Arsonist.CurrentTarget != null) SetPlayerOutline(Arsonist.CurrentTarget, Arsonist.color);
+            if (Arsonist.CurrentTarget != null) SetPlayerOutline(Arsonist.CurrentTarget, Arsonist.Color);
         }
 
         static void SnitchUpdate() 
@@ -773,7 +801,7 @@ namespace TownOfSushi.Patches {
                 var possibleTargets = new List<PlayerControl>();
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls) 
                 {
-                    if (!p.Data.IsDead && !p.Data.Disconnected && p != p.Data.Role.IsImpostor && p != Spy.Player && (Romantic.beloved == BountyHunter.Player && p != Romantic.Player) && (p != Sidekick.Player || !Sidekick.wasTeamRed) && (p != Jackal.Player || !Jackal.wasTeamRed) && (p != Mini.Player || Mini.IsGrownUp()) && (Lovers.GetPartner(BountyHunter.Player) == null || p != Lovers.GetPartner(BountyHunter.Player))) possibleTargets.Add(p);
+                    if (!p.Data.IsDead && !p.Data.Disconnected && p != p.Data.Role.IsImpostor && p != Spy.Player && (Romantic.beloved == BountyHunter.Player && p != Romantic.Player) && (p != Sidekick.Player || !Sidekick.wasTeamRed) && (p != Jackal.Player || !Jackal.wasTeamRed) && (p != Mini.Player || Mini.IsGrownUp) && (Lovers.GetPartner(BountyHunter.Player) == null || p != Lovers.GetPartner(BountyHunter.Player))) possibleTargets.Add(p);
                 }
                 BountyHunter.bounty = possibleTargets[TownOfSushi.rnd.Next(0, possibleTargets.Count)];
                 if (BountyHunter.bounty == null) return;
@@ -901,18 +929,18 @@ namespace TownOfSushi.Patches {
             bool mushRoomSaboIsActive = Helpers.MushroomSabotageActive();
             if (!mushroomSaboWasActive) mushroomSaboWasActive = mushRoomSaboIsActive;
             
-            float oldCamouflageTimer = Camouflager.camouflageTimer;
+            float oldCamouflageTimer = Camouflager.CamouflageTimer;
             float oldMorphTimer = Morphling.morphTimer;
             float oldGlitchTimer = Glitch.MimicTimer;
 
-            Camouflager.camouflageTimer = Mathf.Max(0f, Camouflager.camouflageTimer - Time.fixedDeltaTime);
+            Camouflager.CamouflageTimer = Mathf.Max(0f, Camouflager.CamouflageTimer - Time.fixedDeltaTime);
             Morphling.morphTimer = Mathf.Max(0f, Morphling.morphTimer - Time.fixedDeltaTime);
             Glitch.MimicTimer = Mathf.Max(0f, Glitch.MimicTimer - Time.fixedDeltaTime);
 
             if (mushRoomSaboIsActive) return;
 
             // Camouflage reset and set Morphling look if necessary
-            if (oldCamouflageTimer > 0f && Camouflager.camouflageTimer <= 0f) 
+            if (oldCamouflageTimer > 0f && Camouflager.CamouflageTimer <= 0f) 
             {
                 Camouflager.ResetCamouflage();
                 if (Morphling.morphTimer > 0f && Morphling.Player != null && Morphling.morphTarget != null) 
@@ -940,7 +968,7 @@ namespace TownOfSushi.Patches {
                     PlayerControl target = Glitch.MimicTarget;
                     Glitch.Player.SetLook(target.Data.PlayerName, target.Data.DefaultOutfit.ColorId, target.Data.DefaultOutfit.HatId, target.Data.DefaultOutfit.VisorId, target.Data.DefaultOutfit.SkinId, target.Data.DefaultOutfit.PetId);
                 }
-                if (Camouflager.camouflageTimer > 0) 
+                if (Camouflager.CamouflageTimer > 0) 
                 {
                     foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                         player.SetLook("", 6, "", "", "", "");
@@ -948,9 +976,9 @@ namespace TownOfSushi.Patches {
             }
 
             // Morphling reset (only if camouflage is inactive)
-            if (Camouflager.camouflageTimer <= 0f && oldMorphTimer > 0f && Morphling.morphTimer <= 0f && Morphling.Player != null)
+            if (Camouflager.CamouflageTimer <= 0f && oldMorphTimer > 0f && Morphling.morphTimer <= 0f && Morphling.Player != null)
                 Morphling.ResetMorph();
-            if (Camouflager.camouflageTimer <= 0f && oldGlitchTimer > 0f && Glitch.MimicTimer <= 0f && Glitch.Player != null)
+            if (Camouflager.CamouflageTimer <= 0f && oldGlitchTimer > 0f && Glitch.MimicTimer <= 0f && Glitch.Player != null)
                 Glitch.ResetMimic();
             mushroomSaboWasActive = false;
         }
@@ -1041,14 +1069,14 @@ namespace TownOfSushi.Patches {
         {
             if (Oracle.Player == null || Oracle.Player != PlayerControl.LocalPlayer) return;
             Oracle.CurrentTarget = SetTarget();
-            SetPlayerOutline(Oracle.CurrentTarget, Oracle.color);
+            SetPlayerOutline(Oracle.CurrentTarget, Oracle.Color);
         }
 
         static void PursuerSetTarget() 
         {
             if (Pursuer.pursuer == null || Pursuer.pursuer != PlayerControl.LocalPlayer) return;
             Pursuer.target = SetTarget();
-            SetPlayerOutline(Pursuer.target, Pursuer.color);
+            SetPlayerOutline(Pursuer.target, Pursuer.Color);
         }
 
         static void WitchSetTarget() {
@@ -1063,7 +1091,7 @@ namespace TownOfSushi.Patches {
                 if (Jackal.wasTeamRed && !Witch.canSpellAnyone) untargetables.Add(Jackal.Player);
             }
             Witch.CurrentTarget = SetTarget(onlyCrewmates: !Witch.canSpellAnyone, untargetablePlayers: untargetables);
-            SetPlayerOutline(Witch.CurrentTarget, Witch.color);
+            SetPlayerOutline(Witch.CurrentTarget, Witch.Color);
         }
 
         static void NinjaSetTarget()
@@ -1071,20 +1099,20 @@ namespace TownOfSushi.Patches {
             if (Ninja.ninja == null || Ninja.ninja != PlayerControl.LocalPlayer) return;
             List<PlayerControl> untargetables = new List<PlayerControl>();
             if (Spy.Player != null && !Spy.impostorsCanKillAnyone) untargetables.Add(Spy.Player);
-            if (Mini.Player != null && !Mini.IsGrownUp()) untargetables.Add(Mini.Player);
+            if (Mini.Player != null && !Mini.IsGrownUp) untargetables.Add(Mini.Player);
             if (Sidekick.wasTeamRed && !Spy.impostorsCanKillAnyone) untargetables.Add(Sidekick.Player);
             if (Jackal.wasTeamRed && !Spy.impostorsCanKillAnyone) untargetables.Add(Jackal.Player);
             Ninja.CurrentTarget = SetTarget(onlyCrewmates: Spy.Player == null || !Spy.impostorsCanKillAnyone, untargetablePlayers: untargetables);
-            SetPlayerOutline(Ninja.CurrentTarget, Ninja.color);
+            SetPlayerOutline(Ninja.CurrentTarget, Ninja.Color);
         }
 
         static void ThiefSetTarget() 
         {
             if (Thief.Player == null || Thief.Player != PlayerControl.LocalPlayer) return;
             List<PlayerControl> untargetables = new List<PlayerControl>();
-            if (Mini.Player != null && !Mini.IsGrownUp()) untargetables.Add(Mini.Player);
+            if (Mini.Player != null && !Mini.IsGrownUp) untargetables.Add(Mini.Player);
             Thief.CurrentTarget = SetTarget(onlyCrewmates: false, untargetablePlayers: untargetables);
-            SetPlayerOutline(Thief.CurrentTarget, Thief.color);
+            SetPlayerOutline(Thief.CurrentTarget, Thief.Color);
         }
 
 
@@ -1131,25 +1159,26 @@ namespace TownOfSushi.Patches {
             }
         }
 
-        // Mini set adapted button cooldown for Vampire, Sheriff, Jackal, Sidekick, Warlock, Cleaner
+        // Mini set adapted button Cooldown for Vampire, Sheriff, Jackal, Sidekick, Warlock, Cleaner
         public static void MiniCooldownUpdate() 
         {
             if (Mini.Player != null && PlayerControl.LocalPlayer == Mini.Player) 
             {
-                var multiplier = Mini.IsGrownUp() ? 0.66f : 2f;
-                HudManagerStartPatch.sheriffKillButton.MaxTimer = Sheriff.cooldown * multiplier;
-                HudManagerStartPatch.vampireKillButton.MaxTimer = Vampire.cooldown * multiplier;
-                HudManagerStartPatch.jackalKillButton.MaxTimer = Jackal.cooldown * multiplier;
+                var multiplier = Mini.IsGrownUp ? 0.66f : 2f;
+                HudManagerStartPatch.sheriffKillButton.MaxTimer = Sheriff.Cooldown * multiplier;
+                HudManagerStartPatch.vampireKillButton.MaxTimer = Vampire.Cooldown * multiplier;
+                HudManagerStartPatch.jackalKillButton.MaxTimer = Jackal.Cooldown * multiplier;
+                HudManagerStartPatch.PestilenceButton.MaxTimer = Pestilence.Cooldown * multiplier;
                 HudManagerStartPatch.GlitchKillButton.MaxTimer = Glitch.KillCooldown * multiplier;
                 HudManagerStartPatch.RomanticKillButton.MaxTimer = VengefulRomantic.Cooldown * multiplier;
                 HudManagerStartPatch.SerialKillerStabButton.MaxTimer = SerialKiller.StabCooldown * multiplier;
                 HudManagerStartPatch.WerewolfMaulButton.MaxTimer = Werewolf.Cooldown * multiplier;
-                HudManagerStartPatch.sidekickKillButton.MaxTimer = Sidekick.cooldown * multiplier;
-                HudManagerStartPatch.warlockCurseButton.MaxTimer = Warlock.cooldown * multiplier;
-                HudManagerStartPatch.cleanerCleanButton.MaxTimer = Cleaner.cooldown * multiplier;
-                HudManagerStartPatch.witchSpellButton.MaxTimer = (Witch.cooldown + Witch.currentCooldownAddition) * multiplier;
-                HudManagerStartPatch.ninjaButton.MaxTimer = Ninja.cooldown * multiplier;
-                HudManagerStartPatch.thiefKillButton.MaxTimer = Thief.cooldown * multiplier;
+                HudManagerStartPatch.sidekickKillButton.MaxTimer = Sidekick.Cooldown * multiplier;
+                HudManagerStartPatch.warlockCurseButton.MaxTimer = Warlock.Cooldown * multiplier;
+                HudManagerStartPatch.cleanerCleanButton.MaxTimer = Cleaner.Cooldown * multiplier;
+                HudManagerStartPatch.witchSpellButton.MaxTimer = (Witch.Cooldown + Witch.currentCooldownAddition) * multiplier;
+                HudManagerStartPatch.ninjaButton.MaxTimer = Ninja.Cooldown * multiplier;
+                HudManagerStartPatch.thiefKillButton.MaxTimer = Thief.Cooldown * multiplier;
             }
         }
 
@@ -1204,6 +1233,9 @@ namespace TownOfSushi.Patches {
                 VengefulRomanticSetTarget();
                 // Shifter
                 ShifterSetTarget();
+                //Pesti/plague
+                PestilenceSetTarget();
+                PlaguebearerSetTarget();
                 // Sheriff
                 SheriffSetTarget();
                 // Glitch
@@ -1305,7 +1337,7 @@ namespace TownOfSushi.Patches {
         private static Vector2 offset = Vector2.zero;
         public static void Prefix(PlayerPhysics __instance) 
         {
-            bool correctOffset = Camouflager.camouflageTimer <= 0f && !Helpers.MushroomSabotageActive() && (__instance.myPlayer == Mini.Player ||  (Morphling.Player != null && __instance.myPlayer == Morphling.Player && Morphling.morphTarget == Mini.Player && Morphling.morphTimer > 0f) || (Glitch.Player != null && __instance.myPlayer == Glitch.Player && Glitch.MimicTarget == Mini.Player && Glitch.MimicTimer > 0f));
+            bool correctOffset = Camouflager.CamouflageTimer <= 0f && !Helpers.MushroomSabotageActive() && (__instance.myPlayer == Mini.Player ||  (Morphling.Player != null && __instance.myPlayer == Morphling.Player && Morphling.morphTarget == Mini.Player && Morphling.morphTimer > 0f) || (Glitch.Player != null && __instance.myPlayer == Glitch.Player && Glitch.MimicTarget == Mini.Player && Glitch.MimicTimer > 0f));
             correctOffset = correctOffset && !(Mini.Player == Morphling.Player && Morphling.morphTimer > 0f);
             if (correctOffset) 
             {
@@ -1354,7 +1386,7 @@ namespace TownOfSushi.Patches {
                         else if (timeSinceDeath < Detective.reportColorDuration * 1000) 
                         {
                             var typeOfColor = Helpers.IsLighterColor(deadPlayer.killerIfExisting) ? "lighter" : "darker";
-                            msg =  $"Body Report: The killer appears to be a {typeOfColor} color!";
+                            msg =  $"Body Report: The killer appears to be a {typeOfColor} Color!";
                         } else {
                             msg = $"Body Report: The corpse is too old to gain information from!";
                         }
@@ -1468,7 +1500,7 @@ namespace TownOfSushi.Patches {
                 Medium.futureDeadBodies.Add(new Tuple<DeadPlayer, Vector3>(deadPlayer, target.transform.position));
             }
 
-            // Set bountyHunter cooldown
+            // Set bountyHunter Cooldown
             if (BountyHunter.Player != null && PlayerControl.LocalPlayer == BountyHunter.Player && __instance == BountyHunter.Player) {
                 if (target == BountyHunter.bounty) 
                 {
@@ -1483,7 +1515,7 @@ namespace TownOfSushi.Patches {
             if (Mini.Player != null && __instance == Mini.Player && __instance == PlayerControl.LocalPlayer) 
             {
                 float multiplier = 1f;
-                if (Mini.Player != null && PlayerControl.LocalPlayer == Mini.Player) multiplier = Mini.IsGrownUp() ? 0.66f : 2f;
+                if (Mini.Player != null && PlayerControl.LocalPlayer == Mini.Player) multiplier = Mini.IsGrownUp ? 0.66f : 2f;
                 Mini.Player.SetKillTimer(__instance.killTimer * multiplier);
             }
 
@@ -1527,14 +1559,14 @@ namespace TownOfSushi.Patches {
             // VIP Modifier
             if (Vip.Players.FindAll(x => x.PlayerId == target.PlayerId).Count > 0) 
             {
-                Color color = Color.yellow;
+                Color Color = Color.yellow;
                 if (Vip.showColor) 
                 {
-                    color = Color.white;
-                    if (target.Data.Role.IsImpostor) color = Color.red;
-                    else if (target.IsNeutral() || target.IsNeutralKiller()) color = Color.blue;
+                    Color = Color.white;
+                    if (target.Data.Role.IsImpostor) Color = Color.red;
+                    else if (target.IsNeutral() || target.IsNeutralKiller()) Color = Color.blue;
                 }
-                Helpers.ShowFlash(color, 1.5f);
+                Helpers.ShowFlash(Color, 1.5f);
             }
 
             // Snitch
@@ -1558,7 +1590,7 @@ namespace TownOfSushi.Patches {
             if (GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown <= 0f) return false;
             float multiplier = 1f;
             float addition = 0f;
-            if (Mini.Player != null && PlayerControl.LocalPlayer == Mini.Player) multiplier = Mini.IsGrownUp() ? 0.66f : 2f;
+            if (Mini.Player != null && PlayerControl.LocalPlayer == Mini.Player) multiplier = Mini.IsGrownUp ? 0.66f : 2f;
             if (BountyHunter.Player != null && PlayerControl.LocalPlayer == BountyHunter.Player) addition = BountyHunter.punishmentTime;
 
             __instance.killTimer = Mathf.Clamp(time, 0f, GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown * multiplier + addition);
@@ -1584,11 +1616,11 @@ namespace TownOfSushi.Patches {
         private static int? colorId = null;
         public static void Prefix(PlayerControl source, bool canMove) 
         {
-            Color color = source.cosmetics.currentBodySprite.BodySprite.material.GetColor("_BodyColor");
+            Color Color = source.cosmetics.currentBodySprite.BodySprite.material.GetColor("_BodyColor");
             if ((Morphling.Player != null && source.Data.PlayerId == Morphling.Player.PlayerId) || 
             (Glitch.Player != null && source.Data.PlayerId == Glitch.Player.PlayerId)) 
             {
-            var index = Palette.PlayerColors.IndexOf(color);
+            var index = Palette.PlayerColors.IndexOf(Color);
             if (index != -1) colorId = index;
             }
         }

@@ -75,7 +75,7 @@ namespace TownOfSushi.Objects
             PassiveButton button = actionButton.GetComponent<PassiveButton>();
             this.showButtonText = (actionButtonRenderer.sprite == Sprite || buttonText != "");
             button.OnClick = new Button.ButtonClickedEvent();
-            button.OnClick.AddListener((UnityEngine.Events.UnityAction)onClickEvent);
+            button.OnClick.AddListener((UnityEngine.Events.UnityAction)OnClickEvent);
 
             SetActive(false);
         }
@@ -83,7 +83,7 @@ namespace TownOfSushi.Objects
         public CustomButton(Action OnClick, Func<bool> HasButton, Func<bool> CouldUse, Action OnMeetingEnds, Sprite Sprite, Vector3 PositionOffset, HudManager hudManager, KeyCode? hotkey, bool mirror = false, string buttonText = "")
         : this(OnClick, HasButton, CouldUse, OnMeetingEnds, Sprite, PositionOffset, hudManager, hotkey, false, 0f, () => {}, mirror, buttonText) { }
 
-        public void onClickEvent()
+        public void OnClickEvent()
         {
             if (this.Timer < 0f && HasButton() && CouldUse())
             {
@@ -99,6 +99,24 @@ namespace TownOfSushi.Objects
                     this.Timer = this.EffectDuration;
                     actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
                     this.isEffectActive = true;
+                }
+
+                // Spread infection if interacting with an infected player or the plaguebearer
+                SpreadInfectionIfApplicable();
+            }
+        }
+
+        private void SpreadInfectionIfApplicable()
+        {
+            var localPlayer = PlayerControl.LocalPlayer;
+            foreach (var player in PlayerControl.AllPlayerControls)
+            {
+                if (player == localPlayer) continue;
+
+                // Check if the player is infected or is the plaguebearer
+                if (Plaguebearer.IsInfected(player) || Plaguebearer.Player == player)
+                {
+                    Plaguebearer.SpreadInfection(Plaguebearer.Player, localPlayer);
                 }
             }
         }
@@ -120,7 +138,8 @@ namespace TownOfSushi.Objects
             }
         }
 
-        public static void MeetingEndedUpdate() {
+        public static void MeetingEndedUpdate() 
+        {
             buttons.RemoveAll(item => item.actionButton == null);
             for (int i = 0; i < buttons.Count; i++)
             {
@@ -219,7 +238,8 @@ namespace TownOfSushi.Objects
                 actionButtonMat.SetFloat(Desat, 1f);
             }
         
-            if (Timer >= 0) {
+            if (Timer >= 0 /*&& !Modules.RoleDraft.IsRunning*/) 
+            {  // Make sure role draft has finished or isnt running)
                 if (HasEffect && isEffectActive)
                     Timer -= Time.deltaTime;
                 else if (!localPlayer.inVent && moveable)
@@ -236,7 +256,7 @@ namespace TownOfSushi.Objects
             actionButton.SetCoolDown(Timer, (HasEffect && isEffectActive) ? EffectDuration : MaxTimer);
 
             // Trigger OnClickEvent if the hotkey is being pressed down
-            if (hotkey.HasValue && Input.GetKeyDown(hotkey.Value)) onClickEvent();
+            if (hotkey.HasValue && Input.GetKeyDown(hotkey.Value)) OnClickEvent();
 
             // Glitch disable the button and display Hack instead...
             if (Glitch.HackedPlayers.Contains(localPlayer.PlayerId)) 
