@@ -116,7 +116,7 @@ namespace TownOfSushi.Objects
                 // Check if the player is infected or is the plaguebearer
                 if (Plaguebearer.IsInfected(player) || Plaguebearer.Player == player)
                 {
-                    Plaguebearer.SpreadInfection(Plaguebearer.Player, localPlayer);
+                    RPCProcedure.SpreadInfection(Plaguebearer.Player, localPlayer);
                 }
             }
         }

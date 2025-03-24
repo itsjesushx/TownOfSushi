@@ -293,8 +293,6 @@ namespace TownOfSushi
                 roleName += useColors ? Helpers.ColorString(Romantic.Color, " ♥") : " ♥";
             if (VengefulRomantic.Lover != null && p.PlayerId == VengefulRomantic.Lover.PlayerId && PlayerControl.LocalPlayer != VengefulRomantic.Lover) 
                 roleName += useColors ? Helpers.ColorString(Romantic.Color, " ♥") : " ♥";
-            if (Plaguebearer.Player != null && p.PlayerId == Plaguebearer.Player.PlayerId && Plaguebearer.InfectedPlayers.Contains(PlayerControl.LocalPlayer)) 
-                roleName += Helpers.ColorString(Plaguebearer.Color, " ♨");
 
             if (HandleGuesser.IsGuesser(p.PlayerId)) 
             {
@@ -334,8 +332,8 @@ namespace TownOfSushi
                         roleName = Helpers.ColorString(Witch.Color, "☆ ") + roleName;
                     if (BountyHunter.bounty == p)
                         roleName = Helpers.ColorString(BountyHunter.Color, "(Bounty) ") + roleName;
-                    if (Plaguebearer.InfectedPlayers.Contains(p))
-                        roleName = Helpers.ColorString(Plaguebearer.Color, "♨ ") + roleName;
+                    if (Plaguebearer.InfectedPlayers.Contains(p.PlayerId))
+                        roleName = Helpers.ColorString(Plaguebearer.Color, "⦿ ") + roleName;
                     if (Arsonist.dousedPlayers.Contains(p))
                         roleName = Helpers.ColorString(Arsonist.Color, "♨ ") + roleName;
                     if (p == Arsonist.Player)

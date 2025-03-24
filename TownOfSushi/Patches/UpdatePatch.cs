@@ -177,9 +177,9 @@ namespace TownOfSushi.Patches
             {
                 foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                 {
-                    if (Plaguebearer.InfectedPlayers.Contains(player))
+                    if (Plaguebearer.InfectedPlayers.Contains(player.PlayerId))
                     {
-                        string suffix = Helpers.ColorString(Plaguebearer.Color, " ♨");
+                        string suffix = Helpers.ColorString(Plaguebearer.Color, " ⦿");
                         player.cosmetics.nameText.text += suffix;
 
                         if (MeetingHud.Instance != null)

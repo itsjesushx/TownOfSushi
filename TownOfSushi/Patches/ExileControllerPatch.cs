@@ -108,16 +108,16 @@ namespace TownOfSushi.Patches
 
             // Vigilante vents and cameras
             var allCameras = MapUtilities.CachedShipStatus.AllCameras.ToList();
-            MapOptions.camerasToAdd.ForEach(camera => 
+            MapOptions.CamsToAdd.ForEach(camera => 
             {
                 camera.gameObject.SetActive(true);
                 camera.gameObject.GetComponent<SpriteRenderer>().color = Color.white;
                 allCameras.Add(camera);
             });
             MapUtilities.CachedShipStatus.AllCameras = allCameras.ToArray();
-            MapOptions.camerasToAdd = new List<SurvCamera>();
+            MapOptions.CamsToAdd = new List<SurvCamera>();
 
-            foreach (Vent vent in MapOptions.ventsToSeal) {
+            foreach (Vent vent in MapOptions.VentsToSeal) {
                 PowerTools.SpriteAnim animator = vent.GetComponent<PowerTools.SpriteAnim>();
                 vent.EnterVentAnim = vent.ExitVentAnim = null;
                 Sprite newSprite = animator == null ? Vigilante.GetStaticVentSealedSprite() : Vigilante.getAnimatedVentSealedSprite();
@@ -134,7 +134,7 @@ namespace TownOfSushi.Patches
                 rend.color = Color.white;
                 vent.name = "SealedVent_" + vent.name;
             }
-            MapOptions.ventsToSeal = new List<Vent>();
+            MapOptions.VentsToSeal = new List<Vent>();
 
             EventUtility.MeetingEndsUpdate();
         }
@@ -260,14 +260,14 @@ namespace TownOfSushi.Patches
                 var BottomLeft = newBottomLeft + new Vector3(-0.25f, -0.25f, 0);
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls) 
                 {
-                    if (!MapOptions.playerIcons.ContainsKey(p.PlayerId)) continue;
+                    if (!MapOptions.BeanIcons.ContainsKey(p.PlayerId)) continue;
                     if (p.Data.IsDead || p.Data.Disconnected) 
                     {
-                        MapOptions.playerIcons[p.PlayerId].gameObject.SetActive(false);
+                        MapOptions.BeanIcons[p.PlayerId].gameObject.SetActive(false);
                     } 
                     else 
                     {
-                        MapOptions.playerIcons[p.PlayerId].transform.localPosition = newBottomLeft + Vector3.right * visibleCounter * 0.35f;
+                        MapOptions.BeanIcons[p.PlayerId].transform.localPosition = newBottomLeft + Vector3.right * visibleCounter * 0.35f;
                         visibleCounter++;
                     }
                 }

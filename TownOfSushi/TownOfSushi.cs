@@ -1261,20 +1261,15 @@ namespace TownOfSushi
         public static Color Color = new Color32(230, 255, 179, byte.MaxValue);
         public static PlayerControl CurrentTarget;
         public static float Cooldown = 30f;
-        public static List<PlayerControl> InfectedPlayers = new List<PlayerControl>();
-        public static bool InfectedveryoneAlive() 
+        public static List<byte> InfectedPlayers = new List<byte>();
+        public static bool CanTransform()
         {
-            return PlayerControl.AllPlayerControls.ToArray().All(x => { return x == Player || x.Data.IsDead || x.Data.Disconnected || InfectedPlayers.Any(y => y.PlayerId == x.PlayerId); });
-        }
-        public static void RpcSpreadInfection(PlayerControl source, PlayerControl target)
-        {
-            new WaitForSeconds(1f);
-            SpreadInfection(source, target);
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.Infect, Hazel.SendOption.Reliable, -1);
-            writer.Write(Player.PlayerId);
-            writer.Write(source.PlayerId);
-            writer.Write(target.PlayerId);
-            AmongUsClient.Instance.FinishRpcImmediately(writer);
+            var alivePlayerIds = PlayerControl.AllPlayerControls
+                 .ToArray().Where(x => !x.Data.IsDead && !x.Data.Disconnected && x != Player) // Get all alive players except PB
+                .Select(x => x.PlayerId) // Convert to Player IDs
+                .ToList();
+
+            return alivePlayerIds.All(playerId => InfectedPlayers.Contains(playerId)); // Compare IDs
         }
         private static Sprite ButtonSprite;
         public static Sprite GetButtonSprite() 
@@ -1283,23 +1278,14 @@ namespace TownOfSushi
             ButtonSprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.Infect.png", 115f);
             return ButtonSprite;
         }
-        public static bool IsInfected(PlayerControl target) => InfectedPlayers.Contains(target);
-        public static void SpreadInfection(PlayerControl source, PlayerControl target)
-        {
-            if (InfectedPlayers.Contains(source) && !InfectedPlayers.Contains(target)) InfectedPlayers.Add(target);
-            else if (InfectedPlayers.Contains(target) && !InfectedPlayers.Contains(source)) InfectedPlayers.Add(source);
-        }
+        public static bool IsInfected(PlayerControl target) => InfectedPlayers.Contains(target.PlayerId);
         public static void ClearAndReload()
         {
             Player = null;
             Cooldown = CustomOptionHolder.PlaguebearerCooldown.GetFloat();
             CurrentTarget = null;
-            InfectedPlayers = new List<PlayerControl>();
+            InfectedPlayers = new List<byte>();
             InfectTarget = null;
-            foreach (PoolablePlayer p in MapOptions.playerIcons.Values) 
-            {
-                if (p != null && p.gameObject != null) p.gameObject.SetActive(false);
-            }
         }
     }
 
@@ -1662,7 +1648,7 @@ namespace TownOfSushi
             douseTarget = null; 
             IsArsonistWin = false;
             dousedPlayers = new List<PlayerControl>();
-            foreach (PoolablePlayer p in MapOptions.playerIcons.Values) 
+            foreach (PoolablePlayer p in MapOptions.BeanIcons.Values) 
             {
                 if (p != null && p.gameObject != null) p.gameObject.SetActive(false);
             }
@@ -1699,7 +1685,7 @@ namespace TownOfSushi
             arrow = null;
             if (cooldownText != null && cooldownText.gameObject != null) UnityEngine.Object.Destroy(cooldownText.gameObject);
             cooldownText = null;
-            foreach (PoolablePlayer p in MapOptions.playerIcons.Values) 
+            foreach (PoolablePlayer p in MapOptions.BeanIcons.Values) 
             {
                 if (p != null && p.gameObject != null) p.gameObject.SetActive(false);
             }

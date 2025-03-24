@@ -880,7 +880,7 @@ namespace TownOfSushi.Patches
                 if (__instance.state >= MeetingHud.VoteStates.Discussion)
                 {
                     // Remove first kill shield
-                    MapOptions.firstKillPlayer = null;
+                    MapOptions.FirstPlayerKilled = null;
                 }
             }
         }

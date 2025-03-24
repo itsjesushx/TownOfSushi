@@ -39,7 +39,7 @@ namespace TownOfSushi.Patches
                    // PlayerControl.SetPetImage(data.DefaultOutfit.PetId, data.DefaultOutfit.ColorId, player.PetSlot);
                     player.cosmetics.nameText.text = data.PlayerName;
                     player.SetFlipX(true);
-                    MapOptions.playerIcons[p.PlayerId] = player;
+                    MapOptions.BeanIcons[p.PlayerId] = player;
                     player.gameObject.SetActive(false);
 
                     if (PlayerControl.LocalPlayer == Arsonist.Player && p != Arsonist.Player) 
@@ -76,9 +76,9 @@ namespace TownOfSushi.Patches
             SoundEffectsManager.Load();
 
             // First kill
-            if (AmongUsClient.Instance.AmHost && MapOptions.shieldFirstKill && MapOptions.firstKillName != "")
+            if (AmongUsClient.Instance.AmHost && MapOptions.shieldFirstKill && MapOptions.FirstKillName != "")
             {
-                PlayerControl target = PlayerControl.AllPlayerControls.ToArray().ToList().FirstOrDefault(x => x.Data.PlayerName.Equals(MapOptions.firstKillName));
+                PlayerControl target = PlayerControl.AllPlayerControls.ToArray().ToList().FirstOrDefault(x => x.Data.PlayerName.Equals(MapOptions.FirstKillName));
                 if (target != null) 
                 {
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetFirstKill, Hazel.SendOption.Reliable, -1);
@@ -109,7 +109,7 @@ namespace TownOfSushi.Patches
                 adminVent.Center = BetterPolus.SpecimenVent;
                 bathroomVent.Center = BetterPolus.SpecimenVent;
             }
-            MapOptions.firstKillName = "";
+            MapOptions.FirstKillName = "";
 
             EventUtility.GameStartsUpdate();
         }

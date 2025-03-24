@@ -914,66 +914,70 @@ namespace TownOfSushi
             );
 
             PlaguebearerButton = new CustomButton(
-                () => 
+            OnClick: () => 
+            {
+                if (Plaguebearer.CurrentTarget != null) 
                 {
-                    bool InfectedEveryoneAlive = Plaguebearer.InfectedveryoneAlive();
-                    if (InfectedEveryoneAlive) 
+                    if (Plaguebearer.CurrentTarget.CheckVeteranAlertKill() || Plaguebearer.CurrentTarget.CheckFortifiedPlayer()) return;
+
+                    Plaguebearer.InfectTarget = Plaguebearer.CurrentTarget;
+
+                    // Move this before checking CanTransform because otherwise the Plaguebearer has to infect twice the last player
+                    if (!Plaguebearer.InfectedPlayers.Contains(Plaguebearer.InfectTarget.PlayerId))
                     {
-                        MessageWriter winWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.TurnPestilence, Hazel.SendOption.Reliable, -1);
-                        AmongUsClient.Instance.FinishRpcImmediately(winWriter);
+                        Plaguebearer.InfectedPlayers.Add(Plaguebearer.InfectTarget.PlayerId);
+                    }
+        
+                    SoundEffectsManager.Play("knockKnock");
+
+                    // Now check if everyone is infected
+                    if (Plaguebearer.CanTransform()) 
+                    {
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.TurnPestilence, Hazel.SendOption.Reliable, -1);
+                        AmongUsClient.Instance.FinishRpcImmediately(writer);
                         RPCProcedure.TurnPestilence();
-                        PlaguebearerButton.HasEffect = false;
-                    } 
-                    else if (Plaguebearer.CurrentTarget != null) 
-                    {
-                        if (Plaguebearer.CurrentTarget.CheckVeteranAlertKill() || Plaguebearer.CurrentTarget.CheckFortifiedPlayer()) return;
-
-                        Plaguebearer.InfectTarget = Plaguebearer.CurrentTarget;
-                        PlaguebearerButton.HasEffect = true;
-                        SoundEffectsManager.Play("cleanerClean");
                     }
-                },
-                () => { return Plaguebearer.Player != null && Plaguebearer.Player == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead; },
-                CouldUse: () => 
-                {
-                    return PlayerControl.LocalPlayer.CanMove && Plaguebearer.CurrentTarget != null;
-                },
-                () => 
-                {
-                    PlaguebearerButton.Timer = PlaguebearerButton.MaxTimer;
-                    PlaguebearerButton.isEffectActive = false;
-                    Plaguebearer.InfectTarget = null;
-                },
-                Plaguebearer.GetButtonSprite(),
-                CustomButton.ButtonPositions.lowerRowRight,
-                __instance,
-                KeyCode.F,
-                true,
-                0f,
-                () => 
-                {
-                    if (Plaguebearer.InfectTarget != null) Plaguebearer.InfectedPlayers.Add(Plaguebearer.InfectTarget);
-                    
-                    PlaguebearerButton.Timer = Plaguebearer.InfectedveryoneAlive() ? 0 : PlaguebearerButton.MaxTimer;
-
-                    foreach (PlayerControl p in Plaguebearer.InfectedPlayers) 
-                    {
-                        if (MapOptions.playerIcons.ContainsKey(p.PlayerId)) 
-                        {
-                            MapOptions.playerIcons[p.PlayerId].SetSemiTransparent(false);
-                        }
-                    }
-
-                    // Ghost Info
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareGhostInfo, Hazel.SendOption.Reliable, -1);
-                    writer.Write(PlayerControl.LocalPlayer.PlayerId);
-                    writer.Write((byte)GhostInfoTypes.ArsonistDouse);
-                    writer.Write(Plaguebearer.InfectTarget.PlayerId);
-                    AmongUsClient.Instance.FinishRpcImmediately(writer);
-
-                    Plaguebearer.InfectTarget = null;
                 }
-            );
+            },
+            HasButton: () => { return Plaguebearer.Player != null && Plaguebearer.Player == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead; },
+            CouldUse: () => 
+            {
+                return PlayerControl.LocalPlayer.CanMove && Plaguebearer.CurrentTarget != null;
+            },
+            OnMeetingEnds: () => 
+            {
+                PlaguebearerButton.Timer = PlaguebearerButton.MaxTimer;
+                PlaguebearerButton.isEffectActive = false;
+                Plaguebearer.InfectTarget = null;
+            },
+            Sprite: Plaguebearer.GetButtonSprite(),
+            PositionOffset: CustomButton.ButtonPositions.lowerRowRight,
+            hudManager:  __instance,
+            hotkey: KeyCode.F,
+            HasEffect: true,
+            EffectDuration: 0f,
+            OnEffectEnds: () => 
+            {
+                PlaguebearerButton.Timer = PlaguebearerButton.MaxTimer;
+
+                foreach (PlayerControl p in Plaguebearer.InfectedPlayers) 
+                {
+                    if (MapOptions.BeanIcons.ContainsKey(p.PlayerId)) 
+                    {
+                        MapOptions.BeanIcons[p.PlayerId].SetSemiTransparent(false);
+                    }
+                }
+
+                // Ghost Info
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareGhostInfo, Hazel.SendOption.Reliable, -1);
+                writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                writer.Write((byte)GhostInfoTypes.PlaguebearerInfect);
+                writer.Write(Plaguebearer.InfectTarget.PlayerId);
+                AmongUsClient.Instance.FinishRpcImmediately(writer);
+
+                Plaguebearer.InfectTarget = null;
+            }
+        );
 
             CrusaderButton = new CustomButton(
             OnClick: () =>
@@ -1972,9 +1976,9 @@ namespace TownOfSushi
 
                     foreach (PlayerControl p in Arsonist.dousedPlayers) 
                     {
-                        if (MapOptions.playerIcons.ContainsKey(p.PlayerId)) 
+                        if (MapOptions.BeanIcons.ContainsKey(p.PlayerId)) 
                         {
-                            MapOptions.playerIcons[p.PlayerId].SetSemiTransparent(false);
+                            MapOptions.BeanIcons[p.PlayerId].SetSemiTransparent(false);
                         }
                     }
 

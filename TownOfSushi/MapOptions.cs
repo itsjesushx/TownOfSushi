@@ -34,18 +34,18 @@ namespace TownOfSushi
 
         // Updating values
         public static int meetingsCount = 0;
-        public static List<SurvCamera> camerasToAdd = new List<SurvCamera>();
-        public static List<Vent> ventsToSeal = new List<Vent>();
-        public static Dictionary<byte, PoolablePlayer> playerIcons = new Dictionary<byte, PoolablePlayer>();
-        public static string firstKillName;
-        public static PlayerControl firstKillPlayer;
+        public static List<SurvCamera> CamsToAdd = new List<SurvCamera>();
+        public static List<Vent> VentsToSeal = new List<Vent>();
+        public static Dictionary<byte, PoolablePlayer> BeanIcons = new Dictionary<byte, PoolablePlayer>();
+        public static string FirstKillName;
+        public static PlayerControl FirstPlayerKilled;
 
         public static void ClearAndReloadMapOptions() 
         {
             meetingsCount = 0;
-            camerasToAdd = new List<SurvCamera>();
-            ventsToSeal = new List<Vent>();
-            playerIcons = new Dictionary<byte, PoolablePlayer>(); ;
+            CamsToAdd = new List<SurvCamera>();
+            VentsToSeal = new List<Vent>();
+            BeanIcons = new Dictionary<byte, PoolablePlayer>(); ;
 
             maxNumberOfMeetings = Mathf.RoundToInt(CustomOptionHolder.maxNumberOfMeetings.GetSelection());
             blockSkippingInEmergencyMeetings = CustomOptionHolder.blockSkippingInEmergencyMeetings.GetBool();
@@ -63,7 +63,7 @@ namespace TownOfSushi
             BPVentImprovements = CustomOptionHolder.BPVentImprovements.GetBool();
             EnableBetterPolus = CustomOptionHolder.EnableBetterPolus.GetBool();
 
-            firstKillPlayer = null;
+            FirstPlayerKilled = null;
         }
 
         public static void ReloadPluginOptions() 

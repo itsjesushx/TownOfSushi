@@ -197,6 +197,7 @@ namespace TownOfSushi
         BountyTarget,
         NinjaMarked,
         OracleInfo,
+        PlaguebearerInfect,
         WarlockTarget,
         MysticInfo,
         MediumInfo,

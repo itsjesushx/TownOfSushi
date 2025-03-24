@@ -76,7 +76,7 @@ namespace TownOfSushi.Patches {
                 if (Camouflager.CamouflageTimer <= 0f && !Helpers.MushroomSabotageActive() && Medic.ShieldVisible(target))
                     hasVisibleShield = true;
 
-                if (Camouflager.CamouflageTimer <= 0f && !Helpers.MushroomSabotageActive() && MapOptions.firstKillPlayer != null && MapOptions.shieldFirstKill && ((target == MapOptions.firstKillPlayer && !isMorphedMorphling && !isMimicGlitch) || (isMorphedMorphling && Morphling.morphTarget == MapOptions.firstKillPlayer) || (isMimicGlitch && Glitch.MimicTarget == MapOptions.firstKillPlayer))) 
+                if (Camouflager.CamouflageTimer <= 0f && !Helpers.MushroomSabotageActive() && MapOptions.FirstPlayerKilled != null && MapOptions.shieldFirstKill && ((target == MapOptions.FirstPlayerKilled && !isMorphedMorphling && !isMimicGlitch) || (isMorphedMorphling && Morphling.morphTarget == MapOptions.FirstPlayerKilled) || (isMimicGlitch && Glitch.MimicTarget == MapOptions.FirstPlayerKilled))) 
                 {
                     hasVisibleShield = true;
                     Color = Color.blue;
@@ -201,9 +201,10 @@ namespace TownOfSushi.Patches {
             SetPlayerOutline(Morphling.CurrentTarget, Morphling.Color);
         }
 
-        public static void PlaguebearerSetTarget() 
+        public static void PlaguebearerSetTarget()
         {
             if (Plaguebearer.Player == null || Plaguebearer.Player != PlayerControl.LocalPlayer) return;
+
             List<PlayerControl> untargetables;
             if (Plaguebearer.CurrentTarget != null)
             {
@@ -216,9 +217,20 @@ namespace TownOfSushi.Patches {
                     }
                 }
             }
-            else untargetables = Plaguebearer.InfectedPlayers;
+            else
+            {
+                // Convert AllPlayerControls to a List before using LINQ
+                var allPlayers = PlayerControl.AllPlayerControls.ToArray().ToList(); 
+
+                untargetables = Plaguebearer.InfectedPlayers
+                    .Select(playerId => allPlayers.FirstOrDefault(p => p.PlayerId == playerId))
+                    .Where(player => player != null)
+                    .ToList();
+            }
+
             Plaguebearer.CurrentTarget = SetTarget(untargetablePlayers: untargetables);
-            if (Plaguebearer.CurrentTarget != null) SetPlayerOutline(Plaguebearer.CurrentTarget, Plaguebearer.Color);
+            if (Plaguebearer.CurrentTarget != null) 
+                SetPlayerOutline(Plaguebearer.CurrentTarget, Plaguebearer.Color);
         }
 
         static void PestilenceSetTarget() 
@@ -783,7 +795,8 @@ namespace TownOfSushi.Patches {
                 if (BountyHunter.cooldownText != null && BountyHunter.cooldownText.gameObject != null) UnityEngine.Object.Destroy(BountyHunter.cooldownText.gameObject);
                 BountyHunter.cooldownText = null;
                 BountyHunter.bounty = null;
-                foreach (PoolablePlayer p in MapOptions.playerIcons.Values) {
+                foreach (PoolablePlayer p in MapOptions.BeanIcons.Values) 
+                {
                     if (p != null && p.gameObject != null) p.gameObject.SetActive(false);
                 }
                 return;
@@ -815,15 +828,15 @@ namespace TownOfSushi.Patches {
 
                 // Show poolable player
                 if (FastDestroyableSingleton<HudManager>.Instance != null && FastDestroyableSingleton<HudManager>.Instance.UseButton != null) {
-                    foreach (PoolablePlayer pp in MapOptions.playerIcons.Values) pp.gameObject.SetActive(false);
-                    if (MapOptions.playerIcons.ContainsKey(BountyHunter.bounty.PlayerId) && MapOptions.playerIcons[BountyHunter.bounty.PlayerId].gameObject != null)
-                        MapOptions.playerIcons[BountyHunter.bounty.PlayerId].gameObject.SetActive(true);
+                    foreach (PoolablePlayer pp in MapOptions.BeanIcons.Values) pp.gameObject.SetActive(false);
+                    if (MapOptions.BeanIcons.ContainsKey(BountyHunter.bounty.PlayerId) && MapOptions.BeanIcons[BountyHunter.bounty.PlayerId].gameObject != null)
+                        MapOptions.BeanIcons[BountyHunter.bounty.PlayerId].gameObject.SetActive(true);
                 }
             }
 
             // Hide in meeting
-            if (MeetingHud.Instance && MapOptions.playerIcons.ContainsKey(BountyHunter.bounty.PlayerId) && MapOptions.playerIcons[BountyHunter.bounty.PlayerId].gameObject != null)
-                MapOptions.playerIcons[BountyHunter.bounty.PlayerId].gameObject.SetActive(false);
+            if (MeetingHud.Instance && MapOptions.BeanIcons.ContainsKey(BountyHunter.bounty.PlayerId) && MapOptions.BeanIcons[BountyHunter.bounty.PlayerId].gameObject != null)
+                MapOptions.BeanIcons[BountyHunter.bounty.PlayerId].gameObject.SetActive(false);
 
             // Update Cooldown Text
             if (BountyHunter.cooldownText != null) {
@@ -1449,7 +1462,7 @@ namespace TownOfSushi.Patches {
                 target.ClearAllTasks();
 
             // First kill (set before lover suicide)
-            if (MapOptions.firstKillName == "") MapOptions.firstKillName = target.Data.PlayerName;
+            if (MapOptions.FirstKillName == "") MapOptions.FirstKillName = target.Data.PlayerName;
 
             // Lover suicide trigger on murder
             if ((Lovers.Lover1 != null && target == Lovers.Lover1) || (Lovers.Lover2 != null && target == Lovers.Lover2)) {

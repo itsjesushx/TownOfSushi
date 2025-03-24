@@ -490,7 +490,7 @@ namespace TownOfSushi
 
             foreach (var player in nearbyPlayers)
             {
-                if (Werewolf.Player == player || player.Data.IsDead || player == Armored.Player && !Armored.isBrokenArmor || player == Medic.shielded || player == firstKillPlayer)
+                if (Werewolf.Player == player || player.Data.IsDead || player == Armored.Player && !Armored.isBrokenArmor || player == Medic.shielded || player == FirstPlayerKilled)
                     continue;
                     
                 Helpers.CheckMurderAttemptAndKill(Werewolf.Player, player, showAnimation: false);
@@ -963,7 +963,7 @@ namespace TownOfSushi
             } else {
                 camera.gameObject.SetActive(false);
             }
-            MapOptions.camerasToAdd.Add(camera);
+            MapOptions.CamsToAdd.Add(camera);
         }
 
         public static void SealVent(int ventId) 
@@ -991,7 +991,23 @@ namespace TownOfSushi
                 vent.name = "FutureSealedVent_" + vent.name;
             }
 
-            MapOptions.ventsToSeal.Add(vent);
+            MapOptions.VentsToSeal.Add(vent);
+        }
+
+        public static void PlaguebearerRpcSpreadInfection(PlayerControl source, PlayerControl target)
+        {
+            new WaitForSeconds(1f);
+            SpreadInfection(source, target);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.Infect, Hazel.SendOption.Reliable, -1);
+            writer.Write(Plaguebearer.Player.PlayerId);
+            writer.Write(source.PlayerId);
+            writer.Write(target.PlayerId);
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
+        }
+        public static void SpreadInfection(PlayerControl source, PlayerControl target)
+        {
+            if (Plaguebearer.InfectedPlayers.Contains(source.PlayerId) && !Plaguebearer.InfectedPlayers.Contains(target.PlayerId)) Plaguebearer.InfectedPlayers.Add(target.PlayerId);
+            else if (Plaguebearer.InfectedPlayers.Contains(target.PlayerId) && !Plaguebearer.InfectedPlayers.Contains(source.PlayerId)) Plaguebearer.InfectedPlayers.Add(source.PlayerId);
         }
 
         public static void ArsonistWin() 
@@ -1153,7 +1169,7 @@ namespace TownOfSushi
         {
             PlayerControl target = Helpers.PlayerById(playerId);
             if (target == null) return;
-            MapOptions.firstKillPlayer = target;
+            MapOptions.FirstPlayerKilled = target;
         }
 
         public static void SetTiebreak() 
@@ -1277,18 +1293,6 @@ namespace TownOfSushi
                 case RoleId.Shifter:
                     Shifter.ClearAndReload();
                     Shifter.Player = AmnesiacPlayer;
-                    Amnesiac.ClearAndReload();
-                    break;
-
-                case RoleId.Plaguebearer:
-                    Plaguebearer.ClearAndReload();
-                    Plaguebearer.Player = AmnesiacPlayer;
-                    Amnesiac.ClearAndReload();
-                    break;
-                
-                case RoleId.Pestilence:
-                    Pestilence.ClearAndReload();
-                    Pestilence.Player = AmnesiacPlayer;
                     Amnesiac.ClearAndReload();
                     break;
 
@@ -1432,6 +1436,19 @@ namespace TownOfSushi
                     Vigilante.Player = AmnesiacPlayer;
                     Amnesiac.ClearAndReload();
                     break;
+                
+                case RoleId.Plaguebearer:
+                    Plaguebearer.ClearAndReload();
+                    Plaguebearer.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    Amnesiac.Player = target;
+                    break;
+                
+                case RoleId.Pestilence:
+                    Pestilence.ClearAndReload();
+                    Pestilence.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    break;
 
                 case RoleId.Arsonist:
                     Arsonist.ClearAndReload();
@@ -1445,24 +1462,24 @@ namespace TownOfSushi
                         Vector3 bottomLeft = new(-FastDestroyableSingleton<HudManager>.Instance.UseButton.transform.localPosition.x, FastDestroyableSingleton<HudManager>.Instance.UseButton.transform.localPosition.y, FastDestroyableSingleton<HudManager>.Instance.UseButton.transform.localPosition.z);
                         foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                         {
-                            if (playerIcons.ContainsKey(p.PlayerId) && p != Arsonist.Player)
+                            if (BeanIcons.ContainsKey(p.PlayerId) && p != Arsonist.Player)
                             {
                                 //Arsonist.poolIcons.Add(p);
                                 if (Arsonist.dousedPlayers.Contains(p))
                                 {
-                                    playerIcons[p.PlayerId].SetSemiTransparent(false);
+                                    BeanIcons[p.PlayerId].SetSemiTransparent(false);
                                 }
                                 else
                                 {
-                                    playerIcons[p.PlayerId].SetSemiTransparent(true);
+                                    BeanIcons[p.PlayerId].SetSemiTransparent(true);
                                 }
 
-                            playerIcons[p.PlayerId].transform.localPosition = bottomLeft + new Vector3(-0.25f, -0.25f, 0) + (Vector3.right * playerCounter++ * 0.35f);
-                            playerIcons[p.PlayerId].transform.localScale = Vector3.one * 0.2f;
-                            playerIcons[p.PlayerId].gameObject.SetActive(true);
+                                BeanIcons[p.PlayerId].transform.localPosition = bottomLeft + new Vector3(-0.25f, -0.25f, 0) + (Vector3.right * playerCounter++ * 0.35f);
+                                BeanIcons[p.PlayerId].transform.localScale = Vector3.one * 0.2f;
+                                BeanIcons[p.PlayerId].gameObject.SetActive(true);
+                            }
                         }
                     }
-                }
                     break;
 
                 case RoleId.BountyHunter:
@@ -1482,12 +1499,12 @@ namespace TownOfSushi
 
                         foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                         {
-                            if (playerIcons.ContainsKey(p.PlayerId))
+                            if (BeanIcons.ContainsKey(p.PlayerId))
                             {
-                                playerIcons[p.PlayerId].SetSemiTransparent(false);
-                                playerIcons[p.PlayerId].transform.localPosition = bottomLeft + new Vector3(0f, -1f, 0);
-                                playerIcons[p.PlayerId].transform.localScale = Vector3.one * 0.4f;
-                                playerIcons[p.PlayerId].gameObject.SetActive(false);
+                                BeanIcons[p.PlayerId].SetSemiTransparent(false);
+                                BeanIcons[p.PlayerId].transform.localPosition = bottomLeft + new Vector3(0f, -1f, 0);
+                                BeanIcons[p.PlayerId].transform.localScale = Vector3.one * 0.4f;
+                                BeanIcons[p.PlayerId].gameObject.SetActive(false);
                             }
                         }
                     }
@@ -1645,6 +1662,9 @@ namespace TownOfSushi
                     break;
                 case GhostInfoTypes.ArsonistDouse:
                     Arsonist.dousedPlayers.Add(Helpers.PlayerById(reader.ReadByte()));
+                    break;
+                case GhostInfoTypes.PlaguebearerInfect:
+                    Plaguebearer.InfectedPlayers.Add(Helpers.PlayerById(reader.ReadByte()).PlayerId);
                     break;
                 case GhostInfoTypes.BountyTarget:
                     BountyHunter.bounty = Helpers.PlayerById(reader.ReadByte());
@@ -1869,7 +1889,7 @@ namespace TownOfSushi
                     RPCProcedure.ShieldedMurderAttempt();
                     break;
                 case (byte)CustomRPC.Infect:
-                    Plaguebearer.SpreadInfection(Helpers.PlayerById(reader.ReadByte()), Helpers.PlayerById(reader.ReadByte()));
+                    RPCProcedure.SpreadInfection(Helpers.PlayerById(reader.ReadByte()), Helpers.PlayerById(reader.ReadByte()));
                     break;
                 case (byte)CustomRPC.FortifiedMurderAttempt:
                     RPCProcedure.FortifiedMurderAttempt();

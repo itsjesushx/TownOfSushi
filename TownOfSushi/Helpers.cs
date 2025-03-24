@@ -534,7 +534,7 @@ namespace TownOfSushi
             if (GameOptionsManager.Instance.currentGameOptions.GameMode == GameModes.HideNSeek) return MurderAttemptResult.PerformKill;
 
             // Handle first kill attempt
-            if (MapOptions.shieldFirstKill && MapOptions.firstKillPlayer == target) return MurderAttemptResult.SuppressKill;
+            if (MapOptions.shieldFirstKill && MapOptions.FirstPlayerKilled == target) return MurderAttemptResult.SuppressKill;
 
             // Handle blank shot
             if (!ignoreBlank && Pursuer.blankedList.Any(x => x.PlayerId == killer.PlayerId)) {
