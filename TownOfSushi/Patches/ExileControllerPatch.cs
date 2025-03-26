@@ -61,15 +61,15 @@ namespace TownOfSushi.Patches
             Portal.MeetingEndsUpdate();
 
             // Witch execute casted spells
-            if (Witch.witch != null && Witch.futureSpelled != null && AmongUsClient.Instance.AmHost) 
+            if (Witch.Player != null && Witch.futureSpelled != null && AmongUsClient.Instance.AmHost) 
             {
-                bool exiledIsWitch = exiled != null && exiled.PlayerId == Witch.witch.PlayerId;
-                bool witchDiesWithExiledLover = exiled != null && Lovers.Existing() && Lovers.bothDie && (Lovers.Lover1.PlayerId == Witch.witch.PlayerId || Lovers.Lover2.PlayerId == Witch.witch.PlayerId) && (exiled.PlayerId == Lovers.Lover1.PlayerId || exiled.PlayerId == Lovers.Lover2.PlayerId);
+                bool exiledIsWitch = exiled != null && exiled.PlayerId == Witch.Player.PlayerId;
+                bool witchDiesWithExiledLover = exiled != null && Lovers.Existing() && Lovers.bothDie && (Lovers.Lover1.PlayerId == Witch.Player.PlayerId || Lovers.Lover2.PlayerId == Witch.Player.PlayerId) && (exiled.PlayerId == Lovers.Lover1.PlayerId || exiled.PlayerId == Lovers.Lover2.PlayerId);
 
                 if ((witchDiesWithExiledLover || exiledIsWitch) && Witch.witchVoteSavesTargets) Witch.futureSpelled = new List<PlayerControl>();
                 foreach (PlayerControl target in Witch.futureSpelled) 
                 {
-                    if (target != null && !target.Data.IsDead && Helpers.CheckMuderAttempt(Witch.witch, target, true) == MurderAttemptResult.PerformKill)
+                    if (target != null && !target.Data.IsDead && Helpers.CheckMuderAttempt(Witch.Player, target, true) == MurderAttemptResult.PerformKill)
                     {
                         if (exiled != null && Lawyer.Player != null && (target == Lawyer.Player || target == Lovers.OtherLover(Lawyer.Player)) 
                         && Lawyer.target != null && Lawyer.isProsecutor && Lawyer.target.PlayerId == exiled.PlayerId) continue;
@@ -98,9 +98,9 @@ namespace TownOfSushi.Patches
                         ReasonWriter.Write((byte)GhostInfoTypes.DeathReasonAndKiller);
                         ReasonWriter.Write(target.PlayerId);
                         ReasonWriter.Write((byte)DeadPlayer.CustomDeathReason.WitchExile);
-                        ReasonWriter.Write(Witch.witch.PlayerId);
+                        ReasonWriter.Write(Witch.Player.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(ReasonWriter);
-                        GameHistory.OverrideDeathReasonAndKiller(target, DeadPlayer.CustomDeathReason.WitchExile, killer: Witch.witch);
+                        GameHistory.OverrideDeathReasonAndKiller(target, DeadPlayer.CustomDeathReason.WitchExile, killer: Witch.Player);
                     }
                 }
             }

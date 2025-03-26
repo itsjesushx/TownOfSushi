@@ -1087,13 +1087,13 @@ namespace TownOfSushi.Patches {
 
         static void PursuerSetTarget() 
         {
-            if (Pursuer.pursuer == null || Pursuer.pursuer != PlayerControl.LocalPlayer) return;
+            if (Pursuer.Player == null || Pursuer.Player != PlayerControl.LocalPlayer) return;
             Pursuer.target = SetTarget();
             SetPlayerOutline(Pursuer.target, Pursuer.Color);
         }
 
         static void WitchSetTarget() {
-            if (Witch.witch == null || Witch.witch != PlayerControl.LocalPlayer) return;
+            if (Witch.Player == null || Witch.Player != PlayerControl.LocalPlayer) return;
             List<PlayerControl> untargetables;
             if (Witch.spellCastingTarget != null)
                 untargetables = PlayerControl.AllPlayerControls.ToArray().Where(x => x.PlayerId != Witch.spellCastingTarget.PlayerId).ToList(); // Don't switch the target from the the one you're currently casting a spell on
@@ -1458,7 +1458,7 @@ namespace TownOfSushi.Patches {
             if (resetToDead) __instance.Data.IsDead = true;
 
             // Remove fake tasks when player dies
-            if (target.HasFakeTasks() || target == Lawyer.Player || target == Pursuer.pursuer || target == Thief.Player)
+            if (target.HasFakeTasks() || target == Lawyer.Player || target == Pursuer.Player || target == Thief.Player)
                 target.ClearAllTasks();
 
             // First kill (set before lover suicide)
@@ -1537,7 +1537,7 @@ namespace TownOfSushi.Patches {
                 HudManagerStartPatch.cleanerCleanButton.Timer = Cleaner.Player.killTimer;
 
             // Witch Button Sync
-            if (Witch.triggerBothCooldowns && Witch.witch != null && PlayerControl.LocalPlayer == Witch.witch && __instance == Witch.witch && HudManagerStartPatch.witchSpellButton != null)
+            if (Witch.triggerBothCooldowns && Witch.Player != null && PlayerControl.LocalPlayer == Witch.Player && __instance == Witch.Player && HudManagerStartPatch.witchSpellButton != null)
                 HudManagerStartPatch.witchSpellButton.Timer = HudManagerStartPatch.witchSpellButton.MaxTimer;
 
             // Warlock Button Sync
@@ -1655,7 +1655,7 @@ namespace TownOfSushi.Patches {
 
 
             // Remove fake tasks when player dies
-            if (__instance.HasFakeTasks() || __instance == Lawyer.Player || __instance == Pursuer.pursuer || __instance == Thief.Player)
+            if (__instance.HasFakeTasks() || __instance == Lawyer.Player || __instance == Pursuer.Player || __instance == Thief.Player)
                 __instance.ClearAllTasks();
 
             // Lover suicide trigger on exile
@@ -1699,7 +1699,7 @@ namespace TownOfSushi.Patches {
                 if (!Lawyer.targetWasGuessed && !Lawyer.isProsecutor) 
                 {
                     if (Lawyer.Player != null) Lawyer.Player.Exiled();
-                    if (Pursuer.pursuer != null) Pursuer.pursuer.Exiled();
+                    if (Pursuer.Player != null) Pursuer.Player.Exiled();
 
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareGhostInfo, Hazel.SendOption.Reliable, -1);
                     writer.Write(PlayerControl.LocalPlayer.PlayerId);

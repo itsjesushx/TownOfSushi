@@ -245,7 +245,7 @@ namespace TownOfSushi
             if (p == Trickster.Player) infos.Add(trickster);
             if (p == Cleaner.Player) infos.Add(cleaner);
             if (p == Warlock.Player) infos.Add(warlock);
-            if (p == Witch.witch) infos.Add(witch);
+            if (p == Witch.Player) infos.Add(witch);
             if (p == Ninja.ninja) infos.Add(ninja);
             if (p == Yoyo.Player) infos.Add(yoyo);
             if (p == Amnesiac.Player) infos.Add(amnesiac);
@@ -268,7 +268,7 @@ namespace TownOfSushi
             if (p == Lawyer.Player && !Lawyer.isProsecutor) infos.Add(lawyer);
             if (p == Lawyer.Player && Lawyer.isProsecutor) infos.Add(prosecutor);
             if (p == Trapper.Player) infos.Add(trapper);
-            if (p == Pursuer.pursuer) infos.Add(pursuer);
+            if (p == Pursuer.Player) infos.Add(pursuer);
             if (p == Thief.Player) infos.Add(thief);
 
             // Default roles (just impostor, just crewmate, or hunter / hunted for hide n seek, prop hunt prop ...

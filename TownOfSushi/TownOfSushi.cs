@@ -747,9 +747,9 @@ namespace TownOfSushi
                 }
 
                 else if (roleInfo.RoleId == RoleId.Sheriff ||  roleInfo.RoleId == RoleId.Godfather || roleInfo.RoleId == RoleId.Veteran || roleInfo.RoleId == RoleId.BountyHunter || 
-                roleInfo.RoleId == RoleId.Warlock || roleInfo.RoleId == RoleId.Vampire ||roleInfo.RoleId == RoleId.Sidekick || roleInfo.RoleId == RoleId.Jackal)
+                roleInfo.RoleId == RoleId.Warlock || roleInfo.RoleId == RoleId.Vampire || roleInfo.RoleId == RoleId.Pestilence || roleInfo.RoleId == RoleId.Sidekick || roleInfo.RoleId == RoleId.Jackal)
                 {
-                    message =  "I've been nearby too many kills! They must think I'm evil. \n\n(Sheriff, Warlock, Jackal, Sidekick, Godfather, Bounty Hunter, Vampire or Veteran)";
+                    message =  "I've been nearby too many kills! They must think I'm evil. \n\n(Sheriff, Pestilence, Warlock, Jackal, Sidekick, Godfather, Bounty Hunter, Vampire or Veteran)";
                 }
                     
                 else if (roleInfo.RoleId == RoleId.Lawyer || roleInfo.RoleId == RoleId.TimeMaster || roleInfo.RoleId == RoleId.Vigilante ||
@@ -759,9 +759,9 @@ namespace TownOfSushi
                 }
                 
                 else if (roleInfo.RoleId == RoleId.Arsonist || roleInfo.RoleId == RoleId.Camouflager || roleInfo.RoleId == RoleId.Portalmaker ||
-                roleInfo.RoleId == RoleId.Thief ||  roleInfo.RoleId == RoleId.Lighter || roleInfo.RoleId == RoleId.Trickster)
+                roleInfo.RoleId == RoleId.Thief ||  roleInfo.RoleId == RoleId.Lighter || roleInfo.RoleId == RoleId.Plaguebearer || roleInfo.RoleId == RoleId.Trickster)
                 {
-                    message =  "I love playing among the group! \n\n(Portalmaker, Lighter, Arsonist, Camouflager, Thief or Trickster)";
+                    message =  "I love playing among the group! \n\n(Portalmaker, Lighter, Arsonist, Plaguebearer, Camouflager, Thief or Trickster)";
                 }
                     
                 else if (roleInfo.RoleId == RoleId.Crewmate || roleInfo.RoleId == RoleId.Impostor)
@@ -2086,7 +2086,7 @@ namespace TownOfSushi
 
     public static class Pursuer 
     {        
-        public static PlayerControl pursuer;
+        public static PlayerControl Player;
         public static PlayerControl target;
         public static Color Color = Lawyer.Color;
         public static List<PlayerControl> blankedList = new List<PlayerControl>();
@@ -2105,7 +2105,7 @@ namespace TownOfSushi
 
         public static void ClearAndReload() 
         {
-            pursuer = null;
+            Player = null;
             target = null;
             blankedList = new List<PlayerControl>();
             blanks = 0;
@@ -2116,8 +2116,9 @@ namespace TownOfSushi
         }
     }
 
-    public static class Witch {
-        public static PlayerControl witch;
+    public static class Witch 
+    {
+        public static PlayerControl Player;
         public static Color Color = Palette.ImpostorRed;
 
         public static List<PlayerControl> futureSpelled = new List<PlayerControl>();
@@ -2146,8 +2147,9 @@ namespace TownOfSushi
         }
 
 
-        public static void ClearAndReload() {
-            witch = null;
+        public static void ClearAndReload() 
+        {
+            Player = null;
             futureSpelled = new List<PlayerControl>();
             CurrentTarget = spellCastingTarget = null;
             Cooldown = CustomOptionHolder.witchCooldown.GetFloat();
@@ -2700,10 +2702,10 @@ namespace TownOfSushi
                 if (repeat) ShiftRole(player2, player1, false);
                 Medium.medium = player1;
             } 
-            else if (Pursuer.pursuer != null && Pursuer.pursuer == player2) 
+            else if (Pursuer.Player != null && Pursuer.Player == player2) 
             {
                 if (repeat) ShiftRole(player2, player1, false);
-                Pursuer.pursuer = player1;
+                Pursuer.Player = player1;
             } 
             else if (Trapper.Player != null && Trapper.Player == player2) 
             {

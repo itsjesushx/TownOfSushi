@@ -268,7 +268,7 @@ namespace TownOfSushi.Patches
                 if (exiled != null) 
                 {
                     Lovers.notAckedExiledIsLover = ((Lovers.Lover1 != null && Lovers.Lover1.PlayerId == exiled.PlayerId) || (Lovers.Lover2 != null && Lovers.Lover2.PlayerId == exiled.PlayerId));
-                    Pursuer.notAckedExiled = (Pursuer.pursuer != null && Pursuer.pursuer.PlayerId == exiled.PlayerId) || (Lawyer.Player != null && Lawyer.target != null && Lawyer.target.PlayerId == exiled.PlayerId && Lawyer.target != Jester.Player && !Lawyer.isProsecutor);
+                    Pursuer.notAckedExiled = (Pursuer.Player != null && Pursuer.Player.PlayerId == exiled.PlayerId) || (Lawyer.Player != null && Lawyer.target != null && Lawyer.target.PlayerId == exiled.PlayerId && Lawyer.target != Jester.Player && !Lawyer.isProsecutor);
                     VengefulRomantic.notAckedExiled = (VengefulRomantic.Player != null && VengefulRomantic.Player.PlayerId == exiled.PlayerId) || (Romantic.Player != null && Romantic.beloved != null && Romantic.beloved.PlayerId == exiled.PlayerId && Romantic.beloved != Jester.Player);
                 }
 
@@ -682,7 +682,7 @@ namespace TownOfSushi.Patches
             bool isGuesser = HandleGuesser.IsGuesser(PlayerControl.LocalPlayer.PlayerId);
 
             // Add overlay for spelled players
-            if (Witch.witch != null && Witch.futureSpelled != null) 
+            if (Witch.Player != null && Witch.futureSpelled != null) 
             {
                 foreach (PlayerVoteArea pva in __instance.playerStates) 
                 {

@@ -14,6 +14,8 @@ using TownOfSushi.Utilities;
 using AmongUs.Data;
 using AmongUs.GameOptions;
 using Assets.CoreScripts;
+using Reactor.Utilities;
+using System.Collections;
 
 namespace TownOfSushi
 {
@@ -250,10 +252,10 @@ namespace TownOfSushi
                         Lawyer.isProsecutor = true;
                         break;
                     case RoleId.Pursuer:
-                        Pursuer.pursuer = player;
+                        Pursuer.Player = player;
                         break;
                     case RoleId.Witch:
-                        Witch.witch = player;
+                        Witch.Player = player;
                         break;
                     case RoleId.Ninja:
                         Ninja.ninja = player;
@@ -779,7 +781,7 @@ namespace TownOfSushi
             if (player == Trickster.Player) Trickster.ClearAndReload();
             if (player == Cleaner.Player) Cleaner.ClearAndReload();
             if (player == Warlock.Player) Warlock.ClearAndReload();
-            if (player == Witch.witch) Witch.ClearAndReload();
+            if (player == Witch.Player) Witch.ClearAndReload();
             if (player == Ninja.ninja) Ninja.ClearAndReload();
             if (player == Yoyo.Player) Yoyo.ClearAndReload();
 
@@ -809,7 +811,7 @@ namespace TownOfSushi
             if (player == Lawyer.Player) Lawyer.ClearAndReload();
             if (player == Romantic.Player) Romantic.ClearAndReload();
             if (player == VengefulRomantic.Player) VengefulRomantic.ClearAndReload();
-            if (player == Pursuer.pursuer) Pursuer.ClearAndReload();
+            if (player == Pursuer.Player) Pursuer.ClearAndReload();
             if (player == Thief.Player) Thief.ClearAndReload();
 
             // Modifier
@@ -994,22 +996,6 @@ namespace TownOfSushi
             MapOptions.VentsToSeal.Add(vent);
         }
 
-        public static void PlaguebearerRpcSpreadInfection(PlayerControl source, PlayerControl target)
-        {
-            new WaitForSeconds(1f);
-            SpreadInfection(source, target);
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.Infect, Hazel.SendOption.Reliable, -1);
-            writer.Write(Plaguebearer.Player.PlayerId);
-            writer.Write(source.PlayerId);
-            writer.Write(target.PlayerId);
-            AmongUsClient.Instance.FinishRpcImmediately(writer);
-        }
-        public static void SpreadInfection(PlayerControl source, PlayerControl target)
-        {
-            if (Plaguebearer.InfectedPlayers.Contains(source.PlayerId) && !Plaguebearer.InfectedPlayers.Contains(target.PlayerId)) Plaguebearer.InfectedPlayers.Add(target.PlayerId);
-            else if (Plaguebearer.InfectedPlayers.Contains(target.PlayerId) && !Plaguebearer.InfectedPlayers.Contains(source.PlayerId)) Plaguebearer.InfectedPlayers.Add(source.PlayerId);
-        }
-
         public static void ArsonistWin() 
         {
             Arsonist.IsArsonistWin = true;
@@ -1034,7 +1020,7 @@ namespace TownOfSushi
             PlayerControl client = Lawyer.target;
             Lawyer.ClearAndReload(false);
 
-            Pursuer.pursuer = player;
+            Pursuer.Player = player;
 
             if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId && client != null) 
             {
@@ -1531,7 +1517,7 @@ namespace TownOfSushi
 
                 case RoleId.Pursuer:
                     Pursuer.ClearAndReload();
-                    Pursuer.pursuer = AmnesiacPlayer;
+                    Pursuer.Player = AmnesiacPlayer;
                     Amnesiac.ClearAndReload();
                     Amnesiac.Player = target;
                     break;
@@ -1539,7 +1525,7 @@ namespace TownOfSushi
                 case RoleId.Witch:
                     Helpers.BecomeImpostor(Amnesiac.Player);
                     Witch.ClearAndReload();
-                    Witch.witch = AmnesiacPlayer;
+                    Witch.Player = AmnesiacPlayer;
                     Amnesiac.ClearAndReload();
                     break;
 
@@ -1600,9 +1586,9 @@ namespace TownOfSushi
             if (target == Cleaner.Player) Cleaner.Player = thief;
             if (target == Warlock.Player) Warlock.Player = thief;
             if (target == BountyHunter.Player) BountyHunter.Player = thief;
-            if (target == Witch.witch) 
+            if (target == Witch.Player) 
             {
-                Witch.witch = thief;
+                Witch.Player = thief;
                 if (MeetingHud.Instance) 
                     if (Witch.witchVoteSavesTargets)  // In a meeting, if the thief guesses the witch, all targets are saved or no target is saved.
                         Witch.futureSpelled = new();
@@ -1887,9 +1873,6 @@ namespace TownOfSushi
                     break;
                 case (byte)CustomRPC.ShieldedMurderAttempt:
                     RPCProcedure.ShieldedMurderAttempt();
-                    break;
-                case (byte)CustomRPC.Infect:
-                    RPCProcedure.SpreadInfection(Helpers.PlayerById(reader.ReadByte()), Helpers.PlayerById(reader.ReadByte()));
                     break;
                 case (byte)CustomRPC.FortifiedMurderAttempt:
                     RPCProcedure.FortifiedMurderAttempt();

@@ -114,7 +114,6 @@ namespace TownOfSushi
 
         EngineerFixLights = 120,
         EngineerFixSubmergedOxygen,
-        Infect,
         EngineerUsedRepair,
         CleanBody,
         MedicSetShielded,

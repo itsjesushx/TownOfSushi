@@ -100,24 +100,6 @@ namespace TownOfSushi.Objects
                     actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
                     this.isEffectActive = true;
                 }
-
-                // Spread infection if interacting with an infected player or the plaguebearer
-                SpreadInfectionIfApplicable();
-            }
-        }
-
-        private void SpreadInfectionIfApplicable()
-        {
-            var localPlayer = PlayerControl.LocalPlayer;
-            foreach (var player in PlayerControl.AllPlayerControls)
-            {
-                if (player == localPlayer) continue;
-
-                // Check if the player is infected or is the plaguebearer
-                if (Plaguebearer.IsInfected(player) || Plaguebearer.Player == player)
-                {
-                    RPCProcedure.SpreadInfection(Plaguebearer.Player, localPlayer);
-                }
             }
         }
 

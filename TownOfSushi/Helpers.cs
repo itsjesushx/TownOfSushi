@@ -574,7 +574,8 @@ namespace TownOfSushi
             }
 
             // Block Time Master with time shield kill
-            else if (TimeMaster.shieldActive && TimeMaster.Player != null && TimeMaster.Player == target) {
+            else if (TimeMaster.shieldActive && TimeMaster.Player != null && TimeMaster.Player == target) 
+            {
                 if (!blockRewind) { // Only rewind the attempt was not called because a meeting startet 
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(killer.NetId, (byte)CustomRPC.TimeMasterRewindTime, Hazel.SendOption.Reliable, -1);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -604,6 +605,7 @@ namespace TownOfSushi
                 return MurderAttemptResult.MirrorKill;
             }
 
+            // Pestilence murder attempt
             else if (Pestilence.Player != null && Pestilence.Player == target)
             {
                 if (Medic.shielded != null && Medic.shielded == target)

@@ -82,7 +82,7 @@ namespace TownOfSushi.Patches
             if (Arsonist.Player != null) notWinners.Add(Arsonist.Player);
             if (Vulture.Player != null) notWinners.Add(Vulture.Player);
             if (Lawyer.Player != null) notWinners.Add(Lawyer.Player);
-            if (Pursuer.pursuer != null) notWinners.Add(Pursuer.pursuer);
+            if (Pursuer.Player != null) notWinners.Add(Pursuer.Player);
             if (Romantic.Player != null) notWinners.Add(Romantic.Player);
             if (Juggernaut.Player != null) notWinners.Add(Juggernaut.Player);
             if (VengefulRomantic.Player != null) notWinners.Add(VengefulRomantic.Player);
@@ -236,7 +236,7 @@ namespace TownOfSushi.Patches
                         if (p == null) continue;
                         if (p == Lovers.Lover1 || p == Lovers.Lover2)
                             EndGameResult.CachedWinners.Add(new CachedPlayerData(p.Data));
-                        else if (p == Pursuer.pursuer && !Pursuer.pursuer.Data.IsDead)
+                        else if (p == Pursuer.Player && !Pursuer.Player.Data.IsDead)
                             EndGameResult.CachedWinners.Add(new CachedPlayerData(p.Data));
                         else if (p.IsCrew())
                             EndGameResult.CachedWinners.Add(new CachedPlayerData(p.Data));
@@ -327,10 +327,10 @@ namespace TownOfSushi.Patches
             }
 
             // Possible Additional winner: Pursuer
-            if (Pursuer.pursuer != null && !Pursuer.pursuer.Data.IsDead && !Pursuer.notAckedExiled && !EndGameResult.CachedWinners.ToArray().Any(x => x.IsImpostor)) 
+            if (Pursuer.Player != null && !Pursuer.Player.Data.IsDead && !Pursuer.notAckedExiled && !EndGameResult.CachedWinners.ToArray().Any(x => x.IsImpostor)) 
             {
-                if (!EndGameResult.CachedWinners.ToArray().Any(x => x.PlayerName == Pursuer.pursuer.Data.PlayerName))
-                    EndGameResult.CachedWinners.Add(new CachedPlayerData(Pursuer.pursuer.Data));
+                if (!EndGameResult.CachedWinners.ToArray().Any(x => x.PlayerName == Pursuer.Player.Data.PlayerName))
+                    EndGameResult.CachedWinners.Add(new CachedPlayerData(Pursuer.Player.Data));
                 AdditionalTempData.additionalWinConditions.Add(WinCondition.AdditionalAlivePursuerWin);
             }
             RPCProcedure.ResetVariables();
