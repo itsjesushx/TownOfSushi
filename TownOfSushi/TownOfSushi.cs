@@ -80,6 +80,7 @@ namespace TownOfSushi
             Tiebreaker.ClearAndReload();
             Sunglasses.ClearAndReload();
             Mini.ClearAndReload();
+            Disperser.ClearAndReload();
             Vip.ClearAndReload();
             Invert.ClearAndReload();
             Chameleon.ClearAndReload();
@@ -2361,6 +2362,27 @@ namespace TownOfSushi
         {
             Reported = new List<byte>();
             Players = new List<PlayerControl>();
+        }
+    }
+    public static class Disperser
+    {
+        public static PlayerControl Player;
+        public static float Cooldown = 30f;
+        public static int Charges;
+        public static int RechargeKillsCount;
+        public static Sprite ButtonSprite;
+        public static Sprite GetButtonSprite() 
+        {
+            if (ButtonSprite) return ButtonSprite;
+            ButtonSprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.Disperse.png", 115f);
+            return ButtonSprite;
+        }
+        public static void ClearAndReload()
+        {
+            Player = null;
+            Charges = Mathf.RoundToInt(CustomOptionHolder.ModifierDisperserCharges.GetFloat());
+            RechargeKillsCount = Mathf.RoundToInt(CustomOptionHolder.ModifierDisperserKillCharges.GetFloat());
+            Cooldown = CustomOptionHolder.ModifierDisperserCooldown.GetFloat();
         }
     }
     public static class Bait 

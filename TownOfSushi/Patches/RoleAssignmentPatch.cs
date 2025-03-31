@@ -241,7 +241,8 @@ namespace TownOfSushi.Patches
                 }
 
                 // Adjust the role limit
-                switch (roleType) {
+                switch (roleType) 
+                {
                     case RoleType.Crewmate: data.maxCrewmateRoles--; crewValues -= 10; break;
                     case RoleType.Neutral: data.maxNeutralRoles--; break;
                     case RoleType.NK: data.maxNeutralKRoles--; break;
@@ -260,11 +261,13 @@ namespace TownOfSushi.Patches
             // Assign roles until we run out of either players we can assign roles to or run out of roles we can assign to players
             while (
                 (data.impostors.Count > 0 && data.maxImpostorRoles > 0 && impostorTickets.Count > 0) || 
-                (data.crewmates.Count > 0 && (
+                (data.crewmates.Count > 0 && 
+                (
                     (data.maxCrewmateRoles > 0 && crewmateTickets.Count > 0) || 
                     (data.maxNeutralRoles > 0 && neutralTickets.Count > 0)|| 
                     (data.maxNeutralKRoles > 0 && neutralKTickets.Count > 0)
-                ))) {
+                ))) 
+                {
                 
                 Dictionary<RoleType, List<byte>> rolesToAssign = new Dictionary<RoleType, List<byte>>();
                 if (data.crewmates.Count > 0 && data.maxCrewmateRoles > 0 && crewmateTickets.Count > 0) rolesToAssign.Add(RoleType.Crewmate, crewmateTickets);
@@ -295,7 +298,8 @@ namespace TownOfSushi.Patches
                 }
 
                 // Adjust the role limit
-                switch (roleType) {
+                switch (roleType) 
+                {
                     case RoleType.Crewmate: data.maxCrewmateRoles--; break;
                     case RoleType.Neutral: data.maxNeutralRoles--;break;
                     case RoleType.NK: data.maxNeutralKRoles--;break;
@@ -372,19 +376,20 @@ namespace TownOfSushi.Patches
                 RoleId.Invert,
                 RoleId.Chameleon,
                 RoleId.Armored,
-                RoleId.Shifter
+                RoleId.Shifter,
+                RoleId.Disperser
             });
 
             if (rnd.Next(1, 101) <= CustomOptionHolder.modifierLover.GetSelection() * 10) 
             { // Assign lover
                 bool isEvilLover = rnd.Next(1, 101) <= CustomOptionHolder.modifierLoverImpLoverRate.GetSelection() * 10;
                 byte firstLoverId;
-                List<PlayerControl> impPlayer = new List<PlayerControl>(players);
+                List<PlayerControl> evilPlayer = new List<PlayerControl>(players);
                 List<PlayerControl> crewPlayer = new List<PlayerControl>(players);
-                impPlayer.RemoveAll(x => !x.Data.Role.IsImpostor);
-                crewPlayer.RemoveAll(x => x.Data.Role.IsImpostor || x == Lawyer.Player);
+                evilPlayer.RemoveAll(x => !x.Data.Role.IsImpostor && !x.IsNeutralKiller());
+                crewPlayer.RemoveAll(x => !x.IsCrew());
 
-                if (isEvilLover) firstLoverId = SetModifierToRandomPlayer((byte)RoleId.Lover, impPlayer);
+                if (isEvilLover) firstLoverId = SetModifierToRandomPlayer((byte)RoleId.Lover, evilPlayer);
                 else firstLoverId = SetModifierToRandomPlayer((byte)RoleId.Lover, crewPlayer);
                 byte secondLoverId = SetModifierToRandomPlayer((byte)RoleId.Lover, crewPlayer, 1);
 
@@ -493,6 +498,8 @@ namespace TownOfSushi.Patches
             byte playerId;
 
             List<PlayerControl> crewPlayer = new List<PlayerControl>(playerList);
+            List<PlayerControl> impPlayer = new List<PlayerControl>(playerList);
+            impPlayer.RemoveAll(x => !x.Data.Role.IsImpostor);
             crewPlayer.RemoveAll(x => !x.IsCrew());
             if (modifiers.Contains(RoleId.Shifter)) 
             {
@@ -514,6 +521,14 @@ namespace TownOfSushi.Patches
                     sunglassesCount++;
                 }
                 modifiers.RemoveAll(x => x == RoleId.Sunglasses);
+            }
+
+            if (modifiers.Contains(RoleId.Disperser)) 
+            {
+                playerId = SetModifierToRandomPlayer((byte)RoleId.Disperser, impPlayer);
+                impPlayer.RemoveAll(x => x.PlayerId == playerId);
+                playerList.RemoveAll(x => x.PlayerId == playerId);
+                modifiers.RemoveAll(x => x == RoleId.Disperser);
             }
 
             foreach (RoleId modifier in modifiers) 
@@ -572,6 +587,9 @@ namespace TownOfSushi.Patches
                     break;
                 case RoleId.Shifter:
                     selection = CustomOptionHolder.modifierShifter.GetSelection();
+                    break;
+                case RoleId.Disperser:
+                    selection = CustomOptionHolder.ModifierDisperser.GetSelection();
                     break;
             }
                  

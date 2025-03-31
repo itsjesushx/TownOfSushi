@@ -1414,6 +1414,19 @@ The vision will also be affected when lights out.
 | Sunglasses Spawn Chance | -
 | Sunglasses Quantity | -
 | Vision With Sunglasses | -
+
+-----------------------
+## Disperser
+### **Applied to: Impostors**
+The Disperser is an Impostor who has an ability to send all players to a random vent.\
+Does not appear on Airship.
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Disperser Spawn Chance | -
+| Disperser Cooldown | -
+| Disperser Charge Number | -
+| Disperser Kills Needed To Recharge | -
 -----------------------
 
 ## Mini

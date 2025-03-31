@@ -1,0 +1,13 @@
+using HarmonyLib;
+
+namespace TownOfSushi.Patches
+{
+    [HarmonyPatch(typeof(ChatController), nameof(ChatController.Awake))]
+    public static class QuickChatDisablePatch
+    {
+        private static void Postfix(ChatController __instance)
+        {
+            __instance.quickChatButton.gameObject.SetActive(false);
+        }
+    }
+}

@@ -388,6 +388,11 @@ namespace TownOfSushi
 
         public static CustomOption DisableMedbayAnimation;
 
+        public static CustomOption ModifierDisperser;
+        public static CustomOption ModifierDisperserCooldown;
+        public static CustomOption ModifierDisperserKillCharges;
+        public static CustomOption ModifierDisperserCharges;
+
 
         public static CustomOption dynamicMap;
         public static CustomOption dynamicMapEnableSkeld;
@@ -745,6 +750,11 @@ namespace TownOfSushi
 
             modifierTieBreaker = CustomOption.Create(1020, Types.Modifier, ColorString(Color.yellow, "Tie Breaker"), 0f, 0f, 100f, 10f, null, true, Format: "%");
 
+            ModifierDisperser = CustomOption.Create(1021, Types.Modifier, ColorString(Color.red, "Disperser"), 0f, 0f, 100f, 10f, null, true, Format: "%");
+            ModifierDisperserCooldown = CustomOption.Create(1022, Types.Modifier, "Disperser Cooldown", 30f, 10f, 120f, 5f, ModifierDisperser, Format: "s");
+            ModifierDisperserCharges = CustomOption.Create(1023, Types.Modifier, "Initial Disperser Charges", 1f, 0f, 5f, 1f, ModifierDisperser);
+            ModifierDisperserKillCharges = CustomOption.Create(1024, Types.Modifier, "Number Of Kills The Disperser Needs To Recharge", 1f, 0f, 5f, 1f, ModifierDisperser);
+
             modifierBait = CustomOption.Create(1030, Types.Modifier, ColorString(Color.yellow, "Bait"), 0f, 0f, 100f, 10f, null, true, Format: "%");
             modifierBaitQuantity = CustomOption.Create(1031, Types.Modifier, ColorString(Color.yellow, "Bait Quantity"), ratesModifier, modifierBait);
             modifierBaitReportDelayMin = CustomOption.Create(1032, Types.Modifier, "Bait Report Delay Min", 0f, 0f, 10f, 1f, modifierBait);
@@ -752,7 +762,7 @@ namespace TownOfSushi
             modifierBaitShowKillFlash = CustomOption.Create(1034, Types.Modifier, "Warn The Killer With A Flash", true, modifierBait);
 
             modifierLover = CustomOption.Create(1040, Types.Modifier, ColorString(Color.yellow, "Lovers"), 0f, 0f, 100f, 10f, null, true, Format: "%");
-            modifierLoverImpLoverRate = CustomOption.Create(1041, Types.Modifier, "Chance That One Lover Is Impostor", 0f, 0f, 100f, 10f, modifierLover, Format: "%");
+            modifierLoverImpLoverRate = CustomOption.Create(1041, Types.Modifier, "Chance That One Lover Is A Killer", 0f, 0f, 100f, 10f, modifierLover, Format: "%");
             modifierLoverBothDie = CustomOption.Create(1042, Types.Modifier, "Both Lovers Die", true, modifierLover);
             modifierLoverEnableChat = CustomOption.Create(1043, Types.Modifier, "Enable Lover Chat", true, modifierLover);
 

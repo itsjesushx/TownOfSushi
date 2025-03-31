@@ -48,7 +48,7 @@ namespace TownOfSushi
         public readonly static RoleInfo mafioso = new("Mafioso", Mafioso.Color, "Work with the <color=#FF1919FF>Mafia</color> to kill the Crewmates", "Kill all Crewmates", RoleId.Mafioso, Factions.Impostor, "The Mafioso is an Impostor who cannot kill until the Godfather is dead.");
         public readonly static RoleInfo janitor = new("Janitor", Janitor.Color, "Work with the <color=#FF1919FF>Mafia</color> by hiding dead bodies", "Hide dead bodies", RoleId.Janitor, Factions.Impostor, "The Janitor is an Impostor who cannot kill, but they can hide dead bodies instead.");
         public readonly static RoleInfo morphling = new("Morphling", Morphling.Color, "Change your look to not get caught", "Change your look", RoleId.Morphling, Factions.Impostor, $"The Morphling can morph into the form of their fellow Crewmates, morphing changes the Morphling's look to make them not look sus. The morphling can only morph into a crewmate once every {Morphling.Cooldown} seconds and lasts for {Morphling.Duration} seconds.");
-        public readonly static RoleInfo camouflager = new("Camouflager", Camouflager.Color, "Camouflage and kill the Crewmates", "Hide among others", RoleId.Camouflager, Factions.Impostor, $"The Camouflager can turn everyone gray making nobody knows who is who for {Camouflager.Duration} seconds every {Camouflager.Cooldown}s.");
+        public readonly static RoleInfo camouflager = new("Camouflager", Camouflager.Color, "Camouflage and kill the Crewmates", "Hide among others", RoleId.Camouflager, Factions.Impostor, $"The Camouflager can turn everyone gray making everyone unkown and nobody knows who is who for {Camouflager.Duration}s every {Camouflager.Cooldown}s.");
         public readonly static RoleInfo vampire = new("Vampire", Vampire.Color, "Kill the Crewmates with your bites", "Bite your enemies", RoleId.Vampire, Factions.Impostor,  $"The Vampire can bite a player every {Vampire.Cooldown} seconds, after {Vampire.delay} seconds the player die. Players with protection can't be killed by the Vampire. If the Vampire is alive in the last 4, they will directly kill instead of bitting.");
         public readonly static RoleInfo eraser = new("Eraser", Eraser.Color, "Kill the Crewmates and erase their roles", "Erase the roles of your enemies", RoleId.Eraser, Factions.Impostor, "The Eraser can delete player's role for the rest of the game, making them become regular crewmate. They may be able to erase Neutral killers depending on settings.");
         public readonly static RoleInfo trickster = new("Trickster", Trickster.Color, "Use your jack-in-the-boxes to surprise others", "Surprise your enemies", RoleId.Trickster, Factions.Impostor, "The trickster can place boxes around the map which works like a vent, only the Trickster may use them. They can also manually sabotage lights, at any time, with any sabotage on but lights.");
@@ -89,7 +89,7 @@ namespace TownOfSushi
 
         #region Neutral Killers
         public readonly static RoleInfo jackal = new("Jackal", Jackal.Color, "Kill all Crewmates and <color=#FF1919FF>Impostors</color> to win", "Kill everyone", RoleId.Jackal, Factions.NeutralKiller, "The Jackal is part of an extra team, that tries to eliminate all the other players. The Jackal has no tasks and can kill Impostors, Crewmates and Neutrals. The Jackal (if allowed by the options) can select another player to be their Sidekick. Creating a Sidekick removes all tasks of the Sidekick and adds them to the team Jackal. The Sidekick loses their current role (except if they're a Lover, then they play in two teams). The Create Sidekick Action may only be used once per Jackal or once per game (depending on the options). The Jackal can also promote Impostors to be their Sidekick, but depending on the options the Impostor will either really turn into the Sidekick and leave the team Impostors or they will just look like the Sidekick to the Jackal and remain as they were. Also if a Spy or Impostor gets sidekicked, they still will appear red to the Impostors.");
-        public readonly static RoleInfo plaguebearer = new("Plaguebearer", Plaguebearer.Color, "Infect all players to become Pestilence", "Infect to become Pestilence", RoleId.Pestilence, Factions.NeutralKiller, "The Plaguebearer is a Neutral role with its own win condition, as well as an ability to transform into another role. The Plaguebearer has one ability, which allows them to infect other players. Once infected, the infected player can go and infect other players via interacting with them. Once all players are infected, the Plaguebearer becomes Pestilence.");
+        public readonly static RoleInfo plaguebearer = new("Plaguebearer", Plaguebearer.Color, "Infect all players to become Pestilence", "Infect to become Pestilence", RoleId.Pestilence, Factions.NeutralKiller, "The Plaguebearer is a Neutral role with its own win condition, as well as an ability to transform into another role. The Plaguebearer has one ability, which allows them to infect other players. Once all players are infected, the Plaguebearer becomes Pestilence.");
         public readonly static RoleInfo pestilence = new("Pestilence", Pestilence.Color, "", "Kill with your unstoppable abilities", RoleId.Pestilence, Factions.NeutralKiller, "The Pestilence is a unkillable force which can only be killed by being voted out or them guessing wrong. The Pestilence needs to be the last killer alive to win the game.");
         public readonly static RoleInfo juggernaut = new("Juggernaut", Juggernaut.Color, "Kill all your <color=#FF1919FF>Enemies</color> to win", "Each kill makes you more dangerous", RoleId.Juggernaut, Factions.NeutralKiller, "The Juggernaut is a Neutral role with its own win condition. The Juggernaut's special ability is that their kill Cooldown reduces with each kill. This means in theory the Juggernaut can have a 0 second kill Cooldown!. The Juggernaut needs to be the last killer alive to win the game.");
         public readonly static RoleInfo sidekick = new("Sidekick", Sidekick.Color, "Help your Jackal to kill everyone", "Help your Jackal to kill everyone", RoleId.Sidekick, Factions.NeutralKiller, "Gets assigned to a player during the game by the Create Sidekick Action of the Jackal and joins the Jackal in their quest to eliminate all other players. Upon the death of the Jackal (depending on the options), they might get promoted to Jackal themself and potentially even assign a Sidekick of their own.");
@@ -113,6 +113,7 @@ namespace TownOfSushi
         public readonly static RoleInfo invert = new("Invert", Color.yellow, "Your movement is inverted", "Your movement is inverted", RoleId.Invert, Factions.Modifier, "");
         public readonly static RoleInfo chameleon = new("Chameleon", Color.yellow, "You're hard to see when not moving", "You're hard to see when not moving", RoleId.Chameleon, Factions.Modifier, "");
         public readonly static RoleInfo armored = new("Armored", Color.yellow, "You are protected from one murder attempt", "You are protected from one murder attempt", RoleId.Armored, Factions.Modifier, "");
+        public readonly static RoleInfo disperser = new("Disperser", Color.yellow, "Disperse the Crew to random vents", "Disperse players to random vents", RoleId.Disperser, Factions.Modifier, "");
         public readonly static RoleInfo shifter = new("Shifter", Color.yellow, "Shift your role", "Shift your role", RoleId.Shifter, Factions.Modifier, "");
 
         #endregion
@@ -138,6 +139,7 @@ namespace TownOfSushi
             werewolf,
             pestilence,
             plaguebearer,
+            disperser,
             yoyo,
             lover,
             jester,
@@ -208,6 +210,7 @@ namespace TownOfSushi
                 if (AntiTeleport.Players.Any(x => x.PlayerId == p.PlayerId)) infos.Add(antiTeleport);
                 if (Sleuth.Players.Any(x => x.PlayerId == p.PlayerId)) infos.Add(sleuth);
                 if (Sunglasses.Players.Any(x => x.PlayerId == p.PlayerId)) infos.Add(sunglasses);
+                if (p == Disperser.Player) infos.Add(disperser);
                 if (p == Mini.Player) infos.Add(mini);
                 if (Invert.Players.Any(x => x.PlayerId == p.PlayerId)) infos.Add(invert);
                 if (Chameleon.Players.Any(x => x.PlayerId == p.PlayerId)) infos.Add(chameleon);

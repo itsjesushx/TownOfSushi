@@ -55,7 +55,8 @@ namespace TownOfSushi
         private static CustomButton jackalSidekickButton;
         public static CustomButton jackalAndSidekickSabotageLightsButton;
         private static CustomButton eraserButton;
-        private static CustomButton placeJackInTheBoxButton;        
+        private static CustomButton placeJackInTheBoxButton;
+        private static CustomButton DisperserButton;
         private static CustomButton lightsOutButton;
         public static CustomButton cleanerCleanButton;
         public static CustomButton warlockCurseButton;
@@ -87,6 +88,7 @@ namespace TownOfSushi
         public static TMPro.TMP_Text pursuerButtonBlanksText;
         public static TMPro.TMP_Text hackerAdminTableChargesText;
         public static TMPro.TMP_Text hackerVitalsChargesText;
+        public static TMPro.TMP_Text DisperserChargesText;
         public static TMPro.TMP_Text trapperChargesText;
         public static TMPro.TMP_Text portalmakerButtonText1;
         public static TMPro.TMP_Text portalmakerButtonText2;
@@ -118,6 +120,7 @@ namespace TownOfSushi
             SerialKillerKillButton.MaxTimer = SerialKiller.StabKillCooldown;
             shifterShiftButton.MaxTimer = 0f;
             AmnesiacButton.MaxTimer = 0f;
+            DisperserButton.MaxTimer = Disperser.Cooldown;
             morphlingButton.MaxTimer = Morphling.Cooldown;
             MimicButton.MaxTimer = Glitch.MimicCooldown;
             camouflagerButton.MaxTimer = Camouflager.Cooldown;
@@ -1323,11 +1326,49 @@ namespace TownOfSushi
                     trackerTrackCorpsesButton.Timer = trackerTrackCorpsesButton.MaxTimer;
                 }
             );
+
+            DisperserButton = new CustomButton(
+               OnClick: () => 
+                {
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.Disperse, Hazel.SendOption.Reliable, -1);
+                    AmongUsClient.Instance.FinishRpcImmediately(writer);
+                    RPCProcedure.Disperse();
+
+                    DisperserButton.Timer = DisperserButton.MaxTimer;
+                    SoundEffectsManager.Play("morphlingMorph");
+                },
+               HasButton: () => { return Disperser.Player != null && Disperser.Charges > 0 && Disperser.Player == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead; },
+               CouldUse: () => 
+                {     
+                    if (DisperserChargesText != null) DisperserChargesText.text = $"{Disperser.Charges}";  
+                    return Disperser.Player != null && Disperser.Player == PlayerControl.LocalPlayer && Disperser.Charges > 0 && PlayerControl.LocalPlayer.CanMove;
+                },
+               OnMeetingEnds: () => { DisperserButton.Timer = DisperserButton.MaxTimer; },
+               Sprite: Disperser.GetButtonSprite(),
+               PositionOffset: new Vector3(0, 1f, 0),
+               hudManager: __instance,
+               hotkey: KeyCode.F,
+               HasEffect: true,
+               mirror: true,
+               EffectDuration: 0f,
+               OnEffectEnds: () => 
+                {
+                    DisperserButton.Timer = DisperserButton.MaxTimer;
+                    SoundEffectsManager.Play("disperserDisperse");
+                }
+            );
+            DisperserChargesText = GameObject.Instantiate(DisperserButton.actionButton.cooldownTimerText, DisperserButton.actionButton.cooldownTimerText.transform.parent);
+            DisperserChargesText.text = "";
+            DisperserChargesText.enableWordWrapping = false;
+            DisperserChargesText.transform.localScale = Vector3.one * 0.5f;
+            DisperserChargesText.transform.localPosition += new Vector3(-0.05f, 0.7f, 0);
     
             vampireKillButton = new CustomButton(
-                () => {
+                () => 
+                {
                     MurderAttemptResult murder = Helpers.CheckMuderAttempt(Vampire.Player, Vampire.CurrentTarget);
-                    if (murder == MurderAttemptResult.PerformKill) {
+                    if (murder == MurderAttemptResult.PerformKill) 
+                    {
                         if (Vampire.targetNearGarlic) {
                             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.UncheckedMurderPlayer, Hazel.SendOption.Reliable, -1);
                             writer.Write(Vampire.Player.PlayerId);
@@ -1512,7 +1553,8 @@ namespace TownOfSushi
             );
 
             portalmakerMoveToPortalButton = new CustomButton(
-                () => {
+                () => 
+                {
                     bool didTeleport = false;
                     Vector3 exit = Portal.secondPortal.portalGameObject.transform.position;
 
@@ -1529,14 +1571,17 @@ namespace TownOfSushi
                     FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(Portal.teleportDuration, new Action<float>((p) => { // Delayed action
                         PlayerControl.LocalPlayer.moveable = false;
                         PlayerControl.LocalPlayer.NetTransform.Halt();
-                        if (p >= 0.5f && p <= 0.53f && !didTeleport && !MeetingHud.Instance) {
-                            if (SubmergedCompatibility.IsSubmerged) {
+                        if (p >= 0.5f && p <= 0.53f && !didTeleport && !MeetingHud.Instance) 
+                        {
+                            if (SubmergedCompatibility.IsSubmerged) 
+                            {
                                 SubmergedCompatibility.ChangeFloor(exit.y > -7);
                             }
                             PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(exit);
                             didTeleport = true;
                         }
-                        if (p == 1f) {
+                        if (p == 1f) 
+                        {
                             PlayerControl.LocalPlayer.moveable = true;
                         }
                     })));

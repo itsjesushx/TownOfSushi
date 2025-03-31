@@ -12,6 +12,8 @@ using Reactor.Utilities.Extensions;
 using AmongUs.GameOptions;
 using TownOfSushi.Patches;
 using System.Text;
+using System.Collections;
+using BepInEx.Unity.IL2CPP.Utils;
 
 namespace TownOfSushi 
 {
@@ -298,8 +300,8 @@ namespace TownOfSushi
             return GameOptionsManager.Instance.CurrentGameOptions.MapId == 2;
         }
 
-        public static bool IsFungle() {   
-
+        public static bool IsFungle() 
+        {
             return GameOptionsManager.Instance.CurrentGameOptions.MapId == 5;
         }
 
@@ -307,7 +309,6 @@ namespace TownOfSushi
         {
             return PlayerControl.LocalPlayer.myTasks.ToArray().Any((x) => x.TaskType == TaskTypes.MushroomMixupSabotage);
         }
-
 
         public static bool SabotageActive() 
         {
@@ -319,6 +320,55 @@ namespace TownOfSushi
         {
             var sabSystem = ShipStatus.Instance.Systems[SystemTypes.Sabotage].CastFast<SabotageSystemType>();
             return sabSystem.Timer;
+        }
+
+        // Class from StellarRoles
+        [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.StartMeeting))]
+        class ShipStatusStartMeetingPatch
+        {
+            static void Prefix()
+            {
+                var hudManager = HudManager.Instance;
+                if (hudManager.FullScreen == null)
+                    return;
+                var renderer = hudManager.FullScreen;
+                renderer.gameObject.SetActive(true);
+                renderer.enabled = true;
+                var color = Color.black;
+
+                HudManager.Instance.StartCoroutine(Effects.Lerp(0.8f, new Action<float>((p) =>
+                {
+                    var alpha = Mathf.Clamp01(p < 0.25f ? 1 : (1 - p));
+                    renderer.color = new Color(color.r, color.g, color.b, Mathf.Clamp01(1 - p));
+                    if (p == 1)
+                    {
+                        renderer.enabled = false;
+                    }
+                })));
+            }
+        }
+        public static void ShowTextToast(string text, float delay = 1.25f)
+        {
+            HudManager.Instance.StartCoroutine(CoTextToast(text, delay));
+        }
+        public static IEnumerator CoTextToast(string text, float delay)
+        {
+            GameObject taskOverlay = UnityEngine.Object.Instantiate(HudManager.Instance.TaskCompleteOverlay.gameObject, HudManager.Instance.transform);
+            taskOverlay.SetActive(true);
+            taskOverlay.GetComponentInChildren<TextTranslatorTMP>().DestroyImmediate();
+            taskOverlay.GetComponentInChildren<TMPro.TextMeshPro>().text = text;
+            
+            yield return Effects.Slide2D(taskOverlay.transform, new Vector2(0f, -8f), Vector2.zero, 0.25f);
+            
+            for (float time = 0f; time < delay; time += Time.deltaTime)
+            {
+                yield return null;
+            }
+            
+            yield return Effects.Slide2D(taskOverlay.transform, Vector2.zero, new Vector2(0f, 8f), 0.25f);
+            
+            taskOverlay.SetActive(true);
+            taskOverlay.Destroy();
         }
         public static bool CanUseSabotage() 
         {
@@ -537,7 +587,8 @@ namespace TownOfSushi
             if (MapOptions.shieldFirstKill && MapOptions.FirstPlayerKilled == target) return MurderAttemptResult.SuppressKill;
 
             // Handle blank shot
-            if (!ignoreBlank && Pursuer.blankedList.Any(x => x.PlayerId == killer.PlayerId)) {
+            if (!ignoreBlank && Pursuer.blankedList.Any(x => x.PlayerId == killer.PlayerId)) 
+            {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetBlanked, Hazel.SendOption.Reliable, -1);
                 writer.Write(killer.PlayerId);
                 writer.Write((byte)0);
@@ -576,7 +627,8 @@ namespace TownOfSushi
             // Block Time Master with time shield kill
             else if (TimeMaster.shieldActive && TimeMaster.Player != null && TimeMaster.Player == target) 
             {
-                if (!blockRewind) { // Only rewind the attempt was not called because a meeting startet 
+                if (!blockRewind) 
+                { // Only rewind the attempt was not called because a meeting startet 
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(killer.NetId, (byte)CustomRPC.TimeMasterRewindTime, Hazel.SendOption.Reliable, -1);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                     RPCProcedure.TimeMasterRewindTime();

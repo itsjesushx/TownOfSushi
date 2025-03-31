@@ -24,6 +24,7 @@ namespace TownOfSushi.Patches
             new("Enable Sound Effects", () => MapOptions.enableSoundEffects = TownOfSushiPlugin.EnableSoundEffects.Value = !TownOfSushiPlugin.EnableSoundEffects.Value, TownOfSushiPlugin.EnableSoundEffects.Value),
             new("Show Vents On Map", () => MapOptions.ShowVentsOnMap = TownOfSushiPlugin.ShowVentsOnMap.Value = !TownOfSushiPlugin.ShowVentsOnMap.Value, TownOfSushiPlugin.ShowVentsOnMap.Value),
             new("Show Chat Notifications", () => MapOptions.ShowChatNotifications = TownOfSushiPlugin.ShowChatNotifications.Value = !TownOfSushiPlugin.ShowChatNotifications.Value, TownOfSushiPlugin.ShowChatNotifications.Value),
+            new("Disable Lobby Music", () => MapOptions.DisableLobbyMusic = TownOfSushiPlugin.DisableLobbyMusic.Value = !TownOfSushiPlugin.DisableLobbyMusic.Value, TownOfSushiPlugin.DisableLobbyMusic.Value),
         };
         
         private static GameObject popUp;

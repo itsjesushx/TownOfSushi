@@ -1473,6 +1473,12 @@ namespace TownOfSushi.Patches {
                 }
             }
 
+            if (__instance.AmOwner)
+            {
+                if (PlayerControl.LocalPlayer == Disperser.Player)
+                    Disperser.Charges += Disperser.RechargeKillsCount;
+            }
+
             // Sidekick promotion trigger on murder
             if (Sidekick.promotesToJackal && Sidekick.Player != null && !Sidekick.Player.Data.IsDead && target == Jackal.Player && Jackal.Player == PlayerControl.LocalPlayer) {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SidekickPromotes, Hazel.SendOption.Reliable, -1);
