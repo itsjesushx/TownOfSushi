@@ -455,11 +455,15 @@ namespace TownOfSushi
                                 if (Vector2.Distance(deadBodyPosition, playerPosition) <= PlayerControl.LocalPlayer.MaxReportDistance && PlayerControl.LocalPlayer.CanMove && !PhysicsHelpers.AnythingBetween(playerPosition, deadBodyPosition, Constants.ShipAndObjectsMask, false) && Undertaker.CurrentTarget == null)
                                 {
                                     NetworkedPlayerInfo playerInfo = GameData.Instance.GetPlayerById(deadBody.ParentId);
+                                    if (playerInfo == null) continue;
+
+                                    // Drag the body
                                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.DragBody, SendOption.Reliable, -1);
                                     writer.Write(playerInfo.PlayerId);
                                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                                     RPCProcedure.DragBody(playerInfo.PlayerId);
                                     Undertaker.CurrentTarget = deadBody;
+                                    SoundEffectsManager.Play("cleanerClean");
                                     break;
                                 }
                             }
@@ -468,18 +472,29 @@ namespace TownOfSushi
                 }
                 else
                 {
-                    var writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.DropBody, SendOption.Reliable, -1);
-                    writer.Write(PlayerControl.LocalPlayer.PlayerId);
-                    AmongUsClient.Instance.FinishRpcImmediately(writer);
-                    RPCProcedure.DropBody(PlayerControl.LocalPlayer.PlayerId);
-                    Undertaker.CurrentTarget = null;
-                    UndertakerButton.Timer = UndertakerButton.MaxTimer;
-                }
+                   UndertakerButton.Timer = UndertakerButton.MaxTimer;
 
+                   byte playerId = PlayerControl.LocalPlayer.PlayerId;
+
+                    var writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.DropBody, SendOption.Reliable, -1);
+                    writer.Write(playerId);
+                    AmongUsClient.Instance.FinishRpcImmediately(writer);
+                    RPCProcedure.DropBody(playerId);
+                    SoundEffectsManager.Play("cleanerClean");
+                }
             },
-            HasButton: () => { return Undertaker.Player != null && Undertaker.Player == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead; },
+            HasButton: () => 
+                {
+                    if (Undertaker.CurrentTarget != null)
+                    {
+                        return FastDestroyableSingleton<HudManager>.Instance.ReportButton.graphic.color == Palette.EnabledColor && Undertaker.Player != null  && Undertaker.Player == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead;
+                    }
+                    
+                    return Undertaker.Player != null  && Undertaker.Player == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead;
+                },
             CouldUse: () =>
             {
+                if (Undertaker.CurrentTarget != null) UndertakerButton.actionButton.graphic.sprite = Undertaker.GetSecondButtonSprite();
                 if (Undertaker.CurrentTarget != null) return true;
                 else
                 {
@@ -499,13 +514,10 @@ namespace TownOfSushi
 
             },
             OnMeetingEnds: () => { UndertakerButton.Timer = UndertakerButton.MaxTimer;  },
-            Sprite: Undertaker.CurrentTarget != null ? Undertaker.GetSecondButtonSprite() : Undertaker.GetFirstButtonSprite(),
+            Sprite: Undertaker.GetFirstButtonSprite(),
             PositionOffset: CustomButton.ButtonPositions.upperRowLeft,
             hudManager: __instance,
-            hotkey: KeyCode.F,
-            HasEffect: true,
-            EffectDuration: 0f,
-            OnEffectEnds: () => {  }
+            hotkey: KeyCode.F
         );
 
 

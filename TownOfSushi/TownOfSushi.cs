@@ -2309,6 +2309,7 @@ namespace TownOfSushi
     {
         public static PlayerControl Player;
         public static float Cooldown;
+        public static float DragSpeed;
         public static DeadBody CurrentTarget;
         public static Sprite ButtonSprite;
         public static Sprite GetFirstButtonSprite()
@@ -2329,6 +2330,7 @@ namespace TownOfSushi
             Player = null;
             CurrentTarget = null;
             Cooldown = CustomOptionHolder.UndertakerCooldown.GetFloat();
+            DragSpeed = CustomOptionHolder.UndertakerDragSpeed.GetFloat();
         }
     }
 

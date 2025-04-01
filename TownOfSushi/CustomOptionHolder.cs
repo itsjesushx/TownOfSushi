@@ -288,6 +288,7 @@ namespace TownOfSushi
 
         public static CustomOption UndertakerSpawnRate;
         public static CustomOption UndertakerCooldown;
+        public static CustomOption UndertakerDragSpeed;
 
         public static CustomOption thiefSpawnRate;
         public static CustomOption thiefCooldown;
@@ -511,6 +512,7 @@ namespace TownOfSushi
 
             UndertakerSpawnRate = CustomOption.Create(377, Types.Impostor, ColorString(Ninja.Color, "Undertaker"), 0f, 0f, 100f, 10f, null, true, Format: "%");
             UndertakerCooldown = CustomOption.Create(378, Types.Impostor, "Undertaker Cooldown", 30f, 10f, 120f, 5f, UndertakerSpawnRate, Format: "s");
+            UndertakerDragSpeed = CustomOption.Create(379, Types.Impostor, "Undertaker Drag Speed", 1f, 0.5f, 3f, 0.1f, UndertakerSpawnRate, Format: "x");
 
             ninjaSpawnRate = CustomOption.Create(380, Types.Impostor, ColorString(Ninja.Color, "Ninja"), 0f, 0f, 100f, 10f, null, true, Format: "%");
             ninjaCooldown = CustomOption.Create(381, Types.Impostor, "Ninja Mark Cooldown", 30f, 10f, 120f, 5f, ninjaSpawnRate, Format: "s");
