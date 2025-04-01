@@ -286,6 +286,9 @@ namespace TownOfSushi
         public static CustomOption pursuerCooldown;
         public static CustomOption pursuerBlanksNumber;
 
+        public static CustomOption UndertakerSpawnRate;
+        public static CustomOption UndertakerCooldown;
+
         public static CustomOption thiefSpawnRate;
         public static CustomOption thiefCooldown;
         public static CustomOption thiefHasImpVision;
@@ -441,7 +444,7 @@ namespace TownOfSushi
             if (Utilities.EventUtility.canBeEnabled) enableEventMode = CustomOption.Create(10423, Types.General, ColorString(Color.green, "Enable Special Mode"), true, null, true);
 
             // Using new id's for the options to not break compatibilty with older versions
-            crewmateRolesCountMin = CustomOption.Create(300, Types.General, ColorString(new Color(204f / 255f, 204f / 255f, 0, 1f), "Minimum Crewmate Roles"), 15f, 0f, 15f, 1f, null, true, heading: "Min/Max Roles");
+            crewmateRolesCountMin = CustomOption.Create(300, Types.General, ColorString(new Color(204f / 255f, 204f / 255f, 0, 1f), "Minimum Crewmate Roles"), 15f, 0f, 15f, 1f, null, true, Heading: "Min/Max Roles");
             crewmateRolesCountMax = CustomOption.Create(301, Types.General, ColorString(new Color(204f / 255f, 204f / 255f, 0, 1f), "Maximum Crewmate Roles"), 15f, 0f, 15f, 1f);            
             neutralRolesCountMin = CustomOption.Create(302, Types.General, ColorString(new Color(204f / 255f, 204f / 255f, 0, 1f), "Minimum Neutral Roles"), 15f, 0f, 15f, 1f);
             neutralRolesCountMax = CustomOption.Create(303, Types.General, ColorString(new Color(204f / 255f, 204f / 255f, 0, 1f), "Maximum Neutral Roles"), 15f, 0f, 15f, 1f);
@@ -505,6 +508,9 @@ namespace TownOfSushi
             witchSpellCastingDuration = CustomOption.Create(374, Types.Impostor, "Spell Casting Duration", 1f, 0f, 10f, 1f, witchSpawnRate, Format: "s");
             witchTriggerBothCooldowns = CustomOption.Create(375, Types.Impostor, "Trigger Both Cooldowns", true, witchSpawnRate);
             witchVoteSavesTargets = CustomOption.Create(376, Types.Impostor, "Voting The Witch Saves All The Targets", true, witchSpawnRate);
+
+            UndertakerSpawnRate = CustomOption.Create(377, Types.Impostor, ColorString(Ninja.Color, "Undertaker"), 0f, 0f, 100f, 10f, null, true, Format: "%");
+            UndertakerCooldown = CustomOption.Create(378, Types.Impostor, "Undertaker Cooldown", 30f, 10f, 120f, 5f, UndertakerSpawnRate, Format: "s");
 
             ninjaSpawnRate = CustomOption.Create(380, Types.Impostor, ColorString(Ninja.Color, "Ninja"), 0f, 0f, 100f, 10f, null, true, Format: "%");
             ninjaCooldown = CustomOption.Create(381, Types.Impostor, "Ninja Mark Cooldown", 30f, 10f, 120f, 5f, ninjaSpawnRate, Format: "s");
@@ -736,7 +742,7 @@ namespace TownOfSushi
             trapperTrapDuration = CustomOption.Create(454, Types.Crewmate, "Trap Duration", 5f, 1f, 15f, 1f, trapperSpawnRate, Format: "s");
 
             // Modifier (1000 - 1999)
-            modifiersAreHidden = CustomOption.Create(1009, Types.Modifier, ColorString(Color.yellow, "VIP, Bait & Bloody Are Hidden"), true, null, true, heading: ColorString(Color.yellow, "Hide After Death Modifiers"));
+            modifiersAreHidden = CustomOption.Create(1009, Types.Modifier, ColorString(Color.yellow, "VIP, Bait & Bloody Are Hidden"), true, null, true, Heading: ColorString(Color.yellow, "Hide After Death Modifiers"));
 
             modifierBloody = CustomOption.Create(1000, Types.Modifier, ColorString(Color.yellow, "Bloody"), 0f, 0f, 100f, 10f, null, true, Format: "%");
             modifierBloodyQuantity = CustomOption.Create(1001, Types.Modifier, ColorString(Color.yellow, "Bloody Quantity"), ratesModifier, modifierBloody);
@@ -793,7 +799,7 @@ namespace TownOfSushi
             modifierShifter = CustomOption.Create(1100, Types.Modifier, ColorString(Color.yellow, "Shifter"), 0f, 0f, 100f, 10f, null, true, Format: "%");
 
             // Guesser Gamemode (2000 - 2999)
-            GuesserCrewNumber = CustomOption.Create(2001, Types.Modifier, ColorString(Palette.CrewmateBlue, "Number of Crew Guessers"), 15f, 0f, 15f, 1f, null, true, heading: "Guesser Ability Settings");
+            GuesserCrewNumber = CustomOption.Create(2001, Types.Modifier, ColorString(Palette.CrewmateBlue, "Number of Crew Guessers"), 15f, 0f, 15f, 1f, null, true, Heading: "Guesser Ability Settings");
             GuesserNeutralNumber = CustomOption.Create(2002, Types.Modifier, ColorString(Color.gray, "Number of Neutral Guessers"), 15f, 0f, 15f, 1f, GuesserCrewNumber);
             GuesserImpNumber = CustomOption.Create(2003, Types.Modifier, ColorString(Palette.ImpostorRed, "Number of Impostor Guessers"), 15f, 0f, 15f, 1f, GuesserCrewNumber);
             GuesserSidekickIsAlwaysGuesser = CustomOption.Create(2012, Types.Modifier, "Sidekick Is Always Guesser", false, GuesserCrewNumber);
@@ -806,7 +812,7 @@ namespace TownOfSushi
             GuesserCantGuessSnitchIfTaksDone = CustomOption.Create(2010, Types.Modifier, "Guesser Can't Guess Snitch When Tasks Completed", true, GuesserCrewNumber);
 
             // Other options
-            maxNumberOfMeetings = CustomOption.Create(3, Types.General, "Number Of Meetings (excluding Mayor meeting)", 10, 0, 15, 1, null, true, heading: "Gameplay Settings");
+            maxNumberOfMeetings = CustomOption.Create(3, Types.General, "Number Of Meetings (excluding Mayor meeting)", 10, 0, 15, 1, null, true, Heading: "Gameplay Settings");
             DisableMedbayAnimation = CustomOption.Create(3131, Types.General, "Disable Medbay Walk Animation", true);
             LimitAbilities = CustomOption.Create(1321, Types.General, "Limit Player Abilities When 2 Players Are Left Alive", true);
             anyPlayerCanStopStart = CustomOption.Create(2, Types.General, ColorString(new Color(204f / 255f, 204f / 255f, 0, 1f), "Any Player Can Stop The Start"), false, null, false);
@@ -819,18 +825,18 @@ namespace TownOfSushi
             finishTasksBeforeHauntingOrZoomingOut = CustomOption.Create(9, Types.General, "Finish Tasks Before Haunting Or Zooming Out", true);
             deadImpsBlockSabotage = CustomOption.Create(13, Types.General, "Block Dead Impostor From Sabotaging", false, null, false);
 
-            camsNightVision = CustomOption.Create(11, Types.General, "Cams Switch To Night Vision If Lights Are Off", false, null, true, heading: "Night Vision Cams");
+            camsNightVision = CustomOption.Create(11, Types.General, "Cams Switch To Night Vision If Lights Are Off", false, null, true, Heading: "Night Vision Cams");
             camsNoNightVisionIfImpVision = CustomOption.Create(12, Types.General, "Impostor Vision Ignores Night Vision Cams", false, camsNightVision, false);
 
-            SkeldVentImprovements = CustomOption.Create(3313, Types.General, "Enable Vent Improvements", 10, 0, 15, 1, null, true, heading: "Better Skeld Settings");
+            SkeldVentImprovements = CustomOption.Create(3313, Types.General, "Enable Vent Improvements", 10, 0, 15, 1, null, true, Heading: "Better Skeld Settings");
 
-            EnableBetterPolus = CustomOption.Create(3314, Types.General, "Enable Better Polus", false, null, true, heading: "Better Polus Settings");
+            EnableBetterPolus = CustomOption.Create(3314, Types.General, "Enable Better Polus", false, null, true, Heading: "Better Polus Settings");
             BPVentImprovements = CustomOption.Create(3315, Types.General, "Enable Vent Layout", false, EnableBetterPolus);
             BPVitalsLab = CustomOption.Create(3315, Types.General, "Vitals Moved To Lab", false, EnableBetterPolus);
             BPColdTempDeathValley = CustomOption.Create(3316, Types.General, "Cold Temp Moved To Death Valley", false, EnableBetterPolus);
             BPWifiChartCourseSwap = CustomOption.Create(3317, Types.General, "Reboot Wifi And Chart Course Swapped", false, EnableBetterPolus);
 
-            dynamicMap = CustomOption.Create(500, Types.General, "Play On A Random Map", false, null, true, heading: "Random Maps");
+            dynamicMap = CustomOption.Create(500, Types.General, "Play On A Random Map", false, null, true, Heading: "Random Maps");
             dynamicMapEnableSkeld = CustomOption.Create(501, Types.General, "Skeld", 0f, 0f, 100f, 10f, dynamicMap, false, Format: "%");
             dynamicMapEnableMira = CustomOption.Create(502, Types.General, "Mira", 0f, 0f, 100f, 10f, dynamicMap, false, Format: "%");
             dynamicMapEnablePolus = CustomOption.Create(503, Types.General, "Polus", 0f, 0f, 100f, 10f, dynamicMap, false, Format: "%");

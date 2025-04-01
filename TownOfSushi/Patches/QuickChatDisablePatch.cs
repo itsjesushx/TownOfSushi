@@ -8,6 +8,7 @@ namespace TownOfSushi.Patches
         private static void Postfix(ChatController __instance)
         {
             __instance.quickChatButton.gameObject.SetActive(false);
+            __instance.openKeyboardButton.gameObject.SetActive(false);
         }
     }
 }

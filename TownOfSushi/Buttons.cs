@@ -37,6 +37,7 @@ namespace TownOfSushi
         public static CustomButton hackerVitalsButton;
         public static CustomButton hackerAdminTableButton;
         private static CustomButton AmnesiacButton;
+        public static CustomButton UndertakerButton;
         private static CustomButton trackerTrackPlayerButton;
         private static CustomButton trackerTrackCorpsesButton;
         private static CustomButton RomanticSetTargetButton;
@@ -119,6 +120,7 @@ namespace TownOfSushi
             SerialKillerStabButton.MaxTimer = SerialKiller.StabCooldown;
             SerialKillerKillButton.MaxTimer = SerialKiller.StabKillCooldown;
             shifterShiftButton.MaxTimer = 0f;
+            UndertakerButton.MaxTimer = Undertaker.Cooldown;
             AmnesiacButton.MaxTimer = 0f;
             DisperserButton.MaxTimer = Disperser.Cooldown;
             morphlingButton.MaxTimer = Morphling.Cooldown;
@@ -435,6 +437,77 @@ namespace TownOfSushi
                 __instance,
                 KeyCode.Q
             );
+
+            UndertakerButton = new CustomButton(
+            OnClick: () =>
+            {
+                if (Undertaker.CurrentTarget == null)
+                {
+                    foreach (Collider2D collider2D in Physics2D.OverlapCircleAll(PlayerControl.LocalPlayer.GetTruePosition(), PlayerControl.LocalPlayer.MaxReportDistance, Constants.PlayersOnlyMask))
+                    {
+                        if (collider2D.tag == "DeadBody")
+                        {
+                            DeadBody deadBody = collider2D.GetComponent<DeadBody>();
+                            if (deadBody && !deadBody.Reported)
+                            {
+                                Vector2 playerPosition = PlayerControl.LocalPlayer.GetTruePosition();
+                                Vector2 deadBodyPosition = deadBody.TruePosition;
+                                if (Vector2.Distance(deadBodyPosition, playerPosition) <= PlayerControl.LocalPlayer.MaxReportDistance && PlayerControl.LocalPlayer.CanMove && !PhysicsHelpers.AnythingBetween(playerPosition, deadBodyPosition, Constants.ShipAndObjectsMask, false) && Undertaker.CurrentTarget == null)
+                                {
+                                    NetworkedPlayerInfo playerInfo = GameData.Instance.GetPlayerById(deadBody.ParentId);
+                                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.DragBody, SendOption.Reliable, -1);
+                                    writer.Write(playerInfo.PlayerId);
+                                    AmongUsClient.Instance.FinishRpcImmediately(writer);
+                                    RPCProcedure.DragBody(playerInfo.PlayerId);
+                                    Undertaker.CurrentTarget = deadBody;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    var writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.DropBody, SendOption.Reliable, -1);
+                    writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                    AmongUsClient.Instance.FinishRpcImmediately(writer);
+                    RPCProcedure.DropBody(PlayerControl.LocalPlayer.PlayerId);
+                    Undertaker.CurrentTarget = null;
+                    UndertakerButton.Timer = UndertakerButton.MaxTimer;
+                }
+
+            },
+            HasButton: () => { return Undertaker.Player != null && Undertaker.Player == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead; },
+            CouldUse: () =>
+            {
+                if (Undertaker.CurrentTarget != null) return true;
+                else
+                {
+                    foreach (Collider2D collider2D in Physics2D.OverlapCircleAll(PlayerControl.LocalPlayer.GetTruePosition(), PlayerControl.LocalPlayer.MaxReportDistance, Constants.PlayersOnlyMask))
+                    {
+                        if (collider2D.tag == "DeadBody")
+                        {
+                            DeadBody deadBody = collider2D.GetComponent<DeadBody>();
+                            Vector2 deadBodyPosition = deadBody.TruePosition;
+                            deadBodyPosition.x -= 0.2f;
+                            deadBodyPosition.y -= 0.2f;
+                            return PlayerControl.LocalPlayer.CanMove && Vector2.Distance(PlayerControl.LocalPlayer.GetTruePosition(), deadBodyPosition) < 0.80f;
+                        }
+                    }
+                    return false;
+                }
+
+            },
+            OnMeetingEnds: () => { UndertakerButton.Timer = UndertakerButton.MaxTimer;  },
+            Sprite: Undertaker.CurrentTarget != null ? Undertaker.GetSecondButtonSprite() : Undertaker.GetFirstButtonSprite(),
+            PositionOffset: CustomButton.ButtonPositions.upperRowLeft,
+            hudManager: __instance,
+            hotkey: KeyCode.F,
+            HasEffect: true,
+            EffectDuration: 0f,
+            OnEffectEnds: () => {  }
+        );
+
 
             // Glitch Hack
             GlitchHackButton = new CustomButton(
@@ -1347,7 +1420,7 @@ namespace TownOfSushi
                Sprite: Disperser.GetButtonSprite(),
                PositionOffset: new Vector3(0, 1f, 0),
                hudManager: __instance,
-               hotkey: KeyCode.F,
+               hotkey: KeyCode.G,
                HasEffect: true,
                mirror: true,
                EffectDuration: 0f,

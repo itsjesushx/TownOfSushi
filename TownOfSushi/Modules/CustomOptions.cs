@@ -38,12 +38,12 @@ namespace TownOfSushi
         public CustomOptionType type;
         public string Format;
         public Action onChange = null;
-        public string heading = "";
+        public string Heading = "";
         public bool invertedParent;
 
         // Option creation
 
-        public CustomOption(int id, CustomOptionType type, string name,  System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, Action onChange = null, string heading = "", string Format = "", bool invertedParent = false) 
+        public CustomOption(int id, CustomOptionType type, string name,  System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, Action onChange = null, string Heading = "", string Format = "", bool invertedParent = false) 
         {
             this.id = id;
             this.name = parent == null ? name : "- " + name;
@@ -54,7 +54,7 @@ namespace TownOfSushi
             this.isHeader = isHeader;
             this.type = type;
             this.onChange = onChange;
-            this.heading = heading;
+            this.Heading = Heading;
             this.Format = Format;
             this.invertedParent = invertedParent;
             selection = 0;
@@ -66,22 +66,22 @@ namespace TownOfSushi
             options.Add(this);
         }
 
-        public static CustomOption Create(int id, CustomOptionType type, string name, string[] selections, CustomOption parent = null, bool isHeader = false, Action onChange = null, string heading = "", bool invertedParent = false) 
+        public static CustomOption Create(int id, CustomOptionType type, string name, string[] selections, CustomOption parent = null, bool isHeader = false, Action onChange = null, string Heading = "", bool invertedParent = false) 
         {
-            return new CustomOption(id, type, name, selections, "", parent, isHeader, onChange, heading, "", invertedParent);
+            return new CustomOption(id, type, name, selections, "", parent, isHeader, onChange, Heading, "", invertedParent);
         }
 
-        public static CustomOption Create(int id, CustomOptionType type, string name, float defaultValue, float min, float max, float step, CustomOption parent = null, bool isHeader = false, Action onChange = null, string heading = "", string Format = "", bool invertedParent = false) 
+        public static CustomOption Create(int id, CustomOptionType type, string name, float defaultValue, float min, float max, float step, CustomOption parent = null, bool isHeader = false, Action onChange = null, string Heading = "", string Format = "", bool invertedParent = false) 
         {
             List<object> selections = new();
             for (float s = min; s <= max; s += step)
                 selections.Add(s);
-            return new CustomOption(id, type, name, selections.ToArray(), defaultValue, parent, isHeader, onChange, heading, Format, invertedParent);
+            return new CustomOption(id, type, name, selections.ToArray(), defaultValue, parent, isHeader, onChange, Heading, Format, invertedParent);
         }
 
-        public static CustomOption Create(int id, CustomOptionType type, string name, bool defaultValue, CustomOption parent = null, bool isHeader = false, Action onChange = null, string heading = "", bool invertedParent = false) 
+        public static CustomOption Create(int id, CustomOptionType type, string name, bool defaultValue, CustomOption parent = null, bool isHeader = false, Action onChange = null, string Heading = "", bool invertedParent = false) 
         {
-            return new CustomOption(id, type, name, new string[]{"Off", "On"}, defaultValue ? "On" : "Off", parent, isHeader, onChange, heading, "", invertedParent);
+            return new CustomOption(id, type, name, new string[]{"Off", "On"}, defaultValue ? "On" : "Off", parent, isHeader, onChange, Heading, "", invertedParent);
         }
 
         // Static behaviour
@@ -497,7 +497,7 @@ namespace TownOfSushi
                     headers++; // for header
                     CategoryHeaderMasked categoryHeaderMasked = UnityEngine.Object.Instantiate<CategoryHeaderMasked>(__instance.categoryHeaderOrigin);
                     categoryHeaderMasked.SetHeader(StringNames.ImpostorsCategory, 61);
-                    categoryHeaderMasked.Title.text = option.heading != "" ? option.heading : option.name;
+                    categoryHeaderMasked.Title.text = option.Heading != "" ? option.Heading : option.name;
                     if ((int)optionType == 99)
                         categoryHeaderMasked.Title.text = new Dictionary<CustomOptionType, string>() { { CustomOptionType.Impostor, "Impostor Roles" }, { CustomOptionType.Neutral, "Neutral Roles" },
                             { CustomOptionType.Crewmate, "Crewmate Roles" }, { CustomOptionType.Modifier, "Modifiers" }, { CustomOptionType.NeutralKiller, "Neutral Killing Roles" }, }[curType];
@@ -536,7 +536,7 @@ namespace TownOfSushi
                 var settingTuple = HandleSpecialOptionsView(option, option.name, option.selections[value].ToString());
                 viewSettingsInfoPanel.SetInfo(StringNames.ImpostorsCategory, $"{option.selections[value].ToString()}{option.Format}", 61);
                 viewSettingsInfoPanel.titleText.text = settingTuple.Item1;
-                if (option.isHeader && (int)optionType != 99 && option.heading == "" && (option.type == CustomOptionType.Neutral || option.type == CustomOptionType.Crewmate || option.type == CustomOptionType.Impostor  || option.type == CustomOptionType.NeutralKiller || option.type == CustomOptionType.Modifier)) 
+                if (option.isHeader && (int)optionType != 99 && option.Heading == "" && (option.type == CustomOptionType.Neutral || option.type == CustomOptionType.Crewmate || option.type == CustomOptionType.Impostor  || option.type == CustomOptionType.NeutralKiller || option.type == CustomOptionType.Modifier)) 
                 {
                     viewSettingsInfoPanel.titleText.text = "Spawn Chance";
                 }
@@ -738,7 +738,7 @@ namespace TownOfSushi
                 {
                     CategoryHeaderMasked categoryHeaderMasked = UnityEngine.Object.Instantiate<CategoryHeaderMasked>(menu.categoryHeaderOrigin, Vector3.zero, Quaternion.identity, menu.settingsContainer);
                     categoryHeaderMasked.SetHeader(StringNames.ImpostorsCategory, 20);
-                    categoryHeaderMasked.Title.text = option.heading != "" ? option.heading : option.name;
+                    categoryHeaderMasked.Title.text = option.Heading != "" ? option.Heading : option.name;
                     categoryHeaderMasked.Title.outlineColor = Color.white;
                     categoryHeaderMasked.Title.outlineWidth = 0.2f;
                     categoryHeaderMasked.transform.localScale = Vector3.one * 0.63f;
@@ -765,7 +765,7 @@ namespace TownOfSushi
                 var stringOption = optionBehaviour as StringOption;
                 stringOption.OnValueChanged = new Action<OptionBehaviour>((o) => { });
                 stringOption.TitleText.text = option.name;
-                if (option.isHeader && option.heading == "" && (option.type == CustomOptionType.Neutral || option.type == CustomOptionType.Crewmate || option.type == CustomOptionType.NeutralKiller || option.type == CustomOptionType.Impostor || option.type == CustomOptionType.Modifier)) {
+                if (option.isHeader && option.Heading == "" && (option.type == CustomOptionType.Neutral || option.type == CustomOptionType.Crewmate || option.type == CustomOptionType.NeutralKiller || option.type == CustomOptionType.Impostor || option.type == CustomOptionType.Modifier)) {
                     stringOption.TitleText.text = "Spawn Chance";
                 }
                 if (stringOption.TitleText.text.Length > 25)

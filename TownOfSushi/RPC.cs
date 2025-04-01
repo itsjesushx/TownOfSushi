@@ -138,6 +138,9 @@ namespace TownOfSushi
                     case RoleId.Lighter:
                         Lighter.Player = player;
                         break;
+                    case RoleId.Undertaker:
+                        Undertaker.Player = player;
+                        break;
                     case RoleId.Oracle:
                         Oracle.Player = player;
                         break;
@@ -868,6 +871,7 @@ namespace TownOfSushi
             if (player == Vampire.Player) Vampire.ClearAndReload();
             if (player == Eraser.Player) Eraser.ClearAndReload();
             if (player == Trickster.Player) Trickster.ClearAndReload();
+            if (player == Undertaker.Player) Undertaker.ClearAndReload();
             if (player == Cleaner.Player) Cleaner.ClearAndReload();
             if (player == Warlock.Player) Warlock.ClearAndReload();
             if (player == Witch.Player) Witch.ClearAndReload();
@@ -1132,6 +1136,26 @@ namespace TownOfSushi
                 Helpers.ShowTextToast("You just transformed into the Pestilence!", 2.5f);
             }
         }
+
+        public static void DragBody(byte BodyId)
+        {
+            DeadBody[] array = UnityEngine.Object.FindObjectsOfType<DeadBody>();
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (GameData.Instance.GetPlayerById(array[i].ParentId).PlayerId == BodyId)
+                {
+                    Undertaker.CurrentTarget = array[i];
+                }
+            }
+        }
+
+        public static void DropBody(byte bodyId)
+        {
+            if (Undertaker.Player == null || Undertaker.CurrentTarget == null) return;
+            Undertaker.CurrentTarget = null;
+            Undertaker.CurrentTarget.transform.position = new Vector3(Undertaker.Player.GetTruePosition().x, Undertaker.Player.GetTruePosition().y, Undertaker.Player.transform.position.z);
+        }
+
 
         public static void RomanticChangeRole() 
         {
@@ -1454,6 +1478,13 @@ namespace TownOfSushi
                     Amnesiac.ClearAndReload();
                     break;
                 
+                case RoleId.Undertaker:
+                    Helpers.BecomeImpostor(Amnesiac.Player);
+                    Undertaker.ClearAndReload();
+                    Undertaker.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    break;
+                
                 case RoleId.Romantic:
                     Romantic.ClearAndReload();
                     Romantic.Player = AmnesiacPlayer;
@@ -1669,6 +1700,7 @@ namespace TownOfSushi
             if (target == Mafioso.Player) Mafioso.Player = thief;
             if (target == Janitor.Player) Janitor.Player = thief;
             if (target == Morphling.Player) Morphling.Player = thief;
+            if (target == Undertaker.Player) Undertaker.Player = thief;
             if (target == Camouflager.Player) Camouflager.Player = thief;
             if (target == Vampire.Player) Vampire.Player = thief;
             if (target == Eraser.Player) Eraser.Player = thief;
@@ -1914,6 +1946,12 @@ namespace TownOfSushi
                     byte reportSource = reader.ReadByte();
                     byte reportTarget = reader.ReadByte();
                     RPCProcedure.UncheckedCmdReportDeadBody(reportSource, reportTarget);
+                    break;
+                case (byte)CustomRPC.DragBody:
+                    RPCProcedure.DragBody(reader.ReadByte());
+                    break;
+                case (byte)CustomRPC.DropBody:
+                    RPCProcedure.DropBody(reader.ReadByte());
                     break;
                 case (byte)CustomRPC.DynamicMapOption:
                     byte mapId = reader.ReadByte();

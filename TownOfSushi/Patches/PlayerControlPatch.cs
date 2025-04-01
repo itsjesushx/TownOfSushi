@@ -483,7 +483,8 @@ namespace TownOfSushi.Patches {
             }
             if (Ninja.arrow?.arrow != null)
             {
-                if (Ninja.ninja == null || Ninja.ninja != PlayerControl.LocalPlayer || !Ninja.knowsTargetLocation) {
+                if (Ninja.ninja == null || Ninja.ninja != PlayerControl.LocalPlayer || !Ninja.knowsTargetLocation) 
+                {
                     Ninja.arrow.arrow.SetActive(false);
                     return;
                 }
@@ -502,62 +503,76 @@ namespace TownOfSushi.Patches {
                     }
                     Ninja.arrow.Update(position);
                     Ninja.arrow.arrow.SetActive(trackedOnMap);
-                } else
+                } 
+                else
                 {
                     Ninja.arrow.arrow.SetActive(false);
                 }
             }
         }
 
-        static void TrackerUpdate() {
+        static void TrackerUpdate() 
+        {
             // Handle player tracking
-            if (Tracker.arrow?.arrow != null) {
-                if (Tracker.Player == null || PlayerControl.LocalPlayer != Tracker.Player) {
+            if (Tracker.arrow?.arrow != null) 
+            {
+                if (Tracker.Player == null || PlayerControl.LocalPlayer != Tracker.Player) 
+                {
                     Tracker.arrow.arrow.SetActive(false);
                     if (Tracker.DangerMeterParent) Tracker.DangerMeterParent.SetActive(false);
                     return;
                 }
 
-                if (Tracker.tracked != null && !Tracker.Player.Data.IsDead) {
+                if (Tracker.tracked != null && !Tracker.Player.Data.IsDead) 
+                {
                     Tracker.timeUntilUpdate -= Time.fixedDeltaTime;
 
-                    if (Tracker.timeUntilUpdate <= 0f) {
+                    if (Tracker.timeUntilUpdate <= 0f) 
+                    {
                         bool trackedOnMap = !Tracker.tracked.Data.IsDead;
                         Vector3 position = Tracker.tracked.transform.position;
                         if (!trackedOnMap) { // Check for dead body
                             DeadBody body = UnityEngine.Object.FindObjectsOfType<DeadBody>().FirstOrDefault(b => b.ParentId == Tracker.tracked.PlayerId);
-                            if (body != null) {
+                            if (body != null) 
+                            {
                                 trackedOnMap = true;
                                 position = body.transform.position;
                             }
                         }
 
                         if (Tracker.trackingMode == 1 || Tracker.trackingMode == 2) Arrow.UpdateProximity(position);
-                        if (Tracker.trackingMode == 0 || Tracker.trackingMode == 2) {
+                        if (Tracker.trackingMode == 0 || Tracker.trackingMode == 2) 
+                        {
                             Tracker.arrow.Update(position);
                             Tracker.arrow.arrow.SetActive(trackedOnMap);
                         }
                         Tracker.timeUntilUpdate = Tracker.updateIntervall;
-                    } else {
+                    } 
+                    else 
+                    {
                         if (Tracker.trackingMode == 0 || Tracker.trackingMode == 2) Tracker.arrow.Update();
                     }
                 } 
-                else if (Tracker.Player.Data.IsDead) {
+                else if (Tracker.Player.Data.IsDead) 
+                {
                     Tracker.DangerMeterParent?.SetActive(false);
                     Tracker.Meter?.gameObject.SetActive(false);
                 }
             }
 
             // Handle corpses tracking
-            if (Tracker.Player != null && Tracker.Player == PlayerControl.LocalPlayer && Tracker.corpsesTrackingTimer >= 0f && !Tracker.Player.Data.IsDead) {
+            if (Tracker.Player != null && Tracker.Player == PlayerControl.LocalPlayer && Tracker.corpsesTrackingTimer >= 0f && !Tracker.Player.Data.IsDead) 
+            {
                 bool arrowsCountChanged = Tracker.localArrows.Count != Tracker.deadBodyPositions.Count();
                 int index = 0;
 
-                if (arrowsCountChanged) {
+                if (arrowsCountChanged) 
+                {
                     foreach (Arrow arrow in Tracker.localArrows) UnityEngine.Object.Destroy(arrow.arrow);
                     Tracker.localArrows = new List<Arrow>();
                 }
-                foreach (Vector3 position in Tracker.deadBodyPositions) {
+                foreach (Vector3 position in Tracker.deadBodyPositions) 
+                {
                     if (arrowsCountChanged) {
                         Tracker.localArrows.Add(new Arrow(Tracker.Color));
                         Tracker.localArrows[index].arrow.SetActive(true);
@@ -565,7 +580,9 @@ namespace TownOfSushi.Patches {
                     if (Tracker.localArrows[index] != null) Tracker.localArrows[index].Update(position);
                     index++;
                 }
-            } else if (Tracker.localArrows.Count > 0) { 
+            } 
+            else if (Tracker.localArrows.Count > 0) 
+            {
                 foreach (Arrow arrow in Tracker.localArrows) UnityEngine.Object.Destroy(arrow.arrow);
                 Tracker.localArrows = new List<Arrow>();
             }
@@ -885,6 +902,16 @@ namespace TownOfSushi.Patches {
                 }
                 if (Amnesiac.AmnesiacArrows[index] != null) Amnesiac.AmnesiacArrows[index].Update(db.transform.position);
                 index++;
+            }
+        }
+
+        static void UndertakerUpdate()
+        {
+            if (Undertaker.Player == null || Undertaker.Player.Data.IsDead) return;
+            if (Undertaker.CurrentTarget != null)
+            {
+                Vector3 currentPosition = Undertaker.Player.transform.position;
+                Undertaker.CurrentTarget.transform.position = currentPosition;
             }
         }
 
@@ -1305,6 +1332,8 @@ namespace TownOfSushi.Patches {
                 MediumSetTarget();
                 // Morphling and Camouflager
                 MorphlingAndCamouflagerUpdate();
+                // Undertaker
+                UndertakerUpdate();
                 // Lawyer
                 LawyerUpdate();
                 //Romantic

@@ -6,8 +6,8 @@ public static class DiscordStatusManager
 {
     [HarmonyPatch(typeof(ActivityManager), nameof(ActivityManager.UpdateActivity))]
     [HarmonyPrefix]
-    public static void Prefix([HarmonyArgument(0)] Activity Activity)
+    public static void Prefix([HarmonyArgument(0)] Activity activity)
     {
-        Activity.Details += $" TownOfSushi v" + TownOfSushiPlugin.Version.ToString();
+        activity.Details += $" TownOfSushi v" + TownOfSushiPlugin.Version.ToString();
     }
 }

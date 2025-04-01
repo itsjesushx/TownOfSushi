@@ -47,6 +47,7 @@ namespace TownOfSushi
         public readonly static RoleInfo godfather = new("Godfather", Godfather.Color, "Kill all Crewmates", "Kill all Crewmates", RoleId.Godfather, Factions.Impostor, "As the Godfather, you are a plain impostor that has other 2 helpers, the Janitor and the Mafioso.");
         public readonly static RoleInfo mafioso = new("Mafioso", Mafioso.Color, "Work with the <color=#FF1919FF>Mafia</color> to kill the Crewmates", "Kill all Crewmates", RoleId.Mafioso, Factions.Impostor, "The Mafioso is an Impostor who cannot kill until the Godfather is dead.");
         public readonly static RoleInfo janitor = new("Janitor", Janitor.Color, "Work with the <color=#FF1919FF>Mafia</color> by hiding dead bodies", "Hide dead bodies", RoleId.Janitor, Factions.Impostor, "The Janitor is an Impostor who cannot kill, but they can hide dead bodies instead.");
+        public readonly static RoleInfo undertaker = new("Undertaker", Ninja.Color, "Drag dead bodies and hide them around the map", "Drag dead bodies", RoleId.Undertaker, Factions.Impostor, "The Undertaker is an Impostor who can drag dead bodies around the map. The Undertaker may vent during the drag, depending on settings.");
         public readonly static RoleInfo morphling = new("Morphling", Morphling.Color, "Change your look to not get caught", "Change your look", RoleId.Morphling, Factions.Impostor, $"The Morphling can morph into the form of their fellow Crewmates, morphing changes the Morphling's look to make them not look sus. The morphling can only morph into a crewmate once every {Morphling.Cooldown} seconds and lasts for {Morphling.Duration} seconds.");
         public readonly static RoleInfo camouflager = new("Camouflager", Camouflager.Color, "Camouflage and kill the Crewmates", "Hide among others", RoleId.Camouflager, Factions.Impostor, $"The Camouflager can turn everyone gray making everyone unkown and nobody knows who is who for {Camouflager.Duration}s every {Camouflager.Cooldown}s.");
         public readonly static RoleInfo vampire = new("Vampire", Vampire.Color, "Kill the Crewmates with your bites", "Bite your enemies", RoleId.Vampire, Factions.Impostor,  $"The Vampire can bite a player every {Vampire.Cooldown} seconds, after {Vampire.delay} seconds the player die. Players with protection can't be killed by the Vampire. If the Vampire is alive in the last 4, they will directly kill instead of bitting.");
@@ -156,6 +157,7 @@ namespace TownOfSushi
             juggernaut,
             thief,
             prosecutor,
+            undertaker,
             crewmate,
             vromantic,
             mayor,
@@ -231,6 +233,7 @@ namespace TownOfSushi
             if (p == Romantic.Player) infos.Add(romantic);
             if (p == Juggernaut.Player) infos.Add(juggernaut);
             if (p == Crusader.Player) infos.Add(crusader);
+            if (p == Undertaker.Player) infos.Add(undertaker);
             if (p == VengefulRomantic.Player) infos.Add(vromantic);
             if (p == Glitch.Player) infos.Add(glitch);
             if (p == SerialKiller.Player) infos.Add(serialKiller);

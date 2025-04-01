@@ -1,7 +1,7 @@
 using System;
 using HarmonyLib;
 
-namespace TownOfSushi
+namespace TownOfSushi.Patches
 {
     // Class from: https://github.com/SuperNewRoles/SuperNewRoles
     [HarmonyPatch(typeof(LobbyBehaviour))]

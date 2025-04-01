@@ -58,7 +58,9 @@ namespace TownOfSushi
                 if (killer != null) {
                     target.killerIfExisting = killer;
                 }
-            } else if (player != null) {  // Create dead player if needed:
+            } 
+            else if (player != null) 
+            {  // Create dead player if needed:
                 var dp = new DeadPlayer(player, DateTime.UtcNow, deathReason, killer);
                 deadPlayers.Add(dp);
             }

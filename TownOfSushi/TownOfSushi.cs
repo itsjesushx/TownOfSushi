@@ -66,6 +66,7 @@ namespace TownOfSushi
             Lawyer.ClearAndReload();
             Pursuer.ClearAndReload();
             Witch.ClearAndReload();
+            Undertaker.ClearAndReload();
             Ninja.ClearAndReload();
             Thief.ClearAndReload();
             Trapper.ClearAndReload();
@@ -741,10 +742,10 @@ namespace TownOfSushi
                     message =  "Why is everything in my reality so weird looking?! \n\n(Glitch, Morphling, Snitch, Medium or Engineer)";
                 }
                 
-                else if (roleInfo.RoleId == RoleId.Vulture || roleInfo.RoleId == RoleId.Tracker && Tracker.canTrackCorpses ||
+                else if (roleInfo.RoleId == RoleId.Vulture || roleInfo.RoleId == RoleId.Undertaker || roleInfo.RoleId == RoleId.Tracker && Tracker.canTrackCorpses ||
                 roleInfo.RoleId == RoleId.Cleaner || roleInfo.RoleId == RoleId.Janitor)
                 {
-                    message =  "BODIES?? WHERE?! I NEED ONE NOW! \n\n(Cleaner, Vulture, Tracker or Janitor)";
+                    message =  "BODIES?? WHERE!? \n\n(Cleaner, Undertaker, Vulture, Tracker or Janitor)";
                 }
 
                 else if (roleInfo.RoleId == RoleId.Sheriff ||  roleInfo.RoleId == RoleId.Godfather || roleInfo.RoleId == RoleId.Veteran || roleInfo.RoleId == RoleId.BountyHunter || 
@@ -2301,6 +2302,33 @@ namespace TownOfSushi
             Cooldown = CustomOptionHolder.WerewolfCooldown.GetFloat();
             CanUseVents = CustomOptionHolder.WerewolfCanUseVents.GetBool();
             Radius = CustomOptionHolder.WerewolfMaulRadius.GetFloat();
+        }
+    }
+
+    public static class Undertaker
+    {
+        public static PlayerControl Player;
+        public static float Cooldown;
+        public static DeadBody CurrentTarget;
+        public static Sprite ButtonSprite;
+        public static Sprite GetFirstButtonSprite()
+        {
+            if (ButtonSprite) return ButtonSprite;
+            ButtonSprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.Drag.png", 115f);
+            return ButtonSprite;
+        }
+        public static Sprite ButtonSprite2;
+        public static Sprite GetSecondButtonSprite()
+        {
+            if (ButtonSprite2) return ButtonSprite2;
+            ButtonSprite2 = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.Drop.png", 115f);
+            return ButtonSprite2;
+        }
+        public static void ClearAndReload()
+        {
+            Player = null;
+            CurrentTarget = null;
+            Cooldown = CustomOptionHolder.UndertakerCooldown.GetFloat();
         }
     }
 
