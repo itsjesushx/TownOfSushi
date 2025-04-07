@@ -187,15 +187,17 @@ namespace TownOfSushi
             return (float)selections[selection];
         }
 
-        public int getQuantity() 
+        public int GetQuantity() 
         {
             return selection + 1;
         }
 
 
-        public void UpdateSelection(int newSelection, bool notifyUsers = true) {
+        public void UpdateSelection(int newSelection, bool notifyUsers = true) 
+        {
             newSelection = Mathf.Clamp((newSelection + selections.Length) % selections.Length, 0, selections.Length - 1);
-            if (AmongUsClient.Instance?.AmClient == true && notifyUsers && selection != newSelection) {
+            if (AmongUsClient.Instance?.AmClient == true && notifyUsers && selection != newSelection) 
+            {
                 DestroyableSingleton<HudManager>.Instance.Notifier.AddSettingsChangeMessage((StringNames)(this.id + 6000), $"{selections[newSelection].ToString()}{Format}", false);
                 try 
                 {
@@ -203,12 +205,15 @@ namespace TownOfSushi
                     if (GameStartManager.Instance != null && GameStartManager.Instance.LobbyInfoPane != null && GameStartManager.Instance.LobbyInfoPane.LobbyViewSettingsPane != null && GameStartManager.Instance.LobbyInfoPane.LobbyViewSettingsPane.gameObject.activeSelf) {
                         LobbyViewSettingsPaneChangeTabPatch.Postfix(GameStartManager.Instance.LobbyInfoPane.LobbyViewSettingsPane, GameStartManager.Instance.LobbyInfoPane.LobbyViewSettingsPane.currentTab);
                     }
-                } catch { }
+                } 
+                catch { }
             }
             selection = newSelection;
-            try {
+            try 
+            {
                 if (onChange != null) onChange();
-            } catch { }
+            } 
+            catch { }
             if (AmongUsClient.Instance?.AmHost == true) 
             {
                 var currentTab = GameOptionsMenuStartPatch.currentTabs.FirstOrDefault(x => x.active).GetComponent<GameOptionsMenu>();
@@ -224,26 +229,35 @@ namespace TownOfSushi
                 stringOption.ValueText.text = $"{selections[selection].ToString()}{Format}";
                 if (AmongUsClient.Instance?.AmHost == true && PlayerControl.LocalPlayer) 
                 {
-                    if (id == 0 && selection != preset) {
+                    if (id == 0 && selection != preset) 
+                    {
                         SwitchPreset(selection); // Switch presets
                         ShareOptionSelections();
-                    } else if (entry != null) {
+                    } 
+                    else if (entry != null) 
+                    {
                         entry.Value = selection; // Save selection to config
                         ShareOptionChange((uint)id);// Share single selection
                     }
                 }
-            } else if (id == 0 && AmongUsClient.Instance?.AmHost == true && PlayerControl.LocalPlayer) {  // Share the preset switch for random maps, even if the menu isnt open!
+            } 
+            else if (id == 0 && AmongUsClient.Instance?.AmHost == true && PlayerControl.LocalPlayer) 
+            {  // Share the preset switch for random maps, even if the menu isnt open!
                 SwitchPreset(selection);
                 ShareOptionSelections();// Share all selections
             }
 
         }
 
-        public static byte[] serializeOptions() {
-            using (MemoryStream memoryStream = new MemoryStream()) {
-                using (BinaryWriter binaryWriter = new BinaryWriter(memoryStream)) {
+        public static byte[] SerializeOptions() 
+        {
+            using (MemoryStream memoryStream = new MemoryStream()) 
+            {
+                using (BinaryWriter binaryWriter = new BinaryWriter(memoryStream)) 
+                {
                     int lastId = -1;
-                    foreach (var option in CustomOption.options.OrderBy(x => x.id)) {
+                    foreach (var option in CustomOption.options.OrderBy(x => x.id)) 
+                    {
                         if (option.id == 0) continue;
                         bool consecutive = lastId + 1 == option.id;
                         lastId = option.id;
@@ -258,20 +272,26 @@ namespace TownOfSushi
             }
         }
 
-        public static int deserializeOptions(byte[] inputValues) {
+        public static int DeserializeOptions(byte[] inputValues) 
+        {
             BinaryReader reader = new BinaryReader(new MemoryStream(inputValues));
             int lastId = -1;
             bool somethingApplied = false;
             int errors = 0;
-            while (reader.BaseStream.Position < inputValues.Length) {
-                try {
+            while (reader.BaseStream.Position < inputValues.Length) 
+            {
+                try 
+                {
                     int selection = reader.ReadByte();
                     int id = -1;
                     bool consecutive = selection >= 128;
-                    if (consecutive) {
+                    if (consecutive) 
+                    {
                         selection -= 128;
                         id = lastId + 1;
-                    } else {
+                    } 
+                    else 
+                    {
                         id = reader.ReadUInt16();
                     }
                     if (id == 0) continue;
@@ -284,7 +304,9 @@ namespace TownOfSushi
                         stringOption.ValueText.text = option.selections[option.selection].ToString();
                     }
                     somethingApplied = true;
-                } catch (Exception e) {
+                } 
+                catch (Exception e) 
+                {
                     TownOfSushiPlugin.Logger.LogWarning($"id:{lastId}:{e}: while deserializing - tried to paste invalid settings!");
                     errors++;
                 }
@@ -293,20 +315,23 @@ namespace TownOfSushi
         }
 
         // Copy to or paste from clipboard (as string)
-        public static void copyToClipboard() {
-            GUIUtility.systemCopyBuffer = $"{TownOfSushiPlugin.VersionString}!{Convert.ToBase64String(serializeOptions())}!{vanillaSettings.Value}";
+        public static void CopyToClipboard() 
+        {
+            GUIUtility.systemCopyBuffer = $"{TownOfSushiPlugin.VersionString}!{Convert.ToBase64String(SerializeOptions())}!{vanillaSettings.Value}";
         }
 
-        public static int pasteFromClipboard() {
+        public static int pasteFromClipboard() 
+        {
             string allSettings = GUIUtility.systemCopyBuffer;
             int torOptionsFine = 0;
             bool vanillaOptionsFine = false;
-            try {
+            try 
+            {
                 var settingsSplit = allSettings.Split("!");
                 Version versionInfo = Version.Parse(settingsSplit[0]);
                 string torSettings = settingsSplit[1];
                 string vanillaSettingsSub = settingsSplit[2];
-                torOptionsFine = deserializeOptions(Convert.FromBase64String(torSettings));
+                torOptionsFine = DeserializeOptions(Convert.FromBase64String(torSettings));
                 ShareOptionSelections();
                 if (TownOfSushiPlugin.Version > versionInfo && versionInfo < Version.Parse("4.6.0")) {
                     vanillaOptionsFine = false;
@@ -315,7 +340,8 @@ namespace TownOfSushi
                     vanillaSettings.Value = vanillaSettingsSub;
                     vanillaOptionsFine = LoadVanillaOptions();
                 }
-            } catch (Exception e) {
+            } catch (Exception e) 
+            {
                 TownOfSushiPlugin.Logger.LogWarning($"{e}: tried to paste invalid settings!\n{allSettings}");
                 string errorStr = allSettings.Length > 2 ? allSettings.Substring(0, 3) : "(empty clipboard) ";
                 FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, $"Host Info: You tried to paste invalid settings: \"{errorStr}...\"");
@@ -330,17 +356,22 @@ namespace TownOfSushi
 
 
     [HarmonyPatch(typeof(GameSettingMenu), nameof(GameSettingMenu.ChangeTab))]
-    class GameOptionsMenuChangeTabPatch {
-        public static void Postfix(GameSettingMenu __instance, int tabNum, bool previewOnly) {
+    class GameOptionsMenuChangeTabPatch 
+    {
+        public static void Postfix(GameSettingMenu __instance, int tabNum, bool previewOnly) 
+        {
             if (previewOnly) return;
-            foreach (var tab in GameOptionsMenuStartPatch.currentTabs) {
+            foreach (var tab in GameOptionsMenuStartPatch.currentTabs) 
+            {
                 if (tab != null)
                     tab.SetActive(false);
             }
-            foreach (var pbutton in GameOptionsMenuStartPatch.currentButtons) {
+            foreach (var pbutton in GameOptionsMenuStartPatch.currentButtons) 
+            {
                 pbutton.SelectButton(false);
             }
-            if (tabNum > 2) {
+            if (tabNum > 2) 
+            {
                 tabNum -= 3;
                 GameOptionsMenuStartPatch.currentTabs[tabNum].SetActive(true);
                 GameOptionsMenuStartPatch.currentButtons[tabNum].SelectButton(true);
@@ -349,8 +380,10 @@ namespace TownOfSushi
     }
 
     [HarmonyPatch(typeof(LobbyViewSettingsPane), nameof(LobbyViewSettingsPane.SetTab))]
-    class LobbyViewSettingsPaneRefreshTabPatch {
-        public static bool Prefix(LobbyViewSettingsPane __instance) {
+    class LobbyViewSettingsPaneRefreshTabPatch 
+    {
+        public static bool Prefix(LobbyViewSettingsPane __instance) 
+        {
             if ((int)__instance.currentTab < 15) {
                 LobbyViewSettingsPaneChangeTabPatch.Postfix(__instance, __instance.currentTab);
                 return false;
@@ -360,30 +393,37 @@ namespace TownOfSushi
     }
 
     [HarmonyPatch(typeof(LobbyViewSettingsPane), nameof(LobbyViewSettingsPane.ChangeTab))]
-    class LobbyViewSettingsPaneChangeTabPatch {
-        public static void Postfix(LobbyViewSettingsPane __instance, StringNames category) {
+    class LobbyViewSettingsPaneChangeTabPatch 
+    {
+        public static void Postfix(LobbyViewSettingsPane __instance, StringNames category) 
+        {
             int tabNum = (int)category;
 
-            foreach (var pbutton in LobbyViewSettingsPatch.currentButtons) {
+            foreach (var pbutton in LobbyViewSettingsPatch.currentButtons) 
+            {
                 pbutton.SelectButton(false);
             }
             if (tabNum > 20) // StringNames are in the range of 3000+ 
                 return;
             __instance.taskTabButton.SelectButton(false);
 
-            if (tabNum > 2) {
+            if (tabNum > 2) 
+            {
                 tabNum -= 3;
                 //GameOptionsMenuStartPatch.currentTabs[tabNum].SetActive(true);
                 LobbyViewSettingsPatch.currentButtons[tabNum].SelectButton(true);
-                LobbyViewSettingsPatch.drawTab(__instance, LobbyViewSettingsPatch.currentButtonTypes[tabNum]);
+                LobbyViewSettingsPatch.DrawTab(__instance, LobbyViewSettingsPatch.currentButtonTypes[tabNum]);
             }
         }
     }
 
     [HarmonyPatch(typeof(LobbyViewSettingsPane), nameof(LobbyViewSettingsPane.Update))]
-    class LobbyViewSettingsPaneUpdatePatch {
-        public static void Postfix(LobbyViewSettingsPane __instance) {
-            if (LobbyViewSettingsPatch.currentButtons.Count == 0) {
+    class LobbyViewSettingsPaneUpdatePatch 
+    {
+        public static void Postfix(LobbyViewSettingsPane __instance) 
+        {
+            if (LobbyViewSettingsPatch.currentButtons.Count == 0) 
+            {
                 LobbyViewSettingsPatch.gameModeChangedFlag = true;
                 LobbyViewSettingsPatch.Postfix(__instance);
                 
@@ -393,12 +433,14 @@ namespace TownOfSushi
 
 
     [HarmonyPatch(typeof(LobbyViewSettingsPane), nameof(LobbyViewSettingsPane.Awake))]
-    class LobbyViewSettingsPatch{
+    class LobbyViewSettingsPatch
+    {
         public static List<PassiveButton> currentButtons = new();
         public static List<CustomOptionType> currentButtonTypes = new();
         public static bool gameModeChangedFlag = false;
 
-        public static void createCustomButton(LobbyViewSettingsPane __instance, int targetMenu, string buttonName, string buttonText, CustomOptionType optionType) {
+        public static void createCustomButton(LobbyViewSettingsPane __instance, int targetMenu, string buttonName, string buttonText, CustomOptionType optionType) 
+        {
             buttonName = "View" + buttonName;
             var buttonTemplate = GameObject.Find("OverviewTab");
             var torSettingsButton = GameObject.Find(buttonName);
@@ -420,18 +462,20 @@ namespace TownOfSushi
             }
         }
 
-        public static void Postfix(LobbyViewSettingsPane __instance) {
+        public static void Postfix(LobbyViewSettingsPane __instance) 
+        {
             currentButtons.ForEach(x => x?.Destroy());
             currentButtons.Clear();
             currentButtonTypes.Clear();
 
-            removeVanillaTabs(__instance);
+            RemoveVanillaTabs(__instance);
 
             CreateSettingTabs(__instance);
 
         }
 
-        public static void removeVanillaTabs(LobbyViewSettingsPane __instance) {
+        public static void RemoveVanillaTabs(LobbyViewSettingsPane __instance) 
+        {
             GameObject.Find("RolesTabs")?.Destroy();
             var overview = GameObject.Find("OverviewTab");
             if (!gameModeChangedFlag) {
@@ -444,7 +488,8 @@ namespace TownOfSushi
             gameModeChangedFlag = false;
         }
 
-        public static void drawTab(LobbyViewSettingsPane __instance, CustomOptionType optionType) {
+        public static void DrawTab(LobbyViewSettingsPane __instance, CustomOptionType optionType) 
+        {
 
             var relevantOptions = options.Where(x => x.type == optionType ||optionType == CustomOptionType.General).ToList();
            
@@ -612,7 +657,7 @@ namespace TownOfSushi
                 createCustomButton(__instance, next++, "TORSettings", "TOS Settings", CustomOptionType.General);
                 // create TOS settings
                 createCustomButton(__instance, next++, "RoleOverview", "Role Overview", (CustomOptionType)99);
-                // IMp
+                // Imp
                 createCustomButton(__instance, next++, "ImpostorSettings", "Impostor Roles", CustomOptionType.Impostor);
 
                 // Neutral
@@ -693,7 +738,7 @@ namespace TownOfSushi
             copyButtonPassive.OnClick = new UnityEngine.UI.Button.ButtonClickedEvent();
             copyButtonPassive.OnClick.AddListener((System.Action)(() => 
             {
-                copyToClipboard();
+                CopyToClipboard();
                 copyButtonRenderer.color = Color.green;
                 copyButtonActiveRenderer.color = Color.green;
                 __instance.StartCoroutine(Effects.Lerp(1f, new System.Action<float>((p) => 
@@ -744,7 +789,8 @@ namespace TownOfSushi
                     categoryHeaderMasked.transform.localScale = Vector3.one * 0.63f;
                     categoryHeaderMasked.transform.localPosition = new Vector3(-0.903f, num, -2f);
                     num -= 0.63f;
-                } else if (option.parent != null && (option.parent.selection == 0 && !option.invertedParent || option.parent.parent != null && option.parent.parent.selection == 0 && !option.parent.invertedParent)) continue;  // Hides options, for which the parent is disabled!
+                } 
+                else if (option.parent != null && (option.parent.selection == 0 && !option.invertedParent || option.parent.parent != null && option.parent.parent.selection == 0 && !option.parent.invertedParent)) continue;  // Hides options, for which the parent is disabled!
                 else if (option.parent != null && option.parent.selection != 0 && option.invertedParent) continue;
                 OptionBehaviour optionBehaviour = UnityEngine.Object.Instantiate<StringOption>(menu.stringOptionOrigin, Vector3.zero, Quaternion.identity, menu.settingsContainer);
                 optionBehaviour.transform.localPosition = new Vector3(0.952f, num, -2f);
@@ -765,7 +811,8 @@ namespace TownOfSushi
                 var stringOption = optionBehaviour as StringOption;
                 stringOption.OnValueChanged = new Action<OptionBehaviour>((o) => { });
                 stringOption.TitleText.text = option.name;
-                if (option.isHeader && option.Heading == "" && (option.type == CustomOptionType.Neutral || option.type == CustomOptionType.Crewmate || option.type == CustomOptionType.NeutralKiller || option.type == CustomOptionType.Impostor || option.type == CustomOptionType.Modifier)) {
+                if (option.isHeader && option.Heading == "" && (option.type == CustomOptionType.Neutral || option.type == CustomOptionType.Crewmate || option.type == CustomOptionType.NeutralKiller || option.type == CustomOptionType.Impostor || option.type == CustomOptionType.Modifier)) 
+                {
                     stringOption.TitleText.text = "Spawn Chance";
                 }
                 if (stringOption.TitleText.text.Length > 25)
@@ -984,7 +1031,7 @@ namespace TownOfSushi
             var children = CustomOption.options.Where(o => o.parent == customOption);
             var quantity = children.Where(o => o.name.Contains("Quantity")).ToList();
             if (customOption.GetSelection() == 0) return "";
-            if (quantity.Count == 1) return $" ({quantity[0].getQuantity()})";
+            if (quantity.Count == 1) return $" ({quantity[0].GetQuantity()})";
             if (customOption == CustomOptionHolder.modifierLover) 
             {
                 return $" (1 Evil: {CustomOptionHolder.modifierLoverImpLoverRate.GetSelection() * 10}%)";
@@ -1518,18 +1565,18 @@ namespace TownOfSushi
 
             if (!toggleRoleInfo || !toggleRoleInfoButtonObject) 
             {
-            // add a special button for descriptions viewing:
-            toggleRoleInfoButtonObject = GameObject.Instantiate(__instance.MapButton.gameObject, __instance.MapButton.transform.parent);
-            toggleRoleInfoButtonObject.transform.localPosition = __instance.MapButton.transform.localPosition + new Vector3(0, -1.25f, -500f);
-            toggleRoleInfoButtonObject.name = "TOGGLEDESC";
-            SpriteRenderer renderer = toggleRoleInfoButtonObject.transform.Find("Inactive").GetComponent<SpriteRenderer>();
-            SpriteRenderer rendererActive = toggleRoleInfoButtonObject.transform.Find("Active").GetComponent<SpriteRenderer>();
-            toggleRoleInfoButtonObject.transform.Find("Background").localPosition = Vector3.zero;
-            renderer.sprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.InfoButton.png", 100f);
-            rendererActive.sprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.InfoButton_Active.png", 100);
-            toggleRoleInfo = toggleRoleInfoButtonObject.GetComponent<PassiveButton>();
-            toggleRoleInfo.OnClick.RemoveAllListeners();
-            toggleRoleInfo.OnClick.AddListener((Action)(() => Helpers.ShowRoleInfo()));
+                // add a special button for descriptions viewing:
+                toggleRoleInfoButtonObject = GameObject.Instantiate(__instance.MapButton.gameObject, __instance.MapButton.transform.parent);
+                toggleRoleInfoButtonObject.transform.localPosition = __instance.MapButton.transform.localPosition + new Vector3(0, -1.25f, -500f);
+                toggleRoleInfoButtonObject.name = "TOGGLEDESC";
+                SpriteRenderer renderer = toggleRoleInfoButtonObject.transform.Find("Inactive").GetComponent<SpriteRenderer>();
+                SpriteRenderer rendererActive = toggleRoleInfoButtonObject.transform.Find("Active").GetComponent<SpriteRenderer>();
+                toggleRoleInfoButtonObject.transform.Find("Background").localPosition = Vector3.zero;
+                renderer.sprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.InfoButton.png", 100f);
+                rendererActive.sprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.InfoButton_Active.png", 100);
+                toggleRoleInfo = toggleRoleInfoButtonObject.GetComponent<PassiveButton>();
+                toggleRoleInfo.OnClick.RemoveAllListeners();
+                toggleRoleInfo.OnClick.AddListener((Action)(() => Helpers.ShowRoleInfo()));
             }
             toggleRoleInfoButtonObject.SetActive(__instance.MapButton.gameObject.active && !(MapBehaviour.Instance && MapBehaviour.Instance.IsOpen) && GameOptionsManager.Instance.currentGameOptions.GameMode != GameModes.HideNSeek);
             toggleRoleInfoButtonObject.transform.localPosition = __instance.MapButton.transform.localPosition + new Vector3(-0.8f, -0.8f, -500f);

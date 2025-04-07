@@ -29,6 +29,8 @@ namespace TownOfSushi
         Glitch,
         Lighter,
         Godfather,
+        Agent,
+        Hitman,
         Mafioso,
         Janitor,
         Veteran,
@@ -123,6 +125,9 @@ namespace TownOfSushi
         TurnPestilence,
         ShieldedMurderAttempt,
         GlitchMimic,
+        HitmanMorph,
+        HitmanDragBody,
+        HitmanDropBody,
         DropBody,
         DragBody,
         Disperse,
@@ -161,6 +166,7 @@ namespace TownOfSushi
         ArsonistWin,
         GuesserShoot,
         RomanticSetBeloved,
+        AgentTurnIntoHitman,
         LawyerSetTarget,
         LawyerChangeRole,
         RomanticChangeRole,
@@ -226,6 +232,8 @@ namespace TownOfSushi
         JuggernautWin = 21,
         PestilenceWin = 22,
         PlaguebearerWin = 23,
+        AgentWin = 24,
+        HitmanWin = 25,
     }
 
     enum WinCondition 
@@ -250,5 +258,7 @@ namespace TownOfSushi
         JuggernautWin,
         PestilenceWin,
         PlaguebearerWin,
+        AgentWin,
+        HitmanWin,
     }
 }

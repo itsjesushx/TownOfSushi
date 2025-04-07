@@ -31,7 +31,7 @@ namespace TownOfSushi
     
     public class TownOfSushiPlugin : BasePlugin
     {
-        public const string Id = "me.itsjesushx.TownOfSushi";
+        public const string Id = "me.itsjesushx.townofsushi";
         public const string VersionString = "2.7.0";
         public static Version Version = Version.Parse(VersionString);
         internal static BepInEx.Logging.ManualLogSource Logger;
@@ -180,14 +180,16 @@ namespace TownOfSushi
             StringBuilder builder = new StringBuilder();
             SHA256 sha = SHA256Managed.Create();
             Byte[] hashed = sha.ComputeHash(Encoding.UTF8.GetBytes(TownOfSushiPlugin.DebugMode.Value));
-            foreach (var b in hashed) {
+            foreach (var b in hashed) 
+            {
                 builder.Append(b.ToString("x2"));
             }
             string enteredHash = builder.ToString();
             if (enteredHash != passwordHash) return;
 
             // Terminate round
-            if(Input.GetKeyDown(KeyCode.L)) {
+            if(Input.GetKeyDown(KeyCode.L)) 
+            {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ForceEnd, Hazel.SendOption.Reliable, -1);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
                 RPCProcedure.ForceEnd();

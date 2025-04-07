@@ -71,18 +71,24 @@ namespace TownOfSushi.Patches {
 
                 bool isMorphedMorphling = target == Morphling.Player && Morphling.morphTarget != null && Morphling.morphTimer > 0f;
                 bool isMimicGlitch = target == Glitch.Player && Glitch.MimicTarget != null && Glitch.MimicTimer > 0f;
+                bool isMorphedHitman = target == Hitman.Player && Hitman.MorphTarget != null && Hitman.MorphTimer > 0f;
                 bool hasVisibleShield = false;
                 Color Color = Medic.shieldedColor;
                 if (Camouflager.CamouflageTimer <= 0f && !Helpers.MushroomSabotageActive() && Medic.ShieldVisible(target))
                     hasVisibleShield = true;
 
-                if (Camouflager.CamouflageTimer <= 0f && !Helpers.MushroomSabotageActive() && MapOptions.FirstPlayerKilled != null && MapOptions.shieldFirstKill && ((target == MapOptions.FirstPlayerKilled && !isMorphedMorphling && !isMimicGlitch) || (isMorphedMorphling && Morphling.morphTarget == MapOptions.FirstPlayerKilled) || (isMimicGlitch && Glitch.MimicTarget == MapOptions.FirstPlayerKilled))) 
+                if (Camouflager.CamouflageTimer <= 0f && !Helpers.MushroomSabotageActive() && MapOptions.FirstPlayerKilled != null && MapOptions.shieldFirstKill && 
+                    ((target == MapOptions.FirstPlayerKilled && !isMorphedMorphling && !isMimicGlitch && !isMorphedHitman) || 
+                    (isMorphedMorphling && Morphling.morphTarget == MapOptions.FirstPlayerKilled) || 
+                    (isMimicGlitch && Glitch.MimicTarget == MapOptions.FirstPlayerKilled) || 
+                    (isMorphedHitman && Hitman.MorphTarget == MapOptions.FirstPlayerKilled))) 
                 {
                     hasVisibleShield = true;
                     Color = Color.blue;
                 }
 
-                if (PlayerControl.LocalPlayer.Data.IsDead && Armored.Player != null && target == Armored.Player && !Armored.isBrokenArmor && !hasVisibleShield) {
+                if (PlayerControl.LocalPlayer.Data.IsDead && Armored.Player != null && target == Armored.Player && !Armored.isBrokenArmor && !hasVisibleShield) 
+                {
                     hasVisibleShield = true;
                     Color = Color.yellow;
                 }
@@ -252,6 +258,13 @@ namespace TownOfSushi.Patches {
             if (Glitch.Player == null || Glitch.Player != PlayerControl.LocalPlayer) return;
             Glitch.CurrentTarget = SetTarget();
             SetPlayerOutline(Glitch.CurrentTarget, Glitch.Color);
+        }
+
+        static void HitmanSetTarget()
+        {
+            if (Hitman.Player == null || Hitman.Player != PlayerControl.LocalPlayer) return;
+            Hitman.CurrentTarget = SetTarget();
+            SetPlayerOutline(Hitman.CurrentTarget, Hitman.Color);
         }
 
         static void VengefulRomanticSetTarget()
@@ -915,6 +928,28 @@ namespace TownOfSushi.Patches {
             }
         }
 
+        static void HitmantUpdate()
+        {
+            if (Hitman.Player == null || Hitman.Player.Data.IsDead) return;
+            if (Hitman.BodyTarget != null)
+            {
+                Vector3 currentPosition = Hitman.Player.transform.position;
+                Hitman.BodyTarget.transform.position = currentPosition;
+            }
+        }
+        public static void AgentUpdate() 
+        {
+            if (Agent.Player == null || PlayerControl.LocalPlayer != Agent.Player || PlayerControl.LocalPlayer.Data.IsDead) return;
+            var (tasksCompleted, tasksTotal) = TasksHandler.TaskInfo(PlayerControl.LocalPlayer.Data);
+            bool CompletedAllTasks = tasksCompleted == tasksTotal;
+            if (CompletedAllTasks) 
+            {
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.AgentTurnIntoHitman, Hazel.SendOption.Reliable, -1);
+                AmongUsClient.Instance.FinishRpcImmediately(writer);
+                RPCProcedure.AgentTurnIntoHitman(); 
+            }
+        }
+
         static void VultureUpdate() 
         {
             if (Vulture.Player == null || PlayerControl.LocalPlayer != Vulture.Player || Vulture.localArrows == null || !Vulture.showArrows) return;
@@ -972,10 +1007,12 @@ namespace TownOfSushi.Patches {
             float oldCamouflageTimer = Camouflager.CamouflageTimer;
             float oldMorphTimer = Morphling.morphTimer;
             float oldGlitchTimer = Glitch.MimicTimer;
+            float oldHitmanTimer = Hitman.MorphTimer;
 
             Camouflager.CamouflageTimer = Mathf.Max(0f, Camouflager.CamouflageTimer - Time.fixedDeltaTime);
             Morphling.morphTimer = Mathf.Max(0f, Morphling.morphTimer - Time.fixedDeltaTime);
             Glitch.MimicTimer = Mathf.Max(0f, Glitch.MimicTimer - Time.fixedDeltaTime);
+            Hitman.MorphTimer = Mathf.Max(0f, Hitman.MorphTimer - Time.fixedDeltaTime);
 
             if (mushRoomSaboIsActive) return;
 
@@ -993,6 +1030,11 @@ namespace TownOfSushi.Patches {
                     PlayerControl target = Glitch.MimicTarget;
                     Glitch.Player.SetLook(target.Data.PlayerName, target.Data.DefaultOutfit.ColorId, target.Data.DefaultOutfit.HatId, target.Data.DefaultOutfit.VisorId, target.Data.DefaultOutfit.SkinId, target.Data.DefaultOutfit.PetId);
                 }
+                if (Hitman.MorphTimer > 0f && Hitman.Player != null && Hitman.MorphTarget != null)
+                {
+                    PlayerControl target = Hitman.MorphTarget;
+                    Hitman.Player.SetLook(target.Data.PlayerName, target.Data.DefaultOutfit.ColorId, target.Data.DefaultOutfit.HatId, target.Data.DefaultOutfit.VisorId, target.Data.DefaultOutfit.SkinId, target.Data.DefaultOutfit.PetId);
+                }
             }
 
             // If the MushRoomSabotage ends while Morph is still active set the Morphlings look to the target's look
@@ -1008,6 +1050,11 @@ namespace TownOfSushi.Patches {
                     PlayerControl target = Glitch.MimicTarget;
                     Glitch.Player.SetLook(target.Data.PlayerName, target.Data.DefaultOutfit.ColorId, target.Data.DefaultOutfit.HatId, target.Data.DefaultOutfit.VisorId, target.Data.DefaultOutfit.SkinId, target.Data.DefaultOutfit.PetId);
                 }
+                if (Hitman.MorphTimer > 0f && Hitman.Player != null && Hitman.MorphTarget != null)
+                {
+                    PlayerControl target = Hitman.MorphTarget;
+                    Hitman.Player.SetLook(target.Data.PlayerName, target.Data.DefaultOutfit.ColorId, target.Data.DefaultOutfit.HatId, target.Data.DefaultOutfit.VisorId, target.Data.DefaultOutfit.SkinId, target.Data.DefaultOutfit.PetId);
+                }
                 if (Camouflager.CamouflageTimer > 0) 
                 {
                     foreach (PlayerControl player in PlayerControl.AllPlayerControls)
@@ -1020,6 +1067,8 @@ namespace TownOfSushi.Patches {
                 Morphling.ResetMorph();
             if (Camouflager.CamouflageTimer <= 0f && oldGlitchTimer > 0f && Glitch.MimicTimer <= 0f && Glitch.Player != null)
                 Glitch.ResetMimic();
+            if (Camouflager.CamouflageTimer <= 0f && oldHitmanTimer > 0f && Hitman.MorphTimer <= 0f && Hitman.Player != null)
+                Hitman.ResetMorph();
             mushroomSaboWasActive = false;
         }
 
@@ -1334,6 +1383,11 @@ namespace TownOfSushi.Patches {
                 MorphlingAndCamouflagerUpdate();
                 // Undertaker
                 UndertakerUpdate();
+                // Hitman
+                HitmantUpdate();
+                HitmanSetTarget();
+                // Agent
+                AgentUpdate();
                 // Lawyer
                 LawyerUpdate();
                 //Romantic
@@ -1379,7 +1433,9 @@ namespace TownOfSushi.Patches {
         private static Vector2 offset = Vector2.zero;
         public static void Prefix(PlayerPhysics __instance) 
         {
-            bool correctOffset = Camouflager.CamouflageTimer <= 0f && !Helpers.MushroomSabotageActive() && (__instance.myPlayer == Mini.Player ||  (Morphling.Player != null && __instance.myPlayer == Morphling.Player && Morphling.morphTarget == Mini.Player && Morphling.morphTimer > 0f) || (Glitch.Player != null && __instance.myPlayer == Glitch.Player && Glitch.MimicTarget == Mini.Player && Glitch.MimicTimer > 0f));
+            bool correctOffset = Camouflager.CamouflageTimer <= 0f && !Helpers.MushroomSabotageActive() && (__instance.myPlayer == Mini.Player ||  (Morphling.Player != null && __instance.myPlayer == Morphling.Player && Morphling.morphTarget == Mini.Player && Morphling.morphTimer > 0f) || (Glitch.Player != null && __instance.myPlayer == Glitch.Player && Glitch.MimicTarget == Mini.Player && Glitch.MimicTimer > 0f) 
+            || (Hitman.Player != null && __instance.myPlayer == Hitman.Player && Hitman.MorphTarget == Mini.Player && Hitman.MorphTimer > 0f));
+            
             correctOffset = correctOffset && !(Mini.Player == Morphling.Player && Morphling.morphTimer > 0f);
             if (correctOffset) 
             {

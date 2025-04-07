@@ -22,6 +22,7 @@ namespace TownOfSushi
         private static CustomButton GlitchHackButton;
         private static CustomButton MysticButton;
         private static CustomButton MimicButton;
+        private static CustomButton HitmanMorphButton;
         private static CustomButton CrusaderButton;
         private static CustomButton timeMasterShieldButton;
         private static CustomButton medicShieldButton;
@@ -37,11 +38,13 @@ namespace TownOfSushi
         public static CustomButton hackerVitalsButton;
         public static CustomButton hackerAdminTableButton;
         private static CustomButton AmnesiacButton;
-        public static CustomButton UndertakerButton;
+        private static CustomButton UndertakerButton;
+        private static CustomButton HitmanDragButton;
         private static CustomButton trackerTrackPlayerButton;
         private static CustomButton trackerTrackCorpsesButton;
         private static CustomButton RomanticSetTargetButton;
         public static CustomButton vampireKillButton;
+        public static CustomButton HitmanKillButton;
         public static CustomButton garlicButton;
         public static CustomButton JuggernautKillButton;
         public static CustomButton jackalKillButton;
@@ -110,6 +113,7 @@ namespace TownOfSushi
             engineerRepairButton.MaxTimer = 0f;
             janitorCleanButton.MaxTimer = Janitor.Cooldown;
             sheriffKillButton.MaxTimer = Sheriff.Cooldown;
+            HitmanKillButton.MaxTimer = Hitman.Cooldown;
             GlitchHackButton.MaxTimer = Glitch.HackCooldown;
             timeMasterShieldButton.MaxTimer = TimeMaster.Cooldown;
             PlaguebearerButton.MaxTimer = Plaguebearer.Cooldown;
@@ -121,10 +125,12 @@ namespace TownOfSushi
             SerialKillerKillButton.MaxTimer = SerialKiller.StabKillCooldown;
             shifterShiftButton.MaxTimer = 0f;
             UndertakerButton.MaxTimer = Undertaker.Cooldown;
+            HitmanDragButton.MaxTimer = Hitman.DragCooldown;
             AmnesiacButton.MaxTimer = 0f;
             DisperserButton.MaxTimer = Disperser.Cooldown;
             morphlingButton.MaxTimer = Morphling.Cooldown;
             MimicButton.MaxTimer = Glitch.MimicCooldown;
+            HitmanMorphButton.MaxTimer = Hitman.MorphCooldown;
             camouflagerButton.MaxTimer = Camouflager.Cooldown;
             portalmakerPlacePortalButton.MaxTimer = Portalmaker.Cooldown;
             usePortalButton.MaxTimer = Portalmaker.usePortalCooldown;
@@ -174,6 +180,7 @@ namespace TownOfSushi
             camouflagerButton.EffectDuration = Camouflager.Duration;
             morphlingButton.EffectDuration = Morphling.Duration;
             MimicButton.EffectDuration = Glitch.MimicDuration;
+            HitmanMorphButton.EffectDuration = Hitman.MorphDuration;
             lightsOutButton.EffectDuration = Trickster.lightsOutDuration;
             arsonistButton.EffectDuration = Arsonist.Duration;
             mediumButton.EffectDuration = Medium.Duration;
@@ -520,6 +527,88 @@ namespace TownOfSushi
             hotkey: KeyCode.F
         );
 
+            HitmanDragButton = new CustomButton(
+            OnClick: () =>
+            {
+                if (Hitman.BodyTarget == null)
+                {
+                    foreach (Collider2D collider2D in Physics2D.OverlapCircleAll(PlayerControl.LocalPlayer.GetTruePosition(), PlayerControl.LocalPlayer.MaxReportDistance, Constants.PlayersOnlyMask))
+                    {
+                        if (collider2D.tag == "DeadBody")
+                        {
+                            DeadBody deadBody = collider2D.GetComponent<DeadBody>();
+                            if (deadBody && !deadBody.Reported)
+                            {
+                                Vector2 playerPosition = PlayerControl.LocalPlayer.GetTruePosition();
+                                Vector2 deadBodyPosition = deadBody.TruePosition;
+                                if (Vector2.Distance(deadBodyPosition, playerPosition) <= PlayerControl.LocalPlayer.MaxReportDistance && PlayerControl.LocalPlayer.CanMove && !PhysicsHelpers.AnythingBetween(playerPosition, deadBodyPosition, Constants.ShipAndObjectsMask, false) && Undertaker.CurrentTarget == null)
+                                {
+                                    NetworkedPlayerInfo playerInfo = GameData.Instance.GetPlayerById(deadBody.ParentId);
+                                    if (playerInfo == null) continue;
+
+                                    // Drag the body
+                                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.HitmanDragBody, SendOption.Reliable, -1);
+                                    writer.Write(playerInfo.PlayerId);
+                                    AmongUsClient.Instance.FinishRpcImmediately(writer);
+                                    RPCProcedure.HitmanDragBody(playerInfo.PlayerId);
+                                    Hitman.BodyTarget = deadBody;
+                                    SoundEffectsManager.Play("cleanerClean");
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                   HitmanDragButton.Timer = HitmanDragButton.MaxTimer;
+
+                   byte playerId = PlayerControl.LocalPlayer.PlayerId;
+
+                    var writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.HitmanDropBody, SendOption.Reliable, -1);
+                    writer.Write(playerId);
+                    AmongUsClient.Instance.FinishRpcImmediately(writer);
+                    RPCProcedure.HitmanDropBody(playerId);
+                    SoundEffectsManager.Play("cleanerClean");
+                }
+            },
+            HasButton: () => 
+                {
+                    if (Hitman.BodyTarget != null)
+                    {
+                        return FastDestroyableSingleton<HudManager>.Instance.ReportButton.graphic.color == Palette.EnabledColor && Hitman.Player != null  && Hitman.Player == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead;
+                    }
+                    
+                    return Hitman.Player != null  && Hitman.Player == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead;
+                },
+            CouldUse: () =>
+            {
+                if (Hitman.BodyTarget != null) HitmanDragButton.actionButton.graphic.sprite = Hitman.GetDropButtonSprite();
+                if (Hitman.BodyTarget != null) return true;
+                else
+                {
+                    foreach (Collider2D collider2D in Physics2D.OverlapCircleAll(PlayerControl.LocalPlayer.GetTruePosition(), PlayerControl.LocalPlayer.MaxReportDistance, Constants.PlayersOnlyMask))
+                    {
+                        if (collider2D.tag == "DeadBody")
+                        {
+                            DeadBody deadBody = collider2D.GetComponent<DeadBody>();
+                            Vector2 deadBodyPosition = deadBody.TruePosition;
+                            deadBodyPosition.x -= 0.2f;
+                            deadBodyPosition.y -= 0.2f;
+                            return PlayerControl.LocalPlayer.CanMove && Vector2.Distance(PlayerControl.LocalPlayer.GetTruePosition(), deadBodyPosition) < 0.80f;
+                        }
+                    }
+                    return false;
+                }
+
+            },
+            OnMeetingEnds: () => { HitmanDragButton.Timer = HitmanDragButton.MaxTimer;  },
+            Sprite: Hitman.GetDragButtonSprite(),
+            PositionOffset: CustomButton.ButtonPositions.upperRowCenter,
+            hudManager: __instance,
+            hotkey: KeyCode.G
+        );
+
 
             // Glitch Hack
             GlitchHackButton = new CustomButton(
@@ -811,8 +900,62 @@ namespace TownOfSushi
                 KeyCode.Q
             );
 
+            // Hitman morph
+            HitmanMorphButton = new CustomButton(
+                () => 
+                {
+                    if (Hitman.SampledTarget != null) 
+                    {
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.HitmanMorph, Hazel.SendOption.Reliable, -1);
+                        writer.Write(Hitman.SampledTarget.PlayerId);
+                        AmongUsClient.Instance.FinishRpcImmediately(writer);
+                        RPCProcedure.HitmanMorph(Hitman.SampledTarget.PlayerId);
+                        Hitman.SampledTarget = null;
+                        HitmanMorphButton.EffectDuration = Hitman.MorphDuration;
+                        SoundEffectsManager.Play("morphlingMorph");
+                    }
+                    else if (Hitman.CurrentTarget != null) 
+                    {
+                        Hitman.SampledTarget = Hitman.CurrentTarget;
+                        HitmanMorphButton.Sprite = Hitman.GetMorphSprite();
+                        HitmanMorphButton.EffectDuration = 1f;
+                        SoundEffectsManager.Play("morphlingSample");
+
+                        // Add poolable player to the button so that the target outfit is shown
+                        SetButtonTargetDisplay(Hitman.SampledTarget, HitmanMorphButton);
+                    }
+                },
+                () => { return Hitman.Player != null && Hitman.Player == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead; },
+                () => { return (Hitman.CurrentTarget || Hitman.SampledTarget) && PlayerControl.LocalPlayer.CanMove && !Helpers.MushroomSabotageActive(); },
+                () => { 
+                    HitmanMorphButton.Timer = MimicButton.MaxTimer;
+                    HitmanMorphButton.Sprite = Hitman.GetSampleSprite();
+                    HitmanMorphButton.isEffectActive = false;
+                    HitmanMorphButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
+                    Hitman.SampledTarget = null;
+                    SetButtonTargetDisplay(null);
+                },
+                Hitman.GetSampleSprite(),
+                CustomButton.ButtonPositions.upperRowLeft,
+                __instance,
+                KeyCode.F,
+                true,
+                Hitman.MorphDuration,
+                () => 
+                {
+                    if (Hitman.SampledTarget == null) 
+                    {
+                        HitmanMorphButton.Timer = HitmanMorphButton.MaxTimer;
+                        HitmanMorphButton.Sprite = Hitman.GetSampleSprite();
+                        SoundEffectsManager.Play("morphlingMorph");
+
+                        // Reset the poolable player
+                        SetButtonTargetDisplay(null);
+                    }
+                }
+            );
+
             // Glitch mimic
-            
             MimicButton = new CustomButton(
                 () => 
                 {
@@ -1030,7 +1173,7 @@ namespace TownOfSushi
                     {
                         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.TurnPestilence, Hazel.SendOption.Reliable, -1);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
-                        RPCProcedure.TurnPestilence();
+                        RPCProcedure.PlaguebearerTurnPestilence();
                     }
                 }
             },
@@ -1378,7 +1521,7 @@ namespace TownOfSushi
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.TrackerUsedTracker, Hazel.SendOption.Reliable, -1);
                     writer.Write(Tracker.CurrentTarget.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
-                    RPCProcedure.trackerUsedTracker(Tracker.CurrentTarget.PlayerId);
+                    RPCProcedure.TrackerUsedTracker(Tracker.CurrentTarget.PlayerId);
                     SoundEffectsManager.Play("trackerTrackPlayer");
                 },
                 () => { return Tracker.Player != null && Tracker.Player == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead; },
@@ -1715,6 +1858,25 @@ namespace TownOfSushi
                 CustomButton.ButtonPositions.lowerRowCenter,
                 __instance,
                 KeyCode.F
+            );
+
+            // Hitman Kill
+            HitmanKillButton = new CustomButton(
+                () => 
+                {
+                    if (Helpers.CheckMurderAttemptAndKill(Hitman.Player, Hitman.CurrentTarget) == MurderAttemptResult.SuppressKill) return;
+                    if (Hitman.CurrentTarget.CheckVeteranAlertKill() || Hitman.CurrentTarget.CheckFortifiedPlayer()) return;
+
+                    HitmanKillButton.Timer = HitmanKillButton.MaxTimer; 
+                    Hitman.CurrentTarget = null;
+                },
+                () => { return Hitman.Player != null && Hitman.Player == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead; },
+                () => { return Hitman.CurrentTarget && PlayerControl.LocalPlayer.CanMove; },
+                () => { HitmanKillButton.Timer = HitmanKillButton.MaxTimer;},
+                __instance.KillButton.graphic.sprite,
+                CustomButton.ButtonPositions.upperRowRight,
+                __instance,
+                KeyCode.Q
             );
 
             // Jackal Kill

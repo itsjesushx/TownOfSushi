@@ -1,6 +1,7 @@
 using HarmonyLib;
 using System;
 using TownOfSushi.Utilities;
+using static TownOfSushi.TownOfSushi;
 
 namespace TownOfSushi 
 {
@@ -38,6 +39,7 @@ namespace TownOfSushi
                     if (playerInfo.Object
                         && playerInfo.Object.HasAliveKillingLover() // Tasks do not count if a Crewmate has an alive killing Lover
                         || playerInfo.PlayerId == Lawyer.Player?.PlayerId // Tasks of the Lawyer do not count
+                        || playerInfo.PlayerId == Agent.Player?.PlayerId // Tasks of the Agent do not count
                         || (playerInfo.PlayerId == Pursuer.Player?.PlayerId && Pursuer.Player.Data.IsDead) // Tasks of the Pursuer only count, if he's alive
                         || playerInfo.PlayerId == Thief.Player?.PlayerId // Thief's tasks only count after joining crew team as sheriff (and then the thief is not the thief anymore)
                        )

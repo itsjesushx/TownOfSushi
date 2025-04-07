@@ -51,6 +51,12 @@ namespace TownOfSushi.Patches
                             // Also set hat color, cause the line destroys it...
                             player.RawSetHat(Glitch.MimicTarget.Data.DefaultOutfit.HatId, Glitch.MimicTarget.Data.DefaultOutfit.ColorId);
                         }
+                        if (player == Hitman.Player && Hitman.MorphTimer > 0)
+                        {
+                            hand.SetPlayerColor(Hitman.MorphTarget.CurrentOutfit, PlayerMaterial.MaskType.None, 1f);
+                            // Also set hat color, cause the line destroys it...
+                            player.RawSetHat(Hitman.MorphTarget.Data.DefaultOutfit.HatId, Hitman.MorphTarget.Data.DefaultOutfit.ColorId);
+                        }
                         else
                         {
                             hand.SetPlayerColor(player.CurrentOutfit, PlayerMaterial.MaskType.None, 1f);

@@ -91,13 +91,18 @@ namespace TownOfSushi.Patches
                     {
                         PlayerVersion PV = playerVersions[client.Id];
                         int diff = TownOfSushiPlugin.Version.CompareTo(PV.version);
-                        if (diff > 0) {
+                        if (diff > 0) 
+                        {
                             message += $"<color=#FF0000FF>{client.Character.Data.PlayerName} has an older version of Town Of Sushi (v{playerVersions[client.Id].version.ToString()})\n</color>";
                             versionMismatch = true;
-                        } else if (diff < 0) {
+                        } 
+                        else if (diff < 0) 
+                        {
                             message += $"<color=#FF0000FF>{client.Character.Data.PlayerName} has a newer version of Town Of Sushi (v{playerVersions[client.Id].version.ToString()})\n</color>";
                             versionMismatch = true;
-                        } else if (!PV.GuidMatches()) { // version presumably matches, check if Guid matches
+                        } 
+                        else if (!PV.GuidMatches()) 
+                        { // version presumably matches, check if Guid matches
                             message += $"<color=#FF0000FF>{client.Character.Data.PlayerName} has a modified version of TOS v{playerVersions[client.Id].version.ToString()} <size=30%>({PV.guid.ToString()})</size>\n</color>";
                             versionMismatch = true;
                         }

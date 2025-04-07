@@ -101,10 +101,17 @@ namespace TownOfSushi.Objects
                 {
                     color = Palette.PlayerColors[Morphling.morphTarget.Data.DefaultOutfit.ColorId];
                 } 
-                else if (activeFootprint.Owner == Glitch.Player && Glitch.MimicTimer > 0 && Glitch.MimicTarget && Glitch.MimicTarget.Data != null) {
+                else if (activeFootprint.Owner == Glitch.Player && Glitch.MimicTimer > 0 && Glitch.MimicTarget && Glitch.MimicTarget.Data != null) 
+                {
                     color = Palette.PlayerColors[Glitch.MimicTarget.Data.DefaultOutfit.ColorId];
                 }
-                    else {
+                else if (activeFootprint.Owner == Hitman.Player && Hitman.MorphTimer > 0 && Hitman.MorphTarget && Hitman.MorphTarget.Data != null) 
+                {
+                    color = Palette.PlayerColors[Hitman.MorphTarget.Data.DefaultOutfit.ColorId];
+                }
+                    
+                else 
+                {
                     color = Palette.PlayerColors[activeFootprint.Data.DefaultOutfit.ColorId];
                 }
 

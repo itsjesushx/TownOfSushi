@@ -244,7 +244,7 @@ namespace TownOfSushi
 
         public static bool HasFakeTasks(this PlayerControl player) 
         {
-            return player == Jester.Player || player == Amnesiac.Player || player == Romantic.Player || player.IsNeutralKiller() || player == Arsonist.Player || player == Vulture.Player;
+            return player == Jester.Player || player == Amnesiac.Player || player == Romantic.Player || player.IsNeutralKiller() && player != Agent.Player|| player == Arsonist.Player || player == Vulture.Player;
         }
         
 
@@ -527,6 +527,10 @@ namespace TownOfSushi
             else if (Pestilence.CanUseVents && Pestilence.Player != null && Pestilence.Player == player)
                 isVenter = true;
             else if (Werewolf.CanUseVents && Werewolf.Player != null && Werewolf.Player == player)
+                isVenter = true;
+            else if (Hitman.CanUseVents && Hitman.Player != null && Hitman.Player == player)
+                isVenter = true;
+            else if (Agent.CanUseVents && Agent.Player != null && Agent.Player == player)
                 isVenter = true;
             else if (Jester.CanUseVents && Jester.Player != null && Jester.Player == player)
                 isVenter = true;

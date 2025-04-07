@@ -288,7 +288,11 @@ namespace TownOfSushi.Patches {
             }
 
             // Potentially deactivate emergency button if 2 players are left alive
-            if (MapOptions.LimitAbilities && Helpers.TwoPlayersAlive()) 
+            if (MapOptions.LimitAbilities && Helpers.TwoPlayersAlive() && Tiebreaker.Player != null && Tiebreaker.Player.IsCrew()) 
+            {
+                CanCallEmergency = true;
+            }
+            else 
             {
                 CanCallEmergency = false;
                 statusText = "Two Players Alive Only. Impossible to start a meeting!";
@@ -750,6 +754,11 @@ namespace TownOfSushi.Patches {
                     {
                         PlayerControl target = Glitch.MimicTarget;
                         Glitch.Player.SetLook(target.Data.PlayerName, target.Data.DefaultOutfit.ColorId, target.Data.DefaultOutfit.HatId, target.Data.DefaultOutfit.VisorId, target.Data.DefaultOutfit.SkinId, target.Data.DefaultOutfit.PetId, false);
+                    }
+                    else if (pc == Hitman.Player && Hitman.MorphTimer > 0) 
+                    {
+                        PlayerControl target = Hitman.MorphTarget;
+                        Hitman.Player.SetLook(target.Data.PlayerName, target.Data.DefaultOutfit.ColorId, target.Data.DefaultOutfit.HatId, target.Data.DefaultOutfit.VisorId, target.Data.DefaultOutfit.SkinId, target.Data.DefaultOutfit.PetId, false);
                     }
                     else if (pc == Ninja.ninja && Ninja.invisibleTimer > 0f) 
                     {

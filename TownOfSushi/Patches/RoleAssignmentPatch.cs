@@ -127,6 +127,11 @@ namespace TownOfSushi.Patches
             neutralKSettings.Add((byte)RoleId.Juggernaut, CustomOptionHolder.JuggernautSpawnRate.GetSelection());
             neutralKSettings.Add((byte)RoleId.SerialKiller, CustomOptionHolder.SerialKillerSpawnRate.GetSelection());
 
+            if (CustomOptionHolder.HitmanSpawnsWithNoAgent.GetBool()) // Hitman spawns with no Agent
+                neutralKSettings.Add((byte)RoleId.Hitman, CustomOptionHolder.AgentSpawnRate.GetSelection());
+            else
+                neutralKSettings.Add((byte)RoleId.Agent, CustomOptionHolder.AgentSpawnRate.GetSelection());
+
             neutralSettings.Add((byte)RoleId.Jester, CustomOptionHolder.jesterSpawnRate.GetSelection());
             neutralSettings.Add((byte)RoleId.Romantic, CustomOptionHolder.RomanticSpawnChance.GetSelection());
             neutralSettings.Add((byte)RoleId.Arsonist, CustomOptionHolder.arsonistSpawnRate.GetSelection());
@@ -553,35 +558,35 @@ namespace TownOfSushi.Patches
                     selection = CustomOptionHolder.modifierMini.GetSelection(); break;
                 case RoleId.Bait:
                     selection = CustomOptionHolder.modifierBait.GetSelection();
-                    if (multiplyQuantity) selection *= CustomOptionHolder.modifierBaitQuantity.getQuantity();
+                    if (multiplyQuantity) selection *= CustomOptionHolder.modifierBaitQuantity.GetQuantity();
                     break;
                 case RoleId.Bloody:
                     selection = CustomOptionHolder.modifierBloody.GetSelection();
-                    if (multiplyQuantity) selection *= CustomOptionHolder.modifierBloodyQuantity.getQuantity();
+                    if (multiplyQuantity) selection *= CustomOptionHolder.modifierBloodyQuantity.GetQuantity();
                     break;
                 case RoleId.AntiTeleport:
                     selection = CustomOptionHolder.modifierAntiTeleport.GetSelection();
-                    if (multiplyQuantity) selection *= CustomOptionHolder.modifierAntiTeleportQuantity.getQuantity();
+                    if (multiplyQuantity) selection *= CustomOptionHolder.modifierAntiTeleportQuantity.GetQuantity();
                     break;
                 case RoleId.Sunglasses:
                     selection = CustomOptionHolder.modifierSunglasses.GetSelection();
-                    if (multiplyQuantity) selection *= CustomOptionHolder.modifierSunglassesQuantity.getQuantity();
+                    if (multiplyQuantity) selection *= CustomOptionHolder.modifierSunglassesQuantity.GetQuantity();
                     break;
                 case RoleId.Vip:
                     selection = CustomOptionHolder.modifierVip.GetSelection();
-                    if (multiplyQuantity) selection *= CustomOptionHolder.modifierVipQuantity.getQuantity();
+                    if (multiplyQuantity) selection *= CustomOptionHolder.modifierVipQuantity.GetQuantity();
                     break;
                 case RoleId.Invert:
                     selection = CustomOptionHolder.modifierInvert.GetSelection();
-                    if (multiplyQuantity) selection *= CustomOptionHolder.modifierInvertQuantity.getQuantity();
+                    if (multiplyQuantity) selection *= CustomOptionHolder.modifierInvertQuantity.GetQuantity();
                     break;
                 case RoleId.Chameleon:
                     selection = CustomOptionHolder.modifierChameleon.GetSelection();
-                    if (multiplyQuantity) selection *= CustomOptionHolder.modifierChameleonQuantity.getQuantity();
+                    if (multiplyQuantity) selection *= CustomOptionHolder.modifierChameleonQuantity.GetQuantity();
                     break;
                 case RoleId.Sleuth:
                     selection = CustomOptionHolder.ModifierSleuth.GetSelection();
-                    if (multiplyQuantity) selection *= CustomOptionHolder.ModifierSleuthQuantity.getQuantity();
+                    if (multiplyQuantity) selection *= CustomOptionHolder.ModifierSleuthQuantity.GetQuantity();
                     break;
                 case RoleId.Armored:
                     selection = CustomOptionHolder.modifierArmored.GetSelection();

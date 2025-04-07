@@ -34,7 +34,7 @@ Even more roles are coming soon.
 | | [Portalmaker](#portalmaker) | [Amnesiac](#amnesiac) |  |
 | | [Vigilante](#vigilante) |  [Plaguebearer](#plaguebearer) |  |
 |  | [Medium](#medium) | [Pestilence](#plaguebearer)  |  |
-|  |[Veteran](#veteran)    |  |  |
+|  |[Veteran](#veteran)    | [Agent](#agent)  |  |
 |  |[Oracle](#oracle) |  |  |
 |  |[Crusader](#crusader) |  |  |
 
@@ -571,6 +571,7 @@ The priority of each Neutral Killer win condition is the following:
 8. Team Crew wins by outnumbering (When there is no player that is a Neutral Killer and the team Impostors left)
 
 **NOTE:**
+- The game will NOT end if one of these crewmate roles are alive with the last killers: Sheriff, Mayor, Veteran (with charges), Swapper or if a Crewmate Tiebreaker is alive.
 - The Neutral Killers may be killed by a Sheriff.
 - A Neutral Killer cannot target the Mini (excluding Glitch), while it's growing up. After that they can kill it or interact with them.
 - The Crew can still win, even if all of their members are dead, if they finish their tasks fast enough (That's why converting the last Crewmate with tasks left into a Sidekick results in a task win for the crew.)
@@ -699,6 +700,29 @@ The Serial Killer needs to be the last killer alive to win the game.
 | Stab Duration | -
 | Stab Kill Cooldown | -
 | Serial Killer can Vent when Stabbing | Yes / No
+-----------------------
+
+## Agent
+### **Team: Neutral (Killing) **
+The Agent is a Neutral role with its own win condition.\
+The Agent has tasks like the Crewmates but their tasks do not count for a task win.\
+After the Agent finishes its tasks, They automatically become a Hitman.\
+
+The Hitman is a Neutral role that depending on settings, may spawn naturally or spawns by an [Agent](#agent) becoming it.\
+The Hitman can Morph into players to disguise itself from others.\
+They can additionally drag bodies like the [Undertaker](#undertaker).\
+### Game Options
+| Name | Description |
+|----------|:-------------:|
+| Agent Can Use Vents | -
+| Hitman Spawns Without Agent | -
+| Hitman Kill Cooldown | -
+| Morph Cooldown | -
+| Morph Duration | -
+| Hitman Can Use Vents | -
+| Hitman Drag Cooldown | -
+| Hitman Speed While Dragging | -
+
 -----------------------
 
 ## Plaguebearer

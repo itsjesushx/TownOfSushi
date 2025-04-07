@@ -53,6 +53,7 @@ namespace TownOfSushi.Objects
             secondPortal.animationFgRenderer.flipX = flip;
             if (Morphling.Player != null && Morphling.morphTimer > 0) playerControl = Morphling.morphTarget;  // Will output info of morph-target instead
             if (Glitch.Player != null && Glitch.MimicTimer > 0) playerControl = Glitch.MimicTarget;  // Will output info of Mimic-target instead
+            if (Hitman.Player != null && Hitman.MorphTimer > 0) playerControl = Hitman.MorphTarget;  // Will output info of Morph-target instead
             string playerNameDisplay = Portalmaker.logOnlyHasColors ? "A player (" + (Helpers.IsLighterColor(playerControl) ? "L" : "D") + ")" : playerControl.Data.PlayerName;
 
             int colorId = playerControl.Data.DefaultOutfit.ColorId;

@@ -13,7 +13,6 @@ namespace TownOfSushi
             Kill,
             Disconnect,
             Guess,
-            Execute,
             Shift,
             Maul,
             LawyerSuicide,
@@ -36,7 +35,6 @@ namespace TownOfSushi
             this.killerIfExisting = killerIfExisting;
             this.wasCleaned = false;
         }
-
     }
 
     static class GameHistory 

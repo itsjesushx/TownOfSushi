@@ -83,7 +83,7 @@ namespace TownOfSushi
         public readonly static RoleInfo timeMaster = new("Time Master", TimeMaster.Color, "Save yourself with your time shield", "Use your time shield", RoleId.TimeMaster, Factions.Crewmate, "The Time Master has a time shield which they can activate. The time shield remains active for a configurable amount of time. If a player tries to kill the Time Master while the time shield is active, the kill won't happen and the time will rewind for a set amount of time. The kill Cooldown of the killer won't be reset, so the Time Master has to make sure that the game won't result in the same situation. The Time Master won't be affected by the rewind.");
         public readonly static RoleInfo medic = new("Medic", Medic.Color, "Protect someone with your shield", "Protect other players", RoleId.Medic, Factions.Crewmate, "The Medic can shield (highlighted by an outline around the player) one player per game, which makes the player unkillable. The shield is also shown in the meeting as brackets around the shielded player's name. The shielded player can still be voted out and might also be an Impostor. If set in the options, the shielded player and/or the Medic will get a red flash on their screen if someone (Impostor, Sheriff, ...) tried to murder them. If the Medic dies, the shield disappears with them. The Sheriff will not die if they try to kill a shielded Crewmate and won't perform a kill if they try to kill a shielded Impostor. Depending on the options, guesses from the Guesser will be blocked by the shield and the shielded player/medic might be notified. The Medic's other feature shows when they report a corpse: they will see how long ago the player died.");
         public readonly static RoleInfo swapper = new("Swapper", Swapper.Color, "Swap votes to exile the <color=#FF1919FF>Impostors</color>", "Swap votes", RoleId.Swapper, Factions.Crewmate, "During meetings the Swapper can exchange votes that two people get (i.e. all votes that player A got will be given to player B and vice versa). Because of the Swapper's strength in meetings, they might not start emergency meetings and can't fix lights and comms. The Swapper now has initial swap charges and can recharge those charges after completing a configurable amount of tasks.");
-        public readonly static RoleInfo oracle = new("Oracle", Oracle.Color, "Make the <color=#FF1919FF>Impostors</color> confess their sins", "Get another player to confess on your passing", RoleId.Oracle, Factions.Crewmate, $"The Oracle can compel another player to confess their secrets upon death. The oracle will get information about 3 players being possibly evil each meeting. The Oracle can only make a player confess once per meeting. When the Oracle dies, the player they made confess will be reveal their faction with a probability of {Oracle.Accuracy}% to be right.");
+        public readonly static RoleInfo oracle = new("Oracle", Oracle.Color, "Make the <color=#FF1919FF>Impostors</color> confess their sins", "Get another player to confess on your passing", RoleId.Oracle, Factions.Crewmate, $"The Oracle can compel another player to confess their secrets upon death. The oracle will get information about 3 players being possibly evil each meeting. The Oracle can only make a player confess once per meeting. When the Oracle dies, the player they made confess will reveal their faction with a probability of {Oracle.Accuracy}% of being right.");
         public readonly static RoleInfo mystic = new("Mystic", Mystic.Color, "You will see players die", "You will see players die", RoleId.Mystic, Factions.Crewmate, "The Mystic gets a list of the possible roles that the examined player can be in meetings. The Mystic has more abilities (one can activate one of them or both in the options). The Mystic sees the souls of players that died a round earlier, the souls slowly fade away. The Mystic gets a blue flash on their screen, if a player dies somewhere on the map.");
 
         #endregion
@@ -94,7 +94,9 @@ namespace TownOfSushi
         public readonly static RoleInfo pestilence = new("Pestilence", Pestilence.Color, "", "Kill with your unstoppable abilities", RoleId.Pestilence, Factions.NeutralKiller, "The Pestilence is a unkillable force which can only be killed by being voted out or them guessing wrong. The Pestilence needs to be the last killer alive to win the game.");
         public readonly static RoleInfo juggernaut = new("Juggernaut", Juggernaut.Color, "Kill all your <color=#FF1919FF>Enemies</color> to win", "Each kill makes you more dangerous", RoleId.Juggernaut, Factions.NeutralKiller, "The Juggernaut is a Neutral role with its own win condition. The Juggernaut's special ability is that their kill Cooldown reduces with each kill. This means in theory the Juggernaut can have a 0 second kill Cooldown!. The Juggernaut needs to be the last killer alive to win the game.");
         public readonly static RoleInfo sidekick = new("Sidekick", Sidekick.Color, "Help your Jackal to kill everyone", "Help your Jackal to kill everyone", RoleId.Sidekick, Factions.NeutralKiller, "Gets assigned to a player during the game by the Create Sidekick Action of the Jackal and joins the Jackal in their quest to eliminate all other players. Upon the death of the Jackal (depending on the options), they might get promoted to Jackal themself and potentially even assign a Sidekick of their own.");
-        public readonly static RoleInfo serialKiller = new("Serial Killer", SerialKiller.Color, "Stab to make everyone die", "Murder everyone when stabbing", RoleId.SerialKiller, Factions.NeutralKiller, "The Serial Killer is a Neutral role with its own win condition. Although the Serial Killer has a kill button, they can't use it unless they are stabbing. Once the Serial Killer rampages they gain Impostor vision and the ability to kill. However, unlike most killers their kill Cooldown is really short. The Serial Killer needs to be the last killer alive to win the game.");
+        public readonly static RoleInfo agent = new("Agent", Agent.Color, "Finish your duties to start the dirty work", "Finish your tasks", RoleId.Agent, Factions.NeutralKiller, "The Agent is a Neutral killer role with its own win condition. They need to finish tasks in order to gain new abilities. Depending on settings they may be able to vent so they finish tasks faster.");
+        public readonly static RoleInfo hitman = new("Hitman", Hitman.Color, "Kill your enemies to win", "Kill your enemies", RoleId.Hitman, Factions.NeutralKiller, "The Hitman is a Neutral role with its own win condition. The Hitman's aim is to kill win alone. The Hitman is able to kill players, morph into them like a Morphling or a Glitch for a set amount of time. They can also drag dead bodies just like an Undertaker. They may be able to vent depending on settings.");
+        public readonly static RoleInfo serialKiller = new("Serial Killer", SerialKiller.Color, "Stab to make everyone die", "Murder everyone when stabbing", RoleId.SerialKiller, Factions.NeutralKiller, "The Serial Killer is a Neutral role with its own win condition. The Serial Killer has an invisible kill button, but they can't use it unless they are stabbing. Once the Serial Killer rampages they gain Impostor vision and the ability to kill. However, unlike most killers their kill Cooldown is really short. The Serial Killer needs to be the last killer alive to win the game.");
         public readonly static RoleInfo glitch = new("Glitch", Glitch.Color, "Hack, Kill and Mimic your <color=#FF1919FF>enemies</color>", "Hack, Kill and Mimic your <color=#FF1919FF>enemies</color>", RoleId.Glitch, Factions.NeutralKiller, "Glitch is a Neutral role with its own win condition. Glitch's aim is to kill everyone and be the last person standing. Glitch can Hack players, resulting in them being unable to report bodies and do tasks. Hacking prevents the hacked player from doing anything but walk around the map. Glitch can Mimic someone, which results in them looking exactly like the other person.");
         public readonly static RoleInfo vromantic = new("Vengeful Romantic", Romantic.Color, "", "Avenge your lover", RoleId.VengefulRomantic, Factions.NeutralKiller, "As the Vengeful Romantic you were once a Romantic with a lover, but they died somehow. Now you are mad for revenge and will murder everyone in order to avenge your lover, if you win your dead lover also does.");
         public readonly static RoleInfo werewolf = new("Werewolf", Werewolf.Color, "Maul and eliminate your <color=#FF1919FF>enemies</color>", "Maul to eliminate your <color=#FF1919FF>enemies</color>", RoleId.Werewolf, Factions.NeutralKiller, "The Werewolf can kill all players within a certain radius.");
@@ -108,7 +110,7 @@ namespace TownOfSushi
         public readonly static RoleInfo bait = new("Bait", Color.yellow, "Bait your enemies", "Bait your enemies", RoleId.Bait, Factions.Modifier, "");
         public readonly static RoleInfo sunglasses = new("Sunglasses", Color.yellow, "You got the sunglasses", "Your vision is reduced", RoleId.Sunglasses, Factions.Modifier, "");
         public readonly static RoleInfo sleuth = new("Sleuth", Color.yellow, "Learn from your reports", "Get to know the role of who you report", RoleId.Sleuth, Factions.Modifier, "");
-        public readonly static RoleInfo lover = new("Lover", Lovers.Color, $"You are in love", $"You are in love", RoleId.Lover, Factions.Modifier, "");
+        public readonly static RoleInfo lover = new("Lover", Lovers.Color, $"You are in love", "Stay alive until the end with your lover", RoleId.Lover, Factions.Modifier, "");
         public readonly static RoleInfo mini = new("Mini", Color.yellow, "No one will harm you until you grow up", "No one will harm you", RoleId.Mini, Factions.Modifier, "");
         public readonly static RoleInfo vip = new("VIP", Color.yellow, "You are the VIP", "Everyone is notified when you die", RoleId.Vip, Factions.Modifier, "");
         public readonly static RoleInfo invert = new("Invert", Color.yellow, "Your movement is inverted", "Your movement is inverted", RoleId.Invert, Factions.Modifier, "");
@@ -145,6 +147,8 @@ namespace TownOfSushi
             lover,
             jester,
             arsonist,
+            hitman,
+            agent,
             serialKiller,
             oracle,
             jackal,
@@ -258,6 +262,8 @@ namespace TownOfSushi
             if (p == Detective.Player) infos.Add(detective);
             if (p == TimeMaster.Player) infos.Add(timeMaster);
             if (p == Medic.Player) infos.Add(medic);
+            if (p == Hitman.Player) infos.Add(hitman);
+            if (p == Agent.Player) infos.Add(agent);
             if (p == Swapper.Player) infos.Add(swapper);
             if (p == Mystic.Player) infos.Add(mystic);
             if (p == Hacker.Player) infos.Add(hacker);
@@ -369,12 +375,6 @@ namespace TownOfSushi
                                     break;
                                 case DeadPlayer.CustomDeathReason.Kill:
                                     deathReasonString = $" - Killed by {Helpers.ColorString(killerColor, deadPlayer.killerIfExisting.Data.PlayerName)}";
-                                    break;
-                                case DeadPlayer.CustomDeathReason.Execute:
-                                    if (deadPlayer.killerIfExisting.Data.PlayerName == p.Data.PlayerName)
-                                        deathReasonString = $" - Failed Execution";
-                                    else
-                                    deathReasonString = $" - Executed by {Helpers.ColorString(killerColor, deadPlayer.killerIfExisting.Data.PlayerName)}";
                                     break;
                                 case DeadPlayer.CustomDeathReason.Guess:
                                     if (deadPlayer.killerIfExisting.Data.PlayerName == p.Data.PlayerName)

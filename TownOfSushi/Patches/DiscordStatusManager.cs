@@ -8,6 +8,6 @@ public static class DiscordStatusManager
     [HarmonyPrefix]
     public static void Prefix([HarmonyArgument(0)] Activity activity)
     {
-        activity.Details += $" TownOfSushi v" + TownOfSushiPlugin.Version.ToString();
+        activity.Details += $" TownOfSushi v" + TownOfSushiPlugin.VersionString;
     }
 }

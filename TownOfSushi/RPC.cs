@@ -138,6 +138,12 @@ namespace TownOfSushi
                     case RoleId.Lighter:
                         Lighter.Player = player;
                         break;
+                    case RoleId.Agent:
+                        Agent.Player = player;
+                        break;
+                    case RoleId.Hitman:
+                        Hitman.Player = player;
+                        break;
                     case RoleId.Undertaker:
                         Undertaker.Player = player;
                         break;
@@ -330,7 +336,8 @@ namespace TownOfSushi
             }
         }
 
-        public static void VersionHandshake(int major, int minor, int build, int revision, Guid guid, int clientId) {
+        public static void VersionHandshake(int major, int minor, int build, int revision, Guid guid, int clientId) 
+        {
             System.Version ver;
             if (revision < 0) 
                 ver = new System.Version(major, minor, build);
@@ -339,7 +346,8 @@ namespace TownOfSushi
             GameStartManagerPatch.playerVersions[clientId] = new GameStartManagerPatch.PlayerVersion(ver, guid);
         }
 
-        public static void UseUncheckedVent(int ventId, byte playerId, byte isEnter) {
+        public static void UseUncheckedVent(int ventId, byte playerId, byte isEnter) 
+        {
             PlayerControl player = Helpers.PlayerById(playerId);
             if (player == null) return;
             // Fill dummy MessageReader and call MyPhysics.HandleRpc as the corountines cannot be accessed
@@ -354,17 +362,20 @@ namespace TownOfSushi
             player.MyPhysics.HandleRpc(isEnter != 0 ? (byte)19 : (byte)20, reader);
         }
 
-        public static void UncheckedMurderPlayer(byte sourceId, byte targetId, byte showAnimation) {
+        public static void UncheckedMurderPlayer(byte sourceId, byte targetId, byte showAnimation) 
+        {
             if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
             PlayerControl source = Helpers.PlayerById(sourceId);
             PlayerControl target = Helpers.PlayerById(targetId);
-            if (source != null && target != null) {
+            if (source != null && target != null) 
+            {
                 if (showAnimation == 0) KillAnimationCoPerformKillPatch.hideNextAnimation = true;
                 source.MurderPlayer(target);
             }
         }
 
-        public static void UncheckedCmdReportDeadBody(byte sourceId, byte targetId) {
+        public static void UncheckedCmdReportDeadBody(byte sourceId, byte targetId) 
+        {
             PlayerControl source = Helpers.PlayerById(sourceId);
             var t = targetId == Byte.MaxValue ? null : Helpers.PlayerById(targetId).Data;
             if (source != null) source.ReportDeadBody(t);
@@ -469,7 +480,8 @@ namespace TownOfSushi
         public static void VeteranAlert() 
         {
             Veteran.AlertActive = true;
-            FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(Veteran.Duration, new Action<float>((p) => {
+            FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(Veteran.Duration, new Action<float>((p) => 
+            {
                 if (p == 1f) Veteran.AlertActive = false;
             })));
         }
@@ -714,7 +726,8 @@ namespace TownOfSushi
 
         public static void SwapperSwap(byte playerId1, byte playerId2) 
         {
-            if (MeetingHud.Instance) {
+            if (MeetingHud.Instance) 
+            {
                 Swapper.playerId1 = playerId1;
                 Swapper.playerId2 = playerId2;
             }
@@ -740,6 +753,17 @@ namespace TownOfSushi
             Glitch.MimicTarget = target;
             if (Camouflager.CamouflageTimer <= 0f)
                 Glitch.Player.SetLook(target.Data.PlayerName, target.Data.DefaultOutfit.ColorId, target.Data.DefaultOutfit.HatId, target.Data.DefaultOutfit.VisorId, target.Data.DefaultOutfit.SkinId, target.Data.DefaultOutfit.PetId);
+        }
+
+        public static void HitmanMorph(byte playerId) 
+        {
+            PlayerControl target = Helpers.PlayerById(playerId);
+            if (Hitman.Player == null || target == null) return;
+
+            Hitman.MorphTimer = Hitman.MorphDuration;
+            Hitman.MorphTarget = target;
+            if (Camouflager.CamouflageTimer <= 0f)
+                Hitman.Player.SetLook(target.Data.PlayerName, target.Data.DefaultOutfit.ColorId, target.Data.DefaultOutfit.HatId, target.Data.DefaultOutfit.VisorId, target.Data.DefaultOutfit.SkinId, target.Data.DefaultOutfit.PetId);
         }
 
         public static void CamouflagerCamouflage() 
@@ -776,7 +800,8 @@ namespace TownOfSushi
             new Garlic(position);
         }
 
-        public static void trackerUsedTracker(byte targetId) {
+        public static void TrackerUsedTracker(byte targetId) 
+        {
             Tracker.usedTracker = true;
             foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                 if (player.PlayerId == targetId)
@@ -1123,7 +1148,7 @@ namespace TownOfSushi
             }
         }
 
-        public static void TurnPestilence() 
+        public static void PlaguebearerTurnPestilence() 
         {
             PlayerControl player = Plaguebearer.Player;
             Plaguebearer.ClearAndReload();
@@ -1134,6 +1159,20 @@ namespace TownOfSushi
                 Helpers.ShowFlash(Pestilence.Color, 2.5f);
                 SoundManager.Instance.PlaySound(ShipStatus.Instance.SabotageSound, false, 1f, null);
                 Helpers.ShowTextToast("You just transformed into the Pestilence!", 2.5f);
+            }
+        }
+
+        public static void AgentTurnIntoHitman() 
+        {
+            PlayerControl player = Agent.Player;
+            Agent.ClearAndReload();
+
+            Hitman.Player = player;
+            if (player == PlayerControl.LocalPlayer)
+            {
+                Helpers.ShowFlash(Hitman.Color, 2.5f);
+                SoundManager.Instance.PlaySound(ShipStatus.Instance.SabotageSound, false, 1f, null);
+                Helpers.ShowTextToast("You just became the Hitman!", 2.5f);
             }
         }
 
@@ -1154,6 +1193,25 @@ namespace TownOfSushi
             if (Undertaker.Player == null || Undertaker.CurrentTarget == null) return;
             Undertaker.CurrentTarget = null;
             Undertaker.CurrentTarget.transform.position = new Vector3(Undertaker.Player.GetTruePosition().x, Undertaker.Player.GetTruePosition().y, Undertaker.Player.transform.position.z);
+        }
+
+        public static void HitmanDragBody(byte BodyId)
+        {
+            DeadBody[] array = UnityEngine.Object.FindObjectsOfType<DeadBody>();
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (GameData.Instance.GetPlayerById(array[i].ParentId).PlayerId == BodyId)
+                {
+                    Hitman.BodyTarget = array[i];
+                }
+            }
+        }
+
+        public static void HitmanDropBody(byte bodyId)
+        {
+            if (Hitman.Player == null || Hitman.BodyTarget == null) return;
+            Hitman.BodyTarget = null;
+            Hitman.BodyTarget.transform.position = new Vector3(Hitman.Player.GetTruePosition().x, Hitman.Player.GetTruePosition().y, Hitman.Player.transform.position.z);
         }
 
 
@@ -1475,6 +1533,18 @@ namespace TownOfSushi
                 case RoleId.Oracle:
                     Oracle.ClearAndReload();
                     Oracle.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    break;
+                
+                case RoleId.Agent:
+                    Agent.ClearAndReload();
+                    Agent.Player = AmnesiacPlayer;
+                    Amnesiac.ClearAndReload();
+                    break;
+                
+                 case RoleId.Hitman:
+                    Hitman.ClearAndReload();
+                    Hitman.Player = AmnesiacPlayer;
                     Amnesiac.ClearAndReload();
                     break;
                 
@@ -2050,6 +2120,9 @@ namespace TownOfSushi
                 case (byte)CustomRPC.GlitchMimic:
                     RPCProcedure.GlitchMimic(reader.ReadByte());
                     break;
+                case (byte)CustomRPC.HitmanMorph:
+                    RPCProcedure.HitmanMorph(reader.ReadByte());
+                    break;
                 case (byte)CustomRPC.CamouflagerCamouflage:
                     RPCProcedure.CamouflagerCamouflage();
                     break;
@@ -2065,7 +2138,7 @@ namespace TownOfSushi
                     RPCProcedure.PlaceGarlic(reader.ReadBytesAndSize());
                     break;
                 case (byte)CustomRPC.TrackerUsedTracker:
-                    RPCProcedure.trackerUsedTracker(reader.ReadByte());
+                    RPCProcedure.TrackerUsedTracker(reader.ReadByte());
                     break;               
                 case (byte)CustomRPC.GlitchUsedHacks:
                     RPCProcedure.GlitchUsedHacks(reader.ReadByte());
@@ -2131,7 +2204,10 @@ namespace TownOfSushi
                     RPCProcedure.RomanticChangeRole();
                     break;
                 case (byte)CustomRPC.TurnPestilence:
-                    RPCProcedure.TurnPestilence();
+                    RPCProcedure.PlaguebearerTurnPestilence();
+                    break;
+                case (byte)CustomRPC.AgentTurnIntoHitman:
+                    RPCProcedure.AgentTurnIntoHitman();
                     break;
                 case (byte)CustomRPC.SetBlanked:
                     var pid = reader.ReadByte();

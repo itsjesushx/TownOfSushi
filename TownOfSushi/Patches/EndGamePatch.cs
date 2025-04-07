@@ -89,6 +89,8 @@ namespace TownOfSushi.Patches
             if (Thief.Player != null) notWinners.Add(Thief.Player);
             if (Plaguebearer.Player != null) notWinners.Add(Plaguebearer.Player);
             if (Pestilence.Player != null) notWinners.Add(Pestilence.Player);
+            if (Agent.Player != null) notWinners.Add(Agent.Player);
+            if (Hitman.Player != null) notWinners.Add(Hitman.Player);
 
             notWinners.AddRange(Jackal.formerJackals);
 
@@ -113,6 +115,8 @@ namespace TownOfSushi.Patches
             bool prosecutorWin = Lawyer.Player != null && gameOverReason == (GameOverReason)CustomGameOverReason.ProsecutorWin;
             bool PlaguebearerWin = Plaguebearer.Player != null && gameOverReason == (GameOverReason)CustomGameOverReason.PlaguebearerWin;
             bool PestilenceWin = Pestilence.Player != null && gameOverReason == (GameOverReason)CustomGameOverReason.PestilenceWin;
+            bool HitmanWin = Hitman.Player != null && gameOverReason == (GameOverReason)CustomGameOverReason.HitmanWin;
+            bool AgentWin = Agent.Player != null && gameOverReason == (GameOverReason)CustomGameOverReason.AgentWin;
 
             // Mini lose
             if (miniLose) 
@@ -122,6 +126,24 @@ namespace TownOfSushi.Patches
                 wpd.IsYou = false; // If "no one is the Mini", it will display the Mini, but also show defeat to everyone
                 EndGameResult.CachedWinners.Add(wpd);
                 AdditionalTempData.winCondition = WinCondition.MiniLose;
+            }
+
+            // Hitman Win
+            else if (HitmanWin) 
+            {
+                EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
+                CachedPlayerData wpd = new CachedPlayerData(Hitman.Player.Data);
+                EndGameResult.CachedWinners.Add(wpd);
+                AdditionalTempData.winCondition = WinCondition.HitmanWin;
+            }
+
+            // Agent Win
+            else if (AgentWin) 
+            {
+                EndGameResult.CachedWinners = new Il2CppSystem.Collections.Generic.List<CachedPlayerData>();
+                CachedPlayerData wpd = new CachedPlayerData(Agent.Player.Data);
+                EndGameResult.CachedWinners.Add(wpd);
+                AdditionalTempData.winCondition = WinCondition.AgentWin;
             }
 
             // Jester win
@@ -431,6 +453,18 @@ namespace TownOfSushi.Patches
                 textRenderer.color = Vulture.Color;
                 __instance.BackgroundBar.material.SetColor("_Color", Vulture.Color);
             }
+            else if (AdditionalTempData.winCondition == WinCondition.AgentWin) 
+            {
+                textRenderer.text = "Agent Wins!";
+                textRenderer.color = Agent.Color;
+                __instance.BackgroundBar.material.SetColor("_Color", Agent.Color);
+            }
+            else if (AdditionalTempData.winCondition == WinCondition.HitmanWin) 
+            {
+                textRenderer.text = "Hitman Wins!";
+                textRenderer.color = Hitman.Color;
+                __instance.BackgroundBar.material.SetColor("_Color", Hitman.Color);
+            }
             else if (AdditionalTempData.winCondition == WinCondition.ProsecutorWin) 
             {
                 textRenderer.text = "Prosecutor Wins!";
@@ -569,8 +603,8 @@ namespace TownOfSushi.Patches
 
                 roleSummaryText.AppendLine("<size=125%><u><b>Game Stats</b></u>:</size>");
                 roleSummaryText.AppendLine();
-                winnersText.AppendLine("<size=105%><color=#00FF00FF><b>★ - Winner List - ★</b></color></size>");
-                losersText.AppendLine("<size=105%><color=#FF0000FF><b>◆ - Loser List - ◆</b></color></size>");
+                winnersText.AppendLine("<size=105%><color=#00FF00FF><b>★ - Winners List - ★</b></color></size>");
+                losersText.AppendLine("<size=105%><color=#FF0000FF><b>◆ - Losers List - ◆</b></color></size>");
 
                 foreach(var data in AdditionalTempData.playerRoles) 
                 {
@@ -647,6 +681,8 @@ namespace TownOfSushi.Patches
             if (CheckAndEndGameForJuggernautWin(__instance, statistics)) return false;
             if (CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
             if (CheckAndEndGameForCrewmateWin(__instance, statistics)) return false;
+            if (CheckAndEndGameForHitmanWin(__instance, statistics)) return false;
+            if (CheckAndEndGameForAgentWin(__instance, statistics)) return false;
             return false;
         }
 
@@ -762,6 +798,8 @@ namespace TownOfSushi.Patches
             && statistics.WerewolfAlive == 0
             && statistics.SerialKillerAlive == 0
             && statistics.VengefulRomanticAlive == 0
+            && statistics.HitmanAlive == 0
+            && statistics.AgentAlive == 0
             && statistics.PestilenceAlive == 0
             && statistics.PlaguebearerAlive == 0
             && statistics.CrewPowerAlive == 0
@@ -783,6 +821,8 @@ namespace TownOfSushi.Patches
             && statistics.WerewolfAlive == 0
             && statistics.TeamJackalAlive == 0
             && statistics.SerialKillerAlive == 0
+            && statistics.HitmanAlive == 0
+            && statistics.AgentAlive == 0
             && statistics.VengefulRomanticAlive == 0
             && statistics.CrewPowerAlive == 0
             && statistics.JuggernautAlive == 0
@@ -803,6 +843,8 @@ namespace TownOfSushi.Patches
             && statistics.WerewolfAlive == 0
             && statistics.TeamJackalAlive == 0
             && statistics.SerialKillerAlive == 0
+            && statistics.HitmanAlive == 0
+            && statistics.AgentAlive == 0
             && statistics.VengefulRomanticAlive == 0
             && statistics.CrewPowerAlive == 0
             && statistics.JuggernautAlive == 0
@@ -820,6 +862,8 @@ namespace TownOfSushi.Patches
             if (statistics.JuggernautAlive >= statistics.TotalAlive - statistics.JuggernautAlive
             && statistics.TeamImpostorsAlive == 0
             && statistics.GlitchAlive == 0
+            && statistics.HitmanAlive == 0
+            && statistics.AgentAlive == 0
             && statistics.WerewolfAlive == 0
             && statistics.SerialKillerAlive == 0
             && statistics.VengefulRomanticAlive == 0
@@ -846,6 +890,8 @@ namespace TownOfSushi.Patches
             && statistics.PestilenceAlive == 0
             && statistics.PlaguebearerAlive == 0
             && statistics.SerialKillerAlive == 0
+            && statistics.HitmanAlive == 0
+            && statistics.AgentAlive == 0
             && statistics.TeamJackalAlive == 0
             && statistics.JuggernautAlive == 0
             && statistics.CrewPowerAlive == 0
@@ -868,6 +914,8 @@ namespace TownOfSushi.Patches
             && statistics.SerialKillerAlive == 0
             && statistics.CrewPowerAlive == 0
             && statistics.PestilenceAlive == 0
+            && statistics.HitmanAlive == 0
+            && statistics.AgentAlive == 0
             && statistics.PlaguebearerAlive == 0
             && statistics.JuggernautAlive == 0
             && statistics.VengefulRomanticAlive == 0
@@ -891,6 +939,8 @@ namespace TownOfSushi.Patches
             && statistics.GlitchAlive == 0
             && statistics.PestilenceAlive == 0
             && statistics.PlaguebearerAlive == 0
+            && statistics.HitmanAlive == 0
+            && statistics.AgentAlive == 0
             && statistics.JuggernautAlive == 0
             && statistics.VengefulRomanticAlive == 0
             && !(statistics.SerialKillerHasLover
@@ -898,6 +948,49 @@ namespace TownOfSushi.Patches
             {
 
                 GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.SerialKillerWin, false);
+                return true;
+            }
+            return false;
+        }
+
+        private static bool CheckAndEndGameForHitmanWin(ShipStatus __instance, PlayerStatistics statistics) 
+        {
+            if (statistics.HitmanAlive >= statistics.TotalAlive - statistics.HitmanAlive
+            && statistics.TeamImpostorsAlive == 0
+            && statistics.CrewPowerAlive == 0
+            && statistics.TeamJackalAlive == 0
+            && statistics.WerewolfAlive == 0
+            && statistics.GlitchAlive == 0
+            && statistics.PestilenceAlive == 0
+            && statistics.PlaguebearerAlive == 0
+            && statistics.SerialKillerAlive == 0
+            && statistics.JuggernautAlive == 0
+            && !(statistics.HitmanHasAliveLover 
+            && statistics.TeamLoversAlive == 2)) 
+            {
+
+                GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.HitmanWin, false);
+                return true;
+            }
+            return false;
+        }
+        private static bool CheckAndEndGameForAgentWin(ShipStatus __instance, PlayerStatistics statistics) 
+        {
+            if (statistics.AgentAlive >= statistics.TotalAlive - statistics.AgentAlive
+            && statistics.TeamImpostorsAlive == 0
+            && statistics.CrewPowerAlive == 0
+            && statistics.TeamJackalAlive == 0
+            && statistics.WerewolfAlive == 0
+            && statistics.GlitchAlive == 0
+            && statistics.PestilenceAlive == 0
+            && statistics.PlaguebearerAlive == 0
+            && statistics.SerialKillerAlive == 0
+            && statistics.JuggernautAlive == 0
+            && !(statistics.AgentHasAliveLover 
+            && statistics.TeamLoversAlive == 2)) 
+            {
+
+                GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.AgentWin, false);
                 return true;
             }
             return false;
@@ -911,6 +1004,8 @@ namespace TownOfSushi.Patches
             && statistics.TeamJackalAlive == 0
             && statistics.WerewolfAlive == 0
             && statistics.SerialKillerAlive == 0
+            && statistics.HitmanAlive == 0
+            && statistics.AgentAlive == 0
             && statistics.PestilenceAlive == 0
             && statistics.PlaguebearerAlive == 0
             && statistics.JuggernautAlive == 0
@@ -932,6 +1027,8 @@ namespace TownOfSushi.Patches
             && statistics.GlitchAlive == 0
             && statistics.WerewolfAlive == 0
             && statistics.SerialKillerAlive == 0
+            && statistics.HitmanAlive == 0
+            && statistics.AgentAlive == 0
             && statistics.PestilenceAlive == 0
             && statistics.PlaguebearerAlive == 0
             && statistics.CrewPowerAlive == 0
@@ -967,6 +1064,8 @@ namespace TownOfSushi.Patches
             && statistics.VengefulRomanticAlive == 0
             && statistics.PestilenceAlive == 0
             && statistics.PlaguebearerAlive == 0
+            && statistics.HitmanAlive == 0
+            && statistics.AgentAlive == 0
             && statistics.JuggernautAlive == 0
             && statistics.WerewolfAlive == 0
             && statistics.GlitchAlive == 0) 
@@ -990,6 +1089,8 @@ namespace TownOfSushi.Patches
         public int TeamImpostorsAlive {get;set;}
         public int TeamJackalAlive {get;set;}
         public int GlitchAlive {get;set;}
+        public int HitmanAlive {get;set;}
+        public int AgentAlive {get;set;}
         public int PlaguebearerAlive {get;set;}
         public int PestilenceAlive {get;set;}
         public int WerewolfAlive {get;set;}
@@ -1002,6 +1103,8 @@ namespace TownOfSushi.Patches
         public bool TeamImpostorHasAliveLover {get;set;}
         public bool TeamJackalHasAliveLover {get;set;}
         public bool VengefulRomanticHasAliveLover {get;set;}
+        public bool HitmanHasAliveLover {get;set;}
+        public bool AgentHasAliveLover {get;set;}
         public bool WerewolfAliveHasLover {get;set;}
         public bool PestilenceAliveHasLover {get;set;}
         public bool PlaguebearerAliveHasLover {get;set;}
@@ -1030,6 +1133,8 @@ namespace TownOfSushi.Patches
             int numVRomanticsAlive = 0;
             int numWerewolfAlive = 0;
             int numSerialKillerAlive = 0;
+            int numHitmanAlive = 0;
+            int numAgentAlive = 0;
             int numCrewPowerAlive = 0;
             int numLoversAlive = 0;
             int numTotalAlive = 0;
@@ -1042,6 +1147,8 @@ namespace TownOfSushi.Patches
             bool jackalLover = false;
             bool JuggLover = false;
             bool WerewolfLover = false;
+            bool hitmanLover = false;
+            bool agentLover = false;
 
             foreach (var playerInfo in GameData.Instance.AllPlayers.GetFastEnumerator())
             {
@@ -1063,6 +1170,16 @@ namespace TownOfSushi.Patches
                         {
                             numJackalAlive++;
                             if (lover) jackalLover = true;
+                        }
+                        if (Hitman.Player != null && Hitman.Player.PlayerId == playerInfo.PlayerId) 
+                        {
+                            numHitmanAlive++;
+                            if (lover) hitmanLover = true;
+                        }
+                        if (Agent.Player != null && Agent.Player.PlayerId == playerInfo.PlayerId) 
+                        {
+                            numAgentAlive++;
+                            if (lover) agentLover = true;
                         }
                         if (VengefulRomantic.Player != null && VengefulRomantic.Player.PlayerId == playerInfo.PlayerId) 
                         {
@@ -1100,6 +1217,10 @@ namespace TownOfSushi.Patches
                         {
                             numCrewPowerAlive++;
                         }
+                        if (Tiebreaker.Player != null && Tiebreaker.Player.PlayerId == playerInfo.PlayerId && Tiebreaker.Player.IsCrew()) 
+                        {
+                            numCrewPowerAlive++;
+                        }
                         if (Sidekick.Player != null && Sidekick.Player.PlayerId == playerInfo.PlayerId) 
                         {
                             numJackalAlive++;
@@ -1126,6 +1247,8 @@ namespace TownOfSushi.Patches
 
             TeamJackalAlive = numJackalAlive;
             JuggernautAlive = numJuggAlive;
+            HitmanAlive = numHitmanAlive;
+            AgentAlive = numAgentAlive;
             PlaguebearerAlive = numberPlagueAlive;
             PestilenceAlive = numberPestiAlive;
             GlitchAlive = numGlitchAlive;
@@ -1141,6 +1264,8 @@ namespace TownOfSushi.Patches
             GlitchHasLoverAlive = glitchLover;
             PlaguebearerAliveHasLover = PbLover;
             PestilenceAliveHasLover = PestilenceLover;
+            HitmanHasAliveLover = hitmanLover;
+            AgentHasAliveLover = agentLover;
             VengefulRomanticHasAliveLover = RomanticLover;
             SerialKillerHasLover = SKLover;
             JuggernautHasAliveLover = JuggLover;

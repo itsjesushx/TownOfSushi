@@ -24,6 +24,9 @@ namespace TownOfSushi.Patches
             var glitchTimerNotUp = Glitch.MimicTimer > 0f;
             var glitchTargetNotNull = Glitch.MimicTarget != null;
 
+            var hitmanTimerNotUp = Hitman.MorphTimer > 0f;
+            var hitmanTargetNotNull = Hitman.MorphTarget != null;
+
             var dict = TagColorDict;
             dict.Clear();
             
@@ -37,6 +40,7 @@ namespace TownOfSushi.Patches
                     var playerName = text;
                     if (morphTimerNotUp && morphTargetNotNull && Morphling.Player == player) playerName = Morphling.morphTarget.Data.PlayerName;
                     if (glitchTimerNotUp && glitchTargetNotNull && Glitch.Player == player) playerName = Glitch.MimicTarget.Data.PlayerName;
+                    if (hitmanTimerNotUp && hitmanTargetNotNull && Hitman.Player == player) playerName = Hitman.MorphTarget.Data.PlayerName;
                     var nameText = player.cosmetics.nameText;
                 
                     nameText.text = Helpers.HidePlayerName(localPlayer, player) ? "" : playerName;
@@ -270,7 +274,8 @@ namespace TownOfSushi.Patches
 
         public static void MiniUpdate() 
         {
-            if (Mini.Player == null || Camouflager.CamouflageTimer > 0f || Helpers.MushroomSabotageActive() || Mini.Player == Morphling.Player && Morphling.morphTimer > 0f || Mini.Player == Glitch.Player && Glitch.MimicTimer > 0f || Mini.Player == Ninja.ninja && Ninja.isInvisble || SurveillanceMinigamePatch.nightVisionIsActive) return;
+            if (Mini.Player == null || Camouflager.CamouflageTimer > 0f || Helpers.MushroomSabotageActive() || Mini.Player == Morphling.Player && Morphling.morphTimer > 0f || Mini.Player == Glitch.Player && Glitch.MimicTimer > 0f 
+            || Mini.Player == Hitman.Player && Hitman.MorphTimer > 0f || Mini.Player == Ninja.ninja && Ninja.isInvisble || SurveillanceMinigamePatch.nightVisionIsActive) return;
                 
             float growingProgress = Mini.GrowingProgress();
             float scale = growingProgress * 0.35f + 0.35f;
@@ -292,6 +297,8 @@ namespace TownOfSushi.Patches
                 Morphling.Player.cosmetics.nameText.text += suffix;
             if (Glitch.Player != null && Glitch.MimicTarget == Mini.Player && Glitch.MimicTimer > 0f)
                 Glitch.Player.cosmetics.nameText.text += suffix;
+            if (Hitman.Player != null && Hitman.MorphTarget == Mini.Player && Hitman.MorphTimer > 0f)
+                Hitman.Player.cosmetics.nameText.text += suffix;
         }
 
         static void UpdateImpostorKillButton(HudManager __instance) 

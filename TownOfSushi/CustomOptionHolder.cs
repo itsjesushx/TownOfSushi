@@ -296,6 +296,15 @@ namespace TownOfSushi
         public static CustomOption thiefCanUseVents;
         public static CustomOption thiefCanKillSheriff;
 
+        public static CustomOption AgentSpawnRate;
+        public static CustomOption HitmanCooldown;
+        public static CustomOption HitmanCanUseVents;
+        public static CustomOption HitmanDragCooldown;
+        public static CustomOption HitmanMorphDuration;
+        public static CustomOption HitmanMorphCooldown;
+        public static CustomOption HitmanDragSpeed;
+        public static CustomOption HitmanSpawnsWithNoAgent;
+        public static CustomOption AgentCanUseVents;
 
         public static CustomOption trapperSpawnRate;
         public static CustomOption trapperCooldown;
@@ -547,6 +556,16 @@ namespace TownOfSushi
             PlaguebearerCooldown = CustomOption.Create(2929, Types.NeutralKiller, "Infect Cooldown", 30f, 10f, 60f, 2.5f, PlaguebearerSpawnRate, Format: "s");
             PestilenceCooldown = CustomOption.Create(2928, Types.NeutralKiller, "Pestilence Kill Cooldown", 30f, 10f, 60f, 2.5f, PlaguebearerSpawnRate, Format: "s");
             PestilenceCanUseVents = CustomOption.Create(2930, Types.NeutralKiller, "Pestilence Can Use Vents", true, PlaguebearerSpawnRate);
+
+            AgentSpawnRate = CustomOption.Create(2931, Types.NeutralKiller, ColorString(Agent.Color, "Agent"), 0f, 0f, 100f, 10f, null, true, Format: "%");
+            AgentCanUseVents = CustomOption.Create(2939, Types.NeutralKiller, "Agent Can Use Vents", true, AgentSpawnRate);
+            HitmanCooldown = CustomOption.Create(2932, Types.NeutralKiller, "Hitman Kill Cooldown", 30f, 10f, 60f, 2.5f, AgentSpawnRate, Format: "s");
+            HitmanCanUseVents = CustomOption.Create(2933, Types.NeutralKiller, "Hitman Can Use Vents", true, AgentSpawnRate);
+            HitmanDragCooldown = CustomOption.Create(2934, Types.NeutralKiller, "Hitman Drag Cooldown", 30f, 10f, 60f, 2.5f, AgentSpawnRate, Format: "s");
+            HitmanMorphDuration = CustomOption.Create(2935, Types.NeutralKiller, "Hitman Morph Duration", 10f, 1f, 20f, 0.5f, AgentSpawnRate, Format: "s");
+            HitmanMorphCooldown = CustomOption.Create(2936, Types.NeutralKiller, "Hitman Morph Cooldown", 30f, 10f, 60f, 2.5f, AgentSpawnRate, Format: "s");
+            HitmanDragSpeed = CustomOption.Create(2937, Types.NeutralKiller, "Hitman Drag Speed", 1f, 0.5f, 3f, 0.1f, AgentSpawnRate, Format: "x");
+            HitmanSpawnsWithNoAgent = CustomOption.Create(2938, Types.NeutralKiller, "Hitman Can Spawn With No Agent In Game", false, AgentSpawnRate);
 
             jackalSpawnRate = CustomOption.Create(220, Types.NeutralKiller, ColorString(Jackal.Color, "Jackal"), 0f, 0f, 100f, 10f, null, true, Format: "%");
             jackalKillCooldown = CustomOption.Create(221, Types.NeutralKiller, "Team Jackal Kill Cooldown", 30f, 10f, 60f, 2.5f, jackalSpawnRate, Format: "s");

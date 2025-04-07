@@ -40,7 +40,8 @@ namespace TownOfSushi.Modules
                         PlayerControl target = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(x => x.Data.PlayerName.Equals(playerName));
                         if (target != null && AmongUsClient.Instance != null && AmongUsClient.Instance.CanBan()) {
                             var client = AmongUsClient.Instance.GetClient(target.OwnerId);
-                            if (client != null) {
+                            if (client != null) 
+                            {
                                 AmongUsClient.Instance.KickPlayer(client.Id, true);
                                 handled = true;
                             }
@@ -66,7 +67,7 @@ namespace TownOfSushi.Modules
                         }
                         col = Math.Clamp(col, 0, Palette.PlayerColors.Length - 1);
                         PlayerControl.LocalPlayer.SetColor(col);
-                        __instance.AddChat(PlayerControl.LocalPlayer, "Changed color succesfully");;
+                        __instance.AddChat(PlayerControl.LocalPlayer, "Changed color succesfully");
                     } 
                 }
 

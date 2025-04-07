@@ -85,7 +85,7 @@ namespace TownOfSushi
                 Plugin = (BasePlugin) Activator.CreateInstance(pluginType!);
                 Plugin.Load();
 
-                Version = pluginType.GetCustomAttribute<BepInPlugin>().Version.BaseVersion();;
+                Version = pluginType.GetCustomAttribute<BepInPlugin>().Version.BaseVersion();
 
                 IL2CPPChainloader.Instance.Plugins[SUBMERGED_GUID] = new();
                 return true;
