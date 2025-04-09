@@ -1416,7 +1416,7 @@ namespace TownOfSushi
             if (!settingsTMPs[0]) return;
             foreach (var tmp in settingsTMPs) tmp.text = "";
             var settingsString = GameOptionsDataPatch.buildAllOptions(hideExtras: true);
-            var blocks = settingsString.Split("\n\n", StringSplitOptions.RemoveEmptyEntries); ;
+            var blocks = settingsString.Split("\n\n", StringSplitOptions.RemoveEmptyEntries);
             string curString = "";
             string curBlock;
             int j = 0;

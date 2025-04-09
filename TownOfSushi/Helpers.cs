@@ -67,7 +67,8 @@ namespace TownOfSushi
                 var length = stream.Length;
                 var byteTexture = new Il2CppStructArray<byte>(length);
                 stream.Read(new Span<byte>(IntPtr.Add(byteTexture.Pointer, IntPtr.Size * 4).ToPointer(), (int) length));
-                if (path.Contains("HorseHats")) {
+                if (path.Contains("HorseHats")) 
+                {
                     byteTexture = new Il2CppStructArray<byte>(byteTexture.Reverse().ToArray());
                 }
                 ImageConversion.LoadImage(texture, byteTexture, false);
@@ -892,6 +893,7 @@ namespace TownOfSushi
                 || (Glitch.Player != null && Glitch.Player.PlayerId == player.PlayerId)
                 || (Werewolf.Player != null && Werewolf.Player.PlayerId == player.PlayerId)
                 || (Juggernaut.Player != null && Juggernaut.Player.PlayerId == player.PlayerId)
+                || (Hitman.Player != null && Hitman.Player.PlayerId == player.PlayerId)
                 || (Pestilence.Player != null && Pestilence.Player.PlayerId == player.PlayerId)
                 || (VengefulRomantic.Player != null && VengefulRomantic.Player.PlayerId == player.PlayerId)
                 || (SerialKiller.Player != null && SerialKiller.HasImpostorVision && SerialKiller.Player.PlayerId == player.PlayerId)

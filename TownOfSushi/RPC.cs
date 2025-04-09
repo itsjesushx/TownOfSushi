@@ -14,8 +14,6 @@ using TownOfSushi.Utilities;
 using AmongUs.Data;
 using AmongUs.GameOptions;
 using Assets.CoreScripts;
-using Reactor.Utilities;
-using System.Collections;
 using Reactor.Networking.Extensions;
 using Reactor.Utilities.Extensions;
 
@@ -33,16 +31,16 @@ namespace TownOfSushi
             Portal.ClearPortals();
             Bloodytrail.ResetSprites();
             Trap.ClearTraps();
-            ClearAndReloadMapOptions();
-            ClearAndReloadRoles();
-            ClearGameHistory();
-            SetCustomButtonCooldowns();
-            ReloadPluginOptions();
             Helpers.ToggleZoom(reset : true);
             GameStartManagerPatch.GameStartManagerUpdatePatch.startingTimer = 0;
             SurveillanceMinigamePatch.nightVisionOverlays = null;
             EventUtility.ClearAndReload();
             MapBehaviourPatch.ClearAndReload();
+            ClearAndReloadMapOptions();
+            ClearAndReloadRoles();
+            ClearGameHistory();
+            SetCustomButtonCooldowns();
+            ReloadPluginOptions();
         }
 
         public static void HandleShareOptions(byte numberOfOptions, MessageReader reader) 
@@ -287,9 +285,11 @@ namespace TownOfSushi
             }
         }
 
-        public static void SetModifier(byte modifierId, byte playerId, byte flag) {
+        public static void SetModifier(byte modifierId, byte playerId, byte flag) 
+        {
             PlayerControl player = Helpers.PlayerById(playerId); 
-            switch ((RoleId)modifierId) {
+            switch ((RoleId)modifierId) 
+            {
                 case RoleId.Bait:
                     Bait.Players.Add(player);
                     break;
@@ -415,7 +415,7 @@ namespace TownOfSushi
             Engineer.remainingFixes--;
             if (Helpers.ShouldShowGhostInfo()) 
             {
-                Helpers.ShowFlash(Engineer.Color, 0.5f, "Engineer Fix"); ;
+                Helpers.ShowFlash(Engineer.Color, 0.5f, "Engineer Fix");
             }
         }
 

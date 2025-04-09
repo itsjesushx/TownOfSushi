@@ -541,7 +541,7 @@ namespace TownOfSushi
                             {
                                 Vector2 playerPosition = PlayerControl.LocalPlayer.GetTruePosition();
                                 Vector2 deadBodyPosition = deadBody.TruePosition;
-                                if (Vector2.Distance(deadBodyPosition, playerPosition) <= PlayerControl.LocalPlayer.MaxReportDistance && PlayerControl.LocalPlayer.CanMove && !PhysicsHelpers.AnythingBetween(playerPosition, deadBodyPosition, Constants.ShipAndObjectsMask, false) && Undertaker.CurrentTarget == null)
+                                if (Vector2.Distance(deadBodyPosition, playerPosition) <= PlayerControl.LocalPlayer.MaxReportDistance && PlayerControl.LocalPlayer.CanMove && !PhysicsHelpers.AnythingBetween(playerPosition, deadBodyPosition, Constants.ShipAndObjectsMask, false) && Hitman.BodyTarget == null)
                                 {
                                     NetworkedPlayerInfo playerInfo = GameData.Instance.GetPlayerById(deadBody.ParentId);
                                     if (playerInfo == null) continue;

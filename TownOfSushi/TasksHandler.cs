@@ -9,7 +9,8 @@ namespace TownOfSushi
     public static class TasksHandler 
     {
 
-        public static Tuple<int, int> TaskInfo(NetworkedPlayerInfo playerInfo) {
+        public static Tuple<int, int> TaskInfo(NetworkedPlayerInfo playerInfo) 
+        {
             int TotalTasks = 0;
             int CompletedTasks = 0;
             if (playerInfo != null && !playerInfo.Disconnected && playerInfo.Tasks != null &&

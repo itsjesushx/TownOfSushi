@@ -46,7 +46,7 @@ namespace TownOfSushi
             meetingsCount = 0;
             CamsToAdd = new List<SurvCamera>();
             VentsToSeal = new List<Vent>();
-            BeanIcons = new Dictionary<byte, PoolablePlayer>(); ;
+            BeanIcons = new Dictionary<byte, PoolablePlayer>();
 
             maxNumberOfMeetings = Mathf.RoundToInt(CustomOptionHolder.maxNumberOfMeetings.GetSelection());
             blockSkippingInEmergencyMeetings = CustomOptionHolder.blockSkippingInEmergencyMeetings.GetBool();

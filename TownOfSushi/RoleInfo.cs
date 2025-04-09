@@ -18,7 +18,7 @@ namespace TownOfSushi
         public Factions FactionId;
         /*public bool isImpostor => Color == Palette.ImpostorRed && !(RoleId == RoleId.Spy);
         public static Dictionary<RoleId, RoleInfo> RoleInfoById = new();*/
-        public RoleInfo(string name, Color Color, string IntroDescription, string ShortDescription, RoleId RoleId, Factions FactionId, string RoleDescription) 
+        public RoleInfo(string name, Color Color, string IntroDescription, string ShortDescription, RoleId RoleId, Factions FactionId, string RoleDescription)
         {
             this.Color = Color;
             this.Name = name;
@@ -351,7 +351,7 @@ namespace TownOfSushi
                     if (p == Arsonist.Player)
                         roleName = roleName + Helpers.ColorString(Arsonist.Color, $" ({PlayerControl.AllPlayerControls.ToArray().Count(x => { return x != Arsonist.Player && !x.Data.IsDead && !x.Data.Disconnected && !Arsonist.dousedPlayers.Any(y => y.PlayerId == x.PlayerId); })} left)");
                     if (p == Jackal.fakeSidekick)
-                        roleName = Helpers.ColorString(Sidekick.Color, $" (Fake Sidekick)") + roleName;
+                        roleName = Helpers.ColorString(Sidekick.Color, $"(Fake Sidekick) ") + roleName;
 
                     // Death Reason on Ghosts
                     if (p.Data.IsDead) {
@@ -359,7 +359,8 @@ namespace TownOfSushi
                         var deadPlayer = GameHistory.deadPlayers.FirstOrDefault(x => x.player.PlayerId == p.PlayerId);
 
                         Color killerColor = new();
-                        if (deadPlayer != null && deadPlayer.killerIfExisting != null) {
+                        if (deadPlayer != null && deadPlayer.killerIfExisting != null) 
+                        {
                             killerColor = GetRoleInfoForPlayer(deadPlayer.killerIfExisting, false).FirstOrDefault().Color;
                         }
 

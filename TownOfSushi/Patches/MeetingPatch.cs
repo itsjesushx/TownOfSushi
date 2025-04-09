@@ -885,6 +885,21 @@ namespace TownOfSushi.Patches
             }
         }
 
+        /// Patch to fix the guessing kill animation - Class from Town of Us-R
+        [HarmonyPatch(typeof(OverlayKillAnimation), nameof(OverlayKillAnimation.CoShow))]
+        public static class KillAnimationPatches
+        {
+            [HarmonyPrefix]
+            public static void SetKillAnimationMaskInteraction(OverlayKillAnimation __instance)
+            {
+                if (MeetingHud.Instance)
+                {
+                    __instance.GetComponentsInChildren<SpriteRenderer>(true)
+                        .ToList().ForEach(x => x.maskInteraction = SpriteMaskInteraction.None);
+                }
+            }
+        }
+
         [HarmonyPrefix]
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.StartMeeting))]
         public static void MeetingHudIntroPrefix() 
