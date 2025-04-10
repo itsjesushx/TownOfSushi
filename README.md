@@ -31,7 +31,7 @@ Even more roles are coming soon.
 | [Witch](#witch) | [Tracker](#tracker) | [Serial Killer](#serial-killer)  | [Armored](#armored) |
 | [Ninja](#ninja) | [Snitch](#snitch) | [Romantic](#romantic)   |  [Sleuth](#sleuth)  |
 | [Yo-Yo](#yoyo)  | [Spy](#spy) | [Werewolf](#werewolf)   |  |
-| | [Portalmaker](#portalmaker) | [Amnesiac](#amnesiac) |  |
+| [Undertaker](#undertaker) | [Portalmaker](#portalmaker) | [Amnesiac](#amnesiac) |  |
 | | [Vigilante](#vigilante) |  [Plaguebearer](#plaguebearer) |  |
 |  | [Medium](#medium) | [Pestilence](#plaguebearer)  |  |
 |  |[Veteran](#veteran)    | [Agent](#agent)  |  |
@@ -498,6 +498,21 @@ The Yo-Yo may also have access to a mobile admin table, depending on the setting
 | Has Admin Table | -
 | Admin Table Cooldown | -
 | Silhouette Visibility | -
+-----------------------
+
+## Undertaker
+### **Faction: Impostors**
+
+The Undertaker is an Impostor that can drag and drop bodies.\
+They can vent while dragging bodies, the body will be visible on top of the vent the Undertaker is hidden on.
+
+### Game Options
+| Name | Description |
+|----------|:-------------:|
+| Undertaker Spawn Chance | -
+| Undertaker Drag Cooldown | -
+| Undertaker Speed While Dragging | -
+
 -----------------------
 
 ## Guesser
