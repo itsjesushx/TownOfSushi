@@ -1,18 +1,11 @@
-using HarmonyLib;
 using Hazel;
-using static TownOfSushi.TownOfSushi;
 using static TownOfSushi.HudManagerStartPatch;
 using static TownOfSushi.GameHistory;
-using static TownOfSushi.MapOptions;
-using TownOfSushi.Objects;
-using TownOfSushi.Patches;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using System;
-using TownOfSushi.Utilities;
 using AmongUs.Data;
-using AmongUs.GameOptions;
 using Assets.CoreScripts;
 using Reactor.Networking.Extensions;
 using Reactor.Utilities.Extensions;

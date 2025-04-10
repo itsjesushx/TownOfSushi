@@ -1,7 +1,4 @@
 using Discord;
-using HarmonyLib;
-using TownOfSushi;
-
 public static class DiscordStatusManager
 {
     [HarmonyPatch(typeof(ActivityManager), nameof(ActivityManager.UpdateActivity))]

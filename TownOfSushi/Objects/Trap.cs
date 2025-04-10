@@ -2,7 +2,7 @@ using Hazel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using TownOfSushi.Utilities;
+
 using UnityEngine;
 
 namespace TownOfSushi.Objects 

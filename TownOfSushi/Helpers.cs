@@ -5,12 +5,12 @@ using System.Reflection;
 using UnityEngine;
 using System.Linq;
 using static TownOfSushi.TownOfSushi;
-using HarmonyLib;
+
 using Hazel;
-using TownOfSushi.Utilities;
+
 using Reactor.Utilities.Extensions;
 using AmongUs.GameOptions;
-using TownOfSushi.Patches;
+
 using System.Text;
 using System.Collections;
 using BepInEx.Unity.IL2CPP.Utils;

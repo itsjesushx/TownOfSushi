@@ -1,6 +1,6 @@
 
 using AmongUs.Data;
-using HarmonyLib;
+
 using InnerNet;
 using System.Text.RegularExpressions;
 using UnityEngine;
@@ -15,7 +15,6 @@ namespace TownOfSushi.Patches
 
         [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.JoinGame))]
         [HarmonyPostfix]
-
         public static void Postfix(InnerNetClient __instance) 
         {
             GameId = __instance.GameId;
@@ -47,9 +46,11 @@ namespace TownOfSushi.Patches
             if (code2.Length != 6 || !Regex.IsMatch(code2, @"^[a-zA-Z]+$"))
                 code2 = "";
             string code2Disp = DataManager.Settings.Gameplay.StreamerMode ? "****" : code2.ToUpper();
-            if (GameId != 0 && Input.GetKeyDown(KeyCode.LeftShift)) {
+            if (GameId != 0 && Input.GetKeyDown(KeyCode.LeftShift)) 
+            {
                 __instance.StartCoroutine(AmongUsClient.Instance.CoJoinOnlineGameFromCode(GameId));
-            } else if (Input.GetKeyDown(KeyCode.RightShift) && code2 != "") {
+            } else if (Input.GetKeyDown(KeyCode.RightShift) && code2 != "") 
+            {
                 __instance.StartCoroutine(AmongUsClient.Instance.CoJoinOnlineGameFromCode(GameCode.GameNameToInt(code2)));
             }
 

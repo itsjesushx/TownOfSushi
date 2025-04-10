@@ -4,17 +4,26 @@ global using Il2CppInterop.Runtime.InteropTypes;
 global using Il2CppInterop.Runtime.InteropTypes.Arrays;
 global using Il2CppInterop.Runtime.Injection;
 
+global using TownOfSushi.Utilities;
+global using TownOfSushi.Patches;
+global using TownOfSushi.Objects;
+global using static TownOfSushi.Helpers;
+global using static TownOfSushi.TownOfSushi;
+global using TownOfSushi;
+global using HarmonyLib;
+global using static TownOfSushi.MapOptions;
+global using AmongUs.GameOptions;
+
 using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Unity.IL2CPP;
-using HarmonyLib;
+
 using Hazel;
 using System.Collections.Generic;
 using System.Linq;
 using System;
 using UnityEngine;
 using TownOfSushi.Modules;
-using TownOfSushi.Utilities;
 using Il2CppSystem.Security.Cryptography;
 using Il2CppSystem.Text;
 using Reactor.Networking.Attributes;

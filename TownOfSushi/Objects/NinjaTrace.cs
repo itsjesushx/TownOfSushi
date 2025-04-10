@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using TownOfSushi.Utilities;
+
 using UnityEngine;
 
 namespace TownOfSushi.Objects 

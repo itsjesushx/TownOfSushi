@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 using System.Collections.Generic;
-using TownOfSushi.Utilities;
+
 using static TownOfSushi.TownOfSushi;
 
 namespace TownOfSushi.Objects 

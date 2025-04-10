@@ -1,12 +1,12 @@
   
-using HarmonyLib;
+
 using UnityEngine;
 using System.Reflection;
 using System.Collections.Generic;
 using Hazel;
 using System;
 
-using TownOfSushi.Utilities;
+
 using System.Linq;
 using Reactor.Utilities.Extensions;
 
@@ -85,7 +85,7 @@ namespace TownOfSushi.Patches
                     else if (!playerVersions.ContainsKey(client.Id))  
                     {
                         versionMismatch = true;
-                        message += $"<color=#FF0000FF>{client.Character.Data.PlayerName} has a different or no version of Town Of Sushi\n</color>";
+                        message += $"<color=#FF0000FF>{client.Character.Data.PlayerName} has a different version of Town Of Sushi or doesn't have Town of Sushi installed\n</color>";
                     } 
                     else 
                     {
@@ -103,7 +103,7 @@ namespace TownOfSushi.Patches
                         } 
                         else if (!PV.GuidMatches()) 
                         { // version presumably matches, check if Guid matches
-                            message += $"<color=#FF0000FF>{client.Character.Data.PlayerName} has a modified version of TOS v{playerVersions[client.Id].version.ToString()} <size=30%>({PV.guid.ToString()})</size>\n</color>";
+                            message += $"<color=#FF0000FF>{client.Character.Data.PlayerName} has a modified version of Town Of Sushi v{playerVersions[client.Id].version.ToString()} <size=30%>({PV.guid.ToString()})</size>\n</color>";
                             versionMismatch = true;
                         }
                     }
@@ -156,7 +156,8 @@ namespace TownOfSushi.Patches
                             startingTimer = 0;
                         }
                         startButtonPassiveButton.OnClick.AddListener((Action)(() => StopStartFunc()));
-                        __instance.StartCoroutine(Effects.Lerp(.1f, new System.Action<float>((p) => {
+                        __instance.StartCoroutine(Effects.Lerp(.1f, new System.Action<float>((p) => 
+                        {
                             startButtonText.text = "";
                         })));
                         

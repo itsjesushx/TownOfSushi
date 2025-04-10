@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using HarmonyLib;
+
 using Hazel;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using System.Collections;
-using TownOfSushi.Patches;
+
 using static TownOfSushi.TownOfSushi;
 using UnityEngine.UI;
 using Reactor.Utilities.Extensions;

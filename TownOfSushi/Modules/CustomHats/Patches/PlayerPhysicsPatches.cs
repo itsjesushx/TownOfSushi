@@ -1,5 +1,5 @@
 ﻿using TownOfSushi.Modules.CustomHats.Extensions;
-using HarmonyLib;
+
 
 namespace TownOfSushi.Modules.CustomHats.Patches;
 

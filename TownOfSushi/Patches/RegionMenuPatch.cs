@@ -23,11 +23,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-using HarmonyLib;
+
 using UnityEngine;
 using UnityEngine.UI;
 using System;
-using TownOfSushi.Utilities;
+
 using UnityEngine.Events;
 
 namespace TownOfSushi.Patches 

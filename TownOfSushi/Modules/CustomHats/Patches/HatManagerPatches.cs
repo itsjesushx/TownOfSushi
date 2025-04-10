@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Cpp2IL.Core.Extensions;
-using HarmonyLib;
-using TownOfSushi;
+
 
 namespace TownOfSushi.Modules.CustomHats.Patches;
 

@@ -1,11 +1,11 @@
-using HarmonyLib;
+
 using System;
 using static TownOfSushi.TownOfSushi;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using Hazel;
-using TownOfSushi.Utilities;
+
 using TownOfSushi.Modules.BetterMaps;
 using static TownOfSushi.SubmergedCompatibility;
 

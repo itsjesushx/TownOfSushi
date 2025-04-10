@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using HarmonyLib;
+
 using PowerTools;
 using TownOfSushi;
 using TownOfSushi.Modules.CustomHats.Extensions;

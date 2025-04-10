@@ -1,13 +1,9 @@
-using HarmonyLib;
+
 using Hazel;
 using System;
 using UnityEngine;
-using static TownOfSushi.TownOfSushi;
-using TownOfSushi.Objects;
 using System.Linq;
 using System.Collections.Generic;
-using TownOfSushi.Utilities;
-using TownOfSushi.Patches;
 
 namespace TownOfSushi
 {
@@ -686,8 +682,7 @@ namespace TownOfSushi
                 { 
                     return SerialKiller.Player != null && SerialKiller.Player == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead; },
                 () => 
-                { 
-                    SerialKillerStabButton.actionButton.OverrideText("STAB");
+                {
                     return PlayerControl.LocalPlayer.CanMove; },
                 () =>
                 {
@@ -709,7 +704,8 @@ namespace TownOfSushi
                     SerialKillerStabButton.Timer = SerialKillerStabButton.MaxTimer; 
                     SerialKiller.Stabbing = false; 
                     SerialKiller.HasImpostorVision = false; 
-                }
+                },
+                buttonText: "STAB"
             );
 
             AmnesiacButton = new CustomButton(
@@ -1057,7 +1053,8 @@ namespace TownOfSushi
                 Romantic.GetButtonSprite(),
                 CustomButton.ButtonPositions.lowerRowRight,
                 __instance,
-                KeyCode.F
+                KeyCode.F,
+                buttonText: "PICK LOVER"
             );
 
             

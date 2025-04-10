@@ -4,10 +4,10 @@ using BepInEx.Configuration;
 using System;
 using System.IO;
 using System.Linq;
-using HarmonyLib;
+
 using Hazel;
 using System.Text;
-using TownOfSushi.Utilities;
+
 using static TownOfSushi.TownOfSushi;
 using static TownOfSushi.CustomOption;
 using Reactor.Utilities.Extensions;

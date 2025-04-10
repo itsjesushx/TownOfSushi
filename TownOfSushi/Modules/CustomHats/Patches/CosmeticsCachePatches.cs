@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+﻿
 using TownOfSushi;
 
 namespace TownOfSushi.Modules.CustomHats.Patches;

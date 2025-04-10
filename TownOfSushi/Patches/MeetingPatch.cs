@@ -1,12 +1,12 @@
-using HarmonyLib;
+
 using Hazel;
 using System.Collections.Generic;
 using System.Linq;
 using static TownOfSushi.TownOfSushi;
 using static TownOfSushi.MapOptions;
-using TownOfSushi.Objects;
+
 using System;
-using TownOfSushi.Utilities;
+
 using UnityEngine;
 using Innersloth.Assets;
 using TMPro;
@@ -753,10 +753,12 @@ namespace TownOfSushi.Patches
             {
                 RoomTracker roomTracker = FastDestroyableSingleton<HudManager>.Instance?.roomTracker;
                 byte roomId = Byte.MinValue;
-                if (roomTracker != null && roomTracker.LastRoom != null) {
+                if (roomTracker != null && roomTracker.LastRoom != null) 
+                {
                     roomId = (byte)roomTracker.LastRoom?.RoomId;
                 }
-                if (Snitch.Player != null && roomTracker != null) {
+                if (Snitch.Player != null && roomTracker != null) 
+                {
                     MessageWriter roomWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareRoom, Hazel.SendOption.Reliable, -1);
                     roomWriter.Write(PlayerControl.LocalPlayer.PlayerId);
                     roomWriter.Write(roomId);
@@ -872,7 +874,8 @@ namespace TownOfSushi.Patches
 
         [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Update))]
         class MeetingHudUpdatePatch {
-            static void Postfix(MeetingHud __instance) {
+            static void Postfix(MeetingHud __instance) 
+            {
                 // Deactivate skip Button if skipping on emergency meetings is disabled
                 if (target == null && blockSkippingInEmergencyMeetings)
                     __instance.SkipVoteButton.gameObject.SetActive(false);

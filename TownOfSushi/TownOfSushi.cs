@@ -1,10 +1,10 @@
 using System.Linq;
-using HarmonyLib;
+
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using TownOfSushi.Objects;
-using TownOfSushi.Utilities;
+
+
 using static TownOfSushi.TownOfSushi;
 using AmongUs.Data;
 using Hazel;
@@ -128,7 +128,7 @@ namespace TownOfSushi
             public static Sprite GetButtonSprite() 
             {
                 if (ButtonSprite) return ButtonSprite;
-                ButtonSprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.Stab.png", 80f);
+                ButtonSprite = Helpers.LoadSpriteFromResources("TownOfSushi.Resources.Stab.png", 115f);
                 return ButtonSprite;
             }
             public static void ClearAndReload()

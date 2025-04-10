@@ -1,4 +1,4 @@
-using HarmonyLib;
+
 using System;
 using Hazel;
 using UnityEngine;
@@ -8,8 +8,8 @@ using static TownOfSushi.GameHistory;
 using static TownOfSushi.MapOptions;
 using System.Collections.Generic;
 
-using TownOfSushi.Utilities;
-using TownOfSushi.Objects;
+
+
 
 using Reactor.Utilities.Extensions;
 using AmongUs.GameOptions;
@@ -290,12 +290,12 @@ namespace TownOfSushi.Patches {
             // Potentially deactivate emergency button if 2 players are left alive
             if (MapOptions.LimitAbilities && Helpers.TwoPlayersAlive() && Tiebreaker.Player != null && Tiebreaker.Player.IsCrew()) 
             {
-                CanCallEmergency = true;
+                CanCallEmergency = false;
+                statusText = "Two Players Alive Only. Impossible to start a meeting!";
             }
             else 
             {
-                CanCallEmergency = false;
-                statusText = "Two Players Alive Only. Impossible to start a meeting!";
+                CanCallEmergency = true;
             }
 
             if (!CanCallEmergency) 

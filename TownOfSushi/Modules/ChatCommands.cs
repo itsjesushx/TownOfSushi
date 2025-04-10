@@ -1,7 +1,7 @@
 using System;
-using HarmonyLib;
+
 using System.Linq;
-using TownOfSushi.Utilities;
+
 using Hazel;
 
 namespace TownOfSushi.Modules 

@@ -1,11 +1,11 @@
-using HarmonyLib;
+
 using Hazel;
 using System.Collections.Generic;
 using System.Linq;
 using static TownOfSushi.TownOfSushi;
-using TownOfSushi.Objects;
+
 using System;
-using TownOfSushi.Utilities;
+
 using UnityEngine;
 
 namespace TownOfSushi.Patches 

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using static TownOfSushi.TownOfSushi;
 using UnityEngine;
-using TownOfSushi.Utilities;
+
 
 namespace TownOfSushi
 {

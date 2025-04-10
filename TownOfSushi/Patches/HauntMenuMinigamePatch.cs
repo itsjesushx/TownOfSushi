@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+﻿
 using AmongUs.GameOptions;
 using System.Linq;
 using System;
