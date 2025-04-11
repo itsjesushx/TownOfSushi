@@ -485,7 +485,7 @@ namespace TownOfSushi.Patches
             }
             else if (AdditionalTempData.winCondition == WinCondition.LoversSoloWin) 
             {
-                textRenderer.text = "Love Couple Wins!";
+                textRenderer.text = "Lovers Win!";
                 textRenderer.color = Lovers.Color;
                 __instance.BackgroundBar.material.SetColor("_Color", Lovers.Color);
             }
@@ -497,19 +497,19 @@ namespace TownOfSushi.Patches
             }
             else if (AdditionalTempData.winCondition == WinCondition.JackalWin) 
             {
-                textRenderer.text = "The Team Jackal Win!";
+                textRenderer.text = "Team Jackal Win!";
                 textRenderer.color = Jackal.Color;
                 __instance.BackgroundBar.material.SetColor("_Color", Jackal.Color);
             }
             else if (AdditionalTempData.winCondition == WinCondition.GlitchWin) 
             {
-                textRenderer.text = "The Glitch Wins!";
+                textRenderer.text = "Glitch Wins!";
                 textRenderer.color = Glitch.Color;
                 __instance.BackgroundBar.material.SetColor("_Color", Glitch.Color);
             }
             else if (AdditionalTempData.winCondition == WinCondition.SerialKillerWin) 
             {
-                textRenderer.text = "Serial Kille Wins!";
+                textRenderer.text = "Serial Killer Wins!";
                 textRenderer.color = SerialKiller.Color;
                 __instance.BackgroundBar.material.SetColor("_Color", SerialKiller.Color);
             }

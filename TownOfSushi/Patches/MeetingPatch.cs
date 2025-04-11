@@ -888,7 +888,6 @@ namespace TownOfSushi.Patches
             }
         }
 
-        /// Patch to fix the guessing kill animation - Class from Town of Us-R
         [HarmonyPatch(typeof(OverlayKillAnimation), nameof(OverlayKillAnimation.CoShow))]
         public static class KillAnimationPatches
         {
