@@ -1,0 +1,76 @@
+﻿using MiraAPI.GameOptions;
+using MiraAPI.Modifiers;
+using MiraAPI.Utilities.Assets;
+using TownOfSushi.Modifiers;
+using TownOfSushi.Modifiers.Impostor;
+using TownOfSushi.Modifiers.Neutral;
+using TownOfSushi.Options.Roles.Impostor;
+using TownOfSushi.Roles.Impostor;
+using UnityEngine;
+
+namespace TownOfSushi.Buttons.Impostor;
+
+public sealed class SwooperSwoopButton : TownOfSushiRoleButton<SwooperRole>, IAftermathableButton
+{
+    public override Color TextOutlineColor => TownOfSushiColors.Impostor;
+    public override string Name => "Swoop";
+    public override string Keybind => Keybinds.SecondaryAction;
+    public override float Cooldown => OptionGroupSingleton<SwooperOptions>.Instance.SwoopCooldown + MapCooldown;
+    public override float EffectDuration => OptionGroupSingleton<SwooperOptions>.Instance.SwoopDuration;
+    public override int MaxUses => (int)OptionGroupSingleton<SwooperOptions>.Instance.MaxSwoops;
+    public override LoadableAsset<Sprite> Sprite => TosImpAssets.SwoopSprite;
+
+    public override bool CanUse()
+    {
+        return ((Timer <= 0 && !EffectActive) || (EffectActive && Timer <= EffectDuration - 2f)) && !PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>() && !PlayerControl.LocalPlayer.HasModifier<DisabledModifier>();
+    }
+
+    public override void ClickHandler()
+    {
+        if (!CanUse())
+        {
+            return;
+        }
+
+        OnClick();
+        Button?.SetDisabled();
+        if (EffectActive)
+        {
+            Timer = Cooldown;
+            EffectActive = false;
+        }
+        else if (HasEffect)
+        {
+            EffectActive = true;
+            Timer = EffectDuration;
+        }
+        else
+        {
+            Timer = Cooldown;
+        }
+    }
+
+    protected override void OnClick()
+    {
+        if (!EffectActive)
+        {
+            PlayerControl.LocalPlayer.RpcAddModifier<SwoopModifier>();
+            UsesLeft--;
+            if (MaxUses != 0) Button?.SetUsesRemaining(UsesLeft);
+        }
+        else
+        {
+            OnEffectEnd();
+        }
+    }
+
+    public override void OnEffectEnd()
+    {
+        if (!PlayerControl.LocalPlayer.HasModifier<SwoopModifier>())
+        {
+            return;
+        }
+
+        PlayerControl.LocalPlayer.RpcRemoveModifier<SwoopModifier>();
+    }
+}

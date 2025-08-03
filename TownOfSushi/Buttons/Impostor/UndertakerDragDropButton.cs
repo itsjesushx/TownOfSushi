@@ -1,0 +1,91 @@
+﻿using MiraAPI.GameOptions;
+using MiraAPI.Modifiers;
+using MiraAPI.Utilities;
+using MiraAPI.Utilities.Assets;
+using TownOfSushi.Modifiers.Impostor;
+using TownOfSushi.Options.Roles.Impostor;
+using TownOfSushi.Roles.Impostor;
+using UnityEngine;
+
+namespace TownOfSushi.Buttons.Impostor;
+
+public sealed class UndertakerDragDropButton : TownOfSushiRoleButton<UndertakerRole, DeadBody>, IAftermathableBodyButton
+{
+    public override string Name => "Drag";
+    public override string Keybind => Keybinds.SecondaryAction;
+    public override Color TextOutlineColor => TownOfSushiColors.Impostor;
+    public override float Cooldown => OptionGroupSingleton<UndertakerOptions>.Instance.DragCooldown + MapCooldown;
+    public override LoadableAsset<Sprite> Sprite => TosImpAssets.DragSprite;
+
+    public override DeadBody? GetTarget()
+    {
+        return PlayerControl.LocalPlayer?.GetNearestDeadBody(PlayerControl.LocalPlayer.MaxReportDistance / 4f);
+    }
+
+    protected override void OnClick()
+    {
+        if (Target == null)
+        {
+            return;
+        }
+
+        if (PlayerControl.LocalPlayer.HasModifier<UndertakerDragModifier>())
+        {
+            UndertakerRole.RpcStopDragging(PlayerControl.LocalPlayer, Target.transform.position);
+            Timer = Cooldown;
+        }
+        else
+        {
+            UndertakerRole.RpcStartDragging(PlayerControl.LocalPlayer, Target.ParentId);
+        }
+    }
+
+    public override void ClickHandler()
+    {
+        if (!CanClick())
+        {
+            return;
+        }
+
+        if (LimitedUses)
+        {
+            UsesLeft--;
+            Button?.SetUsesRemaining(UsesLeft);
+        }
+
+        OnClick();
+        Button?.SetDisabled();
+    }
+
+    public override bool CanUse()
+    {
+        return base.CanUse() && Target && !PlayerControl.LocalPlayer.inVent && (!PlayerControl.LocalPlayer.HasModifier<UndertakerDragModifier>() || CanDrop());
+    }
+
+    private bool CanDrop()
+    {
+        if (Target == null)
+        {
+            return false;
+        }
+
+        return !PhysicsHelpers.AnythingBetween(PlayerControl.LocalPlayer.Collider, PlayerControl.LocalPlayer.Collider.bounds.center, Target.TruePosition, Constants.ShipAndAllObjectsMask, false);
+    }
+
+    public void SetDrag()
+    {
+        OverrideSprite(TosImpAssets.DragSprite.LoadAsset());
+        OverrideName("Drag");
+    }
+
+    public void SetDrop()
+    {
+        OverrideSprite(TosImpAssets.DropSprite.LoadAsset());
+        OverrideName("Drop");
+    }
+
+    public override bool IsTargetValid(DeadBody? target)
+    {
+        return target && target?.Reported == false;
+    }
+}
