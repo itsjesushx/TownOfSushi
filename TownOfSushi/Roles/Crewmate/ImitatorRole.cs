@@ -61,7 +61,7 @@ public sealed class ImitatorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfS
             $"{TOSLocale.Get(TOSNames.Bomber, "Bomber")} ⇨ {TOSLocale.Get(TOSNames.Trapper, "Trapper")} | "
             + $"Escapist ⇨ {TOSLocale.Get(TOSNames.Transporter, "Transporter")}\n"
             + "Hypnotist ⇨ Lookout | "
-            + "Janitor ⇨ Detective\n"
+            + "Janitor ⇨ Inspector\n"
             + $"Miner ⇨ {TOSLocale.Get(TOSNames.Engineer, "Engineer")} | "
             + "BountyHunter ⇨ Tracker\n"
             + "Undertaker ⇨ Altruist | "

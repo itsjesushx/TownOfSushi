@@ -35,7 +35,7 @@ public sealed class JanitorRole(IntPtr cppPtr)
          (Player != null && Player.GetModifiers<BaseModifier>().Any(x => x is ICachedRole)) || (Player != null && MiscUtils.ImpAliveCount == 1));
     }
 
-    public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<DetectiveRole>());
+    public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<InspectorRole>());
     public string RoleName => "Janitor";
     public string RoleDescription => "Sanitize The Ship";
 

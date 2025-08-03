@@ -18,7 +18,7 @@ public static class TownOfSushiColors
     public static Color Swapper => UseBasic ? Palette.CrewmateBlue : new Color(0.4f, 0.9f, 0.4f, 1f);
     public static Color Investigator => UseBasic ? Palette.CrewmateBlue : new Color(0f, 0.7f, 0.7f, 1f);
     public static Color Medic => UseBasic ? Palette.CrewmateBlue : new(0.4f, 0.9f, 0.7f, 1f);
-    public static Color Seer => UseBasic ? Palette.CrewmateBlue : new Color(1f, 0.8f, 0.5f, 1f);
+    public static Color Detective => UseBasic ? Palette.CrewmateBlue : new Color(1f, 0.8f, 0.5f, 1f);
     public static Color Administrator => UseBasic ? Palette.CrewmateBlue : new Color(0.8f, 0.64f, 0.8f, 1f);
     public static Color Snitch => UseBasic ? Palette.CrewmateBlue : new Color(0.83f, 0.69f, 0.22f, 1f);
     public static Color Altruist => UseBasic ? Palette.CrewmateBlue : new Color(0.4f, 0f, 0f, 1f);
@@ -29,7 +29,7 @@ public static class TownOfSushiColors
     public static Color Medium => UseBasic ? Palette.CrewmateBlue : new Color(0.65f, 0.5f, 1f, 1f);
     public static Color Mystic => UseBasic ? Palette.CrewmateBlue : new Color(0.3f, 0.6f, 0.9f, 1f);
     public static Color Trapper => UseBasic ? Palette.CrewmateBlue : new Color(0.65f, 0.82f, 0.7f, 1f);
-    public static Color Detective => UseBasic ? Palette.CrewmateBlue : new Color(0.3f, 0.3f, 1f, 1f);
+    public static Color Inspector => UseBasic ? Palette.CrewmateBlue : new Color(0.3f, 0.3f, 1f, 1f);
     public static Color Imitator => UseBasic ? Palette.CrewmateBlue : new Color(0.7f, 0.85f, 0.3f, 1f);
     public static Color Prosecutor => UseBasic ? Palette.CrewmateBlue : new Color(0.7f, 0.5f, 0f, 1f);
     public static Color Oracle => UseBasic ? Palette.CrewmateBlue : new Color(0.75f, 0f, 0.75f, 1f);

@@ -30,9 +30,6 @@ public static class MeetingHudTimerPatch
             case MayorRole mayor:
                 newText = mayor.Revealed ? "\nYou unleash 3 votes at once!" : "\nReveal yourself to get 3 total votes!";
                 break;
-            case DeputyRole dep:
-                if (dep.Killer) newText = "\nShoot a player successfully if they are the killer!";
-                break;
             case VigilanteRole vigi:
                 newText = $"\n{vigi.MaxKills} / {(int)OptionGroupSingleton<VigilanteOptions>.Instance.VigilanteKills} Guesses Remaining";
                 if ((int)OptionGroupSingleton<VigilanteOptions>.Instance.MultiShots > 0)

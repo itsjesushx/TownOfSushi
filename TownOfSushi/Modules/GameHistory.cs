@@ -26,7 +26,7 @@ public sealed class PlayerStats(byte playerId)
     public int IncorrectAssassinKills { get; set; }
 }
 
-// body report class for when medic/detective reports a body
+// body report class for when medic/Inspector reports a body
 public sealed class BodyReport
 {
     public PlayerControl? Killer { get; set; }
@@ -63,10 +63,10 @@ public sealed class BodyReport
             $"Body Report: The killer appears to be a {typeOfColor} color. (Killed {Math.Round(br.KillAge / 1000)}s ago)";
     }
 
-    public static string ParseDetectiveReport(BodyReport br)
+    public static string ParseInspectorReport(BodyReport br)
     {
-        if (br.KillAge > OptionGroupSingleton<DetectiveOptions>.Instance.DetectiveFactionDuration * 1000
-        && OptionGroupSingleton<DetectiveOptions>.Instance.DetectiveFactionDuration > 0)
+        if (br.KillAge > OptionGroupSingleton<InspectorOptions>.Instance.InspectorFactionDuration * 1000
+        && OptionGroupSingleton<InspectorOptions>.Instance.InspectorFactionDuration > 0)
         {
             return
                 $"Body Report: The corpse is too old to gain information from. (Killed {Math.Round(br.KillAge / 1000)}s ago)";
@@ -91,7 +91,7 @@ public sealed class BodyReport
             prefix = "an";
         }
 
-        if (br.KillAge < OptionGroupSingleton<DetectiveOptions>.Instance.DetectiveRoleDuration * 1000)
+        if (br.KillAge < OptionGroupSingleton<InspectorOptions>.Instance.InspectorRoleDuration * 1000)
         {
             return
                 $"Body Report: The killer appears to be {prefix} {role.NiceName}! (Killed {Math.Round(br.KillAge / 1000)}s ago)";

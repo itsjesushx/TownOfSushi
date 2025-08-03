@@ -13,18 +13,18 @@ using UnityEngine;
 
 namespace TownOfSushi.Buttons.Crewmate;
 
-public sealed class SeerRevealButton : TownOfSushiRoleButton<SeerRole, PlayerControl>
+public sealed class DetectiveRevealButton : TownOfSushiRoleButton<DetectiveRole, PlayerControl>
 {
     public override string Name => "Reveal";
     public override string Keybind => Keybinds.SecondaryAction;
-    public override Color TextOutlineColor => TownOfSushiColors.Seer;
-    public override float Cooldown => OptionGroupSingleton<SeerOptions>.Instance.SeerCooldown + MapCooldown;
-    public override LoadableAsset<Sprite> Sprite => TOSCrewAssets.SeerSprite;
+    public override Color TextOutlineColor => TownOfSushiColors.Detective;
+    public override float Cooldown => OptionGroupSingleton<DetectiveOptions>.Instance.DetectiveCooldown + MapCooldown;
+    public override LoadableAsset<Sprite> Sprite => TOSCrewAssets.DetectiveSprite;
 
     public override bool IsTargetValid(PlayerControl? target)
     {
-        return base.IsTargetValid(target) && !target!.HasModifier<SeerGoodRevealModifier>() &&
-               !target!.HasModifier<SeerEvilRevealModifier>();
+        return base.IsTargetValid(target) && !target!.HasModifier<DetectiveGoodRevealModifier>() &&
+               !target!.HasModifier<DetectiveEvilRevealModifier>();
     }
 
     public override PlayerControl? GetTarget()
@@ -42,17 +42,17 @@ public sealed class SeerRevealButton : TownOfSushiRoleButton<SeerRole, PlayerCon
         RevealAlliance(Target);
         TOSAudio.PlaySound(TOSAudio.QuestionSound);
 
-        Target?.cosmetics.SetOutline(false, new Il2CppSystem.Nullable<Color>(TownOfSushiColors.Seer));
+        Target?.cosmetics.SetOutline(false, new Il2CppSystem.Nullable<Color>(TownOfSushiColors.Detective));
     }
 
     public static void RevealAlliance(PlayerControl target)
     {
-        var options = OptionGroupSingleton<SeerOptions>.Instance;
+        var options = OptionGroupSingleton<DetectiveOptions>.Instance;
         var possibleAlignment = new StringBuilder();
 
         if (IsEvil(target))
         {
-            target.AddModifier<SeerEvilRevealModifier>();
+            target.AddModifier<DetectiveEvilRevealModifier>();
             var possiblyGood = options.ShowCrewmateKillingAsRed ? "possibly" : string.Empty;
             if (options.ShowNeutralBenignAsRed)
             {
@@ -61,7 +61,7 @@ public sealed class SeerRevealButton : TownOfSushiRoleButton<SeerRole, PlayerCon
 
             var notif1 = Helpers.CreateAndShowNotification(
                 $"<b>{TownOfSushiColors.ImpSoft.ToTextColor()}You have revealed that {target.Data.PlayerName} is {possiblyGood} evil!</color></b>",
-                Color.white, spr: TOSRoleIcons.Seer.LoadAsset());
+                Color.white, spr: TOSRoleIcons.Detective.LoadAsset());
             notif1.Text.SetOutlineThickness(0.35f);
             notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
 
@@ -102,7 +102,7 @@ public sealed class SeerRevealButton : TownOfSushiRoleButton<SeerRole, PlayerCon
         }
         else
         {
-            target.AddModifier<SeerGoodRevealModifier>();
+            target.AddModifier<DetectiveGoodRevealModifier>();
             var possiblyGood = !options.ShowNeutralBenignAsRed ? "likely" : string.Empty;
             if (!options.ShowNeutralEvilAsRed)
             {
@@ -116,7 +116,7 @@ public sealed class SeerRevealButton : TownOfSushiRoleButton<SeerRole, PlayerCon
 
             var notif1 = Helpers.CreateAndShowNotification(
                 $"<b>{Palette.CrewmateBlue.ToTextColor()}You have revealed that {target.Data.PlayerName} is {possiblyGood} good!</color></b>",
-                Color.white, spr: TOSRoleIcons.Seer.LoadAsset());
+                Color.white, spr: TOSRoleIcons.Detective.LoadAsset());
             notif1.Text.SetOutlineThickness(0.35f);
             notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
 
@@ -151,7 +151,7 @@ public sealed class SeerRevealButton : TownOfSushiRoleButton<SeerRole, PlayerCon
 
     public static bool IsEvil(PlayerControl target)
     {
-        var options = OptionGroupSingleton<SeerOptions>.Instance;
+        var options = OptionGroupSingleton<DetectiveOptions>.Instance;
         return !target.HasModifier<ImitatorCacheModifier>() &&
                ((target.Is(RoleAlignment.CrewmateKilling) && options.ShowCrewmateKillingAsRed) ||
                 (target.Is(RoleAlignment.NeutralBenign) && options.ShowNeutralBenignAsRed) ||

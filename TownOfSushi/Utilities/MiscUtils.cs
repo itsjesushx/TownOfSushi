@@ -42,6 +42,21 @@ public static class MiscUtils
          !(x.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.CrewContinuesGame) &&
          OptionGroupSingleton<GeneralOptions>.Instance.CrewKillersContinue));
 
+    public static bool IsKillerRole(this PlayerControl player)
+    {
+        return !player.HasDied() && player.Is(RoleAlignment.NeutralKilling) || player.IsImpostor();
+    }
+
+    public static bool IsCrewKiller(this PlayerControl player)
+    {
+        return !player.HasDied() && player.Is(RoleAlignment.CrewmateKilling);
+    }
+
+    public static bool IsPassiveNeutral(this PlayerControl player)
+    {
+        return !player.HasDied() && player.Is(RoleAlignment.NeutralEvil) || player.Is(RoleAlignment.NeutralBenign);
+    }
+
     public static int RealKillersAliveCount => Helpers.GetAlivePlayers().Count(x =>
         x.IsImpostor() || x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis &&
                                                                  OptionGroupSingleton<InquisitorOptions>.Instance
@@ -86,6 +101,7 @@ public static class MiscUtils
         return
             player.HasModifier<GuardianAngelProtectModifier>() ||
             player.HasModifier<SurvivorVestModifier>() ||
+            player.HasModifier<InvulnerabilityModifier>() ||
             player.HasModifier<ClericBarrierModifier>() ||
             player.HasModifier<BaseShieldModifier>() ||
             player.HasModifier<MedicShieldModifier>() ||

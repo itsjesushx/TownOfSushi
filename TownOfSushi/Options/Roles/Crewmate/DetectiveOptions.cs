@@ -1,6 +1,5 @@
-﻿using MiraAPI.GameOptions;
+using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.Attributes;
-using MiraAPI.GameOptions.OptionTypes;
 using MiraAPI.Utilities;
 using TownOfSushi.Roles.Crewmate;
 
@@ -10,21 +9,21 @@ public sealed class DetectiveOptions : AbstractOptionGroup<DetectiveRole>
 {
     public override string GroupName => "Detective";
 
-    [ModdedNumberOption("Examine Cooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
-    public float ExamineCooldown { get; set; } = 25f;
+    [ModdedNumberOption("Detective Cooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
+    public float DetectiveCooldown { get; set; } = 25f;
 
-    [ModdedToggleOption("Show Detective Reports")]
-    public bool DetectiveReportOn { get; set; } = true;
+    [ModdedToggleOption("Crewmate Killing Roles Are Red")]
+    public bool ShowCrewmateKillingAsRed { get; set; } = false;
 
-    public ModdedNumberOption DetectiveRoleDuration { get; set; } = new("Time Where Detective Will Have Role", 7.5f, 0f,
-        60f, 2.5f, MiraNumberSuffixes.Seconds)
-    {
-        Visible = () => OptionGroupSingleton<DetectiveOptions>.Instance.DetectiveReportOn
-    };
+    [ModdedToggleOption("Neutral Benign Roles Are Red")]
+    public bool ShowNeutralBenignAsRed { get; set; } = false;
 
-    public ModdedNumberOption DetectiveFactionDuration { get; set; } = new("Time Where Detective Will Have Faction",
-        30f, 0f, 60f, 2.5f, MiraNumberSuffixes.Seconds)
-    {
-        Visible = () => OptionGroupSingleton<DetectiveOptions>.Instance.DetectiveReportOn
-    };
+    [ModdedToggleOption("Neutral Evil Roles Are Red")]
+    public bool ShowNeutralEvilAsRed { get; set; } = false;
+
+    [ModdedToggleOption("Neutral Killing Roles Are Red")]
+    public bool ShowNeutralKillingAsRed { get; set; } = true;
+
+    [ModdedToggleOption("Traitor Swaps Colors")]
+    public bool SwapTraitorColors { get; set; } = true;
 }

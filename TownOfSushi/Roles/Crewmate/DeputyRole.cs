@@ -1,15 +1,12 @@
 ﻿using System.Text;
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
-using MiraAPI.Hud;
 using MiraAPI.Modifiers;
 using MiraAPI.Networking;
 using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Utilities.Extensions;
-using TownOfSushi.Buttons.Crewmate;
-using TownOfSushi.Modifiers;
 using TownOfSushi.Modifiers.Crewmate;
 using TownOfSushi.Modules;
 using TownOfUs.Modules.Wiki;
@@ -21,16 +18,14 @@ namespace TownOfSushi.Roles.Crewmate;
 public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCrewRole, IWikiDiscoverable
 {
     private MeetingMenu meetingMenu;
-    public override bool IsAffectedByComms => false;
-
-    public PlayerControl? Killer { get; set; }
     public string RoleName => "Deputy";
-    public string RoleDescription => "Camp Crewmates To Catch Their Killer";
-    public string RoleLongDescription => "Camp crewmates, then shoot their killer in the meeting!";
+    public string RoleDescription => "Execute killers mid-meeting!";
+    public string RoleLongDescription => "Execute suspicious players.";
     public Color RoleColor => TownOfSushiColors.Deputy;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateKilling;
-    public bool IsPowerCrew => Killer || ModifierUtils.GetActiveModifiers<DeputyCampedModifier>().Any(); // Only stop end game checks if the deputy can actually kill someone
+    public bool IsPowerCrew => true;
+    public int MissedShots { get; set; }
 
     public CustomRoleConfiguration Configuration => new(this)
     {
@@ -46,23 +41,8 @@ public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCrewRo
 
     public string GetAdvancedDescription()
     {
-        return
-            "The Deputy is a Crewmate Killing role that can camp other players. Once a camped player dies the Deputy is alerted to their death. " +
-            "The following meeting the Deputy may then attempt to shoot the killer of the camped player. If successful the killer dies and if not nothing happens." +
+        return $"The {RoleName} can shoot any player mid meeting, if they are evil, they die. If not, the {RoleName} loses half their vision and won't be able to execute until after the next next meeting." +
             MiscUtils.AppendOptionsText(GetType());
-    }
-
-    [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
-        new("Camp",
-            "Camp a player to be alerted once they die. After their death, you may attempt to shoot the killer. If your shot is successful, the killer dies, if not, nothing will happen.",
-            TOSCrewAssets.CampButtonSprite)
-    ];
-
-    public static void OnRoundStart()
-    {
-        CustomButtonSingleton<CampButton>.Instance.Usable = true;
     }
 
     public override void Initialize(PlayerControl player)
@@ -81,17 +61,6 @@ public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCrewRo
             {
                 Position = new Vector3(-0.40f, 0f, -3f)
             };
-        }
-    }
-
-    public override void OnMeetingStart()
-    {
-        RoleBehaviourStubs.OnMeetingStart(this);
-
-        if (Player.AmOwner)
-        {
-            meetingMenu.GenButtons(MeetingHud.Instance,
-                Player.AmOwner && !Player.HasDied() && Killer != null && !Player.HasModifier<JailedModifier>());
         }
     }
 
@@ -137,24 +106,63 @@ public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCrewRo
         }
     }
 
+    public override void OnMeetingStart()
+    {
+        RoleBehaviourStubs.OnMeetingStart(this);
+        
+        if (Player.HasModifier<DeputyLowVisionModifier>())
+        {
+            Player.RemoveModifier<DeputyLowVisionModifier>();
+        }
+
+        if (Player.AmOwner)
+        {
+            meetingMenu.GenButtons(MeetingHud.Instance,
+                Player.AmOwner && !Player.HasDied() && !Player.HasModifier<JailedModifier>());
+        }
+    }
+
     public void ClickGuess(PlayerVoteArea voteArea, MeetingHud __)
     {
         var target = GameData.Instance.GetPlayerById(voteArea.TargetPlayerId).Object;
-        var role = Player.GetRole<DeputyRole>()!;
 
-        if (role.Killer == target && !target.HasModifier<InvulnerabilityModifier>())
+        if (target.IsKillerRole() && !target.IsProtected())
+        {
+            Player.RpcCustomMurder(target, createDeadBody: false, teleportMurderer: false);
+        }
+        else if (target.IsPassiveNeutral() && !target.IsProtected())
         {
             Player.RpcCustomMurder(target, createDeadBody: false, teleportMurderer: false);
         }
         else
         {
-            var title = $"<color=#{TownOfSushiColors.Deputy.ToHtmlStringRGBA()}>Deputy Feedback</color>";
-            MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title,
-                "You missed your shot! They are either not the killer or are invincible.", false, true);
-            var notif1 = Helpers.CreateAndShowNotification(
-                $"<b>{TownOfSushiColors.Deputy.ToTextColor()}You missed your shot! They are either not the killer or are invincible.</b></color>",
-                Color.white, new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Deputy.LoadAsset());
-            notif1.Text.SetOutlineThickness(0.35f);
+            MissedShots++;
+
+            if (MissedShots == 1)
+            {
+                // First miss: reduce vision
+                var title = $"<color=#{TownOfSushiColors.Deputy.ToHtmlStringRGBA()}>Deputy Feedback</color>";
+                MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title,
+                    "You missed your shot! You lost half your vision. Next time you miss you will die.", false, true);
+
+                var notif1 = Helpers.CreateAndShowNotification(
+                    $"<b>{TownOfSushiColors.Deputy.ToTextColor()}You missed your shot! You lost half your vision. Next time you miss you will die.</b>",
+                    Color.white, new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Deputy.LoadAsset());
+                notif1.Text.SetOutlineThickness(0.35f);
+
+                // Apply vision penalty using a modifier
+                Player.AddModifier<DeputyLowVisionModifier>();
+            }
+            else
+            {
+                // Second miss: suicide
+                var notif2 = Helpers.CreateAndShowNotification(
+                    $"<b>{TownOfSushiColors.Deputy.ToTextColor()}You missed again... and paid the price.</b>",
+                    Color.white, new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Deputy.LoadAsset());
+                notif2.Text.SetOutlineThickness(0.35f);
+
+                Player.RpcCustomMurder(Player, createDeadBody: false, teleportMurderer: false);
+            }
         }
 
         if (Player.AmOwner)

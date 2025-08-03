@@ -73,12 +73,13 @@
 - [Engineer](#engineer)  
 - [Vigilante](#vigilante)  
 - [Oracle](#oracle)  
-- [Investigator](#investigator)  
+- [Coroner](#coroner)  
 - [Mystic](#mystic)  
 - [Veteran](#veteran)  
 - [Medic](#medic)  
 - [Imitator](#imitator)  
 - [Detective](#detective)
+- [Coroner](#coroner)
 - [Spy](#spy)
 - [Tracker](#tracker)  
 - [Lookout](#lookout)  
@@ -262,30 +263,23 @@ Delete these files and you're good to go!
 -----------------------
 # Roles
 # Crewmate Roles
-## Investigator
+## Coroner
 ### **Team: Crewmates**
-The Investigator is a Crewmate that can see the footprints of players.\
-Every footprint disappears after a set amount of time.\
-The Investigator can inspect bodies and then examine players.\
-The Investigator must first find a body and inspect it.\
-During the same or following rounds the Investigator can then examine players to see if they were the killer.\
+The Coroner can inspect bodies and then examine players.\
+The Coroner must first find a body and inspect it.\
+During the same or following rounds the Coroner can then examine players to see if they were the killer.\
 If the examined player is the killer they will receive a red flash, else the flash will be green.\
-If the killer of the inspected player dies, the following round the examine button will disable indicating to the Investigator the killer is dead.
+If the killer of the inspected player dies, the following round the examine button will disable indicating to the Coroner the killer is dead.
 
 ### Game Options
 | Name | Description | Type | Default |
 |----------|:-------------:|:------:|:------:|
-| Investigator | The percentage probability of the Investigator appearing | Percentage | 0% |
-| Footprint Size | The size of the footprint on a scale of 1 to 10 | Number | 4 |
-| Footprint Interval | The time interval between two footprints | Time | 0.1s |
-| Footprint Duration | The amount of time that the footprint stays on the ground for | Time | 10s |
-| Anonymous Footprint | When enabled, all footprints are grey instead of the player's colors | Toggle | False |
-| Footprint Vent Visible | Whether footprints near vents are shown | Toggle | False |
-| Examine Cooldown | The cooldown of the Investigator's Examine button | Time | 25s |
-| Show Investigator Reports | Whether the Investigator should get information when reporting a body | Toggle | True |
-| Time Where Investigator Reports Will Have Role | If a body has been dead for shorter than this amount, the Investigator's report will contain the killer's role | Time | 15s |
-| Time Where Investigator Reports Will Have Faction | If a body has been dead for shorter than this amount, the Investigator's report will contain the killer's faction | Time | 30s |
-| Can Detect Last Killer | Whether the Investigator can also detect the last player who killed (resets on round start) | Toggle | False |
+| Coroner Chance | The percentage probability of the Investigator appearing | Percentage | 0% |
+| Examine Cooldown | The cooldown of the Coroner's Examine button | Time | 25s |
+| Show Coroner Reports | Whether the Coroner should get information when reporting a body | Toggle | True |
+| Time Where Coroner Reports Will Have Role | If a body has been dead for shorter than this amount, the Coroner's report will contain the killer's role | Time | 15s |
+| Time Where Coroner Reports Will Have Faction | If a body has been dead for shorter than this amount, the Coroner's report will contain the killer's faction | Time | 30s |
+| Can Detect Last Killer | Whether the Coroner can also detect the last player who killed (resets on round start) | Toggle | False |
 
 -----------------------
 ## Lookout

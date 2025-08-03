@@ -9,7 +9,7 @@ public static class TOSRoleIcons
 
     // THIS FILE SHOULD ONLY HOLD ROLE ICONS
     public static LoadableAsset<Sprite> Aurial { get; } = new LoadableResourceAsset($"{iconPath}.Aurial.png");
-    public static LoadableAsset<Sprite> Detective { get; } = new LoadableResourceAsset($"{iconPath}.Detective.png");
+    public static LoadableAsset<Sprite> Inspector { get; } = new LoadableResourceAsset($"{iconPath}.Inspector.png");
     public static LoadableAsset<Sprite> Haunter { get; } = new LoadableResourceAsset($"{iconPath}.Haunter.png");
 
     public static LoadableAsset<Sprite> Warlock { get; } = new LoadableResourceAsset($"{iconPath}.Warlock.png");
@@ -19,7 +19,7 @@ public static class TOSRoleIcons
 
     public static LoadableAsset<Sprite> Lookout { get; } = new LoadableResourceAsset($"{iconPath}.Lookout.png");
     public static LoadableAsset<Sprite> Mystic { get; } = new LoadableResourceAsset($"{iconPath}.Mystic.png");
-    public static LoadableAsset<Sprite> Seer { get; } = new LoadableResourceAsset($"{iconPath}.Seer.png");
+    public static LoadableAsset<Sprite> Detective { get; } = new LoadableResourceAsset($"{iconPath}.Detective.png");
     public static LoadableAsset<Sprite> Snitch { get; } = new LoadableResourceAsset($"{iconPath}.Snitch.png");
     public static LoadableAsset<Sprite> Administrator { get; } = new LoadableResourceAsset($"{iconPath}.Administrator.png");
     public static LoadableAsset<Sprite> Tracker { get; } = new LoadableResourceAsset($"{iconPath}.Tracker.png");

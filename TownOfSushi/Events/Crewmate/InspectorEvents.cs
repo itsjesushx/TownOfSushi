@@ -9,7 +9,7 @@ using TownOfSushi.Utilities;
 
 namespace TownOfSushi.Events.Crewmate;
 
-public static class DetectiveEvents
+public static class InspectorEvents
 {
     [RegisterEvent]
     public static void ReportBodyEventHandler(ReportBodyEvent @event)
@@ -19,9 +19,9 @@ public static class DetectiveEvents
             return;
         }
 
-        if (@event.Reporter.Data.Role is DetectiveRole detective && @event.Reporter.AmOwner)
+        if (@event.Reporter.Data.Role is InspectorRole Inspector && @event.Reporter.AmOwner)
         {
-            detective.Report(@event.Target.PlayerId);
+            Inspector.Report(@event.Target.PlayerId);
         }
     }
 
@@ -38,7 +38,7 @@ public static class DetectiveEvents
             return;
         }
 
-        if (!Helpers.GetAlivePlayers().Any(x => x.Data.Role is DetectiveRole))
+        if (!Helpers.GetAlivePlayers().Any(x => x.Data.Role is InspectorRole))
         {
             return;
         }
@@ -48,7 +48,7 @@ public static class DetectiveEvents
             scene.gameObject.SetActive(false);
         }
 
-        if (PlayerControl.LocalPlayer.Data.Role is DetectiveRole)
+        if (PlayerControl.LocalPlayer.Data.Role is InspectorRole)
         {
             foreach (var scene in CrimeSceneComponent._crimeScenes)
             {

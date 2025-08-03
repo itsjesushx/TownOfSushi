@@ -54,8 +54,8 @@ public enum AbilityType
     WarlockCurseKill,
     DeputyCamp,
 
-    // DetectiveExamine,
-    // DetectiveInspect,
+    // InspectorExamine,
+    // InspectorInspect,
     EngineerFix,
 
     // EngineerVent,
@@ -77,7 +77,7 @@ public enum AbilityType
 
     MonarchKnight,
 
-    // SeerReveal,
+    // DetectiveReveal,
     // SheriffShoot,
     // TrackerTrack,
     TransporterTransport,

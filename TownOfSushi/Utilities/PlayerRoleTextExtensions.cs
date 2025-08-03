@@ -30,11 +30,11 @@ public static class PlayerRoleTextExtensions
             color = Color.black;
         }
 
-        if (player.HasModifier<SeerGoodRevealModifier>() && PlayerControl.LocalPlayer.IsRole<SeerRole>())
+        if (player.HasModifier<DetectiveGoodRevealModifier>() && PlayerControl.LocalPlayer.IsRole<DetectiveRole>())
         {
             color = Color.green;
         }
-        else if (player.HasModifier<SeerEvilRevealModifier>() && PlayerControl.LocalPlayer.IsRole<SeerRole>())
+        else if (player.HasModifier<DetectiveEvilRevealModifier>() && PlayerControl.LocalPlayer.IsRole<DetectiveRole>())
         {
             color = Color.red;
         }

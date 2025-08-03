@@ -258,7 +258,7 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
             SearchIcon.transform.localPosition += new Vector3(0.625f, 0.796f, -1.1f);
             SearchIcon.transform.localScale *= 0.25f;
             var _renderer = SearchIcon.GetComponent<SpriteRenderer>();
-            _renderer.sprite = TOSRoleIcons.Detective.LoadAsset();
+            _renderer.sprite = TOSRoleIcons.Inspector.LoadAsset();
             SearchIcon.name = "SearchboxIcon";
         }
 
