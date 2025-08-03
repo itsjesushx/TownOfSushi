@@ -38,7 +38,7 @@ public static class TOSModifierIcons
     public static LoadableAsset<Sprite> Lazy { get; } = new LoadableResourceAsset($"{iconPath}.Lazy.png");
     public static LoadableAsset<Sprite> Lover { get; } = new LoadableResourceAsset($"{iconPath}.Lover.png");
     public static LoadableAsset<Sprite> Mini { get; } = new LoadableResourceAsset($"{iconPath}.Mini.png");
-    public static LoadableAsset<Sprite> Radar { get; } = new LoadableResourceAsset($"{iconPath}.Radar.png");
+    public static LoadableAsset<Sprite> Paranoiac { get; } = new LoadableResourceAsset($"{iconPath}.Paranoiac.png");
     public static LoadableAsset<Sprite> Satellite { get; } = new LoadableResourceAsset($"{iconPath}.Satellite.png");
     public static LoadableAsset<Sprite> Shy { get; } = new LoadableResourceAsset($"{iconPath}.Shy.png");
     public static LoadableAsset<Sprite> SixthSense { get; } = new LoadableResourceAsset($"{iconPath}.SixthSense.png");

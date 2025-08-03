@@ -288,7 +288,7 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCre
 
         if (touRole?.RoleAlignment == RoleAlignment.NeutralKilling)
         {
-            return options.VigilanteGuessNeutralKilling;
+            return true;
         }
 
         return false;

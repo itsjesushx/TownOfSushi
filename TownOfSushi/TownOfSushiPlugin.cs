@@ -66,7 +66,7 @@ public partial class TownOfSushiPlugin : BasePlugin, IMiraPlugin
     
     /// <inheritdoc />
     public string OptionsTitleText => "Town of Sushi";
-    public const string DevString = " (Dev 11)";
+    public const string DevString = " (Dev 15)";
 
     /// <inheritdoc />
     public ConfigFile GetConfigFile()

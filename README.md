@@ -131,7 +131,7 @@
 - [Administrator](#administrator)  
 - [Drunk](#drunk)  
 - [Flash](#flash)  
-- [Radar](#radar)  
+- [Paranoiac](#Paranoiac)  
 - [Sleuth](#sleuth)  
 
 </details>
@@ -1121,13 +1121,13 @@ If the Drunk hits the Up KeyCode they will go down etc.
 
 -----------------------
 
-## Radar
+## Paranoiac
 ### **Applied to: All**
-The Radar is a crewmate who knows where the closest player is to them.
+The Paranoiac is a crewmate who knows where the closest player is to them.
 ### Game Options
 | Name | Description | Type | Default |
 |----------|:-------------:|:------:|:------:|
-| Radar | The percentage probability of the Radar appearing | Percentage | 0% |
+| Paranoiac | The percentage probability of the Paranoiac appearing | Percentage | 0% |
 
 -----------------------
 ## Administrator

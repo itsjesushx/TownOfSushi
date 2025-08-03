@@ -10,11 +10,11 @@ using UnityEngine;
 
 namespace TownOfSushi.Modifiers.Game.Universal;
 
-public sealed class RadarModifier : UniversalGameModifier, IWikiDiscoverable
+public sealed class ParanoiacModifier : UniversalGameModifier, IWikiDiscoverable
 {
     private ArrowBehaviour _arrow;
-    public override string ModifierName => "Radar";
-    public override LoadableAsset<Sprite>? ModifierIcon => TOSModifierIcons.Radar;
+    public override string ModifierName => "Paranoiac";
+    public override LoadableAsset<Sprite>? ModifierIcon => TOSModifierIcons.Paranoiac;
 
     public override ModifierFaction FactionType => ModifierFaction.UniversalUtility;
     public override Color FreeplayFileColor => new Color32(180, 180, 180, 255);
@@ -34,12 +34,12 @@ public sealed class RadarModifier : UniversalGameModifier, IWikiDiscoverable
 
     public override int GetAssignmentChance()
     {
-        return (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.RadarChance;
+        return (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.ParanoiacChance;
     }
 
     public override int GetAmountPerGame()
     {
-        return (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.RadarAmount;
+        return (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.ParanoiacAmount;
     }
 
     public override void OnActivate()

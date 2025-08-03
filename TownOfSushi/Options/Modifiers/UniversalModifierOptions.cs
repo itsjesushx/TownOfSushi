@@ -68,12 +68,12 @@ public sealed class UniversalModifierOptions : AbstractOptionGroup
         Visible = () => OptionGroupSingleton<UniversalModifierOptions>.Instance.MiniAmount > 0
     };
 
-    [ModdedNumberOption("Radar Amount", 0, 5)]
-    public float RadarAmount { get; set; } = 0;
+    [ModdedNumberOption("Paranoiac Amount", 0, 5)]
+    public float ParanoiacAmount { get; set; } = 0;
 
-    public ModdedNumberOption RadarChance { get; } = new("Radar Chance", 50f, 0, 100f, 10f, MiraNumberSuffixes.Percent)
+    public ModdedNumberOption ParanoiacChance { get; } = new("Paranoiac Chance", 50f, 0, 100f, 10f, MiraNumberSuffixes.Percent)
     {
-        Visible = () => OptionGroupSingleton<UniversalModifierOptions>.Instance.RadarAmount > 0
+        Visible = () => OptionGroupSingleton<UniversalModifierOptions>.Instance.ParanoiacAmount > 0
     };
 
     [ModdedNumberOption("Satellite Amount", 0, 5)]
