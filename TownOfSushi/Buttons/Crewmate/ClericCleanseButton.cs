@@ -17,9 +17,12 @@ public sealed class ClericCleanseButton : TownOfSushiRoleButton<ClericRole, Play
     public override string Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Cleric;
     public override float Cooldown => OptionGroupSingleton<ClericOptions>.Instance.CleanseCooldown + MapCooldown;
-    public override LoadableAsset<Sprite> Sprite => TosCrewAssets.CleanseSprite;
+    public override LoadableAsset<Sprite> Sprite => TOSCrewAssets.CleanseSprite;
 
-    public override PlayerControl? GetTarget() => PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
+    public override PlayerControl? GetTarget()
+    {
+        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
+    }
 
     protected override void OnClick()
     {

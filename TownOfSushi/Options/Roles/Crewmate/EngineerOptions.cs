@@ -2,19 +2,21 @@
 using MiraAPI.GameOptions.Attributes;
 using MiraAPI.GameOptions.OptionTypes;
 using MiraAPI.Utilities;
+
 using TownOfSushi.Roles.Crewmate;
 
 namespace TownOfSushi.Options.Roles.Crewmate;
 
-public sealed class EngineerOptions : AbstractOptionGroup<EngineerTouRole>
+public sealed class EngineerOptions : AbstractOptionGroup<EngineerTOSRole>
 {
-    public override string GroupName => "Engineer";
+    public override string GroupName => TOSLocale.Get(TOSNames.Engineer, "Engineer");
 
-    [ModdedNumberOption("Vent Uses Per Game", 0f, 30f, 5f, MiraNumberSuffixes.None, "0", zeroInfinity: true)]
+    [ModdedNumberOption("Vent Uses Per Game", 0f, 30f, 5f, MiraNumberSuffixes.None, "0", true)]
     public float MaxVents { get; set; } = 0f;
-    public ModdedToggleOption TaskUses { get; } = new ModdedToggleOption("Get More Vent Uses From Completing Tasks", true)
+
+    public ModdedToggleOption TaskUses { get; } = new("Get More Vent Uses From Completing Tasks", true)
     {
-        Visible = () => OptionGroupSingleton<EngineerOptions>.Instance.MaxVents != 0,
+        Visible = () => OptionGroupSingleton<EngineerOptions>.Instance.MaxVents != 0
     };
 
     [ModdedNumberOption("Vent Cooldown", 0f, 25f, 2.5f, MiraNumberSuffixes.Seconds)]

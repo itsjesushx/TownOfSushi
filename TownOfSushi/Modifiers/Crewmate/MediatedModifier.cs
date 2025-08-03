@@ -5,7 +5,7 @@ using MiraAPI.Modifiers;
 using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
 using TownOfSushi.Buttons.Crewmate;
-using TownOfSushi.Events.TosEvents;
+using TownOfSushi.Events.TOSEvents;
 using TownOfSushi.Options.Roles.Crewmate;
 using TownOfSushi.Roles.Crewmate;
 using TownOfSushi.Utilities;
@@ -15,21 +15,21 @@ namespace TownOfSushi.Modifiers.Crewmate;
 
 public sealed class MediatedModifier(byte mediumId) : BaseModifier
 {
+    private ArrowBehaviour? _arrow;
+
+    private MediumRole? _medium;
+    private PlayerControl? _mediumPlayer;
     public override string ModifierName => "Mediated";
     public override bool HideOnUi => true;
     public byte MediumId { get; } = mediumId;
 
-    private MediumRole? _medium;
-    private PlayerControl? _mediumPlayer;
     public override void OnMeetingStart()
     {
         ModifierComponent?.RemoveModifier(this);
     }
-    private ArrowBehaviour? _arrow;
 
     public override void OnActivate()
     {
-
         _medium = GameData.Instance.GetPlayerById(MediumId).Role as MediumRole;
         _mediumPlayer = _medium?.Player;
 
@@ -39,8 +39,8 @@ public sealed class MediatedModifier(byte mediumId) : BaseModifier
             return;
         }
 
-        var TosAbilityEvent = new TosAbilityEvent(AbilityType.MediumMediate, _mediumPlayer, Player);
-        MiraEventManager.InvokeEvent(TosAbilityEvent);
+        var TOSAbilityEvent = new TOSAbilityEvent(AbilityType.MediumMediate, _mediumPlayer, Player);
+        MiraEventManager.InvokeEvent(TOSAbilityEvent);
 
         _medium.MediatedPlayers.Add(this);
 

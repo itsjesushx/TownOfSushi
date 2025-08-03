@@ -1,6 +1,6 @@
 using MiraAPI.Events;
 using MiraAPI.Modifiers;
-using TownOfSushi.Events.TosEvents;
+using TownOfSushi.Events.TOSEvents;
 
 namespace TownOfSushi.Modifiers.Crewmate;
 
@@ -11,11 +11,13 @@ public sealed class OracleBlessedModifier(PlayerControl oracle) : BaseModifier
     public PlayerControl Oracle { get; } = oracle;
 
     public bool SavedFromExile { get; set; }
+
     public override void OnActivate()
     {
-        var TosAbilityEvent = new TosAbilityEvent(AbilityType.OracleBless, Oracle, Player);
-        MiraEventManager.InvokeEvent(TosAbilityEvent);
+        var TOSAbilityEvent = new TOSAbilityEvent(AbilityType.OracleBless, Oracle, Player);
+        MiraEventManager.InvokeEvent(TOSAbilityEvent);
     }
+
     public override void OnDeath(DeathReason reason)
     {
         ModifierComponent!.RemoveModifier(this);

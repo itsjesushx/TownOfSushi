@@ -1,11 +1,11 @@
 ﻿using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.Attributes;
 using MiraAPI.Utilities;
-using TownOfSushi.Roles.Crewmate;
+using TownOfSushi.Modifiers.Game.Crewmate;
 
 namespace TownOfSushi.Options.Roles.Crewmate;
 
-public sealed class InvestigatorOptions : AbstractOptionGroup<InvestigatorRole>
+public sealed class InvestigatorOptions : AbstractOptionGroup<InvestigatorModifier>
 {
     public override string GroupName => "Investigator";
 

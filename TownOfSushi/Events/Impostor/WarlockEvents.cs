@@ -1,36 +1,41 @@
-﻿using MiraAPI.Events;
+using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
-using MiraAPI.Hud;
-using TownOfSushi.Buttons.Impostor;
-using TownOfSushi.Roles.Impostor;
-using TownOfSushi.Utilities;
+using MiraAPI.Events.Vanilla.Meeting;
+using MiraAPI.Modifiers;
+using TownOfSushi.Modifiers.Impostor;
 
 namespace TownOfSushi.Events.Impostor;
 
 public static class WarlockEvents
 {
     [RegisterEvent]
-    public static void AfterMurderEventHandler(AfterMurderEvent @event)
+    public static void EjectionEvent(EjectionEvent @event)
     {
-        if (!@event.Source.AmOwner || !@event.Source.IsRole<WarlockRole>())
+        var exiled = @event.ExileController?.initData?.networkedPlayer?.Object;
+
+        if (exiled == null)
         {
             return;
         }
 
-        var button = CustomButtonSingleton<WarlockKillButton>.Instance;
-        if (button.BurstActive) ++button.Kills;
-    }
-    [RegisterEvent]
-    public static void RoundStartHandler(RoundStartEvent @event)
-    {
-        if (@event.TriggeredByIntro)
+        if (exiled.HasModifier<WarlockCursedModifier>())
         {
-            return; // Only run when round starts.
+            exiled.RpcRemoveModifier<WarlockCursedModifier>();
         }
+    }
 
-        var button = CustomButtonSingleton<WarlockKillButton>.Instance;
-        button.Charge = 0f;
-        button.BurstActive = false;
-        button.ResetCooldownAndOrEffect();
+    [RegisterEvent]
+    public static void AfterMurderEvent(AfterMurderEvent @event)
+    {
+        var target = @event.Target;
+
+        if (target == null)
+        {
+            return;
+        }
+        if (target.HasModifier<WarlockCursedModifier>())
+        {
+            target.RpcRemoveModifier<WarlockCursedModifier>();
+        }
     }
 }

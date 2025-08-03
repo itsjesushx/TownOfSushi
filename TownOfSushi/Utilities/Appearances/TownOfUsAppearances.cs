@@ -14,5 +14,5 @@ public enum TownOfSushiAppearances : uint
     Camouflage,
     Morph,
     PlayerNameOnly,
-    PlayerOnly,
+    PlayerOnly
 }

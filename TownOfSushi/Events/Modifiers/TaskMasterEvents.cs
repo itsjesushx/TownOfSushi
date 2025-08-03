@@ -13,8 +13,9 @@ public static class TaskmasterEvents
     {
         if (@event.TriggeredByIntro)
         {
-            return; // Only run when round starts
+            return; // Only run when round starts.
         }
+
         ModifierUtils.GetActiveModifiers<TaskmasterModifier>().Do(x => x.OnRoundStart());
     }
 }

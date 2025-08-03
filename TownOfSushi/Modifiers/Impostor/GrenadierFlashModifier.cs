@@ -1,7 +1,7 @@
 ﻿using MiraAPI.Events;
 using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
-using TownOfSushi.Events.TosEvents;
+using TownOfSushi.Events.TOSEvents;
 using TownOfSushi.Modules;
 using TownOfSushi.Options.Roles.Impostor;
 using TownOfSushi.Utilities;
@@ -12,33 +12,40 @@ namespace TownOfSushi.Modifiers.Impostor;
 
 public sealed class GrenadierFlashModifier(PlayerControl grenadier) : DisabledModifier, IDisposable
 {
+    private readonly Color blindVision = new(0.83f, 0.83f, 0.83f, 1f);
+    private readonly Color dimVision = new(0.83f, 0.83f, 0.83f, 0.2f);
+
+    private readonly Color normalVision = new(0.83f, 0.83f, 0.83f, 0f);
+
+    private ScreenFlash? flash;
     public override string ModifierName => "Flashed";
     public override bool HideOnUi => true;
     public override float Duration => OptionGroupSingleton<GrenadierOptions>.Instance.GrenadeDuration + 0.5f;
     public override bool AutoStart => true;
+    public override bool CanUseAbilities => true;
     public PlayerControl Grenadier => grenadier;
 
-    private readonly Color normalVision = new Color(0.83f, 0.83f, 0.83f, 0f);
-    private readonly Color dimVision = new Color(0.83f, 0.83f, 0.83f, 0.2f);
-    private readonly Color blindVision = new Color(0.83f, 0.83f, 0.83f, 1f);
-
-    private ScreenFlash? flash;
+    public void Dispose()
+    {
+        flash?.Dispose();
+    }
 
     public override void OnActivate()
     {
         base.OnActivate();
-        var TosAbilityEvent = new TosAbilityEvent(AbilityType.GrenadierFlash, Grenadier, Player);
-        MiraEventManager.InvokeEvent(TosAbilityEvent);
+        var TOSAbilityEvent = new TOSAbilityEvent(AbilityType.GrenadierFlash, Grenadier, Player);
+        MiraEventManager.InvokeEvent(TOSAbilityEvent);
 
-        flash = new();
+        flash = new ScreenFlash();
 
         if (Player.AmOwner && !Grenadier.AmOwner)
         {
             var notif1 = Helpers.CreateAndShowNotification(
-                $"<b>{TownOfSushiColors.ImpSoft.ToTextColor()}You were flashed by a Grenadier!</color></b>", Color.white, spr: TosRoleIcons.Grenadier.LoadAsset());
+                $"<b>{TownOfSushiColors.ImpSoft.ToTextColor()}You were flashed by a Grenadier!</color></b>", Color.white,
+                spr: TOSRoleIcons.Grenadier.LoadAsset());
 
             notif1.Text.SetOutlineThickness(0.35f);
-            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+            notif1.transform.localPosition = new Vector3(0f, 1f, -150f);
         }
     }
 
@@ -47,18 +54,23 @@ public sealed class GrenadierFlashModifier(PlayerControl grenadier) : DisabledMo
         base.FixedUpdate();
 
         if (!Player.IsImpostor() && PlayerControl.LocalPlayer.IsImpostor())
+        {
+            if (TimeRemaining <= Duration - 0.5f && TimeRemaining >= 0.5f)
             {
-                if (TimeRemaining <= Duration - 0.5f && TimeRemaining >= 0.5f)
-                    Player.cosmetics.currentBodySprite.BodySprite.material.SetColor(ShaderID.VisorColor, Color.black);
-                else
-                    Player.cosmetics.currentBodySprite.BodySprite.material.SetColor(ShaderID.VisorColor, Palette.VisorColor);
+                Player.cosmetics.currentBodySprite.BodySprite.material.SetColor(ShaderID.VisorColor, Color.black);
             }
+            else
+            {
+                Player.cosmetics.currentBodySprite.BodySprite.material.SetColor(ShaderID.VisorColor,
+                    Palette.VisorColor);
+            }
+        }
 
         if (PlayerControl.LocalPlayer.PlayerId == Player.PlayerId)
         {
             if (TimeRemaining > Duration - 0.5f)
             {
-                float fade = (TimeRemaining - Duration) * -2.0f;
+                var fade = (TimeRemaining - Duration) * -2.0f;
 
                 if (ShouldPlayerBeBlinded(Player))
                 {
@@ -90,7 +102,7 @@ public sealed class GrenadierFlashModifier(PlayerControl grenadier) : DisabledMo
             }
             else if (TimeRemaining < 0.5f)
             {
-                float fade2 = TimeRemaining * -2.0f + 1.0f;
+                var fade2 = TimeRemaining * -2.0f + 1.0f;
 
                 if (ShouldPlayerBeBlinded(Player))
                 {
@@ -159,6 +171,4 @@ public sealed class GrenadierFlashModifier(PlayerControl grenadier) : DisabledMo
     {
         return !player.IsImpostor() && !player.HasDied() && !MeetingHud.Instance;
     }
-
-    public void Dispose() => flash?.Dispose();
 }

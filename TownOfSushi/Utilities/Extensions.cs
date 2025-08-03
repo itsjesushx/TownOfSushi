@@ -1,34 +1,35 @@
 ﻿using System.Collections;
 using AmongUs.GameOptions;
 using LibCpp2IL;
+using MiraAPI.Events;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities.Extensions;
+using TMPro;
+using TownOfSushi.Events.TOSEvents;
+using TownOfSushi.Modifiers;
+using TownOfSushi.Modifiers.Crewmate;
 using TownOfSushi.Modifiers.Game;
-using TownOfSushi.Modifiers.Game.Impostor;
 using TownOfSushi.Modifiers.Game.Alliance;
+using TownOfSushi.Modifiers.Game.Impostor;
 using TownOfSushi.Modifiers.Impostor;
 using TownOfSushi.Modules;
+using TownOfSushi.Patches;
 using TownOfSushi.Roles;
 using TownOfSushi.Roles.Impostor;
 using TownOfSushi.Utilities.Appearances;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
-using TownOfSushi.Modifiers;
-using TownOfSushi.Patches;
-using TownOfSushi.Events.TosEvents;
-using MiraAPI.Events;
-using TMPro;
-using TownOfSushi.Modifiers.Crewmate;
 
 namespace TownOfSushi.Utilities;
 
 public static class Extensions
 {
-
     public static ITownOfSushiRole? GetTownOfSushiRole(this PlayerControl player)
     {
         var role = player.Data?.Role as ITownOfSushiRole;
@@ -48,9 +49,15 @@ public static class Extensions
         return player.Data?.Role is T;
     }
 
-    public static bool IsLover(this PlayerControl player) => player?.HasModifier<LoverModifier>() == true;
+    public static bool IsLover(this PlayerControl player)
+    {
+        return player?.HasModifier<LoverModifier>() == true;
+    }
 
-    public static bool IsImpostor(this PlayerControl player) => player?.Data && player?.Data?.Role && player?.Data?.Role.IsImpostor() == true;
+    public static bool IsImpostor(this PlayerControl player)
+    {
+        return player?.Data && player?.Data?.Role && player?.Data?.Role.IsImpostor() == true;
+    }
 
     public static bool IsImpostor(this RoleBehaviour role)
     {
@@ -58,7 +65,12 @@ public static class Extensions
             ? customRole.Team is ModdedRoleTeams.Impostor
             : role.TeamType is RoleTeamTypes.Impostor;
     }
-    public static bool IsTraitor(this PlayerControl player) => player?.Data && player?.Data?.Role && player?.Data?.Role.IsImpostor() == true && (player?.HasModifier<TraitorCacheModifier>() == true || player?.Data?.Role is TraitorRole);
+
+    public static bool IsTraitor(this PlayerControl player)
+    {
+        return player?.Data && player?.Data?.Role && player?.Data?.Role.IsImpostor() == true &&
+               (player?.HasModifier<TraitorCacheModifier>() == true || player?.Data?.Role is TraitorRole);
+    }
 
     public static bool IsCrewmate(this PlayerControl player)
     {
@@ -82,21 +94,40 @@ public static class Extensions
         return role is ICustomRole { Team: ModdedRoleTeams.Custom };
     }
 
-    public static bool Is(this PlayerControl player, RoleTypes roleType) => player.Data.Role.Role == roleType;
+    public static bool Is(this PlayerControl player, RoleTypes roleType)
+    {
+        return player.Data.Role.Role == roleType;
+    }
 
     public static bool Is(this PlayerControl player, RoleAlignment roleAlignment)
     {
         if (player.Data.Role is ITownOfSushiRole role && role.RoleAlignment == roleAlignment)
+        {
             return true;
-        else if (player.Data.Role.Role is RoleTypes.Crewmate or RoleTypes.Scientist or RoleTypes.Noisemaker or RoleTypes.Engineer &&
+        }
+
+        if (player.Data.Role.Role is RoleTypes.Crewmate or RoleTypes.Scientist or RoleTypes.Noisemaker
+                or RoleTypes.Engineer &&
             roleAlignment == RoleAlignment.CrewmateSupport)
+        {
             return true;
-        else if (player.Data.Role.Role is RoleTypes.Tracker && roleAlignment == RoleAlignment.CrewmateInvestigative)
+        }
+
+        if (player.Data.Role.Role is RoleTypes.Tracker && roleAlignment == RoleAlignment.CrewmateInvestigative)
+        {
             return true;
-        else if (player.Data.Role.Role is RoleTypes.Impostor && roleAlignment == RoleAlignment.ImpostorSupport)
+        }
+
+        if (player.Data.Role.Role is RoleTypes.Impostor && roleAlignment == RoleAlignment.ImpostorSupport)
+        {
             return true;
-        else if (player.Data.Role.Role is RoleTypes.Shapeshifter or RoleTypes.Phantom && roleAlignment == RoleAlignment.ImpostorConcealing)
+        }
+
+        if (player.Data.Role.Role is RoleTypes.Shapeshifter or RoleTypes.Phantom &&
+            roleAlignment == RoleAlignment.ImpostorConcealing)
+        {
             return true;
+        }
 
         return false;
     }
@@ -107,11 +138,13 @@ public static class Extensions
         {
             return true;
         }
-        else if (team == ModdedRoleTeams.Impostor)
+
+        if (team == ModdedRoleTeams.Impostor)
         {
             return player.IsImpostor();
         }
-        else if (team == ModdedRoleTeams.Crewmate)
+
+        if (team == ModdedRoleTeams.Crewmate)
         {
             return player.IsCrewmate();
         }
@@ -131,7 +164,10 @@ public static class Extensions
         return mod?.HysteriaActive == true;
     }
 
-    public static bool HasDied(this PlayerControl player) => !player || !player.Data || player.Data.IsDead || player.Data.Disconnected;
+    public static bool HasDied(this PlayerControl player)
+    {
+        return !player || !player.Data || player.Data.IsDead || player.Data.Disconnected;
+    }
 
     public static IEnumerator CoClean(this DeadBody body)
     {
@@ -148,7 +184,7 @@ public static class Extensions
         }
 
         passive.OnClick?.RemoveAllListeners();
-        passive.OnClick = new();
+        passive.OnClick = new Button.ButtonClickedEvent();
         passive.OnClick.AddListener(action);
         passive.enabled = enabled;
     }
@@ -161,7 +197,7 @@ public static class Extensions
         }
 
         passive.OnMouseOver?.RemoveAllListeners();
-        passive.OnMouseOver = new();
+        passive.OnMouseOver = new UnityEvent();
         passive.OnMouseOver.AddListener(action);
         passive.enabled = enabled;
     }
@@ -174,7 +210,7 @@ public static class Extensions
         }
 
         passive.OnMouseOut?.RemoveAllListeners();
-        passive.OnMouseOut = new();
+        passive.OnMouseOut = new UnityEvent();
         passive.OnMouseOut.AddListener(action);
         passive.enabled = enabled;
     }
@@ -183,11 +219,17 @@ public static class Extensions
     {
         foreach (var item in collection)
         {
-            if (item == null) continue;
+            if (item == null)
+            {
+                continue;
+            }
 
             Object.Destroy(item);
 
-            if (item.gameObject == null) return;
+            if (item.gameObject == null)
+            {
+                return;
+            }
 
             Object.Destroy(item.gameObject);
         }
@@ -228,13 +270,17 @@ public static class Extensions
         roleIcon.gameObject.transform.localScale = new Vector3(0.21f, 0.9f, 1);
         roleIcon.gameObject.transform.localPosition += new Vector3(-0.964f, 0, -2);
 
-        Sprite? roleImg = TosRoleIcons.RandomImp.LoadAsset();
-    
+        var roleImg = TOSRoleIcons.RandomImp.LoadAsset();
+
         if (roleBehaviour.IsCrewmate())
-            roleImg = TosRoleIcons.RandomCrew.LoadAsset();
+        {
+            roleImg = TOSRoleIcons.RandomCrew.LoadAsset();
+        }
         else if (roleBehaviour.IsNeutral())
-            roleImg = TosRoleIcons.RandomNeut.LoadAsset();
-                
+        {
+            roleImg = TOSRoleIcons.RandomNeut.LoadAsset();
+        }
+
         if (roleBehaviour is ICustomRole customRole3 && customRole3.Configuration.Icon != null)
         {
             roleImg = customRole3.Configuration.Icon.LoadAsset();
@@ -243,14 +289,15 @@ public static class Extensions
         {
             roleImg = roleBehaviour.RoleIconSolid;
         }
+
         roleIcon.gameObject.GetComponent<SpriteRenderer>().sprite = roleImg;
         roleIcon.gameObject.SetActive(true);
 
         //var material = panel.PlayerIcon.cosmetics.currentBodySprite.BodySprite.material;
         var color = roleBehaviour is ICustomRole customRole ? customRole.RoleColor : roleBehaviour.TeamColor;
 
-        //var teamName = roleBehaviour is ITownOfSushiRole tosRole
-        //    ? tosRole.Alignment.ToDisplayString()
+        //var teamName = roleBehaviour is ITownOfSushiRole touRole
+        //    ? touRole.Alignment.ToDisplayString()
         //    : roleBehaviour.TeamType.ToDisplayString();
         //if (roleBehaviour is ICustomRole customOther && roleBehaviour is not ITownOfSushiRole) teamName = customOther.Team.ToDisplayString();
 
@@ -264,24 +311,25 @@ public static class Extensions
         //    teamName = teamName.Replace("Neutral", $"<color=#8A8A8AFF>Neutral</color>");
         //}
 
-        var alignment = roleBehaviour is ITownOfSushiRole tosRole
-            ? tosRole.RoleAlignment.ToDisplayString()
+        var alignment = roleBehaviour is ITownOfSushiRole touRole
+            ? touRole.RoleAlignment.ToDisplayString()
             : roleBehaviour.TeamType.ToDisplayString();
 
         if (alignment.Contains("Crewmate"))
         {
-            alignment = alignment.Replace("Crewmate", $"<color=#68ACF4FF>Crewmate</color>");
+            alignment = alignment.Replace("Crewmate", "<color=#68ACF4FF>Crewmate</color>");
         }
         else if (alignment.Contains("Impostor"))
         {
-            alignment = alignment.Replace("Impostor", $"<color=#D63F42FF>Impostor</color>");
+            alignment = alignment.Replace("Impostor", "<color=#D63F42FF>Impostor</color>");
         }
         else if (alignment.Contains("Neutral"))
         {
-            alignment = alignment.Replace("Neutral", $"<color=#8A8A8AFF>Neutral</color>");
+            alignment = alignment.Replace("Neutral", "<color=#8A8A8AFF>Neutral</color>");
         }
 
-        var finalString = $"<size=88%>{roleBehaviour.NiceName}</size>\n<size=70%><color=white>{alignment}</color></size>";
+        var finalString =
+            $"<size=88%>{roleBehaviour.NiceName}</size>\n<size=70%><color=white>{alignment}</color></size>";
 
         // material.SetColor(PlayerMaterial.BackColor, color.DarkenColor(0.35f));
         // material.SetColor(PlayerMaterial.BodyColor, color);
@@ -329,32 +377,65 @@ public static class Extensions
         roleIcon.gameObject.transform.localScale = new Vector3(0.21f, 0.9f, 1);
         roleIcon.gameObject.transform.localPosition += new Vector3(-0.964f, 0, -2);
 
-        Sprite? modImg = TosRoleIcons.RandomAny.LoadAsset();
+        var modImg = TOSRoleIcons.RandomAny.LoadAsset();
 
         var teamName = "Universal";
-        if (modifier is TosGameModifier tosModifier)
+        if (modifier is TOSGameModifier touModifier)
         {
-            if (tosModifier.FactionType.ToDisplayString().Contains("Crewmate")) modImg = TosRoleIcons.RandomCrew.LoadAsset();
-            else if (tosModifier.FactionType.ToDisplayString().Contains("Neutral")) modImg = TosRoleIcons.RandomNeut.LoadAsset();
-            else if (tosModifier.FactionType.ToDisplayString().Contains("Impostor")) modImg = TosRoleIcons.RandomImp.LoadAsset();
-            teamName = tosModifier.FactionType.ToDisplayString();
+            if (touModifier.FactionType.ToDisplayString().Contains("Crewmate"))
+            {
+                modImg = TOSRoleIcons.RandomCrew.LoadAsset();
+            }
+            else if (touModifier.FactionType.ToDisplayString().Contains("Neutral"))
+            {
+                modImg = TOSRoleIcons.RandomNeut.LoadAsset();
+            }
+            else if (touModifier.FactionType.ToDisplayString().Contains("Impostor"))
+            {
+                modImg = TOSRoleIcons.RandomImp.LoadAsset();
+            }
+
+            teamName = touModifier.FactionType.ToDisplayString();
         }
         else if (modifier is UniversalGameModifier uniMod)
         {
-            if (uniMod.FactionType.ToDisplayString().Contains("Crewmate")) modImg = TosRoleIcons.RandomCrew.LoadAsset();
-            else if (uniMod.FactionType.ToDisplayString().Contains("Neutral")) modImg = TosRoleIcons.RandomNeut.LoadAsset();
-            else if (uniMod.FactionType.ToDisplayString().Contains("Impostor")) modImg = TosRoleIcons.RandomImp.LoadAsset();
+            if (uniMod.FactionType.ToDisplayString().Contains("Crewmate"))
+            {
+                modImg = TOSRoleIcons.RandomCrew.LoadAsset();
+            }
+            else if (uniMod.FactionType.ToDisplayString().Contains("Neutral"))
+            {
+                modImg = TOSRoleIcons.RandomNeut.LoadAsset();
+            }
+            else if (uniMod.FactionType.ToDisplayString().Contains("Impostor"))
+            {
+                modImg = TOSRoleIcons.RandomImp.LoadAsset();
+            }
+
             teamName = uniMod.FactionType.ToDisplayString();
         }
         else if (modifier is AllianceGameModifier allyModifier)
         {
-            if (allyModifier.FactionType.ToDisplayString().Contains("Crewmate")) modImg = TosRoleIcons.RandomCrew.LoadAsset();
-            else if (allyModifier.FactionType.ToDisplayString().Contains("Neutral")) modImg = TosRoleIcons.RandomNeut.LoadAsset();
-            else if (allyModifier.FactionType.ToDisplayString().Contains("Impostor")) modImg = TosRoleIcons.RandomImp.LoadAsset();
+            if (allyModifier.FactionType.ToDisplayString().Contains("Crewmate"))
+            {
+                modImg = TOSRoleIcons.RandomCrew.LoadAsset();
+            }
+            else if (allyModifier.FactionType.ToDisplayString().Contains("Neutral"))
+            {
+                modImg = TOSRoleIcons.RandomNeut.LoadAsset();
+            }
+            else if (allyModifier.FactionType.ToDisplayString().Contains("Impostor"))
+            {
+                modImg = TOSRoleIcons.RandomImp.LoadAsset();
+            }
+
             teamName = allyModifier.FactionType.ToDisplayString();
         }
 
-        if (modifier.ModifierIcon != null) modImg = modifier.ModifierIcon.LoadAsset();
+        if (modifier.ModifierIcon != null)
+        {
+            modImg = modifier.ModifierIcon.LoadAsset();
+        }
 
         roleIcon.gameObject.GetComponent<SpriteRenderer>().sprite = modImg;
         roleIcon.gameObject.SetActive(true);
@@ -362,14 +443,27 @@ public static class Extensions
         // var material = panel.PlayerIcon.cosmetics.currentBodySprite.BodySprite.material;
 
 
-        if (teamName.Contains("Crewmate")) teamName = teamName.Replace("Crewmate", $"<color=#68ACF4FF>Crewmate</color>");
-        else if (teamName.Contains("Impostor")) teamName = teamName.Replace("Impostor", $"<color=#D63F42FF>Impostor</color>");
-        else teamName = teamName.Replace("Neutral", $"<color=#8A8A8AFF>Neutral</color>");
+        if (teamName.Contains("Crewmate"))
+        {
+            teamName = teamName.Replace("Crewmate", "<color=#68ACF4FF>Crewmate</color>");
+        }
+        else if (teamName.Contains("Impostor"))
+        {
+            teamName = teamName.Replace("Impostor", "<color=#D63F42FF>Impostor</color>");
+        }
+        else
+        {
+            teamName = teamName.Replace("Neutral", "<color=#8A8A8AFF>Neutral</color>");
+        }
         //teamName += " Modifier";
 
-        var finalString = $"<size=88%>{modifier.ModifierName}<color=white> (Modifier)</size>\n<size=70%>{teamName}</color></size>";
+        var finalString =
+            $"<size=88%>{modifier.ModifierName}<color=white> (Modifier)</size>\n<size=70%>{teamName}</color></size>";
         var color = MiscUtils.GetRoleColour(modifier.ModifierName.Replace(" ", string.Empty));
-        if (modifier is IColoredModifier colorMod) color = colorMod.ModifierColor;
+        if (modifier is IColoredModifier colorMod)
+        {
+            color = colorMod.ModifierColor;
+        }
 
         // material.SetColor(PlayerMaterial.BackColor, color.DarkenColor(0.35f));
         // material.SetColor(PlayerMaterial.BodyColor, color);
@@ -392,14 +486,14 @@ public static class Extensions
     {
         player.roleAssigned = false;
 
-        NetworkedPlayerInfo data = player.Data;
+        var data = player.Data;
 
         if (data.Role)
         {
             data.Role.Deinitialize(player);
-            // Object.Destroy(data.Role.gameObject);
         }
 
+        // Object.Destroy(data.Role.gameObject);
         var newRole = RoleManager.Instance.GetRole((RoleTypes)newRoleType);
         var roleBehaviour = Object.Instantiate(newRole, data.gameObject.transform);
         var oldRole = player.Data.Role;
@@ -462,10 +556,13 @@ public static class Extensions
         player.Visible = true;
         var color = new Color(1f, 1f, 1f, 0f);
 
-        var maxDistance = ShipStatus.Instance.MaxLightRadius * GameOptionsManager.Instance.currentNormalGameOptions.CrewLightMod;
+        var maxDistance = ShipStatus.Instance.MaxLightRadius *
+                          GameOptionsManager.Instance.currentNormalGameOptions.CrewLightMod;
 
         if (PlayerControl.LocalPlayer == null)
+        {
             return;
+        }
 
         var distance = (PlayerControl.LocalPlayer.GetTruePosition() - player.GetTruePosition()).magnitude;
 
@@ -488,7 +585,7 @@ public static class Extensions
                 RendererColor = color,
                 NameColor = Color.clear,
                 ColorBlindTextColor = Color.clear,
-                NameVisible = false,
+                NameVisible = false
             };
 
             player?.RawSetAppearance(fade);
@@ -506,8 +603,8 @@ public static class Extensions
         if (cleanVentTasks != null)
         {
             var ids = cleanVentTasks.Where(x => !x.IsComplete)
-                                    .ToList()
-                                    .ConvertAll(x => x.FindConsoles().ToArray()[0].ConsoleId);
+                .ToList()
+                .ConvertAll(x => x.FindConsoles().ToArray()[0].ConsoleId);
 
             vents = ShipStatus.Instance.AllVents.Where(x => !ids.Contains(x.Id)).ToList();
         }
@@ -532,7 +629,10 @@ public static class Extensions
         }
     }
 
-    public static T TakeFirst<T>(this List<T> list) => list.RemoveAndReturn(0);
+    public static T TakeFirst<T>(this List<T> list)
+    {
+        return list.RemoveAndReturn(0);
+    }
 
     public static List<T> Pad<T>(this List<T> list, int max, T item)
     {
@@ -555,7 +655,10 @@ public static class Extensions
         if (player.Data.Role is IGhostRole ghost)
         {
             ghost.Clicked();
-            if (player.AmOwner) Patches.HudManagerPatches.ZoomButton.SetActive(true);
+            if (player.AmOwner)
+            {
+                HudManagerPatches.ZoomButton.SetActive(true);
+            }
         }
     }
 
@@ -572,7 +675,7 @@ public static class Extensions
     }
 
     /// <summary>
-    /// Gets the closest player that matches the given criteria that also isn't hidden by other roles.
+    ///     Gets the closest player that matches the given criteria that also isn't hidden by other roles.
     /// </summary>
     /// <param name="playerControl">The player object.</param>
     /// <param name="includeImpostors">Whether impostors should be included in the search.</param>
@@ -588,12 +691,12 @@ public static class Extensions
         Predicate<PlayerControl>? predicate = null)
     {
         var filteredPlayers = Helpers.GetClosestPlayers(playerControl, distance, ignoreColliders)
-            .Where(
-                playerInfo => !playerInfo.Data.Disconnected &&
-                              playerInfo.PlayerId != playerControl.PlayerId &&
-                              ((playerInfo.TryGetModifier<DisabledModifier>(out var mod) && mod.IsConsideredAlive) || !playerInfo.HasModifier<DisabledModifier>()) &&
-                              !playerInfo.Data.IsDead &&
-                              (includeImpostors || !playerInfo.Data.Role.IsImpostor))
+            .Where(playerInfo => !playerInfo.Data.Disconnected &&
+                                 playerInfo.PlayerId != playerControl.PlayerId &&
+                                 ((playerInfo.TryGetModifier<DisabledModifier>(out var mod) && mod.IsConsideredAlive) ||
+                                  !playerInfo.HasModifier<DisabledModifier>()) &&
+                                 !playerInfo.Data.IsDead &&
+                                 (includeImpostors || !playerInfo.Data.Role.IsImpostor))
             .ToList();
 
         return predicate != null ? filteredPlayers.Find(predicate) : filteredPlayers.FirstOrDefault();
@@ -607,7 +710,7 @@ public static class Extensions
         hackedSprite.gameObject.layer = button.gameObject.layer;
 
         var render = hackedSprite.AddComponent<SpriteRenderer>();
-        render.sprite = TosAssets.Hacked.LoadAsset();
+        render.sprite = TOSAssets.Hacked.LoadAsset();
 
         hackedSprite.SetHackActive(false);
 

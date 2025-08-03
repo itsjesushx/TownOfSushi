@@ -33,24 +33,6 @@ public static class MapPatches
         RpcSetMap(PlayerControl.LocalPlayer, map);
     }
 
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(NormalGameOptionsV09), nameof(NormalGameOptionsV09.GetInt))]
-    public static void AdjustTasksPostfix(Int32OptionNames optionName, ref int __result)
-    {
-        switch (optionName)
-        {
-            case Int32OptionNames.NumShortTasks:
-                __result += OptionGroupSingleton<TownOfSushiMapOptions>.Instance.GetMapBasedShortTasks();
-                break;
-
-            case Int32OptionNames.NumLongTasks:
-                __result += OptionGroupSingleton<TownOfSushiMapOptions>.Instance.GetMapBasedLongTasks();
-                break;
-        }
-
-        __result = Math.Clamp(__result, 0, int.MaxValue);
-    }
-
     [HarmonyPatch(typeof(Vent), nameof(Vent.ToggleNeighborVentBeingCleaned))]
     [HarmonyPatch(typeof(Vent), nameof(Vent.UpdateArrows))]
     [HarmonyPrefix]
@@ -133,12 +115,16 @@ public static class MapPatches
         // randomNumber -= OptionGroupSingleton<Options.MapOptions>.Instance.dlekSChance;
 
         if (ModCompatibility.SubLoaded && randomNumber < submergedChance)
+        {
             return 6;
+        }
 
         randomNumber -= submergedChance;
 
         if (ModCompatibility.LILoaded && randomNumber < liChance)
+        {
             return 7;
+        }
 
         return GameOptionsManager.Instance.currentNormalGameOptions.MapId;
     }

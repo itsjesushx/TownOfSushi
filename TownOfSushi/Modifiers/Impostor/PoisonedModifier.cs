@@ -1,10 +1,9 @@
 using MiraAPI.GameOptions;
-using MiraAPI.Hud;
 using MiraAPI.Modifiers;
-using TownOfSushi.Buttons.Impostor;
 using TownOfSushi.Modules;
 using TownOfSushi.Options.Roles.Impostor;
 using TownOfSushi.Roles.Impostor;
+using TownOfSushi.Utilities;
 
 namespace TownOfSushi.Modifiers.Impostor;
 
@@ -21,7 +20,7 @@ public sealed class PoisonModifier : ConcealedModifier
     public override void OnMeetingStart()
     {
         var viper = PlayerControl.AllPlayerControls
-            .ToArray().FirstOrDefault(p => !p.Data.IsDead && p.GetRoleWhenAlive() is ViperRole);
+            .ToArray().FirstOrDefault(p => !p.HasDied() && p.GetRoleWhenAlive() is ViperRole);
 
         if (viper != null)
         {
@@ -29,11 +28,5 @@ public sealed class PoisonModifier : ConcealedModifier
         }
 
         Player.RemoveModifier(this);
-    }
-
-    public override void OnActivate()
-    {
-        var button = CustomButtonSingleton<ViperButton>.Instance;
-        button.OverrideName("POISONED");
     }
 }

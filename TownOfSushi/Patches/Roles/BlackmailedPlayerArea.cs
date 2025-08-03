@@ -37,13 +37,13 @@ public static class BlackmailedPlayerArea
             var bmIcon = Object.Instantiate(__instance.XMark, __instance.XMark.transform.parent);
             bmIcon.transform.localPosition = new Vector3(-0.804f, -0.212f, -2);
             bmIcon.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
-            bmIcon.sprite = TosAssets.BlackmailLetterSprite.LoadAsset();
+            bmIcon.sprite = TOSAssets.BlackmailLetterSprite.LoadAsset();
             bmIcon.gameObject.SetActive(true);
 
             BmOverlay = Object.Instantiate(__instance.XMark, __instance.XMark.transform.parent);
             BmOverlay.transform.localPosition = new Vector3(0, 0, -2);
             BmOverlay.transform.localScale = new Vector3(0.769f, 1, 1);
-            BmOverlay.sprite = TosAssets.BlackmailOverlaySprite.LoadAsset();
+            BmOverlay.sprite = TOSAssets.BlackmailOverlaySprite.LoadAsset();
             BmOverlay.gameObject.SetActive(true);
             __instance.ColorBlindName.gameObject.SetActive(false);
         }
@@ -51,10 +51,16 @@ public static class BlackmailedPlayerArea
         if (Helpers.GetAlivePlayers().Count > maxAliveNeeded)
         {
             __instance.SetVote(252);
-            if (targetSeeOnly) __instance.Flag.enabled = false;
-            if (amOwner == true) MeetingHud.Instance.Confirm(252);
-        }
+            if (targetSeeOnly)
+            {
+                __instance.Flag.enabled = false;
+            }
 
+            if (amOwner == true)
+            {
+                MeetingHud.Instance.Confirm(252);
+            }
+        }
     }
 
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Update))]

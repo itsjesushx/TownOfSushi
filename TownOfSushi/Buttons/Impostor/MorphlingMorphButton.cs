@@ -18,14 +18,7 @@ public sealed class MorphlingMorphButton : TownOfSushiRoleButton<MorphlingRole>,
     public override float Cooldown => OptionGroupSingleton<MorphlingOptions>.Instance.MorphlingCooldown + MapCooldown;
     public override float EffectDuration => OptionGroupSingleton<MorphlingOptions>.Instance.MorphlingDuration;
     public override int MaxUses => (int)OptionGroupSingleton<MorphlingOptions>.Instance.MaxMorphs;
-    public override LoadableAsset<Sprite> Sprite => TosImpAssets.MorphSprite;
-
-    public override bool Enabled(RoleBehaviour? role) => base.Enabled(role) && Role is not { Sampled: null };
-
-    public override bool CanUse()
-    {
-        return ((Timer <= 0 && !EffectActive) || (EffectActive && Timer <= (EffectDuration - 2f))) && !PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>() && !PlayerControl.LocalPlayer.HasModifier<DisabledModifier>();
-    }
+    public override LoadableAsset<Sprite> Sprite => TOSImpAssets.MorphSprite;
 
     public override void ClickHandler()
     {
@@ -52,6 +45,18 @@ public sealed class MorphlingMorphButton : TownOfSushiRoleButton<MorphlingRole>,
         }
     }
 
+    public override bool Enabled(RoleBehaviour? role)
+    {
+        return base.Enabled(role) && Role is not { Sampled: null };
+    }
+
+    public override bool CanUse()
+    {
+        return ((Timer <= 0 && !EffectActive) || (EffectActive && Timer <= EffectDuration - 2f)) &&
+               !PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>() &&
+               !PlayerControl.LocalPlayer.HasModifier<DisabledModifier>();
+    }
+
     protected override void OnClick()
     {
         if (!EffectActive)
@@ -59,7 +64,10 @@ public sealed class MorphlingMorphButton : TownOfSushiRoleButton<MorphlingRole>,
             PlayerControl.LocalPlayer.RpcAddModifier<MorphlingMorphModifier>(Role.Sampled!);
             OverrideName("Unmorph");
             UsesLeft--;
-            if (MaxUses != 0) Button?.SetUsesRemaining(UsesLeft);
+            if (MaxUses != 0)
+            {
+                Button?.SetUsesRemaining(UsesLeft);
+            }
         }
         else
         {

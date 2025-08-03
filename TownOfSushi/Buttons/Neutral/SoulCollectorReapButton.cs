@@ -10,13 +10,15 @@ using UnityEngine;
 
 namespace TownOfSushi.Buttons.Neutral;
 
-public sealed class SoulCollectorReapButton : TownOfSushiRoleButton<SoulCollectorRole, PlayerControl>, IDiseaseableButton, IKillButton
+public sealed class SoulCollectorReapButton : TownOfSushiRoleButton<SoulCollectorRole, PlayerControl>, IDiseaseableButton,
+    IKillButton
 {
     public override string Name => "Reap";
     public override string Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.SoulCollector;
     public override float Cooldown => OptionGroupSingleton<SoulCollectorOptions>.Instance.KillCooldown + MapCooldown;
-    public override LoadableAsset<Sprite> Sprite => TosNeutAssets.ReapSprite;
+    public override LoadableAsset<Sprite> Sprite => TOSNeutAssets.ReapSprite;
+
     public void SetDiseasedTimer(float multiplier)
     {
         SetTimer(Cooldown * multiplier);
@@ -31,13 +33,17 @@ public sealed class SoulCollectorReapButton : TownOfSushiRoleButton<SoulCollecto
         }
 
         PlayerControl.LocalPlayer.RpcCustomMurder(Target, createDeadBody: false);
-        
+
         var notif1 = Helpers.CreateAndShowNotification(
-            $"<b>{TownOfSushiColors.SoulCollector.ToTextColor()}You have taken {Target.Data.PlayerName}'s soul from their body, leaving a soulless player behind.</color></b>", Color.white, spr: TosRoleIcons.SoulCollector.LoadAsset());
+            $"<b>{TownOfSushiColors.SoulCollector.ToTextColor()}You have taken {Target.Data.PlayerName}'s soul from their body, leaving a soulless player behind.</color></b>",
+            Color.white, spr: TOSRoleIcons.SoulCollector.LoadAsset());
 
         notif1.Text.SetOutlineThickness(0.35f);
-            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+        notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
     }
 
-    public override PlayerControl? GetTarget() => PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
+    public override PlayerControl? GetTarget()
+    {
+        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
+    }
 }

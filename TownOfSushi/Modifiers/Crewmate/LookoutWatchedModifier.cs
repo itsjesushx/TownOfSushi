@@ -1,8 +1,8 @@
-﻿using MiraAPI.Events;
+﻿using System.Text;
+using MiraAPI.Events;
 using MiraAPI.Modifiers;
 using Reactor.Utilities.Extensions;
-using System.Text;
-using TownOfSushi.Events.TosEvents;
+using TownOfSushi.Events.TOSEvents;
 using TownOfSushi.Utilities;
 using UnityEngine;
 
@@ -20,9 +20,10 @@ public sealed class LookoutWatchedModifier(PlayerControl lookout) : BaseModifier
     {
         base.OnActivate();
 
-        var TosAbilityEvent = new TosAbilityEvent(AbilityType.LookoutWatch, Lookout, Player);
-        MiraEventManager.InvokeEvent(TosAbilityEvent);
+        var TOSAbilityEvent = new TOSAbilityEvent(AbilityType.LookoutWatch, Lookout, Player);
+        MiraEventManager.InvokeEvent(TOSAbilityEvent);
     }
+
     public override void OnDeath(DeathReason reason)
     {
         ModifierComponent!.RemoveModifier(this);
@@ -40,7 +41,11 @@ public sealed class LookoutWatchedModifier(PlayerControl lookout) : BaseModifier
 
     public override void OnMeetingStart()
     {
-        if (!Lookout.AmOwner) return;
+        if (!Lookout.AmOwner)
+        {
+            return;
+        }
+
         var title = $"<color=#{TownOfSushiColors.Lookout.ToHtmlStringRGBA()}>Lookout Feedback</color>";
         var msg = $"No players interacted with {Player.Data.PlayerName}";
 
@@ -60,7 +65,9 @@ public sealed class LookoutWatchedModifier(PlayerControl lookout) : BaseModifier
             var final = message.ToString();
 
             if (string.IsNullOrWhiteSpace(final))
+            {
                 return;
+            }
 
             msg = final;
         }

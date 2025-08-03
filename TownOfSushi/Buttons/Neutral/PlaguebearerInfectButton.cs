@@ -16,9 +16,13 @@ public sealed class PlaguebearerInfectButton : TownOfSushiRoleButton<Plaguebeare
     public override string Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Plaguebearer;
     public override float Cooldown => OptionGroupSingleton<PlaguebearerOptions>.Instance.InfectCooldown;
-    public override LoadableAsset<Sprite> Sprite => TosNeutAssets.InfectSprite;
+    public override LoadableAsset<Sprite> Sprite => TOSNeutAssets.InfectSprite;
 
-    public override PlayerControl? GetTarget() => PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance, predicate: plr => !plr.HasModifier<PlaguebearerInfectedModifier>());
+    public override PlayerControl? GetTarget()
+    {
+        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance,
+            predicate: plr => !plr.HasModifier<PlaguebearerInfectedModifier>());
+    }
 
     protected override void OnClick()
     {

@@ -19,18 +19,23 @@ public sealed class AltruistReviveButton : TownOfSushiRoleButton<AltruistRole>
     public override float Cooldown => 0.001f + MapCooldown;
     public override float EffectDuration => OptionGroupSingleton<AltruistOptions>.Instance.ReviveDuration;
     public override int MaxUses => (int)OptionGroupSingleton<AltruistOptions>.Instance.MaxRevives;
-    public override LoadableAsset<Sprite> Sprite => TosCrewAssets.ReviveSprite;
+    public override LoadableAsset<Sprite> Sprite => TOSCrewAssets.ReviveSprite;
 
     public bool RevivedInRound { get; set; }
+
     public override void CreateButton(Transform parent)
     {
         base.CreateButton(parent);
 
-        Button!.usesRemainingSprite.sprite = TosAssets.AbilityCounterBodySprite.LoadAsset();
+        Button!.usesRemainingSprite.sprite = TOSAssets.AbilityCounterBodySprite.LoadAsset();
     }
+
     public override bool CanUse()
     {
-        if (RevivedInRound) return false;
+        if (RevivedInRound)
+        {
+            return false;
+        }
 
         var bodiesInRange = Helpers.GetNearestDeadBodies(
             PlayerControl.LocalPlayer.transform.position,
@@ -62,13 +67,16 @@ public sealed class AltruistReviveButton : TownOfSushiRoleButton<AltruistRole>
                         AltruistRole.RpcRevive(PlayerControl.LocalPlayer, other()!);
                     }
                 }
+
                 AltruistRole.RpcRevive(PlayerControl.LocalPlayer, player);
             }
         }
+        OverrideName("Reviving");
     }
 
     public override void OnEffectEnd()
     {
         RevivedInRound = true;
+        OverrideName("Revive");
     }
 }

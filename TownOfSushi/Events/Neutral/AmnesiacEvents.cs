@@ -1,44 +1,45 @@
 ﻿using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
-using MiraAPI.GameOptions;
-using MiraAPI.Modifiers;
-using MiraAPI.Roles;
-using Reactor.Utilities;
-using System.Collections;
-using TownOfSushi.Modifiers.Crewmate;
-using TownOfSushi.Options.Roles.Neutral;
 using TownOfSushi.Roles.Neutral;
 using UnityEngine;
-using Object = UnityEngine.Object;
-using Color = UnityEngine.Color;
+using MiraAPI.Hud;
+using TownOfSushi.Utilities;
+using TownOfSushi.Modules;
 
 namespace TownOfSushi.Events.Neutral;
 
 public static class AmnesiacEvents
 {
     [RegisterEvent]
-    public static void AfterMurderEventHandler(AfterMurderEvent @event)
+    public static void RoundStartEventHandler(RoundStartEvent @event)
     {
-        if (!CustomRoleUtils.GetActiveRolesOfType<AmnesiacRole>().Any()) return;
-        if (!OptionGroupSingleton<AmnesiacOptions>.Instance.RememberArrows) return;
+        if (@event.TriggeredByIntro) return;
 
-        Coroutines.Start(CoCreateArrow(@event.Target));
-    }
+        if (!PlayerControl.LocalPlayer.IsRole<AmnesiacRole>()) return;
 
-    private static IEnumerator CoCreateArrow(PlayerControl target)
-    {
-        yield return new WaitForSeconds(OptionGroupSingleton<AmnesiacOptions>.Instance.RememberArrowDelay.Value);
-
-        var deadBody = Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == target.PlayerId);
-
-        if (deadBody == null) yield break;
-
-        foreach (var amne in CustomRoleUtils.GetActiveRolesOfType<AmnesiacRole>().Select(x => x.Player))
-        {
-            if (amne.AmOwner)
+        var playerMenu = CustomPlayerMenu.Create();
+        playerMenu.transform.FindChild("PhoneUI").GetChild(0).GetComponent<SpriteRenderer>().material = PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;
+        playerMenu.transform.FindChild("PhoneUI").GetChild(1).GetComponent<SpriteRenderer>().material = PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;
+        playerMenu.Begin(
+            plr => (plr.HasDied() || UnityEngine.Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == plr.PlayerId) ||
+            FakePlayer.FakePlayers.FirstOrDefault(x => x?.body?.name == $"Fake {plr.gameObject.name}")?.body) && plr != PlayerControl.LocalPlayer,
+            plr =>
             {
-                amne.AddModifier<AmnesiacArrowModifier>(deadBody, Color.white);
-            }
+                playerMenu.ForceClose();
+
+                if (plr != null)
+                {
+                    var targetId = plr.PlayerId;
+                    var targetPlayer = MiscUtils.PlayerById(targetId);
+
+                    if (targetPlayer == null) return;
+
+                    AmnesiacRole.RpcRemember(PlayerControl.LocalPlayer, targetPlayer);
+                }
+            });
+        foreach (var panel in playerMenu.potentialVictims)
+        {
+            panel.PlayerIcon.cosmetics.SetPhantomRoleAlpha(1f);
         }
     }
 }

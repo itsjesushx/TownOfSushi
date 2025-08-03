@@ -21,7 +21,7 @@ public sealed class LoverGameOver : CustomGameOver
         endGameManager.BackgroundBar.material.SetColor(ShaderID.Color, TownOfSushiColors.Lover);
 
         var text = Object.Instantiate(endGameManager.WinText);
-        text.text = $"Lovers Win!";
+        text.text = "Love Couple Wins!";
         text.color = TownOfSushiColors.Lover;
         GameHistory.WinningFaction = $"<color=#{TownOfSushiColors.Lover.ToHtmlStringRGBA()}>Lovers</color>";
 

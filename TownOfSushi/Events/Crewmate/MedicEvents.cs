@@ -11,7 +11,9 @@ using TownOfSushi.Buttons;
 using TownOfSushi.Buttons.Crewmate;
 using TownOfSushi.Modifiers;
 using TownOfSushi.Modifiers.Crewmate;
+using TownOfSushi.Modules;
 using TownOfSushi.Options;
+using TownOfSushi.Options.Roles.Crewmate;
 using TownOfSushi.Roles.Crewmate;
 using TownOfSushi.Utilities;
 
@@ -20,13 +22,39 @@ namespace TownOfSushi.Events.Crewmate;
 public static class MedicEvents
 {
     [RegisterEvent]
-    public static void RoundStartHandler(RoundStartEvent @event)
+    public static void RoundStartEventHandler(RoundStartEvent @event)
     {
         if (PlayerControl.LocalPlayer.Data.Role is MedicRole)
         {
             MedicRole.OnRoundStart();
         }
+        var medicShields = ModifierUtils.GetActiveModifiers<MedicShieldModifier>();
+
+        if (!medicShields.Any())
+        {
+            return;
+        }
+
+        foreach (var mod in medicShields)
+        {
+            var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
+            var showShielded = OptionGroupSingleton<MedicOptions>.Instance.ShowShielded;
+
+            var showShieldedEveryone = showShielded == MedicOption.Everyone;
+            var showShieldedSelf = PlayerControl.LocalPlayer.PlayerId == mod.Player.PlayerId &&
+                                   showShielded is MedicOption.Shielded or MedicOption.ShieldedAndMedic;
+            var showShieldedMedic = PlayerControl.LocalPlayer.PlayerId == mod.Medic.PlayerId &&
+                                    showShielded is MedicOption.Medic or MedicOption.ShieldedAndMedic;
+
+            var body = UnityEngine.Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x =>
+                x.ParentId == PlayerControl.LocalPlayer.PlayerId && !TutorialManager.InstanceExists);
+            var fakePlayer = FakePlayer.FakePlayers.FirstOrDefault(x =>
+                x.PlayerId == PlayerControl.LocalPlayer.PlayerId && !TutorialManager.InstanceExists);
+        
+            mod.ShowShield = showShieldedEveryone || showShieldedSelf || showShieldedMedic || (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body);
+        }
     }
+
     [RegisterEvent]
     public static void BeforeMurderEventHandler(BeforeMurderEvent @event)
     {
@@ -45,7 +73,10 @@ public static class MedicEvents
         var source = PlayerControl.LocalPlayer;
         var button = @event.Button as CustomActionButton<PlayerControl>;
         var target = button?.Target;
-        if (target == null || button is not IKillButton) return;
+        if (target == null || button is not IKillButton)
+        {
+            return;
+        }
 
         if (CheckForMedicShield(@event, source, target))
         {
@@ -61,8 +92,11 @@ public static class MedicEvents
         foreach (var medic in CustomRoleUtils.GetActiveRolesOfType<MedicRole>())
         {
             if (victim == medic.Shielded)
+            {
                 medic.Clear();
+            }
         }
+
         if (victim.TryGetModifier<MedicShieldModifier>(out var medMod)
             && PlayerControl.LocalPlayer.Data.Role is MedicRole
             && medMod.Medic.AmOwner)
@@ -99,8 +133,8 @@ public static class MedicEvents
         }
 
         if (player && player.TryGetModifier<MedicShieldModifier>(out var medMod)
-            && PlayerControl.LocalPlayer.Data.Role is MedicRole
-            && medMod.Medic.AmOwner)
+                   && PlayerControl.LocalPlayer.Data.Role is MedicRole
+                   && medMod.Medic.AmOwner)
         {
             CustomButtonSingleton<MedicShieldButton>.Instance.CanChangeTarget = true;
         }
@@ -122,10 +156,14 @@ public static class MedicEvents
 
     private static bool CheckForMedicShield(MiraCancelableEvent @event, PlayerControl source, PlayerControl target)
     {
-        if (!target.HasModifier<MedicShieldModifier>() || 
-            MeetingHud.Instance ||
+        if (MeetingHud.Instance || ExileController.Instance)
+        {
+            return false;
+        }
+
+        if (!target.HasModifier<MedicShieldModifier>() ||
             source == null ||
-            target.PlayerId == source.PlayerId || 
+            target.PlayerId == source.PlayerId ||
             (source.TryGetModifier<IndirectAttackerModifier>(out var indirect) && indirect.IgnoreShield))
         {
             return false;
@@ -150,7 +188,10 @@ public static class MedicEvents
         button?.SetTimer(reset);
 
         // Reset impostor kill cooldown if they attack a shielded player
-        if (!source.AmOwner || !source.IsImpostor()) return;
+        if (!source.AmOwner || !source.IsImpostor())
+        {
+            return;
+        }
 
         source.SetKillTimer(reset);
     }

@@ -1,22 +1,22 @@
 using AmongUs.GameOptions;
 using System.Text;
 using Il2CppInterop.Runtime.Attributes;
-using MiraAPI.GameOptions;
 using MiraAPI.Roles;
 using UnityEngine;
-using TownOfSushi.Modules.Wiki;
-using TownOfSushi.Utilities;
-using TownOfSushi.Options.Roles.Impostor;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
 using MiraAPI.Networking;
 using MiraAPI.Utilities;
 using MiraAPI.Modifiers;
+using TownOfUs.Modules.Wiki;
+using MiraAPI.GameOptions;
+using TownOfSushi.Utilities;
 using TownOfSushi.Modifiers.Impostor;
+using TownOfSushi.Options.Roles.Impostor;
 
 namespace TownOfSushi.Roles.Impostor;
 
-public sealed class ViperRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IDoomable
+public sealed class ViperRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
 {
     public string RoleName => "Viper";
     public string RoleDescription => "Poison other players and kill them after some seconds.";
@@ -24,11 +24,10 @@ public sealed class ViperRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfSush
     public Color RoleColor => TownOfSushiColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorKilling;
-    public DoomableType DoomHintType => DoomableType.Relentless;
     public CustomRoleConfiguration Configuration => new(this)
     {
         CanUseVent = OptionGroupSingleton<ViperOptions>.Instance.CanUseVents,
-        Icon = TosImpAssets.PoisonSprite,
+        Icon = TOSImpAssets.PoisonSprite,
         IntroSound = CustomRoleUtils.GetIntroSound(RoleTypes.Shapeshifter),
     };
     public void FixedUpdate()
@@ -56,11 +55,11 @@ public sealed class ViperRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfSush
         {
             var notif1 = Helpers.CreateAndShowNotification(
                 $"<b>{TownOfSushiColors.ImpSoft.ToTextColor()}{target.Data.PlayerName}, has been successfully poisoned. They are dead.</b></color>",
-                Color.white, spr: TosImpAssets.PoisonSprite.LoadAsset());
+                Color.white, spr: TOSImpAssets.PoisonSprite.LoadAsset());
 
             notif1.Text.SetOutlineThickness(0.35f);
             notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
-            source.RpcCustomMurder(target, createDeadBody: true, teleportMurderer: false, playKillSound: true);
+            source.RpcCustomMurder(target, teleportMurderer: false);
         }
     }
 
@@ -85,7 +84,7 @@ public sealed class ViperRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfSush
 
     public string GetAdvancedDescription()
     {
-        return "The Viper is an Impostor Concealing role that can temporarily turn invisible."
+        return $"The Viper is an Impostor killing role that can poison other players, poisoned players will die after {OptionGroupSingleton<ViperOptions>.Instance.PoisonDelay} second(s)."
             + MiscUtils.AppendOptionsText(GetType());
     }
 
@@ -93,6 +92,6 @@ public sealed class ViperRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfSush
     public List<CustomButtonWikiDescription> Abilities { get; } = [
         new("Poison",
             "A poisoned player will die after  second(s).",
-            TosImpAssets.PoisonSprite)
+            TOSImpAssets.PoisonSprite)
     ];
 }

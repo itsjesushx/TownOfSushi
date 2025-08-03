@@ -4,7 +4,7 @@ using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers.Types;
 using TownOfSushi.Buttons;
-using TownOfSushi.Events.TosEvents;
+using TownOfSushi.Events.TOSEvents;
 using TownOfSushi.Options.Roles.Neutral;
 using TownOfSushi.Utilities;
 using UnityEngine;
@@ -25,13 +25,13 @@ public sealed class GlitchHackedModifier(byte glitchId) : TimedModifier
     private GameObject? VentButtonHackedSprite { get; set; }
     private GameObject? UseButtonHackedSprite { get; set; }
     private GameObject? SabotageButtonHackedSprite { get; set; }
-    private List<GameObject> CustomButtonHackedSprites { get; set; } = [];
+    private List<GameObject> CustomButtonHackedSprites { get; } = [];
 
     public override void OnActivate()
     {
         var glitch = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(x => x.PlayerId == GlitchId);
-        var TosAbilityEvent = new TosAbilityEvent(AbilityType.GlitchInitialHack, glitch!, Player);
-        MiraEventManager.InvokeEvent(TosAbilityEvent);
+        var TOSAbilityEvent = new TOSAbilityEvent(AbilityType.GlitchInitialHack, glitch!, Player);
+        MiraEventManager.InvokeEvent(TOSAbilityEvent);
         if (Player.AmOwner)
         {
             ReportButtonHackedSprite = HudManager.Instance.ReportButton.CreateHackedIcon();
@@ -42,12 +42,16 @@ public sealed class GlitchHackedModifier(byte glitchId) : TimedModifier
 
             foreach (var button in CustomButtonManager.Buttons)
             {
-                if (button is FakeVentButton) continue;
+                if (button is FakeVentButton)
+                {
+                    continue;
+                }
+
                 CustomButtonHackedSprites.Add(button!.Button!.CreateHackedIcon());
             }
         }
     }
-    
+
     public override void OnDeath(DeathReason reason)
     {
         ModifierComponent!.RemoveModifier(this);
@@ -55,16 +59,19 @@ public sealed class GlitchHackedModifier(byte glitchId) : TimedModifier
 
     public void ShowHacked()
     {
-        if (!ShouldHideHacked) return;
+        if (!ShouldHideHacked)
+        {
+            return;
+        }
 
         ShouldHideHacked = false;
         var glitch = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(x => x.PlayerId == GlitchId);
-        var TosAbilityEvent = new TosAbilityEvent(AbilityType.GlitchHackTrigger, glitch!, Player);
-        MiraEventManager.InvokeEvent(TosAbilityEvent);
+        var TOSAbilityEvent = new TOSAbilityEvent(AbilityType.GlitchHackTrigger, glitch!, Player);
+        MiraEventManager.InvokeEvent(TOSAbilityEvent);
 
         if (Player.AmOwner)
         {
-            TosAudio.PlaySound(TosAudio.HackedSound);
+            TOSAudio.PlaySound(TOSAudio.HackedSound);
 
             ReportButtonHackedSprite?.SetHackActive(true);
             KillButtonHackedSprite?.SetHackActive(true);
@@ -82,7 +89,7 @@ public sealed class GlitchHackedModifier(byte glitchId) : TimedModifier
     {
         if (Player.AmOwner)
         {
-            TosAudio.PlaySound(TosAudio.UnhackedSound);
+            TOSAudio.PlaySound(TOSAudio.UnhackedSound);
 
             ReportButtonHackedSprite?.SetHackActive(false);
             KillButtonHackedSprite?.SetHackActive(false);

@@ -1,6 +1,7 @@
 ﻿using MiraAPI.Modifiers;
 using MiraAPI.Modifiers.Types;
 using MiraAPI.PluginLoading;
+using TownOfSushi.Modifiers.Neutral;
 
 namespace TownOfSushi.Modifiers.Game;
 
@@ -19,7 +20,13 @@ public abstract class AllianceGameModifier : GameModifier
 
     public override bool HideOnUi => false;
 
-    public override int GetAmountPerGame() => 1;
+    public override int GetAmountPerGame()
+    {
+        return 1;
+    }
 
-    public override bool IsModifierValidOn(RoleBehaviour role) => !role.Player.GetModifierComponent().HasModifier<AllianceGameModifier>(true);
+    public override bool IsModifierValidOn(RoleBehaviour role)
+    {
+        return !role.Player.GetModifierComponent().HasModifier<AllianceGameModifier>(true) && !role.Player.HasModifier<ExecutionerTargetModifier>();
+    }
 }

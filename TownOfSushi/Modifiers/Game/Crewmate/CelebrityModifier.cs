@@ -3,27 +3,28 @@ using MiraAPI.Modifiers;
 using MiraAPI.Utilities.Assets;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
-using TownOfSushi.Modules.Wiki;
+using TownOfUs.Modules.Wiki;
 using TownOfSushi.Options.Modifiers;
 using TownOfSushi.Roles.Crewmate;
-using TownOfSushi.Roles.Impostor;
 using TownOfSushi.Roles.Neutral;
 using TownOfSushi.Utilities;
 using TownOfSushi.Utilities.Appearances;
 using UnityEngine;
+using TownOfSushi.Roles.Impostor;
+using TownOfSushi.Modules;
+using TownOfSushi.Roles;
 
 namespace TownOfSushi.Modifiers.Game.Crewmate;
 
-public sealed class CelebrityModifier : TosGameModifier, IWikiDiscoverable
+public sealed class CelebrityModifier : TOSGameModifier, IWikiDiscoverable
 {
     public override string ModifierName => "Celebrity";
-    public override LoadableAsset<Sprite>? ModifierIcon => TosModifierIcons.Celebrity;
-    public override string GetDescription() => "Announce how you died on your passing.";
+    public override string IntroInfo => "You will also reveal info about your death in the meeting.";
+    public override LoadableAsset<Sprite>? ModifierIcon => TOSModifierIcons.Celebrity;
+    public override Color FreeplayFileColor => new Color32(140, 255, 255, 255);
+
     public override ModifierFaction FactionType => ModifierFaction.CrewmatePostmortem;
-    public override int GetAssignmentChance() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.CelebrityChance;
-    public override int GetAmountPerGame() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.CelebrityAmount != 0 ? 1 : 0;
-    public List<CustomButtonWikiDescription> Abilities { get; } = [];
-    
+
     public DateTime DeathTime { get; set; }
     public float DeathTimeMilliseconds { get; set; }
     public string DeathMessage { get; set; }
@@ -31,9 +32,27 @@ public sealed class CelebrityModifier : TosGameModifier, IWikiDiscoverable
     public string StoredRoom { get; set; }
     public bool Announced { get; set; }
 
+    public List<CustomButtonWikiDescription> Abilities { get; } = [];
+
     public string GetAdvancedDescription()
     {
-        return "After you die, details about your death will be revealed such as where you were killed and which role killed you during the meeting.";
+        return
+            "After you die, details about your death will be revealed such as where you were killed and which role killed you during the meeting.";
+    }
+
+    public override string GetDescription()
+    {
+        return "Announce how you died on your passing.";
+    }
+
+    public override int GetAssignmentChance()
+    {
+        return (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.CelebrityChance;
+    }
+
+    public override int GetAmountPerGame()
+    {
+        return (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.CelebrityAmount != 0 ? 1 : 0;
     }
 
     public override bool IsModifierValidOn(RoleBehaviour role)
@@ -49,39 +68,37 @@ public sealed class CelebrityModifier : TosGameModifier, IWikiDiscoverable
             return;
         }
 
-        PlainShipRoom? plainShipRoom = null;
-
-        var allRooms2 = ShipStatus.Instance.FastRooms;
-        foreach (PlainShipRoom plainShipRoom2 in allRooms2.Values)
-        {
-            if (plainShipRoom2.roomArea && plainShipRoom2.roomArea.OverlapPoint(player.GetTruePosition()))
-            {
-                plainShipRoom = plainShipRoom2;
-            }
-        }
-
-        var room = plainShipRoom != null ? TranslationController.Instance.GetString(plainShipRoom.RoomId) : "Outside/Hallway";
+        var room = MiscUtils.GetRoomName(player.GetTruePosition());
 
         var celeb = player.GetModifier<CelebrityModifier>()!;
         celeb.StoredRoom = room;
         celeb.DeathTime = DateTime.UtcNow;
 
-        celeb.AnnounceMessage = $"<size=90%>The Celebrity, {player.GetDefaultAppearance().PlayerName}, has died!</size>\n<size=70%>(Details in chat)</size>";
+        celeb.AnnounceMessage =
+            $"<size=90%>The Celebrity, {player.GetDefaultAppearance().PlayerName}, has died!</size>\n<size=70%>(Details in chat)</size>";
 
         var cod = "killed";
-        switch (source.Data.Role)
+        var role = source.GetRoleWhenAlive();
+        if (source.Data.Role is IGhostRole)
         {
-            case SheriffRole or HunterRole or VeteranRole:
+            role = source.Data.Role;
+        }
+        switch (role)
+        {
+            case SheriffRole or VeteranRole:
                 cod = "shot";
                 break;
             case InquisitorRole:
                 cod = "vanquished";
                 break;
-            case ArsonistRole:
+            case PyromaniacRole:
                 cod = "ignited";
                 break;
             case GlitchRole:
                 cod = "bugged";
+                break;
+            case WarlockRole:
+                cod = "cursed";
                 break;
             case JuggernautRole:
                 cod = "destroyed";
@@ -93,28 +110,51 @@ public sealed class CelebrityModifier : TosGameModifier, IWikiDiscoverable
                 cod = "reaped";
                 break;
             case VampireRole:
-                cod = "bit";
+                cod = "bitten";
+                break;
+            case WerewolfRole:
+                cod = "mauled";
+                break;
+            case WitchRole:
+                cod = "spelled";
                 break;
             case PredatorRole:
                 cod = "terminated";
                 break;
-            case WerewolfRole:
-                cod = "mauled";
+            case JesterRole:
+                cod = "haunted";
+                break;
+            case ExecutionerRole:
+                cod = "tormented";
+                break;
+            case PhantomRole:
+                cod = "spooked";
                 break;
             case ViperRole:
                 cod = "poisoned";
                 break;
         }
-        if (customDeath != string.Empty && customDeath != "") cod = customDeath;
+
+        if (customDeath != string.Empty && customDeath != "")
+        {
+            cod = customDeath;
+        }
+
         if (MeetingHud.Instance)
         {
             celeb.Announced = true;
         }
 
         if (source == player)
-            celeb.DeathMessage = $"The Celebrity, {player.GetDefaultAppearance().PlayerName}, was killed! Location: {celeb.StoredRoom}, Death: By Suicide, Time: ";
+        {
+            celeb.DeathMessage =
+                $"The Celebrity, {player.GetDefaultAppearance().PlayerName}, was killed! Location: {celeb.StoredRoom}, Death: By Suicide, Time: ";
+        }
         else
-            celeb.DeathMessage = $"The Celebrity, {player.GetDefaultAppearance().PlayerName}, was {cod}! Location: {celeb.StoredRoom}, Death: By the {source.Data.Role.NiceName}, Time: ";
+        {
+            celeb.DeathMessage =
+                $"The Celebrity, {player.GetDefaultAppearance().PlayerName}, was {cod}! Location: {celeb.StoredRoom}, Death: By the {source.Data.Role.NiceName}, Time: ";
+        }
     }
 
     [MethodRpc((uint)TownOfSushiRpc.UpdateCelebrityKilled, SendImmediately = true)]

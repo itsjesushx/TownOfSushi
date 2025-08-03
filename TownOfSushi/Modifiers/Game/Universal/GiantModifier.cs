@@ -1,6 +1,6 @@
 ﻿using MiraAPI.GameOptions;
 using MiraAPI.Utilities.Assets;
-using TownOfSushi.Modules.Wiki;
+using TownOfUs.Modules.Wiki;
 using TownOfSushi.Options.Modifiers;
 using TownOfSushi.Options.Modifiers.Universal;
 using TownOfSushi.Utilities.Appearances;
@@ -11,13 +11,10 @@ namespace TownOfSushi.Modifiers.Game.Universal;
 public sealed class GiantModifier : UniversalGameModifier, IWikiDiscoverable, IVisualAppearance
 {
     public override string ModifierName => "Giant";
-    public override LoadableAsset<Sprite>? ModifierIcon => TosModifierIcons.Giant;
-    public override string GetDescription() => $"You are bigger than the average player, moving {Math.Round(1f / OptionGroupSingleton<GiantOptions>.Instance.GiantSpeed, 2)}x slower";
-    public override ModifierFaction FactionType => ModifierFaction.UniversalVisibility;
+    public override LoadableAsset<Sprite>? ModifierIcon => TOSModifierIcons.Giant;
 
-    public override int GetAssignmentChance() =>
-        (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.GiantChance;
-    public override int GetAmountPerGame() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.GiantAmount;
+    public override ModifierFaction FactionType => ModifierFaction.UniversalVisibility;
+    public override Color FreeplayFileColor => new Color32(180, 180, 180, 255);
 
     public VisualAppearance GetVisualAppearance()
     {
@@ -25,6 +22,30 @@ public sealed class GiantModifier : UniversalGameModifier, IWikiDiscoverable, IV
         appearance.Speed = OptionGroupSingleton<GiantOptions>.Instance.GiantSpeed;
         appearance.Size = new Vector3(1f, 1f, 1f);
         return appearance;
+    }
+
+    public string GetAdvancedDescription()
+    {
+        return
+            $"You are bigger than regular players, and you also move {Math.Round(OptionGroupSingleton<GiantOptions>.Instance.GiantSpeed, 2)}x slower than regular players.";
+    }
+
+    public List<CustomButtonWikiDescription> Abilities { get; } = [];
+
+    public override string GetDescription()
+    {
+        return
+            $"You are bigger than the average player, moving {Math.Round(1f / OptionGroupSingleton<GiantOptions>.Instance.GiantSpeed, 2)}x slower";
+    }
+
+    public override int GetAssignmentChance()
+    {
+        return (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.GiantChance;
+    }
+
+    public override int GetAmountPerGame()
+    {
+        return (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.GiantAmount;
     }
 
     public override void OnActivate()
@@ -36,11 +57,4 @@ public sealed class GiantModifier : UniversalGameModifier, IWikiDiscoverable, IV
     {
         Player?.ResetAppearance(fullReset: true);
     }
-    public string GetAdvancedDescription()
-    {
-        return
-            $"You are bigger than regular players, and you also move {Math.Round(OptionGroupSingleton<GiantOptions>.Instance.GiantSpeed, 2)}x slower than regular players.";
-    }
-
-    public List<CustomButtonWikiDescription> Abilities { get; } = [];
 }

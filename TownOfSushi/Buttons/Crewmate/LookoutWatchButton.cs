@@ -1,13 +1,13 @@
 ﻿using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
-using TownOfSushi.Utilities;
+using MiraAPI.Utilities;
 using MiraAPI.Utilities.Assets;
 using Reactor.Utilities;
 using TownOfSushi.Modifiers.Crewmate;
 using TownOfSushi.Options.Roles.Crewmate;
 using TownOfSushi.Roles.Crewmate;
+using TownOfSushi.Utilities;
 using UnityEngine;
-using MiraAPI.Utilities;
 
 namespace TownOfSushi.Buttons.Crewmate;
 
@@ -18,7 +18,7 @@ public sealed class WatchButton : TownOfSushiRoleButton<LookoutRole, PlayerContr
     public override Color TextOutlineColor => TownOfSushiColors.Lookout;
     public override float Cooldown => OptionGroupSingleton<LookoutOptions>.Instance.WatchCooldown + MapCooldown;
     public override int MaxUses => (int)OptionGroupSingleton<LookoutOptions>.Instance.MaxWatches;
-    public override LoadableAsset<Sprite> Sprite => TosCrewAssets.WatchSprite;
+    public override LoadableAsset<Sprite> Sprite => TOSCrewAssets.WatchSprite;
     public int ExtraUses { get; set; }
 
     public override bool IsTargetValid(PlayerControl? target)
@@ -26,7 +26,10 @@ public sealed class WatchButton : TownOfSushiRoleButton<LookoutRole, PlayerContr
         return base.IsTargetValid(target) && !target!.HasModifier<LookoutWatchedModifier>(x => x.Lookout.AmOwner);
     }
 
-    public override PlayerControl? GetTarget() => PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
+    public override PlayerControl? GetTarget()
+    {
+        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
+    }
 
     protected override void OnClick()
     {
@@ -36,9 +39,11 @@ public sealed class WatchButton : TownOfSushiRoleButton<LookoutRole, PlayerContr
             return;
         }
 
-        Target.RpcAddModifier<LookoutWatchedModifier>(PlayerControl.LocalPlayer);  
-        
-        var notif1 = Helpers.CreateAndShowNotification($"<b>You will know what roles interact with {Target.Data.PlayerName} if they are not dead by next meeting.</b>", Color.white, new Vector3(0f, 1f, -20f), spr: TosRoleIcons.Lookout.LoadAsset());
+        Target.RpcAddModifier<LookoutWatchedModifier>(PlayerControl.LocalPlayer);
+
+        var notif1 = Helpers.CreateAndShowNotification(
+            $"<b>You will know what roles interact with {Target.Data.PlayerName} if they are not dead by next meeting.</b>",
+            Color.white, new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Lookout.LoadAsset());
         notif1.Text.SetOutlineThickness(0.35f);
     }
 }

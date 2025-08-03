@@ -1,7 +1,7 @@
 ﻿using MiraAPI.Events;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers.Types;
-using TownOfSushi.Events.TosEvents;
+using TownOfSushi.Events.TOSEvents;
 using TownOfSushi.Options.Roles.Crewmate;
 using TownOfSushi.Roles.Crewmate;
 
@@ -17,8 +17,8 @@ public sealed class VeteranAlertModifier : TimedModifier
     {
         base.OnActivate();
 
-        var TosAbilityEvent = new TosAbilityEvent(AbilityType.VeteranAlert, Player);
-        MiraEventManager.InvokeEvent(TosAbilityEvent);
+        var TOSAbilityEvent = new TOSAbilityEvent(AbilityType.VeteranAlert, Player);
+        MiraEventManager.InvokeEvent(TOSAbilityEvent);
 
         if (Player.Data.Role is VeteranRole vet)
         {

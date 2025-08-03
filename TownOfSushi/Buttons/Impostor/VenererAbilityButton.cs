@@ -11,16 +11,19 @@ namespace TownOfSushi.Buttons.Impostor;
 
 public sealed class VenererAbilityButton : TownOfSushiRoleButton<VenererRole>, IAftermathableButton
 {
+    private VenererAbility _queuedAbility = VenererAbility.None;
     public override Color TextOutlineColor => TownOfSushiColors.Impostor;
     public override string Keybind => Keybinds.SecondaryAction;
-    public override LoadableAsset<Sprite> Sprite => TosImpAssets.NoAbilitySprite;
+    public override LoadableAsset<Sprite> Sprite => TOSImpAssets.NoAbilitySprite;
     public override float Cooldown => OptionGroupSingleton<VenererOptions>.Instance.AbilityCooldown;
     public override float EffectDuration => OptionGroupSingleton<VenererOptions>.Instance.AbilityDuration;
 
     public VenererAbility ActiveAbility { get; private set; } = VenererAbility.None;
-    private VenererAbility _queuedAbility = VenererAbility.None;
 
-    public override bool Enabled(RoleBehaviour? role) => base.Enabled(role) && ActiveAbility != VenererAbility.None;
+    public override bool Enabled(RoleBehaviour? role)
+    {
+        return base.Enabled(role) && ActiveAbility != VenererAbility.None;
+    }
 
     public void UpdateAbility(VenererAbility ability)
     {
@@ -41,7 +44,7 @@ public sealed class VenererAbilityButton : TownOfSushiRoleButton<VenererRole>, I
         {
             var notif1 = Helpers.CreateAndShowNotification(
                 $"<b>{TownOfSushiColors.ImpSoft.ToTextColor()}You have unlocked the {ability.ToString()} ability for getting a kill. {(EffectActive ? "You must wait until your current ability is over." : string.Empty)}</color></b>",
-                Color.white, spr: TosRoleIcons.Venerer.LoadAsset());
+                Color.white, spr: TOSRoleIcons.Venerer.LoadAsset());
 
             notif1.Text.SetOutlineThickness(0.35f);
             notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
@@ -69,13 +72,13 @@ public sealed class VenererAbilityButton : TownOfSushiRoleButton<VenererRole>, I
         switch (ActiveAbility)
         {
             case VenererAbility.Camouflage:
-                SetAbility("Camouflage", TosImpAssets.CamouflageSprite.LoadAsset());
+                SetAbility("Camouflage", TOSImpAssets.CamouflageSprite.LoadAsset());
                 break;
             case VenererAbility.Sprint:
-                SetAbility("Sprint", TosImpAssets.SprintSprite.LoadAsset());
+                SetAbility("Sprint", TOSImpAssets.SprintSprite.LoadAsset());
                 break;
             case VenererAbility.Freeze:
-                SetAbility("Freeze", TosImpAssets.FreezeSprite.LoadAsset());
+                SetAbility("Freeze", TOSImpAssets.FreezeSprite.LoadAsset());
                 break;
         }
 
@@ -90,14 +93,18 @@ public sealed class VenererAbilityButton : TownOfSushiRoleButton<VenererRole>, I
 
     public override void OnEffectEnd()
     {
-        var mod = PlayerControl.LocalPlayer.GetModifierComponent()?.ActiveModifiers.FirstOrDefault(mod => mod is IVenererModifier);
+        var mod = PlayerControl.LocalPlayer.GetModifierComponent()?.ActiveModifiers
+            .FirstOrDefault(mod => mod is IVenererModifier);
 
         if (mod != null)
         {
             PlayerControl.LocalPlayer.RpcRemoveModifier(mod.UniqueId);
         }
 
-        if (_queuedAbility == VenererAbility.None) return;
+        if (_queuedAbility == VenererAbility.None)
+        {
+            return;
+        }
 
         UpdateButton(_queuedAbility);
         _queuedAbility = VenererAbility.None;

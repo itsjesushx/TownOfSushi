@@ -1,25 +1,21 @@
 using MiraAPI.GameOptions;
 using MiraAPI.Utilities.Assets;
-using TownOfSushi.Modules.Wiki;
+using TownOfUs.Modules.Wiki;
 using TownOfSushi.Options.Modifiers;
 using TownOfSushi.Utilities;
 using UnityEngine;
 
 namespace TownOfSushi.Modifiers.Game.Crewmate;
 
-public sealed class AftermathModifier : TosGameModifier, IWikiDiscoverable
+public sealed class AftermathModifier : TOSGameModifier, IWikiDiscoverable
 {
     public override string ModifierName => "Aftermath";
-    public override LoadableAsset<Sprite>? ModifierIcon => TosModifierIcons.Aftermath;
-    public override string GetDescription() => "Your killer will be forced to use their abilities!";
-    public override ModifierFaction FactionType => ModifierFaction.CrewmatePostmortem;
-    public override int GetAssignmentChance() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.AftermathChance;
-    public override int GetAmountPerGame() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.AftermathAmount;
+    public override string IntroInfo => "You will also trigger your killer's abilities upon death.";
+    public override LoadableAsset<Sprite>? ModifierIcon => TOSModifierIcons.Aftermath;
 
-    public override bool IsModifierValidOn(RoleBehaviour role)
-    {
-        return base.IsModifierValidOn(role) && role.IsCrewmate();
-    }
+    public override ModifierFaction FactionType => ModifierFaction.CrewmatePostmortem;
+    public override Color FreeplayFileColor => new Color32(140, 255, 255, 255);
+
     public string GetAdvancedDescription()
     {
         return
@@ -27,4 +23,24 @@ public sealed class AftermathModifier : TosGameModifier, IWikiDiscoverable
     }
 
     public List<CustomButtonWikiDescription> Abilities { get; } = [];
+
+    public override string GetDescription()
+    {
+        return "Your killer will be forced to use their abilities!";
+    }
+
+    public override int GetAssignmentChance()
+    {
+        return (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.AftermathChance;
+    }
+
+    public override int GetAmountPerGame()
+    {
+        return (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.AftermathAmount;
+    }
+
+    public override bool IsModifierValidOn(RoleBehaviour role)
+    {
+        return base.IsModifierValidOn(role) && role.IsCrewmate();
+    }
 }

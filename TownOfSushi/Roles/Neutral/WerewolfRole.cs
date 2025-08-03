@@ -4,22 +4,21 @@ using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Networking;
+using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
-using TownOfSushi.Modifiers;
 using TownOfSushi.Modifiers.Crewmate;
-using TownOfSushi.Modules.Wiki;
 using TownOfSushi.Options.Roles.Neutral;
-
 using TownOfSushi.Roles.Crewmate;
 using TownOfSushi.Utilities;
+using TownOfUs.Modules.Wiki;
 using UnityEngine;
 
 namespace TownOfSushi.Roles.Neutral;
 
-public sealed class WerewolfRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IDoomable, ICrewVariant
+public sealed class WerewolfRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant
 {
     public string RoleName => "Werewolf";
     public string RoleDescription => "Maul To Kill Everyone";
@@ -28,13 +27,11 @@ public sealed class WerewolfRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSu
     public Color RoleColor => TownOfSushiColors.Werewolf;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralKilling;
-    public DoomableType DoomHintType => DoomableType.Hunter;
     public CustomRoleConfiguration Configuration => new(this)
     {
         CanUseVent = OptionGroupSingleton<WerewolfOptions>.Instance.CanVent,
-        IntroSound = TosAudio.WerewolfRampageSound,
-        Icon = TosRoleIcons.Werewolf,
-        MaxRoleCount = 1,
+        IntroSound = TOSAudio.PredatorTerminateSound,
+        Icon = TOSRoleIcons.Werewolf,
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
     };
     public override void Initialize(PlayerControl player)
@@ -42,7 +39,7 @@ public sealed class WerewolfRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSu
         RoleBehaviourStubs.Initialize(this, player);
         if (Player.AmOwner)
         {
-            HudManager.Instance.ImpostorVentButton.graphic.sprite = TosNeutAssets.WerewolfVentSprite.LoadAsset();
+            HudManager.Instance.ImpostorVentButton.graphic.sprite = TOSNeutAssets.PredatorVentSprite.LoadAsset();
             HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(TownOfSushiColors.Werewolf);
         }
     }
@@ -51,7 +48,7 @@ public sealed class WerewolfRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSu
         RoleBehaviourStubs.Deinitialize(this, targetPlayer);
         if (Player.AmOwner)
         {
-            HudManager.Instance.ImpostorVentButton.graphic.sprite = TosAssets.VentSprite.LoadAsset();
+            HudManager.Instance.ImpostorVentButton.graphic.sprite = TOSAssets.VentSprite.LoadAsset();
             HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(TownOfSushiColors.Impostor);
         }
     }
@@ -74,11 +71,14 @@ public sealed class WerewolfRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSu
 
     public bool WinConditionMet()
     {
-        if (Player.HasDied()) return false;
+        var roleCount = CustomRoleUtils.GetActiveRolesOfType<WerewolfRole>().Count(x => !x.Player.HasDied());
 
-        var result = Helpers.GetAlivePlayers().Count <= 2 && MiscUtils.KillersAliveCount == 1;
+        if (MiscUtils.KillersAliveCount > roleCount)
+        {
+            return false;
+        }
 
-        return result;
+        return roleCount >= Helpers.GetAlivePlayers().Count - roleCount;
     }
 
     [HideFromIl2Cpp]
@@ -100,10 +100,10 @@ public sealed class WerewolfRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSu
 
         foreach (var nearbyPlayer in nearbyPlayers)
         {
-            if (nearbyPlayer == role.Player || nearbyPlayer.Data.IsDead
-            || nearbyPlayer.HasModifier<MedicShieldModifier>() || nearbyPlayer.HasModifier<FirstDeadShield>()) continue;
-            
-            PlayerControl.LocalPlayer.RpcCustomMurder(nearbyPlayer, teleportMurderer: false);
+            if (nearbyPlayer == role.Player || nearbyPlayer.Data.IsDead || nearbyPlayer.IsProtected()
+            || player.HasModifier<MonarchKnightedModifier>() && nearbyPlayer.Data.Role is MonarchRole) continue;
+
+            player.RpcCustomMurder(nearbyPlayer, teleportMurderer: false);
         }
     }
 
@@ -117,6 +117,6 @@ public sealed class WerewolfRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSu
     [
         new("Maul",
             "Once you kill a player, any nearby player inbetween the range set in settings, is dying too.",
-            TosNeutAssets.MaulSprite)
+            TOSNeutAssets.MaulSprite)
     ];
 }

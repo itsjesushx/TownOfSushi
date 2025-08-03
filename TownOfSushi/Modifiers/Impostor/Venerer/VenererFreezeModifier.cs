@@ -1,7 +1,7 @@
 ﻿using MiraAPI.Events;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers.Types;
-using TownOfSushi.Events.TosEvents;
+using TownOfSushi.Events.TOSEvents;
 using TownOfSushi.Options.Roles.Impostor;
 using TownOfSushi.Utilities;
 using UnityEngine;
@@ -19,18 +19,22 @@ public sealed class VenererFreezeModifier(PlayerControl venerer) : TimedModifier
 
     public override void OnActivate()
     {
-        var TosAbilityEvent = new TosAbilityEvent(AbilityType.VenererFreezeAbility, Player);
-        MiraEventManager.InvokeEvent(TosAbilityEvent);
+        var TOSAbilityEvent = new TOSAbilityEvent(AbilityType.VenererFreezeAbility, Player);
+        MiraEventManager.InvokeEvent(TOSAbilityEvent);
     }
 
     public override void FixedUpdate()
     {
         base.FixedUpdate();
 
-        if (Player.HasDied() || Venerer.HasDied()) return;
+        if (Player.HasDied() || Venerer.HasDied())
+        {
+            return;
+        }
 
         var minFreezeSpeed = OptionGroupSingleton<VenererOptions>.Instance.MinFreezeSpeed;
-        var freezeRadius = OptionGroupSingleton<VenererOptions>.Instance.FreezeRadius * ShipStatus.Instance.MaxLightRadius;
+        var freezeRadius = OptionGroupSingleton<VenererOptions>.Instance.FreezeRadius *
+                           ShipStatus.Instance.MaxLightRadius;
         var rangeFromVenerer = (Player.GetTruePosition() - Venerer.GetTruePosition()).magnitude;
 
         SpeedFactor = 1f;

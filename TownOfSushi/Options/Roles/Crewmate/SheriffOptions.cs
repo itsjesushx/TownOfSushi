@@ -1,19 +1,21 @@
 ﻿using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.Attributes;
 using MiraAPI.Utilities;
+
 using TownOfSushi.Roles.Crewmate;
 
 namespace TownOfSushi.Options.Roles.Crewmate;
 
 public sealed class SheriffOptions : AbstractOptionGroup<SheriffRole>
 {
-    public override string GroupName => "Sheriff";
+    public override string GroupName => TOSLocale.Get(TOSNames.Sheriff, "Sheriff");
 
     [ModdedNumberOption("Kill Cooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float KillCooldown { get; set; } = 25f;
 
     [ModdedToggleOption("Can Self Report")]
     public bool SheriffBodyReport { get; set; } = false;
+
     [ModdedToggleOption("Allow Shooting in First Round")]
     public bool FirstRoundUse { get; set; } = false;
 
@@ -23,10 +25,10 @@ public sealed class SheriffOptions : AbstractOptionGroup<SheriffRole>
     [ModdedToggleOption("Can Shoot Neutral Killing Roles")]
     public bool ShootNeutralKiller { get; set; } = true;
 
-    [ModdedEnumOption("Misfire Kills", typeof(MisfireOptions), ["Sheriff", "Target", "Sheriff & Target", "No One"])]
+    [ModdedEnumOption("Misfire Kills", typeof(MisfireOptions), ["Self", "Target", "Self & Target", "No One"])]
     public MisfireOptions MisfireType { get; set; } = MisfireOptions.Sheriff;
-
 }
+
 public enum MisfireOptions
 {
     Sheriff,

@@ -2,15 +2,19 @@
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
+using MiraAPI.Modifiers.ModifierDisplay;
 using MiraAPI.Modifiers.Types;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
+using Reactor.Utilities.Extensions;
 using TMPro;
+using TownOfSushi.Buttons;
 using TownOfSushi.Modifiers.Game;
 using TownOfSushi.Options;
 using TownOfSushi.Roles;
 using TownOfSushi.Utilities;
 using UnityEngine;
+using Object = Il2CppSystem.Object;
 
 namespace TownOfSushi.Patches;
 
@@ -21,8 +25,14 @@ public static class IntroScenePatches
     [HarmonyPrefix]
     public static bool ImpostorBeginPatch(IntroCutscene __instance)
     {
-        if (OptionGroupSingleton<GeneralOptions>.Instance.ImpsKnowRoles && !OptionGroupSingleton<GeneralOptions>.Instance.FFAImpostorMode) return true;
-        __instance.TeamTitle.text = DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.Impostor, Array.Empty<Il2CppSystem.Object>());
+        if ( /* OptionGroupSingleton<GeneralOptions>.Instance.ImpsKnowRoles &&  */
+            !OptionGroupSingleton<GeneralOptions>.Instance.FFAImpostorMode)
+        {
+            return true;
+        }
+
+        __instance.TeamTitle.text =
+            DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.Impostor, Array.Empty<Object>());
         __instance.TeamTitle.color = Palette.ImpostorRed;
 
         var player = __instance.CreatePlayer(0, 1, PlayerControl.LocalPlayer.Data, true);
@@ -40,6 +50,11 @@ public static class IntroScenePatches
 
         foreach (var button in CustomButtonManager.Buttons.Where(x => x.Enabled(PlayerControl.LocalPlayer.Data.Role)))
         {
+            if (button is FakeVentButton)
+            {
+                continue;
+            }
+
             button.SetTimer(OptionGroupSingleton<GeneralOptions>.Instance.GameStartCd);
         }
 
@@ -48,8 +63,9 @@ public static class IntroScenePatches
             PlayerControl.LocalPlayer.SetKillTimer(OptionGroupSingleton<GeneralOptions>.Instance.GameStartCd);
         }
 
-        var modsTab = MiraAPI.Modifiers.ModifierDisplay.ModifierDisplayComponent.Instance;
-        if (modsTab != null && !modsTab.IsOpen && PlayerControl.LocalPlayer.GetModifiers<GameModifier>().Any(x => !x.HideOnUi && x.GetDescription() != string.Empty))
+        var modsTab = ModifierDisplayComponent.Instance;
+        if (modsTab != null && !modsTab.IsOpen && PlayerControl.LocalPlayer.GetModifiers<GameModifier>()
+                .Any(x => !x.HideOnUi && x.GetDescription() != string.Empty))
         {
             modsTab.ToggleTab();
         }
@@ -59,19 +75,24 @@ public static class IntroScenePatches
         {
             var panel = panelThing.gameObject.GetComponent<TaskPanelBehaviour>();
             var role = PlayerControl.LocalPlayer.Data.Role as ICustomRole;
-            if (role == null) return;
-            
+            if (role == null)
+            {
+                return;
+            }
+
             panel.open = true;
 
             var tabText = panel.tab.gameObject.GetComponentInChildren<TextMeshPro>();
-            var ogPanel = HudManager.Instance.TaskStuff.transform.FindChild("TaskPanel").gameObject.GetComponent<TaskPanelBehaviour>();
+            var ogPanel = HudManager.Instance.TaskStuff.transform.FindChild("TaskPanel").gameObject
+                .GetComponent<TaskPanelBehaviour>();
             if (tabText.text != role.RoleName)
             {
                 tabText.text = role.RoleName;
             }
 
             var y = ogPanel.taskText.textBounds.size.y + 1;
-            panel.closedPosition = new Vector3(ogPanel.closedPosition.x, ogPanel.open ? y + 0.2f : 2f, ogPanel.closedPosition.z);
+            panel.closedPosition = new Vector3(ogPanel.closedPosition.x, ogPanel.open ? y + 0.2f : 2f,
+                ogPanel.closedPosition.z);
             panel.openPosition = new Vector3(ogPanel.openPosition.x, ogPanel.open ? y : 2f, ogPanel.openPosition.z);
 
             panel.SetTaskText(role.SetTabText().ToString());
@@ -80,31 +101,56 @@ public static class IntroScenePatches
 
     [HarmonyPatch(typeof(SpawnInMinigame), nameof(SpawnInMinigame.Close))]
     [HarmonyPrefix]
-    public static void SpawnInMinigameClosePatch() => IntroCutsceneOnDestroyPatch();
+    public static void SpawnInMinigameClosePatch()
+    {
+        IntroCutsceneOnDestroyPatch();
+    }
 }
 
 public static class ModifierIntroPatch
 {
     private static TextMeshPro ModifierText;
 
+    public static void RunModChecks()
+    {
+        var option = OptionGroupSingleton<GeneralOptions>.Instance.ModifierReveal;
+        var modifier = PlayerControl.LocalPlayer.GetModifiers<AllianceGameModifier>().FirstOrDefault();
+        var uniModifier = PlayerControl.LocalPlayer.GetModifiers<UniversalGameModifier>().FirstOrDefault();
+
+        if (modifier != null && option is ModReveal.Alliance)
+        {
+            ModifierText.text = $"<size={modifier.IntroSize}>{modifier.IntroInfo}</size>";
+
+            ModifierText.color = MiscUtils.GetRoleColour(modifier.ModifierName.Replace(" ", string.Empty));
+            if (modifier is IColoredModifier colorMod)
+            {
+                ModifierText.color = colorMod.ModifierColor;
+            }
+        }
+        else if (uniModifier != null && option is ModReveal.Universal)
+        {
+            ModifierText.text = $"<size=4><color=#FFFFFF>Modifier: </color>{uniModifier.ModifierName}</size>";
+
+            ModifierText.color = MiscUtils.GetRoleColour(uniModifier.ModifierName.Replace(" ", string.Empty));
+            if (uniModifier is IColoredModifier colorMod)
+            {
+                ModifierText.color = colorMod.ModifierColor;
+            }
+        }
+        else
+        {
+            ModifierText.text = string.Empty;
+        }
+    }
+
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginCrewmate))]
     public static class IntroCutscene_BeginCrewmate
     {
         public static void Postfix(IntroCutscene __instance)
         {
-			int adjustedNumImpostors = Helpers.GetAlivePlayers().Count(x => x.IsImpostor());
-			if (adjustedNumImpostors == 1)
-			{
-				__instance.ImpostorText.text = TranslationController.Instance.GetString(StringNames.NumImpostorsS, Array.Empty<Il2CppSystem.Object>());
-			}
-			else
-			{
-                __instance.ImpostorText.text = TranslationController.Instance.GetString(StringNames.NumImpostorsP, adjustedNumImpostors);
-			}
-            //__instance.ImpostorText.text = __instance.ImpostorText.text.GetAdjustedString(adjustedNumImpostors);
-			__instance.ImpostorText.text = __instance.ImpostorText.text.Replace("[FF1919FF]", "<color=#FF1919FF>");
-			__instance.ImpostorText.text = __instance.ImpostorText.text.Replace("[]", "</color>");
-            ModifierText = UnityEngine.Object.Instantiate(__instance.RoleText, __instance.RoleText.transform.parent, false);
+            ModifierText =
+                UnityEngine.Object.Instantiate(__instance.RoleText, __instance.RoleText.transform.parent, false);
+            SetHiddenImpostors(__instance);
         }
     }
 
@@ -113,7 +159,8 @@ public static class ModifierIntroPatch
     {
         public static void Postfix(IntroCutscene __instance)
         {
-            ModifierText = UnityEngine.Object.Instantiate(__instance.RoleText, __instance.RoleText.transform.parent, false);
+            ModifierText =
+                UnityEngine.Object.Instantiate(__instance.RoleText, __instance.RoleText.transform.parent, false);
         }
     }
 
@@ -132,15 +179,19 @@ public static class ModifierIntroPatch
                     tmp.TargetText = StringNames.None;
                     tmp.ResetText();
                 }
+
                 __instance.__4__this.RoleBlurbText.text = custom.RoleDescription;
             }
 
-            if (ModifierText == null) return;
+            if (ModifierText == null)
+            {
+                return;
+            }
 
             RunModChecks();
 
             ModifierText.transform.position =
-            __instance.__4__this.transform.position - new Vector3(0f, 1.6f, -10f);
+                __instance.__4__this.transform.position - new Vector3(0f, 1.6f, -10f);
             ModifierText.gameObject.SetActive(true);
             ModifierText.color.SetAlpha(0.8f);
         }
@@ -160,19 +211,24 @@ public static class ModifierIntroPatch
                     tmp.TargetText = StringNames.None;
                     tmp.ResetText();
                 }
+
                 __instance.__4__this.RoleBlurbText.text = custom.RoleDescription;
             }
 
-            if (ModifierText == null) return;
+            if (ModifierText == null)
+            {
+                return;
+            }
 
             RunModChecks();
 
             ModifierText.transform.position =
-            __instance.__4__this.transform.position - new Vector3(0f, 1.6f, -10f);
+                __instance.__4__this.transform.position - new Vector3(0f, 1.6f, -10f);
             ModifierText.gameObject.SetActive(true);
             ModifierText.color.SetAlpha(0.8f);
         }
     }
+
     [HarmonyPatch(typeof(IntroCutscene._ShowRole_d__41), nameof(IntroCutscene._ShowRole_d__41.MoveNext))]
     [HarmonyPriority(Priority.Last)]
     public static class ShowModifierPatch_Role
@@ -186,92 +242,90 @@ public static class ModifierIntroPatch
                 __instance.__4__this.RoleBlurbText.text = custom.RoleDescription;
             }
 
-            if (ModifierText == null) return;
+            var teamModifier = PlayerControl.LocalPlayer.GetModifiers<TOSGameModifier>().FirstOrDefault();
+            if (teamModifier != null && OptionGroupSingleton<GeneralOptions>.Instance.TeamModifierReveal)
+            {
+                var color = MiscUtils.GetRoleColour(teamModifier.ModifierName.Replace(" ", string.Empty));
+                if (teamModifier is IColoredModifier colorMod)
+                {
+                    ModifierText.color = colorMod.ModifierColor;
+                }
+
+                __instance.__4__this.RoleBlurbText.text =
+                    $"<size={teamModifier.IntroSize}>\n</size>{__instance.__4__this.RoleBlurbText.text}\n<size={teamModifier.IntroSize}><color=#{color.ToHtmlStringRGBA()}>{teamModifier.IntroInfo}</color></size>";
+            }
+
+            if (ModifierText == null)
+            {
+                return;
+            }
 
             RunModChecks();
 
             ModifierText.transform.position =
-            __instance.__4__this.transform.position - new Vector3(0f, 1.6f, -10f);
+                __instance.__4__this.transform.position - new Vector3(0f, 1.6f, -10f);
             ModifierText.gameObject.SetActive(true);
             ModifierText.color.SetAlpha(0.8f);
         }
     }
-    /* public static string GetAdjustedString(this string text, int impCount)
+
+    public static void SetHiddenImpostors(IntroCutscene __instance)
     {
-        var list = OptionGroupSingleton<RoleOptions>.Instance;
+        var amount = Helpers.GetAlivePlayers().Count(x => x.IsImpostor());
+        __instance.ImpostorText.text =
+            DestroyableSingleton<TranslationController>.Instance.GetString(amount == 1 ? StringNames.NumImpostorsS : StringNames.NumImpostorsP, amount);
+        __instance.ImpostorText.text = __instance.ImpostorText.text.Replace("[FF1919FF]", "<color=#FF1919FF>");
+        __instance.ImpostorText.text = __instance.ImpostorText.text.Replace("[]", "</color>");
+        
+        if (!OptionGroupSingleton<RoleOptions>.Instance.RoleListEnabled) return;
+
         var players = GameData.Instance.PlayerCount;
-        if (players > 6 && list.RoleListEnabled)
+
+        if (players < 7)
         {
-            bool isAny = false;
+            return;
+        }
 
-            int maxSlots = players < 15 ? players : 15;
+        var list = OptionGroupSingleton<RoleOptions>.Instance;
 
-            List<RoleListOption> buckets = [];
-            if (list.RoleListEnabled)
+        int maxSlots = players < 15 ? players : 15;
+
+        List<RoleListOption> buckets = [];
+        if (list.RoleListEnabled)
+        {
+            for (int i = 0; i < maxSlots; i++)
             {
-                for (int i = 0; i < maxSlots; i++)
+                int slotValue = i switch
                 {
-                    int slotValue = i switch
-                    {
-                        0 => list.Slot1,
-                        1 => list.Slot2,
-                        2 => list.Slot3,
-                        3 => list.Slot4,
-                        4 => list.Slot5,
-                        5 => list.Slot6,
-                        6 => list.Slot7,
-                        7 => list.Slot8,
-                        8 => list.Slot9,
-                        9 => list.Slot10,
-                        10 => list.Slot11,
-                        11 => list.Slot12,
-                        12 => list.Slot13,
-                        13 => list.Slot14,
-                        14 => list.Slot15,
-                        _ => -1
-                    };
+                    0 => list.Slot1,
+                    1 => list.Slot2,
+                    2 => list.Slot3,
+                    3 => list.Slot4,
+                    4 => list.Slot5,
+                    5 => list.Slot6,
+                    6 => list.Slot7,
+                    7 => list.Slot8,
+                    8 => list.Slot9,
+                    9 => list.Slot10,
+                    10 => list.Slot11,
+                    11 => list.Slot12,
+                    12 => list.Slot13,
+                    13 => list.Slot14,
+                    14 => list.Slot15,
+                    _ => -1
+                };
 
-                    buckets.Add((RoleListOption)slotValue);
-                }
+                buckets.Add((RoleListOption)slotValue);
             }
-            if (buckets.Any(x => x is RoleListOption.Any)) isAny = true;
-
-            if (isAny) text = text.Replace($"] {impCount}", "] ???");
         }
-        return text;
-    } */
-    
-    public static void RunModChecks()
-    {
-        var option = OptionGroupSingleton<GeneralOptions>.Instance.ModifierReveal;
-        var modifier = PlayerControl.LocalPlayer.GetModifiers<AllianceGameModifier>().FirstOrDefault();
-        var uniModifier = PlayerControl.LocalPlayer.GetModifiers<UniversalGameModifier>().FirstOrDefault();
-        var teamModifier = PlayerControl.LocalPlayer.GetModifiers<TosGameModifier>().FirstOrDefault();
 
-        if (modifier != null && option is ModReveal.Alliance)
-        {
-            ModifierText.text = $"<size={modifier.IntroSize}>{modifier.IntroInfo}</size>";
+        if (!buckets.Any(x => x is RoleListOption.Any)) return;
 
-            ModifierText.color = MiscUtils.GetRoleColour(modifier.ModifierName.Replace(" ", string.Empty));
-            if (modifier is IColoredModifier colorMod) ModifierText.color = colorMod.ModifierColor;
-        }
-        else if (uniModifier != null && option is ModReveal.Universal)
-        {
-            ModifierText.text = $"<size=4><color=#FFFFFF>Modifier: </color>{uniModifier.ModifierName}</size>";
 
-            ModifierText.color = MiscUtils.GetRoleColour(uniModifier.ModifierName.Replace(" ", string.Empty));
-            if (uniModifier is IColoredModifier colorMod) ModifierText.color = colorMod.ModifierColor;
-        }
-        else if (teamModifier != null && option is ModReveal.Faction)
-        {
-            ModifierText.text = $"<size=4><color=#FFFFFF>Modifier: </color>{teamModifier.ModifierName}</size>";
-
-            ModifierText.color = MiscUtils.GetRoleColour(teamModifier.ModifierName.Replace(" ", string.Empty));
-            if (teamModifier is IColoredModifier colorMod) ModifierText.color = colorMod.ModifierColor;
-        }
-        else
-        {
-            ModifierText.text = string.Empty;
-        }
+        __instance.ImpostorText.text =
+            DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.NumImpostorsP, 256);
+        __instance.ImpostorText.text = __instance.ImpostorText.text.Replace("[FF1919FF]", "<color=#FF1919FF>");
+        __instance.ImpostorText.text = __instance.ImpostorText.text.Replace("[]", "</color>");
+        __instance.ImpostorText.text = __instance.ImpostorText.text.Replace("256", "???");
     }
 }

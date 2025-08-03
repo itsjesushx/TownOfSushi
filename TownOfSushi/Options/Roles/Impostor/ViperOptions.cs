@@ -9,14 +9,6 @@ public sealed class ViperOptions : AbstractOptionGroup<ViperRole>
 {
     public override string GroupName => "Viper";
 
-    [ModdedNumberOption("Blind Cooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
-    public float BlindCooldown { get; set; } = 25f;
-    [ModdedNumberOption("Number Of Blind Traps Per Game", 0f, 30f, 5f, MiraNumberSuffixes.None, "0", zeroInfinity: true)]
-    public float MaxBlindTraps { get; set; } = 0f;
-
-    [ModdedNumberOption("Blind Duration", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
-    public float BlindDuration { get; set; } = 25f;
-
     [ModdedNumberOption("Poison Cooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float PoisonCooldown { get; set; } = 25f;
 

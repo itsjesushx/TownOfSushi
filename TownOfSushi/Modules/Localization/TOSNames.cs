@@ -1,0 +1,35 @@
+﻿namespace TownOfSushi.Modules.Localization;
+
+public enum TOSNames
+{
+    Astral,
+    Bomber,
+    Swooper,
+    PuppetMaster,
+    Mage,
+    Sandworm,
+    Rcxd,
+    Warlock,
+    Glitch,
+    Morphling,
+    Poisoner,
+    Sniper,
+    Veteran,
+    Sheriff,
+    Transporter,
+    Eclipsal,
+    Snitch,
+    Ambusher,
+    Trapper,
+    Medic,
+    Mystic,
+    Cannibal,
+    Amnesiac,
+    Pyromaniac,
+    Jester,
+    Vigilante,
+    Politician,
+    Mayor,
+    Engineer,
+    Arsonist
+}

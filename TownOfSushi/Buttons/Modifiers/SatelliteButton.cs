@@ -19,8 +19,10 @@ public sealed class SatelliteButton : TownOfSushiButton
     public override float Cooldown => OptionGroupSingleton<SatelliteOptions>.Instance.Cooldown + MapCooldown;
     public override int MaxUses => (int)OptionGroupSingleton<SatelliteOptions>.Instance.MaxNumCast;
     public override ButtonLocation Location => ButtonLocation.BottomLeft;
-    public override LoadableAsset<Sprite> Sprite => TosAssets.BroadcastSprite;
-    public bool Usable { get; set; } = OptionGroupSingleton<SatelliteOptions>.Instance.FirstRoundUse;
+    public override LoadableAsset<Sprite> Sprite => TOSAssets.BroadcastSprite;
+
+    public bool Usable { get; set; } = OptionGroupSingleton<SatelliteOptions>.Instance.FirstRoundUse ||
+                                       TutorialManager.InstanceExists;
 
     public override bool Enabled(RoleBehaviour? role)
     {
@@ -33,12 +35,14 @@ public sealed class SatelliteButton : TownOfSushiButton
     {
         return base.CanUse() && Usable;
     }
+
     public override void CreateButton(Transform parent)
     {
         base.CreateButton(parent);
 
-        Button!.usesRemainingSprite.sprite = TosAssets.AbilityCounterBodySprite.LoadAsset();
+        Button!.usesRemainingSprite.sprite = TOSAssets.AbilityCounterBodySprite.LoadAsset();
     }
+
     protected override void OnClick()
     {
         var deadBodies = Object.FindObjectsOfType<DeadBody>().ToList();
@@ -46,10 +50,15 @@ public sealed class SatelliteButton : TownOfSushiButton
         deadBodies.Do(x => PlayerControl.LocalPlayer.AddModifier<SatelliteArrowModifier>(x, Color.white));
         if (deadBodies.Count == 0)
         {
-            var notif1 = Helpers.CreateAndShowNotification($"<b>No bodies were found on the map.</b>", Color.white, new Vector3(0f, 1f, -20f), spr: TosModifierIcons.Satellite.LoadAsset());
+            var notif1 = Helpers.CreateAndShowNotification("<b>No bodies were found on the map.</b>", Color.white,
+                new Vector3(0f, 1f, -20f), spr: TOSModifierIcons.Satellite.LoadAsset());
             notif1.Text.SetOutlineThickness(0.35f);
         }
-        if (OptionGroupSingleton<SatelliteOptions>.Instance.OneUsePerRound) Usable = false;
+
+        if (OptionGroupSingleton<SatelliteOptions>.Instance.OneUsePerRound)
+        {
+            Usable = false;
+        }
         // will return to this once i get more freetime
         //deadBodies.Do(x => PlayerControl.LocalPlayer.GetModifier<SatelliteModifier>().NewMapIcon(MiscUtils.PlayerById(x.ParentId)));
     }

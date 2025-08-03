@@ -1,75 +1,91 @@
 using MiraAPI.Events;
 using UnityEngine;
 
-namespace TownOfSushi.Events.TosEvents;
+namespace TownOfSushi.Events.TOSEvents;
+
 /// <summary>
-/// Event that is invoked after a player uses specific abilities. This event is not cancelable.
+///     Event that is invoked after a player uses specific abilities. This event is not cancelable.
 /// </summary>
-public class TosAbilityEvent : MiraEvent
+public class TOSAbilityEvent : MiraEvent
 {
     /// <summary>
-    /// Gets the player who used the ability.
-    /// </summary>
-    public PlayerControl Player { get; }
-
-    /// <summary>
-    /// Gets the target of the ability, if any.
-    /// </summary>
-    public MonoBehaviour? Target { get; set; }
-
-    /// <summary>
-    /// Gets the second target of the ability, if any.
-    /// </summary>
-    public MonoBehaviour? Target2 { get; set; }
-    /// <summary>
-    /// Gets the ability used by the player.
-    /// </summary>
-    public AbilityType AbilityType { get; }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="TosAbilityEvent"/> class.
+    ///     Initializes a new instance of the <see cref="TOSAbilityEvent" /> class.
     /// </summary>
     /// <param name="ability">The player's ability that was used.</param>
     /// <param name="player">The player who used the ability.</param>
     /// <param name="target">The player's target, if available.</param>
     /// <param name="target2">The player's second target, if available.</param>
-    public TosAbilityEvent(AbilityType ability, PlayerControl player, MonoBehaviour? target = null, MonoBehaviour? target2 = null)
+    public TOSAbilityEvent(AbilityType ability, PlayerControl player, MonoBehaviour? target = null,
+        MonoBehaviour? target2 = null)
     {
         AbilityType = ability;
         Player = player;
         Target = target;
         Target2 = target2;
     }
+
+    /// <summary>
+    ///     Gets the player who used the ability.
+    /// </summary>
+    public PlayerControl Player { get; }
+
+    /// <summary>
+    ///     Gets the target of the ability, if any.
+    /// </summary>
+    public MonoBehaviour? Target { get; set; }
+
+    /// <summary>
+    ///     Gets the second target of the ability, if any.
+    /// </summary>
+    public MonoBehaviour? Target2 { get; set; }
+
+    /// <summary>
+    ///     Gets the ability used by the player.
+    /// </summary>
+    public AbilityType AbilityType { get; }
 }
+
 public enum AbilityType
 {
     AltruistRevive,
     ClericBarrier,
-    ViperCreateBlindTrap,
     ClericCleanse,
+    WarlockCurse,
+    WarlockCurseKill,
     DeputyCamp,
+
     // DetectiveExamine,
     // DetectiveInspect,
     EngineerFix,
+
     // EngineerVent,
     HunterStalk,
     JailorJail,
     LookoutWatch,
+    WitchCurse,
     MedicShield,
     MediumMediate,
     OracleBless,
     OracleConfess,
     PlumberBlock,
-    SetPoisonedPlayer,
+    HitmanMorph,
+    HitmanUnMorph,
+    HitmanDrop,
+    HitmanDrag,
     PlumberFlush,
     PoliticianCampaign,
+
+    MonarchKnight,
+
     // SeerReveal,
     // SheriffShoot,
     // TrackerTrack,
     TransporterTransport,
+    RomanticProtect,
+
     // TrapperTrap,
     VeteranAlert,
-    WardenFortify,
+    CrusaderFortify,
     BlackmailerBlackmail,
     BomberPlant,
     EclipsalBlind,
@@ -81,6 +97,7 @@ public enum AbilityType
     JanitorClean,
     MinerPlaceVent,
     MinerRevealVent,
+
     // MorphlingSample,
     MorphlingMorph,
     MorphlingUnmorph,
@@ -89,29 +106,27 @@ public enum AbilityType
     TraitorChangeRole,
     UndertakerDrag,
     UndertakerDrop,
-    HitmanDrag,
-    HitmanMorph,
-    HitmanUnMorph,
-    HitmanDrop,
     VenererCamoAbility,
     VenererSprintAbility,
     VenererFreezeAbility,
-    // WarlockBurstKill,
+
+    // HexbladeBurstKill,
     AmnesiacPreRemember,
     AmnesiacPostRemember,
-    ArsonistDouse,
-    // ArsonistIgnite,
-    // DoomsayerObserve,
+    PyromaniacDouse,
+
+    // PyromaniacIgnite,
     GlitchInitialHack,
     GlitchHackTrigger,
     GlitchMimic,
     GlitchUnmimic,
     GuardianAngelProtect,
-    // InquisitorInquire,
-    MercenaryGuard,
-    MercenaryBribe,
+
+    ScavengerEat,
+    ArsonistDouse,
     PlaguebearerInfect,
     SurvivorVest,
-    VampireBite,
-    WerewolfMaul
+
+    VampireBite
+    // PredatorTerminate
 }

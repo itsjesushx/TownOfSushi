@@ -16,11 +16,17 @@ public sealed class VeteranAlertButton : TownOfSushiRoleButton<VeteranRole>
     public override float Cooldown => OptionGroupSingleton<VeteranOptions>.Instance.AlertCooldown + MapCooldown;
     public override float EffectDuration => OptionGroupSingleton<VeteranOptions>.Instance.AlertDuration;
     public override int MaxUses => (int)OptionGroupSingleton<VeteranOptions>.Instance.MaxNumAlerts;
-    public override LoadableAsset<Sprite> Sprite => TosCrewAssets.AlertSprite;
+    public override LoadableAsset<Sprite> Sprite => TOSCrewAssets.AlertSprite;
     public int ExtraUses { get; set; }
 
     protected override void OnClick()
     {
         PlayerControl.LocalPlayer.RpcAddModifier<VeteranAlertModifier>();
+        OverrideName("Alerting");
+    }
+
+    public override void OnEffectEnd()
+    {
+        OverrideName("Alert");
     }
 }

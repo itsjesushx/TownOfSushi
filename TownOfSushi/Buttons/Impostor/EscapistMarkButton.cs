@@ -10,10 +10,14 @@ public sealed class EscapistMarkButton : TownOfSushiRoleButton<EscapistRole>, IA
     public override string Name => "Mark Location";
     public override string Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Impostor;
-    public override float Cooldown => 0;
-    public override LoadableAsset<Sprite> Sprite => TosImpAssets.MarkSprite;
+    public override float Cooldown => 0.001f;
+    public override float InitialCooldown => 0.001f;
+    public override LoadableAsset<Sprite> Sprite => TOSImpAssets.MarkSprite;
 
-    public override bool Enabled(RoleBehaviour? role) => base.Enabled(role) && Role is { MarkedLocation: null };
+    public override bool Enabled(RoleBehaviour? role)
+    {
+        return base.Enabled(role) && Role is { MarkedLocation: null };
+    }
 
     public override bool CanUse()
     {
@@ -24,8 +28,9 @@ public sealed class EscapistMarkButton : TownOfSushiRoleButton<EscapistRole>, IA
     {
         EscapistRole.RpcMarkLocation(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.transform.position);
 
-        // TosAudio.PlaySound(TosAudio.EscapistMarkSound);
+        // TOSAudio.PlaySound(TOSAudio.EscapistMarkSound);
         CustomButtonSingleton<EscapistRecallButton>.Instance.SetActive(true, Role);
+        CustomButtonSingleton<EscapistRecallButton>.Instance.ResetCooldownAndOrEffect();
         SetActive(false, Role);
     }
 }

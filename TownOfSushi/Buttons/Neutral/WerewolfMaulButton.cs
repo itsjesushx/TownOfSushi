@@ -15,7 +15,7 @@ public sealed class WerewolfMaulButton : TownOfSushiRoleButton<WerewolfRole, Pla
     public override string Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Werewolf;
     public override float Cooldown => OptionGroupSingleton<WerewolfOptions>.Instance.MaulCooldown + MapCooldown;
-    public override LoadableAsset<Sprite> Sprite => TosNeutAssets.MaulSprite;
+    public override LoadableAsset<Sprite> Sprite => TOSNeutAssets.MaulSprite;
     public void SetDiseasedTimer(float multiplier)
     {
         SetTimer(Cooldown * multiplier);

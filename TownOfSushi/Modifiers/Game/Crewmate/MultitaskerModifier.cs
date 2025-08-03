@@ -1,24 +1,45 @@
 ﻿using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Utilities.Assets;
-using TownOfSushi.Modules.Wiki;
-using TownOfSushi.Options.Modifiers;
-using TownOfSushi.Utilities;
 using TownOfUs.Modules.Components;
 using TownOfUs.Modules.Wiki;
+using TownOfSushi.Options.Modifiers;
+using TownOfSushi.Utilities;
 using UnityEngine;
 
 namespace TownOfSushi.Modifiers.Game.Crewmate;
 
-public sealed class MultitaskerModifier : TosGameModifier, IWikiDiscoverable
+public sealed class MultitaskerModifier : TOSGameModifier, IWikiDiscoverable
 {
     public override string ModifierName => "Multitasker";
-    public override LoadableAsset<Sprite>? ModifierIcon => TosModifierIcons.Multitasker;
-    public override string GetDescription() => "Your tasks are transparent.";
+    public override string IntroInfo => "You can also see through tasks.";
+    public override LoadableAsset<Sprite>? ModifierIcon => TOSModifierIcons.Multitasker;
+    public override Color FreeplayFileColor => new Color32(140, 255, 255, 255);
+
     public override ModifierFaction FactionType => ModifierFaction.CrewmateVisibility;
 
-    public override int GetAssignmentChance() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.MultitaskerChance;
-    public override int GetAmountPerGame() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.MultitaskerAmount;
+    public string GetAdvancedDescription()
+    {
+        return
+            "All your menus are seethrough, allowing you to look behind menus!";
+    }
+
+    public List<CustomButtonWikiDescription> Abilities { get; } = [];
+
+    public override string GetDescription()
+    {
+        return "Your tasks are transparent.";
+    }
+
+    public override int GetAssignmentChance()
+    {
+        return (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.MultitaskerChance;
+    }
+
+    public override int GetAmountPerGame()
+    {
+        return (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.MultitaskerAmount;
+    }
 
     public override void Update()
     {
@@ -61,11 +82,4 @@ public sealed class MultitaskerModifier : TosGameModifier, IWikiDiscoverable
                Minigame.Instance is CustomPlayerMenu ||
                Minigame.Instance is GuesserMenu;
     }
-    public string GetAdvancedDescription()
-    {
-        return
-            "All your menus are seethrough, allowing you to look behind menus!";
-    }
-
-    public List<CustomButtonWikiDescription> Abilities { get; } = [];
 }

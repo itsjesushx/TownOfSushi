@@ -2,9 +2,12 @@
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
 using InnerNet;
+using MiraAPI.Hud;
 using MiraAPI.Networking;
+using TownOfSushi.Buttons.Modifiers;
 using TownOfSushi.Modules.Debugger.Embedded.ReactorImGui;
 using TownOfSushi.Utilities;
+
 using UnityEngine;
 
 namespace TownOfSushi.Modules.Debugger.Components;
@@ -103,10 +106,14 @@ public class Debugger : MonoBehaviour
                         player.RpcCompleteTask(task.Id);
                     }
                 }
-            
+
             if (GUILayout.Button("Remove Cooldowns"))
             {
                 PlayerControl.LocalPlayer.SetKillTimer(0f);
+                foreach (var button in CustomButtonManager.Buttons.Where(x => x.Enabled(PlayerControl.LocalPlayer.Data.Role)))
+                {
+                    button.SetTimer(0f);
+                }
             }
 
             if (GUILayout.Button("Redo Intro Sequence"))
@@ -117,8 +124,7 @@ public class Debugger : MonoBehaviour
 
             if (!MeetingHud.Instance && GUILayout.Button("Start Meeting"))
             {
-                PlayerControl.LocalPlayer.RemainingEmergencies++;
-                PlayerControl.LocalPlayer.StartMeeting(null);
+                BarryButton.CallButtonBarry(PlayerControl.LocalPlayer);
             }
 
             if (GUILayout.Button("End Meeting") && MeetingHud.Instance)
@@ -149,7 +155,7 @@ public class Debugger : MonoBehaviour
 
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F3)) Toggle();
+        if (Input.GetKeyDown(KeyCode.F3) || Input.GetKeyDown(KeyCode.F1)) Toggle();
     }
 
     private void Start()

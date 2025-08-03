@@ -1,14 +1,14 @@
 ﻿using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
-using TownOfSushi.Utilities;
+using MiraAPI.Utilities;
 using MiraAPI.Utilities.Assets;
 using Reactor.Utilities;
 using TownOfSushi.Modifiers.Neutral;
 using TownOfSushi.Options.Roles.Neutral;
 using TownOfSushi.Roles.Neutral;
+using TownOfSushi.Utilities;
 using UnityEngine;
-using MiraAPI.Utilities;
 
 namespace TownOfSushi.Buttons.Neutral;
 
@@ -18,10 +18,14 @@ public sealed class GlitchHackButton : TownOfSushiRoleButton<GlitchRole, PlayerC
     public override string Keybind => "tos.ActionCustom";
     public override Color TextOutlineColor => TownOfSushiColors.Glitch;
     public override float Cooldown => OptionGroupSingleton<GlitchOptions>.Instance.HackCooldown + MapCooldown;
-    public override LoadableAsset<Sprite> Sprite => TosNeutAssets.HackSprite;
+    public override LoadableAsset<Sprite> Sprite => TOSNeutAssets.HackSprite;
     public override ButtonLocation Location => ButtonLocation.BottomRight;
+    public override bool ShouldPauseInVent => false;
 
-    public override PlayerControl? GetTarget() => PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
+    public override PlayerControl? GetTarget()
+    {
+        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
+    }
 
     protected override void OnClick()
     {
@@ -30,10 +34,13 @@ public sealed class GlitchHackButton : TownOfSushiRoleButton<GlitchRole, PlayerC
             Logger<TownOfSushiPlugin>.Error("Glitch Hack: Target is null");
             return;
         }
-        var notif1 = Helpers.CreateAndShowNotification($"<b>Once {Target.Data.PlayerName} attempts to use an ability, all their abilities will get disabled.</b>", Color.white, new Vector3(0f, 1f, -20f), spr: TosRoleIcons.Glitch.LoadAsset());
+
+        var notif1 = Helpers.CreateAndShowNotification(
+            $"<b>Once {Target.Data.PlayerName} attempts to use an ability, all their abilities will get disabled.</b>",
+            Color.white, new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Glitch.LoadAsset());
         notif1.Text.SetOutlineThickness(0.35f);
 
-        TosAudio.PlaySound(TosAudio.HackedSound);
+        TOSAudio.PlaySound(TOSAudio.HackedSound);
         Target.RpcAddModifier<GlitchHackedModifier>(PlayerControl.LocalPlayer.PlayerId);
     }
 }

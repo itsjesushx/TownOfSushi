@@ -1,10 +1,11 @@
 ﻿using MiraAPI.GameOptions;
 using MiraAPI.Networking;
-using TownOfSushi.Utilities;
 using MiraAPI.Utilities.Assets;
 using Reactor.Utilities;
+using TownOfSushi.Options.Modifiers.Alliance;
 using TownOfSushi.Options.Roles.Neutral;
 using TownOfSushi.Roles.Neutral;
+using TownOfSushi.Utilities;
 using UnityEngine;
 
 namespace TownOfSushi.Buttons.Neutral;
@@ -15,7 +16,9 @@ public sealed class GlitchKillButton : TownOfSushiRoleButton<GlitchRole, PlayerC
     public override string Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Glitch;
     public override float Cooldown => OptionGroupSingleton<GlitchOptions>.Instance.KillCooldown + MapCooldown;
-    public override LoadableAsset<Sprite> Sprite => TosNeutAssets.GlitchKillSprite;
+    public override LoadableAsset<Sprite> Sprite => TOSNeutAssets.GlitchKillSprite;
+    public override bool ShouldPauseInVent => false;
+
     public void SetDiseasedTimer(float multiplier)
     {
         SetTimer(Cooldown * multiplier);
@@ -32,5 +35,12 @@ public sealed class GlitchKillButton : TownOfSushiRoleButton<GlitchRole, PlayerC
         PlayerControl.LocalPlayer.RpcCustomMurder(Target);
     }
 
-    public override PlayerControl? GetTarget() => PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
+    public override PlayerControl? GetTarget()
+    {
+        if (!OptionGroupSingleton<LoversOptions>.Instance.LoversKillEachOther && PlayerControl.LocalPlayer.IsLover())
+        {
+            return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance, false, x => !x.IsLover());
+        }
+        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
+    }
 }

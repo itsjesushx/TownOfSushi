@@ -13,17 +13,21 @@ namespace TownOfSushi.GameOver;
 
 public sealed class NeutralGameOver : CustomGameOver
 {
-    private string _roleName = "PLACEHOLDER";
     private Color _roleColor;
+    private string _roleName = "PLACEHOLDER";
+
     public override bool VerifyCondition(PlayerControl playerControl, NetworkedPlayerInfo[] winners)
     {
-        if (winners is not [{ Role: RoleBehaviour role and ITownOfSushiRole tRole }]) return false;
+        if (winners is not [{ Role: RoleBehaviour role and ITownOfSushiRole tRole }])
+        {
+            return false;
+        }
 
         var mainRole = role;
 
         Logger<TownOfSushiPlugin>.Error($"VerifyCondition - mainRole: '{mainRole.NiceName}', IsDead: '{role.IsDead}'");
 
-        if (role.IsDead && role is not ModdedPhantomRole or HaunterRole)
+        if (role.IsDead && role is not PhantomTOSRole or HaunterRole)
         {
             mainRole = role.Player.GetRoleWhenAlive();
 

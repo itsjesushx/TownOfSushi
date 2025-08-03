@@ -2,7 +2,7 @@
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Utilities.Assets;
-using TownOfSushi.Modules.Wiki;
+using TownOfUs.Modules.Wiki;
 using TownOfSushi.Options.Modifiers;
 using TownOfSushi.Options.Modifiers.Impostor;
 using TownOfSushi.Utilities;
@@ -10,18 +10,41 @@ using UnityEngine;
 
 namespace TownOfSushi.Modifiers.Game.Impostor;
 
-public sealed class UnderdogModifier : TosGameModifier, IWikiDiscoverable
+public sealed class UnderdogModifier : TOSGameModifier, IWikiDiscoverable
 {
     public override string ModifierName => "Underdog";
-    public override string GetDescription() => "When you're alone your kill cooldown is shortened";
-    public override LoadableAsset<Sprite>? ModifierIcon => TosModifierIcons.Underdog;
+    public override string IntroInfo => "Your kill cooldown is also faster when you're on your own.";
+    public override Color FreeplayFileColor => new Color32(255, 25, 25, 255);
+
+    public override LoadableAsset<Sprite>? ModifierIcon => TOSModifierIcons.Underdog;
     public override ModifierFaction FactionType => ModifierFaction.ImpostorPassive;
 
     private static float KillCooldownIncrease => OptionGroupSingleton<UnderdogOptions>.Instance.KillCooldownIncrease;
     private static bool ExtraImpsKillCooldown => OptionGroupSingleton<UnderdogOptions>.Instance.ExtraImpsKillCooldown;
 
-    public override int GetAssignmentChance() => (int)OptionGroupSingleton<ImpostorModifierOptions>.Instance.UnderdogChance;
-    public override int GetAmountPerGame() => (int)OptionGroupSingleton<ImpostorModifierOptions>.Instance.UnderdogAmount;
+    public string GetAdvancedDescription()
+    {
+        return
+            "Your kill cooldown is lower if you're solo or your teammate is dead."
+            + MiscUtils.AppendOptionsText(GetType());
+    }
+
+    public List<CustomButtonWikiDescription> Abilities { get; } = [];
+
+    public override string GetDescription()
+    {
+        return "When you're alone your kill cooldown is shortened";
+    }
+
+    public override int GetAssignmentChance()
+    {
+        return (int)OptionGroupSingleton<ImpostorModifierOptions>.Instance.UnderdogChance;
+    }
+
+    public override int GetAmountPerGame()
+    {
+        return (int)OptionGroupSingleton<ImpostorModifierOptions>.Instance.UnderdogAmount;
+    }
 
     public override bool IsModifierValidOn(RoleBehaviour role)
     {
@@ -38,7 +61,9 @@ public sealed class UnderdogModifier : TosGameModifier, IWikiDiscoverable
         var mod = player.GetModifier<UnderdogModifier>();
 
         if (mod == null)
+        {
             return GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
+        }
 
         var baseKillCooldown = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
 
@@ -52,12 +77,4 @@ public sealed class UnderdogModifier : TosGameModifier, IWikiDiscoverable
 
         return timer;
     }
-    public string GetAdvancedDescription()
-    {
-        return
-            "Your kill cooldown is lower if you're solo or your teammate is dead."
-               + MiscUtils.AppendOptionsText(GetType());
-    }
-
-    public List<CustomButtonWikiDescription> Abilities { get; } = [];
 }

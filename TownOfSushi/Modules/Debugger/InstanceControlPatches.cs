@@ -3,6 +3,8 @@ using RCoroutines = Reactor.Utilities.Coroutines;
 using System.Collections;
 using UnityEngine;
 using HarmonyLib;
+using MiraAPI.Modifiers;
+using MiraAPI.Modifiers.Types;
 using TownOfSushi.Utilities;
 
 namespace TownOfSushi.Modules.Debugger;
@@ -77,6 +79,12 @@ public static class InstanceControlPatches
             }
 
         });
+
+        var modsTab = MiraAPI.Modifiers.ModifierDisplay.ModifierDisplayComponent.Instance;
+        if (modsTab != null && !modsTab.IsOpen && PlayerControl.LocalPlayer.GetModifiers<GameModifier>().Any(x => !x.HideOnUi && x.GetDescription() != string.Empty))
+        {
+            modsTab.ToggleTab();
+        }
 
         light.transform.SetParent(newPlayer.transform);
         light.transform.localPosition = newPlayer.Collider.offset;

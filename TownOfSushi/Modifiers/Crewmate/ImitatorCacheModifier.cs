@@ -2,7 +2,6 @@ using AmongUs.GameOptions;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
-using Reactor.Networking.Attributes;
 using TownOfSushi.Modules;
 using TownOfSushi.Options.Roles.Crewmate;
 using TownOfSushi.Roles.Crewmate;
@@ -12,19 +11,21 @@ using UnityEngine;
 
 namespace TownOfSushi.Modifiers.Crewmate;
 
-public sealed class ImitatorCacheModifier() : BaseModifier, ICachedRole
+public sealed class ImitatorCacheModifier : BaseModifier, ICachedRole
 {
+    private MeetingMenu? _meetingMenu;
+    private NetworkedPlayerInfo? _selectedPlr;
     public override string ModifierName => "Imitator";
     public override bool HideOnUi => true;
-    public bool ShowCurrentRoleFirst => true;
-    public bool Visible => Player.AmOwner || PlayerControl.LocalPlayer.HasDied() || ModdedGuardianAngelRole.GASeesRoleVisibilityFlag(Player);
-    public RoleBehaviour CachedRole => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<ImitatorRole>());
-    public RoleBehaviour OldRole { get; set; }
-    private NetworkedPlayerInfo? _selectedPlr;
-    private NetworkedPlayerInfo? _prevSelectedPlr;
     public bool ChangedSelectedPlayer { get; set; } = true;
+    public bool ShowCurrentRoleFirst => true;
 
-    private MeetingMenu? _meetingMenu;
+    public bool Visible => Player.AmOwner || PlayerControl.LocalPlayer.HasDied() ||
+                           GuardianAngelTOSRole.GASeesRoleVisibilityFlag(Player)  ||
+                           RomanticRole.RomamticSeesRoleVisibilityFlag(Player);
+
+    public RoleBehaviour CachedRole => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<ImitatorRole>());
+
     public override void OnActivate()
     {
         base.OnActivate();
@@ -35,27 +36,36 @@ public sealed class ImitatorCacheModifier() : BaseModifier, ICachedRole
                 Player.Data.Role,
                 Click,
                 MeetingAbilityType.Toggle,
-                TosAssets.ImitateSelectSprite,
-                TosAssets.ImitateDeselectSprite,
+                TOSAssets.ImitateSelectSprite,
+                TOSAssets.ImitateDeselectSprite,
                 IsExempt,
-                activeColor: Color.white)
+                Color.white)
             {
-                Position = new Vector3(-0.40f, 0f, -3f),
+                Position = new Vector3(-0.40f, 0f, -3f)
             };
         }
     }
+
     public override void OnMeetingStart()
     {
+        if (!Player.IsCrewmate())
+        {
+            ModifierComponent?.RemoveModifier(this);
+            return;
+        }
+
         if (Player.AmOwner)
         {
             // _selectedPlr = null;
-            _meetingMenu!.GenButtons(MeetingHud.Instance, Player.AmOwner && !Player.HasDied() && !Player.HasModifier<JailedModifier>());
+            _meetingMenu!.GenButtons(MeetingHud.Instance,
+                Player.AmOwner && !Player.HasDied() && !Player.HasModifier<JailedModifier>());
             if (_selectedPlr != null)
             {
                 _meetingMenu!.Actives[_selectedPlr.PlayerId] = true;
             }
         }
     }
+
     public void OnVotingComplete()
     {
         if (Player.AmOwner)
@@ -73,11 +83,8 @@ public sealed class ImitatorCacheModifier() : BaseModifier, ICachedRole
             _meetingMenu?.Dispose();
             _meetingMenu = null!;
         }
-
-        // if (Player == null || Player.IsRole<ImitatorRole>()) return;
-
-        // Player.ChangeRole(RoleId.Get<ImitatorRole>(), false);
     }
+
     public void Click(PlayerVoteArea voteArea, MeetingHud __)
     {
         var player = GameData.Instance.GetPlayerById(voteArea.TargetPlayerId);
@@ -97,43 +104,56 @@ public sealed class ImitatorCacheModifier() : BaseModifier, ICachedRole
 
         _meetingMenu!.Actives[voteArea.TargetPlayerId] = true;
         _selectedPlr = player;
-        ChangedSelectedPlayer = _prevSelectedPlr != _selectedPlr;
     }
 
     private bool IsExempt(PlayerVoteArea voteArea)
     {
         var player = GameData.Instance.GetPlayerById(voteArea.TargetPlayerId);
         var opts = OptionGroupSingleton<ImitatorOptions>.Instance;
-        if (player != null && player.Object.GetRoleWhenAlive() is ICrewVariant neutVariant && player.Object.IsNeutral() && opts.ImitateNeutrals && MiscUtils.GetPotentialRoles().Contains(neutVariant.CrewVariant))
+        if (player != null && player.Object.GetRoleWhenAlive() is ICrewVariant neutVariant &&
+            player.Object.IsNeutral() && opts.ImitateNeutrals &&
+            MiscUtils.GetPotentialRoles().Contains(neutVariant.CrewVariant))
         {
             return voteArea.TargetPlayerId == Player.PlayerId || Player.Data.IsDead || !voteArea!.AmDead;
         }
 
-        if (player != null && player.Object.GetRoleWhenAlive() is ICrewVariant impVariant && player.Object.IsImpostor() && opts.ImitateImpostors && MiscUtils.GetPotentialRoles().Contains(impVariant.CrewVariant))
+        if (player != null && player.Object.GetRoleWhenAlive() is ICrewVariant impVariant &&
+            player.Object.IsImpostor() && opts.ImitateImpostors &&
+            MiscUtils.GetPotentialRoles().Contains(impVariant.CrewVariant))
         {
             return voteArea.TargetPlayerId == Player.PlayerId || Player.Data.IsDead || !voteArea!.AmDead;
         }
+
 
         if (player != null && !player.Object.IsCrewmate())
         {
             return true;
         }
 
-        if (player != null && player.Object.GetRoleWhenAlive() is MayorRole && PlayerControl.AllPlayerControls.ToArray().Any(x => x.HasModifier<ImitatorCacheModifier>() && !x.Data.IsDead && !x != Player))
+        if (player != null && player.Object.GetRoleWhenAlive() is JailorRole &&
+            !CustomRoleUtils.GetActiveRolesOfType<JailorRole>().Any() && PlayerControl.AllPlayerControls.ToArray()
+                .Any(x => x.HasModifier<ImitatorCacheModifier>() && !x.Data.IsDead && !x != Player))
         {
             return true;
         }
 
-        if (player != null && player.Object.GetRoleWhenAlive() is JailorRole && PlayerControl.AllPlayerControls.ToArray().Any(x => x.HasModifier<ImitatorCacheModifier>() && !x.Data.IsDead && !x != Player))
+        if (player != null && player.Object.GetRoleWhenAlive() is ProsecutorRole &&
+            !CustomRoleUtils.GetActiveRolesOfType<ProsecutorRole>().Any() && PlayerControl.AllPlayerControls.ToArray()
+                .Any(x => x.HasModifier<ImitatorCacheModifier>() && !x.Data.IsDead && !x != Player))
         {
             return true;
         }
 
-        if (player != null && player.Object.GetRoleWhenAlive() is ProsecutorRole && PlayerControl.AllPlayerControls.ToArray().Any(x => x.HasModifier<ImitatorCacheModifier>() && !x.Data.IsDead && !x != Player))
+        if (player != null && player.Object.GetRoleWhenAlive() is MayorRole)
         {
             return true;
         }
-        
+
+        if (player != null && player.Object.GetRoleWhenAlive() is PoliticianRole)
+        {
+            return true;
+        }
+
         if (player != null && player.Object.GetRoleWhenAlive() is ImitatorRole)
         {
             return true;
@@ -141,22 +161,18 @@ public sealed class ImitatorCacheModifier() : BaseModifier, ICachedRole
 
         return voteArea.TargetPlayerId == Player.PlayerId || Player.Data.IsDead || !voteArea!.AmDead;
     }
+
     public void UpdateRole()
     {
-        if (!ChangedSelectedPlayer)
+        if (!Player.IsCrewmate())
         {
-            return;
-        }
-
-        if (_prevSelectedPlr != null)
-        {
+            ModifierComponent?.RemoveModifier(this);
             return;
         }
 
         if (_selectedPlr == null || Player.Data.IsDead || !_selectedPlr.IsDead)
         {
             _selectedPlr = null;
-            _prevSelectedPlr = null;
             if (Player == null || Player.IsRole<ImitatorRole>())
             {
                 return;
@@ -176,22 +192,5 @@ public sealed class ImitatorCacheModifier() : BaseModifier, ICachedRole
         {
             Player.RpcChangeRole((ushort)roleWhenAlive.Role, false);
         }
-
-        RpcUpdateImitation(Player, (ushort)roleWhenAlive.Role);
-
-        _prevSelectedPlr = _selectedPlr;
-    }
-    [MethodRpc((uint)TownOfSushiRpc.UpdateImitation, SendImmediately = true)]
-    public static void RpcUpdateImitation(PlayerControl player, ushort role)
-    {
-        if (player.TryGetModifier<ImitatorCacheModifier>(out var mod))
-        {
-            mod.OldRole = RoleManager.Instance.GetRole((RoleTypes)role);
-        }
-    }
-
-    public override void OnDeath(DeathReason reason)
-    {
-        ModifierComponent?.RemoveModifier(this);
     }
 }

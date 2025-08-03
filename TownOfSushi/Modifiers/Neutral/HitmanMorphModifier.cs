@@ -2,7 +2,7 @@ using MiraAPI.Events;
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using TownOfSushi.Buttons.Neutral;
-using TownOfSushi.Events.TosEvents;
+using TownOfSushi.Events.TOSEvents;
 using TownOfSushi.Options.Roles.Neutral;
 using TownOfSushi.Utilities.Appearances;
 
@@ -11,7 +11,7 @@ namespace TownOfSushi.Modifiers.Neutral;
 public sealed class HitmanMorphModifier(PlayerControl target) : ConcealedModifier, IVisualAppearance
 {
     public override float Duration => OptionGroupSingleton<AgentOptions>.Instance.MorphDuration;
-    public override string ModifierName => "Morph";
+    public override string ModifierName => "Hitman Morph";
     public override bool HideOnUi => true;
     public override bool AutoStart => true;
     public bool VisualPriority => true;
@@ -24,7 +24,7 @@ public sealed class HitmanMorphModifier(PlayerControl target) : ConcealedModifie
     public override void OnActivate()
     {
         Player.RawSetAppearance(this);
-        var TosAbilityEvent = new TosAbilityEvent(AbilityType.HitmanMorph, Player, target);
+        var TosAbilityEvent = new TOSAbilityEvent(AbilityType.HitmanMorph, Player, target);
         MiraEventManager.InvokeEvent(TosAbilityEvent);
     }
     
@@ -37,7 +37,7 @@ public sealed class HitmanMorphModifier(PlayerControl target) : ConcealedModifie
     {
         CustomButtonSingleton<HitmanMorphButton>.Instance.SetTimer(OptionGroupSingleton<AgentOptions>.Instance.MorphCooldown);
         Player.ResetAppearance();
-        var TosAbilityEvent = new TosAbilityEvent(AbilityType.HitmanUnMorph, Player, target);
+        var TosAbilityEvent = new TOSAbilityEvent(AbilityType.HitmanUnMorph, Player, target);
         MiraEventManager.InvokeEvent(TosAbilityEvent);
     }
 }

@@ -1,8 +1,8 @@
 using MiraAPI.GameOptions;
-using TownOfSushi.Utilities;
 using MiraAPI.Utilities.Assets;
 using TownOfSushi.Options.Roles.Impostor;
 using TownOfSushi.Roles.Impostor;
+using TownOfSushi.Utilities;
 using UnityEngine;
 
 namespace TownOfSushi.Buttons.Impostor;
@@ -14,7 +14,7 @@ public sealed class ViperButton : TownOfSushiRoleButton<ViperRole, PlayerControl
     public override Color TextOutlineColor => TownOfSushiColors.Impostor;
     public override float Cooldown => OptionGroupSingleton<ViperOptions>.Instance.PoisonCooldown;
     public override float EffectDuration => OptionGroupSingleton<ViperOptions>.Instance.PoisonDelay;
-    public override LoadableAsset<Sprite> Sprite => TosImpAssets.PoisonSprite;
+    public override LoadableAsset<Sprite> Sprite => TOSImpAssets.PoisonSprite;
     public PlayerControl? Poisoned { get; set; }
     protected override void OnClick()
     {

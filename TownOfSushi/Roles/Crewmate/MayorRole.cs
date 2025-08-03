@@ -5,6 +5,7 @@ using AmongUs.GameOptions;
 using HarmonyLib;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.Modifiers;
+using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using PowerTools;
 using Reactor.Networking.Attributes;
@@ -12,41 +13,76 @@ using Reactor.Utilities;
 using TownOfSushi.Modifiers.Crewmate;
 using TownOfSushi.Modifiers.Game.Alliance;
 using TownOfSushi.Modules;
-using TownOfSushi.Modules.Wiki;
-
 using TownOfSushi.Utilities;
+using TownOfUs.Modules.Wiki;
 using UnityEngine;
 
 namespace TownOfSushi.Roles.Crewmate;
 
-public sealed class MayorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRole, IWikiDiscoverable, IDoomable, IUnguessable
+public sealed class MayorRole(IntPtr cppPtr)
+    : CrewmateRole(cppPtr), ITOSCrewRole, IWikiDiscoverable, IUnguessable
 {
-    public string RoleName => "Mayor";
+    public static GameObject MayorPlayer;
+
+    private MeetingMenu meetingMenu;
+    public bool Revealed { get; set; }
+    public string RoleName => TOSLocale.Get(TOSNames.Mayor, "Mayor");
     public string RoleDescription => "Reveal Yourself To Save The Crew";
     public string RoleLongDescription => "Lead the crew to victory!";
     public Color RoleColor => TownOfSushiColors.Mayor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
-    public bool Revealed { get; set; }
-    public static GameObject MayorPlayer;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmatePower;
-    public DoomableType DoomHintType => DoomableType.Trickster;
-    public bool IsGuessable => false;
-    public RoleBehaviour AppearAs => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<PoliticianRole>());
+
     public CustomRoleConfiguration Configuration => new(this)
     {
-        Icon = TosRoleIcons.Mayor,
+        Icon = TOSRoleIcons.Mayor,
         HideSettings = true,
         MaxRoleCount = 0,
         DefaultRoleCount = 0,
         DefaultChance = 0,
-        CanModifyChance = false,
+        CanModifyChance = false
     };
 
     public bool IsPowerCrew => true;
+    public static bool DisabledAnimation { get; set; }
+
+    [HideFromIl2Cpp]
+    public StringBuilder SetTabText()
+    {
+        var stringB = ITownOfSushiRole.SetNewTabText(this);
+        if (!Revealed)
+        {
+            stringB.AppendLine(CultureInfo.InvariantCulture, $"<b>Reveal yourself whenever you wish.</b>");
+        }
+
+        if (PlayerControl.LocalPlayer.HasModifier<EgotistModifier>())
+        {
+            stringB.AppendLine(CultureInfo.InvariantCulture, $"<b>The Impostors know your true motives.</b>");
+        }
+
+        return stringB;
+    }
+
+    public bool IsGuessable => false;
+    public RoleBehaviour AppearAs => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<PoliticianRole>());
+
+    public string GetAdvancedDescription()
+    {
+        return
+            $"The {RoleName} is a Crewmate Power role that gains three votes and is revealed to all players, also changing their look in meetings.";
+    }
+
+    [HideFromIl2Cpp] public List<CustomButtonWikiDescription> Abilities { get; } = [];
+
     public override void Initialize(PlayerControl player)
     {
         RoleBehaviourStubs.Initialize(this, player);
-        if (MeetingHud.Instance)
+        Player.AddModifier<MayorRevealModifier>(RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<MayorRole>()));
+        if (Player.HasModifier<ToBecomeTraitorModifier>())
+        {
+            Player.GetModifier<ToBecomeTraitorModifier>()!.Clear();
+        }
+        if (MeetingHud.Instance && !DisabledAnimation)
         {
             var targetVoteArea = MeetingHud.Instance.playerStates.First(x => x.TargetPlayerId == player.PlayerId);
             Coroutines.Start(CoAnimateReveal(targetVoteArea));
@@ -58,28 +94,30 @@ public sealed class MayorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRol
                 this,
                 Click,
                 MeetingAbilityType.Click,
-                TosAssets.RevealButtonSprite,
+                TOSAssets.RevealButtonSprite,
                 null!,
                 IsExempt)
             {
-                Position = new Vector3(-0.35f, 0f, -3f),
+                Position = new Vector3(-0.35f, 0f, -3f)
             };
         }
     }
-
-    private MeetingMenu meetingMenu;
 
     public override void OnMeetingStart()
     {
         RoleBehaviourStubs.OnMeetingStart(this);
 
         var targetVoteArea = MeetingHud.Instance.playerStates.First(x => x.TargetPlayerId == Player.PlayerId);
-        if (Revealed) Coroutines.Start(CoAnimatePostReveal(targetVoteArea));
+        if (Revealed && !DisabledAnimation)
+        {
+            Coroutines.Start(CoAnimatePostReveal(targetVoteArea));
+        }
 
         if (Player.AmOwner && !Revealed)
+            // Logger<TownOfUsPlugin>.Message($"PoliticianRole.OnMeetingStart '{Player.Data.PlayerName}' {Player.AmOwner && !Player.HasDied() && !Player.HasModifier<JailedModifier>()}");
         {
-            // Logger<TownOfSushiPlugin>.Message($"PoliticianRole.OnMeetingStart '{Player.Data.PlayerName}' {Player.AmOwner && !Player.HasDied() && !Player.HasModifier<JailedModifier>()}");
-            meetingMenu.GenButtons(MeetingHud.Instance, Player.AmOwner && !Player.HasDied() && !Player.HasModifier<JailedModifier>());
+            meetingMenu.GenButtons(MeetingHud.Instance,
+                Player.AmOwner && !Player.HasDied() && !Player.HasModifier<JailedModifier>());
         }
     }
 
@@ -106,7 +144,10 @@ public sealed class MayorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRol
 
     public void Click(PlayerVoteArea voteArea, MeetingHud __)
     {
-        if (!Player.AmOwner) return;
+        if (!Player.AmOwner)
+        {
+            return;
+        }
 
         meetingMenu.HideButtons();
         RpcAnimateNewReveal(Player);
@@ -115,6 +156,15 @@ public sealed class MayorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRol
     [MethodRpc((uint)TownOfSushiRpc.AnimateNewReveal, SendImmediately = true)]
     public static void RpcAnimateNewReveal(PlayerControl plr)
     {
+        if (plr.Data.Role is MayorRole mayor)
+        {
+            mayor.Revealed = true;
+        }
+
+        if (DisabledAnimation)
+        {
+            return;
+        }
         var targetVoteArea = MeetingHud.Instance.playerStates.First(x => x.TargetPlayerId == plr.PlayerId);
         Coroutines.Start(CoAnimateReveal(targetVoteArea));
     }
@@ -125,25 +175,6 @@ public sealed class MayorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRol
         return voteArea?.TargetPlayerId != Player.PlayerId;
     }
 
-    [HideFromIl2Cpp]
-    public StringBuilder SetTabText()
-    {
-        var stringB = ITownOfSushiRole.SetNewTabText(this);
-        if (!Revealed)
-        {
-            stringB.AppendLine(CultureInfo.InvariantCulture, $"<b>Reveal yourself whenever you wish.</b>");
-        }
-        if (PlayerControl.LocalPlayer.HasModifier<EgotistModifier>())
-        {
-            stringB.AppendLine(CultureInfo.InvariantCulture, $"<b>The Impostors know your true motives.</b>");
-        }
-
-        return stringB;
-    }
-    public static bool MayorVisibilityFlag(PlayerControl player)
-    {
-        return player.IsRole<MayorRole>() && player.GetRole<MayorRole>()!.Revealed;
-    }
     private static IEnumerator CoAnimateReveal(PlayerVoteArea voteArea)
     {
         if (Minigame.Instance != null)
@@ -151,13 +182,14 @@ public sealed class MayorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRol
             Minigame.Instance.Close();
             Minigame.Instance.Close();
         }
+
         // hide meeting menu buttons (such as for guessers) for everyone but the mayor
         if (voteArea.TargetPlayerId != PlayerControl.LocalPlayer.PlayerId)
         {
             MeetingMenu.Instances.Do(x => x.HideSingle(voteArea.TargetPlayerId));
         }
-        
-        MayorPlayer = UnityEngine.Object.Instantiate(TosAssets.MayorRevealPrefab.LoadAsset(), voteArea.transform);
+
+        MayorPlayer = Instantiate(TOSAssets.MayorRevealPrefab.LoadAsset(), voteArea.transform);
         MayorPlayer.transform.localPosition = new Vector3(-0.8f, 0, 0);
         MayorPlayer.transform.localScale = new Vector3(0.375f, 0.375f, 1f);
         MayorPlayer.gameObject.layer = MayorPlayer.transform.GetChild(0).gameObject.layer = voteArea.gameObject.layer;
@@ -169,7 +201,11 @@ public sealed class MayorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRol
         {
             handRend = MayorPlayer.transform.FindRecursive("Hand").GetComponent<SpriteRenderer>();
         }
-        if (handRend) handRend.material = voteArea.PlayerIcon.cosmetics.currentBodySprite.BodySprite.material;
+
+        if (handRend)
+        {
+            handRend.material = voteArea.PlayerIcon.cosmetics.currentBodySprite.BodySprite.material;
+        }
 
         voteArea.PlayerIcon.gameObject.SetActive(false);
         MayorPlayer.gameObject.SetActive(true);
@@ -181,10 +217,10 @@ public sealed class MayorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRol
         var bodysAnim = MayorPlayer.GetComponent<SpriteAnim>();
         var outfitAnim = MayorPlayer.transform.GetChild(0).GetComponent<SpriteAnim>();
         var handAnim = MayorPlayer.transform.GetChild(1).GetComponent<SpriteAnim>();
-            bodysAnim.SetSpeed(1.02f);
-            outfitAnim.SetSpeed(1.02f);
-            handAnim.SetSpeed(1.02f);
-        TosAudio.PlaySound(TosAudio.MayorRevealSound);
+        bodysAnim.SetSpeed(1.02f);
+        outfitAnim.SetSpeed(1.02f);
+        handAnim.SetSpeed(1.02f);
+        TOSAudio.PlaySound(TOSAudio.MayorRevealSound);
         yield return new WaitForSeconds(0.1f);
         var player = MiscUtils.PlayerById(voteArea.TargetPlayerId);
         if (player!.Data.Role is MayorRole mayor)
@@ -194,9 +230,10 @@ public sealed class MayorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRol
 
         yield return new WaitForSeconds(bodysAnim.m_currAnim.length - 0.25f);
     }
+
     private static IEnumerator CoAnimatePostReveal(PlayerVoteArea voteArea)
     {
-        MayorPlayer = UnityEngine.Object.Instantiate(TosAssets.MayorRevealPrefab.LoadAsset(), voteArea.transform);
+        MayorPlayer = Instantiate(TOSAssets.MayorPostRevealPrefab.LoadAsset(), voteArea.transform);
         MayorPlayer.transform.localPosition = new Vector3(-0.8f, 0, 0);
         MayorPlayer.transform.localScale = new Vector3(0.375f, 0.375f, 1f);
         MayorPlayer.gameObject.layer = MayorPlayer.transform.GetChild(0).gameObject.layer = voteArea.gameObject.layer;
@@ -208,21 +245,19 @@ public sealed class MayorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRol
         {
             handRend = MayorPlayer.transform.FindRecursive("Hand").GetComponent<SpriteRenderer>();
         }
-        if (handRend) handRend.material = voteArea.PlayerIcon.cosmetics.currentBodySprite.BodySprite.material;
+
+        if (handRend)
+        {
+            handRend.material = voteArea.PlayerIcon.cosmetics.currentBodySprite.BodySprite.material;
+        }
 
         voteArea.PlayerIcon.gameObject.SetActive(false);
         MayorPlayer.gameObject.SetActive(true);
         MayorPlayer.transform.GetChild(0).gameObject.SetActive(true);
         MayorPlayer.transform.GetChild(1).gameObject.SetActive(true);
-
-        var bodysAnim = MayorPlayer.GetComponent<SpriteAnim>();
-        var outfitAnim = MayorPlayer.transform.GetChild(0).GetComponent<SpriteAnim>();
-        var handAnim = MayorPlayer.transform.GetChild(1).GetComponent<SpriteAnim>();
-            bodysAnim.SetSpeed(1.02f);
-            outfitAnim.SetSpeed(1.02f);
-            handAnim.SetSpeed(1.02f);
-        yield return new WaitForSeconds(bodysAnim.m_currAnim.length - 0.25f);
+        yield return new WaitForSeconds(0.01f);
     }
+
     public static void DestroyReveal(PlayerVoteArea voteArea)
     {
         if (MayorPlayer != null)
@@ -233,11 +268,4 @@ public sealed class MayorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRol
             MayorPlayer = null!;
         }
     }
-    public string GetAdvancedDescription()
-    {
-        return "The Mayor is a Crewmate Power role that gains three votes and is revealed to all players, also changing their look in meetings.";
-    }
-
-    [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } = [];
 }

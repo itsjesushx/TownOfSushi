@@ -1,6 +1,6 @@
 namespace TownOfSushi.Roles;
 
-public interface ITouCrewRole : ITownOfSushiRole
+public interface ITOSCrewRole : ITownOfSushiRole
 {
     bool IsPowerCrew { get; }
 }
