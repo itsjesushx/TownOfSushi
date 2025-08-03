@@ -19,8 +19,9 @@ public static class LogoPatch
         var sizer = GameObject.Find("Sizer");
         if (newLogo != null)
         {
-            newLogo.GetComponent<SpriteRenderer>().sprite = TosAssets.Banner.LoadAsset();
+            newLogo.GetComponent<SpriteRenderer>().sprite = TOSAssets.Banner.LoadAsset();
         }
+
         if (sizer != null)
         {
             sizer.GetComponent<AspectSize>().PercentWidth = 0.3f;

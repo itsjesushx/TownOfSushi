@@ -3,11 +3,12 @@ using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
 using TownOfSushi.Buttons.Impostor;
-using TownOfSushi.Events.TosEvents;
+using TownOfSushi.Events.TOSEvents;
 using TownOfSushi.Options.Roles.Impostor;
 using TownOfSushi.Utilities;
 using TownOfSushi.Utilities.Appearances;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace TownOfSushi.Modifiers.Impostor;
 
@@ -18,16 +19,6 @@ public sealed class SwoopModifier : ConcealedModifier, IVisualAppearance
     public override bool HideOnUi => true;
     public override bool AutoStart => true;
     public bool VisualPriority => true;
-
-    public override void OnDeath(DeathReason reason)
-    {
-        Player.RemoveModifier(this);
-    }
-
-    public override void OnMeetingStart()
-    {
-        Player.RemoveModifier(this);
-    }
 
     public VisualAppearance GetVisualAppearance()
     {
@@ -44,31 +35,43 @@ public sealed class SwoopModifier : ConcealedModifier, IVisualAppearance
             PetId = string.Empty,
             RendererColor = playerColor,
             NameColor = Color.clear,
-            ColorBlindTextColor = Color.clear,
+            ColorBlindTextColor = Color.clear
         };
+    }
+
+    public override void OnDeath(DeathReason reason)
+    {
+        Player.RemoveModifier(this);
+    }
+
+    public override void OnMeetingStart()
+    {
+        Player.RemoveModifier(this);
     }
 
     public override void OnActivate()
     {
-        if (Player.AmOwner) 
-            TosAudio.PlaySound(TosAudio.SwooperActivateSound);
+        if (Player.AmOwner)
+        {
+            TOSAudio.PlaySound(TOSAudio.SwooperActivateSound);
+        }
 
         Player.RawSetAppearance(this);
         Player.cosmetics.ToggleNameVisible(false);
 
         var button = CustomButtonSingleton<SwooperSwoopButton>.Instance;
-        button.OverrideSprite(TosImpAssets.UnswoopSprite.LoadAsset());
+        button.OverrideSprite(TOSImpAssets.UnswoopSprite.LoadAsset());
         button.OverrideName("Unswoop");
 
-        var TosAbilityEvent = new TosAbilityEvent(AbilityType.SwooperSwoop, Player);
-        MiraEventManager.InvokeEvent(TosAbilityEvent);
+        var TOSAbilityEvent = new TOSAbilityEvent(AbilityType.SwooperSwoop, Player);
+        MiraEventManager.InvokeEvent(TOSAbilityEvent);
     }
 
     public override void FixedUpdate()
     {
         base.FixedUpdate();
 
-        var mushroom = UnityEngine.Object.FindObjectOfType<MushroomMixupSabotageSystem>();
+        var mushroom = Object.FindObjectOfType<MushroomMixupSabotageSystem>();
         if (mushroom && mushroom.IsActive)
         {
             Player.RawSetAppearance(this);
@@ -82,20 +85,22 @@ public sealed class SwoopModifier : ConcealedModifier, IVisualAppearance
         Player.cosmetics.ToggleNameVisible(true);
 
         var button = CustomButtonSingleton<SwooperSwoopButton>.Instance;
-        button.OverrideSprite(TosImpAssets.SwoopSprite.LoadAsset());
+        button.OverrideSprite(TOSImpAssets.SwoopSprite.LoadAsset());
         button.OverrideName("Swoop");
 
-        if (Player.AmOwner) 
-            TosAudio.PlaySound(TosAudio.SwooperDeactivateSound);
+        if (Player.AmOwner)
+        {
+            TOSAudio.PlaySound(TOSAudio.SwooperDeactivateSound);
+        }
 
-        var mushroom = UnityEngine.Object.FindObjectOfType<MushroomMixupSabotageSystem>();
+        var mushroom = Object.FindObjectOfType<MushroomMixupSabotageSystem>();
         if (mushroom && mushroom.IsActive)
         {
             MushroomMixUp(mushroom, Player);
         }
 
-        var TosAbilityEvent = new TosAbilityEvent(AbilityType.SwooperUnswoop, Player);
-        MiraEventManager.InvokeEvent(TosAbilityEvent);
+        var TOSAbilityEvent = new TOSAbilityEvent(AbilityType.SwooperUnswoop, Player);
+        MiraEventManager.InvokeEvent(TOSAbilityEvent);
     }
 
     public static void MushroomMixUp(MushroomMixupSabotageSystem instance, PlayerControl player)

@@ -12,7 +12,7 @@ public sealed class WerewolfOptions : AbstractOptionGroup<WerewolfRole>
     [ModdedNumberOption("Maul Cooldown", 10f, 60f, 5f, MiraNumberSuffixes.Seconds)]
     public float MaulCooldown { get; set; } = 25f;
 
-    [ModdedToggleOption("Can Vent")]
+    [ModdedToggleOption("Werewolf Can Vent")]
     public bool CanVent { get; set; } = false;
 
     [ModdedToggleOption("Has Impostor Vision")]

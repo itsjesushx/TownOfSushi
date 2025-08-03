@@ -2,7 +2,7 @@
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Meeting;
 using MiraAPI.Modifiers;
-using TownOfSushi.Events.TosEvents;
+using TownOfSushi.Events.TOSEvents;
 using TownOfSushi.Modifiers.Crewmate;
 using TownOfSushi.Utilities;
 
@@ -20,30 +20,37 @@ public static class ImitatorEvents
             return;
         }
 
-        foreach (var mod in imitators.Where(x=>x.Player.Data.Role.Role != x.OldRole.Role))
+        // This makes converted imitators not be imitators anymore
+        foreach (var mod in imitators.Where(x => !x.Player.IsCrewmate()))
         {
-            // This makes converted imitators not be imitators anymore
             mod.ModifierComponent?.RemoveModifier(mod);
         }
     }
 
-    [RegisterEvent]
+    [RegisterEvent(1001)]
     public static void RoundStartEventHandler(RoundStartEvent @event)
     {
         if (@event.TriggeredByIntro)
         {
             return;
         }
+
         var imitators = ModifierUtils.GetActiveModifiers<ImitatorCacheModifier>();
+
         if (!imitators.Any())
         {
             return;
         }
+
         foreach (var mod in imitators)
         {
-            if (mod.Player.AmOwner) mod.UpdateRole();
+            if (mod.Player.AmOwner)
+            {
+                mod.UpdateRole();
+            }
         }
     }
+
     [RegisterEvent]
     public static void ChangeRoleHandler(ChangeRoleEvent @event)
     {
@@ -54,17 +61,9 @@ public static class ImitatorEvents
 
         var player = @event.Player;
 
-        // Should make a converted imitator into whatever role they become after the next meeting starts
-        if (player.TryGetModifier<ImitatorCacheModifier>(out var imi))
+        if (player.HasModifier<ImitatorCacheModifier>() && !@event.NewRole.IsCrewmate())
         {
-            if (!@event.NewRole.IsCrewmate())
-            {
-                player.RemoveModifier<ImitatorCacheModifier>();
-            }
-            else
-            {
-                imi.OldRole = @event.NewRole;
-            }
+            player.RemoveModifier<ImitatorCacheModifier>();
         }
     }
 }

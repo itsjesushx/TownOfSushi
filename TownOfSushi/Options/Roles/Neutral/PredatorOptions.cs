@@ -18,6 +18,6 @@ public sealed class PredatorOptions : AbstractOptionGroup<PredatorRole>
     [ModdedNumberOption("Terminate Kill Cooldown", 0.5f, 15f, 0.5f, MiraNumberSuffixes.Seconds)]
     public float TerminateKillCooldown { get; set; } = 1.5f;
 
-    [ModdedToggleOption("Predator Can Vent")]
+    [ModdedToggleOption("Predator Can Vent When Terminated")]
     public bool CanVent { get; set; } = true;
 }

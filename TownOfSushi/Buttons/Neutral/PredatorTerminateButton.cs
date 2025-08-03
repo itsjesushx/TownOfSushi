@@ -7,36 +7,42 @@ using UnityEngine;
 
 namespace TownOfSushi.Buttons.Neutral;
 
-public sealed class WerewolfRampageButton : TownOfSushiRoleButton<PredatorRole>, IAftermathableButton
+public sealed class PredatorTerminateButton : TownOfSushiRoleButton<PredatorRole>, IAftermathableButton
 {
     public override string Name => "Terminate";
     public override string Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Predator;
     public override float Cooldown => OptionGroupSingleton<PredatorOptions>.Instance.TerminateCooldown + MapCooldown;
     public override float EffectDuration => OptionGroupSingleton<PredatorOptions>.Instance.TerminateDuration;
-    public override LoadableAsset<Sprite> Sprite => TosNeutAssets.TerminateSprite;
+    public override LoadableAsset<Sprite> Sprite => TOSNeutAssets.TerminateSprite;
 
     public override bool CanUse()
     {
-        return base.CanUse() && Role?.Rampaging == false;
+        return base.CanUse() && Role?.Terminating == false;
     }
 
     protected override void OnClick()
     {
-        if (Role == null) return;
+        if (Role == null)
+        {
+            return;
+        }
 
-        Role.Rampaging = true;
+        Role.Terminating = true;
 
         CustomButtonSingleton<PredatorKillButton>.Instance.SetActive(true, Role);
         CustomButtonSingleton<PredatorKillButton>.Instance.SetTimer(0.01f);
-        TosAudio.PlaySound(TosAudio.WerewolfRampageSound);
+        TOSAudio.PlaySound(TOSAudio.PredatorTerminateSound);
     }
 
     public override void OnEffectEnd()
     {
-        if (Role == null) return;
+        if (Role == null)
+        {
+            return;
+        }
 
-        Role.Rampaging = false;
+        Role.Terminating = false;
 
         CustomButtonSingleton<PredatorKillButton>.Instance.SetActive(false, Role);
     }

@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Meeting;
+using MiraAPI.Events.Vanilla.Player;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using TownOfSushi.Modifiers.Impostor;
@@ -24,9 +25,34 @@ public static class HypnotistEvents
     {
         foreach (var hypnotist in CustomRoleUtils.GetActiveRolesOfType<HypnotistRole>())
         {
-            if (!hypnotist.HysteriaActive) continue;
+            if (!hypnotist.HysteriaActive)
+            {
+                continue;
+            }
+
             var mods = ModifierUtils.GetActiveModifiers<HypnotisedModifier>(x => x.Hypnotist == hypnotist.Player);
             mods.Do(x => x.Hysteria());
         }
     }
+
+    [RegisterEvent]
+    public static void HypnotistDeathHandler(PlayerDeathEvent @event)
+    {
+        if (@event.Player.Data.Role is HypnotistRole hypno)
+        {
+            ModifierUtils.GetPlayersWithModifier<HypnotisedModifier>(x => x.Hypnotist == hypno)
+                         .Do(x => x.RemoveModifier<HypnotisedModifier>());
+        }
+    }
+
+    /* whenever the event gets changed to having the character not being null
+    [RegisterEvent]
+    public static void HypnotistDisconnectHandler(PlayerLeaveEvent @event)
+    {
+        if (@event.ClientData.Character.Data.Role is HypnotistRole hypno)
+        {
+            ModifierUtils.GetPlayersWithModifier<HypnotisedModifier>(x => x.Hypnotist == hypno)
+                         .Do(x => x.RemoveModifier<HypnotisedModifier>());
+        }
+    }*/
 }

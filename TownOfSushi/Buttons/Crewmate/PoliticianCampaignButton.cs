@@ -15,7 +15,7 @@ public sealed class PoliticianCampaignButton : TownOfSushiRoleButton<PoliticianR
     public override string Keybind => Keybinds.SecondaryAction;
     public override float Cooldown => OptionGroupSingleton<PoliticianOptions>.Instance.CampaignCooldown + MapCooldown;
     public override Color TextOutlineColor => TownOfSushiColors.Politician;
-    public override LoadableAsset<Sprite> Sprite => TosCrewAssets.CampaignButtonSprite;
+    public override LoadableAsset<Sprite> Sprite => TOSCrewAssets.CampaignButtonSprite;
 
     public override bool CanUse()
     {
@@ -24,12 +24,16 @@ public sealed class PoliticianCampaignButton : TownOfSushiRoleButton<PoliticianR
 
     public override PlayerControl? GetTarget()
     {
-        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance, predicate: x => !x.HasModifier<PoliticianCampaignedModifier>());
+        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance,
+            predicate: x => !x.HasModifier<PoliticianCampaignedModifier>());
     }
 
     protected override void OnClick()
     {
-        if (Target == null) return;
+        if (Target == null)
+        {
+            return;
+        }
 
         Target?.RpcAddModifier<PoliticianCampaignedModifier>(PlayerControl.LocalPlayer);
     }

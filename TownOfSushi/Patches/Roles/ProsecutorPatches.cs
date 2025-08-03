@@ -26,9 +26,16 @@ public static class ProsecutorPatches
             return false;
         }
 
-        if (__instance != prosecutor.ProsecuteButton && __instance != MeetingHud.Instance.SkipVoteButton && prosecutor.SelectingProsecuteVictim)
+        if (__instance != prosecutor.ProsecuteButton && __instance != MeetingHud.Instance.SkipVoteButton &&
+            prosecutor.SelectingProsecuteVictim)
         {
-            ProsecutorRole.RpcProsecute(PlayerControl.LocalPlayer);
+            ProsecutorRole.RpcProsecute(PlayerControl.LocalPlayer, __instance.TargetPlayerId);
+        }
+
+        if (__instance == MeetingHud.Instance.SkipVoteButton && prosecutor.SelectingProsecuteVictim)
+        {
+            prosecutor.SelectingProsecuteVictim = false;
+            prosecutor.ProsecuteVictim = byte.MaxValue;
         }
 
         return true;

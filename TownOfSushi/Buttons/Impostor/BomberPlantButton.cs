@@ -15,7 +15,8 @@ public sealed class BomberPlantButton : TownOfSushiRoleButton<BomberRole>, IAfte
     public override float Cooldown => PlayerControl.LocalPlayer.GetKillCooldown() + MapCooldown;
     public override float EffectDuration => OptionGroupSingleton<BomberOptions>.Instance.DetonateDelay;
     public override int MaxUses => (int)OptionGroupSingleton<BomberOptions>.Instance.MaxBombs;
-    public override LoadableAsset<Sprite> Sprite => TosImpAssets.PlaceSprite;
+    public override LoadableAsset<Sprite> Sprite => TOSImpAssets.PlaceSprite;
+
     public void SetDiseasedTimer(float multiplier)
     {
         SetTimer(Cooldown * multiplier);
@@ -23,7 +24,7 @@ public sealed class BomberPlantButton : TownOfSushiRoleButton<BomberRole>, IAfte
 
     protected override void OnClick()
     {
-        OverrideSprite(TosImpAssets.DetonatingSprite.LoadAsset());
+        OverrideSprite(TOSImpAssets.DetonatingSprite.LoadAsset());
         OverrideName("Detonating");
 
         PlayerControl.LocalPlayer.killTimer = EffectDuration + 1f;
@@ -33,7 +34,7 @@ public sealed class BomberPlantButton : TownOfSushiRoleButton<BomberRole>, IAfte
 
     public override void OnEffectEnd()
     {
-        OverrideSprite(TosImpAssets.PlaceSprite.LoadAsset());
+        OverrideSprite(TOSImpAssets.PlaceSprite.LoadAsset());
         OverrideName("Place");
 
         PlayerControl.LocalPlayer.SetKillTimer(PlayerControl.LocalPlayer.GetKillCooldown());

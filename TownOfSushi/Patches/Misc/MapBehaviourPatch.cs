@@ -1,49 +1,89 @@
 using HarmonyLib;
+using MiraAPI.Modifiers;
+using TownOfSushi.Modifiers.Game.Universal;
 using TownOfSushi.Modules;
 using TownOfSushi.Utilities;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace TownOfSushi.Patches.Misc;
 
 [HarmonyPatch]
-
 public static class ShowVentsPatch
 {
     public static readonly List<List<Vent>> VentNetworks = [];
 
     public static readonly Dictionary<int, GameObject> VentIcons = [];
+    public static readonly Dictionary<int, GameObject> BodyIcons = [];
 
     [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.ShowSabotageMap))]
     [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.ShowCountOverlay))]
     [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.ShowNormalMap))]
     [HarmonyPostfix]
-
     public static void Postfix(MapBehaviour __instance)
     {
+        if (PlayerControl.LocalPlayer.HasModifier<SatelliteModifier>())
+        {
+            foreach (var deadBody in ModifierUtils.GetActiveModifiers<SatelliteArrowModifier>()
+                         .Select(bodyMod => bodyMod.DeadBody))
+            {
+                var location = deadBody.transform.position / ShipStatus.Instance.MapScale;
+                location.z = -1.99f;
+
+                if (!BodyIcons.TryGetValue(deadBody.ParentId, out var Icon) || Icon == null)
+                {
+                    Icon = Object.Instantiate(__instance.HerePoint.gameObject, __instance.HerePoint.transform.parent);
+                    var renderer = Icon.GetComponent<SpriteRenderer>();
+                    renderer.sprite = TOSAssets.MapBodySprite.LoadAsset();
+                    Icon.name = $"Satellite Body {deadBody.ParentId} Map Icon";
+                    Icon.transform.localPosition = location;
+                    BodyIcons[deadBody.ParentId] = Icon;
+                }
+
+                Icon.transform.localScale = Vector3.one;
+            }
+        }
+
+        if (!ModifierUtils.GetActiveModifiers<SatelliteArrowModifier>().Any())
+        {
+            foreach (var icon in BodyIcons.Values.Where(x => x))
+            {
+                Object.Destroy(icon);
+            }
+
+            BodyIcons.Clear();
+        }
+
         if (!TownOfSushiPlugin.ShowVents.Value)
         {
-            foreach (var icon in VentIcons.Values.Where(x=> x))
+            foreach (var icon in VentIcons.Values.Where(x => x))
             {
-                UnityEngine.Object.Destroy(icon);
+                Object.Destroy(icon);
             }
+
             VentIcons.Clear();
             VentNetworks.Clear();
             return;
         }
 
-        var task = PlayerControl.LocalPlayer.myTasks.ToArray().FirstOrDefault(x => x.TaskType == TaskTypes.VentCleaning);
+        var task = PlayerControl.LocalPlayer.myTasks.ToArray()
+            .FirstOrDefault(x => x.TaskType == TaskTypes.VentCleaning);
 
         foreach (var vent in ShipStatus.Instance.AllVents)
         {
-            if (vent.name.StartsWith("MinerVent-", StringComparison.Ordinal)) continue;
+            if (vent.name.StartsWith("MinerVent-", StringComparison.Ordinal))
+            {
+                continue;
+            }
+
             var location = vent.transform.position / ShipStatus.Instance.MapScale;
             location.z = -0.99f;
 
-            if (!VentIcons.TryGetValue(vent.Id, out GameObject? Icon) || Icon == null)
+            if (!VentIcons.TryGetValue(vent.Id, out var Icon) || Icon == null)
             {
-                Icon = UnityEngine.Object.Instantiate(__instance.HerePoint.gameObject, __instance.HerePoint.transform.parent);
+                Icon = Object.Instantiate(__instance.HerePoint.gameObject, __instance.HerePoint.transform.parent);
                 var renderer = Icon.GetComponent<SpriteRenderer>();
-                renderer.sprite = TosAssets.MapVentSprite.LoadAsset();
+                renderer.sprite = TOSAssets.MapVentSprite.LoadAsset();
                 Icon.name = $"Vent {vent.Id} Map Icon";
                 Icon.transform.localPosition = location;
                 VentIcons[vent.Id] = Icon;
@@ -63,11 +103,14 @@ public static class ShowVentsPatch
             var network = GetNetworkFor(vent);
             if (network == null)
             {
-                VentNetworks.Add(new(vent.NearbyVents.Where(x => x != null)) { vent });
+                VentNetworks.Add(new List<Vent>(vent.NearbyVents.Where(x => x != null)) { vent });
             }
             else
             {
-                if (!network.Any(x => x == vent)) network.Add(vent);
+                if (!network.Any(x => x == vent))
+                {
+                    network.Add(vent);
+                }
             }
         }
 
@@ -77,40 +120,57 @@ public static class ShowVentsPatch
             foreach (var connectedgroup in VentNetworks)
             {
                 var index = Array.IndexOf(array, connectedgroup);
-                connectedgroup.Do(x => VentIcons[x.Id].GetComponent<SpriteRenderer>().color = Palette.PlayerColors[index]);
+                connectedgroup.Do(x =>
+                    VentIcons[x.Id].GetComponent<SpriteRenderer>().color = Palette.PlayerColors[index]);
             }
         }
     }
 
     [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.Begin))]
     [HarmonyPostfix]
-
     public static void Postfix()
     {
+        BodyIcons.Clear();
         VentIcons.Clear();
         VentNetworks.Clear();
     }
 
     public static List<Vent>? GetNetworkFor(Vent vent)
     {
-        return VentNetworks.FirstOrDefault(x => x.Any(y => y == vent || y == vent.Left || y == vent.Center || y == vent.Right));
+        return VentNetworks.FirstOrDefault(x =>
+            x.Any(y => y == vent || y == vent.Left || y == vent.Center || y == vent.Right));
     }
 
     public static bool AllVentsRegistered()
     {
         foreach (var vent in ShipStatus.Instance.AllVents)
         {
-            if (!vent.isActiveAndEnabled) continue;
-            if (vent.name.StartsWith("MinerVent-", StringComparison.Ordinal)) continue;
+            if (!vent.isActiveAndEnabled)
+            {
+                continue;
+            }
+
+            if (vent.name.StartsWith("MinerVent-", StringComparison.Ordinal))
+            {
+                continue;
+            }
+
             var network = GetNetworkFor(vent);
-            if (network == null || !network.Any(x => x == vent)) return false;
+            if (network == null || !network.Any(x => x == vent))
+            {
+                return false;
+            }
         }
+
         return true;
     }
 
     public static void HandleMiraOrSub()
     {
-        if (VentNetworks.Count != 0) return;
+        if (VentNetworks.Count != 0)
+        {
+            return;
+        }
 
         if (MiscUtils.IsMap(1))
         {

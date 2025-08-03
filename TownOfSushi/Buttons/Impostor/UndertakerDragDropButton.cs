@@ -15,30 +15,7 @@ public sealed class UndertakerDragDropButton : TownOfSushiRoleButton<UndertakerR
     public override string Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Impostor;
     public override float Cooldown => OptionGroupSingleton<UndertakerOptions>.Instance.DragCooldown + MapCooldown;
-    public override LoadableAsset<Sprite> Sprite => TosImpAssets.DragSprite;
-
-    public override DeadBody? GetTarget()
-    {
-        return PlayerControl.LocalPlayer?.GetNearestDeadBody(PlayerControl.LocalPlayer.MaxReportDistance / 4f);
-    }
-
-    protected override void OnClick()
-    {
-        if (Target == null)
-        {
-            return;
-        }
-
-        if (PlayerControl.LocalPlayer.HasModifier<UndertakerDragModifier>())
-        {
-            UndertakerRole.RpcStopDragging(PlayerControl.LocalPlayer, Target.transform.position);
-            Timer = Cooldown;
-        }
-        else
-        {
-            UndertakerRole.RpcStartDragging(PlayerControl.LocalPlayer, Target.ParentId);
-        }
-    }
+    public override LoadableAsset<Sprite> Sprite => TOSImpAssets.DragSprite;
 
     public override void ClickHandler()
     {
@@ -57,9 +34,33 @@ public sealed class UndertakerDragDropButton : TownOfSushiRoleButton<UndertakerR
         Button?.SetDisabled();
     }
 
+    public override DeadBody? GetTarget()
+    {
+        return PlayerControl.LocalPlayer?.GetNearestDeadBody(PlayerControl.LocalPlayer.MaxReportDistance / 4f);
+    }
+
+    protected override void OnClick()
+    {
+        if (Target == null)
+        {
+            return;
+        }
+
+        if (PlayerControl.LocalPlayer.HasModifier<DragModifier>())
+        {
+            UndertakerRole.RpcStopDragging(PlayerControl.LocalPlayer, Target.transform.position);
+            Timer = Cooldown;
+        }
+        else
+        {
+            UndertakerRole.RpcStartDragging(PlayerControl.LocalPlayer, Target.ParentId);
+        }
+    }
+
     public override bool CanUse()
     {
-        return base.CanUse() && Target && !PlayerControl.LocalPlayer.inVent && (!PlayerControl.LocalPlayer.HasModifier<UndertakerDragModifier>() || CanDrop());
+        return base.CanUse() && Target && !PlayerControl.LocalPlayer.inVent &&
+               (!PlayerControl.LocalPlayer.HasModifier<DragModifier>() || CanDrop());
     }
 
     private bool CanDrop()
@@ -69,18 +70,20 @@ public sealed class UndertakerDragDropButton : TownOfSushiRoleButton<UndertakerR
             return false;
         }
 
-        return !PhysicsHelpers.AnythingBetween(PlayerControl.LocalPlayer.Collider, PlayerControl.LocalPlayer.Collider.bounds.center, Target.TruePosition, Constants.ShipAndAllObjectsMask, false);
+        return !PhysicsHelpers.AnythingBetween(PlayerControl.LocalPlayer.Collider,
+            PlayerControl.LocalPlayer.Collider.bounds.center, Target.TruePosition, Constants.ShipAndAllObjectsMask,
+            false);
     }
 
     public void SetDrag()
     {
-        OverrideSprite(TosImpAssets.DragSprite.LoadAsset());
+        OverrideSprite(TOSImpAssets.DragSprite.LoadAsset());
         OverrideName("Drag");
     }
 
     public void SetDrop()
     {
-        OverrideSprite(TosImpAssets.DropSprite.LoadAsset());
+        OverrideSprite(TOSImpAssets.DropSprite.LoadAsset());
         OverrideName("Drop");
     }
 

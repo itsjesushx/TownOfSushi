@@ -3,17 +3,17 @@ using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
+using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using TownOfSushi.Modifiers;
-using TownOfSushi.Modules.Wiki;
+using TownOfUs.Modules.Wiki;
 using TownOfSushi.Options.Roles.Neutral;
-
 using TownOfSushi.Utilities;
 using UnityEngine;
 
 namespace TownOfSushi.Roles.Neutral;
 
-public sealed class SurvivorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IDoomable
+public sealed class SurvivorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
 {
     public string RoleName => "Survivor";
     public string RoleDescription => "Do Whatever It Takes To Live";
@@ -21,20 +21,13 @@ public sealed class SurvivorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSu
     public Color RoleColor => TownOfSushiColors.Survivor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralBenign;
-    public DoomableType DoomHintType => DoomableType.Protective;
+
     public CustomRoleConfiguration Configuration => new(this)
     {
-        IntroSound = TosAudio.ToppatIntroSound,
-        Icon = TosRoleIcons.Survivor,
-        GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
+        IntroSound = TOSAudio.ToppatIntroSound,
+        Icon = TOSRoleIcons.Survivor,
+        GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>()
     };
-
-    [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } = [
-        new("Vest",
-            "Put on a Vest protecting you from attacks.",
-            TosNeutAssets.VestSprite)
-    ];
 
     [HideFromIl2Cpp]
     public StringBuilder SetTabText()
@@ -42,9 +35,18 @@ public sealed class SurvivorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSu
         return ITownOfSushiRole.SetNewTabText(this);
     }
 
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities { get; } =
+    [
+        new("Vest",
+            "Put on a Vest protecting you from attacks.",
+            TOSNeutAssets.VestSprite)
+    ];
+
     public string GetAdvancedDescription()
     {
-        return "The Survivor is a Neutral Benign role that just needs to survive till the end of the game." + MiscUtils.AppendOptionsText(GetType());
+        return "The Survivor is a Neutral Benign role that just needs to survive till the end of the game." +
+               MiscUtils.AppendOptionsText(GetType());
     }
 
     public override void Initialize(PlayerControl player)

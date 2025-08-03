@@ -18,6 +18,7 @@ public static class MorphlingEvents
         CustomRoleUtils.GetActiveRolesOfType<MorphlingRole>().Do(x => x.Clear());
         var button = CustomButtonSingleton<MorphlingMorphButton>.Instance;
         button.SetUses((int)OptionGroupSingleton<MorphlingOptions>.Instance.MaxMorphs);
+
         if ((int)OptionGroupSingleton<MorphlingOptions>.Instance.MaxMorphs == 0)
         {
             button.Button?.usesRemainingText.gameObject.SetActive(false);

@@ -1,7 +1,7 @@
 using MiraAPI.Events;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
-using TownOfSushi.Events.TosEvents;
+using TownOfSushi.Events.TOSEvents;
 
 namespace TownOfSushi.Modifiers.Crewmate;
 
@@ -17,15 +17,21 @@ public sealed class OracleConfessModifier(PlayerControl oracle, int faction) : B
     {
         base.OnActivate();
 
-        var TosAbilityEvent = new TosAbilityEvent(AbilityType.OracleConfess, Oracle, Player);
-        MiraEventManager.InvokeEvent(TosAbilityEvent);
+        var TOSAbilityEvent = new TOSAbilityEvent(AbilityType.OracleConfess, Oracle, Player);
+        MiraEventManager.InvokeEvent(TOSAbilityEvent);
 
         if (faction == 0)
+        {
             RevealedFaction = ModdedRoleTeams.Crewmate;
+        }
         else if (faction == 1)
+        {
             RevealedFaction = ModdedRoleTeams.Custom;
+        }
         else
+        {
             RevealedFaction = ModdedRoleTeams.Impostor;
+        }
     }
 
     public override void OnDeath(DeathReason reason)

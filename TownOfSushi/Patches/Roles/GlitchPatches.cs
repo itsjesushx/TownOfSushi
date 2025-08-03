@@ -13,10 +13,11 @@ public static class GlitchPatches
     [HarmonyPrefix]
     public static bool DisabledReportButtonPatch(ActionButton __instance)
     {
-        if (PlayerControl.LocalPlayer.HasModifier<DisabledModifier>())
+        if (PlayerControl.LocalPlayer.HasModifier<DisabledModifier>() && !PlayerControl.LocalPlayer.GetModifier<DisabledModifier>()!.CanReport)
         {
             return false;
         }
+
         if (PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>())
         {
             PlayerControl.LocalPlayer.GetModifier<GlitchHackedModifier>()!.ShowHacked();
@@ -51,7 +52,8 @@ public static class GlitchPatches
         {
             return false;
         }
-        if (PlayerControl.LocalPlayer.HasModifier<DisabledModifier>())
+
+        if (PlayerControl.LocalPlayer.HasModifier<DisabledModifier>() && !PlayerControl.LocalPlayer.GetModifier<DisabledModifier>()!.CanUseAbilities)
         {
             return false;
         }

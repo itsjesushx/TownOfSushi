@@ -1,9 +1,14 @@
 ﻿using HarmonyLib;
+using InnerNet;
 using MiraAPI.GameOptions;
+using MiraAPI.Modifiers;
+using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities.Extensions;
 using TMPro;
+using TownOfSushi.Modifiers.Crewmate;
+using TownOfSushi.Modules;
 using TownOfSushi.Options;
 using TownOfSushi.Roles.Crewmate;
 using TownOfSushi.Roles.Neutral;
@@ -17,6 +22,7 @@ public static class TeamChatPatches
 {
     private static TextMeshPro? _teamText;
     public static bool TeamChatActive;
+
     public static void ToggleTeamChat()
     {
         // WIP
@@ -36,38 +42,49 @@ public static class TeamChatPatches
     {
         if (PlayerControl.LocalPlayer.IsJailed())
         {
-            MiscUtils.AddTeamChat(PlayerControl.LocalPlayer.Data, $"<color=#{TownOfSushiColors.Jailor.ToHtmlStringRGBA()}>Jailor</color>", text);
+            MiscUtils.AddTeamChat(PlayerControl.LocalPlayer.Data,
+                $"<color=#{TownOfSushiColors.Jailor.ToHtmlStringRGBA()}>Jailor</color>", text);
         }
         else if (PlayerControl.LocalPlayer.HasDied() && OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow)
         {
-            MiscUtils.AddTeamChat(player.Data, $"<color=#{TownOfSushiColors.Jailor.ToHtmlStringRGBA()}>{player.Data.PlayerName} (Jailor)</color>", text);
+            MiscUtils.AddTeamChat(player.Data,
+                $"<color=#{TownOfSushiColors.Jailor.ToHtmlStringRGBA()}>{player.Data.PlayerName} (Jailor)</color>", text);
         }
     }
 
     [MethodRpc((uint)TownOfSushiRpc.SendJaileeChat, SendImmediately = true)]
     public static void RpcSendJaileeChat(PlayerControl player, string text)
     {
-        if (PlayerControl.LocalPlayer.Data.Role is JailorRole || (PlayerControl.LocalPlayer.HasDied() && OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow))
+        if (PlayerControl.LocalPlayer.Data.Role is JailorRole || (PlayerControl.LocalPlayer.HasDied() &&
+                                                                  OptionGroupSingleton<GeneralOptions>.Instance
+                                                                      .TheDeadKnow))
         {
-            MiscUtils.AddTeamChat(player.Data, $"<color=#{TownOfSushiColors.Jailor.ToHtmlStringRGBA()}>{player.Data.PlayerName} (Jailed)</color>", text);
+            MiscUtils.AddTeamChat(player.Data,
+                $"<color=#{TownOfSushiColors.Jailor.ToHtmlStringRGBA()}>{player.Data.PlayerName} (Jailed)</color>", text);
         }
     }
 
     [MethodRpc((uint)TownOfSushiRpc.SendVampTeamChat, SendImmediately = true)]
     public static void RpcSendVampTeamChat(PlayerControl player, string text)
     {
-        if ((PlayerControl.LocalPlayer.Data.Role is VampireRole && player != PlayerControl.LocalPlayer) || (PlayerControl.LocalPlayer.HasDied() && OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow))
+        if ((PlayerControl.LocalPlayer.Data.Role is VampireRole && player != PlayerControl.LocalPlayer) ||
+            (PlayerControl.LocalPlayer.HasDied() && OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow))
         {
-            MiscUtils.AddTeamChat(player.Data, $"<color=#{TownOfSushiColors.Vampire.ToHtmlStringRGBA()}>{player.Data.PlayerName} (Vampire Chat)</color>", text);
+            MiscUtils.AddTeamChat(player.Data,
+                $"<color=#{TownOfSushiColors.Vampire.ToHtmlStringRGBA()}>{player.Data.PlayerName} (Vampire Chat)</color>",
+                text);
         }
     }
 
     [MethodRpc((uint)TownOfSushiRpc.SendImpTeamChat, SendImmediately = true)]
     public static void RpcSendImpTeamChat(PlayerControl player, string text)
     {
-        if ((PlayerControl.LocalPlayer.IsImpostor() && player != PlayerControl.LocalPlayer) || (PlayerControl.LocalPlayer.HasDied() && OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow))
+        if ((PlayerControl.LocalPlayer.IsImpostor() && player != PlayerControl.LocalPlayer) ||
+            (PlayerControl.LocalPlayer.HasDied() && OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow))
         {
-            MiscUtils.AddTeamChat(player.Data, $"<color=#{TownOfSushiColors.ImpSoft.ToHtmlStringRGBA()}>{player.Data.PlayerName} (Impostor Chat)</color>", text);
+            MiscUtils.AddTeamChat(player.Data,
+                $"<color=#{TownOfSushiColors.ImpSoft.ToHtmlStringRGBA()}>{player.Data.PlayerName} (Impostor Chat)</color>",
+                text);
         }
     }
 
@@ -93,28 +110,64 @@ public static class TeamChatPatches
             }
         }
     } */
+    [HarmonyPostfix]
+    [HarmonyPatch(typeof(ChatBubble), nameof(ChatBubble.SetName))]
+    public static void SetNamePostfix(ChatBubble __instance, [HarmonyArgument(0)] string playerName, [HarmonyArgument(3)] Color color)
+    {
+        var player = PlayerControl.AllPlayerControls.ToArray()
+            .FirstOrDefault(x => x.Data.PlayerName == playerName);
+        if (player == null) return;
+        var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
+        if (genOpt.FFAImpostorMode && PlayerControl.LocalPlayer.IsImpostor() && !PlayerControl.LocalPlayer.HasDied() &&
+            !player.AmOwner && player.IsImpostor() && MeetingHud.Instance)
+        {
+            __instance.NameText.color = Color.white;
+        }
+        else if (color == Color.white &&
+                 (player.AmOwner || player.Data.Role is MayorRole mayor && mayor.Revealed ||
+                  PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow) && PlayerControl.AllPlayerControls
+                     .ToArray()
+                     .FirstOrDefault(x => x.Data.PlayerName == playerName) && MeetingHud.Instance)
+        {
+            __instance.NameText.color = (player.GetRoleWhenAlive() is ICustomRole custom) ? custom.RoleColor : player.GetRoleWhenAlive().TeamColor;
+        }
+    }
     [HarmonyPatch(typeof(ChatController), nameof(ChatController.Toggle))]
     public static class TogglePatch
     {
         public static void Postfix(ChatController __instance)
         {
+            if (PlayerControl.LocalPlayer == null ||
+                PlayerControl.LocalPlayer.Data == null ||
+                PlayerControl.LocalPlayer.Data.Role == null ||
+                !ShipStatus.Instance ||
+                (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started &&
+                 !TutorialManager.InstanceExists))
+            {
+                return;
+            }
             try
             {
                 if (__instance.IsOpenOrOpening)
                 {
                     if (_teamText == null)
                     {
-                        _teamText = Object.Instantiate(__instance.sendRateMessageText, __instance.sendRateMessageText.transform.parent);
+                        _teamText = Object.Instantiate(__instance.sendRateMessageText,
+                            __instance.sendRateMessageText.transform.parent);
                         _teamText.text = string.Empty;
                         _teamText.color = TownOfSushiColors.ImpSoft;
                     }
+
                     var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
                     _teamText.text = string.Empty;
-                    if (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && (genOpt is { FFAImpostorMode: false, ImpostorChat.Value: true } || genOpt.VampireChat || Helpers.GetAlivePlayers().Any(x => x.Data.Role is JailorRole)))
+                    if (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow &&
+                        (genOpt is { FFAImpostorMode: false, ImpostorChat.Value: true } || genOpt.VampireChat ||
+                         Helpers.GetAlivePlayers().Any(x => x.Data.Role is JailorRole)))
                     {
                         _teamText.text = "Jailor, Impostor, and Vampire Chat can be seen here.";
                         _teamText.color = Color.white;
                     }
+
                     var ChatScreenContainer = GameObject.Find("ChatScreenContainer");
                     // var FreeChat = GameObject.Find("FreeChatInputField");
                     var Background = ChatScreenContainer.transform.FindChild("Background");
@@ -124,6 +177,12 @@ public static class TeamChatPatches
 
                     if (TeamChatActive)
                     {
+                        if (PlayerControl.LocalPlayer.TryGetModifier<JailedModifier>(out var jailMod) && !jailMod.HasOpenedQuickChat)
+                        {
+                            if (!__instance.quickChatMenu.IsOpen) __instance.OpenQuickChat();
+                            __instance.quickChatMenu.Close();
+                            jailMod.HasOpenedQuickChat = true;
+                        }
                         var ogChat = HudManager.Instance.Chat.chatButton;
                         ogChat.transform.Find("Inactive").gameObject.SetActive(true);
                         ogChat.transform.Find("Active").gameObject.SetActive(false);
@@ -134,24 +193,33 @@ public static class TeamChatPatches
                         //typeText.GetComponent<TextMeshPro>().color = Color.white;
                         if (MeetingHud.Instance)
                         {
-                            ChatScreenContainer.transform.localPosition = HudManager.Instance.Chat.chatButton.transform.localPosition - new Vector3(3.5133f + 4.33f * (Camera.main.orthographicSize / 3f), 4.576f);
+                            ChatScreenContainer.transform.localPosition =
+                                HudManager.Instance.Chat.chatButton.transform.localPosition -
+                                new Vector3(3.5133f + 4.33f * (Camera.main.orthographicSize / 3f), 4.576f);
                         }
                         else
                         {
-                            ChatScreenContainer.transform.localPosition = HudManager.Instance.Chat.chatButton.transform.localPosition - new Vector3(3.5133f + 3.49f * (Camera.main.orthographicSize / 3f), 4.576f);
+                            ChatScreenContainer.transform.localPosition =
+                                HudManager.Instance.Chat.chatButton.transform.localPosition -
+                                new Vector3(3.5133f + 3.49f * (Camera.main.orthographicSize / 3f), 4.576f);
                         }
 
-                        if ((PlayerControl.LocalPlayer.IsJailed() || PlayerControl.LocalPlayer.Data.Role is JailorRole) && _teamText != null)
+                        if ((PlayerControl.LocalPlayer.IsJailed() ||
+                             PlayerControl.LocalPlayer.Data.Role is JailorRole) && _teamText != null)
                         {
                             _teamText.text = "Jailor Chat is Open. Only the Jailor and Jailee can see this.";
                             _teamText.color = TownOfSushiColors.Jailor;
                         }
-                        else if (PlayerControl.LocalPlayer.IsImpostor() && genOpt is { FFAImpostorMode: false, ImpostorChat.Value: true } && !PlayerControl.LocalPlayer.Data.IsDead && _teamText != null)
+                        else if (PlayerControl.LocalPlayer.IsImpostor() &&
+                                genOpt is { FFAImpostorMode: false, ImpostorChat.Value: true } &&
+                                !PlayerControl.LocalPlayer.Data.IsDead && _teamText != null
+                                && !MiscUtils.SpyInGame())// Impostors don't have a chat if spy exists!!!
                         {
                             _teamText.text = "Impostor Chat is Open. Only Impostors can see this.";
                             _teamText.color = TownOfSushiColors.ImpSoft;
                         }
-                        else if (PlayerControl.LocalPlayer.Data.Role is VampireRole && genOpt.VampireChat && !PlayerControl.LocalPlayer.Data.IsDead && _teamText != null)
+                        else if (PlayerControl.LocalPlayer.Data.Role is VampireRole && genOpt.VampireChat &&
+                                 !PlayerControl.LocalPlayer.Data.IsDead && _teamText != null)
                         {
                             _teamText.text = "Vampire Chat is Open. Only Vampires can see this.";
                             _teamText.color = TownOfSushiColors.Vampire;
@@ -197,7 +265,9 @@ public static class TeamChatPatches
                             txt.SetFaceColor(new Color(0.6706f, 0.8902f, 0.8667f, 1f));
                         }
                         typeText.GetComponent<TextMeshPro>().color = new Color(0.6706f, 0.8902f, 0.8667f, 1f); */
-                        ChatScreenContainer.transform.localPosition = HudManager.Instance.Chat.chatButton.transform.localPosition - new Vector3(3.5133f + 3.49f * (Camera.main.orthographicSize / 3f), 4.576f);
+                        ChatScreenContainer.transform.localPosition =
+                            HudManager.Instance.Chat.chatButton.transform.localPosition -
+                            new Vector3(3.5133f + 3.49f * (Camera.main.orthographicSize / 3f), 4.576f);
                     }
                 }
                 else if (TeamChatActive)
@@ -211,6 +281,7 @@ public static class TeamChatPatches
             }
         }
     }
+
     /* [HarmonyPatch(typeof(ChatController), nameof(ChatController.AlignAllBubbles))]
     public static class AlignBubblesPatch
     {

@@ -5,15 +5,18 @@ using TownOfSushi.Utilities;
 
 namespace TownOfSushi.Events.Impostor;
 
-public static class ScavengerEvents
+public static class BountyHunterEvents
 {
     [RegisterEvent]
     public static void AfterMurderEventHandler(AfterMurderEvent @event)
     {
         var source = @event.Source;
-        if (!source.AmOwner || !source.IsRole<ScavengerRole>()) return;
+        if (!source.AmOwner || !source.IsRole<BountyHunterRole>())
+        {
+            return;
+        }
 
-        var scavenger = source.GetRole<ScavengerRole>();
-        scavenger?.OnPlayerKilled(@event.Target);
+        var bountyHunter = source.GetRole<BountyHunterRole>();
+        bountyHunter?.OnPlayerKilled(@event.Target);
     }
 }

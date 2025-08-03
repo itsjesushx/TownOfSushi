@@ -6,24 +6,52 @@ using TownOfSushi.Modifiers;
 using TownOfSushi.Modifiers.Neutral;
 using TownOfSushi.Options.Roles.Crewmate;
 using TownOfSushi.Roles.Crewmate;
+using TownOfSushi.Utilities;
 using UnityEngine;
 
 namespace TownOfSushi.Buttons.Crewmate;
 
-public sealed class EngineerVentButton : TownOfSushiRoleButton<EngineerTouRole, Vent>
+public sealed class EngineerVentButton : TownOfSushiRoleButton<EngineerTOSRole, Vent>
 {
+    private static readonly ContactFilter2D Filter = Helpers.CreateFilter(Constants.Usables);
     public override string Name => "Vent";
     public override string Keybind => Keybinds.VentAction;
     public override Color TextOutlineColor => TownOfSushiColors.Engineer;
-    public override float Cooldown => OptionGroupSingleton<EngineerOptions>.Instance.VentCooldown + 0.001f + MapCooldown;
+
+    public override float Cooldown =>
+        OptionGroupSingleton<EngineerOptions>.Instance.VentCooldown + 0.001f + MapCooldown;
+
     public override float EffectDuration => OptionGroupSingleton<EngineerOptions>.Instance.VentDuration;
     public override int MaxUses => (int)OptionGroupSingleton<EngineerOptions>.Instance.MaxVents;
-    public override LoadableAsset<Sprite> Sprite => TosCrewAssets.EngiVentSprite;
+    public override LoadableAsset<Sprite> Sprite => TOSCrewAssets.EngiVentSprite;
+    public override bool ShouldPauseInVent => false;
     public int ExtraUses { get; set; }
 
-    private static readonly ContactFilter2D Filter = Helpers.CreateFilter(Constants.NotShipMask);
+    public override Vent? GetTarget()
+    {
+        var vent = PlayerControl.LocalPlayer.GetNearestObjectOfType<Vent>(Distance / 4, Filter);
+        if (vent == null)
+        {
+            vent = PlayerControl.LocalPlayer.GetNearestObjectOfType<Vent>(Distance / 3, Filter);
+        }
 
-    public override Vent? GetTarget() => PlayerControl.LocalPlayer.GetNearestObjectOfType<Vent>(Distance, Filter);
+        if (vent == null)
+        {
+            vent = PlayerControl.LocalPlayer.GetNearestObjectOfType<Vent>(Distance / 2, Filter);
+        }
+
+        if (vent == null)
+        {
+            vent = PlayerControl.LocalPlayer.GetNearestObjectOfType<Vent>(Distance, Filter);
+        }
+
+        if (vent != null && PlayerControl.LocalPlayer.CanUseVent(vent))
+        {
+            return vent;
+        }
+
+        return null;
+    }
 
     public override bool CanUse()
     {
@@ -37,10 +65,11 @@ public sealed class EngineerVentButton : TownOfSushiRoleButton<EngineerTouRole, 
         SetOutline(true);
 
         return ((Timer <= 0 && !PlayerControl.LocalPlayer.inVent && Target != null) || PlayerControl.LocalPlayer.inVent)
-            && !PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>()
-            && !PlayerControl.LocalPlayer.HasModifier<DisabledModifier>()
-            && (MaxUses == 0 || UsesLeft > 0);
+               && !PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>()
+               && !PlayerControl.LocalPlayer.HasModifier<DisabledModifier>()
+               && (MaxUses == 0 || UsesLeft > 0);
     }
+
     public override void ClickHandler()
     {
         if (!CanUse())
@@ -69,6 +98,7 @@ public sealed class EngineerVentButton : TownOfSushiRoleButton<EngineerTouRole, 
             // Logger<TownOfSushiPlugin>.Error($"Cooldown is active");
         }
     }
+
     protected override void OnClick()
     {
         if (!PlayerControl.LocalPlayer.inVent)
@@ -92,6 +122,7 @@ public sealed class EngineerVentButton : TownOfSushiRoleButton<EngineerTouRole, 
             }
         }
     }
+
     public override void OnEffectEnd()
     {
         if (PlayerControl.LocalPlayer.inVent)
@@ -100,7 +131,10 @@ public sealed class EngineerVentButton : TownOfSushiRoleButton<EngineerTouRole, 
             Vent.currentVent.SetButtons(false);
             PlayerControl.LocalPlayer.MyPhysics.RpcExitVent(Vent.currentVent.Id);
             UsesLeft--;
-            if (MaxUses != 0) Button?.SetUsesRemaining(UsesLeft);
+            if (MaxUses != 0)
+            {
+                Button?.SetUsesRemaining(UsesLeft);
+            }
         }
     }
 }

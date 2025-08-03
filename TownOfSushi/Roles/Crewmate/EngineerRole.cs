@@ -1,40 +1,62 @@
 ﻿using System.Text;
-using Il2CppInterop.Runtime.Attributes;
 using AmongUs.GameOptions;
+using Il2CppInterop.Runtime.Attributes;
+using MiraAPI.Events;
 using MiraAPI.GameOptions;
+using MiraAPI.Hud;
+using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
+using TownOfSushi.Buttons;
+using TownOfSushi.Events.TOSEvents;
 using TownOfSushi.Modules;
-using TownOfSushi.Modules.Wiki;
+
+using TownOfUs.Modules.Wiki;
 using TownOfSushi.Options.Roles.Crewmate;
 using TownOfSushi.Utilities;
 using UnityEngine;
-using TownOfSushi.Events.TosEvents;
-using MiraAPI.Events;
-
-using MiraAPI.Hud;
-using TownOfSushi.Buttons;
 
 namespace TownOfSushi.Roles.Crewmate;
 
-public sealed class EngineerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IDoomable
+public sealed class EngineerTOSRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
 {
-    public string RoleName => "Engineer";
+    public override bool IsAffectedByComms => false;
+    public string RoleName => TOSLocale.Get(TOSNames.Engineer, "Engineer");
     public string RoleDescription => "Maintain Important Systems On The Ship";
     public string RoleLongDescription => "Vent around and fix sabotages remotely";
     public Color RoleColor => TownOfSushiColors.Engineer;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateSupport;
-    public DoomableType DoomHintType => DoomableType.Protective;
+
     public CustomRoleConfiguration Configuration => new(this)
     {
         // CanUseVent = true,
-        Icon = TosRoleIcons.Engineer,
-        OptionsScreenshot = TosCrewAssets.EngineerRoleBanner,
-        IntroSound = CustomRoleUtils.GetIntroSound(RoleTypes.Engineer),
+        Icon = TOSRoleIcons.Engineer,
+        OptionsScreenshot = TOSCrewAssets.EngineerRoleBanner,
+        IntroSound = CustomRoleUtils.GetIntroSound(RoleTypes.Engineer)
     };
-    public override bool IsAffectedByComms => false;
+
+    [HideFromIl2Cpp]
+    public StringBuilder SetTabText()
+    {
+        return ITownOfSushiRole.SetNewTabText(this);
+    }
+
+    public string GetAdvancedDescription()
+    {
+        return $"The {RoleName} is a Crewmate Support role that can vent and fix sabotages remotely."
+               + MiscUtils.AppendOptionsText(GetType());
+    }
+
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities { get; } =
+    [
+        new("Fix",
+            $"It doesn't matter where you are on the map, you can use your fix button to instantly fix the active sabotage. You can do this {OptionGroupSingleton<EngineerOptions>.Instance.MaxFixes} times per game.",
+            TOSCrewAssets.FixButtonSprite)
+    ];
+
     public override void Initialize(PlayerControl player)
     {
         RoleBehaviourStubs.Initialize(this, player);
@@ -43,6 +65,7 @@ public sealed class EngineerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
             CustomButtonSingleton<FakeVentButton>.Instance.Show = false;
         }
     }
+
     public override void Deinitialize(PlayerControl targetPlayer)
     {
         RoleBehaviourStubs.Deinitialize(this, targetPlayer);
@@ -59,77 +82,176 @@ public sealed class EngineerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
             case 0:
             case 3:
                 var comms1 = ShipStatus.Instance.Systems[SystemTypes.Comms].Cast<HudOverrideSystemType>();
-                if (comms1.IsActive) FixComms();
+                if (comms1.IsActive)
+                {
+                    FixComms();
+                }
+
                 var reactor1 = ShipStatus.Instance.Systems[SystemTypes.Reactor].Cast<ReactorSystemType>();
-                if (reactor1.IsActive) FixReactor(SystemTypes.Reactor);
+                if (reactor1.IsActive)
+                {
+                    FixReactor(SystemTypes.Reactor);
+                }
+
                 var oxygen1 = ShipStatus.Instance.Systems[SystemTypes.LifeSupp].Cast<LifeSuppSystemType>();
-                if (oxygen1.IsActive) FixOxygen();
+                if (oxygen1.IsActive)
+                {
+                    FixOxygen();
+                }
+
                 var lights1 = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
-                if (lights1.IsActive) RpcFix(engineer, 0);
+                if (lights1.IsActive)
+                {
+                    RpcFix(engineer, 0);
+                }
+
                 break;
             case 1:
                 var comms2 = ShipStatus.Instance.Systems[SystemTypes.Comms].Cast<HqHudSystemType>();
-                if (comms2.IsActive) FixMiraComms();
+                if (comms2.IsActive)
+                {
+                    FixMiraComms();
+                }
+
                 var reactor2 = ShipStatus.Instance.Systems[SystemTypes.Reactor].Cast<ReactorSystemType>();
-                if (reactor2.IsActive) FixReactor(SystemTypes.Reactor);
+                if (reactor2.IsActive)
+                {
+                    FixReactor(SystemTypes.Reactor);
+                }
+
                 var oxygen2 = ShipStatus.Instance.Systems[SystemTypes.LifeSupp].Cast<LifeSuppSystemType>();
-                if (oxygen2.IsActive) FixOxygen();
+                if (oxygen2.IsActive)
+                {
+                    FixOxygen();
+                }
+
                 var lights2 = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
-                if (lights2.IsActive) RpcFix(engineer, 0);
+                if (lights2.IsActive)
+                {
+                    RpcFix(engineer, 0);
+                }
+
                 break;
             case 2:
                 var comms3 = ShipStatus.Instance.Systems[SystemTypes.Comms].Cast<HudOverrideSystemType>();
-                if (comms3.IsActive) FixComms();
+                if (comms3.IsActive)
+                {
+                    FixComms();
+                }
+
                 var seismic = ShipStatus.Instance.Systems[SystemTypes.Laboratory].Cast<ReactorSystemType>();
-                if (seismic.IsActive) FixReactor(SystemTypes.Laboratory);
+                if (seismic.IsActive)
+                {
+                    FixReactor(SystemTypes.Laboratory);
+                }
+
                 var lights3 = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
-                if (lights3.IsActive) RpcFix(engineer, 0);
+                if (lights3.IsActive)
+                {
+                    RpcFix(engineer, 0);
+                }
+
                 break;
             case 4:
                 var comms4 = ShipStatus.Instance.Systems[SystemTypes.Comms].Cast<HudOverrideSystemType>();
-                if (comms4.IsActive) FixComms();
+                if (comms4.IsActive)
+                {
+                    FixComms();
+                }
+
                 var reactor = ShipStatus.Instance.Systems[SystemTypes.HeliSabotage].Cast<HeliSabotageSystem>();
-                if (reactor.IsActive) FixAirshipReactor();
+                if (reactor.IsActive)
+                {
+                    FixAirshipReactor();
+                }
+
                 var lights4 = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
-                if (lights4.IsActive) RpcFix(engineer, 0);
+                if (lights4.IsActive)
+                {
+                    RpcFix(engineer, 0);
+                }
+
                 break;
             case 5:
                 var reactor7 = ShipStatus.Instance.Systems[SystemTypes.Reactor].Cast<ReactorSystemType>();
-                if (reactor7.IsActive) FixReactor(SystemTypes.Reactor);
+                if (reactor7.IsActive)
+                {
+                    FixReactor(SystemTypes.Reactor);
+                }
+
                 var comms7 = ShipStatus.Instance.Systems[SystemTypes.Comms].Cast<HqHudSystemType>();
-                if (comms7.IsActive) FixMiraComms();
-                var mushroom = ShipStatus.Instance.Systems[SystemTypes.MushroomMixupSabotage].Cast<MushroomMixupSabotageSystem>();
-                if (mushroom.IsActive) RpcFix(engineer, 1);
+                if (comms7.IsActive)
+                {
+                    FixMiraComms();
+                }
+
+                var mushroom = ShipStatus.Instance.Systems[SystemTypes.MushroomMixupSabotage]
+                    .Cast<MushroomMixupSabotageSystem>();
+                if (mushroom.IsActive)
+                {
+                    RpcFix(engineer, 1);
+                }
+
                 break;
             case 6:
                 var reactor5 = ShipStatus.Instance.Systems[SystemTypes.Reactor].Cast<ReactorSystemType>();
-                if (reactor5.IsActive) FixReactor(SystemTypes.Reactor);
+                if (reactor5.IsActive)
+                {
+                    FixReactor(SystemTypes.Reactor);
+                }
+
                 var lights5 = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
-                if (lights5.IsActive) RpcFix(engineer, 0);
+                if (lights5.IsActive)
+                {
+                    RpcFix(engineer, 0);
+                }
+
                 var comms5 = ShipStatus.Instance.Systems[SystemTypes.Comms].Cast<HudOverrideSystemType>();
-                if (comms5.IsActive) FixComms();
-                foreach (PlayerTask i in PlayerControl.LocalPlayer.myTasks)
+                if (comms5.IsActive)
+                {
+                    FixComms();
+                }
+
+                foreach (var i in PlayerControl.LocalPlayer.myTasks)
                 {
                     if (i.TaskType == ModCompatibility.RetrieveOxygenMask)
                     {
                         RpcFix(engineer, 2);
                     }
                 }
+
                 break;
             case 7:
                 var comms6 = ShipStatus.Instance.Systems[SystemTypes.Comms].Cast<HudOverrideSystemType>();
-                if (comms6.IsActive) FixComms();
-                var reactor6 = ShipStatus.Instance.Systems[SystemTypes.Reactor].Cast<ReactorSystemType>();
-                if (reactor6.IsActive) FixReactor(SystemTypes.Reactor);
-                var oxygen6 = ShipStatus.Instance.Systems[SystemTypes.LifeSupp].Cast<LifeSuppSystemType>();
-                if (oxygen6.IsActive) FixOxygen();
-                var lights6 = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
-                if (lights6.IsActive) RpcFix(engineer, 0);
+                if (comms6.IsActive)
+                {
+                    FixComms();
+                }
 
-                if (ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Laboratory, out var seismic1) && seismic1.Cast<IActivatable>().IsActive)
+                var reactor6 = ShipStatus.Instance.Systems[SystemTypes.Reactor].Cast<ReactorSystemType>();
+                if (reactor6.IsActive)
+                {
+                    FixReactor(SystemTypes.Reactor);
+                }
+
+                var oxygen6 = ShipStatus.Instance.Systems[SystemTypes.LifeSupp].Cast<LifeSuppSystemType>();
+                if (oxygen6.IsActive)
+                {
+                    FixOxygen();
+                }
+
+                var lights6 = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
+                if (lights6.IsActive)
+                {
+                    RpcFix(engineer, 0);
+                }
+
+                if (ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Laboratory, out var seismic1) &&
+                    seismic1.Cast<IActivatable>().IsActive)
                 {
                     FixReactor(SystemTypes.Laboratory);
                 }
+
                 break;
         }
     }
@@ -169,7 +291,7 @@ public sealed class EngineerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
     [MethodRpc((uint)TownOfSushiRpc.EngineerFix, SendImmediately = true)]
     private static void RpcFix(PlayerControl engineer, byte type)
     {
-        if (engineer.Data.Role is not EngineerTouRole)
+        if (engineer.Data.Role is not EngineerTOSRole)
         {
             Logger<TownOfSushiPlugin>.Error("Invalid engineer");
             return;
@@ -182,45 +304,29 @@ public sealed class EngineerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
         }
         else if (type == 1)
         {
-            var mushroom = ShipStatus.Instance.Systems[SystemTypes.MushroomMixupSabotage].Cast<MushroomMixupSabotageSystem>();
+            var mushroom = ShipStatus.Instance.Systems[SystemTypes.MushroomMixupSabotage]
+                .Cast<MushroomMixupSabotageSystem>();
             mushroom.currentSecondsUntilHeal = 0.1f;
         }
         else if (type == 2)
         {
             ModCompatibility.RepairOxygen();
         }
-        var TosAbilityEvent = new TosAbilityEvent(AbilityType.EngineerFix, engineer);
-        MiraEventManager.InvokeEvent(TosAbilityEvent);
+
+        var TOSAbilityEvent = new TOSAbilityEvent(AbilityType.EngineerFix, engineer);
+        MiraEventManager.InvokeEvent(TOSAbilityEvent);
     }
+
     [MethodRpc((uint)TownOfSushiRpc.EngineerEventFix, SendImmediately = true)]
     public static void RpcEngineerEventFix(PlayerControl engi)
     {
-        if (engi.Data.Role is not EngineerTouRole)
+        if (engi.Data.Role is not EngineerTOSRole)
         {
             Logger<TownOfSushiPlugin>.Error("Invalid engineer");
             return;
         }
-        
-        var TosAbilityEvent = new TosAbilityEvent(AbilityType.EngineerFix, engi);
-        MiraEventManager.InvokeEvent(TosAbilityEvent);
-    }
 
-    [HideFromIl2Cpp]
-    public StringBuilder SetTabText()
-    {
-        return ITownOfSushiRole.SetNewTabText(this);
+        var TOSAbilityEvent = new TOSAbilityEvent(AbilityType.EngineerFix, engi);
+        MiraEventManager.InvokeEvent(TOSAbilityEvent);
     }
-    
-    public string GetAdvancedDescription()
-    {
-        return "The Engineer is a Crewmate Support role that can vent and fix sabotages remotely."
-               + MiscUtils.AppendOptionsText(GetType());
-    }
-
-    [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } = [
-        new("Fix",
-            $"It doesn't matter where you are on the map, you can use your fix button to instantly fix the active sabotage. You can do this {OptionGroupSingleton<EngineerOptions>.Instance.MaxFixes} times per game.",
-            TosCrewAssets.FixButtonSprite),
-    ];
 }

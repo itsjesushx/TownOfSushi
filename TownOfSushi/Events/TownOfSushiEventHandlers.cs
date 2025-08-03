@@ -1,41 +1,68 @@
-﻿using System.Collections;
+﻿﻿using System.Collections;
+using System.Globalization;
 using HarmonyLib;
 using MiraAPI.Events;
+using System.Text;
 using MiraAPI.Events.Vanilla.Gameplay;
+using MiraAPI.Events.Vanilla.Meeting;
+using MiraAPI.Events.Vanilla.Meeting.Voting;
 using MiraAPI.Events.Vanilla.Player;
 using MiraAPI.Events.Vanilla.Usables;
+using MiraAPI.GameOptions;
+using MiraAPI.Hud;
+using MiraAPI.Modifiers;
+using MiraAPI.Modifiers.Types;
 using MiraAPI.Utilities;
+using PowerTools;
+using Reactor.Utilities;
+using Reactor.Utilities.Extensions;
+using TownOfSushi.Buttons;
+using TownOfSushi.Buttons.Crewmate;
+using TownOfSushi.Buttons.Impostor;
+using TownOfSushi.Buttons.Modifiers;
+using TownOfSushi.Buttons.Neutral;
+using TownOfSushi.Events.TOSEvents;
+using TownOfSushi.Modifiers;
+using TownOfSushi.Modifiers.Game.Universal;
+using TownOfSushi.Modifiers.Neutral;
 using TownOfSushi.Modules;
+using TownOfSushi.Modules.Anims;
+using TownOfSushi.Options;
+using TownOfSushi.Options.Modifiers.Universal;
+using TownOfSushi.Options.Roles.Crewmate;
+using TownOfSushi.Options.Roles.Impostor;
 using TownOfSushi.Patches;
 using TownOfSushi.Roles;
 using TownOfSushi.Roles.Crewmate;
+using TownOfSushi.Roles.Impostor;
 using TownOfSushi.Utilities;
 using UnityEngine;
-using Reactor.Utilities.Extensions;
-using PowerTools;
-using Reactor.Utilities;
 using Object = UnityEngine.Object;
-using MiraAPI.Modifiers;
-using TownOfSushi.Modifiers.Game.Universal;
-using TownOfSushi.Modules.Anims;
-using MiraAPI.Hud;
-using MiraAPI.Modifiers.Types;
-using TownOfSushi.Buttons.Crewmate;
-using MiraAPI.Events.Vanilla.Meeting;
-using MiraAPI.GameOptions;
-using TownOfSushi.Options.Modifiers.Universal;
-using TownOfSushi.Buttons.Modifiers;
-using TownOfSushi.Options.Roles.Crewmate;
-using TownOfSushi.Buttons.Impostor;
-using TownOfSushi.Events.TosEvents;
-using MiraAPI.Events.Vanilla.Meeting.Voting;
-using TownOfSushi.Roles.Impostor;
-using TownOfSushi.Options.Roles.Impostor;
+using Random = UnityEngine.Random;
 
 namespace TownOfSushi.Events;
 
 public static class TownOfSushiEventHandlers
 {
+    [RegisterEvent]
+    public static void StartMeetingEventHandler(StartMeetingEvent @event)
+    {
+        foreach (var mod in ModifierUtils.GetActiveModifiers<MisfortuneTargetModifier>())
+        {
+            mod.ModifierComponent?.RemoveModifier(mod);
+        }
+
+        var exeButton = CustomButtonSingleton<ExeTormentButton>.Instance;
+        var jestButton = CustomButtonSingleton<JesterHauntButton>.Instance;
+        var phantomButton = CustomButtonSingleton<PhantomSpookButton>.Instance;
+        if (exeButton.Show || jestButton.Show || phantomButton.Show)
+        {
+            PlayerControl.LocalPlayer.RpcRemoveModifier<IndirectAttackerModifier>();
+        }
+        exeButton.Show = false;
+        jestButton.Show = false;
+        phantomButton.Show = false;
+    }
     [RegisterEvent]
     public static void RoundStartHandler(RoundStartEvent @event)
     {
@@ -44,36 +71,86 @@ public static class TownOfSushiEventHandlers
             return; // Only run when game starts.
         }
 
+        if (FirstDeadPatch.PlayerNames.Count > 0)
+        {
+            var stringB = new StringBuilder();
+            stringB.Append(CultureInfo.InvariantCulture, $"List Of Players That Died In Order: ");
+            foreach (var playername in FirstDeadPatch.PlayerNames)
+            {
+                stringB.Append(CultureInfo.InvariantCulture, $"{playername}, ");
+            }
+            
+            stringB = stringB.Remove(stringB.Length - 2, 2);
+            
+            Logger<TownOfSushiPlugin>.Warning(stringB.ToString());
+        }
+        FirstDeadPatch.PlayerNames = [];
+
         HudManager.Instance.SetHudActive(false);
         HudManager.Instance.SetHudActive(true);
 
         CustomButtonSingleton<WatchButton>.Instance.ExtraUses = 0;
-        CustomButtonSingleton<WatchButton>.Instance.SetUses((int)OptionGroupSingleton<LookoutOptions>.Instance.MaxWatches);
+        CustomButtonSingleton<WatchButton>.Instance.SetUses((int)OptionGroupSingleton<LookoutOptions>.Instance
+            .MaxWatches);
         CustomButtonSingleton<TrackerTrackButton>.Instance.ExtraUses = 0;
-        CustomButtonSingleton<TrackerTrackButton>.Instance.SetUses((int)OptionGroupSingleton<TrackerOptions>.Instance.MaxTracks);
+        CustomButtonSingleton<TrackerTrackButton>.Instance.SetUses((int)OptionGroupSingleton<TrackerOptions>.Instance
+            .MaxTracks);
         CustomButtonSingleton<TrapperTrapButton>.Instance.ExtraUses = 0;
-        CustomButtonSingleton<TrapperTrapButton>.Instance.SetUses((int)OptionGroupSingleton<TrapperOptions>.Instance.MaxTraps);
+        CustomButtonSingleton<TrapperTrapButton>.Instance.SetUses((int)OptionGroupSingleton<TrapperOptions>.Instance
+            .MaxTraps);
 
         CustomButtonSingleton<HunterStalkButton>.Instance.ExtraUses = 0;
-        CustomButtonSingleton<HunterStalkButton>.Instance.SetUses((int)OptionGroupSingleton<HunterOptions>.Instance.StalkUses);
-        CustomButtonSingleton<SheriffShootButton>.Instance.Usable = OptionGroupSingleton<SheriffOptions>.Instance.FirstRoundUse;
+        CustomButtonSingleton<HunterStalkButton>.Instance.SetUses((int)OptionGroupSingleton<HunterOptions>.Instance
+            .StalkUses);
+        CustomButtonSingleton<SheriffShootButton>.Instance.Usable =
+            OptionGroupSingleton<SheriffOptions>.Instance.FirstRoundUse;
         CustomButtonSingleton<VeteranAlertButton>.Instance.ExtraUses = 0;
-        CustomButtonSingleton<VeteranAlertButton>.Instance.SetUses((int)OptionGroupSingleton<VeteranOptions>.Instance.MaxNumAlerts);
+        CustomButtonSingleton<VeteranAlertButton>.Instance.SetUses((int)OptionGroupSingleton<VeteranOptions>.Instance
+            .MaxNumAlerts);
 
         CustomButtonSingleton<JailorJailButton>.Instance.ExecutedACrew = false;
 
-        CustomButtonSingleton<EngineerVentButton>.Instance.ExtraUses = 0;
-        CustomButtonSingleton<EngineerVentButton>.Instance.SetUses((int)OptionGroupSingleton<EngineerOptions>.Instance.MaxVents);
+        var engiVent = CustomButtonSingleton<EngineerVentButton>.Instance;
+        engiVent.ExtraUses = 0;
+        engiVent.SetUses((int)OptionGroupSingleton<EngineerOptions>.Instance.MaxVents);
+        if ((int)OptionGroupSingleton<EngineerOptions>.Instance.MaxVents == 0)
+        {
+            engiVent.Button?.usesRemainingText.gameObject.SetActive(false);
+            engiVent.Button?.usesRemainingSprite.gameObject.SetActive(false);
+        }
+        else
+        {
+            engiVent.Button?.usesRemainingText.gameObject.SetActive(true);
+            engiVent.Button?.usesRemainingSprite.gameObject.SetActive(true);
+        }
+
+        var medicShield = CustomButtonSingleton<MedicShieldButton>.Instance;
+        medicShield.SetUses(OptionGroupSingleton<MedicOptions>.Instance.ChangeTarget ? (int)OptionGroupSingleton<MedicOptions>.Instance.MedicShieldUses : 0);
+        if ((int)OptionGroupSingleton<MedicOptions>.Instance.MedicShieldUses == 0 || !OptionGroupSingleton<MedicOptions>.Instance.ChangeTarget)
+        {
+            medicShield.Button?.usesRemainingText.gameObject.SetActive(false);
+            medicShield.Button?.usesRemainingSprite.gameObject.SetActive(false);
+        }
+        else
+        {
+            medicShield.Button?.usesRemainingText.gameObject.SetActive(true);
+            medicShield.Button?.usesRemainingSprite.gameObject.SetActive(true);
+        }
+
         CustomButtonSingleton<PlumberBlockButton>.Instance.ExtraUses = 0;
-        CustomButtonSingleton<PlumberBlockButton>.Instance.SetUses((int)OptionGroupSingleton<PlumberOptions>.Instance.MaxBarricades);
+        CustomButtonSingleton<PlumberBlockButton>.Instance.SetUses((int)OptionGroupSingleton<PlumberOptions>.Instance
+            .MaxBarricades);
         CustomButtonSingleton<TransporterTransportButton>.Instance.ExtraUses = 0;
-        CustomButtonSingleton<TransporterTransportButton>.Instance.SetUses((int)OptionGroupSingleton<TransporterOptions>.Instance.MaxNumTransports);
+        CustomButtonSingleton<TransporterTransportButton>.Instance.SetUses((int)OptionGroupSingleton<TransporterOptions>
+            .Instance.MaxNumTransports);
 
-        CustomButtonSingleton<WarlockKillButton>.Instance.Charge = 0f;
-        CustomButtonSingleton<WarlockKillButton>.Instance.BurstActive = false;
+        CustomButtonSingleton<HexbladeKillButton>.Instance.Charge = 0f;
+        CustomButtonSingleton<HexbladeKillButton>.Instance.BurstActive = false;
 
-        CustomButtonSingleton<BarryButton>.Instance.Usable = OptionGroupSingleton<ButtonBarryOptions>.Instance.FirstRoundUse;
-        CustomButtonSingleton<SatelliteButton>.Instance.Usable = OptionGroupSingleton<SatelliteOptions>.Instance.FirstRoundUse;
+        CustomButtonSingleton<BarryButton>.Instance.Usable =
+            OptionGroupSingleton<ButtonBarryOptions>.Instance.FirstRoundUse;
+        CustomButtonSingleton<SatelliteButton>.Instance.Usable =
+            OptionGroupSingleton<SatelliteOptions>.Instance.FirstRoundUse;
     }
 
     [RegisterEvent]
@@ -87,6 +164,21 @@ public static class TownOfSushiEventHandlers
         var player = @event.Player;
         if (!MeetingHud.Instance && player.AmOwner)
         {
+            foreach (var button in CustomButtonManager.Buttons)
+            {
+                if (button is TownOfSushiTargetButton<PlayerControl> TOSPlayerButton && TOSPlayerButton.Target != null)
+                {
+                    TOSPlayerButton.Target.cosmetics.currentBodySprite.BodySprite.SetOutline(null);
+                }
+                else if (button is TownOfSushiTargetButton<DeadBody> TOSBodyButton && TOSBodyButton.Target != null)
+                {
+                    TOSBodyButton.Target.bodyRenderers.Do(x => x.SetOutline(null));
+                }
+                else if (button is TownOfSushiTargetButton<Vent> TOSVentButton && TOSVentButton.Target != null)
+                {
+                    TOSVentButton.Target.SetOutline(false, true, player.Data.Role.TeamColor);
+                }
+            }
             HudManager.Instance.SetHudActive(false);
             HudManager.Instance.SetHudActive(true);
         }
@@ -108,6 +200,7 @@ public static class TownOfSushiEventHandlers
             player.MyPhysics.ResetAnimState();
             player.MyPhysics.ResetMoveState();
         }
+
         FakePlayer.ClearAll();
     }
 
@@ -123,6 +216,7 @@ public static class TownOfSushiEventHandlers
         if (exiled.AmOwner)
         {
             HudManager.Instance.SetHudActive(false);
+
             if (!MeetingHud.Instance)
             {
                 HudManager.Instance.SetHudActive(true);
@@ -134,11 +228,13 @@ public static class TownOfSushiEventHandlers
             animated.IsVisible = false;
             animated.SetVisible();
         }
+
         foreach (var button in CustomButtonManager.Buttons.Where(x => x.Enabled(exiled.Data.Role)).OfType<IAnimated>())
         {
             button.IsVisible = false;
             button.SetVisible();
         }
+
         foreach (var modifier in exiled.GetModifiers<GameModifier>().Where(x => x is IAnimated))
         {
             var animatedMod = modifier as IAnimated;
@@ -161,6 +257,7 @@ public static class TownOfSushiEventHandlers
         if (target.AmOwner)
         {
             HudManager.Instance.SetHudActive(false);
+
             if (!MeetingHud.Instance)
             {
                 HudManager.Instance.SetHudActive(true);
@@ -172,11 +269,13 @@ public static class TownOfSushiEventHandlers
             animated.IsVisible = false;
             animated.SetVisible();
         }
+
         foreach (var button in CustomButtonManager.Buttons.Where(x => x.Enabled(target.Data.Role)).OfType<IAnimated>())
         {
             button.IsVisible = false;
             button.SetVisible();
         }
+
         foreach (var modifier in target.GetModifiers<GameModifier>().Where(x => x is IAnimated))
         {
             var animatedMod = modifier as IAnimated;
@@ -186,20 +285,29 @@ public static class TownOfSushiEventHandlers
                 animatedMod.SetVisible();
             }
         }
+
         if (source.IsImpostor() && source.AmOwner && source != target && !MeetingHud.Instance)
         {
             switch (source.Data.Role)
             {
+                case AmbusherRole:
+                    var ambushButton = CustomButtonSingleton<AmbusherAmbushButton>.Instance;
+                    ambushButton.ResetCooldownAndOrEffect();
+                    break;
                 case BomberRole:
                     var bombButton = CustomButtonSingleton<BomberPlantButton>.Instance;
                     bombButton.ResetCooldownAndOrEffect();
                     break;
                 case JanitorRole:
                     if (OptionGroupSingleton<JanitorOptions>.Instance.ResetCooldowns)
-                    { 
+                    {
                         var cleanButton = CustomButtonSingleton<JanitorCleanButton>.Instance;
                         cleanButton.ResetCooldownAndOrEffect();
                     }
+                    break;
+                case WarlockRole:
+                    CustomButtonSingleton<WarlockCurseButton>.Instance.ResetCooldownAndOrEffect();
+                    CustomButtonSingleton<WarlockCurseKillButton>.Instance.SetTimer(OptionGroupSingleton<WarlockOptions>.Instance.CurseCooldown);
                     break;
             }
         }
@@ -243,7 +351,8 @@ public static class TownOfSushiEventHandlers
     [RegisterEvent]
     public static void PlayerCanUseEventHandler(PlayerCanUseEvent @event)
     {
-        if (!PlayerControl.LocalPlayer || !PlayerControl.LocalPlayer.Data || !PlayerControl.LocalPlayer.Data.Role)
+        if (!PlayerControl.LocalPlayer || !PlayerControl.LocalPlayer.Data ||
+            !PlayerControl.LocalPlayer.Data.Role)
         {
             return;
         }
@@ -253,7 +362,8 @@ public static class TownOfSushiEventHandlers
         {
             var aliveCount = PlayerControl.AllPlayerControls.ToArray().Count(x => !x.HasDied());
 
-            if (PlayerControl.LocalPlayer.inVent && aliveCount <= 2 && PlayerControl.LocalPlayer.Data.Role is not IGhostRole)
+            if (PlayerControl.LocalPlayer.inVent && aliveCount <= 2 &&
+                PlayerControl.LocalPlayer.Data.Role is not IGhostRole)
             {
                 PlayerControl.LocalPlayer.MyPhysics.RpcExitVent(Vent.currentVent.Id);
                 PlayerControl.LocalPlayer.MyPhysics.ExitAllVents();
@@ -266,12 +376,6 @@ public static class TownOfSushiEventHandlers
         }
     }
 
-    [RegisterEvent]
-    public static void GameEndEventHandler(GameEndEvent @event)
-    {
-        EndGamePatches.BuildEndGameSummary(@event.EndGameManager);
-    }
-    
     [RegisterEvent]
     public static void PlayerLeaveEventHandler(PlayerLeaveEvent @event)
     {
@@ -288,7 +392,7 @@ public static class TownOfSushiEventHandlers
         }
 
         var pva = MeetingHud.Instance.playerStates.First(x => x.TargetPlayerId == player.PlayerId);
-        
+
         if (!pva)
         {
             return;
@@ -303,16 +407,22 @@ public static class TownOfSushiEventHandlers
         MeetingMenu.Instances.Do(x => x.HideSingle(player.PlayerId));
     }
 
+    private static IEnumerator CoHideHud()
+    {
+        yield return new WaitForSeconds(0.01f);
+        HudManager.Instance.SetHudActive(false);
+    }
+
     private static IEnumerator CoAnimateDeath(PlayerVoteArea voteArea)
     {
         var animDic = new Dictionary<AnimationClip, AnimationClip>
         {
-            {TosAssets.MeetingDeathBloodAnim1.LoadAsset(), TosAssets.MeetingDeathAnim1.LoadAsset()},
-            {TosAssets.MeetingDeathBloodAnim2.LoadAsset(), TosAssets.MeetingDeathAnim2.LoadAsset()},
-            {TosAssets.MeetingDeathBloodAnim3.LoadAsset(), TosAssets.MeetingDeathAnim3.LoadAsset()}
+            { TOSAssets.MeetingDeathBloodAnim1.LoadAsset(), TOSAssets.MeetingDeathAnim1.LoadAsset() },
+            { TOSAssets.MeetingDeathBloodAnim2.LoadAsset(), TOSAssets.MeetingDeathAnim2.LoadAsset() },
+            { TOSAssets.MeetingDeathBloodAnim3.LoadAsset(), TOSAssets.MeetingDeathAnim3.LoadAsset() }
         };
         var trueAnim = animDic.Random();
-        var animation = Object.Instantiate(TosAssets.MeetingDeathPrefab.LoadAsset(), voteArea.transform);
+        var animation = Object.Instantiate(TOSAssets.MeetingDeathPrefab.LoadAsset(), voteArea.transform);
         animation.transform.localPosition = new Vector3(-0.8f, 0, 0);
         animation.transform.localScale = new Vector3(0.375f, 0.375f, 1f);
         animation.gameObject.layer = animation.transform.GetChild(0).gameObject.layer = voteArea.gameObject.layer;
@@ -324,14 +434,21 @@ public static class TownOfSushiEventHandlers
         animation.gameObject.SetActive(false);
 
         Coroutines.Start(MiscUtils.CoFlash(Palette.ImpostorRed, 0.5f, 0.15f));
-        yield return new WaitForSeconds(UnityEngine.Random.RandomRange(0.4f, 1.1f));
+        var seconds = Random.RandomRange(0.4f, 1.1f);
+        // if there's less than 6 players alive, animation will play instantly
+        if (Helpers.GetAlivePlayers().Count <= 5)
+        {
+            seconds = 0.01f;
+        }
+
+        yield return new WaitForSeconds(seconds);
 
         voteArea.PlayerIcon.gameObject.SetActive(false);
         animation.gameObject.SetActive(true);
         var bodysAnim = animation.GetComponent<SpriteAnim>();
-        
+
         var bloodAnim = animation.transform.GetChild(0).GetComponent<SpriteAnim>();
-        
+
         bloodAnim.Play(trueAnim.Key);
         bodysAnim.Play(trueAnim.Value);
 
@@ -351,8 +468,17 @@ public static class TownOfSushiEventHandlers
         voteArea.Overlay.gameObject.SetActive(true);
     }
 
-    private static void HandleMeetingMurder(MeetingHud instance, PlayerControl source, PlayerControl target)
+    public static void HandleMeetingMurder(MeetingHud instance, PlayerControl source, PlayerControl target)
     {
+        var timer = (int)OptionGroupSingleton<GeneralOptions>.Instance.AddedMeetingDeathTimer;
+        if (timer > 0 && timer <= 15)
+        {
+            instance.discussionTimer -= timer;
+        }
+        else if (timer >= 15)
+        {
+            instance.discussionTimer -= 15f;
+        }
         // To handle murders during a meeting
         var targetVoteArea = instance.playerStates.First(x => x.TargetPlayerId == target.PlayerId);
 
@@ -377,24 +503,25 @@ public static class TownOfSushiEventHandlers
             Minigame.Instance.Close();
             Minigame.Instance.Close();
         }
-        
+
         targetVoteArea.Overlay.gameObject.SetActive(false);
-        if (target.Data.Role is MayorRole)
+        if (target.GetRoleWhenAlive() is MayorRole mayor && mayor.Revealed)
         {
             MayorRole.DestroyReveal(targetVoteArea);
         }
 
         Coroutines.Start(CoAnimateDeath(targetVoteArea));
 
-        // hide meeting menu button for victim
-        if (!source.AmOwner && !target.AmOwner)
-        {
-            MeetingMenu.Instances.Do(x => x.HideSingle(target.PlayerId));
-        }
         // hide meeting menu buttons on the victim's screen
-        else if (target.AmOwner)
+        if (target.AmOwner)
         {
             MeetingMenu.Instances.Do(x => x.HideButtons());
+            Coroutines.Start(CoHideHud());
+        }
+        // hide meeting menu button for victim
+        else if (!source.AmOwner && !target.AmOwner)
+        {
+            MeetingMenu.Instances.Do(x => x.HideSingle(target.PlayerId));
         }
 
         foreach (var pva in instance.playerStates)
@@ -428,7 +555,7 @@ public static class TownOfSushiEventHandlers
         instance.SetDirtyBit(1U);
 
         if (AmongUsClient.Instance.AmHost)
-        { 
+        {
             instance.CheckForEndVoting();
         }
     }

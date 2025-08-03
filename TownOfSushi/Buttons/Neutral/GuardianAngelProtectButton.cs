@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace TownOfSushi.Buttons.Neutral;
 
-public sealed class GuardianAngelProtectButton : TownOfSushiRoleButton<ModdedGuardianAngelRole>
+public sealed class GuardianAngelProtectButton : TownOfSushiRoleButton<GuardianAngelTOSRole>
 {
     public override string Name => "Protect";
     public override string Keybind => Keybinds.SecondaryAction;
@@ -16,7 +16,10 @@ public sealed class GuardianAngelProtectButton : TownOfSushiRoleButton<ModdedGua
     public override float Cooldown => OptionGroupSingleton<GuardianAngelOptions>.Instance.ProtectCooldown + MapCooldown;
     public override float EffectDuration => OptionGroupSingleton<GuardianAngelOptions>.Instance.ProtectDuration;
     public override int MaxUses => (int)OptionGroupSingleton<GuardianAngelOptions>.Instance.MaxProtects;
-    public override LoadableAsset<Sprite> Sprite => TosNeutAssets.ProtectSprite;
+    public override LoadableAsset<Sprite> Sprite => TOSNeutAssets.ProtectSprite;
 
-    protected override void OnClick() => Role.Target?.RpcAddModifier<GuardianAngelProtectModifier>(PlayerControl.LocalPlayer);
+    protected override void OnClick()
+    {
+        Role.Target?.RpcAddModifier<GuardianAngelProtectModifier>(PlayerControl.LocalPlayer);
+    }
 }

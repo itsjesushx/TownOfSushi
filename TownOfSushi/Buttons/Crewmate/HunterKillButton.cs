@@ -5,6 +5,7 @@ using MiraAPI.Networking;
 using MiraAPI.Utilities;
 using MiraAPI.Utilities.Assets;
 using Reactor.Utilities;
+using TownOfSushi.Options.Modifiers.Alliance;
 using TownOfSushi.Options.Roles.Crewmate;
 using TownOfSushi.Roles.Crewmate;
 using TownOfSushi.Utilities;
@@ -18,7 +19,8 @@ public sealed class HunterKillButton : TownOfSushiRoleButton<HunterRole, PlayerC
     public override string Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Hunter;
     public override float Cooldown => OptionGroupSingleton<HunterOptions>.Instance.HunterKillCooldown + MapCooldown;
-    public override LoadableAsset<Sprite> Sprite => TosCrewAssets.HunterKillSprite;
+    public override LoadableAsset<Sprite> Sprite => TOSCrewAssets.HunterKillSprite;
+
     public void SetDiseasedTimer(float multiplier)
     {
         SetTimer(Cooldown * multiplier);
@@ -26,7 +28,8 @@ public sealed class HunterKillButton : TownOfSushiRoleButton<HunterRole, PlayerC
 
     private static IEnumerator CoSetBodyReportable(byte bodyId)
     {
-        var waitDelegate = DelegateSupport.ConvertDelegate<Il2CppSystem.Func<bool>>(() => Helpers.GetBodyById(bodyId) != null);
+        var waitDelegate =
+            DelegateSupport.ConvertDelegate<Il2CppSystem.Func<bool>>(() => Helpers.GetBodyById(bodyId) != null);
         yield return new WaitUntil(waitDelegate);
         var body = Helpers.GetBodyById(bodyId);
 
@@ -55,12 +58,19 @@ public sealed class HunterKillButton : TownOfSushiRoleButton<HunterRole, PlayerC
 
     public override PlayerControl? GetTarget()
     {
+        if (!OptionGroupSingleton<LoversOptions>.Instance.LoversKillEachOther && PlayerControl.LocalPlayer.IsLover())
+        {
+            return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance, false, x => !x.IsLover());
+        }
         return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
     }
 
     public override bool IsTargetValid(PlayerControl? target)
     {
-        if (!Role.CaughtPlayers.Contains(target!)) return false;
+        if (!Role.CaughtPlayers.Contains(target!))
+        {
+            return false;
+        }
 
         return base.IsTargetValid(target);
     }

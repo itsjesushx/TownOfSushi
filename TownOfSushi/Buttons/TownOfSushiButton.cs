@@ -1,8 +1,10 @@
-﻿using HarmonyLib;
+﻿using System.Globalization;
+using HarmonyLib;
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
 using MiraAPI.PluginLoading;
+using MiraAPI.Utilities;
 using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
 using Rewired;
@@ -18,16 +20,27 @@ namespace TownOfSushi.Buttons;
 public abstract class TownOfSushiButton : CustomActionButton
 {
     public override string Name => string.Empty;
-    public static float MapCooldown => OptionGroupSingleton<TownOfSushiMapOptions>.Instance.GetMapBasedCooldownDifference();
+
+    public static float MapCooldown =>
+        OptionGroupSingleton<TownOfSushiMapOptions>.Instance.GetMapBasedCooldownDifference();
+
     public override float InitialCooldown => 10;
     public override ButtonLocation Location => ButtonLocation.BottomRight;
-    public override string CooldownTimerFormatString => Timer <= 10f && TownOfSushiPlugin.PreciseCooldowns.Value ? "0.0" : "0";
+
+    public override string CooldownTimerFormatString =>
+        Timer <= 10f && TownOfSushiPlugin.PreciseCooldowns.Value ? "0.0" : "0";
+
+    public virtual bool UsableInDeath => false;
+    public virtual bool ShouldPauseInVent => true;
 
     /// <summary>
-    /// Gets the keybind used for the button.<br/>
-    /// Use ActionQuaternary for primary abilities, ActionSecondary for secondary abilities or kill buttons, tos.ActionCustom for tertiary abilities, and tos.ActionCustom2 for modifier buttons.
+    ///     Gets the keybind used for the button.<br />
+    ///     Use ActionQuaternary for primary abilities, ActionSecondary for secondary abilities or kill buttons,
+    ///     tos.ActionCustom for tertiary abilities, and tos.ActionCustom2 for modifier buttons.
     /// </summary>
     public virtual string Keybind => string.Empty;
+
+    private PassiveButton PassiveComp { get; set; }
 
     public virtual int ConsoleBind()
     {
@@ -37,16 +50,59 @@ public abstract class TownOfSushiButton : CustomActionButton
             Keybinds.SecondaryAction => Keybinds.SecondaryConsole,
             Keybinds.ModifierAction => Keybinds.ModifierConsole,
             Keybinds.VentAction => Keybinds.VentConsole,
-            _ => -1,
+            _ => -1
         };
     }
 
-    private PassiveButton PassiveComp { get; set; }
+    public override void FixedUpdateHandler(PlayerControl playerControl)
+    {
+        if (Timer >= 0)
+        {
+            if (!TimerPaused && (!(ShouldPauseInVent && PlayerControl.LocalPlayer.inVent) || EffectActive))
+            {
+                Timer -= Time.deltaTime;
+            }
+        }
+        else if (HasEffect && EffectActive)
+        {
+            EffectActive = false;
+            Timer = Cooldown;
+            OnEffectEnd();
+        }
+
+        if (Button)
+        {
+            if (CanUse())
+            {
+                Button!.SetEnabled();
+            }
+            else
+            {
+                Button!.SetDisabled();
+            }
+
+            if (EffectActive)
+            {
+                Button.SetFillUp(Timer, EffectDuration);
+
+                Button.cooldownTimerText.text =
+                    Timer.ToString(CooldownTimerFormatString, NumberFormatInfo.InvariantInfo);
+                Button.cooldownTimerText.gameObject.SetActive(true);
+            }
+            else
+            {
+                Button.SetCooldownFormat(Timer, Cooldown, CooldownTimerFormatString);
+            }
+        }
+
+        FixedUpdate(playerControl);
+    }
 
     public override void SetActive(bool visible, RoleBehaviour role)
     {
         Button?.ToggleVisible(visible && Enabled(role) && !role.Player.HasDied());
     }
+
     public override void CreateButton(Transform parent)
     {
         base.CreateButton(parent);
@@ -55,7 +111,8 @@ public abstract class TownOfSushiButton : CustomActionButton
             Logger<TownOfSushiPlugin>.Error($"Button is null for {GetType().FullName}");
             return;
         }
-        Button.usesRemainingSprite.sprite = TosAssets.AbilityCounterBasicSprite.LoadAsset();
+
+        Button.usesRemainingSprite.sprite = TOSAssets.AbilityCounterBasicSprite.LoadAsset();
 
         TownOfSushiColors.UseBasic = false;
         if (TextOutlineColor != Color.clear)
@@ -68,6 +125,7 @@ public abstract class TownOfSushiButton : CustomActionButton
 
         PassiveComp = Button.GetComponent<PassiveButton>();
     }
+
     public override void SetUses(int amount)
     {
         base.SetUses(amount);
@@ -83,8 +141,21 @@ public abstract class TownOfSushiButton : CustomActionButton
 
     public override bool CanUse()
     {
-        if (PlayerControl.LocalPlayer == null) return false;
-        if (!PlayerControl.LocalPlayer.CanMove || PlayerControl.LocalPlayer.HasModifier<DisabledModifier>()) return false;
+        if (PlayerControl.LocalPlayer == null)
+        {
+            return false;
+        }
+        
+        if (PlayerControl.LocalPlayer.HasDied() && !UsableInDeath)
+        {
+            return false;
+        }
+
+        if (!PlayerControl.LocalPlayer.CanMove || PlayerControl.LocalPlayer.HasModifier<DisabledModifier>())
+        {
+            return false;
+        }
+
         return base.CanUse();
     }
 
@@ -95,16 +166,20 @@ public abstract class TownOfSushiButton : CustomActionButton
             return;
         }
 
-        Button?.gameObject.SetActive(HudManager.Instance.UseButton.isActiveAndEnabled || HudManager.Instance.PetButton.isActiveAndEnabled);
+        Button?.gameObject.SetActive(HudManager.Instance.UseButton.isActiveAndEnabled ||
+                                     HudManager.Instance.PetButton.isActiveAndEnabled);
 
-        if (CanUse() && Keybind != string.Empty && (ReInput.players.GetPlayer(0).GetButtonDown(Keybind) || ConsoleJoystick.player.GetButtonDown(ConsoleBind())))
+        if (CanUse() && Keybind != string.Empty && (ReInput.players.GetPlayer(0).GetButtonDown(Keybind) ||
+                                                    ConsoleJoystick.player.GetButtonDown(ConsoleBind())))
         {
             PassiveComp.OnClick.Invoke();
         }
     }
+
     public override void ClickHandler()
     {
-        if (!CanClick() || PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>() || PlayerControl.LocalPlayer.HasModifier<DisabledModifier>())
+        if (!CanClick() || PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>() ||
+            PlayerControl.LocalPlayer.HasModifier<DisabledModifier>())
         {
             return;
         }
@@ -117,7 +192,10 @@ public abstract class TownOfSushiButton : CustomActionButton
             if (TextOutlineColor != Color.clear)
             {
                 SetTextOutline(TextOutlineColor);
-                if (Button != null) Button.usesRemainingSprite.color = TextOutlineColor;
+                if (Button != null)
+                {
+                    Button.usesRemainingSprite.color = TextOutlineColor;
+                }
             }
 
             TownOfSushiColors.UseBasic = TownOfSushiPlugin.UseCrewmateTeamColor.Value;
@@ -141,16 +219,27 @@ public abstract class TownOfSushiButton : CustomActionButton
 public abstract class TownOfSushiTargetButton<T> : CustomActionButton<T> where T : MonoBehaviour
 {
     public override string Name => string.Empty;
-    public static float MapCooldown => OptionGroupSingleton<TownOfSushiMapOptions>.Instance.GetMapBasedCooldownDifference();
+
+    public static float MapCooldown =>
+        OptionGroupSingleton<TownOfSushiMapOptions>.Instance.GetMapBasedCooldownDifference();
+
     public override float InitialCooldown => 10;
     public override ButtonLocation Location => ButtonLocation.BottomRight;
-    public override string CooldownTimerFormatString => Timer <= 10f && TownOfSushiPlugin.PreciseCooldowns.Value ? "0.0" : "0";
+
+    public override string CooldownTimerFormatString =>
+        Timer <= 10f && TownOfSushiPlugin.PreciseCooldowns.Value ? "0.0" : "0";
+
+    public virtual bool ShouldPauseInVent => true;
+    public virtual bool UsableInDeath => false;
 
     /// <summary>
-    /// Gets the keybind used for the button.
-    /// Use ActionQuaternary for primary abilities, ActionSecondary for secondary abilities or kill buttons, tos.ActionCustom for tertiary abilities, and tos.ActionCustom2 for modifier buttons.
+    ///     Gets the keybind used for the button.
+    ///     Use ActionQuaternary for primary abilities, ActionSecondary for secondary abilities or kill buttons,
+    ///     tos.ActionCustom for tertiary abilities, and tos.ActionCustom2 for modifier buttons.
     /// </summary>
     public virtual string Keybind => string.Empty;
+
+    private PassiveButton PassiveComp { get; set; }
 
     public virtual int ConsoleBind()
     {
@@ -160,11 +249,53 @@ public abstract class TownOfSushiTargetButton<T> : CustomActionButton<T> where T
             Keybinds.SecondaryAction => Keybinds.SecondaryConsole,
             Keybinds.ModifierAction => Keybinds.ModifierConsole,
             Keybinds.VentAction => Keybinds.VentConsole,
-            _ => -1,
+            _ => -1
         };
     }
 
-    private PassiveButton PassiveComp { get; set; }
+    public override void FixedUpdateHandler(PlayerControl playerControl)
+    {
+        if (Timer >= 0)
+        {
+            if (!TimerPaused && (!(ShouldPauseInVent && PlayerControl.LocalPlayer.inVent) || EffectActive))
+            {
+                Timer -= Time.deltaTime;
+            }
+        }
+        else if (HasEffect && EffectActive)
+        {
+            EffectActive = false;
+            Timer = Cooldown;
+            OnEffectEnd();
+        }
+
+        if (Button)
+        {
+            if (CanUse())
+            {
+                Button!.SetEnabled();
+            }
+            else
+            {
+                Button!.SetDisabled();
+            }
+
+            if (EffectActive)
+            {
+                Button.SetFillUp(Timer, EffectDuration);
+
+                Button.cooldownTimerText.text =
+                    Timer.ToString(CooldownTimerFormatString, NumberFormatInfo.InvariantInfo);
+                Button.cooldownTimerText.gameObject.SetActive(true);
+            }
+            else
+            {
+                Button.SetCooldownFormat(Timer, Cooldown, CooldownTimerFormatString);
+            }
+        }
+
+        FixedUpdate(playerControl);
+    }
 
     public override void SetActive(bool visible, RoleBehaviour role)
     {
@@ -173,7 +304,16 @@ public abstract class TownOfSushiTargetButton<T> : CustomActionButton<T> where T
 
     public override bool CanUse()
     {
-        if (!PlayerControl.LocalPlayer.CanMove || PlayerControl.LocalPlayer.HasModifier<DisabledModifier>()) return false;
+        if (PlayerControl.LocalPlayer.HasDied() && !UsableInDeath)
+        {
+            return false;
+        }
+        
+        if (!PlayerControl.LocalPlayer.CanMove || PlayerControl.LocalPlayer.HasModifier<DisabledModifier>())
+        {
+            return false;
+        }
+
         return base.CanUse();
     }
 
@@ -189,18 +329,19 @@ public abstract class TownOfSushiTargetButton<T> : CustomActionButton<T> where T
         switch (typeof(T))
         {
             case Type t when t == typeof(Vent):
-                Button.usesRemainingSprite.sprite = TosAssets.AbilityCounterVentSprite.LoadAsset();
+                Button.usesRemainingSprite.sprite = TOSAssets.AbilityCounterVentSprite.LoadAsset();
                 break;
             case Type t when t == typeof(DeadBody):
-                Button.usesRemainingSprite.sprite = TosAssets.AbilityCounterBodySprite.LoadAsset();
+                Button.usesRemainingSprite.sprite = TOSAssets.AbilityCounterBodySprite.LoadAsset();
                 break;
             case Type t when t == typeof(PlayerControl):
-                Button.usesRemainingSprite.sprite = TosAssets.AbilityCounterPlayerSprite.LoadAsset();
+                Button.usesRemainingSprite.sprite = TOSAssets.AbilityCounterPlayerSprite.LoadAsset();
                 break;
             default:
-                Button.usesRemainingSprite.sprite = TosAssets.AbilityCounterBasicSprite.LoadAsset();
+                Button.usesRemainingSprite.sprite = TOSAssets.AbilityCounterBasicSprite.LoadAsset();
                 break;
         }
+
         TownOfSushiColors.UseBasic = false;
         if (TextOutlineColor != Color.clear)
         {
@@ -209,9 +350,10 @@ public abstract class TownOfSushiTargetButton<T> : CustomActionButton<T> where T
         }
 
         TownOfSushiColors.UseBasic = TownOfSushiPlugin.UseCrewmateTeamColor.Value;
-        
+
         PassiveComp = Button.GetComponent<PassiveButton>();
     }
+
     public override void SetUses(int amount)
     {
         base.SetUses(amount);
@@ -227,7 +369,8 @@ public abstract class TownOfSushiTargetButton<T> : CustomActionButton<T> where T
 
     public override void ClickHandler()
     {
-        if (CanClick() && !PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>() && !PlayerControl.LocalPlayer.HasModifier<DisabledModifier>())
+        if (CanClick() && !PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>() &&
+            !PlayerControl.LocalPlayer.HasModifier<DisabledModifier>())
         {
             if (LimitedUses)
             {
@@ -237,7 +380,10 @@ public abstract class TownOfSushiTargetButton<T> : CustomActionButton<T> where T
                 if (TextOutlineColor != Color.clear)
                 {
                     SetTextOutline(TextOutlineColor);
-                    if (Button != null) Button.usesRemainingSprite.color = TextOutlineColor;
+                    if (Button != null)
+                    {
+                        Button.usesRemainingSprite.color = TextOutlineColor;
+                    }
                 }
 
                 TownOfSushiColors.UseBasic = TownOfSushiPlugin.UseCrewmateTeamColor.Value;
@@ -263,9 +409,11 @@ public abstract class TownOfSushiTargetButton<T> : CustomActionButton<T> where T
             return;
         }
 
-        Button?.gameObject.SetActive(HudManager.Instance.UseButton.isActiveAndEnabled || HudManager.Instance.PetButton.isActiveAndEnabled);
+        Button?.gameObject.SetActive(HudManager.Instance.UseButton.isActiveAndEnabled ||
+                                     HudManager.Instance.PetButton.isActiveAndEnabled);
 
-        if (CanUse() && Keybind != string.Empty && (ReInput.players.GetPlayer(0).GetButtonDown(Keybind) || ConsoleJoystick.player.GetButtonDown(ConsoleBind())))
+        if (CanUse() && Keybind != string.Empty && (ReInput.players.GetPlayer(0).GetButtonDown(Keybind) ||
+                                                    ConsoleJoystick.player.GetButtonDown(ConsoleBind())))
         {
             PassiveComp.OnClick.Invoke();
         }
@@ -284,7 +432,8 @@ public abstract class TownOfSushiRoleButton<TRole> : TownOfSushiButton where TRo
 }
 
 [MiraIgnore]
-public abstract class TownOfSushiRoleButton<TRole, TTarget> : TownOfSushiTargetButton<TTarget> where TTarget : MonoBehaviour where TRole : RoleBehaviour
+public abstract class TownOfSushiRoleButton<TRole, TTarget> : TownOfSushiTargetButton<TTarget>
+    where TTarget : MonoBehaviour where TRole : RoleBehaviour
 {
     public TRole Role => PlayerControl.LocalPlayer.GetRole<TRole>()!;
 
@@ -311,13 +460,17 @@ public abstract class TownOfSushiRoleButton<TRole, TTarget> : TownOfSushiTargetB
             }
         }
     }
+
     public override bool IsTargetValid(TTarget? target)
     {
-        if (target is PlayerControl playerTarget) return base.IsTargetValid(target) && !playerTarget.inVent && !(playerTarget.TryGetModifier<DisabledModifier>(out var mod) && !mod.CanBeInteractedWith);
+        if (target is PlayerControl playerTarget)
+        {
+            return base.IsTargetValid(target) && !playerTarget.inVent &&
+                   !(playerTarget.TryGetModifier<DisabledModifier>(out var mod) && !mod.CanBeInteractedWith);
+        }
 
         return base.IsTargetValid(target);
     }
-
 }
 
 public interface IAftermathablePlayerButton : IAftermathableButton
@@ -334,11 +487,12 @@ public interface IAftermathableButton
 {
     void ClickHandler();
 }
+
 public interface IDiseaseableButton
 {
     void SetDiseasedTimer(float multiplier);
 }
+
 public interface IKillButton
 {
-    
 }

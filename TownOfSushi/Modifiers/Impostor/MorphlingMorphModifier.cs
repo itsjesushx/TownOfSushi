@@ -1,6 +1,6 @@
 ﻿using MiraAPI.Events;
 using MiraAPI.GameOptions;
-using TownOfSushi.Events.TosEvents;
+using TownOfSushi.Events.TOSEvents;
 using TownOfSushi.Options.Roles.Impostor;
 using TownOfSushi.Utilities.Appearances;
 
@@ -13,6 +13,7 @@ public sealed class MorphlingMorphModifier(PlayerControl target) : ConcealedModi
     public override bool HideOnUi => true;
     public override bool AutoStart => true;
     public bool VisualPriority => true;
+    public override bool VisibleToOthers => true;
 
     public VisualAppearance GetVisualAppearance()
     {
@@ -23,10 +24,10 @@ public sealed class MorphlingMorphModifier(PlayerControl target) : ConcealedModi
     {
         Player.RawSetAppearance(this);
 
-        var TosAbilityEvent = new TosAbilityEvent(AbilityType.MorphlingMorph, Player, target);
-        MiraEventManager.InvokeEvent(TosAbilityEvent);
+        var TOSAbilityEvent = new TOSAbilityEvent(AbilityType.MorphlingMorph, Player, target);
+        MiraEventManager.InvokeEvent(TOSAbilityEvent);
     }
-    
+
     public override void OnDeath(DeathReason reason)
     {
         ModifierComponent!.RemoveModifier(this);
@@ -36,7 +37,7 @@ public sealed class MorphlingMorphModifier(PlayerControl target) : ConcealedModi
     {
         Player.ResetAppearance();
 
-        var TosAbilityEvent = new TosAbilityEvent(AbilityType.MorphlingUnmorph, Player, target);
-        MiraEventManager.InvokeEvent(TosAbilityEvent);
+        var TOSAbilityEvent = new TOSAbilityEvent(AbilityType.MorphlingUnmorph, Player, target);
+        MiraEventManager.InvokeEvent(TOSAbilityEvent);
     }
 }

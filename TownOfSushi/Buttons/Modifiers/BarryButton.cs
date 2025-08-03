@@ -17,8 +17,10 @@ public sealed class BarryButton : TownOfSushiButton
     public override float Cooldown => OptionGroupSingleton<ButtonBarryOptions>.Instance.Cooldown + MapCooldown;
     public override int MaxUses => (int)OptionGroupSingleton<ButtonBarryOptions>.Instance.MaxNumButtons;
     public override ButtonLocation Location => ButtonLocation.BottomLeft;
-    public override LoadableAsset<Sprite> Sprite => TosAssets.BarryButtonSprite;
-    public bool Usable { get; set; } = OptionGroupSingleton<ButtonBarryOptions>.Instance.FirstRoundUse;
+    public override LoadableAsset<Sprite> Sprite => TOSAssets.BarryButtonSprite;
+
+    public bool Usable { get; set; } = OptionGroupSingleton<ButtonBarryOptions>.Instance.FirstRoundUse ||
+                                       TutorialManager.InstanceExists;
 
     public override bool Enabled(RoleBehaviour? role)
     {
@@ -31,7 +33,8 @@ public sealed class BarryButton : TownOfSushiButton
     public override bool CanUse()
     {
         var system = ShipStatus.Instance.Systems[SystemTypes.Sabotage].Cast<SabotageSystemType>();
-        return base.CanUse() && Usable && PlayerControl.LocalPlayer.RemainingEmergencies > 0 && (OptionGroupSingleton<ButtonBarryOptions>.Instance.IgnoreSabo || system is { AnyActive: false });
+        return base.CanUse() && Usable && PlayerControl.LocalPlayer.RemainingEmergencies > 0 &&
+               (OptionGroupSingleton<ButtonBarryOptions>.Instance.IgnoreSabo || system is { AnyActive: false });
     }
 
     protected override void OnClick()
@@ -40,7 +43,6 @@ public sealed class BarryButton : TownOfSushiButton
     }
 
     [MethodRpc((uint)TownOfSushiRpc.ButtonBarry, SendImmediately = true)]
-
     public static void CallButtonBarry(PlayerControl player)
     {
         if (AmongUsClient.Instance.AmHost)

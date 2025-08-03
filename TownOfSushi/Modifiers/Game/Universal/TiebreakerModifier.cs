@@ -1,6 +1,6 @@
 ﻿using MiraAPI.GameOptions;
 using MiraAPI.Utilities.Assets;
-using TownOfSushi.Modules.Wiki;
+using TownOfUs.Modules.Wiki;
 using TownOfSushi.Options.Modifiers;
 using UnityEngine;
 
@@ -9,12 +9,11 @@ namespace TownOfSushi.Modifiers.Game.Universal;
 public sealed class TiebreakerModifier : UniversalGameModifier, IWikiDiscoverable
 {
     public override string ModifierName => "Tiebreaker";
-    public override LoadableAsset<Sprite>? ModifierIcon => TosModifierIcons.Tiebreaker;
-    public override string GetDescription() => "Your vote breaks ties";
-    public override ModifierFaction FactionType => ModifierFaction.UniversalPassive;
+    public override LoadableAsset<Sprite>? ModifierIcon => TOSModifierIcons.Tiebreaker;
 
-    public override int GetAmountPerGame() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.TiebreakerAmount != 0 ? 1 : 0;
-    public override int GetAssignmentChance() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.TiebreakerChance;
+    public override ModifierFaction FactionType => ModifierFaction.UniversalPassive;
+    public override Color FreeplayFileColor => new Color32(180, 180, 180, 255);
+
     public string GetAdvancedDescription()
     {
         return
@@ -22,4 +21,19 @@ public sealed class TiebreakerModifier : UniversalGameModifier, IWikiDiscoverabl
     }
 
     public List<CustomButtonWikiDescription> Abilities { get; } = [];
+
+    public override string GetDescription()
+    {
+        return "Your vote breaks ties";
+    }
+
+    public override int GetAmountPerGame()
+    {
+        return (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.TiebreakerAmount != 0 ? 1 : 0;
+    }
+
+    public override int GetAssignmentChance()
+    {
+        return (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.TiebreakerChance;
+    }
 }

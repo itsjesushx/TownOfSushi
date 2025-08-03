@@ -2,7 +2,7 @@
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using TownOfSushi.Modifiers.Game.Crewmate;
-using TownOfSushi.Modifiers.Impostor;
+using TownOfSushi.Modifiers.Neutral;
 using TownOfSushi.Modules;
 using TownOfSushi.Options;
 using TownOfSushi.Roles;
@@ -32,18 +32,21 @@ public static class VisionPatch
 
             visionFactor = mod.VisionPerc;
         }
- 
-        if (player.Role.IsImpostor || (player.Object?.Data.Role is ITownOfSushiRole tosRole && tosRole.HasImpostorVision))
+
+
+        if (player.Role.IsImpostor || (player._object?.Data.Role is ITownOfSushiRole touRole && touRole.HasImpostorVision))
         {
-            __result = __instance.MaxLightRadius * GameOptionsManager.Instance.currentNormalGameOptions.ImpostorLightMod * visionFactor;
+            __result = __instance.MaxLightRadius *
+                       GameOptionsManager.Instance.currentNormalGameOptions.ImpostorLightMod * visionFactor;
         }
         else
         {
             if (ModCompatibility.IsSubmerged())
             {
-                if (player._object.HasModifier<TorchModifier>())
+                if (player._object!.HasModifier<TorchModifier>() && !player._object!.HasModifier<EclipsalBlindModifier>())
                 {
-                    __result = Mathf.Lerp(__instance.MinLightRadius, __instance.MaxLightRadius, 1) * GameOptionsManager.Instance.currentNormalGameOptions.CrewLightMod * visionFactor;
+                    __result = Mathf.Lerp(__instance.MinLightRadius, __instance.MaxLightRadius, 1) *
+                               GameOptionsManager.Instance.currentNormalGameOptions.CrewLightMod * visionFactor;
                 }
                 else
                 {
@@ -63,21 +66,35 @@ public static class VisionPatch
                 var t = switchSystem?.Level ?? 1;
 
 
-                if (player._object.HasModifier<TorchModifier>()) t = 1;
+                if (player._object!.HasModifier<TorchModifier>())
+                {
+                    t = 1;
+                }
 
-                __result = Mathf.Lerp(__instance.MinLightRadius, __instance.MaxLightRadius, t) * GameOptionsManager.Instance.currentNormalGameOptions.CrewLightMod * visionFactor;
+                __result = Mathf.Lerp(__instance.MinLightRadius, __instance.MaxLightRadius, t) *
+                           GameOptionsManager.Instance.currentNormalGameOptions.CrewLightMod * visionFactor;
                 var mapId = (MapNames)GameOptionsManager.Instance.currentNormalGameOptions.MapId;
-                if (TutorialManager.InstanceExists) mapId = (MapNames)AmongUsClient.Instance.TutorialMapId;
+                if (TutorialManager.InstanceExists)
+                {
+                    mapId = (MapNames)AmongUsClient.Instance.TutorialMapId;
+                }
+
                 if (!player.Role.IsImpostor && OptionGroupSingleton<TownOfSushiMapOptions>.Instance.SmallMapHalfVision &&
-                mapId is MapNames.MiraHQ or MapNames.Skeld or MapNames.Dleks)
+                    mapId is MapNames.MiraHQ or MapNames.Skeld or MapNames.Dleks)
                 {
                     __result /= 2;
                 }
-                if (player._object.HasModifier<ScoutModifier>()) __result = t == 1 ? __result * 1.5f : __result / 2;
+
+                if (player._object!.HasModifier<ScoutModifier>())
+                {
+                    __result = t == 1 ? __result * 2f : __result / 2;
+                }
             }
         }
 
         if (NerfMe && !PlayerControl.LocalPlayer.HasDied())
+        {
             __result /= 2;
+        }
     }
 }

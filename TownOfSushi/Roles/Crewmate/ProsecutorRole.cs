@@ -4,60 +4,81 @@ using HarmonyLib;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
+using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities.Extensions;
 using TMPro;
 using TownOfSushi.Modifiers.Crewmate;
 using TownOfSushi.Modifiers.Game;
-using TownOfSushi.Modules.Wiki;
+using TownOfUs.Modules.Wiki;
 using TownOfSushi.Options.Roles.Crewmate;
-
 using TownOfSushi.Utilities;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace TownOfSushi.Roles.Crewmate;
 
-public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IDoomable
+public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCrewRole, IWikiDiscoverable
 {
+    public PlayerVoteArea? ProsecuteButton { get; private set; }
+    public bool HasProsecuted { get; private set; }
+    public byte ProsecuteVictim { get; set; } = byte.MaxValue;
+    public bool SelectingProsecuteVictim { get; set; }
+    public int ProsecutionsCompleted { get; set; }
+
+    public void FixedUpdate()
+    {
+        if (Player == null || Player.Data.Role is not ProsecutorRole)
+        {
+            return;
+        }
+
+        var meeting = MeetingHud.Instance;
+
+        if (!Player.AmOwner || meeting == null || ProsecuteButton == null)
+        {
+            return;
+        }
+
+        ProsecuteButton.gameObject.SetActive(meeting.SkipVoteButton.gameObject.active && !SelectingProsecuteVictim);
+
+        if (!ProsecuteButton.gameObject.active)
+        {
+            return;
+        }
+
+        if (meeting.state == MeetingHud.VoteStates.Discussion &&
+            meeting.discussionTimer < GameOptionsManager.Instance.currentNormalGameOptions.DiscussionTime)
+        {
+            ProsecuteButton.SetDisabled();
+        }
+        else
+        {
+            ProsecuteButton.SetEnabled();
+        }
+
+        ProsecuteButton.voteComplete = meeting.SkipVoteButton.voteComplete;
+    }
     public string RoleName => "Prosecutor";
     public string RoleDescription => "Exile Players Of Your Choosing";
     public string RoleLongDescription => "Choose to exile anyone you want";
     public Color RoleColor => TownOfSushiColors.Prosecutor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmatePower;
-    public DoomableType DoomHintType => DoomableType.Fearmonger;
+
+    public bool IsPowerCrew =>
+        ProsecutionsCompleted <
+        (int)OptionGroupSingleton<ProsecutorOptions>.Instance
+            .MaxProsecutions; // Disable end game checks if prosecutes are available
+
     public CustomRoleConfiguration Configuration => new(this)
     {
         MaxRoleCount = 1,
-        Icon = TosRoleIcons.Prosecutor,
-        IntroSound = TosAudio.ProsIntroSound,
+        Icon = TOSRoleIcons.Prosecutor,
+        IntroSound = TOSAudio.ProsIntroSound
     };
 
-    public PlayerVoteArea? ProsecuteButton { get; private set; }
-
-    /// <summary>
-    /// Gets a value indicating whether the Prosecutor has selected a victim.
-    /// </summary>
-    public bool HasProsecuted { get; private set; }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether the Prosecutor has pressed the Prosecute button and is selecting a victim.
-    /// </summary>
-    public bool SelectingProsecuteVictim { get; set; }
-
-    /// <summary>
-    /// Gets or sets a value indicating how many prosecutions have been completed.
-    /// </summary>
-    public int ProsecutionsCompleted { get; set; }
-
-    public override void Initialize(PlayerControl player)
-    {
-        RoleBehaviourStubs.Initialize(this, player);
-
-        if (Player.HasModifier<ImitatorCacheModifier>()) ProsecutionsCompleted = (int)OptionGroupSingleton<ProsecutorOptions>.Instance.MaxProsecutions;
-    }
     [HideFromIl2Cpp]
     public StringBuilder SetTabText()
     {
@@ -66,10 +87,36 @@ public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownO
         {
             text.AppendLine(CultureInfo.InvariantCulture, $"<b>You may prosecute crew.</b>");
         }
+
         var prosecutes = OptionGroupSingleton<ProsecutorOptions>.Instance.MaxProsecutions - ProsecutionsCompleted;
-        var newText = prosecutes == 1 ? $"1 Prosecution Remaining." : $"\n{prosecutes} Prosecutions Remaining.";
+        var newText = prosecutes == 1 ? "1 Prosecution Remaining." : $"\n{prosecutes} Prosecutions Remaining.";
         text.AppendLine(CultureInfo.InvariantCulture, $"{newText}");
         return text;
+    }
+
+    public string GetAdvancedDescription()
+    {
+        return
+            "The Prosecutor is a Crewmate Power role that can Exile a player, applying 5 votes to a player of their choosing. They can also see who voted for who, even if they’re anonymous."
+            + MiscUtils.AppendOptionsText(GetType());
+    }
+
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities { get; } =
+    [
+        new("Prosecute (Meeting)",
+            "Exile any player of your choosing, throwing 5 votes on them and ignoring all other votes.",
+            TOSRoleIcons.Prosecutor)
+    ];
+
+    public override void Initialize(PlayerControl player)
+    {
+        RoleBehaviourStubs.Initialize(this, player);
+
+        if (Player.HasModifier<ImitatorCacheModifier>())
+        {
+            ProsecutionsCompleted = (int)OptionGroupSingleton<ProsecutorOptions>.Instance.MaxProsecutions;
+        }
     }
 
     public override void OnMeetingStart()
@@ -77,7 +124,11 @@ public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownO
         RoleBehaviourStubs.OnMeetingStart(this);
 
         var meeting = MeetingHud.Instance;
-        if (!Player.AmOwner || meeting == null || ProsecutionsCompleted >= OptionGroupSingleton<ProsecutorOptions>.Instance.MaxProsecutions) return;
+        if (!Player.AmOwner || meeting == null ||
+            ProsecutionsCompleted >= OptionGroupSingleton<ProsecutorOptions>.Instance.MaxProsecutions)
+        {
+            return;
+        }
 
         var skip = meeting.SkipVoteButton;
         ProsecuteButton = Instantiate(skip, skip.transform.parent);
@@ -101,6 +152,7 @@ public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownO
     {
         ProsecuteButton = null;
         SelectingProsecuteVictim = false;
+        ProsecuteVictim = byte.MaxValue;
 
         if (HasProsecuted)
         {
@@ -110,57 +162,21 @@ public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownO
         HasProsecuted = false;
     }
 
-    public void FixedUpdate()
-    {
-        if (Player == null || Player.Data.Role is not ProsecutorRole) return;
-
-        var meeting = MeetingHud.Instance;
-
-        if (!Player.AmOwner || meeting == null || ProsecuteButton == null) return;
-
-        ProsecuteButton.gameObject.SetActive(meeting.SkipVoteButton.gameObject.active && !SelectingProsecuteVictim);
-
-        if (!ProsecuteButton.gameObject.active) return;
-
-        if (meeting.state == MeetingHud.VoteStates.Discussion &&
-            meeting.discussionTimer < GameOptionsManager.Instance.currentNormalGameOptions.DiscussionTime)
-        {
-            ProsecuteButton.SetDisabled();
-        }
-        else
-        {
-            ProsecuteButton.SetEnabled();
-        }
-
-        ProsecuteButton.voteComplete = meeting.SkipVoteButton.voteComplete;
-    }
-
     [MethodRpc((uint)TownOfSushiRpc.Prosecute, SendImmediately = true)]
-    public static void RpcProsecute(PlayerControl plr)
+    public static void RpcProsecute(PlayerControl plr, byte Victim)
     {
         if (plr.Data.Role is not ProsecutorRole prosecutorRole)
         {
             return;
         }
 
-        if (prosecutorRole.ProsecutionsCompleted >= OptionGroupSingleton<ProsecutorOptions>.Instance.MaxProsecutions)
+        if (prosecutorRole.ProsecutionsCompleted >=
+            OptionGroupSingleton<ProsecutorOptions>.Instance.MaxProsecutions)
         {
             return;
         }
 
         prosecutorRole.HasProsecuted = true;
+        prosecutorRole.ProsecuteVictim = Victim;
     }
-
-    public string GetAdvancedDescription()
-    {
-        return "The Prosecutor is a Crewmate Power role that can Exile a player, applying 5 votes to a player of their choosing. They can also see who voted for who, even if they’re anonymous."
-            + MiscUtils.AppendOptionsText(GetType());
-    }
-
-    [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } = [
-        new("Prosecute (Meeting)",
-            "Exile any player of your choosing, throwing 5 votes on them and ignoring all other votes.",
-            TosRoleIcons.Prosecutor)
-    ];
 }

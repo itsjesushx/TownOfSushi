@@ -13,7 +13,11 @@ public static class LobbyBehaviourPatches
     {
         foreach (var role in GameHistory.AllRoles)
         {
-            if (!role || role is not ITownOfSushiRole tosRole) continue;
+            if (!role || role is not ITownOfSushiRole tosRole)
+            {
+                continue;
+            }
+
             tosRole.LobbyStart();
         }
 

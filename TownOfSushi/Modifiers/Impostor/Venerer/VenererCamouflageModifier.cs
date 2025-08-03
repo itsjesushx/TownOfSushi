@@ -1,6 +1,6 @@
 ﻿using MiraAPI.Events;
 using MiraAPI.GameOptions;
-using TownOfSushi.Events.TosEvents;
+using TownOfSushi.Events.TOSEvents;
 using TownOfSushi.Options.Roles.Impostor;
 using TownOfSushi.Utilities.Appearances;
 using UnityEngine;
@@ -13,6 +13,7 @@ public sealed class VenererCamouflageModifier : ConcealedModifier, IVenererModif
     public override float Duration => OptionGroupSingleton<VenererOptions>.Instance.AbilityDuration;
     public override bool AutoStart => true;
     public bool VisualPriority => true;
+    public override bool VisibleToOthers => true;
 
     public VisualAppearance GetVisualAppearance()
     {
@@ -29,13 +30,13 @@ public sealed class VenererCamouflageModifier : ConcealedModifier, IVenererModif
         appearance.PlayerMaterialColor = Color.grey;
         return appearance;
     }
-    
+
     public override void OnActivate()
     {
         Player.RawSetAppearance(this);
 
-        var TosAbilityEvent = new TosAbilityEvent(AbilityType.VenererCamoAbility, Player);
-        MiraEventManager.InvokeEvent(TosAbilityEvent);
+        var TOSAbilityEvent = new TOSAbilityEvent(AbilityType.VenererCamoAbility, Player);
+        MiraEventManager.InvokeEvent(TOSAbilityEvent);
     }
 
     public override void OnDeactivate()

@@ -8,9 +8,9 @@ using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
-using TownOfSushi.Events.TosEvents;
+using TownOfSushi.Events.TOSEvents;
 using TownOfSushi.Modules;
-using TownOfSushi.Modules.Wiki;
+using TownOfUs.Modules.Wiki;
 using TownOfSushi.Options.Roles.Impostor;
 using TownOfSushi.Roles.Crewmate;
 using TownOfSushi.Utilities;
@@ -18,46 +18,61 @@ using UnityEngine;
 
 namespace TownOfSushi.Roles.Impostor;
 
-public sealed class MinerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IDoomable, ICrewVariant
+public sealed class MinerRole(IntPtr cppPtr)
+    : ImpostorRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant
 {
+    [HideFromIl2Cpp] public List<Vent> Vents { get; set; } = [];
+
+    public void FixedUpdate()
+    {
+        if (Player == null || Player.Data.Role is not MinerRole || Player.HasDied() || !Player.AmOwner ||
+            MeetingHud.Instance || (!HudManager.Instance.UseButton.isActiveAndEnabled &&
+                                    !HudManager.Instance.PetButton.isActiveAndEnabled))
+        {
+            return;
+        }
+
+        HudManager.Instance.KillButton.ToggleVisible(OptionGroupSingleton<MinerOptions>.Instance.MinerKill ||
+                                                     (Player != null && Player.GetModifiers<BaseModifier>()
+                                                         .Any(x => x is ICachedRole)) ||
+                                                     (Player != null && MiscUtils.ImpAliveCount == 1));
+    }
+
+    public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<EngineerTOSRole>());
     public string RoleName => "Miner";
     public string RoleDescription => "From The Top, Make It Drop, That's A Vent";
     public string RoleLongDescription => "Place interconnected vents around the map";
-    public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<EngineerTouRole>());
     public Color RoleColor => TownOfSushiColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorSupport;
-    public DoomableType DoomHintType => DoomableType.Fearmonger;
+
     public CustomRoleConfiguration Configuration => new(this)
     {
         UseVanillaKillButton = true,
-        Icon = TosRoleIcons.Miner,
-        OptionsScreenshot = TosImpAssets.MinerRoleBanner,
-        IntroSound = TosAudio.MineSound,
+        Icon = TOSRoleIcons.Miner,
+        OptionsScreenshot = TOSImpAssets.MinerRoleBanner,
+        IntroSound = TOSAudio.MineSound
     };
-    public void FixedUpdate()
-    {
-        if (Player == null || Player.Data.Role is not JanitorRole || Player.HasDied() || !Player.AmOwner || MeetingHud.Instance || (!HudManager.Instance.UseButton.isActiveAndEnabled && !HudManager.Instance.PetButton.isActiveAndEnabled)) return;
-        HudManager.Instance.KillButton.ToggleVisible(OptionGroupSingleton<MinerOptions>.Instance.MinerKill || (Player != null && Player.GetModifiers<BaseModifier>().Any(x => x is ICachedRole)) || (Player != null && MiscUtils.ImpAliveCount == 1));
-    }
-
-    [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } = [
-        new("Mine",
-            "Place a vent where you are standing. These vents won't connect to already existing vents on the map but with each other.",
-            TosImpAssets.MineSprite)
-    ];
-
-    [HideFromIl2Cpp]
-    public List<Vent> Vents { get; set; } = [];
 
     [HideFromIl2Cpp]
     public StringBuilder SetTabText()
     {
         var stringB = ITownOfSushiRole.SetNewTabText(this);
-        if (OptionGroupSingleton<MinerOptions>.Instance.MineVisibility is MineVisiblityOptions.AfterUse) stringB.Append(CultureInfo.InvariantCulture, $"Vents will only be visible once used");
+        if (OptionGroupSingleton<MinerOptions>.Instance.MineVisibility is MineVisiblityOptions.AfterUse)
+        {
+            stringB.Append(CultureInfo.InvariantCulture, $"Vents will only be visible once used");
+        }
+
         return stringB;
     }
+
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities { get; } =
+    [
+        new("Mine",
+            "Place a vent where you are standing. These vents won't connect to already existing vents on the map but with each other.",
+            TOSImpAssets.MineSprite)
+    ];
 
     public string GetAdvancedDescription()
     {
@@ -90,7 +105,10 @@ public sealed class MinerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfSush
         vent.Id = ventId;
         vent.transform.position = new Vector3(position.x, position.y, zAxis);
 
-        if (miner == null) return;
+        if (miner == null)
+        {
+            return;
+        }
 
         if (miner.Vents.Count > 0)
         {
@@ -111,6 +129,29 @@ public sealed class MinerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfSush
         ShipStatus.Instance.AllVents = allVents.ToArray();
 
         miner.Vents.Add(vent);
+        
+        PlainShipRoom? plainShipRoom = null;
+
+        var allRooms2 = ShipStatus.Instance.FastRooms;
+        foreach (var plainShipRoom2 in allRooms2.Values)
+        {
+            if (plainShipRoom2.roomArea && plainShipRoom2.roomArea.OverlapPoint(vent.transform.position))
+            {
+                plainShipRoom = plainShipRoom2;
+            }
+        }
+        
+        var mapId = (MapNames)GameOptionsManager.Instance.currentNormalGameOptions.MapId;
+        if (TutorialManager.InstanceExists)
+        {
+            mapId = (MapNames)AmongUsClient.Instance.TutorialMapId;
+        }
+
+        if (mapId is MapNames.Polus && plainShipRoom?.RoomId is SystemTypes.Weapons)
+        {
+            vent.gameObject.transform.position = new Vector3(vent.gameObject.transform.position.x,
+                vent.gameObject.transform.position.y, -0.0209f);
+        }
 
         if (ModCompatibility.SubLoaded)
         {
@@ -118,20 +159,24 @@ public sealed class MinerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfSush
             vent.gameObject.AddSubmergedComponent("ElevatorMover"); // just in case elevator vent is not blocked
             if (vent.gameObject.transform.position.y > -7)
             {
-                vent.gameObject.transform.position = new Vector3(vent.gameObject.transform.position.x, vent.gameObject.transform.position.y, 0.03f);
+                vent.gameObject.transform.position = new Vector3(vent.gameObject.transform.position.x,
+                    vent.gameObject.transform.position.y, 0.03f);
             }
             else
             {
-                vent.gameObject.transform.position = new Vector3(vent.gameObject.transform.position.x, vent.gameObject.transform.position.y, 0.0009f);
-                vent.gameObject.transform.localPosition = new Vector3(vent.gameObject.transform.localPosition.x, vent.gameObject.transform.localPosition.y, -0.003f);
+                vent.gameObject.transform.position = new Vector3(vent.gameObject.transform.position.x,
+                    vent.gameObject.transform.position.y, 0.0009f);
+                vent.gameObject.transform.localPosition = new Vector3(vent.gameObject.transform.localPosition.x,
+                    vent.gameObject.transform.localPosition.y, -0.003f);
             }
         }
-        var TosAbilityEvent = new TosAbilityEvent(AbilityType.MinerPlaceVent, player, vent);
-        MiraEventManager.InvokeEvent(TosAbilityEvent);
+
+        var TOSAbilityEvent = new TOSAbilityEvent(AbilityType.MinerPlaceVent, player, vent);
+        MiraEventManager.InvokeEvent(TOSAbilityEvent);
         if (immediate)
         {
-            var TosAbilityEvent2 = new TosAbilityEvent(AbilityType.MinerRevealVent, player, vent);
-            MiraEventManager.InvokeEvent(TosAbilityEvent2);
+            var TOSAbilityEvent2 = new TOSAbilityEvent(AbilityType.MinerRevealVent, player, vent);
+            MiraEventManager.InvokeEvent(TOSAbilityEvent2);
         }
     }
 
@@ -150,8 +195,8 @@ public sealed class MinerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfSush
         {
             vent.myRend.enabled = true;
 
-            var TosAbilityEvent = new TosAbilityEvent(AbilityType.MinerRevealVent, player, vent);
-            MiraEventManager.InvokeEvent(TosAbilityEvent);
+            var TOSAbilityEvent = new TOSAbilityEvent(AbilityType.MinerRevealVent, player, vent);
+            MiraEventManager.InvokeEvent(TOSAbilityEvent);
         }
     }
 }

@@ -14,8 +14,11 @@ public static class UnderdogEvents
     {
         var source = @event.Source;
 
-        // Scavenger already handles it's own Kill timer
-        if (!source.HasModifier<UnderdogModifier>() || source.IsRole<ScavengerRole>()) return;
+        // BountyHunter already handles it's own Kill timer
+        if (!source.HasModifier<UnderdogModifier>() || source.IsRole<BountyHunterRole>())
+        {
+            return;
+        }
 
         source.SetKillTimer(source.GetKillCooldown());
     }
@@ -23,7 +26,11 @@ public static class UnderdogEvents
     [RegisterEvent]
     public static void RoundStartEventHandler(RoundStartEvent @event)
     {
-        if (!PlayerControl.LocalPlayer.HasModifier<UnderdogModifier>() || PlayerControl.LocalPlayer.IsRole<ScavengerRole>()) return;
+        if (!PlayerControl.LocalPlayer.HasModifier<UnderdogModifier>() ||
+            PlayerControl.LocalPlayer.IsRole<BountyHunterRole>())
+        {
+            return;
+        }
 
         PlayerControl.LocalPlayer.SetKillTimer(PlayerControl.LocalPlayer.GetKillCooldown());
     }

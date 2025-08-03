@@ -1,6 +1,6 @@
-﻿using MiraAPI.Modifiers;
+﻿using AuAvengers.Animations;
+using MiraAPI.Modifiers;
 using PowerTools;
-using AuAvengers.Animations;
 using TownOfSushi.Modifiers.Game.Universal;
 using TownOfSushi.Utilities;
 using UnityEngine;
@@ -31,8 +31,15 @@ public static class AnimStore
         var a = prefab.transform.localScale;
         var b = player.transform.localScale;
         var scale = new Vector3(a.x / b.x, a.y / b.y, 1);
-        if (player.HasModifier<GiantModifier>()) scale /= 0.7f;
-        else if (player.HasModifier<MiniModifier>()) scale *= 0.7f;
+        if (player.HasModifier<GiantModifier>())
+        {
+            scale /= 0.7f;
+        }
+        else if (player.HasModifier<MiniModifier>())
+        {
+            scale *= 0.7f;
+        }
+
         spawned.transform.localScale = scale;
 
         var cMat = SetSpriteColourMatch(player, PlayerMat);
@@ -82,14 +89,15 @@ public static class AnimStore
         GameObject prefab,
         bool shouldOffset = true,
         float offsetAmount = 0.8f,
-        float yOffset = -0.575f)
+        float yOffset = -0.575f,
+        float zOffset = 0f)
     {
         var cosmeticsLayer = player.transform.GetChild(2);
         var animation = SpawnAnimPlayer(player, prefab);
         var animationBounceHolder = new GameObject($"A_{prefab.name}");
         animationBounceHolder.transform.SetParent(cosmeticsLayer, false);
         animationBounceHolder.transform.localPosition =
-            new Vector3(0, yOffset + 0.05f, 0f); // -0.04f, 0.575 (but we flip to reverse this)
+            new Vector3(0, yOffset + 0.05f, zOffset); // -0.04f, 0.575 (but we flip to reverse this)
 
         animation.transform.SetParent(animationBounceHolder.transform, true);
         var bounceSync = animation.AddComponent<SpriteAnimNodeSync>();
@@ -104,6 +112,28 @@ public static class AnimStore
         spriteFlipper.DoOffset = shouldOffset;
         spriteFlipper.Offset = offsetAmount;
 
+        return animation;
+    }
+    public static GameObject SpawnFliplessAnimBody(
+        PlayerControl player,
+        GameObject prefab,
+        float yOffset = -0.575f,
+        float zOffset = 0f)
+    {
+        var cosmeticsLayer = player.transform.GetChild(2);
+        var animation = SpawnAnimPlayer(player, prefab);
+        var animationBounceHolder = new GameObject($"A_{prefab.name}");
+        animationBounceHolder.transform.SetParent(cosmeticsLayer, false);
+        animationBounceHolder.transform.localPosition =
+            new Vector3(0, yOffset + 0.05f, zOffset); // -0.04f, 0.575 (but we flip to reverse this)
+
+        animation.transform.SetParent(animationBounceHolder.transform, true);
+        var bounceSync = animation.AddComponent<SpriteAnimNodeSync>();
+        var hatParent = animationBounceHolder.transform.parent.GetChild(0).GetComponent<HatParent>();
+
+        bounceSync.NodeId = 1;
+        bounceSync.Parent = hatParent.SpriteSyncNode.Parent;
+        bounceSync.Renderer = bounceSync.ParentRenderer = hatParent.SpriteSyncNode.Renderer;
         return animation;
     }
 

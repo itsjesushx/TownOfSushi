@@ -1,34 +1,36 @@
-﻿using MiraAPI.GameOptions;
+﻿using MiraAPI.Events;
+using MiraAPI.GameOptions;
 using MiraAPI.Utilities.Assets;
-using TownOfSushi.Modules.Anims;
 using Reactor.Utilities.Extensions;
-using TownOfSushi.Options.Roles.Crewmate;
-using UnityEngine;
-using TownOfSushi.Utilities;
+using TownOfSushi.Events.TOSEvents;
+using TownOfSushi.Modules;
+using TownOfSushi.Modules.Anims;
+
 using TownOfSushi.Options;
-using TownOfSushi.Events.TosEvents;
-using MiraAPI.Events;
+using TownOfSushi.Options.Roles.Crewmate;
+using TownOfSushi.Utilities;
+using UnityEngine;
 
 namespace TownOfSushi.Modifiers.Crewmate;
 
 public sealed class MedicShieldModifier(PlayerControl medic) : BaseShieldModifier
 {
-    public override string ModifierName => "Medic Shield";
-    public override LoadableAsset<Sprite>? ModifierIcon => TosRoleIcons.Medic;
-    public override string ShieldDescription => "You are shielded by a Medic!\nYou may not die to other players";
+    public override string ModifierName => $"{TOSLocale.Get(TOSNames.Medic, "Medic")} Shield";
+    public override LoadableAsset<Sprite>? ModifierIcon => TOSRoleIcons.Medic;
+    public override string ShieldDescription => $"You are shielded by a {TOSLocale.Get(TOSNames.Medic, "Medic")} !\nYou may not die to other players";
     public PlayerControl Medic { get; } = medic;
     public GameObject? MedicShield { get; set; }
+    public bool ShowShield { get; set; }
+
     public override bool HideOnUi
     {
         get
         {
             var showShielded = OptionGroupSingleton<MedicOptions>.Instance.ShowShielded;
-            var showShieldedEveryone = showShielded == MedicOption.Everyone;
-            var showShieldedSelf = PlayerControl.LocalPlayer.PlayerId == Player.PlayerId &&
-                (showShielded is MedicOption.Shielded or MedicOption.ShieldedAndMedic);
-            return !TownOfSushiPlugin.ShowShieldHud.Value && (!showShieldedSelf || !showShieldedEveryone);
+            return !TownOfSushiPlugin.ShowShieldHud.Value || (showShielded is MedicOption.Medic or MedicOption.Nobody);
         }
     }
+
     public override bool VisibleSymbol
     {
         get
@@ -36,29 +38,35 @@ public sealed class MedicShieldModifier(PlayerControl medic) : BaseShieldModifie
             var showShielded = OptionGroupSingleton<MedicOptions>.Instance.ShowShielded;
             var showShieldedEveryone = showShielded == MedicOption.Everyone;
             var showShieldedSelf = PlayerControl.LocalPlayer.PlayerId == Player.PlayerId &&
-                (showShielded is MedicOption.Shielded or MedicOption.ShieldedAndMedic);
+                                   showShielded is MedicOption.Shielded or MedicOption.ShieldedAndMedic;
             return showShieldedSelf || showShieldedEveryone;
         }
     }
 
     public override void OnActivate()
     {
-        var TosAbilityEvent = new TosAbilityEvent(AbilityType.MedicShield, Medic, Player);
-        MiraEventManager.InvokeEvent(TosAbilityEvent);
+        var TOSAbilityEvent = new TOSAbilityEvent(AbilityType.MedicShield, Medic, Player);
+        MiraEventManager.InvokeEvent(TOSAbilityEvent);
 
+        var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
         var showShielded = OptionGroupSingleton<MedicOptions>.Instance.ShowShielded;
 
         var showShieldedEveryone = showShielded == MedicOption.Everyone;
         var showShieldedSelf = PlayerControl.LocalPlayer.PlayerId == Player.PlayerId &&
-            (showShielded is MedicOption.Shielded or MedicOption.ShieldedAndMedic);
+                               showShielded is MedicOption.Shielded or MedicOption.ShieldedAndMedic;
         var showShieldedMedic = PlayerControl.LocalPlayer.PlayerId == Medic.PlayerId &&
-                 (showShielded is MedicOption.Medic or MedicOption.ShieldedAndMedic);
+                                showShielded is MedicOption.Medic or MedicOption.ShieldedAndMedic;
 
-        if (showShieldedEveryone || showShieldedSelf || showShieldedMedic || (PlayerControl.LocalPlayer.HasDied() && OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow))
-        {
-            MedicShield = AnimStore.SpawnAnimBody(Player, TosAssets.MedicShield.LoadAsset(), false, -1.1f, -0.1f)!;
-        }
+        var body = UnityEngine.Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x =>
+            x.ParentId == PlayerControl.LocalPlayer.PlayerId && !TutorialManager.InstanceExists);
+        var fakePlayer = FakePlayer.FakePlayers.FirstOrDefault(x =>
+            x.PlayerId == PlayerControl.LocalPlayer.PlayerId && !TutorialManager.InstanceExists);
+        
+        ShowShield = showShieldedEveryone || showShieldedSelf || showShieldedMedic || (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body);
+        
+        MedicShield = AnimStore.SpawnAnimBody(Player, TOSAssets.MedicShield.LoadAsset(), false, -1.1f, -0.1f, 1.5f)!;
     }
+
     public override void OnDeactivate()
     {
         if (MedicShield?.gameObject != null)
@@ -66,11 +74,12 @@ public sealed class MedicShieldModifier(PlayerControl medic) : BaseShieldModifie
             MedicShield.gameObject.Destroy();
         }
     }
+
     public override void Update()
     {
         if (!MeetingHud.Instance && MedicShield?.gameObject != null)
         {
-            MedicShield?.SetActive(!Player.IsConcealed() && IsVisible);
+            MedicShield?.SetActive(!Player.IsConcealed() && IsVisible && ShowShield);
         }
     }
 }

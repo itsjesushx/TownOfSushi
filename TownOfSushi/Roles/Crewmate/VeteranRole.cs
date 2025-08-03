@@ -2,57 +2,59 @@
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
+using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
-using TownOfSushi.Modules.Wiki;
-using TownOfSushi.Options.Roles.Crewmate;
 
+using TownOfUs.Modules.Wiki;
+using TownOfSushi.Options.Roles.Crewmate;
 using TownOfSushi.Utilities;
 using UnityEngine;
 
 namespace TownOfSushi.Roles.Crewmate;
 
-public sealed class VeteranRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRole, IWikiDiscoverable, IDoomable
+public sealed class VeteranRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCrewRole, IWikiDiscoverable
 {
-    public string RoleName => "Veteran";
+    public override bool IsAffectedByComms => false;
+
+    public int Alerts { get; set; }
+    public string RoleName => TOSLocale.Get(TOSNames.Veteran, "Veteran");
     public string RoleDescription => "Alert To Kill Anyone Who Interacts With You";
     public string RoleLongDescription => "Alert to kill whoever who interacts with you.";
     public Color RoleColor => TownOfSushiColors.Veteran;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateKilling;
-    public DoomableType DoomHintType => DoomableType.Trickster;
-    public override bool IsAffectedByComms => false;
     public bool IsPowerCrew => Alerts > 0; // Stop end game checks if the veteran can still alert
+
     public CustomRoleConfiguration Configuration => new(this)
     {
-        Icon = TosRoleIcons.Veteran,
-        IntroSound = CustomRoleUtils.GetIntroSound(RoleTypes.Impostor),
+        Icon = TOSRoleIcons.Veteran,
+        IntroSound = CustomRoleUtils.GetIntroSound(RoleTypes.Impostor)
     };
-
-    public int Alerts { get; set; }
-
-    public override void Initialize(PlayerControl player)
-    {
-        RoleBehaviourStubs.Initialize(this, player);
-        Alerts = (int)OptionGroupSingleton<VeteranOptions>.Instance.MaxNumAlerts;
-    }
 
     [HideFromIl2Cpp]
     public StringBuilder SetTabText()
     {
         return ITownOfSushiRole.SetNewTabText(this);
     }
-    
+
     public string GetAdvancedDescription()
     {
         return
-            "The Veteran is a Crewmate Killing role that can go on alert and kill anyone who interacts with them."
+            $"The {RoleName} is a Crewmate Killing role that can go on alert and kill anyone who interacts with them."
             + MiscUtils.AppendOptionsText(GetType());
     }
-    
+
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } = [
+    public List<CustomButtonWikiDescription> Abilities { get; } =
+    [
         new("Alert",
-            $"When the Veteran is on alert, any player who interacts with them will be instantly killed, with the exception of Pestilence and shielded players, who will ignore the attack.",
-            TosCrewAssets.AlertSprite),
+            $"When the {TOSLocale.Get(TOSNames.Veteran, "Veteran")} is on alert, any player who interacts with them will be instantly killed, with the exception of Pestilence and shielded players, who will ignore the attack.",
+            TOSCrewAssets.AlertSprite)
     ];
+
+    public override void Initialize(PlayerControl player)
+    {
+        RoleBehaviourStubs.Initialize(this, player);
+        Alerts = (int)OptionGroupSingleton<VeteranOptions>.Instance.MaxNumAlerts;
+    }
 }

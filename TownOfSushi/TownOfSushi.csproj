@@ -1,14 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <LangVersion>latest</LangVersion>
-        <Description>Town Of Sushi</Description>
+        <Description>Town of Sushi</Description>
+        <RootNamespace>TownOfSushi</RootNamespace>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     </PropertyGroup>
 
     <ItemGroup>
-        <EmbeddedResource Include="Resources\**\*.*" />
+        <EmbeddedResource Include="Resources\**\*.*"/>
     </ItemGroup>
 
-    <Import Project="../AmongUs.props" />
+    <Import Project="../AmongUs.props"/>
 
 </Project>

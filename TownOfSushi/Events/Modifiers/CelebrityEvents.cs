@@ -3,8 +3,11 @@ using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Meeting;
 using MiraAPI.Events.Vanilla.Player;
 using MiraAPI.Modifiers;
+using MiraAPI.Utilities;
+using Reactor.Utilities;
 using TownOfSushi.Modifiers.Game.Crewmate;
 using TownOfSushi.Utilities;
+using UnityEngine;
 
 namespace TownOfSushi.Events.Modifiers;
 
@@ -18,18 +21,33 @@ public static class CelebrityEvents
 
         if (target.HasModifier<CelebrityModifier>())
         {
-            if (!MeetingHud.Instance) CelebrityModifier.CelebrityKilled(source, target);
+            var celeb = target.GetModifier<CelebrityModifier>()!;
+
+            Coroutines.Start(MiscUtils.CoFlash(TownOfSushiColors.Celebrity, PlaySound: true));
+
+            var notif1 = Helpers.CreateAndShowNotification(
+            $"<b>{TownOfSushiColors.Celebrity.ToTextColor()}The Celebrity, {celeb.Player.Data.PlayerName}, has been killed! Everyone will get info at the start of the meeting</b></color>", Color.white,
+            new Vector3(0f, 1f, -20f), spr: TOSModifierIcons.Celebrity.LoadAsset());
+            notif1.Text.SetOutlineThickness(0.35f);
+
+            if (!MeetingHud.Instance)
+            {
+                CelebrityModifier.CelebrityKilled(source, target);
+            }
             else
             {
-                var celeb = target.GetModifier<CelebrityModifier>()!;
                 celeb.Announced = true;
             }
         }
     }
-     [RegisterEvent]
+
+    [RegisterEvent]
     public static void PlayerDeathEventHandler(PlayerDeathEvent @event)
     {
-        if (@event.DeathReason != DeathReason.Exile) return;
+        if (@event.DeathReason != DeathReason.Exile)
+        {
+            return;
+        }
 
         if (@event.Player.TryGetModifier<CelebrityModifier>(out var celeb))
         {
@@ -42,7 +60,8 @@ public static class CelebrityEvents
     {
         if (@event.Reporter.AmOwner)
         {
-            var celebrity = ModifierUtils.GetActiveModifiers<CelebrityModifier>(x => x.Player.HasDied() && !x.Announced).FirstOrDefault();
+            var celebrity = ModifierUtils.GetActiveModifiers<CelebrityModifier>(x => x.Player.HasDied() && !x.Announced)
+                .FirstOrDefault();
             if (celebrity != null)
             {
                 var milliSeconds = (float)(DateTime.UtcNow - celebrity.DeathTime).TotalMilliseconds;
@@ -51,11 +70,16 @@ public static class CelebrityEvents
             }
         }
     }
+
     [RegisterEvent]
     public static void WrapUpEvent(EjectionEvent @event)
     {
         var player = @event.ExileController.initData.networkedPlayer?.Object;
-        if (player == null) return;
+        if (player == null)
+        {
+            return;
+        }
+
         if (player.TryGetModifier<CelebrityModifier>(out var celeb))
         {
             celeb.Announced = true;

@@ -1,7 +1,7 @@
 ﻿using MiraAPI.Events;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers.Types;
-using TownOfSushi.Events.TosEvents;
+using TownOfSushi.Events.TOSEvents;
 using TownOfSushi.Options.Roles.Neutral;
 
 namespace TownOfSushi.Modifiers.Neutral;
@@ -17,7 +17,7 @@ public sealed class SurvivorVestModifier : TimedModifier
     {
         base.OnActivate();
 
-        var TosAbilityEvent = new TosAbilityEvent(AbilityType.SurvivorVest, Player);
-        MiraEventManager.InvokeEvent(TosAbilityEvent);
+        var TOSAbilityEvent = new TOSAbilityEvent(AbilityType.SurvivorVest, Player);
+        MiraEventManager.InvokeEvent(TOSAbilityEvent);
     }
 }

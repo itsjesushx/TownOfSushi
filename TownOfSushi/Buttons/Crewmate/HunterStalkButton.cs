@@ -1,13 +1,14 @@
 ﻿using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
-using TownOfSushi.Utilities;
+using MiraAPI.Utilities;
 using MiraAPI.Utilities.Assets;
 using Reactor.Utilities;
 using TownOfSushi.Modifiers.Crewmate;
+using TownOfSushi.Options.Modifiers.Alliance;
 using TownOfSushi.Options.Roles.Crewmate;
 using TownOfSushi.Roles.Crewmate;
+using TownOfSushi.Utilities;
 using UnityEngine;
-using MiraAPI.Utilities;
 
 namespace TownOfSushi.Buttons.Crewmate;
 
@@ -19,7 +20,7 @@ public sealed class HunterStalkButton : TownOfSushiRoleButton<HunterRole, Player
     public override float Cooldown => OptionGroupSingleton<HunterOptions>.Instance.HunterStalkCooldown + MapCooldown;
     public override float EffectDuration => OptionGroupSingleton<HunterOptions>.Instance.HunterStalkDuration;
     public override int MaxUses => (int)OptionGroupSingleton<HunterOptions>.Instance.StalkUses;
-    public override LoadableAsset<Sprite> Sprite => TosCrewAssets.StalkButtonSprite;
+    public override LoadableAsset<Sprite> Sprite => TOSCrewAssets.StalkButtonSprite;
     public int ExtraUses { get; set; }
 
     protected override void OnClick()
@@ -28,17 +29,28 @@ public sealed class HunterStalkButton : TownOfSushiRoleButton<HunterRole, Player
         {
             Logger<TownOfSushiPlugin>.Error("Stalk: Target is null");
             return;
-        }  
-        var notif1 = Helpers.CreateAndShowNotification($"<b>If {Target.Data.PlayerName} uses an ability, you will be able to kill them at any time in the round.</b>", Color.white, new Vector3(0f, 1f, -20f), spr: TosRoleIcons.Hunter.LoadAsset());
+        }
+
+        var notif1 = Helpers.CreateAndShowNotification(
+            $"<b>If {Target.Data.PlayerName} uses an ability, you will be able to kill them at any time in the round.</b>",
+            Color.white, new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Hunter.LoadAsset());
         notif1.Text.SetOutlineThickness(0.35f);
 
         Target.RpcAddModifier<HunterStalkedModifier>(PlayerControl.LocalPlayer);
         OverrideName("Stalking");
     }
+
     public override void OnEffectEnd()
     {
         OverrideName("Stalk");
     }
 
-    public override PlayerControl? GetTarget() => PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
+    public override PlayerControl? GetTarget()
+    {
+        if (!OptionGroupSingleton<LoversOptions>.Instance.LoversKillEachOther && PlayerControl.LocalPlayer.IsLover())
+        {
+            return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance, false, x => !x.IsLover());
+        }
+        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
+    }
 }

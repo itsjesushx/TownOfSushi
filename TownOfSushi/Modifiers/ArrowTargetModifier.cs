@@ -9,15 +9,16 @@ namespace TownOfSushi.Modifiers;
 [MiraIgnore]
 public abstract class ArrowTargetModifier(PlayerControl owner, Color color, float updateInterval) : BaseModifier
 {
+    private readonly float _updateInterval = updateInterval;
+
+    private ArrowBehaviour? _arrow;
+    private DateTime _time = DateTime.UnixEpoch;
+    public ArrowBehaviour? Arrow => _arrow;
     public override string ModifierName => "Arrow Target";
     public override bool Unique => false;
     public override bool HideOnUi => true;
 
     public PlayerControl Owner { get; set; } = owner;
-
-    private ArrowBehaviour? _arrow;
-    private readonly float _updateInterval = updateInterval;
-    private DateTime _time = DateTime.UnixEpoch;
 
     //public override string GetHudString()
     //{
@@ -54,6 +55,12 @@ public abstract class ArrowTargetModifier(PlayerControl owner, Color color, floa
             }
 
             _time = DateTime.UtcNow;
+        }
+        
+        if (Player == null)
+        {
+            ModifierComponent!.RemoveModifier(this);
+            return;
         }
     }
 }

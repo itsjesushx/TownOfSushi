@@ -5,7 +5,7 @@ using TownOfSushi.Roles.Neutral;
 
 namespace TownOfSushi.Options.Roles.Neutral;
 
-public sealed class GuardianAngelOptions : AbstractOptionGroup<ModdedGuardianAngelRole>
+public sealed class GuardianAngelOptions : AbstractOptionGroup<GuardianAngelTOSRole>
 {
     public override string GroupName => "Guardian Angel";
 
@@ -18,14 +18,19 @@ public sealed class GuardianAngelOptions : AbstractOptionGroup<ModdedGuardianAng
     [ModdedNumberOption("Max Number Of Protects", 1, 15, 1, MiraNumberSuffixes.None, "0")]
     public float MaxProtects { get; set; } = 5;
 
-    [ModdedEnumOption("Show Protected Player", typeof(ProtectOptions), ["Guardian Angel", "Self + GA", "Everyone"])]
+    [ModdedEnumOption("Show Protected Player", typeof(ProtectOptions), ["Guardian Angel", "Target + GA", "Everyone"])]
     public ProtectOptions ShowProtect { get; set; } = ProtectOptions.SelfAndGA;
 
     [ModdedEnumOption("On Target Death, GA Becomes", typeof(BecomeOptions))]
     public BecomeOptions OnTargetDeath { get; set; } = BecomeOptions.Amnesiac;
 
+    [ModdedToggleOption("Target Knows GA Exists")]
+    public bool GATargetKnows { get; set; } = true;
+    
     [ModdedToggleOption("GA Knows Targets Role")]
     public bool GAKnowsTargetRole { get; set; } = true;
+    [ModdedToggleOption("Target Knows GA")]
+    public bool TargetKnowsGA { get; set; } = true;
 
     [ModdedNumberOption("Odds Of Target Being Evil", 0f, 100f, 10f, MiraNumberSuffixes.Percent, "0")]
     public float EvilTargetPercent { get; set; } = 20f;
@@ -35,7 +40,7 @@ public enum ProtectOptions
 {
     GA,
     SelfAndGA,
-    Everyone,
+    Everyone
 }
 
 public enum BecomeOptions
@@ -43,6 +48,6 @@ public enum BecomeOptions
     Crew,
     Amnesiac,
     Survivor,
-    Mercenary,
-    Jester,
+    Romantic,
+    Jester
 }

@@ -2,7 +2,7 @@
 using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
 using MiraAPI.Utilities.Assets;
-using TownOfSushi.Modules.Wiki;
+using TownOfUs.Modules.Wiki;
 using TownOfSushi.Options.Modifiers;
 using TownOfSushi.Options.Modifiers.Crewmate;
 using TownOfSushi.Utilities;
@@ -11,18 +11,41 @@ using Random = UnityEngine.Random;
 
 namespace TownOfSushi.Modifiers.Game.Crewmate;
 
-public sealed class BaitModifier : TosGameModifier, IWikiDiscoverable
+public sealed class BaitModifier : TOSGameModifier, IWikiDiscoverable
 {
     public override string ModifierName => "Bait";
-    public override LoadableAsset<Sprite>? ModifierIcon => TosModifierIcons.Bait;
-    public override string GetDescription() => "Force your killer to self-report.";
+    public override string IntroInfo => "You will also force your killer to report your body.";
+    public override LoadableAsset<Sprite>? ModifierIcon => TOSModifierIcons.Bait;
+    public override Color FreeplayFileColor => new Color32(140, 255, 255, 255);
+
     public override ModifierFaction FactionType => ModifierFaction.CrewmatePostmortem;
 
     private static float MinDelay => OptionGroupSingleton<BaitOptions>.Instance.MinDelay;
     private static float MaxDelay => OptionGroupSingleton<BaitOptions>.Instance.MaxDelay;
 
-    public override int GetAssignmentChance() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.BaitChance;
-    public override int GetAmountPerGame() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.BaitAmount;
+    public string GetAdvancedDescription()
+    {
+        return
+            "After you die, your killer will self-report, reporting your body."
+            + MiscUtils.AppendOptionsText(GetType());
+    }
+
+    public List<CustomButtonWikiDescription> Abilities { get; } = [];
+
+    public override string GetDescription()
+    {
+        return "Force your killer to self-report.";
+    }
+
+    public override int GetAssignmentChance()
+    {
+        return (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.BaitChance;
+    }
+
+    public override int GetAmountPerGame()
+    {
+        return (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.BaitAmount;
+    }
 
     public override bool IsModifierValidOn(RoleBehaviour role)
     {
@@ -32,7 +55,9 @@ public sealed class BaitModifier : TosGameModifier, IWikiDiscoverable
     public static IEnumerator CoReportDelay(PlayerControl killer, PlayerControl target)
     {
         if (!killer || !target || killer == target)
+        {
             yield break;
+        }
 
         yield return new WaitForSeconds(Random.RandomRange(MinDelay, MaxDelay));
 
@@ -41,18 +66,11 @@ public sealed class BaitModifier : TosGameModifier, IWikiDiscoverable
             killer.CmdReportDeadBody(target.Data);
 
             var notif1 = Helpers.CreateAndShowNotification(
-                $"<b>{TownOfSushiColors.Bait.ToTextColor()}{target.Data.PlayerName} was a Bait, causing you to self report.</color></b>", Color.white, spr: TosModifierIcons.Bait.LoadAsset());
+                $"<b>{TownOfSushiColors.Bait.ToTextColor()}{target.Data.PlayerName} was a Bait, causing you to self report.</color></b>",
+                Color.white, spr: TOSModifierIcons.Bait.LoadAsset());
 
             notif1.Text.SetOutlineThickness(0.35f);
             notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
         }
     }
-    public string GetAdvancedDescription()
-    {
-        return
-            "After you die, your killer will self-report, reporting your body."
-               + MiscUtils.AppendOptionsText(GetType());
-    }
-
-    public List<CustomButtonWikiDescription> Abilities { get; } = [];
 }

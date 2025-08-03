@@ -3,7 +3,7 @@ using MiraAPI.Events;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
-using TownOfSushi.Events.TosEvents;
+using TownOfSushi.Events.TOSEvents;
 using TownOfSushi.Roles.Impostor;
 using TownOfSushi.Roles.Neutral;
 using TownOfSushi.Utilities;
@@ -16,30 +16,39 @@ public sealed class TraitorCacheModifier : BaseModifier, ICachedRole
     public override string ModifierName => "Traitor";
     public override bool HideOnUi => true;
     public bool ShowCurrentRoleFirst => true;
-    public bool Visible => Player.AmOwner || PlayerControl.LocalPlayer.HasDied() || ModdedGuardianAngelRole.GASeesRoleVisibilityFlag(Player);
+
+    public bool Visible => Player.AmOwner || PlayerControl.LocalPlayer.HasDied() ||
+                           GuardianAngelTOSRole.GASeesRoleVisibilityFlag(Player) || RomanticRole.RomamticSeesRoleVisibilityFlag(Player);
+
     public RoleBehaviour CachedRole => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<TraitorRole>());
 
     public override void OnDeath(DeathReason reason)
     {
         ModifierComponent?.RemoveModifier(this);
     }
+
     public override void OnActivate()
     {
         if (Player.AmOwner)
         {
             var notif1 = Helpers.CreateAndShowNotification(
-                $"<b>{TownOfSushiColors.ImpSoft.ToTextColor()}You are a new role, and you are only guessable as Traitor now!</color></b>", Color.white, spr: TosRoleIcons.Traitor.LoadAsset());
+                $"<b>{TownOfSushiColors.ImpSoft.ToTextColor()}You are a new role, and you are only guessable as Traitor now!</color></b>",
+                Color.white, spr: TOSRoleIcons.Traitor.LoadAsset());
 
             notif1.Text.SetOutlineThickness(0.35f);
             notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
         }
-        var TosAbilityEvent = new TosAbilityEvent(AbilityType.TraitorChangeRole, Player);
-        MiraEventManager.InvokeEvent(TosAbilityEvent);
+
+        var TOSAbilityEvent = new TOSAbilityEvent(AbilityType.TraitorChangeRole, Player);
+        MiraEventManager.InvokeEvent(TOSAbilityEvent);
     }
 
     public override void OnDeactivate()
     {
-        if (Player.IsRole<TraitorRole>()) return;
+        if (Player.IsRole<TraitorRole>())
+        {
+            return;
+        }
 
         Player.RpcChangeRole(RoleId.Get<TraitorRole>(), false);
     }

@@ -5,22 +5,22 @@ using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.Events;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
+using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
-using TownOfSushi.Events.TosEvents;
+using TownOfSushi.Events.TOSEvents;
 using TownOfSushi.Modifiers.Game.Neutral;
 using TownOfSushi.Modifiers.Neutral;
-using TownOfSushi.Modules.Wiki;
+using TownOfUs.Modules.Wiki;
 using TownOfSushi.Options.Roles.Neutral;
-
 using TownOfSushi.Utilities;
 using UnityEngine;
 
 namespace TownOfSushi.Roles.Neutral;
 
-public sealed class VampireRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IDoomable
+public sealed class VampireRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
 {
     public string RoleName => "Vampire";
     public string RoleDescription => "Convert Crewmates And Kill The Rest";
@@ -28,22 +28,17 @@ public sealed class VampireRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSus
     public Color RoleColor => TownOfSushiColors.Vampire;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralKilling;
-    public DoomableType DoomHintType => DoomableType.Death;
+
     public CustomRoleConfiguration Configuration => new(this)
     {
         CanUseVent = OptionGroupSingleton<VampireOptions>.Instance.CanVent,
         IntroSound = CustomRoleUtils.GetIntroSound(RoleTypes.Phantom),
-        Icon = TosRoleIcons.Vampire,
+        Icon = TOSRoleIcons.Vampire,
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
-        MaxRoleCount = 1,
+        MaxRoleCount = 1
     };
+
     public bool HasImpostorVision => OptionGroupSingleton<VampireOptions>.Instance.HasVision;
-    [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } = [
-        new("Bite",
-            "Bite a player. If the bitten player is a Crewmate and you have not exceeded the maximum amount of vampires in a game yet. You convert them into a vampire. Otherwise they just get killed.",
-            TosNeutAssets.BiteSprite)
-    ];
 
     [HideFromIl2Cpp]
     public StringBuilder SetTabText()
@@ -51,7 +46,8 @@ public sealed class VampireRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSus
         var alignment = RoleAlignment.ToDisplayString().Replace("Neutral", "<color=#8A8A8AFF>Neutral");
 
         var stringB = new StringBuilder();
-        stringB.AppendLine(CultureInfo.InvariantCulture, $"{RoleColor.ToTextColor()}You are a<b> {RoleName}.</b></color>");
+        stringB.AppendLine(CultureInfo.InvariantCulture,
+            $"{RoleColor.ToTextColor()}You are a<b> {RoleName}.</b></color>");
         stringB.AppendLine(CultureInfo.InvariantCulture, $"<size=60%>Alignment: <b>{alignment}</color></b></size>");
         stringB.Append("<size=70%>");
         stringB.AppendLine(CultureInfo.InvariantCulture, $"{RoleLongDescription}");
@@ -59,30 +55,53 @@ public sealed class VampireRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSus
         return stringB;
     }
 
+    public bool WinConditionMet()
+    {
+        var vampireCount = CustomRoleUtils.GetActiveRolesOfType<VampireRole>().Count(x => !x.Player.HasDied());
+
+        if (MiscUtils.KillersAliveCount > vampireCount)
+        {
+            return false;
+        }
+
+        return vampireCount >= Helpers.GetAlivePlayers().Count - vampireCount;
+    }
+
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities { get; } =
+    [
+        new("Bite",
+            "Bite a player. If the bitten player is a Crewmate and you have not exceeded the maximum amount of vampires in a game yet. You convert them into a vampire. Otherwise they just get killed.",
+            TOSNeutAssets.BiteSprite)
+    ];
+
     public string GetAdvancedDescription()
     {
-        return "The Vampire is a Neutral Killing role that wins by being the last killer(s) alive. They can bite, changing others into Vampires, or kill players." + MiscUtils.AppendOptionsText(GetType());
+        return
+            "The Vampire is a Neutral Killing role that wins by being the last killer(s) alive. They can bite, changing others into Vampires, or kill players." +
+            MiscUtils.AppendOptionsText(GetType());
     }
+
     public override void Initialize(PlayerControl player)
     {
         RoleBehaviourStubs.Initialize(this, player);
         if (Player.AmOwner)
         {
-            HudManager.Instance.ImpostorVentButton.graphic.sprite = TosNeutAssets.VampVentSprite.LoadAsset();
+            HudManager.Instance.ImpostorVentButton.graphic.sprite = TOSNeutAssets.VampVentSprite.LoadAsset();
             HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(TownOfSushiColors.Vampire);
         }
     }
+
     public override void Deinitialize(PlayerControl targetPlayer)
     {
         RoleBehaviourStubs.Deinitialize(this, targetPlayer);
         if (Player.AmOwner)
         {
-            HudManager.Instance.ImpostorVentButton.graphic.sprite = TosAssets.VentSprite.LoadAsset();
+            HudManager.Instance.ImpostorVentButton.graphic.sprite = TOSAssets.VentSprite.LoadAsset();
             HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(TownOfSushiColors.Impostor);
         }
     }
 
-    //public bool CanChangeRole => false;
     public override bool CanUse(IUsable usable)
     {
         if (!GameManager.Instance.LogicUsables.CanUse(usable, Player))
@@ -90,22 +109,13 @@ public sealed class VampireRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSus
             return false;
         }
 
-        Console console = usable.TryCast<Console>()!;
-        return (console == null) || console.AllowImpostor;
+        var console = usable.TryCast<Console>()!;
+        return console == null || console.AllowImpostor;
     }
 
     public override bool DidWin(GameOverReason gameOverReason)
     {
         return WinConditionMet();
-    }
-
-    public bool WinConditionMet()
-    {
-        var vampireCount = CustomRoleUtils.GetActiveRolesOfType<VampireRole>().Count(x => !x.Player.HasDied());
-
-        if (MiscUtils.KillersAliveCount > vampireCount) return false;
-
-        return vampireCount >= Helpers.GetAlivePlayers().Count - vampireCount;
     }
 
     [MethodRpc((uint)TownOfSushiRpc.VampireBite, SendImmediately = true)]
@@ -117,11 +127,12 @@ public sealed class VampireRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSus
             return;
         }
 
-        var TosAbilityEvent = new TosAbilityEvent(AbilityType.VampireBite, player, target);
-        MiraEventManager.InvokeEvent(TosAbilityEvent);
+        var TOSAbilityEvent = new TOSAbilityEvent(AbilityType.VampireBite, player, target);
+        MiraEventManager.InvokeEvent(TOSAbilityEvent);
 
         target.ChangeRole(RoleId.Get<VampireRole>());
         target.AddModifier<VampireBittenModifier>();
+
         if (OptionGroupSingleton<VampireOptions>.Instance.CanGuessAsNewVamp)
         {
             target.AddModifier<NeutralKillerAssassinModifier>();

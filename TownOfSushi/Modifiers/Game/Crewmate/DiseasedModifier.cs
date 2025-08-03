@@ -1,6 +1,6 @@
 ﻿using MiraAPI.GameOptions;
 using MiraAPI.Utilities.Assets;
-using TownOfSushi.Modules.Wiki;
+using TownOfUs.Modules.Wiki;
 using TownOfSushi.Options.Modifiers;
 using TownOfSushi.Options.Modifiers.Crewmate;
 using TownOfSushi.Utilities;
@@ -8,20 +8,15 @@ using UnityEngine;
 
 namespace TownOfSushi.Modifiers.Game.Crewmate;
 
-public sealed class DiseasedModifier : TosGameModifier, IWikiDiscoverable
+public sealed class DiseasedModifier : TOSGameModifier, IWikiDiscoverable
 {
     public override string ModifierName => "Diseased";
-    public override LoadableAsset<Sprite>? ModifierIcon => TosModifierIcons.Diseased;
-    public override string GetDescription() => "Increase your killer's kill cooldown.";
+    public override string IntroInfo => "You will also extend your killer's cooldown upon death.";
+    public override LoadableAsset<Sprite>? ModifierIcon => TOSModifierIcons.Diseased;
+    public override Color FreeplayFileColor => new Color32(140, 255, 255, 255);
+
     public override ModifierFaction FactionType => ModifierFaction.CrewmatePostmortem;
 
-    public override int GetAssignmentChance() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.DiseasedChance;
-    public override int GetAmountPerGame() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.DiseasedAmount;
-
-    public override bool IsModifierValidOn(RoleBehaviour role)
-    {
-        return base.IsModifierValidOn(role) && role.IsCrewmate();
-    }
     public string GetAdvancedDescription()
     {
         return
@@ -29,4 +24,24 @@ public sealed class DiseasedModifier : TosGameModifier, IWikiDiscoverable
     }
 
     public List<CustomButtonWikiDescription> Abilities { get; } = [];
+
+    public override string GetDescription()
+    {
+        return "Increase your killer's kill cooldown.";
+    }
+
+    public override int GetAssignmentChance()
+    {
+        return (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.DiseasedChance;
+    }
+
+    public override int GetAmountPerGame()
+    {
+        return (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.DiseasedAmount;
+    }
+
+    public override bool IsModifierValidOn(RoleBehaviour role)
+    {
+        return base.IsModifierValidOn(role) && role.IsCrewmate();
+    }
 }

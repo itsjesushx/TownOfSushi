@@ -16,19 +16,20 @@ public sealed class DisperseButton : TownOfSushiButton
     public override float Cooldown => 0.001f + MapCooldown;
     public override int MaxUses => 1;
     public override ButtonLocation Location => ButtonLocation.BottomLeft;
-    public override LoadableAsset<Sprite> Sprite => TosAssets.DisperseSprite;
+    public override LoadableAsset<Sprite> Sprite => TOSAssets.DisperseSprite;
 
     public override bool Enabled(RoleBehaviour? role)
     {
         return PlayerControl.LocalPlayer != null &&
                PlayerControl.LocalPlayer.HasModifier<DisperserModifier>() &&
-                !PlayerControl.LocalPlayer.Data.IsDead;
+               !PlayerControl.LocalPlayer.Data.IsDead;
     }
+
     public override void CreateButton(Transform parent)
     {
         base.CreateButton(parent);
 
-        Button!.usesRemainingSprite.sprite = TosAssets.AbilityCounterVentSprite.LoadAsset();
+        Button!.usesRemainingSprite.sprite = TOSAssets.AbilityCounterVentSprite.LoadAsset();
     }
 
     protected override void OnClick()

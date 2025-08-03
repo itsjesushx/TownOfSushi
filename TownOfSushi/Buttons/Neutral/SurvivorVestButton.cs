@@ -21,7 +21,10 @@ public sealed class SurvivorVestButton : TownOfSushiRoleButton<SurvivorRole>
     public override float Cooldown => OptionGroupSingleton<SurvivorOptions>.Instance.VestCooldown;
     public override float EffectDuration => OptionGroupSingleton<SurvivorOptions>.Instance.VestDuration;
     public override int MaxUses => (int)OptionGroupSingleton<SurvivorOptions>.Instance.MaxVests;
-    public override LoadableAsset<Sprite> Sprite => TosNeutAssets.VestSprite;
+    public override LoadableAsset<Sprite> Sprite => TOSNeutAssets.VestSprite;
 
-    protected override void OnClick() => PlayerControl.LocalPlayer.RpcAddModifier<SurvivorVestModifier>();
+    protected override void OnClick()
+    {
+        PlayerControl.LocalPlayer.RpcAddModifier<SurvivorVestModifier>();
+    }
 }

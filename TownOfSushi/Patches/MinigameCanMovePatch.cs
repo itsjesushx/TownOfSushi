@@ -1,10 +1,12 @@
 ﻿using HarmonyLib;
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
-using MiraAPI.Modifiers;
-using TownOfSushi.Buttons.Modifiers;
-using TownOfSushi.Modifiers.Game.Crewmate;
+using TownOfSushi.Buttons.Crewmate;
 using TownOfSushi.Options.Modifiers.Crewmate;
+using TownOfSushi.Options.Roles.Crewmate;
+using TownOfSushi.Options.Roles.Neutral;
+using TownOfSushi.Roles.Crewmate;
+using TownOfSushi.Roles.Neutral;
 
 namespace TownOfSushi.Patches;
 
@@ -15,16 +17,40 @@ public static class MinigameCanMovePatch
     [HarmonyPrefix]
     public static bool PlayerControlCanMovePatch(PlayerControl __instance, ref bool __result)
     {
-        if (PlayerControl.LocalPlayer == null) return true;
-        if (MeetingHud.Instance) return true;
+        if (PlayerControl.LocalPlayer == null)
+        {
+            return true;
+        }
+
+        if (MeetingHud.Instance)
+        {
+            return true;
+        }
+
         // Only allows Scientist Vitals to allow you to move, not just vitals on the map
-        if (PlayerControl.LocalPlayer.HasModifier<ScientistModifier>() && CustomButtonSingleton<ScientistButton>.Instance.EffectActive &&
-            Minigame.Instance is VitalsMinigame && OptionGroupSingleton<ScientistOptions>.Instance.MoveWithMenu)
+        if (PlayerControl.LocalPlayer.Data.Role is OperativeRole &&
+            CustomButtonSingleton<OperativeButton>.Instance.EffectActive &&
+            Minigame.Instance is VitalsMinigame && OptionGroupSingleton<OperativeOptions>.Instance.MoveWithMenu)
         {
             __result = __instance.moveable;
             return false;
         }
-        if (PlayerControl.LocalPlayer.HasModifier<OperativeModifier>() && ActiveInputManager.currentControlType == ActiveInputManager.InputType.Keyboard && CustomButtonSingleton<SecurityButton>.Instance.EffectActive && CustomButtonSingleton<SecurityButton>.Instance.canMoveWithMinigame)
+
+        if (PlayerControl.LocalPlayer.Data.Role is OperativeRole &&
+            ActiveInputManager.currentControlType == ActiveInputManager.InputType.Keyboard &&
+            CustomButtonSingleton<SecurityButton>.Instance.EffectActive &&
+            CustomButtonSingleton<SecurityButton>.Instance.canMoveWithMinigame)
+        {
+            __result = __instance.moveable;
+            return false;
+        }
+
+        if (PlayerControl.LocalPlayer.Data.Role is TransporterRole && ActiveInputManager.currentControlType == ActiveInputManager.InputType.Keyboard && OptionGroupSingleton<TransporterOptions>.Instance.MoveWithMenu && Minigame.Instance is CustomPlayerMenu)
+        {
+            __result = __instance.moveable;
+            return false;
+        }
+        if (PlayerControl.LocalPlayer.Data.Role is GlitchRole && ActiveInputManager.currentControlType == ActiveInputManager.InputType.Keyboard && OptionGroupSingleton<GlitchOptions>.Instance.MoveWithMenu && Minigame.Instance is CustomPlayerMenu)
         {
             __result = __instance.moveable;
             return false;

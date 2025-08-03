@@ -2,7 +2,7 @@
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using TownOfSushi.Buttons.Neutral;
-using TownOfSushi.Events.TosEvents;
+using TownOfSushi.Events.TOSEvents;
 using TownOfSushi.Options.Roles.Neutral;
 using TownOfSushi.Utilities.Appearances;
 
@@ -14,6 +14,7 @@ public sealed class GlitchMimicModifier(PlayerControl target) : ConcealedModifie
     public override string ModifierName => "Mimic";
     public override bool HideOnUi => true;
     public override bool AutoStart => true;
+    public override bool VisibleToOthers => true;
     public bool VisualPriority => true;
 
     public VisualAppearance GetVisualAppearance()
@@ -24,10 +25,10 @@ public sealed class GlitchMimicModifier(PlayerControl target) : ConcealedModifie
     public override void OnActivate()
     {
         Player.RawSetAppearance(this);
-        var TosAbilityEvent = new TosAbilityEvent(AbilityType.GlitchMimic, Player, target);
-        MiraEventManager.InvokeEvent(TosAbilityEvent);
+        var TOSAbilityEvent = new TOSAbilityEvent(AbilityType.GlitchMimic, Player, target);
+        MiraEventManager.InvokeEvent(TOSAbilityEvent);
     }
-    
+
     public override void OnDeath(DeathReason reason)
     {
         ModifierComponent!.RemoveModifier(this);
@@ -35,9 +36,10 @@ public sealed class GlitchMimicModifier(PlayerControl target) : ConcealedModifie
 
     public override void OnDeactivate()
     {
-        CustomButtonSingleton<GlitchMimicButton>.Instance.SetTimer(OptionGroupSingleton<GlitchOptions>.Instance.MimicCooldown);
+        CustomButtonSingleton<GlitchMimicButton>.Instance.SetTimer(OptionGroupSingleton<GlitchOptions>.Instance
+            .MimicCooldown);
         Player.ResetAppearance();
-        var TosAbilityEvent = new TosAbilityEvent(AbilityType.GlitchUnmimic, Player, target);
-        MiraEventManager.InvokeEvent(TosAbilityEvent);
+        var TOSAbilityEvent = new TOSAbilityEvent(AbilityType.GlitchUnmimic, Player, target);
+        MiraEventManager.InvokeEvent(TOSAbilityEvent);
     }
 }
