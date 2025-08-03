@@ -82,7 +82,6 @@ public static class TownOfSushiColors
     public static Color Diseased => Color.grey;
     public static Color Torch => new(1f, 1f, 0.6f, 1f);
     public static Color ButtonBarry => new(0.7f, 0.2f, 0.8f, 1f);
-    public static Color Flash => new(1f, 0.5f, 0.5f, 1f);
     public static Color Giant => new(1f, 0.7f, 0.3f, 1f);
     public static Color Lover => new(1f, 0.4f, 0.8f, 1f);
     public static Color Sleuth => new(0.5f, 0.2f, 0.2f, 1f);

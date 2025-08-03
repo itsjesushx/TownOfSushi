@@ -13,5 +13,5 @@ public sealed class MiniOptions : AbstractOptionGroup<MiniModifier>
     public override Color GroupColor => TownOfSushiColors.Mini;
 
     [ModdedNumberOption("Mini Speed", 1.05f, 2.5f, 0.05f, MiraNumberSuffixes.Multiplier, "0.00")]
-    public float MiniSpeed { get; set; } = 1.35f;
+    public float MiniSpeed { get; set; } = 1.75f;
 }

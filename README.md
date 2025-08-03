@@ -130,7 +130,6 @@
 - [Tiebreaker](#tiebreaker)  
 - [Administrator](#administrator)  
 - [Drunk](#drunk)  
-- [Flash](#flash)  
 - [Paranoiac](#Paranoiac)  
 - [Sleuth](#sleuth)  
 
@@ -1100,14 +1099,15 @@ They have the same amount of meetings as a regular player.
 | Button Barry | The percentage probability of Button Barry appearing | Percentage | 0% |
 
 -----------------------
-## Flash
+## Mini
 ### **Applied to: All**
-The Flash travels at a faster speed in comparison to a normal player.
+The Mini travels at a faster speed in comparison to a normal player.
+They are also smaller than everyone else.
 ### Game Options
 | Name | Description | Type | Default |
 |----------|:-------------:|:------:|:------:|
-| Flash | The percentage probability of the Flash appearing | Percentage | 0% |
-| Speed | How fast the Flash moves in comparison to normal | Multiplier | 1.25x |
+| Mini Chance | The percentage probability of the Mini appearing | Percentage | 0% |
+| Mini Speed | How fast the Mini moves in comparison to normal | Multiplier | 1.25x |
 
 -----------------------
 

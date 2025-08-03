@@ -227,10 +227,6 @@ public static class AppearanceExtensions
         {
             appearance = playerControl.GetModifier<GiantModifier>()!.GetVisualAppearance()!;
         }
-        else if (playerControl.HasModifier<FlashModifier>())
-        {
-            appearance = playerControl.GetModifier<FlashModifier>()!.GetVisualAppearance();
-        }
 
         return appearance;
     }
