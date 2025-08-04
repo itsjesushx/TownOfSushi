@@ -66,7 +66,7 @@ public partial class TownOfSushiPlugin : BasePlugin, IMiraPlugin
     
     /// <inheritdoc />
     public string OptionsTitleText => "Town of Sushi";
-    public const string DevString = " (Dev 15)";
+    public const string DevString = "";
 
     /// <inheritdoc />
     public ConfigFile GetConfigFile()
@@ -88,7 +88,7 @@ public partial class TownOfSushiPlugin : BasePlugin, IMiraPlugin
     /// </summary>
     public override void Load()
     {
-        ReactorCredits.Register($"TownOfSushi v{Version}{DevString}", "", isPreRelease: true, ReactorCredits.AlwaysShow);
+        ReactorCredits.Register($"TownOfSushi v{Version}{DevString}", "", isPreRelease: false, ReactorCredits.AlwaysShow);
         LocalizationManager.Register(new TaskProvider());
 
         TOSAssets.Initialize();
