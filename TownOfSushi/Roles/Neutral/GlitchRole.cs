@@ -17,7 +17,7 @@ namespace TownOfSushi.Roles.Neutral;
 public sealed class GlitchRole(IntPtr cppPtr)
     : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant
 {
-    public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<SheriffRole>());
+    public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<VigilanteRole>());
     public string RoleName => TOSLocale.Get(TOSNames.Glitch, "Glitch");
     public string RoleDescription => "Murder, Mimic, Hack... Data Lost";
     public string RoleLongDescription => "Murder everyone to win with your abilities!";

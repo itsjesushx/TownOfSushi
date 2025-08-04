@@ -13,7 +13,6 @@ public static class TownOfSushiColors
 
     public static Color Monarch => UseBasic ? Palette.CrewmateBlue : new(1f, 0.5f, 0f, 1f);
     public static Color Mayor => UseBasic ? Palette.CrewmateBlue : new Color(0.44f, 0.31f, 0.66f, 1f);
-    public static Color Sheriff => UseBasic ? Palette.CrewmateBlue : Color.yellow;
     public static Color Engineer => UseBasic ? Palette.CrewmateBlue : new Color(1f, 0.65f, 0.04f, 1f);
     public static Color Swapper => UseBasic ? Palette.CrewmateBlue : new Color(0.4f, 0.9f, 0.4f, 1f);
     public static Color Investigator => UseBasic ? Palette.CrewmateBlue : new Color(0f, 0.7f, 0.7f, 1f);

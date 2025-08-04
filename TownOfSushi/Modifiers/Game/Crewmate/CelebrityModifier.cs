@@ -85,7 +85,7 @@ public sealed class CelebrityModifier : TOSGameModifier, IWikiDiscoverable
         }
         switch (role)
         {
-            case SheriffRole or VeteranRole:
+            case VigilanteRole or VeteranRole:
                 cod = "shot";
                 break;
             case InquisitorRole:

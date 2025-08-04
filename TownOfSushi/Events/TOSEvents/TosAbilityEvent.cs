@@ -78,7 +78,7 @@ public enum AbilityType
     MonarchKnight,
 
     // DetectiveReveal,
-    // SheriffShoot,
+    // VigilanteShoot,
     // TrackerTrack,
     TransporterTransport,
     RomanticProtect,

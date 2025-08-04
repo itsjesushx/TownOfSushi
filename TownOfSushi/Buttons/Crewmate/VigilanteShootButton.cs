@@ -18,16 +18,16 @@ using UnityEngine;
 
 namespace TownOfSushi.Buttons.Crewmate;
 
-public sealed class SheriffShootButton : TownOfSushiRoleButton<SheriffRole, PlayerControl>, IKillButton
+public sealed class VigilanteShootButton : TownOfSushiRoleButton<VigilanteRole, PlayerControl>, IKillButton
 {
     public override string Name => "Shoot";
     public override string Keybind => Keybinds.PrimaryAction;
-    public override Color TextOutlineColor => TownOfSushiColors.Sheriff;
-    public override float Cooldown => OptionGroupSingleton<SheriffOptions>.Instance.KillCooldown + MapCooldown;
-    public override LoadableAsset<Sprite> Sprite => TOSCrewAssets.SheriffShootSprite;
+    public override Color TextOutlineColor => TownOfSushiColors.Vigilante;
+    public override float Cooldown => OptionGroupSingleton<VigilanteOptions>.Instance.KillCooldown + MapCooldown;
+    public override LoadableAsset<Sprite> Sprite => TOSCrewAssets.VigilanteShootSprite;
 
     public bool Usable { get; set; } =
-        OptionGroupSingleton<SheriffOptions>.Instance.FirstRoundUse || TutorialManager.InstanceExists;
+        OptionGroupSingleton<VigilanteOptions>.Instance.FirstRoundUse || TutorialManager.InstanceExists;
 
     public bool FailedShot { get; set; }
 
@@ -44,15 +44,15 @@ public sealed class SheriffShootButton : TownOfSushiRoleButton<SheriffRole, Play
             return;
         }
 
-        var missType = OptionGroupSingleton<SheriffOptions>.Instance.MisfireType;
-        SheriffRole.RpcSheriffMisfire(PlayerControl.LocalPlayer);
+        var missType = OptionGroupSingleton<VigilanteOptions>.Instance.MisfireType;
+        VigilanteRole.RpcVigilanteMisfire(PlayerControl.LocalPlayer);
 
         if (missType is MisfireOptions.Target or MisfireOptions.Both)
         {
             PlayerControl.LocalPlayer.RpcCustomMurder(Target);
         }
 
-        if (missType is MisfireOptions.Sheriff or MisfireOptions.Both)
+        if (missType is MisfireOptions.Vigilante or MisfireOptions.Both)
         {
             PlayerControl.LocalPlayer.RpcCustomMurder(PlayerControl.LocalPlayer);
             DeathHandlerModifier.RpcUpdateDeathHandler(PlayerControl.LocalPlayer, "Suicide", DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetTrue, lockInfo: DeathHandlerOverride.SetTrue);
@@ -61,7 +61,7 @@ public sealed class SheriffShootButton : TownOfSushiRoleButton<SheriffRole, Play
         FailedShot = true;
 
         var notif1 = Helpers.CreateAndShowNotification("<b>You have lost the ability to shoot!</b>", Color.white,
-            spr: TOSRoleIcons.Sheriff.LoadAsset());
+            spr: TOSRoleIcons.Vigilante.LoadAsset());
 
         notif1.Text.SetOutlineThickness(0.35f);
         notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
@@ -87,7 +87,7 @@ public sealed class SheriffShootButton : TownOfSushiRoleButton<SheriffRole, Play
     {
         if (Target == null)
         {
-            Logger<TownOfSushiPlugin>.Error("Sheriff Shoot: Target is null");
+            Logger<TownOfSushiPlugin>.Error("Vigilante Shoot: Target is null");
             return;
         }
 
@@ -102,7 +102,7 @@ public sealed class SheriffShootButton : TownOfSushiRoleButton<SheriffRole, Play
         }
 
         var alignment = RoleAlignment.CrewmateSupport;
-        var options = OptionGroupSingleton<SheriffOptions>.Instance;
+        var options = OptionGroupSingleton<VigilanteOptions>.Instance;
 
         if (Target.Data.Role is ITownOfSushiRole touRole)
         {
@@ -116,11 +116,11 @@ public sealed class SheriffShootButton : TownOfSushiRoleButton<SheriffRole, Play
         // Check for Spy!
         if (Target.Data.Role is SpyRole)
         {
-            if (OptionGroupSingleton<SpyOptions>.Instance.SheriffKillsSpy)
+            if (OptionGroupSingleton<SpyOptions>.Instance.VigilanteKillsSpy)
             {
                 PlayerControl.LocalPlayer.RpcCustomMurder(Target);
 
-                if (!options.SheriffBodyReport)
+                if (!options.VigilanteBodyReport)
                     Coroutines.Start(CoSetBodyReportable(Target.PlayerId));
                 return;
             }
@@ -153,15 +153,7 @@ public sealed class SheriffShootButton : TownOfSushiRoleButton<SheriffRole, Play
                     break;
 
                 case RoleAlignment.NeutralKilling:
-                    if (!options.ShootNeutralKiller)
-                    {
-                        Misfire();
-                    }
-                    else
-                    {
-                        PlayerControl.LocalPlayer.RpcCustomMurder(Target);
-                    }
-
+                    PlayerControl.LocalPlayer.RpcCustomMurder(Target);
                     break;
 
                 case RoleAlignment.NeutralEvil:
@@ -185,7 +177,7 @@ public sealed class SheriffShootButton : TownOfSushiRoleButton<SheriffRole, Play
             PlayerControl.LocalPlayer.RpcCustomMurder(Target);
         }
 
-        if (!OptionGroupSingleton<SheriffOptions>.Instance.SheriffBodyReport)
+        if (!OptionGroupSingleton<VigilanteOptions>.Instance.VigilanteBodyReport)
         {
             Coroutines.Start(CoSetBodyReportable(Target.PlayerId));
         }

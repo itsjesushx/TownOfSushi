@@ -35,9 +35,6 @@ public static class TOSAudio
     public static LoadableAsset<AudioClip> OtherIntroSound { get; } =
         new LoadableAudioResourceAsset($"{AudioPath}.OtherIntro.wav");
 
-    public static LoadableAsset<AudioClip> SheriffIntroSound { get; } =
-        new LoadableAudioResourceAsset($"{AudioPath}.SheriffIntro.wav");
-
     public static LoadableAsset<AudioClip> VigiIntroSound { get; } =
         new LoadableAudioResourceAsset($"{AudioPath}.VigilanteIntro.wav");
 

@@ -19,8 +19,8 @@ public sealed class SpyOptions : AbstractOptionGroup<SpyRole>
     [ModdedToggleOption("Spy Has Impostor Vision")]
     public bool SpyHasImpVision { get; set; } = true;
 
-    [ModdedToggleOption("Spy Can Be Shot By A Sheriff")]
-    public bool SheriffKillsSpy { get; set; } = false;
+    [ModdedToggleOption("Spy Can Be Shot By A Vigilante")]
+    public bool VigilanteKillsSpy { get; set; } = false;
 
     [ModdedToggleOption("Impostors Can Kill Anyone If There Is A Spy")]
     public bool SpyImpsKillEachOther { get; set; } = false;

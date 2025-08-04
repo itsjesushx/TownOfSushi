@@ -52,8 +52,8 @@ public static class TOSCrewAssets
     public static LoadableAsset<Sprite> HunterKillSprite { get; } =
         new LoadableResourceAsset($"{ButtonPath}.HunterKillButton.png");
 
-    public static LoadableAsset<Sprite> SheriffShootSprite { get; } =
-        new LoadableResourceAsset($"{ButtonPath}.SheriffShootButton.png");
+    public static LoadableAsset<Sprite> VigilanteShootSprite { get; } =
+        new LoadableResourceAsset($"{ButtonPath}.VigilanteShootButton.png");
 
     public static LoadableAsset<Sprite> ReviveSprite { get; } =
         new LoadableResourceAsset($"{ButtonPath}.ReviveButton.png");

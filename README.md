@@ -419,13 +419,13 @@ During meetings, the Vigilante can choose to kill someone by guessing their role
 | Vigilante Multiple Kill  | Whether the Vigilante can kill more than once per meeting | Toggle | False |
 | Vigilante Guess Neutral Benign  | Whether the Vigilante can Guess Neutral Benign roles | Toggle | False |
 | Vigilante Guess Neutral Evil  | Whether the Vigilante can Guess Neutral Evil roles | Toggle | False |
-| Vigilante Guess Neutral Killing  | Whether the Vigilante can Guess Neutral Killing roles | Toggle | False |
 | Vigilante Guess After Voting  | Whether the Vigilante can Guess after they have voted | Toggle | False |
 | Vigilante | The percentage probability of the Vigilante appearing | Percentage | 0% |
 | Vigilante Miskill Kills Crewmate | Whether the other player is killed if the Vigilante Misfires | Toggle | False |
 | Vigilante Kills Neutral Evil Roles | Whether the Vigilante is able to kill the Neutral Evil Roles | Toggle | False |
 | Vigilante Kills Neutral Benign Roles | Whether the Vigilante is able to kill the Neutral Benign Roles | Toggle | False |
 | Vigilante Kill Cooldown | The cooldown on the Vigilante's kill button | Time | 25s |
+| Vigilante Safe Shots Count | Amount of chances the Vigilante has before getting punished for a wrong murder | Number | 2 |
 | Vigilante can report who they've killed | Whether the Vigilante is able to report their own kills | Toggle | True |
 
 -----------------------
@@ -433,7 +433,7 @@ During meetings, the Vigilante can choose to kill someone by guessing their role
 ### **Team: Crewmates**
 
 The Hunter is a Crewmate Killing role with the ability to track players and execute them if they do anything suspicious.\ 
-Unlike the Sheriff, the Hunter does not die if they kill an innocent player,\
+Unlike the Vigilante, the Hunter does not die if they kill an innocent player,\
 however the Hunter may only execute players who have given them probable cause.
 ### Game Options
 | Name | Description | Type | Default |
@@ -503,14 +503,14 @@ The Spy looks like an additional Impostor to the Impostors, they can't tell the 
 There are two possibilities (depending on the set options):
 - The Impostors can't kill the Spy (because otherwise their kill button would reveal, who the Spy is)
 - The Impostors can kill the Spy but they can also kill their Impostor partner (if they mistake another Impostor for the Spy)
-You can set whether the Sheriff can kill the Spy or not (in order to keep the lie alive).
+You can set whether the Vigilante can kill the Spy or not (in order to keep the lie alive).
 Impostors don't get the Impostor chat if there's a Spy in game.
 
 ### Game Options
 | Name | Description
 |----------|:-------------:|
 | Spy Spawn Chance |
-| Spy Can Die To Sheriff |
+| Spy Can Die To Vigilante |
 | Impostors Can Kill Anyone If There Is A Spy | This allows the Impostors to kill both the Spy and their Impostor partners
 | Spy Can Enter Vents | Allow the Spy to enter/exit vents (but not actually move to connected vents)
 | Spy Has Impostor Vision | Give the Spy the same vision as the Impostors have
@@ -1281,13 +1281,7 @@ The Saboteur is an Impostor with a passive sabotage cooldown reduction.
 | Reduced Sabotage Bonus | The amount of time removed from the Saboteur's sabotage cooldowns | Time | 10s |
 
 -----------------------
-# Game Mode Settings
-| Name | Description | Type | Default |
-|----------|:-------------:|:------:|:------:|
-| Game Mode | What game mode the next game will be | Classic / All Any / Killing Only | Classic |
-
------------------------
-# Classic Game Mode Settings
+# Neutral Role Count Settings
 | Name | Description | Type | Default |
 |----------|:-------------:|:------:|:------:|
 | Min Neutral Benign Roles | The minimum number of Neutral Benign roles a game can have | Number | 1 |
@@ -1298,20 +1292,7 @@ The Saboteur is an Impostor with a passive sabotage cooldown reduction.
 | Max Neutral Killing Roles | The maximum number of Neutral Killing roles a game can have | Number | 1 |
 
 -----------------------
-# All Any Settings
-| Name | Description | Type | Default |
-|----------|:-------------:|:------:|:------:|
-| Random Number of Impostors | Whether there are a random number of Impostors | Toggle | True |
 
------------------------
-# Killing Only Settings
-| Name | Description | Type | Default |
-|----------|:-------------:|:------:|:------:|
-| Neutral Roles | How many neutrals roles will spawn | Number | 1 |
-| Veteran Count | How many Veterans will spawn | Number | 1 |
-| Vigilante Count | How many Vigilantes will spawn | Number | 1 |
-| Add Pyromaniac | Whether Pyromaniac will be added to the role list | Toggle | True |
-| Add Plaguebearer | Whether Plaguebearer will be added to the role list | Toggle | True |
 -----------------------
 # Map Settings
 | Name | Description | Type | Default |

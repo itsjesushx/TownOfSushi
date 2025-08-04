@@ -102,8 +102,8 @@ public static class TownOfSushiEventHandlers
         CustomButtonSingleton<HunterStalkButton>.Instance.ExtraUses = 0;
         CustomButtonSingleton<HunterStalkButton>.Instance.SetUses((int)OptionGroupSingleton<HunterOptions>.Instance
             .StalkUses);
-        CustomButtonSingleton<SheriffShootButton>.Instance.Usable =
-            OptionGroupSingleton<SheriffOptions>.Instance.FirstRoundUse;
+        CustomButtonSingleton<VigilanteShootButton>.Instance.Usable =
+            OptionGroupSingleton<VigilanteOptions>.Instance.FirstRoundUse;
         CustomButtonSingleton<VeteranAlertButton>.Instance.ExtraUses = 0;
         CustomButtonSingleton<VeteranAlertButton>.Instance.SetUses((int)OptionGroupSingleton<VeteranOptions>.Instance
             .MaxNumAlerts);

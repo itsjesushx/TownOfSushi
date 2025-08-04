@@ -49,7 +49,7 @@ public sealed class ImitatorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfS
         new("Neutral Counterparts",
             $"{TOSLocale.Get(TOSNames.Amnesiac, "Amnesiac")} ⇨ {TOSLocale.Get(TOSNames.Medic, "Medic")} | "
             + "Exe ⇨ Snitch\n"
-            + $"{TOSLocale.Get(TOSNames.Glitch, "Glitch")} ⇨ {TOSLocale.Get(TOSNames.Sheriff, "Sheriff")} | "
+            + $"{TOSLocale.Get(TOSNames.Glitch, "Glitch")} ⇨ {TOSLocale.Get(TOSNames.Vigilante, "Vigilante")} | "
             + "GA ⇨ Cleric | "
             + "Inquis ⇨ Oracle\n"
             + $"{TOSLocale.Get(TOSNames.Jester, "Jester")} ⇨ Plumber | "

@@ -23,22 +23,27 @@ using TownOfSushi.Roles.Impostor;
 using TownOfSushi.Utilities;
 using UnityEngine;
 using TownOfSushi.Options;
+using TownOfSushi.Buttons.Crewmate;
+using MiraAPI.Hud;
+using Reactor.Networking.Attributes;
 
 namespace TownOfSushi.Roles.Crewmate;
 
 public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCrewRole, IWikiDiscoverable
 {
     private MeetingMenu meetingMenu;
-
+    public override bool IsAffectedByComms => false;
+    public bool HasMisfired { get; set; }
     public int MaxKills { get; set; }
     public int SafeShotsLeft { get; set; }
     public string RoleName => "Vigilante";
-    public string RoleDescription => "Kill Impostors If You Can Guess Their Roles";
-    public string RoleLongDescription => "Guess the roles of impostors mid-meeting to kill them!";
+    public string RoleDescription => "Kill evildoers by any means possible";
+    public string RoleLongDescription => "Guess the roles of impostors mid-meeting to kill them! Or shoot them mid round!";
     public Color RoleColor => TownOfSushiColors.Vigilante;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateKilling;
-    public bool IsPowerCrew => MaxKills > 0; // Always disable end game checks with a vigi running around
+    public bool IsPowerCrew => !HasMisfired || MaxKills > 0;
+    // Always disable end game checks if the Vigilante hasn't misfired or if they still have guesses left
 
     public CustomRoleConfiguration Configuration => new(this)
     {
@@ -50,8 +55,36 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCre
     public StringBuilder SetTabText()
     {
         var stringB = ITownOfSushiRole.SetNewTabText(this);
+        var missType = OptionGroupSingleton<VigilanteOptions>.Instance.MisfireType;
+
+        if (CustomButtonSingleton<VigilanteShootButton>.Instance.FailedShot)
+        {
+            stringB.AppendLine(CultureInfo.InvariantCulture, $"<b>You can no longer shoot.</b>");
+        }
+        else
+        {
+            switch (missType)
+            {
+                case MisfireOptions.Both:
+                    stringB.AppendLine(CultureInfo.InvariantCulture, $"<b>Misfiring kills you and your target.</b>");
+                    break;
+                case MisfireOptions.Vigilante:
+                    stringB.AppendLine(CultureInfo.InvariantCulture, $"<b>Misfiring will lead to suicide.</b>");
+                    break;
+                case MisfireOptions.Target:
+                    stringB.AppendLine(CultureInfo.InvariantCulture,
+                        $"<b>Misfiring will lead to your target's death,\nat the cost of your ability to kill. You can still guess.</b>");
+                    break;
+                default:
+                    stringB.AppendLine(CultureInfo.InvariantCulture,
+                        $"<b>Misfiring will prevent you from shooting again. You can still guess.</b>");
+                    break;
+            }
+        }
+
         if (PlayerControl.LocalPlayer.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.GetsPunished)
         {
+            stringB.AppendLine(CultureInfo.InvariantCulture, $"<b>You may shoot without repercussions.</b>");
             stringB.AppendLine(CultureInfo.InvariantCulture, $"You can also guess Crewmates.");
         }
 
@@ -66,6 +99,11 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCre
         return stringB;
     }
 
+    public static void OnRoundStart()
+    {
+        CustomButtonSingleton<VigilanteShootButton>.Instance.Usable = true;
+    }
+
     public string GetAdvancedDescription()
     {
         return
@@ -73,6 +111,14 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCre
             "If they guess correctly, the other player will die. If not, they will die. "
             + MiscUtils.AppendOptionsText(GetType());
     }
+
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities { get; } =
+    [
+        new("Shoot",
+            "Shoot a player to kill them, misfiring if they aren't a Impostor or one of the other selected shootable factions",
+            TOSCrewAssets.VigilanteShootSprite)
+    ];
 
     public override void Initialize(PlayerControl player)
     {
@@ -181,7 +227,7 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCre
             {
                 meetingMenu?.HideButtons();
             }
-            
+
             if (victim.TryGetModifier<OracleBlessedModifier>(out var oracleMod))
             {
                 OracleRole.RpcOracleBlessNotify(oracleMod.Oracle, PlayerControl.LocalPlayer, victim);
@@ -255,8 +301,8 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCre
             return false;
         }
 
-        if (role.IsCrewmate() && !(PlayerControl.LocalPlayer.TryGetModifier<AllianceGameModifier>(out var allyMod) &&
-                                   !allyMod.GetsPunished))
+        if (role.IsCrewmate() && !(PlayerControl.LocalPlayer.TryGetModifier<AllianceGameModifier>(out var allyMod)
+        && !allyMod.GetsPunished))
         {
             return false;
         }
@@ -326,5 +372,22 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCre
         }
 
         return false;
+    }
+    
+    [MethodRpc((uint)TownOfSushiRpc.VigilanteMisfire, SendImmediately = true)]
+    public static void RpcVigilanteMisfire(PlayerControl Vigilante)
+    {
+        if (Vigilante.Data.Role is not VigilanteRole role)
+        {
+            Logger<TownOfSushiPlugin>.Error("RpcVigilanteMisfire - Invalid Vigilante");
+            return;
+        }
+
+        role.HasMisfired = true;
+
+        if (GameHistory.PlayerStats.TryGetValue(Vigilante.PlayerId, out var stats))
+        {
+            stats.IncorrectKills += 1;
+        }
     }
 }

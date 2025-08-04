@@ -66,7 +66,7 @@ public enum TownOfSushiRpc : uint
     ButtonBarry,
     LookoutSeePlayer,
     AnimateNewReveal,
-    SheriffMisfire,
+    VigilanteMisfire,
     WerewolfMaul,
     WiitchSetCursedPlayer,
     MurderCursedPlayer,
