@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
+using TownOfSushi.Modifiers.Crewmate;
 using TownOfSushi.Modifiers.Game.Crewmate;
 using TownOfSushi.Modifiers.Neutral;
 using TownOfSushi.Modules;
@@ -95,6 +96,11 @@ public static class VisionPatch
         if (NerfMe && !PlayerControl.LocalPlayer.HasDied())
         {
             __result /= 2;
+        }
+        // Deputy vision penalty
+        if (player.Object.HasModifier<DeputyLowVisionModifier>())
+        {
+            __result *= 0.40f;
         }
     }
 }

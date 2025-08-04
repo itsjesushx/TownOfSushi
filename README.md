@@ -1,20 +1,5 @@
 > [!NOTE]
 > This mod is NOT for console versions of Among Us and is NOT host only either, please do not ask for a port or a rewrite.
-
------------------------
-
-# Releases
-| Among Us - Version| Mod Version | Link |
-|----------|-------------|-----------------|
-| V2024.10.29s & V2024.10.29e | v2.2.0 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/v2.2.0/TOS.v2.2.0.zip) |
-| V2024.10.29s & V2024.10.29e | v2.0.0 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/v2.0.0/TOS.v2.0.0.zip) |
-| V2024.10.29s & V2024.10.29e | v1.6.0 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/v1.6.0/TOS.v1.6.0.zip) |
-| V2024.10.29s & V2024.10.29e | v1.2.1 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/v1.2.1/TOS.v1.2.1.zip) |
-| V2024.10.29s & V2024.10.29e | v1.2.0 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/v1.2.0/TOS.v1.2.0.zip) |
-| V2024.10.29s & V2024.10.29e | v1.0.0 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/v1.0.0/TownOfSushi.v1.0.0.zip) |
-
------------------------
-
 -----------------------
 
 ### An [Among Us](https://store.steampowered.com/app/945360/Among_Us/) mod that adds a bunch of roles, modifiers, abilities, game settings, quality of life changes and many improvements to the base game.
@@ -274,7 +259,7 @@ If the killer of the inspected player dies, the following round the examine butt
 ### Game Options
 | Name | Description | Type | Default |
 |----------|:-------------:|:------:|:------:|
-| Coroner Chance | The percentage probability of the Investigator appearing | Percentage | 0% |
+| Coroner Chance | The percentage probability of the Coroner appearing | Percentage | 0% |
 | Examine Cooldown | The cooldown of the Coroner's Examine button | Time | 25s |
 | Show Coroner Reports | Whether the Coroner should get information when reporting a body | Toggle | True |
 | Time Where Coroner Reports Will Have Role | If a body has been dead for shorter than this amount, the Coroner's report will contain the killer's role | Time | 15s |

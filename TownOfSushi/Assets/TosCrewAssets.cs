@@ -33,6 +33,9 @@ public static class TOSCrewAssets
     public static LoadableAsset<Sprite> TrackSprite { get; } =
         new LoadableResourceAsset($"{ButtonPath}.TrackButton.png");
 
+    public static LoadableAsset<Sprite> SeerButton { get; } =
+        new LoadableResourceAsset($"{ButtonPath}.SeerButton.png");
+
     public static LoadableAsset<Sprite> TrapSprite { get; } = new LoadableResourceAsset($"{ButtonPath}.TrapButton.png");
 
     public static LoadableAsset<Sprite> CampButtonSprite { get; } =

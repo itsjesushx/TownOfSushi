@@ -7,7 +7,7 @@ public enum TOSNames
     Swooper,
     PuppetMaster,
     Mage,
-    Sandworm,
+    Seer,
     Rcxd,
     Warlock,
     Glitch,
