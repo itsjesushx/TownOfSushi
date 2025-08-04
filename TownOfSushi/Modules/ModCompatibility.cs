@@ -17,6 +17,10 @@ public static class ModCompatibility
 {
     public const string SubmergedGuid = "Submerged";
     public const ShipStatus.MapType SubmergedMapType = (ShipStatus.MapType)6;
+    public static class Classes
+    {
+        public const string ElevatorMover = "ElevatorMover";
+    }
 
     public const string LevelImpostorGuid = "com.DigiWorm.LevelImposter";
     public const ShipStatus.MapType LevelImpostorMapType = (ShipStatus.MapType)7;

@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace TownOfSushi.Options.Modifiers.Universal
 {
-    public sealed class ArmoredOptions : AbstractOptionGroup
+    public sealed class ArmoredOptions : AbstractOptionGroup<ArmoredModifier>
     {
         public override string GroupName => "Armored";
         public override uint GroupPriority => 29;

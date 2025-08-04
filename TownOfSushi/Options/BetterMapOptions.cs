@@ -24,4 +24,7 @@ public sealed class BetterMapOptions : AbstractOptionGroup
 
     [ModdedToggleOption("Polus: Reboot Wifi And Chart Course Swapped")]
     public bool BPSwapWifiAndChart { get; set; } = false;
+
+    [ModdedToggleOption("Polus: Add Custom Specimen Vent")]
+    public bool BPCustomSpeciVent { get; set; } = false;
 }
