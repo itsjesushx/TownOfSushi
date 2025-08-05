@@ -20,7 +20,7 @@ namespace TownOfSushi.Roles.Neutral;
 
 public sealed class PyromaniacRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
 {
-    public string RoleName => TOSLocale.Get(TOSNames.Pyromaniac, "Pyromaniac");
+    public string RoleName => "Pyromaniac";
     public string RoleDescription => "Douse Players And Ignite The Light";
 
     public string RoleLongDescription => OptionGroupSingleton<PyromaniacOptions>.Instance.LegacyPyromaniac

@@ -44,28 +44,28 @@ public sealed class ImitatorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfS
     public List<CustomButtonWikiDescription> Abilities { get; } =
     [
         new("Crewmate Imitation",
-            $"All crewmate roles are available besides Imitator, and Crewmate. {TOSLocale.Get(TOSNames.Politician, "Politician")}, {TOSLocale.Get(TOSNames.Mayor, "Mayor")}, Prosecutor and Jailor are limited," + " as they can only be selected if no other Imitators exist. Jailor and Prosecutor cannot use their meeting abilities, and Vigi does not get safe shots.",
+            $"All crewmate roles are available besides Imitator, and Crewmate. Politician, Mayor, Prosecutor and Jailor are limited," + " as they can only be selected if no other Imitators exist. Jailor and Prosecutor cannot use their meeting abilities, and Vigi does not get safe shots.",
             TOSCrewAssets.InspectSprite),
         new("Neutral Counterparts",
-            $"{TOSLocale.Get(TOSNames.Amnesiac, "Amnesiac")} ⇨ {TOSLocale.Get(TOSNames.Medic, "Medic")} | "
+            $"Amnesiac ⇨ Medic | "
             + "Exe ⇨ Snitch\n"
-            + $"{TOSLocale.Get(TOSNames.Glitch, "Glitch")} ⇨ {TOSLocale.Get(TOSNames.Vigilante, "Vigilante")} | "
+            + $"Glitch ⇨ Vigilante | "
             + "GA ⇨ Cleric | "
             + "Inquis ⇨ Oracle\n"
-            + $"{TOSLocale.Get(TOSNames.Jester, "Jester")} ⇨ Plumber | "
+            + $"Jester ⇨ Plumber | "
             + "Pb/Pest ⇨ Aurial | "
             + "SC ⇨ Medium | "
             + "WW ⇨ Hunter",
             TOSNeutAssets.GuardSprite),
         new("Impostor Counterparts",
-            $"{TOSLocale.Get(TOSNames.Bomber, "Bomber")} ⇨ {TOSLocale.Get(TOSNames.Trapper, "Trapper")} | "
-            + $"Escapist ⇨ {TOSLocale.Get(TOSNames.Transporter, "Transporter")}\n"
+            $"Bomber ⇨ Trapper | "
+            + $"Escapist ⇨ Transporter\n"
             + "Hypnotist ⇨ Lookout | "
             + "Janitor ⇨ Inspector\n"
-            + $"Miner ⇨ {TOSLocale.Get(TOSNames.Engineer, "Engineer")} | "
+            + $"Miner ⇨ Engineer | "
             + "BountyHunter ⇨ Tracker\n"
             + "Undertaker ⇨ Altruist | "
-            + $"Hexblade ⇨ {TOSLocale.Get(TOSNames.Veteran, "Veteran")}",
+            + $"Hexblade ⇨ Veteran",
             TOSImpAssets.DragSprite),
     ];
 

@@ -11,6 +11,6 @@ public static class DiscordStatus
     [HarmonyPrefix]
     public static void Prefix([HarmonyArgument(0)] Activity activity)
     {
-        activity.Details += $" Town of Sushi v{TownOfSushiPlugin.Version}{TownOfSushiPlugin.DevString} MiraAPI v{MiraApiPlugin.Version}";
+        activity.Details += $" Town of Sushi v{TownOfSushiPlugin.Version}{TownOfSushiPlugin.DevString} \nusing MiraAPI v{MiraApiPlugin.Version}";
     }
 }

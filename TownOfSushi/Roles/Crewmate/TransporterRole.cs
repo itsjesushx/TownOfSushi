@@ -27,7 +27,7 @@ namespace TownOfSushi.Roles.Crewmate;
 public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
 {
     public override bool IsAffectedByComms => false;
-    public string RoleName => TOSLocale.Get(TOSNames.Transporter, "Transporter");
+    public string RoleName => "Transporter";
     public string RoleDescription => "Choose Two Players To Swap Locations";
     public string RoleLongDescription => "Choose two players to swap locations with one another";
     public Color RoleColor => TownOfSushiColors.Transporter;
@@ -292,6 +292,12 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
             {
                 return null;
             }
+
+            if (pc.GetModifiers<BaseModifier>().Any(x => x is IUntransportable))
+            {
+                return null;
+            }
+            
             // FAKE PLAYER MUST BE A MONO BEHAVIOUR FOR THIS TO WORK
             /*var fakePlayer = Utilities.MiscUtils.GetFakePlayer(pc)?.body;
 

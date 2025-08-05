@@ -13,7 +13,7 @@ namespace TownOfSushi.Roles.Impostor;
 
 public sealed class SwooperRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
 {
-    public string RoleName => TOSLocale.Get(TOSNames.Swooper, "Swooper");
+    public string RoleName => "Swooper";
     public string RoleDescription => "Turn Invisible Temporarily";
     public string RoleLongDescription => "Turn invisible and sneakily kill";
     public Color RoleColor => TownOfSushiColors.Impostor;

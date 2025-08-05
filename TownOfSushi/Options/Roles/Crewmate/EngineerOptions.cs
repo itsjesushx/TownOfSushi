@@ -9,7 +9,7 @@ namespace TownOfSushi.Options.Roles.Crewmate;
 
 public sealed class EngineerOptions : AbstractOptionGroup<EngineerTOSRole>
 {
-    public override string GroupName => TOSLocale.Get(TOSNames.Engineer, "Engineer");
+    public override string GroupName => "Engineer";
 
     [ModdedNumberOption("Vent Uses Per Game", 0f, 30f, 5f, MiraNumberSuffixes.None, "0", true)]
     public float MaxVents { get; set; } = 0f;

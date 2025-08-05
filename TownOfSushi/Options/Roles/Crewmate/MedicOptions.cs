@@ -9,7 +9,7 @@ namespace TownOfSushi.Options.Roles.Crewmate;
 
 public sealed class MedicOptions : AbstractOptionGroup<MedicRole>
 {
-    public override string GroupName => TOSLocale.Get(TOSNames.Medic, "Medic");
+    public override string GroupName => "Medic";
 
     [ModdedEnumOption("Show Shielded Player", typeof(MedicOption),
         ["Medic", "Shielded", "Shielded + Medic", "Everyone", "No One"])]
@@ -33,13 +33,13 @@ public sealed class MedicOptions : AbstractOptionGroup<MedicRole>
     [ModdedToggleOption("Show Reports in Chat")]
     public bool ShowReports { get; set; } = true;
 
-    public ModdedNumberOption MedicReportNameDuration { get; } = new($"Time Where {TOSLocale.Get(TOSNames.Medic, "Medic")} Will Have Name", 0f, 0f, 60f,
+    public ModdedNumberOption MedicReportNameDuration { get; } = new($"Time Where Medic Will Have Name", 0f, 0f, 60f,
         2.5f, MiraNumberSuffixes.Seconds)
     {
         Visible = () => OptionGroupSingleton<MedicOptions>.Instance.ShowReports
     };
 
-    public ModdedNumberOption MedicReportColorDuration { get; } = new($"Time Where {TOSLocale.Get(TOSNames.Medic, "Medic")} Will Have Color Type", 15, 0f,
+    public ModdedNumberOption MedicReportColorDuration { get; } = new($"Time Where Medic Will Have Color Type", 15, 0f,
         60f, 2.5f, MiraNumberSuffixes.Seconds)
     {
         Visible = () => OptionGroupSingleton<MedicOptions>.Instance.ShowReports

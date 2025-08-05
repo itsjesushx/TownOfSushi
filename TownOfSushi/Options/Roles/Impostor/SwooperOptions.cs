@@ -8,7 +8,7 @@ namespace TownOfSushi.Options.Roles.Impostor;
 
 public sealed class SwooperOptions : AbstractOptionGroup<SwooperRole>
 {
-    public override string GroupName => TOSLocale.Get(TOSNames.Swooper, "Swooper");
+    public override string GroupName => "Swooper";
 
     [ModdedNumberOption("Swoop Uses Per Round", 0f, 10f, 1f, MiraNumberSuffixes.None, "0", true)]
     public float MaxSwoops { get; set; } = 0f;

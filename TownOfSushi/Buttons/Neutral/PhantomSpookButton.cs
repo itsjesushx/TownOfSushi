@@ -39,7 +39,7 @@ public sealed class PhantomSpookButton : TownOfSushiButton
             {
                 playerMenu.ForceClose();
 
-                if (plr != null)
+                if (plr != null && ModifierUtils.GetActiveModifiers<MisfortuneTargetModifier>().Any())
                 {
                     PlayerControl.LocalPlayer.RpcCustomMurder(plr, teleportMurderer: false);
                     DeathHandlerModifier.RpcUpdateDeathHandler(plr, "Spooked", DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetTrue, $"By {PlayerControl.LocalPlayer.Data.PlayerName}", lockInfo: DeathHandlerOverride.SetTrue);

@@ -1,7 +1,6 @@
 using AmongUs.GameOptions;
 using HarmonyLib;
 using Reactor.Localization.Utilities;
-using UnityEngine;
 
 namespace TownOfSushi.Patches.Misc;
 
@@ -14,17 +13,5 @@ public static class LogoPatch
             CustomStringName.CreateAndRegister("Crewmate Ghost");
         RoleManager.Instance.GetRole(RoleTypes.ImpostorGhost).StringName =
             CustomStringName.CreateAndRegister("Impostor Ghost");
-
-        var newLogo = GameObject.Find("LOGO-AU");
-        var sizer = GameObject.Find("Sizer");
-        if (newLogo != null)
-        {
-            newLogo.GetComponent<SpriteRenderer>().sprite = TOSAssets.Banner.LoadAsset();
-        }
-
-        if (sizer != null)
-        {
-            sizer.GetComponent<AspectSize>().PercentWidth = 0.3f;
-        }
     }
 }

@@ -28,7 +28,7 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
     : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant
 {
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<MysticRole>());
-    public string RoleName => TOSLocale.Get(TOSNames.Amnesiac, "Amnesiac");
+    public string RoleName => "Amnesiac";
     public string RoleDescription => "Remember A Role Of A Deceased Player";
     public string RoleLongDescription => "Wait for a meeting to end to remember and become a new role";
     public Color RoleColor => TownOfSushiColors.Amnesiac;

@@ -9,7 +9,7 @@ namespace TownOfSushi.Options.Roles.Impostor;
 
 public sealed class BomberOptions : AbstractOptionGroup<BomberRole>
 {
-    public override string GroupName => TOSLocale.Get(TOSNames.Bomber, "Bomber");
+    public override string GroupName => "Bomber";
 
     [ModdedNumberOption("Bomb Uses Per Game", 0f, 15f, 1f, MiraNumberSuffixes.None, "0", true)]
     public float MaxBombs { get; set; } = 3f;

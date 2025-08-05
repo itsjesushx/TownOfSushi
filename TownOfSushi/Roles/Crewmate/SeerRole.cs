@@ -9,7 +9,7 @@ namespace TownOfSushi.Roles.Crewmate;
 
 public sealed class SeerRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
 {
-    public string RoleName => TOSLocale.Get(TOSNames.Seer, "Seer");
+    public string RoleName => "Seer";
     public string RoleDescription => "Check the faction of 2 players";
     public string RoleLongDescription => "Check the faction of 2 players to see if they match";
     public Color RoleColor => TownOfSushiColors.Detective;

@@ -22,7 +22,7 @@ namespace TownOfSushi.Roles.Crewmate;
 public sealed class EngineerTOSRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
 {
     public override bool IsAffectedByComms => false;
-    public string RoleName => TOSLocale.Get(TOSNames.Engineer, "Engineer");
+    public string RoleName => "Engineer";
     public string RoleDescription => "Maintain Important Systems On The Ship";
     public string RoleLongDescription => "Vent around and fix sabotages remotely";
     public Color RoleColor => TownOfSushiColors.Engineer;

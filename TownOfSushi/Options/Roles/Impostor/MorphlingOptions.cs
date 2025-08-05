@@ -8,7 +8,7 @@ namespace TownOfSushi.Options.Roles.Impostor;
 
 public sealed class MorphlingOptions : AbstractOptionGroup<MorphlingRole>
 {
-    public override string GroupName => TOSLocale.Get(TOSNames.Morphling, "Morphling");
+    public override string GroupName => "Morphling";
 
     [ModdedNumberOption("Samples Per Game", 0f, 15f, 5f, MiraNumberSuffixes.None, "0", true)]
     public float MaxSamples { get; set; } = 0f;

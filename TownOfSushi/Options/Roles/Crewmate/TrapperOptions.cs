@@ -9,7 +9,7 @@ namespace TownOfSushi.Options.Roles.Crewmate;
 
 public sealed class TrapperOptions : AbstractOptionGroup<TrapperRole>
 {
-    public override string GroupName => TOSLocale.Get(TOSNames.Trapper, "Trapper");
+    public override string GroupName => "Trapper";
 
     [ModdedNumberOption("Trap Cooldown", 1f, 30f, 1f, MiraNumberSuffixes.Seconds)]
     public float TrapCooldown { get; set; } = 20f;

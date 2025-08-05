@@ -17,7 +17,7 @@ public sealed class VeteranRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCrewR
     public override bool IsAffectedByComms => false;
 
     public int Alerts { get; set; }
-    public string RoleName => TOSLocale.Get(TOSNames.Veteran, "Veteran");
+    public string RoleName => "Veteran";
     public string RoleDescription => "Alert To Kill Anyone Who Interacts With You";
     public string RoleLongDescription => "Alert to kill whoever who interacts with you.";
     public Color RoleColor => TownOfSushiColors.Veteran;
@@ -48,7 +48,7 @@ public sealed class VeteranRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCrewR
     public List<CustomButtonWikiDescription> Abilities { get; } =
     [
         new("Alert",
-            $"When the {TOSLocale.Get(TOSNames.Veteran, "Veteran")} is on alert, any player who interacts with them will be instantly killed, with the exception of Pestilence and shielded players, who will ignore the attack.",
+            $"When the Veteran is on alert, any player who interacts with them will be instantly killed, with the exception of Pestilence and shielded players, who will ignore the attack.",
             TOSCrewAssets.AlertSprite)
     ];
 

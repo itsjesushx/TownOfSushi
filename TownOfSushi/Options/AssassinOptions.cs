@@ -29,9 +29,9 @@ public sealed class AssassinOptions : AbstractOptionGroup
             Visible = () => OptionGroupSingleton<AssassinOptions>.Instance.NumberOfNeutralAssassins > 0
         };
 
-    public ModdedToggleOption AmneTurnImpAssassin { get; } = new($"{TOSLocale.Get(TOSNames.Amnesiac, "Amnesiac")} Turned Impostor Gets Ability", true);
+    public ModdedToggleOption AmneTurnImpAssassin { get; } = new($"Amnesiac Turned Impostor Gets Ability", true);
 
-    public ModdedToggleOption AmneTurnNeutAssassin { get; } = new($"{TOSLocale.Get(TOSNames.Amnesiac, "Amnesiac")} Turned Neutral Killing Gets Ability", true);
+    public ModdedToggleOption AmneTurnNeutAssassin { get; } = new($"Amnesiac Turned Neutral Killing Gets Ability", true);
 
     [ModdedToggleOption("Traitor Gets Ability")]
     public bool TraitorCanAssassin { get; set; } = true;

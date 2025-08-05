@@ -15,9 +15,9 @@ namespace TownOfSushi.Modifiers.Crewmate;
 
 public sealed class MedicShieldModifier(PlayerControl medic) : BaseShieldModifier
 {
-    public override string ModifierName => $"{TOSLocale.Get(TOSNames.Medic, "Medic")} Shield";
+    public override string ModifierName => $"Medic Shield";
     public override LoadableAsset<Sprite>? ModifierIcon => TOSRoleIcons.Medic;
-    public override string ShieldDescription => $"You are shielded by a {TOSLocale.Get(TOSNames.Medic, "Medic")} !\nYou may not die to other players";
+    public override string ShieldDescription => $"You are shielded by a Medic !\nYou may not die to other players";
     public PlayerControl Medic { get; } = medic;
     public GameObject? MedicShield { get; set; }
     public bool ShowShield { get; set; }

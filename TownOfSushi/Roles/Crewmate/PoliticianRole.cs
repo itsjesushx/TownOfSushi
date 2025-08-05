@@ -23,9 +23,9 @@ public sealed class PoliticianRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCr
     public override bool IsAffectedByComms => false;
 
     public bool CanCampaign { get; set; } = true;
-    public string RoleName => TOSLocale.Get(TOSNames.Politician, "Politician");
-    public string RoleDescription => $"Campaign To Become The {TOSLocale.Get(TOSNames.Mayor, "Mayor")}!";
-    public string RoleLongDescription => $"Spread your campaign to become the {TOSLocale.Get(TOSNames.Mayor, "Mayor")}!";
+    public string RoleName => "Politician";
+    public string RoleDescription => $"Campaign To Become The Mayor!";
+    public string RoleLongDescription => $"Spread your campaign to become the Mayor!";
     public Color RoleColor => TownOfSushiColors.Politician;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmatePower;
@@ -54,7 +54,7 @@ public sealed class PoliticianRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCr
     public string GetAdvancedDescription()
     {
         return
-            $"The {RoleName} is a Crewmate Power role that can reveal themselves to the crew as the {TOSLocale.Get(TOSNames.Mayor, "Mayor")}, given that they have campaigned at least half of the crewmates."
+            $"The {RoleName} is a Crewmate Power role that can reveal themselves to the crew as the Mayor, given that they have campaigned at least half of the crewmates."
             + MiscUtils.AppendOptionsText(GetType());
     }
 
@@ -65,7 +65,7 @@ public sealed class PoliticianRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCr
             "Give a player a ballot, which will only be useful to you if they are a Crewmate.",
             TOSCrewAssets.CampaignButtonSprite),
         new("Reveal (Meeting)",
-            $"If you reveal and you have more than half of the crewmates campaigned (or no other crewmates remain), you will become the {TOSLocale.Get(TOSNames.Mayor, "Mayor")}! Otherwise, your ability will fail and you " +
+            $"If you reveal and you have more than half of the crewmates campaigned (or no other crewmates remain), you will become the Mayor! Otherwise, your ability will fail and you " +
             (OptionGroupSingleton<PoliticianOptions>.Instance.PreventCampaign ? "cannot" : "can") +
             " campaign the following round.",
             TOSAssets.RevealCleanSprite)

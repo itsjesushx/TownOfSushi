@@ -8,7 +8,7 @@ namespace TownOfSushi.Options.Roles.Crewmate;
 
 public sealed class TransporterOptions : AbstractOptionGroup<TransporterRole>
 {
-    public override string GroupName => TOSLocale.Get(TOSNames.Transporter, "Transporter");
+    public override string GroupName => "Transporter";
 
     [ModdedNumberOption("Transport Cooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float TransporterCooldown { get; set; } = 25f;

@@ -13,7 +13,7 @@ namespace TownOfSushi.Roles.Neutral;
 
 public sealed class EclipsalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
 {
-    public string RoleName => TOSLocale.Get(TOSNames.Eclipsal, "Eclipsal");
+    public string RoleName => "Eclipsal";
     public string RoleDescription => "Block Out The Light";
     public string RoleLongDescription => "Make crewmates unable to see, slowly returning their vision to normal.";
     public Color RoleColor => TownOfSushiColors.Eclipsal;

@@ -39,7 +39,7 @@ public sealed class TraitorRole(IntPtr cppPtr)
     public string GetAdvancedDescription()
     {
         return
-            $"The Traitor is an Impostor Killing role that spawns after a meeting, in which the spawn conditions are suitable. The Traitor will never be a {TOSLocale.Get(TOSNames.Mayor, "Mayor")}, and must be a crewmate. The Traitor sets out to win the game for the fallen Impostors, and kill off the crew. They are also able to change to a better role."
+            $"The Traitor is an Impostor Killing role that spawns after a meeting, in which the spawn conditions are suitable. The Traitor will never be a Mayor, and must be a crewmate. The Traitor sets out to win the game for the fallen Impostors, and kill off the crew. They are also able to change to a better role."
             + MiscUtils.AppendOptionsText(GetType());
     }
 

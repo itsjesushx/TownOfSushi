@@ -8,7 +8,7 @@ namespace TownOfSushi.Options.Roles.Neutral;
 
 public sealed class JesterOptions : AbstractOptionGroup<JesterRole>
 {
-    public override string GroupName => TOSLocale.Get(TOSNames.Jester, "Jester");
+    public override string GroupName => "Jester";
 
     [ModdedToggleOption("Can Use Button")]
     public bool CanButton { get; set; } = true;

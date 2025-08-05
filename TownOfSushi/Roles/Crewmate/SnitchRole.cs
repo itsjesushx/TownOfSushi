@@ -43,7 +43,7 @@ public sealed class SnitchRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSus
             _snitchArrows.ToList().ForEach(arrow => arrow.Value.target = arrow.Value.transform.parent.position);
         }
     }
-    public string RoleName => TOSLocale.Get(TOSNames.Snitch, "Snitch");
+    public string RoleName => "Snitch";
     public string RoleDescription => "Find the <color=#FF0000FF>Impostors</color>!";
 
     public string RoleLongDescription =>

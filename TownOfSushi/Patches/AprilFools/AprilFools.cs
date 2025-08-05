@@ -37,7 +37,7 @@ public static class AprilFoolsPatches
             aprilfoolstoggle.gameObject.transform.SetParent(GameObject.Find("RightPanel").transform);
             var pos = aprilfoolstoggle.gameObject.AddComponent<AspectPosition>();
             pos.Alignment = AspectPosition.EdgeAlignments.LeftBottom;
-            pos.DistanceFromEdge = new Vector3(2.1f, 2f, 8f);
+            pos.DistanceFromEdge = new Vector3(2.1f, 0.8f, 8f);
 
             passive.OnClick.AddListener((Action)(() =>
             {

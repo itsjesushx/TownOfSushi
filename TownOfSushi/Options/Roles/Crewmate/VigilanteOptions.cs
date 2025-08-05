@@ -8,7 +8,7 @@ namespace TownOfSushi.Options.Roles.Crewmate;
 
 public sealed class VigilanteOptions : AbstractOptionGroup<VigilanteRole>
 {
-    public override string GroupName => TOSLocale.Get(TOSNames.Vigilante, "Vigilante");
+    public override string GroupName => "Vigilante";
 
     [ModdedNumberOption("Kill Cooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float KillCooldown { get; set; } = 25f;

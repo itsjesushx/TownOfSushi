@@ -8,7 +8,7 @@ namespace TownOfSushi.Options.Roles.Impostor;
 
 public sealed class AmbusherOptions : AbstractOptionGroup<AmbusherRole>
 {
-    public override string GroupName => TOSLocale.Get(TOSNames.Ambusher, "Ambusher");
+    public override string GroupName => "Ambusher";
 
     [ModdedNumberOption("Ambush Uses Per Game", 0f, 15f, 1f, MiraNumberSuffixes.None, "0", true)]
     public float MaxAmbushes { get; set; } = 0f;

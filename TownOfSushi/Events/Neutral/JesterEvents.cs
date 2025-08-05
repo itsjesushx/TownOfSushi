@@ -43,7 +43,7 @@ public static class JesterEvents
             if (jester.Player.AmOwner)
             {
                 var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>You have successfully won as the {TownOfSushiColors.Jester.ToTextColor()}{TOSLocale.Get(TOSNames.Jester, "Jester")}</color>, by getting voted out!</b>",
+                    $"<b>You have successfully won as the {TownOfSushiColors.Jester.ToTextColor()}Jester</color>, by getting voted out!</b>",
                     Color.white, spr: TOSRoleIcons.Jester.LoadAsset());
 
                 notif1.Text.SetOutlineThickness(0.35f);
@@ -67,7 +67,7 @@ public static class JesterEvents
             else
             {
                 var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>The {TownOfSushiColors.Jester.ToTextColor()}{TOSLocale.Get(TOSNames.Jester, "Jester")}</color>, {jester.Player.Data.PlayerName}, has successfully won, as they were voted out!</b>",
+                    $"<b>The {TownOfSushiColors.Jester.ToTextColor()}Jester</color>, {jester.Player.Data.PlayerName}, has successfully won, as they were voted out!</b>",
                     Color.white, spr: TOSRoleIcons.Jester.LoadAsset());
 
                 notif1.Text.SetOutlineThickness(0.35f);

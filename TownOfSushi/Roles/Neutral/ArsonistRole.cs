@@ -15,7 +15,7 @@ namespace TownOfSushi.Roles.Neutral;
 
 public sealed class ArsonistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
 {
-    public string RoleName => TOSLocale.Get(TOSNames.Arsonist, "Arsonist");
+    public string RoleName => "Arsonist";
     public string RoleDescription => "Douse Players And Ignite The Light";
 
     public string RoleLongDescription => "Douse players in gasoline and ignite them to win with your abilities!";

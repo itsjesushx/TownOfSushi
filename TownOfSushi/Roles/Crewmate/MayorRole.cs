@@ -26,7 +26,7 @@ public sealed class MayorRole(IntPtr cppPtr)
 
     private MeetingMenu meetingMenu;
     public bool Revealed { get; set; }
-    public string RoleName => TOSLocale.Get(TOSNames.Mayor, "Mayor");
+    public string RoleName => "Mayor";
     public string RoleDescription => "Reveal Yourself To Save The Crew";
     public string RoleLongDescription => "Lead the crew to victory!";
     public Color RoleColor => TownOfSushiColors.Mayor;

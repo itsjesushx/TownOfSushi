@@ -23,7 +23,7 @@ public sealed class BomberRole(IntPtr cppPtr)
     [HideFromIl2Cpp] public Bomb? Bomb { get; set; }
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<TrapperRole>());
 
-    public string RoleName => TOSLocale.Get(TOSNames.Bomber, "Bomber");
+    public string RoleName => "Bomber";
     public string RoleDescription => "Plant Bombs To Kill Multiple Crewmates At Once";
     public string RoleLongDescription => "Plant bombs to kill several crewmates at once";
     public Color RoleColor => TownOfSushiColors.Impostor;

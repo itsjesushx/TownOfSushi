@@ -9,7 +9,7 @@ namespace TownOfSushi.Options.Roles.Neutral;
 
 public sealed class PyromaniacOptions : AbstractOptionGroup<PyromaniacRole>
 {
-    public override string GroupName => TOSLocale.Get(TOSNames.Pyromaniac, "Pyromaniac");
+    public override string GroupName => "Pyromaniac";
 
     [ModdedNumberOption("Douse Cooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float DouseCooldown { get; set; } = 25f;

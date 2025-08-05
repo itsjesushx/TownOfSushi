@@ -7,7 +7,9 @@ using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
+using TownOfSushi.Events;
 using TownOfSushi.GameOver;
+using TownOfSushi.Modifiers;
 using TownOfSushi.Modifiers.Crewmate;
 using TownOfSushi.Modifiers.Game;
 using TownOfSushi.Modifiers.Game.Alliance;
@@ -76,7 +78,9 @@ public static class LogicGameFlowPatches
         for (var i = 0; i < __instance.AllPlayers.Count; i++)
         {
             var playerInfo = __instance.AllPlayers.ToArray()[i];
-            if (!playerInfo.Disconnected && playerInfo.Tasks != null && playerInfo.Object &&
+            if (playerInfo.Disconnected || playerInfo.Object == null) continue;
+            
+            if (playerInfo.Tasks != null && playerInfo.Object &&
                 (GameOptionsManager.Instance.currentNormalGameOptions.GhostsDoTasks || !playerInfo.IsDead) &&
                 !playerInfo._object.IsImpostor() &&
                 !(
@@ -125,6 +129,11 @@ public static class LogicGameFlowPatches
         
         // Prevents game end on exile screen
         if (ExileController.Instance)
+        {
+            return false;
+        }
+
+        if (DeathHandlerModifier.IsCoroutineRunning || DeathEventHandlers.IsDeathRecent)
         {
             return false;
         }

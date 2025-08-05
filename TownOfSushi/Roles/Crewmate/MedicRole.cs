@@ -40,7 +40,7 @@ public sealed class MedicRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSush
             Clear();
         }
     }
-    public string RoleName => TOSLocale.Get(TOSNames.Medic, "Medic");
+    public string RoleName => "Medic";
     public string RoleDescription => "Create A Shield To Protect A Crewmate";
     public string RoleLongDescription => "Protect a crewmate with a shield";
     public Color RoleColor => TownOfSushiColors.Medic;
