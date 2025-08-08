@@ -125,7 +125,7 @@ public enum AbilityType
     ScavengerEat,
     ArsonistDouse,
     PlaguebearerInfect,
-    SurvivorVest,
+    AmnesiacVest,
 
     VampireBite
     // PredatorTerminate

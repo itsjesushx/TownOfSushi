@@ -5,9 +5,9 @@ using TownOfSushi.Roles.Neutral;
 
 namespace TownOfSushi.Options.Roles.Neutral;
 
-public sealed class SurvivorOptions : AbstractOptionGroup<SurvivorRole>
+public sealed class AmnesiacOptions : AbstractOptionGroup<AmnesiacRole>
 {
-    public override string GroupName => "Survivor";
+    public override string GroupName => "Amnesiac";
 
     [ModdedNumberOption("Vest Cooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float VestCooldown { get; set; } = 25f;
@@ -18,9 +18,9 @@ public sealed class SurvivorOptions : AbstractOptionGroup<SurvivorRole>
     [ModdedNumberOption("Max Number Of Vests", 1f, 15f, 1f, MiraNumberSuffixes.None, "0")]
     public float MaxVests { get; set; } = 10f;
 
-    [ModdedToggleOption("Survivor Scatter Mechanic Enabled")]
+    [ModdedToggleOption("Amnesiac Scatter Mechanic Enabled")]
     public bool ScatterOn { get; set; } = false;
 
-    [ModdedNumberOption("Survivor Scatter Timer", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds, "0.0")]
+    [ModdedNumberOption("Amnesiac Scatter Timer", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds, "0.0")]
     public float ScatterTimer { get; set; } = 25f;
 }

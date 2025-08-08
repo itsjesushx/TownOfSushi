@@ -243,16 +243,16 @@ public static class EndGamePatches
             var role = string.Join(" ", data.RoleString);
             if (count % 2 == 0)
             {
-                roleSummaryText2.AppendLine(TownOfSushiPlugin.Culture, $"<size=70%>{data.PlayerName} - {role}</size>");
+                roleSummaryText2.AppendLine(TownOfSushiPlugin.Culture, $"<size=70%>{data.PlayerName}: {role}</size>");
             }
             else
             {
-                roleSummaryText1.AppendLine(TownOfSushiPlugin.Culture, $"<size=70%>{data.PlayerName} - {role}</size>");
+                roleSummaryText1.AppendLine(TownOfSushiPlugin.Culture, $"<size=70%>{data.PlayerName}: {role}</size>");
             }
 
             count++;
-            roleSummaryBackup.AppendLine(TownOfSushiPlugin.Culture, $"<size=70%>{data.PlayerName} - {role}</size>");
-            roleSummaryTextFull.AppendLine(TownOfSushiPlugin.Culture, $"<size=70%>{data.PlayerName} - {role}</size>");
+            roleSummaryBackup.AppendLine(TownOfSushiPlugin.Culture, $"<size=70%>{data.PlayerName}: {role}</size>");
+            roleSummaryTextFull.AppendLine(TownOfSushiPlugin.Culture, $"<size=70%>{data.PlayerName}: {role}</size>");
         }
 
         var roleSummaryTextMesh = roleSummary.GetComponent<TMP_Text>();

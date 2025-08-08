@@ -198,7 +198,6 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
             {
                 BecomeOptions.Crew => (ushort)RoleTypes.Crewmate,
                 BecomeOptions.Jester => RoleId.Get<JesterRole>(),
-                BecomeOptions.Survivor => RoleId.Get<SurvivorRole>(),
                 BecomeOptions.Amnesiac => RoleId.Get<AmnesiacRole>(),
                 BecomeOptions.Romantic => RoleId.Get<RomanticRole>(),
                 _ => (ushort)RoleTypes.Crewmate
@@ -208,7 +207,7 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
             Player.ChangeRole(roleType);
 
             if ((roleType == RoleId.Get<JesterRole>() && OptionGroupSingleton<JesterOptions>.Instance.ScatterOn) ||
-                (roleType == RoleId.Get<SurvivorRole>() && OptionGroupSingleton<SurvivorOptions>.Instance.ScatterOn))
+                (roleType == RoleId.Get<AmnesiacRole>() && OptionGroupSingleton<AmnesiacOptions>.Instance.ScatterOn))
             {
                 StartCoroutine(Effects.Lerp(0.2f,
                     new Action<float>(p => { Player.GetModifier<ScatterModifier>()?.OnRoundStart(); })));

@@ -15,7 +15,7 @@ public class Debugger : MonoBehaviour
 {
     [HideFromIl2Cpp]
     public DragWindow Window { get; }
-    public static bool IsDebuggerActive => AmongUsClient.Instance.NetworkMode == NetworkModes.LocalGame || AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay;
+    public static bool IsDebuggerActive => AmongUsClient.Instance.NetworkMode == NetworkModes.LocalGame;
     public bool WindowEnabled { get; set; } = true;
     public Debugger(IntPtr ptrs) : base(ptrs)
     {

@@ -72,7 +72,8 @@ public static class PlayerRoleTextExtensions
         }
 
         if ((player.HasModifier<WitchSpelledModifier>() && PlayerControl.LocalPlayer.IsRole<WitchRole>() && !PlayerControl.LocalPlayer.HasDied())
-            || (player.HasModifier<WitchSpelledModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !hidden))
+            || player.HasModifier<WitchSpelledModifier>() && MeetingHud.Instance ||
+            (player.HasModifier<WitchSpelledModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !hidden))
         {
             name += "<color=#FF0000> [†]</color>";
         }

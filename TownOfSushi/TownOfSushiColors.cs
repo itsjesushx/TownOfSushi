@@ -54,7 +54,6 @@ public static class TownOfSushiColors
     public static Color Pyromaniac => new(0.9f, 0.4f, 0.2f, 1f);
     public static Color Amnesiac => new(0.5f, 0.7f, 1f, 1f);
     public static Color Juggernaut => new(0.55f, 0f, 0.3f, 1f);
-    public static Color Survivor => new(1f, 0.9f, 0.3f, 1f);
     public static Color Protector => new(0.7f, 1f, 1f, 1f);
     public static Color Plaguebearer => new(0.9f, 1f, 0.7f, 1f);
     public static Color Pestilence => new(0.3f, 0.3f, 0.3f, 1f);

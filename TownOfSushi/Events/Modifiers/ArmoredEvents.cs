@@ -91,7 +91,7 @@ namespace TownOfSushi.Events.Modifiers
         {
             return
                 player.HasModifier<GuardianAngelProtectModifier>() ||
-                player.HasModifier<SurvivorVestModifier>() ||
+                player.HasModifier<AmnesiacVestModifier>() ||
                 (player.HasModifier<VeteranAlertModifier>() && OptionGroupSingleton<VeteranOptions>.Instance.KilledOnAlert) ||
                 player.HasModifier<ClericBarrierModifier>() ||
                 player.HasModifier<MedicShieldModifier>() ||

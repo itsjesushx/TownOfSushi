@@ -1,15 +1,18 @@
-﻿using AmongUs.GameOptions;
+﻿using System.Collections;
+using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
 using MiraAPI.Events;
 using MiraAPI.GameOptions;
 using MiraAPI.Roles;
+using Reactor.Utilities;
 using TownOfSushi.Events.TOSEvents;
 using TownOfSushi.Options;
 using TownOfSushi.Roles;
 using TownOfSushi.Roles.Crewmate;
 using TownOfSushi.Roles.Neutral;
 using TownOfSushi.Utilities;
+using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace TownOfSushi.Patches;
@@ -597,12 +600,20 @@ public static class TOSRoleManagerPatches
 
     public static void AssignTargets()
     {
+        // This is a coroutine because otherwise, the game just assigns targets real badly like traitor egotist, exe being lovers with their targets, that sort of thing - Atony
+        Coroutines.Start(CoAssignTargets());
+    }
+
+    public static IEnumerator CoAssignTargets()
+    {
         foreach (var role in MiscUtils.AllRoles.Where(x => x is IAssignableTargets)
                      .OrderBy(x => (x as IAssignableTargets)!.Priority))
         {
             if (role is IAssignableTargets assignRole)
             {
                 assignRole.AssignTargets();
+                yield return new WaitForSeconds(0.01f);
+
             }
         }
 
@@ -612,6 +623,7 @@ public static class TOSRoleManagerPatches
             if (modifier is IAssignableTargets assignMod)
             {
                 assignMod.AssignTargets();
+                yield return new WaitForSeconds(0.01f);
             }
         }
 

@@ -44,7 +44,6 @@ public sealed class RomanticRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSu
             {
                 RomanticBecomeOptions.Crew => (ushort)RoleTypes.Crewmate,
                 RomanticBecomeOptions.Jester => RoleId.Get<JesterRole>(),
-                RomanticBecomeOptions.Survivor => RoleId.Get<SurvivorRole>(),
                 RomanticBecomeOptions.Amnesiac => RoleId.Get<AmnesiacRole>(),
                 _ => (ushort)RoleTypes.Crewmate,
             };
@@ -53,7 +52,7 @@ public sealed class RomanticRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSu
             Player.ChangeRole(roleType);
 
             if ((roleType == RoleId.Get<JesterRole>() && OptionGroupSingleton<JesterOptions>.Instance.ScatterOn) ||
-                (roleType == RoleId.Get<SurvivorRole>() && OptionGroupSingleton<SurvivorOptions>.Instance.ScatterOn))
+                (roleType == RoleId.Get<AmnesiacRole>() && OptionGroupSingleton<AmnesiacOptions>.Instance.ScatterOn))
             {
                 StartCoroutine(Effects.Lerp(0.2f, new Action<float>((p) =>
                 {

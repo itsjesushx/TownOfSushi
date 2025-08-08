@@ -6,9 +6,9 @@ using TownOfSushi.Options.Roles.Neutral;
 
 namespace TownOfSushi.Modifiers.Neutral;
 
-public sealed class SurvivorVestModifier : TimedModifier
+public sealed class AmnesiacVestModifier : TimedModifier
 {
-    public override float Duration => OptionGroupSingleton<SurvivorOptions>.Instance.VestDuration;
+    public override float Duration => OptionGroupSingleton<AmnesiacOptions>.Instance.VestDuration;
     public override string ModifierName => "Vested";
     public override bool AutoStart => true;
     public override bool HideOnUi => true;
@@ -17,7 +17,7 @@ public sealed class SurvivorVestModifier : TimedModifier
     {
         base.OnActivate();
 
-        var TOSAbilityEvent = new TOSAbilityEvent(AbilityType.SurvivorVest, Player);
+        var TOSAbilityEvent = new TOSAbilityEvent(AbilityType.AmnesiacVest, Player);
         MiraEventManager.InvokeEvent(TOSAbilityEvent);
     }
 }

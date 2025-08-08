@@ -52,7 +52,6 @@ public static class TOSRoleIcons
 
     public static LoadableAsset<Sprite> GuardianAngel { get; } =
         new LoadableResourceAsset($"{iconPath}.GuardianAngel.png");
-    public static LoadableAsset<Sprite> Survivor { get; } = new LoadableResourceAsset($"{iconPath}.Survivor.png");
     
     public static LoadableAsset<Sprite> Executioner { get; } = new LoadableResourceAsset($"{iconPath}.Executioner.png");
     public static LoadableAsset<Sprite> Inquisitor { get; } = new LoadableResourceAsset($"{iconPath}.Inquisitor.png");

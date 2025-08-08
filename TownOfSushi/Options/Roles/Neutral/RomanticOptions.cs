@@ -47,6 +47,5 @@ public enum RomanticBecomeOptions
 {
     Crew,
     Amnesiac,
-    Survivor,
     Jester,
 }

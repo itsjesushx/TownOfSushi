@@ -21,6 +21,9 @@ using TownOfSushi.Utilities;
 using UnityEngine;
 using MiraAPI.Hud;
 using TownOfUs.Modules.Wiki;
+using MiraAPI.Patches.Stubs;
+using TownOfSushi.Modifiers;
+using TownOfSushi.Options.Roles.Neutral;
 
 namespace TownOfSushi.Roles.Neutral;
 
@@ -29,8 +32,8 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
 {
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<MysticRole>());
     public string RoleName => "Amnesiac";
-    public string RoleDescription => "Remember A Role Of A Deceased Player";
-    public string RoleLongDescription => "Wait for a meeting to end to remember and become a new role";
+    public string RoleDescription => "Remember a role after a meeting or survive the game to win.";
+    public string RoleLongDescription => "Remember a role after a meeting or survive until the end to win.";
     public Color RoleColor => TownOfSushiColors.Amnesiac;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralBenign;
@@ -42,6 +45,26 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
         Icon = TOSRoleIcons.Amnesiac
     };
 
+    public override void Initialize(PlayerControl player)
+    {
+        RoleBehaviourStubs.Initialize(this, player);
+
+        if (Player.AmOwner && OptionGroupSingleton<AmnesiacOptions>.Instance.ScatterOn)
+        {
+            Player.AddModifier<ScatterModifier>(OptionGroupSingleton<AmnesiacOptions>.Instance.ScatterTimer);
+        }
+    }
+
+    public override void Deinitialize(PlayerControl targetPlayer)
+    {
+        RoleBehaviourStubs.Deinitialize(this, targetPlayer);
+
+        if (Player.AmOwner && OptionGroupSingleton<AmnesiacOptions>.Instance.ScatterOn)
+        {
+            Player.RemoveModifier<ScatterModifier>();
+        }
+    }
+
     [HideFromIl2Cpp]
     public StringBuilder SetTabText()
     {
@@ -51,7 +74,7 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
     public string GetAdvancedDescription()
     {
         return
-            $"The {RoleName} is a Neutral Benign role that gains access to a shapeshift panel after each exile scene (when the meeting ends) to pick a player and gain their role. Use the role you remember to win the game." +
+            $"The {RoleName} is a Neutral Benign role that gains access to a shapeshift panel after each exile scene (when the meeting ends) to pick a player and gain their role. Use the role you remember to win the game. Aside from this, the Amnesiac can also just survive till the end of the game to win with anyone." +
             MiscUtils.AppendOptionsText(GetType());
     }
 
@@ -60,13 +83,17 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
     [
         new("Remember",
             "Remember the role of a dead player. If the dead player's role is a unique role, you will remember the base faction's role instead.",
-            TOSNeutAssets.RememberButtonSprite)
+            TOSNeutAssets.RememberButtonSprite),
+        new("Vest",
+            "Put on a Vest protecting you from attacks.",
+            TOSNeutAssets.VestSprite)
     ];
 
     public override bool DidWin(GameOverReason gameOverReason)
     {
-        return false;
+        return !Player.HasDied();
     }
+
     [MethodRpc((uint)TownOfSushiRpc.Remember, SendImmediately = true)]
     public static void RpcRemember(PlayerControl player, PlayerControl target)
     {

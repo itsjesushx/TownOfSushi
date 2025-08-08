@@ -76,6 +76,11 @@ public interface ITownOfSushiRole : ICustomRole
                 return TOSRoleGroups.NeutralEvil;
             }
 
+            if (RoleAlignment == RoleAlignment.NeutralOutlier)
+            {
+                return TOSRoleGroups.NeutralOutlier;
+            }
+
             if (RoleAlignment == RoleAlignment.NeutralKilling)
             {
                 return TOSRoleGroups.NeutralKiller;
@@ -209,6 +214,7 @@ public enum RoleAlignment
     ImpostorConcealing,
     ImpostorKilling,
     ImpostorSupport,
+    NeutralOutlier,
     NeutralBenign,
     NeutralEvil,
     NeutralKilling
