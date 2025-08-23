@@ -177,6 +177,10 @@ public sealed class PhantomTOSRole(IntPtr cppPtr)
 
             Faded = false;
         }
+        if (!Player.HasModifier<BasicGhostModifier>())
+        {
+            Player.AddModifier<BasicGhostModifier>();
+        }
     }
 
     public override bool CanUse(IUsable console)

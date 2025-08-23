@@ -4,6 +4,7 @@ using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Usables;
 using Reactor.Utilities;
+using TownOfSushi.Modifiers;
 using TownOfSushi.Modifiers.Game;
 
 namespace TownOfSushi.Events;
@@ -49,6 +50,7 @@ public static class GhostRoleEvents
                 {
                     var deadCrew = PlayerControl.AllPlayerControls.ToArray().Where(x =>
                         x.Data.IsDead && x.IsCrewmate() && !x.HasModifier<AllianceGameModifier>() &&
+                        !x.HasModifier<BasicGhostModifier>() &&
                         x.Data.Role.Role is not RoleTypes.GuardianAngel).ToList();
 
                     if (deadCrew.Count > 0)
@@ -76,7 +78,7 @@ public static class GhostRoleEvents
                 {
                     var deadNeutral = PlayerControl.AllPlayerControls.ToArray().Where(x =>
                         x.Data.IsDead && x.IsNeutral() && !x.Data.Role.DidWin(GameOverReason.CrewmatesByVote) &&
-                        !x.HasModifier<AllianceGameModifier>()).ToList();
+                        !x.HasModifier<BasicGhostModifier>() && !x.HasModifier<AllianceGameModifier>()).ToList();
 
                     if (deadNeutral.Count > 0)
                     {

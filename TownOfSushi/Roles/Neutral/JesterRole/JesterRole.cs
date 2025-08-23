@@ -9,7 +9,7 @@ using UnityEngine;
 namespace TownOfSushi.Roles.Neutral;
 
 public sealed class JesterRole(IntPtr cppPtr)
-    : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant
+    : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant, IGuessable
 {
     public bool Voted { get; set; }
     public bool AboutToWin { get; set; }
@@ -24,7 +24,17 @@ public sealed class JesterRole(IntPtr cppPtr)
     public Color RoleColor => TownOfSushiColors.Jester;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralEvil;
-
+    // This is so the role can be guessed without requiring it to be enabled normally
+    public bool CanBeGuessed =>
+        (MiscUtils.GetPotentialRoles()
+             .Contains(RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<GuardianAngelTOSRole>())) &&
+         OptionGroupSingleton<GuardianAngelOptions>.Instance.OnTargetDeath is BecomeOptions.Jester)
+        || (MiscUtils.GetPotentialRoles()
+                .Contains(RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<ExecutionerRole>())) &&
+            OptionGroupSingleton<ExecutionerOptions>.Instance.OnTargetDeath is BecomeOptions.Jester)
+        || (MiscUtils.GetPotentialRoles()
+                .Contains(RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<RomanticRole>())) &&
+            OptionGroupSingleton<RomanticOptions>.Instance.OnTargetDeath is RomanticBecomeOptions.Jester);
     public CustomRoleConfiguration Configuration => new(this)
     {
         CanUseVent = OptionGroupSingleton<JesterOptions>.Instance.CanVent,
@@ -94,6 +104,10 @@ public sealed class JesterRole(IntPtr cppPtr)
 
             HudManager.Instance.ImpostorVentButton.graphic.sprite = TOSAssets.VentSprite.LoadAsset();
             HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(TownOfSushiColors.Impostor);
+        }
+        if (!Player.HasModifier<BasicGhostModifier>() && Voted)
+        {
+            Player.AddModifier<BasicGhostModifier>();
         }
     }
 

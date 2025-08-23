@@ -1,6 +1,7 @@
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.Modifiers.Types;
+using MiraAPI.Patches.Stubs;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
 using TownOfSushi.Modifiers;
@@ -26,6 +27,14 @@ public sealed class RomanticRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSu
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
         TasksCountForProgress = false
     };
+    public override void Deinitialize(PlayerControl targetPlayer)
+    {
+        RoleBehaviourStubs.Deinitialize(this, targetPlayer);
+        if (!Player.HasModifier<BasicGhostModifier>() && Player.HasDied())
+        {
+            Player.AddModifier<BasicGhostModifier>();
+        }
+    }
     public void CheckTargetDeath(PlayerControl victim)
     {
         if (Player.HasDied()) return;

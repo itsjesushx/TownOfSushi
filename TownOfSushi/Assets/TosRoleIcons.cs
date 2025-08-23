@@ -73,6 +73,8 @@ public static class TOSRoleIcons
     public static LoadableAsset<Sprite> Predator { get; } = new LoadableResourceAsset($"{iconPath}.Predator.png");
     public static LoadableAsset<Sprite> Werewolf { get; } = new LoadableResourceAsset($"{iconPath}.Werewolf.png");
 
+    public static LoadableAsset<Sprite> Ambassador { get; } = new LoadableBundleAsset<Sprite>("Ambassador", TOSAssets.MainBundle);
+
     public static LoadableAsset<Sprite> Thief { get; } = new LoadableResourceAsset($"{iconPath}.Thief.png");
 
     public static LoadableAsset<Sprite> Hitman { get; } = new LoadableResourceAsset($"{iconPath}.Hitman.png");

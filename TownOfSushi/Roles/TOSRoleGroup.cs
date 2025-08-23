@@ -16,4 +16,5 @@ public static class TOSRoleGroups
     public static RoleOptionsGroup ImpConceal { get; } = new("Impostor Concealing Roles", TownOfSushiColors.ImpSoft);
     public static RoleOptionsGroup ImpKiller { get; } = new("Impostor Killing Roles", TownOfSushiColors.ImpSoft);
     public static RoleOptionsGroup ImpSup { get; } = new("Impostor Support Roles", TownOfSushiColors.ImpSoft);
+    public static RoleOptionsGroup ImpPower { get; } = new("Impostor Power Roles", TownOfSushiColors.ImpSoft);
 }

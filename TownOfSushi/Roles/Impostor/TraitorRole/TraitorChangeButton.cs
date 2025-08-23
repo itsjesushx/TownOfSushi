@@ -1,5 +1,4 @@
-﻿using AmongUs.GameOptions;
-using MiraAPI.Hud;
+﻿using MiraAPI.Hud;
 using Reactor.Utilities.Extensions;
 using TownOfSushi.Modules;
 using TownOfUs.Modules.Components;
@@ -31,10 +30,8 @@ public sealed class TraitorChangeButton : TownOfSushiRoleButton<TraitorRole>
     {
         if (Role.ChosenRoles.Count == 0)
         {
-            Func<RoleBehaviour, bool>? impFilter = x => x.Role != (RoleTypes)RoleId.Get<TraitorRole>();
-
-            var impRoles = MiscUtils.GetRolesToAssign(ModdedRoleTeams.Impostor, impFilter).Select(x => x.RoleType)
-                .ToList();
+            var excluded = MiscUtils.AllRoles.Where(x => x is ISpawnChange { NoSpawn: true } || x is ITownOfSushiRole { RoleAlignment: RoleAlignment.ImpostorPower }).Select(x => x.Role).ToList();
+            var impRoles = MiscUtils.GetRolesToAssign(ModdedRoleTeams.Impostor, x => !excluded.Contains(x.Role)).Select(x => x.RoleType).ToList();
 
             var roleList = MiscUtils.GetPotentialRoles()
                 .Where(role => role is ICustomRole)

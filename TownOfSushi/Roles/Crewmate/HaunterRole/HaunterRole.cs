@@ -3,6 +3,7 @@ using System.Text;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.Patches.Stubs;
 using Reactor.Utilities;
+using TownOfSushi.Modifiers;
 using TownOfSushi.Modifiers.Game;
 using TownOfSushi.Patches;
 using TownOfSushi.Utilities.Appearances;
@@ -220,6 +221,10 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
             Player.MyPhysics.ResetMoveState();
 
             Faded = false;
+        }
+        else if (!Player.HasModifier<BasicGhostModifier>())
+        {
+            Player.AddModifier<BasicGhostModifier>();
         }
         /* if (Player.AmOwner)
         {

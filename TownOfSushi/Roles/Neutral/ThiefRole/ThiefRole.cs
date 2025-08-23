@@ -36,11 +36,6 @@ public sealed class ThiefRole(IntPtr cppPtr)
 
     public bool HasImpostorVision => OptionGroupSingleton<ThiefOptions>.Instance.HasImpostorVision;
 
-    public bool WinConditionMet()
-    {
-        return false;
-    }
-
     [HideFromIl2Cpp]
     public StringBuilder SetTabText()
     {
@@ -187,7 +182,7 @@ public sealed class ThiefRole(IntPtr cppPtr)
 
     public override bool DidWin(GameOverReason gameOverReason)
     {
-        return WinConditionMet();
+        return false;
     }
 
     public override bool CanUse(IUsable usable)

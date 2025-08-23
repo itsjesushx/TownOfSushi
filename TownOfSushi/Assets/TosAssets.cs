@@ -12,6 +12,18 @@ public static class TOSAssets
 
     public static readonly LoadableAsset<GameObject> RoleSelectionGame =
         new LoadableBundleAsset<GameObject>("SelectRoleGame", MainBundle);
+    
+    public static readonly LoadableAsset<GameObject> AltRoleSelectionGame =
+        new LoadableBundleAsset<GameObject>("AmbassadorRoleGame", MainBundle);
+    
+    public static readonly LoadableAsset<GameObject> ConfirmMinigame =
+        new LoadableBundleAsset<GameObject>("AmbassadorConfirmGame", MainBundle);
+
+    public static LoadableAsset<Sprite> RetrainSprite { get; } =
+        new LoadableBundleAsset<Sprite>("Retrain.png", MainBundle);
+    
+    public static LoadableAsset<Sprite> RetrainCleanSprite { get; } =
+        new LoadableBundleAsset<Sprite>("RetrainClean.png", MainBundle);
 
     public static LoadableAsset<GameObject> WikiPrefab { get; } =
         new LoadableBundleAsset<GameObject>("IngameWiki", MainBundle);

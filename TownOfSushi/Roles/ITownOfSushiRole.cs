@@ -68,6 +68,11 @@ public interface ITownOfSushiRole : ICustomRole
                 return TOSRoleGroups.ImpKiller;
             }
 
+            if (RoleAlignment == RoleAlignment.ImpostorPower)
+            {
+                return TOSRoleGroups.ImpPower;
+            }
+
             if (RoleAlignment == RoleAlignment.NeutralEvil)
             {
                 return TOSRoleGroups.NeutralEvil;
@@ -206,6 +211,7 @@ public enum RoleAlignment
     CrewmateInvestigative,
     CrewmateKilling,
     CrewmateProtective,
+    ImpostorPower,
     CrewmatePower,
     CrewmateSupport,
     ImpostorConcealing,

@@ -395,6 +395,10 @@ public static class HudManagerPatches
                     {
                         roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
                     }
+                    if (player.HasModifier<AmbassadorRetrainedModifier>() && player.IsImpostor())
+                    {
+                        roleName += "<size=80%><color=#FFFFFF> (<color=#D63F42>Retrained</color>)</color></size>";
+                    }
 
                     var cachedMod = player.GetModifiers<BaseModifier>().FirstOrDefault(x => x is ICachedRole);
                     if (cachedMod is ICachedRole cache && cache.Visible &&
@@ -423,6 +427,10 @@ public static class HudManagerPatches
                         if (PlayerControl.LocalPlayer.HasDied() && !player.HasModifier<VampireBittenModifier>() && roleWhenAlive is VampireRole)
                         {
                             roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
+                        }
+                        if (player.HasModifier<AmbassadorRetrainedModifier>() && player.IsImpostor())
+                        {
+                            roleName += "<size=80%><color=#FFFFFF> (<color=#D63F42>Retrained</color>)</color></size>";
                         }
                     }
                     if (PlayerControl.LocalPlayer.HasDied() && player.TryGetModifier<DeathHandlerModifier>(out var deathMod))
@@ -570,6 +578,10 @@ public static class HudManagerPatches
                     {
                         roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
                     }
+                    if (player.HasModifier<AmbassadorRetrainedModifier>() && player.IsImpostor())
+                    {
+                        roleName += "<size=80%><color=#FFFFFF> (<color=#D63F42>Retrained</color>)</color></size>";
+                    }
 
                     var cachedMod = player.GetModifiers<BaseModifier>().FirstOrDefault(x => x is ICachedRole);
                     if (cachedMod is ICachedRole cache && cache.Visible &&
@@ -598,6 +610,10 @@ public static class HudManagerPatches
                         if (!player.HasModifier<VampireBittenModifier>() && roleWhenAlive is VampireRole)
                         {
                             roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
+                        }
+                        if (player.HasModifier<AmbassadorRetrainedModifier>() && player.IsImpostor())
+                        {
+                            roleName += "<size=80%><color=#FFFFFF> (<color=#D63F42>Retrained</color>)</color></size>";
                         }
                     }
                     if (PlayerControl.LocalPlayer.HasDied() && isVisible && player.TryGetModifier<DeathHandlerModifier>(out var deathMod))

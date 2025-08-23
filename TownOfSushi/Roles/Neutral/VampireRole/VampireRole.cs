@@ -7,6 +7,7 @@ using MiraAPI.Patches.Stubs;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
 using TownOfSushi.Events.TOSEvents;
+using TownOfSushi.Modifiers;
 using UnityEngine;
 
 namespace TownOfSushi.Roles.Neutral;
@@ -90,6 +91,10 @@ public sealed class VampireRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSus
         {
             HudManager.Instance.ImpostorVentButton.graphic.sprite = TOSAssets.VentSprite.LoadAsset();
             HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(TownOfSushiColors.Impostor);
+        }
+        if (!Player.HasModifier<BasicGhostModifier>())
+        {
+            Player.AddModifier<BasicGhostModifier>();
         }
     }
 

@@ -137,9 +137,13 @@ public sealed class GuardianAngelTOSRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
         if (TutorialManager.InstanceExists && Player.AmOwner)
         {
             var players = ModifierUtils
-                .GetPlayersWithModifier<GuardianAngelTargetModifier>([HideFromIl2Cpp](x) => x.OwnerId == Player.PlayerId)
+                .GetPlayersWithModifier<GuardianAngelTargetModifier>([HideFromIl2Cpp] (x) => x.OwnerId == Player.PlayerId)
                 .ToList();
             players.Do(x => x.RpcRemoveModifier<GuardianAngelTargetModifier>());
+        }
+        if (!Player.HasModifier<BasicGhostModifier>() && Player.HasDied())
+        {
+            Player.AddModifier<BasicGhostModifier>();
         }
     }
 

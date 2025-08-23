@@ -5,6 +5,7 @@ using Hazel;
 using MiraAPI.Events;
 using Reactor.Utilities;
 using TownOfSushi.Events.TOSEvents;
+using TownOfSushi.Modifiers;
 using TownOfSushi.Options;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -26,14 +27,14 @@ public static class TOSRoleManagerPatches
         // var ghostRoles = RoleManager.Instance.AllRoles.Where(x => x.IsDead);
         var ghostRoles = MiscUtils.GetRegisteredGhostRoles();
 
-        // Logger<TownOfSushiPlugin>.Message($"GhostRoleSetup - ghostRoles Count: {ghostRoles.Count()}");
+        if (TownOfSushiPlugin.IsDevBuild) Logger<TownOfSushiPlugin>.Warning($"GhostRoleSetup - ghostRoles Count: {ghostRoles.Count()}");
         CrewmateGhostRolePool.Clear();
         ImpostorGhostRolePool.Clear();
         CustomGhostRolePool.Clear();
 
         foreach (var role in ghostRoles)
         {
-            // Logger<TownOfSushiPlugin>.Message($"GhostRoleSetup - ghostRoles role NiceName: {role.NiceName}");
+            if (TownOfSushiPlugin.IsDevBuild) Logger<TownOfSushiPlugin>.Warning($"GhostRoleSetup - ghostRoles role NiceName: {role.NiceName}");
             var data = MiscUtils.GetAssignData(role.Role);
 
             switch (data.Chance)
@@ -178,6 +179,9 @@ public static class TOSRoleManagerPatches
         if (uniqueRole != null && impRoles.Contains(RoleId.Get(uniqueRole.GetType())))
         {
             impCount = 1;
+            
+            if (TownOfSushiPlugin.IsDevBuild) Logger<TownOfSushiPlugin>.Warning($"Removing Impostor Roles because of {uniqueRole.NiceName}");
+            
             impRoles.RemoveAll(x => x != RoleId.Get(uniqueRole.GetType()));
 
             while (impostors.Count > impCount)
@@ -193,6 +197,11 @@ public static class TOSRoleManagerPatches
         var crewCount = crewmates.Count - nbRoles.Count - neRoles.Count - nkRoles.Count;
 
         Func<RoleBehaviour, bool>? crewFilter = null;
+
+        if ((MapNames)GameOptionsManager.Instance.GameHostOptions.MapId == MapNames.Fungle)
+        {
+            crewFilter = x => x.Role != (RoleTypes)RoleId.Get<SpyRole>();
+        }
 
         var crewRoles = MiscUtils.GetMaxRolesToAssign(ModdedRoleTeams.Crewmate, crewCount, crewFilter);
 
@@ -212,7 +221,7 @@ public static class TOSRoleManagerPatches
 
             crewmates.RemoveAt(num);
 
-            // Logger<TownOfSushiPlugin>.Message($"SelectRoles - player: '{player.Data.PlayerName}', role: '{(RoleType)item}'");
+            if (TownOfSushiPlugin.IsDevBuild) Logger<TownOfSushiPlugin>.Warning($"SelectRoles - player: '{player.Data.PlayerName}', role: '{RoleManager.Instance.GetRole((RoleTypes)role).NiceName}'");
         }
 
         foreach (var role in impRoles)
@@ -224,7 +233,7 @@ public static class TOSRoleManagerPatches
 
             impostors.RemoveAt(num);
 
-            // Logger<TownOfSushiPlugin>.Message($"SelectRoles - player: '{player.Data.PlayerName}', role: '{(RoleType)item}'");
+            if (TownOfSushiPlugin.IsDevBuild) Logger<TownOfSushiPlugin>.Warning($"SelectRoles - player: '{player.Data.PlayerName}', role: '{RoleManager.Instance.GetRole((RoleTypes)role).NiceName}'");
         }
 
         foreach (var player in crewmates)
@@ -264,8 +273,8 @@ public static class TOSRoleManagerPatches
         ];
         List<RoleListOption> impBuckets =
         [
-            RoleListOption.ImpConceal, RoleListOption.ImpKilling, RoleListOption.ImpSupport, RoleListOption.ImpCommon,
-            RoleListOption.ImpRandom
+            RoleListOption.ImpConceal, RoleListOption.ImpKilling, RoleListOption.ImpPower, RoleListOption.ImpSupport,
+            RoleListOption.ImpCommon, RoleListOption.ImpSpecial, RoleListOption.ImpRandom
         ];
         List<RoleListOption> buckets =
         [
@@ -432,6 +441,10 @@ public static class TOSRoleManagerPatches
         }
 
         Func<RoleBehaviour, bool>? crewFilter = null;
+        if ((MapNames)GameOptionsManager.Instance.GameHostOptions.MapId == MapNames.Fungle)
+        {
+            crewFilter = x => x.Role != (RoleTypes)RoleId.Get<SpyRole>();
+        }
 
         var excluded = MiscUtils.AllRoles.Where(x => x is ISpawnChange { NoSpawn: true }).Select(x => x.Role).ToList();
 
@@ -446,6 +459,8 @@ public static class TOSRoleManagerPatches
         var impConcealRoles = MiscUtils.GetRolesToAssign(RoleAlignment.ImpostorConcealing);
         var impKillingRoles =
             MiscUtils.GetRolesToAssign(RoleAlignment.ImpostorKilling, x => !excluded.Contains(x.Role));
+        var impPowerRoles =
+            MiscUtils.GetRolesToAssign(RoleAlignment.ImpostorPower, x => !excluded.Contains(x.Role));
         var impSupportRoles = MiscUtils.GetRolesToAssign(RoleAlignment.ImpostorSupport);
 
         // imp buckets
@@ -460,15 +475,25 @@ public static class TOSRoleManagerPatches
         commonImpRoles.AddRange(impSupportRoles);
 
         impRoles.AddRange(MiscUtils.ReadFromBucket(buckets, impKillingRoles, RoleListOption.ImpKilling,
-            RoleListOption.ImpRandom));
+            RoleListOption.ImpSpecial));
 
-        var randomImpRoles = impKillingRoles;
+        var specialImpRoles = impKillingRoles;
 
+        impRoles.AddRange(MiscUtils.ReadFromBucket(buckets, impPowerRoles, RoleListOption.ImpPower,
+            RoleListOption.ImpSpecial));
+
+        specialImpRoles.AddRange(impPowerRoles);
+        
         impRoles.AddRange(MiscUtils.ReadFromBucket(buckets, commonImpRoles, RoleListOption.ImpCommon,
             RoleListOption.ImpRandom));
+        
+        var randomImpRoles = commonImpRoles;
 
-        randomImpRoles.AddRange(commonImpRoles);
+        impRoles.AddRange(MiscUtils.ReadFromBucket(buckets, specialImpRoles, RoleListOption.ImpSpecial,
+            RoleListOption.ImpRandom));
 
+        randomImpRoles.AddRange(specialImpRoles);
+        
         impRoles.AddRange(MiscUtils.ReadFromBucket(buckets, randomImpRoles, RoleListOption.ImpRandom));
 
         // crew buckets
@@ -551,6 +576,8 @@ public static class TOSRoleManagerPatches
         if (uniqueRole != null && chosenImpRoles.Contains(RoleId.Get(uniqueRole.GetType())))
         {
             impCount = 1;
+            
+            if (TownOfSushiPlugin.IsDevBuild) Logger<TownOfSushiPlugin>.Warning($"Removing Impostor Roles because of {uniqueRole.NiceName}");
 
             while (impostors.Count > impCount)
             {
@@ -568,6 +595,8 @@ public static class TOSRoleManagerPatches
             player.RpcSetRole((RoleTypes)role);
 
             impostors.RemoveAt(num);
+            
+            if (TownOfSushiPlugin.IsDevBuild) Logger<TownOfSushiPlugin>.Warning($"SelectRoles - player: '{player.Data.PlayerName}', role: '{RoleManager.Instance.GetRole((RoleTypes)role).NiceName}'");
         }
 
         foreach (var role in crewRoles)
@@ -578,6 +607,8 @@ public static class TOSRoleManagerPatches
             player.RpcSetRole((RoleTypes)role);
 
             crewmates.RemoveAt(num);
+            
+            if (TownOfSushiPlugin.IsDevBuild) Logger<TownOfSushiPlugin>.Warning($"SelectRoles - player: '{player.Data.PlayerName}', role: '{RoleManager.Instance.GetRole((RoleTypes)role).NiceName}'");
         }
 
         // Assign vanilla roles to anyone who did not receive a role.
@@ -607,7 +638,6 @@ public static class TOSRoleManagerPatches
             {
                 assignRole.AssignTargets();
                 yield return new WaitForSeconds(0.01f);
-
             }
         }
 
@@ -629,7 +659,7 @@ public static class TOSRoleManagerPatches
     [HarmonyPriority(Priority.Last)]
     public static bool SelectRolesPatch(RoleManager __instance)
     {
-        //Logger<TownOfSushiPlugin>.Error($"RoleManager.SelectRoles - ReplaceRoleManager: {ReplaceRoleManager}");
+        if (TownOfSushiPlugin.IsDevBuild) Logger<TownOfSushiPlugin>.Error($"RoleManager.SelectRoles - ReplaceRoleManager: {ReplaceRoleManager}");
 
         if (TutorialManager.InstanceExists || ReplaceRoleManager)
         {
@@ -660,6 +690,7 @@ public static class TOSRoleManagerPatches
                     infected.AddRange(players.Where(x=>!infected.Contains(x)).Take(remainingImps));
                     break;
                 }
+
                 var num = random.Next(players.Count);
                 var player = players[num];
                 var skip = LastImps.Contains(player.ClientId) && random.NextDouble() < biasPercent;
@@ -721,14 +752,14 @@ public static class TOSRoleManagerPatches
         // Note: I know this is a like for like recreation of the AssignRoleOnDeath function but for some reason
         // the original won't spawn the Phantom and just spawns Neutral Ghost instead
 
-        // Logger<TownOfSushiPlugin>.Message($"AssignRoleOnDeathPatch - Player: '{player.Data.PlayerName}', specialRolesAllowed: {specialRolesAllowed}");
+        if (TownOfSushiPlugin.IsDevBuild) Logger<TownOfSushiPlugin>.Warning($"AssignRoleOnDeathPatch - Player: '{player.Data.PlayerName}', specialRolesAllowed: {specialRolesAllowed}");
         if (player == null || !player.Data.IsDead)
             // Logger<TownOfSushiPlugin>.Message($"AssignRoleOnDeathPatch - !player.Data.IsDead: '{!player.Data.IsDead}'");
         {
             return false;
         }
 
-        if (!player.Data.Role.IsImpostor && specialRolesAllowed)
+        if (/*!player.Data.Role.IsImpostor && */specialRolesAllowed && !player.HasModifier<BasicGhostModifier>())
             // Logger<TownOfSushiPlugin>.Message($"AssignRoleOnDeathPatch - !player.Data.Role.IsImpostor: '{!player.Data.Role.IsImpostor}' specialRolesAllowed: {specialRolesAllowed}");
         {
             RoleManager.TryAssignSpecialGhostRoles(player);
@@ -747,7 +778,7 @@ public static class TOSRoleManagerPatches
     [HarmonyPrefix]
     public static bool TryAssignSpecialGhostRolesPatch(RoleManager __instance, PlayerControl player)
     {
-        // Logger<TownOfSushiPlugin>.Message($"TryAssignSpecialGhostRolesPatch - Player: '{player.Data.PlayerName}'");
+        if (TownOfSushiPlugin.IsDevBuild) Logger<TownOfSushiPlugin>.Warning($"TryAssignSpecialGhostRolesPatch - Player: '{player.Data.PlayerName}'");
         var ghostRole = RoleTypes.CrewmateGhost;
 
         if (player.IsCrewmate() && CrewmateGhostRolePool.Count > 0)
@@ -793,8 +824,8 @@ public static class TOSRoleManagerPatches
         var maxSlots = players < 15 ? players : 15;
         List<RoleListOption> impBuckets =
         [
-            RoleListOption.ImpConceal, RoleListOption.ImpKilling, RoleListOption.ImpSupport, RoleListOption.ImpCommon,
-            RoleListOption.ImpRandom
+            RoleListOption.ImpConceal, RoleListOption.ImpKilling, RoleListOption.ImpPower, RoleListOption.ImpSupport,
+            RoleListOption.ImpCommon, RoleListOption.ImpSpecial, RoleListOption.ImpRandom
         ];
         List<RoleListOption> buckets = [];
         var anySlots = 0;

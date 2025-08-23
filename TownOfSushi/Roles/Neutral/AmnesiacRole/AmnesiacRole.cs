@@ -16,7 +16,7 @@ using TownOfSushi.Modifiers;
 namespace TownOfSushi.Roles.Neutral;
 
 public sealed class AmnesiacRole(IntPtr cppPtr)
-    : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant
+    : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant, IGuessable
 {
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<MysticRole>());
     public string RoleName => "Amnesiac";
@@ -25,6 +25,17 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
     public Color RoleColor => TownOfSushiColors.Amnesiac;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralBenign;
+    // This is so the role can be guessed without requiring it to be enabled normally
+    public bool CanBeGuessed =>
+        (MiscUtils.GetPotentialRoles()
+             .Contains(RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<GuardianAngelTOSRole>())) &&
+         OptionGroupSingleton<GuardianAngelOptions>.Instance.OnTargetDeath is BecomeOptions.Amnesiac)
+        || (MiscUtils.GetPotentialRoles()
+                .Contains(RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<ExecutionerRole>())) &&
+            OptionGroupSingleton<ExecutionerOptions>.Instance.OnTargetDeath is BecomeOptions.Amnesiac)
+        || (MiscUtils.GetPotentialRoles()
+                .Contains(RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<RomanticRole>())) &&
+            OptionGroupSingleton<RomanticOptions>.Instance.OnTargetDeath is RomanticBecomeOptions.Amnesiac);
 
     public CustomRoleConfiguration Configuration => new(this)
     {

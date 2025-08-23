@@ -11,6 +11,8 @@ public enum TownOfSushiRpc : uint
     SetPos,
     SendLoveChat,
     SendJailorChat,
+    RetrainConfirm,
+    RetrainImpostor,
     SendJaileeChat,
     SendImpTeamChat,
     SendVampTeamChat,

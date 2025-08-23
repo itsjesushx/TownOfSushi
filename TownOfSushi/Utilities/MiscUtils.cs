@@ -294,6 +294,29 @@ public static class MiscUtils
         return role?.NiceName ?? (roleType == RoleTypes.Crewmate ? "Crewmate" : "Impostor");
     }
 
+    public static void SetSizeLimit(this SpriteRenderer sprite, float scale)
+    {
+        if (sprite.bounds.size.x < sprite.bounds.size.y)
+        {
+            sprite.size = new Vector2(scale * sprite.bounds.size.x / sprite.bounds.size.y, scale);
+        }
+        else
+        {
+            sprite.size = new Vector2(scale, scale * sprite.bounds.size.y / sprite.bounds.size.x);
+        }
+        sprite.tileMode = SpriteTileMode.Adaptive;
+    }
+    
+    public static void SetSizeLimit(this GameObject spriteObj, float scale)
+    {
+        if (!spriteObj.TryGetComponent<SpriteRenderer>(out var sprite))
+        {
+            return;
+        }
+
+        sprite.SetSizeLimit(scale);
+    }
+
     public static IEnumerable<RoleBehaviour> GetPotentialRoles()
     {
         var currentGameOptions = GameOptionsManager.Instance.CurrentGameOptions;
@@ -302,7 +325,7 @@ public static class MiscUtils
             new RoleManager.RoleAssignmentData(role, roleOptions.GetNumPerGame(role.Role),
                 roleOptions.GetChancePerGame(role.Role))).ToList();
 
-        var roleList = assignmentData.Where(x => x is { Chance: > 0, Role: ICustomRole }).Select(x => x.Role);
+        var roleList = assignmentData.Where(x => x is { Chance: > 0, Count: > 0, Role: ICustomRole }).Select(x => x.Role);
 
         var crewmateRole = RoleManager.Instance.AllRoles.FirstOrDefault(x => x.Role == RoleTypes.Crewmate);
         roleList = roleList.AddItem(crewmateRole!);
