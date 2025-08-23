@@ -1,3 +1,4 @@
+using MiraAPI.Networking;
 using Reactor.Utilities;
 using TownOfSushi.Buttons;
 using UnityEngine;
@@ -35,6 +36,13 @@ public sealed class ThiefKillButton : TownOfSushiRoleButton<ThiefRole, PlayerCon
             return;
         }
 
-        ThiefRole.RpcStealRole(PlayerControl.LocalPlayer, Target);
+        if (Target.IsCrewmate() || Target.IsNeutral() && !Target.Is(RoleAlignment.NeutralKilling))
+        {
+            PlayerControl.LocalPlayer.RpcCustomMurder(PlayerControl.LocalPlayer);
+        }
+        else
+        {
+            PlayerControl.LocalPlayer.RpcCustomMurder(Target);
+        }
     }
 }

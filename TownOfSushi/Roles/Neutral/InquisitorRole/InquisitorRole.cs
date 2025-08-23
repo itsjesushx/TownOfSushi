@@ -9,6 +9,7 @@ using MiraAPI.Patches.Stubs;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
+using TownOfSushi.Modifiers;
 using UnityEngine;
 
 namespace TownOfSushi.Roles.Neutral;
@@ -205,6 +206,10 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
         {
             var players = ModifierUtils.GetPlayersWithModifier<InquisitorHereticModifier>().ToList();
             players.Do(x => x.RpcRemoveModifier<InquisitorHereticModifier>());
+        }
+        if (!Player.HasModifier<BasicGhostModifier>() && TargetsDead)
+        {
+            Player.AddModifier<BasicGhostModifier>();
         }
     }
 

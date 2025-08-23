@@ -4,10 +4,8 @@ using HarmonyLib;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.Events;
 using MiraAPI.Hud;
-using MiraAPI.Networking;
 using MiraAPI.Patches.Stubs;
 using Reactor.Networking.Attributes;
-using Reactor.Utilities;
 using TownOfSushi.Events.TOSEvents;
 using TownOfSushi.Modules;
 using TownOfSushi.Options;
@@ -54,7 +52,7 @@ public sealed class ThiefRole(IntPtr cppPtr)
         RoleBehaviourStubs.Initialize(this, player);
         if (Player.AmOwner)
         {
-            HudManager.Instance.ImpostorVentButton.graphic.sprite = TOSNeutAssets.ReaperVentSprite.LoadAsset();
+            HudManager.Instance.ImpostorVentButton.graphic.sprite = TOSAssets.VentSprite.LoadAsset();
             HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(TownOfSushiColors.Thief);
         }
     }
@@ -62,12 +60,6 @@ public sealed class ThiefRole(IntPtr cppPtr)
     [MethodRpc((uint)TownOfSushiRpc.StealRole, SendImmediately = true)]
     public static void RpcStealRole(PlayerControl player, PlayerControl target)
     {
-        if (player.Data.Role is not ThiefRole)
-        {
-            Logger<TownOfSushiPlugin>.Error("RpcStealRole - Invalid Thief");
-            return;
-        }
-
         var roleWhenAlive = target.GetRoleWhenAlive();
 
         if (roleWhenAlive is ThiefRole)
@@ -85,89 +77,77 @@ public sealed class ThiefRole(IntPtr cppPtr)
         var TOSAbilityEvent = new TOSAbilityEvent(AbilityType.ThiefPreSteal, player, target);
         MiraEventManager.InvokeEvent(TOSAbilityEvent);
 
-        if (target.IsCrewmate() || target.IsNeutral() && !target.Is(RoleAlignment.NeutralKilling))
+        player.ChangeRole((ushort)roleWhenAlive.Role);
+
+        if (player.IsImpostor())
         {
-            player.RpcCustomMurder(player, teleportMurderer: false);
+            player.SetKillTimer(GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown));
+        }
+        foreach (var button in CustomButtonManager.Buttons.Where(x => x.Enabled(player.Data.Role)))
+        {
+            button.SetTimer(OptionGroupSingleton<GeneralOptions>.Instance.GameStartCd);
+        }
+
+        if (player.Data.Role is HitmanRole)
+        {
+            player.ChangeRole(RoleId.Get<AgentRole>());
+        }
+        if (player.Data.Role is PlaguebearerRole)
+        {
+            ModifierUtils.GetActiveModifiers<PlaguebearerInfectedModifier>().Do(x => x.ModifierComponent?.RemoveModifier(x));
+        }
+        else if (player.Data.Role is ArsonistRole)
+        {
+            ModifierUtils.GetActiveModifiers<ArsonistDousedModifier>().Do(x => x.ModifierComponent?.RemoveModifier(x));
+        }
+        /* commented this out for now as it basically makes the thief a vanilla killer.
+        else if (player.Data.Role is VampireRole)
+        {
+            if (target.HasModifier<VampireBittenModifier>())
+            {
+                // Makes the thief stay with the bitten modifier
+                player.AddModifier<VampireBittenModifier>();
+            }
+            else
+            {
+                // Makes the og vampire a bitten vampire so to speak, yes it makes it more confusing, but that's how it is, deal with it - Atony
+                target.AddModifier<VampireBittenModifier>();
+            }
+        }*/
+
+        if (player.AmOwner)
+        {
+            var notif1 = Helpers.CreateAndShowNotification(
+                $"<b>{target.Data.PlayerName}'s role was {player.Data.Role.TeamColor.ToTextColor()}{player.Data.Role.NiceName}</color>. You have stolen their role!</b>",
+                Color.white, new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Thief.LoadAsset());
+            notif1.Text.SetOutlineThickness(0.35f);
+        }
+
+        if (target.IsCrewmate())
+        {
+            target.ChangeRole((ushort)RoleTypes.Crewmate);
+        }
+        else if (target.IsImpostor())
+        {
+            target.ChangeRole((ushort)RoleTypes.Impostor);
         }
         else
         {
-            player.RpcCustomMurder(target);
-
-            player.ChangeRole((ushort)roleWhenAlive.Role);
-            
-            if (player.IsImpostor())
-            {
-                player.SetKillTimer(GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown));
-            }
-            foreach (var button in CustomButtonManager.Buttons.Where(x => x.Enabled(player.Data.Role)))
-            {
-                button.SetTimer(OptionGroupSingleton<GeneralOptions>.Instance.GameStartCd);
-            }
-
-            if (player.Data.Role is HitmanRole)
-            {
-                player.ChangeRole(RoleId.Get<AgentRole>());
-            }
-            if (player.Data.Role is PlaguebearerRole || player.Data.Role is PestilenceRole)
-            {
-                ModifierUtils.GetActiveModifiers<PlaguebearerInfectedModifier>().Do(x => x.ModifierComponent?.RemoveModifier(x));
-            }
-            else if (player.Data.Role is ArsonistRole)
-            {
-                ModifierUtils.GetActiveModifiers<ArsonistDousedModifier>().Do(x => x.ModifierComponent?.RemoveModifier(x));
-            }
-            else if (player.Data.Role is VampireRole)
-            {
-                if (target.HasModifier<VampireBittenModifier>())
-                {
-                    // Makes the amne stay with the bitten modifier
-                    player.AddModifier<VampireBittenModifier>();
-                }
-                else
-                {
-                    // Makes the og vampire a bitten vampire so to speak, yes it makes it more confusing, but that's how it is, deal with it - Atony
-                    target.AddModifier<VampireBittenModifier>();
-                }
-            }
-
-            if (player.AmOwner)
-            {
-                var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>{target.Data.PlayerName}'s role was {player.Data.Role.TeamColor.ToTextColor()}{player.Data.Role.NiceName}</color>. You have stolen their role!</b>",
-                    Color.white, new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Thief.LoadAsset());
-                notif1.Text.SetOutlineThickness(0.35f);
-            }
-
-            if (roleWhenAlive is not VampireRole && (roleWhenAlive.MaxCount <= 1 || (roleWhenAlive.MaxCount <= PlayerControl.AllPlayerControls
-                    .ToArray().Count(x => x.Data.Role.Role == roleWhenAlive.Role))))
-            {
-                if (target.IsCrewmate())
-                {
-                    target.ChangeRole((ushort)RoleTypes.Crewmate);
-                }
-                else if (target.IsImpostor())
-                {
-                    target.ChangeRole((ushort)RoleTypes.Impostor);
-                }
-                else
-                {
-                    target.ChangeRole(RoleId.Get<JesterRole>());
-                }
-            }
-
-            if (player.IsImpostor() && OptionGroupSingleton<AssassinOptions>.Instance.ThiefTurnAssassin)
-            {
-                player.AddModifier<ImpostorAssassinModifier>();
-            }
-            else if (player.IsNeutral() && player.Is(RoleAlignment.NeutralKilling) &&
-                     OptionGroupSingleton<AssassinOptions>.Instance.ThiefTurnAssassin)
-            {
-                player.AddModifier<NeutralKillerAssassinModifier>();
-            }
-
-            var TOSAbilityEvent2 = new TOSAbilityEvent(AbilityType.ThiefPostSteal, player, target);
-            MiraEventManager.InvokeEvent(TOSAbilityEvent2);
+            target.ChangeRole(RoleId.Get<JesterRole>());
         }
+
+        if (player.IsImpostor() && OptionGroupSingleton<AssassinOptions>.Instance.ThiefTurnAssassin)
+        {
+            player.AddModifier<ImpostorAssassinModifier>();
+        }
+        else if (player.IsNeutral() && player.Is(RoleAlignment.NeutralKilling) &&
+                 OptionGroupSingleton<AssassinOptions>.Instance.ThiefTurnAssassin)
+        {
+            player.AddModifier<NeutralKillerAssassinModifier>();
+        }
+
+        var TOSAbilityEvent2 = new TOSAbilityEvent(AbilityType.ThiefPostSteal, player, target);
+        MiraEventManager.InvokeEvent(TOSAbilityEvent2);
     }
 
     public override void Deinitialize(PlayerControl targetPlayer)
