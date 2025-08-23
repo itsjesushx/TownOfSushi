@@ -1,9 +1,6 @@
 ﻿using System.Globalization;
 using System.Text;
 using Il2CppInterop.Runtime.Attributes;
-using MiraAPI.Roles;
-using MiraAPI.Utilities;
-using TownOfSushi.Utilities;
 
 namespace TownOfSushi.Roles;
 
@@ -74,6 +71,11 @@ public interface ITownOfSushiRole : ICustomRole
             if (RoleAlignment == RoleAlignment.NeutralEvil)
             {
                 return TOSRoleGroups.NeutralEvil;
+            }
+
+            if (RoleAlignment == RoleAlignment.NeutralOutlier)
+            {
+                return TOSRoleGroups.NeutralOutlier;
             }
 
             if (RoleAlignment == RoleAlignment.NeutralKilling)
@@ -209,6 +211,7 @@ public enum RoleAlignment
     ImpostorConcealing,
     ImpostorKilling,
     ImpostorSupport,
+    NeutralOutlier,
     NeutralBenign,
     NeutralEvil,
     NeutralKilling

@@ -1,11 +1,11 @@
 using HarmonyLib;
-using MiraAPI.GameOptions;
-using MiraAPI.Modifiers;
+
+
 using TownOfSushi.Modifiers.Game;
 using TownOfSushi.Options;
-using TownOfSushi.Options.Roles.Crewmate;
-using TownOfSushi.Roles.Crewmate;
-using TownOfSushi.Utilities;
+
+
+
 
 namespace TownOfSushi.Patches.Roles;
 
@@ -29,9 +29,6 @@ public static class MeetingHudTimerPatch
                 break;
             case MayorRole mayor:
                 newText = mayor.Revealed ? "\nYou unleash 3 votes at once!" : "\nReveal yourself to get 3 total votes!";
-                break;
-            case DeputyRole dep:
-                if (dep.Killer) newText = "\nShoot a player successfully if they are the killer!";
                 break;
             case VigilanteRole vigi:
                 newText = $"\n{vigi.MaxKills} / {(int)OptionGroupSingleton<VigilanteOptions>.Instance.VigilanteKills} Guesses Remaining";

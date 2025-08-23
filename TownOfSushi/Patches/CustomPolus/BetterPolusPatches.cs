@@ -1,16 +1,17 @@
 using HarmonyLib;
-using MiraAPI.GameOptions;
+
 
 using TownOfSushi.Options;
-using TownOfSushi.Utilities;
+
 using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace TownOfSushi.Patches.CustomPolus;
 
 [HarmonyPatch(typeof(ShipStatus))]
-public static class BetterPolusPatches
+public static class BetterPolus
 {
+    public static Vent SpecimenVent;
     public const float DvdScreenNewScale = 0.75f;
     public static readonly Vector3 DvdScreenNewPos = new(26.635f, -15.92f, 1f);
     public static readonly Vector3 VitalsNewPos = new(31.275f, -6.45f, 1f);
@@ -323,7 +324,7 @@ public static class TaskTextUpdates
             return;
         }
 
-        if (BetterPolusPatches.IsObjectsFetched && BetterPolusPatches.IsAdjustmentsDone)
+        if (BetterPolus.IsObjectsFetched && BetterPolus.IsAdjustmentsDone)
         {
             var opts = OptionGroupSingleton<BetterMapOptions>.Instance;
 
@@ -339,7 +340,7 @@ public static class TaskTextUpdates
                     opts.BPTempInDeathValley)
                 {
                     task.StartAt = TaskProvider.DeathValleySystemType;
-                    BetterPolusPatches.TempCold.Room = TaskProvider.DeathValleySystemType;
+                    BetterPolus.TempCold.Room = TaskProvider.DeathValleySystemType;
                 }
 
                 if (opts.BPSwapWifiAndChart)

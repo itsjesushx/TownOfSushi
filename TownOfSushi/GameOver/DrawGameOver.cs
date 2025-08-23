@@ -1,5 +1,4 @@
 ﻿using MiraAPI.GameEnd;
-using MiraAPI.Utilities;
 using Reactor.Utilities.Extensions;
 using TownOfSushi.Modules;
 using UnityEngine;
@@ -19,7 +18,7 @@ public sealed class DrawGameOver : CustomGameOver
         endGameManager.BackgroundBar.material.SetColor(ShaderID.Color, TownOfSushiColors.Neutral);
 
         var text = Object.Instantiate(endGameManager.WinText);
-        text.text = "Nobody Wins!";
+        text.text = "Draw Game!";
         text.color = TownOfSushiColors.Neutral;
         GameHistory.WinningFaction = $"<color=#{TownOfSushiColors.Neutral.ToHtmlStringRGBA()}>Nobody</color>";
 

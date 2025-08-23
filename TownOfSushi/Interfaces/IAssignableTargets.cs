@@ -1,4 +1,4 @@
-namespace TownOfSushi.Extensions;
+namespace TownOfSushi.Interfaces;
 
 public interface IAssignableTargets
 {

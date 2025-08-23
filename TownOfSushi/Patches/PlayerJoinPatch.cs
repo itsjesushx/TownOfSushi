@@ -2,7 +2,7 @@ using System.Collections;
 using HarmonyLib;
 using Reactor.Utilities;
 using TownOfSushi.Modules;
-using TownOfSushi.Utilities;
+
 using UnityEngine;
 
 namespace TownOfSushi.Patches;

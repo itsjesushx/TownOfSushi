@@ -1,7 +1,7 @@
 using AmongUs.Data;
 using HarmonyLib;
 using TownOfSushi.Modules.RainbowMod;
-using TownOfSushi.Utilities;
+
 using UnityEngine;
 using Object = Il2CppSystem.Object;
 

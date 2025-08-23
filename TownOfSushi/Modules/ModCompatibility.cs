@@ -5,8 +5,6 @@ using HarmonyLib;
 using Il2CppInterop.Runtime;
 using Reactor.Utilities;
 using TownOfUs.Modules.Components;
-using TownOfSushi.Roles;
-using TownOfSushi.Utilities;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using Version = SemanticVersioning.Version;
@@ -17,6 +15,10 @@ public static class ModCompatibility
 {
     public const string SubmergedGuid = "Submerged";
     public const ShipStatus.MapType SubmergedMapType = (ShipStatus.MapType)6;
+    public static class Classes
+    {
+        public const string ElevatorMover = "ElevatorMover";
+    }
 
     public const string LevelImpostorGuid = "com.DigiWorm.LevelImposter";
     public const ShipStatus.MapType LevelImpostorMapType = (ShipStatus.MapType)7;

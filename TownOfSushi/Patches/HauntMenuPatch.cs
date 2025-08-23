@@ -2,16 +2,16 @@ using System.Globalization;
 using System.Text;
 using AmongUs.GameOptions;
 using HarmonyLib;
-using MiraAPI.GameOptions;
-using MiraAPI.Modifiers;
+
+
 using MiraAPI.Modifiers.Types;
-using MiraAPI.Roles;
+
 using TownOfSushi.Modifiers;
 using TownOfSushi.Modules;
 using TownOfSushi.Options;
-using TownOfSushi.Roles.Crewmate;
-using TownOfSushi.Roles.Neutral;
-using TownOfSushi.Utilities;
+
+
+
 using UnityEngine;
 using Object = UnityEngine.Object;
 

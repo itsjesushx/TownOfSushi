@@ -1,10 +1,7 @@
-using MiraAPI.GameOptions;
-using MiraAPI.Utilities.Assets;
 using Reactor.Utilities.Extensions;
 using TownOfSushi.Modules.Anims;
 using TownOfSushi.Options;
 using TownOfSushi.Patches;
-using TownOfSushi.Utilities;
 using UnityEngine;
 
 namespace TownOfSushi.Modifiers;

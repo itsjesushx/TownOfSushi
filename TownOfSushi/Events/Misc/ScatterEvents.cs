@@ -1,7 +1,6 @@
 ﻿using HarmonyLib;
 using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
-using MiraAPI.Modifiers;
 using TownOfSushi.Modifiers;
 
 namespace TownOfSushi.Events.Misc;

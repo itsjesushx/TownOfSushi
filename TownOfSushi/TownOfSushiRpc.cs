@@ -66,7 +66,7 @@ public enum TownOfSushiRpc : uint
     ButtonBarry,
     LookoutSeePlayer,
     AnimateNewReveal,
-    SheriffMisfire,
+    VigilanteMisfire,
     WerewolfMaul,
     WiitchSetCursedPlayer,
     MurderCursedPlayer,
@@ -79,5 +79,6 @@ public enum TownOfSushiRpc : uint
     HostCallMeeting,
     SetPoisonedPlayer,
     MurderPoisonedPlayer,
-    AmbushPlayer
+    AmbushPlayer,
+    StealRole
 }

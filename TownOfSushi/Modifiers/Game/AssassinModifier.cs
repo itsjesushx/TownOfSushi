@@ -1,20 +1,11 @@
 ﻿using HarmonyLib;
-using MiraAPI.GameOptions;
-using MiraAPI.Modifiers;
 using MiraAPI.Networking;
 using MiraAPI.PluginLoading;
-using MiraAPI.Roles;
-using MiraAPI.Utilities;
 using Reactor.Utilities;
 using TownOfSushi.Events;
-using TownOfSushi.Modifiers.Crewmate;
 using TownOfSushi.Modules;
 using TownOfUs.Modules.Components;
 using TownOfSushi.Options;
-using TownOfSushi.Roles;
-using TownOfSushi.Roles.Crewmate;
-using TownOfSushi.Roles.Neutral;
-using TownOfSushi.Utilities;
 using UnityEngine;
 
 namespace TownOfSushi.Modifiers.Game;

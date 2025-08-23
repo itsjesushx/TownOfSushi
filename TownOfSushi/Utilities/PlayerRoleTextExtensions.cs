@@ -1,16 +1,6 @@
-﻿using MiraAPI.GameOptions;
-using MiraAPI.Modifiers;
-using TownOfSushi.Modifiers;
-using TownOfSushi.Modifiers.Crewmate;
-using TownOfSushi.Modifiers.Game.Alliance;
-using TownOfSushi.Modifiers.Impostor;
-using TownOfSushi.Modifiers.Neutral;
+﻿using TownOfSushi.Modifiers;
 using TownOfSushi.Modules;
 using TownOfSushi.Options;
-using TownOfSushi.Options.Roles.Neutral;
-using TownOfSushi.Roles.Crewmate;
-using TownOfSushi.Roles.Impostor;
-using TownOfSushi.Roles.Neutral;
 using UnityEngine;
 
 namespace TownOfSushi.Utilities;
@@ -30,11 +20,11 @@ public static class PlayerRoleTextExtensions
             color = Color.black;
         }
 
-        if (player.HasModifier<SeerGoodRevealModifier>() && PlayerControl.LocalPlayer.IsRole<SeerRole>())
+        if (player.HasModifier<DetectiveGoodRevealModifier>() && PlayerControl.LocalPlayer.IsRole<DetectiveRole>())
         {
             color = Color.green;
         }
-        else if (player.HasModifier<SeerEvilRevealModifier>() && PlayerControl.LocalPlayer.IsRole<SeerRole>())
+        else if (player.HasModifier<DetectiveEvilRevealModifier>() && PlayerControl.LocalPlayer.IsRole<DetectiveRole>())
         {
             color = Color.red;
         }
@@ -69,12 +59,6 @@ public static class PlayerRoleTextExtensions
             player.HasModifier<HunterStalkedModifier>(x => x.Hunter.AmOwner))
         {
             name += "<color=#29AB87> &</color>";
-        }
-
-        if ((player.HasModifier<WitchSpelledModifier>() && PlayerControl.LocalPlayer.IsRole<WitchRole>() && !PlayerControl.LocalPlayer.HasDied())
-            || (player.HasModifier<WitchSpelledModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !hidden))
-        {
-            name += "<color=#FF0000> [†]</color>";
         }
 
         if ((player.HasModifier<WarlockCursedModifier>() && PlayerControl.LocalPlayer.IsRole<WarlockRole>() && !PlayerControl.LocalPlayer.HasDied())

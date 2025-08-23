@@ -3,7 +3,6 @@ using Reactor.Networking.Attributes;
 using Reactor.Networking.Extensions;
 using Reactor.Networking.Rpc;
 using Reactor.Utilities;
-using TownOfSushi.Modifiers.Game.Impostor;
 using UnityEngine;
 
 namespace TownOfSushi.Networking;

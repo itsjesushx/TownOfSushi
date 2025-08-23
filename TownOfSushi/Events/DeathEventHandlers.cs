@@ -1,21 +1,25 @@
-﻿using HarmonyLib;
+﻿using System.Collections;
+using HarmonyLib;
 using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Meeting;
 using MiraAPI.Events.Vanilla.Player;
-using MiraAPI.Modifiers;
 using TownOfSushi.Events.TOSEvents;
 using TownOfSushi.Modifiers;
 using TownOfSushi.Modules;
-using TownOfSushi.Roles.Crewmate;
-using TownOfSushi.Roles.Impostor;
-using TownOfSushi.Roles.Neutral;
 using UnityEngine;
 
 namespace TownOfSushi.Events;
 
 public static class DeathEventHandlers
 {
+    public static bool IsDeathRecent { get; set; }
+    public static IEnumerator CoWaitDeathHandler()
+    {
+        IsDeathRecent = true;
+        yield return new WaitForSeconds(0.15f);
+        IsDeathRecent = false;
+    }
     public static int CurrentRound { get; set; } = 1;
 
     [RegisterEvent(-1)]
@@ -98,7 +102,7 @@ public static class DeathEventHandlers
             var cod = "Killed";
             switch (source.GetRoleWhenAlive())
             {
-                case SheriffRole or VeteranRole:
+                case VigilanteRole or VeteranRole:
                     cod = "Shot";
                     break;
                 case JailorRole:

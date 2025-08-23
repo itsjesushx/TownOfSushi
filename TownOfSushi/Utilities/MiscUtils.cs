@@ -6,29 +6,16 @@ using System.Text;
 using System.Text.RegularExpressions;
 using AmongUs.GameOptions;
 using HarmonyLib;
-using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.OptionTypes;
-using MiraAPI.Modifiers;
-using MiraAPI.Roles;
-using MiraAPI.Utilities;
 using TownOfSushi.Modifiers;
 using TownOfSushi.Modifiers.Game;
 using TownOfSushi.Modules;
-using TownOfUs.Modules.Wiki;
 using TownOfSushi.Options;
-using TownOfSushi.Options.Roles.Neutral;
-using TownOfSushi.Roles;
-using TownOfSushi.Roles.Neutral;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
-using TownOfSushi.Modifiers.Neutral;
-using TownOfSushi.Modifiers.Crewmate;
-using TownOfSushi.Modifiers.Game.Universal;
 using TownOfSushi.Events;
-using MiraAPI.Utilities.Assets;
 using Reactor.Utilities;
-using TownOfSushi.Roles.Crewmate;
 
 namespace TownOfSushi.Utilities;
 
@@ -41,6 +28,21 @@ public static class MiscUtils
         (x.Data.Role is ITOSCrewRole { IsPowerCrew: true } &&
          !(x.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.CrewContinuesGame) &&
          OptionGroupSingleton<GeneralOptions>.Instance.CrewKillersContinue));
+
+    public static bool IsKillerRole(this PlayerControl player)
+    {
+        return !player.HasDied() && player.Is(RoleAlignment.NeutralKilling) || player.IsImpostor();
+    }
+
+    public static bool IsCrewKiller(this PlayerControl player)
+    {
+        return !player.HasDied() && player.Is(RoleAlignment.CrewmateKilling);
+    }
+
+    public static bool IsPassiveNeutral(this PlayerControl player)
+    {
+        return !player.HasDied() && player.Is(RoleAlignment.NeutralEvil) || player.Is(RoleAlignment.NeutralBenign);
+    }
 
     public static int RealKillersAliveCount => Helpers.GetAlivePlayers().Count(x =>
         x.IsImpostor() || x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis &&
@@ -85,7 +87,8 @@ public static class MiscUtils
     {
         return
             player.HasModifier<GuardianAngelProtectModifier>() ||
-            player.HasModifier<SurvivorVestModifier>() ||
+            player.HasModifier<AmnesiacVestModifier>() ||
+            player.HasModifier<InvulnerabilityModifier>() ||
             player.HasModifier<ClericBarrierModifier>() ||
             player.HasModifier<BaseShieldModifier>() ||
             player.HasModifier<MedicShieldModifier>() ||
@@ -646,6 +649,38 @@ public static class MiscUtils
             $"<b>{TownOfSushiColors.ImpSoft.ToTextColor()}{player.Data.PlayerName}, the lobby host, has committed suicide!</b></color>", Color.white,
             new Vector3(0f, 1f, -20f), spr: MiraAssets.Empty.LoadAsset());
         notif1.Text.SetOutlineThickness(0.35f);
+    }
+
+    public static RoleAlignment GetRoleAlignment(this RoleBehaviour role)
+    {
+        if (role is ITownOfSushiRole touRole)
+        {
+            return touRole.RoleAlignment;
+        }
+        else if (role is ICustomRole customRole)
+        {
+            var alignments = Enum.GetValues<RoleAlignment>();
+            foreach (var alignment in alignments)
+            {
+                var roleAlignment = alignment;
+                if (customRole.RoleOptionsGroup.Name.Replace(" Roles", "") == roleAlignment.ToDisplayString())
+                {
+                    return roleAlignment;
+                }
+            }
+        }
+        if (role.IsNeutral())
+        {
+            return RoleAlignment.NeutralOutlier;
+        }
+        else if (role.IsImpostor())
+        {
+            return RoleAlignment.ImpostorSupport;
+        }
+        else
+        {
+            return RoleAlignment.CrewmateSupport;
+        }
     }
 
     public static IEnumerator CoFlash(Color color, float waitfor = 1f, float alpha = 0.3f, bool PlaySound = false)

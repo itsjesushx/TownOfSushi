@@ -1,4 +1,3 @@
-using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.Attributes;
 
 namespace TownOfSushi.Options;

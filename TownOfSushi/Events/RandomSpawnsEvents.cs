@@ -1,10 +1,7 @@
 using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
 using TownOfSushi.Options;
-using MiraAPI.GameOptions;
 using UnityEngine;
-using MiraAPI.Modifiers;
-using TownOfSushi.Modifiers.Game.Universal;
 
 namespace TownOfSushi.Events
 {

@@ -1,4 +1,3 @@
-using MiraAPI.Modifiers;
 using MiraAPI.PluginLoading;
 
 namespace TownOfSushi.Modifiers;

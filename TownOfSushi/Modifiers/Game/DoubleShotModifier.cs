@@ -1,7 +1,4 @@
-﻿using MiraAPI.GameOptions;
-using MiraAPI.Utilities.Assets;
-using TownOfUs.Modules.Wiki;
-using TownOfSushi.Options.Modifiers;
+﻿using TownOfSushi.Options.Modifiers;
 using UnityEngine;
 
 namespace TownOfSushi.Modifiers.Game;
@@ -42,21 +39,21 @@ public class DoubleShotModifier : TOSGameModifier, IWikiDiscoverable
         return 0;
     }
     public override int CustomAmount =>
-        (int)OptionGroupSingleton<ImpostorModifierOptions>.Instance.DoubleShotAmount + (int)OptionGroupSingleton<NeutralModifierOptions>.Instance.DoubleShotAmount;
+        (int)OptionGroupSingleton<ImpostorDoubleShotOptions>.Instance.ImpostorDoubleShotAmount + (int)OptionGroupSingleton<NeutralModifierOptions>.Instance.DoubleShotAmount;
 
     public override int CustomChance
     {
         get
         {
             var neutOpt = OptionGroupSingleton<NeutralModifierOptions>.Instance;
-            var impOpt = OptionGroupSingleton<ImpostorModifierOptions>.Instance;
-            var impChance = (int)impOpt.DoubleShotChance;
+            var impOpt = OptionGroupSingleton<ImpostorDoubleShotOptions>.Instance;
+            var impChance = (int)OptionGroupSingleton<ImpostorDoubleShotOptions>.Instance.ImpostorDoubleShotChance;
             var neutChance = (int)neutOpt.DoubleShotChance;
-            if ((int)impOpt.DoubleShotAmount > 0 && (int)neutOpt.DoubleShotAmount > 0)
+            if ((int)impOpt.ImpostorDoubleShotAmount > 0 && (int)neutOpt.DoubleShotAmount > 0)
             {
                 return (impChance + neutChance) / 2;
             }
-            if ((int)impOpt.DoubleShotAmount > 0)
+            if ((int)impOpt.ImpostorDoubleShotAmount > 0)
             {
                 return impChance;
             }

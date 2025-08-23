@@ -1,0 +1,11 @@
+﻿using MiraAPI.GameOptions.Attributes;
+
+namespace TownOfSushi.Roles.Crewmate;
+
+public sealed class MysticOptions : AbstractOptionGroup<MysticRole>
+{
+    public override string GroupName => "Mystic";
+
+    [ModdedNumberOption("Dead Body Arrow Duration", 0f, 1f, 0.05f, MiraNumberSuffixes.Seconds, "0.00")]
+    public float MysticArrowDuration { get; set; } = 0.1f;
+}

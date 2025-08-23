@@ -1,8 +1,4 @@
-﻿using MiraAPI.GameOptions;
-using MiraAPI.Modifiers;
-using MiraAPI.Utilities;
-using TownOfSushi.Modifiers.Game.Universal;
-using TownOfSushi.Options;
+﻿using TownOfSushi.Options;
 using UnityEngine;
 
 namespace TownOfSushi.Utilities.Appearances;
@@ -226,10 +222,6 @@ public static class AppearanceExtensions
         else if (playerControl.HasModifier<GiantModifier>())
         {
             appearance = playerControl.GetModifier<GiantModifier>()!.GetVisualAppearance()!;
-        }
-        else if (playerControl.HasModifier<FlashModifier>())
-        {
-            appearance = playerControl.GetModifier<FlashModifier>()!.GetVisualAppearance();
         }
 
         return appearance;

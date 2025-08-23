@@ -1,19 +1,5 @@
 > [!NOTE]
 > This mod is NOT for console versions of Among Us and is NOT host only either, please do not ask for a port or a rewrite.
-
------------------------
-
-| Among Us   | Mod Version | Download Link                                                                                   |
-|------------|-------------|-------------------------------------------------------------------------------------------------|
-| 2025.5.20  | 1.0.0       | [Download](TBD) |
-
-<details>
-<summary>Older Versions</summary>
-
-| Among Us   | Mod Version  | Download Link                                                                                                         |
-|------------|--------------|-----------------------------------------------------------------------------------------------------------------------|
-</details>
-
 -----------------------
 
 ### An [Among Us](https://store.steampowered.com/app/945360/Among_Us/) mod that adds a bunch of roles, modifiers, abilities, game settings, quality of life changes and many improvements to the base game.
@@ -46,7 +32,6 @@
 - [Hexblade](#hexblade)  
 - [Undertaker](#undertaker)  
 - [Bomber](#bomber)  
-- [Witch](#witch)  
 - [Viper](#viper)  
 - [Bounty Hunter](#bounty-hunter)  
 - [Warlock](#warlock)  
@@ -72,12 +57,13 @@
 - [Engineer](#engineer)  
 - [Vigilante](#vigilante)  
 - [Oracle](#oracle)  
-- [Investigator](#investigator)  
+- [Coroner](#coroner)  
 - [Mystic](#mystic)  
 - [Veteran](#veteran)  
 - [Medic](#medic)  
 - [Imitator](#imitator)  
 - [Detective](#detective)
+- [Coroner](#coroner)
 - [Spy](#spy)
 - [Tracker](#tracker)  
 - [Lookout](#lookout)  
@@ -129,8 +115,7 @@
 - [Tiebreaker](#tiebreaker)  
 - [Administrator](#administrator)  
 - [Drunk](#drunk)  
-- [Flash](#flash)  
-- [Radar](#radar)  
+- [Paranoiac](#Paranoiac)  
 - [Sleuth](#sleuth)  
 
 </details>
@@ -262,30 +247,23 @@ Delete these files and you're good to go!
 -----------------------
 # Roles
 # Crewmate Roles
-## Investigator
+## Coroner
 ### **Team: Crewmates**
-The Investigator is a Crewmate that can see the footprints of players.\
-Every footprint disappears after a set amount of time.\
-The Investigator can inspect bodies and then examine players.\
-The Investigator must first find a body and inspect it.\
-During the same or following rounds the Investigator can then examine players to see if they were the killer.\
+The Coroner can inspect bodies and then examine players.\
+The Coroner must first find a body and inspect it.\
+During the same or following rounds the Coroner can then examine players to see if they were the killer.\
 If the examined player is the killer they will receive a red flash, else the flash will be green.\
-If the killer of the inspected player dies, the following round the examine button will disable indicating to the Investigator the killer is dead.
+If the killer of the inspected player dies, the following round the examine button will disable indicating to the Coroner the killer is dead.
 
 ### Game Options
 | Name | Description | Type | Default |
 |----------|:-------------:|:------:|:------:|
-| Investigator | The percentage probability of the Investigator appearing | Percentage | 0% |
-| Footprint Size | The size of the footprint on a scale of 1 to 10 | Number | 4 |
-| Footprint Interval | The time interval between two footprints | Time | 0.1s |
-| Footprint Duration | The amount of time that the footprint stays on the ground for | Time | 10s |
-| Anonymous Footprint | When enabled, all footprints are grey instead of the player's colors | Toggle | False |
-| Footprint Vent Visible | Whether footprints near vents are shown | Toggle | False |
-| Examine Cooldown | The cooldown of the Investigator's Examine button | Time | 25s |
-| Show Investigator Reports | Whether the Investigator should get information when reporting a body | Toggle | True |
-| Time Where Investigator Reports Will Have Role | If a body has been dead for shorter than this amount, the Investigator's report will contain the killer's role | Time | 15s |
-| Time Where Investigator Reports Will Have Faction | If a body has been dead for shorter than this amount, the Investigator's report will contain the killer's faction | Time | 30s |
-| Can Detect Last Killer | Whether the Investigator can also detect the last player who killed (resets on round start) | Toggle | False |
+| Coroner Chance | The percentage probability of the Coroner appearing | Percentage | 0% |
+| Examine Cooldown | The cooldown of the Coroner's Examine button | Time | 25s |
+| Show Coroner Reports | Whether the Coroner should get information when reporting a body | Toggle | True |
+| Time Where Coroner Reports Will Have Role | If a body has been dead for shorter than this amount, the Coroner's report will contain the killer's role | Time | 15s |
+| Time Where Coroner Reports Will Have Faction | If a body has been dead for shorter than this amount, the Coroner's report will contain the killer's faction | Time | 30s |
+| Can Detect Last Killer | Whether the Coroner can also detect the last player who killed (resets on round start) | Toggle | False |
 
 -----------------------
 ## Lookout
@@ -440,13 +418,13 @@ During meetings, the Vigilante can choose to kill someone by guessing their role
 | Vigilante Multiple Kill  | Whether the Vigilante can kill more than once per meeting | Toggle | False |
 | Vigilante Guess Neutral Benign  | Whether the Vigilante can Guess Neutral Benign roles | Toggle | False |
 | Vigilante Guess Neutral Evil  | Whether the Vigilante can Guess Neutral Evil roles | Toggle | False |
-| Vigilante Guess Neutral Killing  | Whether the Vigilante can Guess Neutral Killing roles | Toggle | False |
 | Vigilante Guess After Voting  | Whether the Vigilante can Guess after they have voted | Toggle | False |
 | Vigilante | The percentage probability of the Vigilante appearing | Percentage | 0% |
 | Vigilante Miskill Kills Crewmate | Whether the other player is killed if the Vigilante Misfires | Toggle | False |
 | Vigilante Kills Neutral Evil Roles | Whether the Vigilante is able to kill the Neutral Evil Roles | Toggle | False |
 | Vigilante Kills Neutral Benign Roles | Whether the Vigilante is able to kill the Neutral Benign Roles | Toggle | False |
 | Vigilante Kill Cooldown | The cooldown on the Vigilante's kill button | Time | 25s |
+| Vigilante Safe Shots Count | Amount of chances the Vigilante has before getting punished for a wrong murder | Number | 2 |
 | Vigilante can report who they've killed | Whether the Vigilante is able to report their own kills | Toggle | True |
 
 -----------------------
@@ -454,7 +432,7 @@ During meetings, the Vigilante can choose to kill someone by guessing their role
 ### **Team: Crewmates**
 
 The Hunter is a Crewmate Killing role with the ability to track players and execute them if they do anything suspicious.\ 
-Unlike the Sheriff, the Hunter does not die if they kill an innocent player,\
+Unlike the Vigilante, the Hunter does not die if they kill an innocent player,\
 however the Hunter may only execute players who have given them probable cause.
 ### Game Options
 | Name | Description | Type | Default |
@@ -524,14 +502,14 @@ The Spy looks like an additional Impostor to the Impostors, they can't tell the 
 There are two possibilities (depending on the set options):
 - The Impostors can't kill the Spy (because otherwise their kill button would reveal, who the Spy is)
 - The Impostors can kill the Spy but they can also kill their Impostor partner (if they mistake another Impostor for the Spy)
-You can set whether the Sheriff can kill the Spy or not (in order to keep the lie alive).
+You can set whether the Vigilante can kill the Spy or not (in order to keep the lie alive).
 Impostors don't get the Impostor chat if there's a Spy in game.
 
 ### Game Options
 | Name | Description
 |----------|:-------------:|
 | Spy Spawn Chance |
-| Spy Can Die To Sheriff |
+| Spy Can Die To Vigilante |
 | Impostors Can Kill Anyone If There Is A Spy | This allows the Impostors to kill both the Spy and their Impostor partners
 | Spy Can Enter Vents | Allow the Spy to enter/exit vents (but not actually move to connected vents)
 | Spy Has Impostor Vision | Give the Spy the same vision as the Impostors have
@@ -932,27 +910,6 @@ However, they do not need to fully charge their kill button to use it.
 | Time It Takes To Use Full Charge | The maximum duration a charge of the Hexblade's Kill Button lasts | Time | 1s |
 -----------------------
 
-## Witch
-### **Team: Impostors**
-### **Alignment: Killing**
-The Witch is an Impostor that can Spell people.\
-During each round, the Witch can go up to someone and Spell them.\
-This makes the Spelled person to die after the meeting ends.\
-The Witch can Spell their partners, so be careful!\
-The Spelled player's name will have a cross (†) during meetings to let everyone know they have been cursed.\
-Note: Only Witch being dead will save the spelled player from being dead after the meeting.
-
-### Game Options
-| Name | Description | Type | Default |
-|----------|:-------------:|:------:|:------:|
-| Witch | The percentage probability of the Witch appearing | Percentage | 0% |
-| Spell Cooldown | The cooldown of the Witch's Spell button | Time | 25s |
-| Spell Duration | The delay that the witch's spell button before cursing someone | Time | 2s |
-| Witch Can Spell Impostors | Whether the Witch is able to curse their impostor partners | Toggle | False |
-| Cursed Players Only Die If Witch Is Alive | If enabled, spelled players will only be dead if the Witch is alive after the meeting | Toggle | True |
-
------------------------
-
 ## Bounty Hunter
 ### **Team: Impostors**
 ### **Alignment: Killing**
@@ -1099,14 +1056,15 @@ They have the same amount of meetings as a regular player.
 | Button Barry | The percentage probability of Button Barry appearing | Percentage | 0% |
 
 -----------------------
-## Flash
+## Mini
 ### **Applied to: All**
-The Flash travels at a faster speed in comparison to a normal player.
+The Mini travels at a faster speed in comparison to a normal player.
+They are also smaller than everyone else.
 ### Game Options
 | Name | Description | Type | Default |
 |----------|:-------------:|:------:|:------:|
-| Flash | The percentage probability of the Flash appearing | Percentage | 0% |
-| Speed | How fast the Flash moves in comparison to normal | Multiplier | 1.25x |
+| Mini Chance | The percentage probability of the Mini appearing | Percentage | 0% |
+| Mini Speed | How fast the Mini moves in comparison to normal | Multiplier | 1.25x |
 
 -----------------------
 
@@ -1120,13 +1078,13 @@ If the Drunk hits the Up KeyCode they will go down etc.
 
 -----------------------
 
-## Radar
+## Paranoiac
 ### **Applied to: All**
-The Radar is a crewmate who knows where the closest player is to them.
+The Paranoiac is a crewmate who knows where the closest player is to them.
 ### Game Options
 | Name | Description | Type | Default |
 |----------|:-------------:|:------:|:------:|
-| Radar | The percentage probability of the Radar appearing | Percentage | 0% |
+| Paranoiac | The percentage probability of the Paranoiac appearing | Percentage | 0% |
 
 -----------------------
 ## Administrator
@@ -1301,13 +1259,7 @@ The Saboteur is an Impostor with a passive sabotage cooldown reduction.
 | Reduced Sabotage Bonus | The amount of time removed from the Saboteur's sabotage cooldowns | Time | 10s |
 
 -----------------------
-# Game Mode Settings
-| Name | Description | Type | Default |
-|----------|:-------------:|:------:|:------:|
-| Game Mode | What game mode the next game will be | Classic / All Any / Killing Only | Classic |
-
------------------------
-# Classic Game Mode Settings
+# Neutral Role Count Settings
 | Name | Description | Type | Default |
 |----------|:-------------:|:------:|:------:|
 | Min Neutral Benign Roles | The minimum number of Neutral Benign roles a game can have | Number | 1 |
@@ -1318,20 +1270,7 @@ The Saboteur is an Impostor with a passive sabotage cooldown reduction.
 | Max Neutral Killing Roles | The maximum number of Neutral Killing roles a game can have | Number | 1 |
 
 -----------------------
-# All Any Settings
-| Name | Description | Type | Default |
-|----------|:-------------:|:------:|:------:|
-| Random Number of Impostors | Whether there are a random number of Impostors | Toggle | True |
 
------------------------
-# Killing Only Settings
-| Name | Description | Type | Default |
-|----------|:-------------:|:------:|:------:|
-| Neutral Roles | How many neutrals roles will spawn | Number | 1 |
-| Veteran Count | How many Veterans will spawn | Number | 1 |
-| Vigilante Count | How many Vigilantes will spawn | Number | 1 |
-| Add Pyromaniac | Whether Pyromaniac will be added to the role list | Toggle | True |
-| Add Plaguebearer | Whether Plaguebearer will be added to the role list | Toggle | True |
 -----------------------
 # Map Settings
 | Name | Description | Type | Default |

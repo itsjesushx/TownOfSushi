@@ -1,8 +1,5 @@
 using HarmonyLib;
-using MiraAPI.Modifiers;
-using TownOfSushi.Modifiers.Game.Universal;
 using TownOfSushi.Modules;
-using TownOfSushi.Utilities;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -22,6 +19,8 @@ public static class ShowVentsPatch
     [HarmonyPostfix]
     public static void Postfix(MapBehaviour __instance)
     {
+        __instance.HerePoint.transform.SetLocalZ(-2.1f);
+
         if (PlayerControl.LocalPlayer.HasModifier<SatelliteModifier>())
         {
             foreach (var deadBody in ModifierUtils.GetActiveModifiers<SatelliteArrowModifier>()
@@ -45,14 +44,14 @@ public static class ShowVentsPatch
         }
 
         if (!ModifierUtils.GetActiveModifiers<SatelliteArrowModifier>().Any())
-        {
-            foreach (var icon in BodyIcons.Values.Where(x => x))
             {
-                Object.Destroy(icon);
-            }
+                foreach (var icon in BodyIcons.Values.Where(x => x))
+                {
+                    Object.Destroy(icon);
+                }
 
-            BodyIcons.Clear();
-        }
+                BodyIcons.Clear();
+            }
 
         if (!TownOfSushiPlugin.ShowVents.Value)
         {

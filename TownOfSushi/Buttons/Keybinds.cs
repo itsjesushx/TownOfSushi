@@ -1,5 +1,4 @@
 namespace TownOfSushi.Buttons;
-
 public static class Keybinds
 {
     public const string PrimaryAction = "ActionSecondary"; // Keyboard: used for kill button

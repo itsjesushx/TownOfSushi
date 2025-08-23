@@ -1,5 +1,4 @@
 namespace TownOfUs.Modules.Wiki;
-
 public class RoleComparer(List<ushort> currentRoles) : IComparer<RoleBehaviour>
 {
     public int Compare(RoleBehaviour? x, RoleBehaviour? y)

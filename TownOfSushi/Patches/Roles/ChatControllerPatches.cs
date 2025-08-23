@@ -1,12 +1,11 @@
 ﻿using HarmonyLib;
-using MiraAPI.GameOptions;
-using MiraAPI.Modifiers;
+
+
 using TMPro;
-using TownOfSushi.Modifiers.Crewmate;
-using TownOfSushi.Modifiers.Impostor;
-using TownOfSushi.Options.Roles.Crewmate;
+
 using TownOfSushi.Patches.Options;
 using Object = UnityEngine.Object;
+
 
 namespace TownOfSushi.Patches.Roles;
 

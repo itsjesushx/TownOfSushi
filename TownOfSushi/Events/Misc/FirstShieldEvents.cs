@@ -1,13 +1,10 @@
 using MiraAPI.Events;
 using MiraAPI.Events.Mira;
 using MiraAPI.Events.Vanilla.Gameplay;
-using MiraAPI.GameOptions;
 using MiraAPI.Hud;
-using MiraAPI.Modifiers;
 using TownOfSushi.Buttons;
 using TownOfSushi.Modifiers;
 using TownOfSushi.Options;
-using TownOfSushi.Utilities;
 
 namespace TownOfSushi.Events.Misc;
 

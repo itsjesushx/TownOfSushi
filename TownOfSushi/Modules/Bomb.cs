@@ -1,14 +1,9 @@
 ﻿using System.Collections;
-using MiraAPI.GameOptions;
-using MiraAPI.Modifiers;
 using MiraAPI.Networking;
-using MiraAPI.Utilities;
 using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
 using TownOfSushi.Events;
 using TownOfSushi.Modifiers;
-using TownOfSushi.Options.Roles.Impostor;
-using TownOfSushi.Utilities;
 using UnityEngine;
 
 namespace TownOfSushi.Modules;

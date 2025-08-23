@@ -1,6 +1,6 @@
 ﻿using HarmonyLib;
 using InnerNet;
-using MiraAPI.GameOptions;
+
 using TMPro;
 using TownOfSushi.Options;
 using UnityEngine;

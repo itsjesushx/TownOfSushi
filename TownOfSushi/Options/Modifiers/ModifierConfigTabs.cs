@@ -1,5 +1,4 @@
-﻿using MiraAPI.GameOptions;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace TownOfSushi.Options.Modifiers;
 
@@ -23,7 +22,7 @@ public sealed class CrewOptions : AbstractOptionGroup
     public override string GroupName => "Crewmate Modifier Configs";
     public override Color GroupColor => Palette.CrewmateRoleHeaderBlue;
     public override bool ShowInModifiersMenu => true;
-    public override uint GroupPriority => 30;
+    public override uint GroupPriority => 31;
 }
 
 public sealed class ImpostorOptions : AbstractOptionGroup

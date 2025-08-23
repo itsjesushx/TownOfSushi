@@ -2,12 +2,8 @@
 using AmongUs.Data;
 using HarmonyLib;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
-using MiraAPI.GameOptions;
-using MiraAPI.Modifiers;
 using PowerTools;
 using TMPro;
-using TownOfSushi.Modifiers.Game.Universal;
-using TownOfSushi.Options.Modifiers.Universal;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;

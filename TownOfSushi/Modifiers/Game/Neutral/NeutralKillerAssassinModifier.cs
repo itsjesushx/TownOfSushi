@@ -1,6 +1,4 @@
-﻿using MiraAPI.GameOptions;
-using TownOfSushi.Options;
-using TownOfSushi.Roles;
+﻿using TownOfSushi.Options;
 
 namespace TownOfSushi.Modifiers.Game.Neutral;
 

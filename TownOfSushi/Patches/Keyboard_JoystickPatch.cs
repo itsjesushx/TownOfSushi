@@ -3,7 +3,7 @@ using HarmonyLib;
 using InnerNet;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
-using TownOfSushi.Utilities;
+
 using UnityEngine;
 
 namespace TownOfSushi.Patches

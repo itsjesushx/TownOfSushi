@@ -1,4 +1,3 @@
-using MiraAPI.Utilities.Assets;
 using UnityEngine;
 
 namespace TownOfSushi.Assets;
@@ -28,10 +27,13 @@ public static class TOSCrewAssets
     public static LoadableAsset<Sprite> BlessSprite { get; } =
         new LoadableResourceAsset($"{ButtonPath}.BlessButton.png");
 
-    public static LoadableAsset<Sprite> SeerSprite { get; } = new LoadableResourceAsset($"{ButtonPath}.SeerButton.png");
+    public static LoadableAsset<Sprite> DetectiveSprite { get; } = new LoadableResourceAsset($"{ButtonPath}.DetectiveButton.png");
 
     public static LoadableAsset<Sprite> TrackSprite { get; } =
         new LoadableResourceAsset($"{ButtonPath}.TrackButton.png");
+
+    public static LoadableAsset<Sprite> SeerButton { get; } =
+        new LoadableResourceAsset($"{ButtonPath}.SeerButton.png");
 
     public static LoadableAsset<Sprite> TrapSprite { get; } = new LoadableResourceAsset($"{ButtonPath}.TrapButton.png");
 
@@ -49,8 +51,8 @@ public static class TOSCrewAssets
     public static LoadableAsset<Sprite> HunterKillSprite { get; } =
         new LoadableResourceAsset($"{ButtonPath}.HunterKillButton.png");
 
-    public static LoadableAsset<Sprite> SheriffShootSprite { get; } =
-        new LoadableResourceAsset($"{ButtonPath}.SheriffShootButton.png");
+    public static LoadableAsset<Sprite> VigilanteShootSprite { get; } =
+        new LoadableResourceAsset($"{ButtonPath}.VigilanteShootButton.png");
 
     public static LoadableAsset<Sprite> ReviveSprite { get; } =
         new LoadableResourceAsset($"{ButtonPath}.ReviveButton.png");

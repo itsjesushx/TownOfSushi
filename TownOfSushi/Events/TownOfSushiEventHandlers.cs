@@ -8,34 +8,18 @@ using MiraAPI.Events.Vanilla.Meeting;
 using MiraAPI.Events.Vanilla.Meeting.Voting;
 using MiraAPI.Events.Vanilla.Player;
 using MiraAPI.Events.Vanilla.Usables;
-using MiraAPI.GameOptions;
 using MiraAPI.Hud;
-using MiraAPI.Modifiers;
 using MiraAPI.Modifiers.Types;
-using MiraAPI.Utilities;
 using PowerTools;
 using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
 using TownOfSushi.Buttons;
-using TownOfSushi.Buttons.Crewmate;
-using TownOfSushi.Buttons.Impostor;
-using TownOfSushi.Buttons.Modifiers;
-using TownOfSushi.Buttons.Neutral;
 using TownOfSushi.Events.TOSEvents;
 using TownOfSushi.Modifiers;
-using TownOfSushi.Modifiers.Game.Universal;
-using TownOfSushi.Modifiers.Neutral;
 using TownOfSushi.Modules;
 using TownOfSushi.Modules.Anims;
 using TownOfSushi.Options;
-using TownOfSushi.Options.Modifiers.Universal;
-using TownOfSushi.Options.Roles.Crewmate;
-using TownOfSushi.Options.Roles.Impostor;
 using TownOfSushi.Patches;
-using TownOfSushi.Roles;
-using TownOfSushi.Roles.Crewmate;
-using TownOfSushi.Roles.Impostor;
-using TownOfSushi.Utilities;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
@@ -102,8 +86,8 @@ public static class TownOfSushiEventHandlers
         CustomButtonSingleton<HunterStalkButton>.Instance.ExtraUses = 0;
         CustomButtonSingleton<HunterStalkButton>.Instance.SetUses((int)OptionGroupSingleton<HunterOptions>.Instance
             .StalkUses);
-        CustomButtonSingleton<SheriffShootButton>.Instance.Usable =
-            OptionGroupSingleton<SheriffOptions>.Instance.FirstRoundUse;
+        CustomButtonSingleton<VigilanteShootButton>.Instance.Usable =
+            OptionGroupSingleton<VigilanteOptions>.Instance.FirstRoundUse;
         CustomButtonSingleton<VeteranAlertButton>.Instance.ExtraUses = 0;
         CustomButtonSingleton<VeteranAlertButton>.Instance.SetUses((int)OptionGroupSingleton<VeteranOptions>.Instance
             .MaxNumAlerts);

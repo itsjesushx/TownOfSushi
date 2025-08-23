@@ -1,7 +1,5 @@
-﻿using MiraAPI.Modifiers;
-using MiraAPI.PluginLoading;
+﻿using MiraAPI.PluginLoading;
 using Reactor.Utilities.Extensions;
-using TownOfSushi.Utilities;
 using UnityEngine;
 
 namespace TownOfSushi.Modifiers;

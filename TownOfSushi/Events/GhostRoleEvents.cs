@@ -3,14 +3,8 @@ using AmongUs.GameOptions;
 using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Usables;
-using MiraAPI.Modifiers;
-using MiraAPI.Roles;
 using Reactor.Utilities;
 using TownOfSushi.Modifiers.Game;
-using TownOfSushi.Roles;
-using TownOfSushi.Roles.Crewmate;
-using TownOfSushi.Roles.Neutral;
-using TownOfSushi.Utilities;
 
 namespace TownOfSushi.Events;
 

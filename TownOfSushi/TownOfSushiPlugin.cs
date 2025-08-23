@@ -7,14 +7,11 @@ using HarmonyLib;
 using Il2CppInterop.Runtime.Injection;
 using MiraAPI;
 using MiraAPI.PluginLoading;
-using MiraAPI.Utilities.Assets;
 using Reactor;
 using Reactor.Localization;
 using Reactor.Networking;
 using Reactor.Networking.Attributes;
-using Reactor.Utilities;
 using TownOfSushi.Modules.Debugger.Components;
-
 using TownOfSushi.Patches.Misc;
 using static TownOfSushi.Modules.Debugger.Embedded.ReactorCoroutines.Coroutines;
 using ModCompatibility = TownOfSushi.Modules.ModCompatibility;
@@ -66,17 +63,12 @@ public partial class TownOfSushiPlugin : BasePlugin, IMiraPlugin
     
     /// <inheritdoc />
     public string OptionsTitleText => "Town of Sushi";
-    public const string DevString = " (Dev 11)";
+    public const string DevString = " (Dev 20)";
 
     /// <inheritdoc />
     public ConfigFile GetConfigFile()
     {
         return Config;
-    }
-
-    public TownOfSushiPlugin()
-    {
-        TOSLocale.Initialize();
     }
     public static string RobotName { get; set; } = "Bot";
     public static bool Persistence { get; set; } = true;
@@ -88,7 +80,7 @@ public partial class TownOfSushiPlugin : BasePlugin, IMiraPlugin
     /// </summary>
     public override void Load()
     {
-        ReactorCredits.Register($"TownOfSushi v{Version}{DevString}", "", isPreRelease: true, ReactorCredits.AlwaysShow);
+        //ReactorCredits.Register($"TownOfSushi v", Version + DevString, isPreRelease: false, ReactorCredits.AlwaysShow);
         LocalizationManager.Register(new TaskProvider());
 
         TOSAssets.Initialize();

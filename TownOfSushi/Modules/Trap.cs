@@ -1,12 +1,7 @@
 ﻿using System.Collections;
 using HarmonyLib;
 using InnerNet;
-using MiraAPI.GameOptions;
-using MiraAPI.Modifiers;
 using Reactor.Utilities;
-using TownOfSushi.Options.Roles.Crewmate;
-using TownOfSushi.Roles.Crewmate;
-using TownOfSushi.Utilities;
 using UnityEngine;
 using Object = UnityEngine.Object;
 

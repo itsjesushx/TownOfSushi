@@ -1,7 +1,5 @@
-﻿using MiraAPI.Modifiers;
-using MiraAPI.Modifiers.Types;
+﻿using MiraAPI.Modifiers.Types;
 using MiraAPI.PluginLoading;
-using TownOfSushi.Modifiers.Neutral;
 
 namespace TownOfSushi.Modifiers.Game;
 

@@ -1,8 +1,8 @@
 using HarmonyLib;
-using MiraAPI.GameOptions;
+
 using TownOfSushi.Options;
-using TownOfSushi.Roles.Crewmate;
-using TownOfSushi.Utilities;
+
+
 using UnityEngine;
 using Object = UnityEngine.Object;
 
