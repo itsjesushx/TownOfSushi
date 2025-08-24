@@ -60,7 +60,7 @@ public static class TownOfSushiColors
     public static Color Werewolf => new(0.66f, 0.4f, 0.16f, 1f);
     public static Color Predator = new(0.2f, 0.4f, 1f, 1f);
     public static Color Doomsayer => new(0f, 1f, 0.5f, 1f);
-    public static Color Vampire => new(0.64f, 0.16f, 0.16f, 1f);
+    public static Color Vampire = new Color(0.15f, 0.15f, 0.15f, 1f);
     public static Color SoulCollector => new(0.6f, 1f, 0.8f, 1f);
     public static Color GuardianAngel => new(0.7f, 1f, 1f, 1f);
     public static Color Hitman = new(0f, 0.7f, 0.9f, 1f);

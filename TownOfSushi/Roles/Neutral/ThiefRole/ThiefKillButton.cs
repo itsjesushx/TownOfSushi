@@ -11,9 +11,8 @@ public sealed class ThiefKillButton : TownOfSushiRoleButton<ThiefRole, PlayerCon
     public override string Name => "Kill";
     public override string Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Thief;
-    public override float Cooldown => OptionGroupSingleton<PlaguebearerOptions>.Instance.PestKillCooldown;
-    public override LoadableAsset<Sprite> Sprite => TOSNeutAssets.PestKillSprite;
-
+    public override float Cooldown => OptionGroupSingleton<ThiefOptions>.Instance.KillCooldown;
+    public override LoadableAsset<Sprite> Sprite => TOSAssets.KillSprite;
     public void SetDiseasedTimer(float multiplier)
     {
         SetTimer(Cooldown * multiplier);

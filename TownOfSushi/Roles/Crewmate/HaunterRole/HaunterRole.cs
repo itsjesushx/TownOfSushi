@@ -9,18 +9,30 @@ using TownOfSushi.Patches;
 using TownOfSushi.Utilities.Appearances;
 using UnityEngine;
 using UnityEngine.UI;
+// using Reactor.Utilities.Extensions;
 
 namespace TownOfSushi.Roles.Crewmate;
 
 public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITownOfSushiRole, IGhostRole, IWikiDiscoverable
 {
-    public bool Revealed { get; private set; }
-    public bool CompletedAllTasks { get; private set; }
+    public bool Revealed => TaskStage is GhostTaskStage.Revealed or GhostTaskStage.CompletedTasks;
+    public bool CompletedAllTasks => TaskStage is GhostTaskStage.CompletedTasks;
 
     public bool Setup { get; set; }
     public bool Caught { get; set; }
     public bool Faded { get; set; }
-    public bool CanBeClicked { get; set; }
+    public bool CanBeClicked
+    {
+        get
+        {
+            return TaskStage is GhostTaskStage.Clickable || TaskStage is GhostTaskStage.Revealed || TaskStage is GhostTaskStage.CompletedTasks;
+        }
+        set
+        {
+            // Left Alone
+        }
+    }
+    public GhostTaskStage TaskStage { get; private set; } = GhostTaskStage.Unclickable;
     public bool GhostActive => Setup && !Caught;
 
     public bool CanCatch()
@@ -47,7 +59,7 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
     {
         Setup = true;
 
-        // Logger<TownOfSushiPlugin>.Error($"Setup HaunterRole '{Player.Data.PlayerName}'");
+        if (TownOfSushiPlugin.IsDevBuild) Logger<TownOfSushiPlugin>.Error($"Setup HaunterRole '{Player.Data.PlayerName}'");
         Player.gameObject.layer = LayerMask.NameToLayer("Players");
 
         Player.gameObject.GetComponent<PassiveButton>().OnClick = new Button.ButtonClickedEvent();
@@ -90,7 +102,7 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
 
     public void Clicked()
     {
-        // Logger<TownOfSushiPlugin>.Message($"HaunterRole.Clicked");
+        if (TownOfSushiPlugin.IsDevBuild) Logger<TownOfSushiPlugin>.Message($"HaunterRole.Clicked");
         Caught = true;
         Player.Exiled();
 
@@ -126,10 +138,10 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
     public string GetAdvancedDescription()
     {
         return
-            "The Haunter is a Crewmate Ghost who can do tasks. They will appear as a transparent player. " +
+            $"The {RoleName} is a Crewmate Ghost who can do tasks. They will appear as a transparent player. " +
             "If they finish all their tasks, all alive players will see who the Impostors are. " +
             "However, if an Impostor clicks them first, they will become a normal ghost. " +
-            "Impostors get a warning shortly before and when the Haunter finishes their tasks. "
+            $"Impostors get a warning shortly before and when the {RoleName} finishes their tasks. "
             + MiscUtils.AppendOptionsText(GetType());
     }
     // public DangerMeter ImpostorMeter { get; set; }
@@ -167,11 +179,6 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
         }
 
         MiscUtils.AdjustGhostTasks(player);
-
-        var completedTasks = Player.myTasks.ToArray().Count(t => t.IsComplete);
-        var tasksRemaining = Player.myTasks.Count - completedTasks;
-
-        CanBeClicked = tasksRemaining <= (int)OptionGroupSingleton<HaunterOptions>.Instance.NumTasksLeftBeforeClickable;
     }
 
     /* public void FixedUpdate()
@@ -252,26 +259,28 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
         {
             return;
         }
+        var realTasks = Player.myTasks.ToArray()
+            .Where(x => !PlayerTask.TaskIsEmergency(x) && !x.TryCast<ImportantTextTask>()).ToList();
 
-        var completedTasks = Player.myTasks.ToArray().Count(t => t.IsComplete);
-        var tasksRemaining = Player.myTasks.Count - completedTasks - 1;
+        var completedTasks = realTasks.Count(t => t.IsComplete);
+        var tasksRemaining = realTasks.Count - completedTasks;
 
-        CanBeClicked = tasksRemaining <= (int)OptionGroupSingleton<HaunterOptions>.Instance.NumTasksLeftBeforeClickable;
-
-        if (!CompletedAllTasks && completedTasks == Player.myTasks.Count)
+        if (TaskStage is GhostTaskStage.Unclickable && tasksRemaining ==
+            (int)OptionGroupSingleton<HaunterOptions>.Instance.NumTasksLeftBeforeClickable)
         {
-            CompletedAllTasks = true;
-
-            if (Player.AmOwner || IsTargetOfHaunter(PlayerControl.LocalPlayer))
+            TaskStage = GhostTaskStage.Clickable;
+            if (Player.AmOwner)
             {
-                Coroutines.Start(MiscUtils.CoFlash(Color.white));
+                var notif1 = Helpers.CreateAndShowNotification(
+                    $"<b>{TownOfSushiColors.Haunter.ToTextColor()}You are now clickable by players!</b></color>", Color.white,
+                    new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Haunter.LoadAsset());
+                notif1.Text.SetOutlineThickness(0.35f);
             }
         }
 
         if (!Revealed && tasksRemaining == (int)OptionGroupSingleton<HaunterOptions>.Instance.NumTasksLeftBeforeAlerted)
         {
-            // Logger<TownOfSushiPlugin>.Error($"CheckTaskRequirements Revealed");
-            Revealed = true;
+            TaskStage = GhostTaskStage.Revealed;
 
             if (Player.AmOwner)
             {
@@ -293,6 +302,32 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
                 notif1.Text.SetOutlineThickness(0.35f);
             }
         }
+
+        if (!CompletedAllTasks && completedTasks == realTasks.Count)
+        {
+            TaskStage = GhostTaskStage.CompletedTasks;
+
+            if (Player.AmOwner)
+            {
+                Coroutines.Start(MiscUtils.CoFlash(Color.white));
+                var notif1 = Helpers.CreateAndShowNotification(
+                    $"<b>{TownOfSushiColors.Haunter.ToTextColor()}You have revealed the Killers!</b></color>", Color.white,
+                    new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Haunter.LoadAsset());
+                notif1.Text.SetOutlineThickness(0.35f);
+            }
+            else if (IsTargetOfHaunter(PlayerControl.LocalPlayer))
+            {
+                // Logger<TownOfSushiPlugin>.Error($"CheckTaskRequirements IsTargetOfHaunter");
+                Coroutines.Start(MiscUtils.CoFlash(Color.white));
+
+                Player.AddModifier<HaunterArrowModifier>(PlayerControl.LocalPlayer, RoleColor);
+                var notif1 = Helpers.CreateAndShowNotification(
+                    $"<b>{TownOfSushiColors.Haunter.ToTextColor()}The Haunter has completed their tasks!</b></color>",
+                    Color.white, new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Haunter.LoadAsset());
+                notif1.Text.SetOutlineThickness(0.35f);
+            }
+        }
+        if (TownOfSushiPlugin.IsDevBuild) Logger<TownOfSushiPlugin>.Error($"Haunter Stage for '{Player.Data.PlayerName}': {TaskStage.ToDisplayString()} - ({completedTasks} / {realTasks.Count})");
     }
 
     public static bool IsTargetOfHaunter(PlayerControl player)
@@ -316,5 +351,12 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
         }
 
         return IsTargetOfHaunter(player) && haunter.CompletedAllTasks && !player.AmOwner;
+    }
+    public enum GhostTaskStage
+    {
+        Unclickable,
+        Clickable,
+        Revealed,
+        CompletedTasks
     }
 }

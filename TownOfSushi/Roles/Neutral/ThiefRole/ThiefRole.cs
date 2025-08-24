@@ -27,7 +27,7 @@ public sealed class ThiefRole(IntPtr cppPtr)
     public CustomRoleConfiguration Configuration => new(this)
     {
         CanUseVent = OptionGroupSingleton<ThiefOptions>.Instance.CanVent,
-        IntroSound = CustomRoleUtils.GetIntroSound(RoleTypes.Phantom),
+        IntroSound = CustomRoleUtils.GetIntroSound(RoleTypes.Impostor),
         Icon = TOSRoleIcons.Thief,
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>()
     };
@@ -100,7 +100,7 @@ public sealed class ThiefRole(IntPtr cppPtr)
         {
             ModifierUtils.GetActiveModifiers<ArsonistDousedModifier>().Do(x => x.ModifierComponent?.RemoveModifier(x));
         }
-        /* commented this out for now as it basically makes the thief a vanilla killer.
+        /* commented this out for now as it basically makes the thief a vanilla killer if the vampire max setting is set to 2.
         else if (player.Data.Role is VampireRole)
         {
             if (target.HasModifier<VampireBittenModifier>())
