@@ -1,13 +1,6 @@
 ﻿using HarmonyLib;
-
-
-
-
-
 using TownOfSushi.Modules;
 using TownOfSushi.Options;
-
-
 using UnityEngine;
 
 namespace TownOfSushi.Patches;

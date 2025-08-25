@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using HarmonyLib;
-
 using Object = Il2CppSystem.Object;
 
 namespace TownOfSushi.Patches.Roles;

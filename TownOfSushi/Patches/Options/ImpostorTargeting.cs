@@ -1,10 +1,6 @@
 using HarmonyLib;
-
-
 using TownOfSushi.Modifiers;
 using TownOfSushi.Options;
-
-
 using TownOfSushi.Utilities.Appearances;
 
 namespace TownOfSushi.Patches.Options;

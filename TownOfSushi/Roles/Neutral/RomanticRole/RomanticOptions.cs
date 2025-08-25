@@ -21,8 +21,8 @@ public sealed class RomanticOptions : AbstractOptionGroup<RomanticRole>
     [ModdedEnumOption("Show Protect To", typeof(RomanticProtectOptions), ["Romantic", "Self + Romantic", "Everyone"])]
     public RomanticProtectOptions ShowProtect { get; set; } = RomanticProtectOptions.SelfAndRomantic;
 
-    [ModdedEnumOption("On Beloved Death, Romantic Becomes", typeof(RomanticBecomeOptions))]
-    public RomanticBecomeOptions OnTargetDeath { get; set; } = RomanticBecomeOptions.Amnesiac;
+    [ModdedEnumOption("On Beloved Death, Romantic Becomes", typeof(BecomeOptions))]
+    public BecomeOptions OnTargetDeath { get; set; } = BecomeOptions.Amnesiac;
 
     [ModdedToggleOption("Romantic Knows Beloved's Role")]
     public bool RomanticKnowsTargetRole { get; set; } = true;
@@ -38,11 +38,4 @@ public enum RomanticProtectOptions
     Romantic,
     SelfAndRomantic,
     Everyone,
-}
-
-public enum RomanticBecomeOptions
-{
-    Crew,
-    Amnesiac,
-    Jester,
 }

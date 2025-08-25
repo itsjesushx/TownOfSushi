@@ -1,8 +1,6 @@
 using HarmonyLib;
 using Il2CppInterop.Runtime.Attributes;
 
-
-
 namespace TownOfSushi.Patches
 {
     // There is probably a better way to do this, or maybe not, but this works for now.

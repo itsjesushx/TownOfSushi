@@ -195,6 +195,7 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
                 BecomeOptions.Jester => RoleId.Get<JesterRole>(),
                 BecomeOptions.Amnesiac => RoleId.Get<AmnesiacRole>(),
                 BecomeOptions.Romantic => RoleId.Get<RomanticRole>(),
+                BecomeOptions.Thief => RoleId.Get<ThiefRole>(),
                 _ => (ushort)RoleTypes.Crewmate
             };
 

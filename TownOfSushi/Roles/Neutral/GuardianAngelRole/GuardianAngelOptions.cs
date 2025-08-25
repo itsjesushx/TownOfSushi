@@ -45,5 +45,6 @@ public enum BecomeOptions
     Crew,
     Amnesiac,
     Romantic,
-    Jester
+    Jester,
+    Thief
 }

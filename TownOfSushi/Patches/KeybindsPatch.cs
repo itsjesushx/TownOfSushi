@@ -4,7 +4,6 @@ using Rewired;
 using Rewired.Data;
 using TownOfSushi.Buttons;
 
-
 namespace TownOfSushi.Patches;
 
 // original patch taken from TheOtherRolesAU/TheOtherRoles/pull/347 by dadoum
@@ -20,11 +19,11 @@ public static class Keybinds
             // var blankAction = new Action(() => { });
             __instance.userData.GetAction("ActionSecondary").descriptiveName = "Kill / Secondary Ability";
             __instance.userData.GetAction("ActionQuaternary").descriptiveName = "Primary Ability";
-            __instance.userData.RegisterBind("tou.ActionCustom", "Tertiary Ability (Hack Ability)");
-            __instance.userData.RegisterBind("tou.ActionCustom2", "Modifier Ability");
-            /*KeybindManager.Register("tou.ActionCustom", "Tertiary Ability (Hack Ability)", KeyboardKeyCode.C,
+            __instance.userData.RegisterBind("tos.ActionCustom", "Tertiary Ability (Hack Ability)");
+            __instance.userData.RegisterBind("tos.ActionCustom2", "Modifier Ability");
+            /*KeybindManager.Register("tos.ActionCustom", "Tertiary Ability (Hack Ability)", KeyboardKeyCode.C,
                 blankAction);
-            KeybindManager.Register("tou.ActionCustom2", "Modifier Ability", KeyboardKeyCode.X, blankAction);*/
+            KeybindManager.Register("tos.ActionCustom2", "Modifier Ability", KeyboardKeyCode.X, blankAction);*/
         }
         catch
         {

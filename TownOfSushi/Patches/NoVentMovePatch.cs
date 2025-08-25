@@ -1,9 +1,5 @@
 using HarmonyLib;
 
-
-
-
-
 namespace TownOfSushi.Patches;
 
 [HarmonyPatch(typeof(Vent), nameof(Vent.SetButtons))]

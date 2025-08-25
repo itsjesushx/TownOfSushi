@@ -1,5 +1,4 @@
 using HarmonyLib;
-
 using TownOfSushi.Options;
 using TaskLength = NormalPlayerTask.TaskLength;
 

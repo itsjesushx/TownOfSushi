@@ -44,9 +44,10 @@ public sealed class RomanticRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSu
         {
             var roleType = OptionGroupSingleton<RomanticOptions>.Instance.OnTargetDeath switch
             {
-                RomanticBecomeOptions.Crew => (ushort)RoleTypes.Crewmate,
-                RomanticBecomeOptions.Jester => RoleId.Get<JesterRole>(),
-                RomanticBecomeOptions.Amnesiac => RoleId.Get<AmnesiacRole>(),
+                BecomeOptions.Crew => (ushort)RoleTypes.Crewmate,
+                BecomeOptions.Jester => RoleId.Get<JesterRole>(),
+                BecomeOptions.Amnesiac => RoleId.Get<AmnesiacRole>(),
+                BecomeOptions.Thief => RoleId.Get<ThiefRole>(),
                 _ => (ushort)RoleTypes.Crewmate,
             };
 

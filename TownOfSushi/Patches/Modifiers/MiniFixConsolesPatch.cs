@@ -1,7 +1,5 @@
 ﻿using HarmonyLib;
 
-
-
 namespace TownOfSushi.Patches.Modifiers;
 
 [HarmonyPatch]

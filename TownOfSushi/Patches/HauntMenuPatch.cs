@@ -2,16 +2,10 @@ using System.Globalization;
 using System.Text;
 using AmongUs.GameOptions;
 using HarmonyLib;
-
-
 using MiraAPI.Modifiers.Types;
-
 using TownOfSushi.Modifiers;
 using TownOfSushi.Modules;
 using TownOfSushi.Options;
-
-
-
 using UnityEngine;
 using Object = UnityEngine.Object;
 

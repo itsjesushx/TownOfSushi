@@ -1,9 +1,5 @@
 ﻿using HarmonyLib;
-
 using MiraAPI.Hud;
-
-
-
 
 namespace TownOfSushi.Patches;
 

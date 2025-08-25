@@ -1,8 +1,4 @@
 using HarmonyLib;
-
-
-
-
 using UnityEngine;
 
 namespace TownOfSushi.Patches.Roles;

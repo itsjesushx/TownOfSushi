@@ -1,6 +1,5 @@
 using HarmonyLib;
 
-
 namespace TownOfSushi.Patches.Misc;
 
 [HarmonyPatch(typeof(CosmeticsLayer), nameof(CosmeticsLayer.GetColorBlindText))]

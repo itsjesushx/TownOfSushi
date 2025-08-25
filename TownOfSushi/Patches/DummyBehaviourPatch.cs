@@ -1,11 +1,8 @@
 using System.Collections;
 using HarmonyLib;
-
 using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
 using TownOfSushi.Modifiers.Game;
-
-
 using UnityEngine;
 using Random = UnityEngine.Random;
 

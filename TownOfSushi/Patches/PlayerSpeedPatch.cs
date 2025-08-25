@@ -1,8 +1,5 @@
 ﻿using HarmonyLib;
-
-
 using TownOfSushi.Roles.Impostor.Venerer;
-
 using TownOfSushi.Utilities.Appearances;
 
 namespace TownOfSushi.Patches;

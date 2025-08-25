@@ -1,11 +1,7 @@
 ﻿using HarmonyLib;
-
-
 using TMPro;
-
 using TownOfSushi.Patches.Options;
 using Object = UnityEngine.Object;
-
 
 namespace TownOfSushi.Patches.Roles;
 

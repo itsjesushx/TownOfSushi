@@ -30,7 +30,7 @@ public abstract class TownOfSushiButton : CustomActionButton
     /// <summary>
     ///     Gets the keybind used for the button.<br />
     ///     Use ActionQuaternary for primary abilities, ActionSecondary for secondary abilities or kill buttons,
-    ///     tou.ActionCustom for tertiary abilities, and tou.ActionCustom2 for modifier buttons.
+    ///     tos.ActionCustom for tertiary abilities, and tos.ActionCustom2 for modifier buttons.
     /// </summary>
     public virtual string Keybind => string.Empty;
 
@@ -223,7 +223,7 @@ public abstract class TownOfSushiTargetButton<T> : CustomActionButton<T> where T
     /// <summary>
     ///     Gets the keybind used for the button.
     ///     Use ActionQuaternary for primary abilities, ActionSecondary for secondary abilities or kill buttons,
-    ///     tou.ActionCustom for tertiary abilities, and tou.ActionCustom2 for modifier buttons.
+    ///     tos.ActionCustom for tertiary abilities, and tos.ActionCustom2 for modifier buttons.
     /// </summary>
     public virtual string Keybind => string.Empty;
 

@@ -1,8 +1,5 @@
 using HarmonyLib;
-
-
 using TownOfSushi.Options;
-
 using UnityEngine;
 using Object = UnityEngine.Object;
 

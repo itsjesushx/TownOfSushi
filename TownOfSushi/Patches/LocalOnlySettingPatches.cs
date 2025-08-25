@@ -1,10 +1,7 @@
 using HarmonyLib;
 using InnerNet;
-
 using TMPro;
 using TownOfSushi.Options;
-
-
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;

@@ -1,13 +1,9 @@
 using System.Globalization;
 using HarmonyLib;
-
 using Reactor.Utilities.Extensions;
 using TownOfSushi.Modules;
 using TownOfSushi.Options;
 using TownOfSushi.Patches.Options;
-
-
-
 
 namespace TownOfSushi.Patches.Misc;
 

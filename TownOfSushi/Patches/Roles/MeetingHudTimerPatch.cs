@@ -3,9 +3,6 @@ using TownOfSushi.Events;
 using TownOfSushi.Modifiers.Game;
 using TownOfSushi.Options;
 
-
-
-
 namespace TownOfSushi.Patches.Roles;
 
 [HarmonyPatch(typeof(MeetingHud))]

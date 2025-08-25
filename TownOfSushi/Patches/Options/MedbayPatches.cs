@@ -1,8 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
 using HarmonyLib;
-
-
-
 using TownOfSushi.Options;
 using UnityEngine;
 
