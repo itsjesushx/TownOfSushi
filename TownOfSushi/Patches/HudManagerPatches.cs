@@ -459,11 +459,11 @@ public static class HudManagerPatches
                     var revealText = confess.RevealedFaction switch
                     {
                         ModdedRoleTeams.Crewmate =>
-                            $"\n<size=75%>{Palette.CrewmateBlue.ToTextColor()}({accuracy}% Crew) </color></size>",
+                            MiscUtils.ColorString(TownOfSushiColors.Crewmate, $"\n<size=75%>({accuracy}% Crew) </color></size>"),
                         ModdedRoleTeams.Custom =>
-                            $"\n<size=75%>{TownOfSushiColors.Neutral.ToTextColor()}({accuracy}% Neut) </color></size>",
+                            MiscUtils.ColorString(TownOfSushiColors.Neutral, $"\n<size=75%>({accuracy}% Neut)</size>"),
                         ModdedRoleTeams.Impostor =>
-                            $"\n<size=75%>{TownOfSushiColors.ImpSoft.ToTextColor()}({accuracy}% Imp) </color></size>",
+                            MiscUtils.ColorString(TownOfSushiColors.ImpSoft, $"\n<size=75%>({accuracy}% Imp)</size>"),
                         _ => string.Empty
                     };
 

@@ -17,7 +17,7 @@ public static class FrostyEvents
         if (@event.Source.AmOwner)
         {
             var notif1 = Helpers.CreateAndShowNotification(
-                $"<b>{TownOfSushiColors.Frosty.ToTextColor()}{@event.Target.Data.PlayerName} was Frosty, causing you to be slower for {Math.Round(OptionGroupSingleton<FrostyOptions>.Instance.ChillDuration, 2)} seconds.</color></b>",
+                MiscUtils.ColorString(TownOfSushiColors.Frosty, $"<b>{@event.Target.Data.PlayerName} was Frosty, causing you to be slower for {Math.Round(OptionGroupSingleton<FrostyOptions>.Instance.ChillDuration, 2)} seconds.</b>"),
                 Color.white, spr: TOSModifierIcons.Frosty.LoadAsset());
 
             notif1.Text.SetOutlineThickness(0.35f);

@@ -98,8 +98,8 @@ public sealed class SnitchRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSus
                 text = "The Snitch is an Egotist, who will help you overthrow the crewmates!";
             }
 
-            var notif1 = Helpers.CreateAndShowNotification(
-                $"<b>{TownOfSushiColors.Snitch.ToTextColor()}{text}</color></b>", Color.white,
+            var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Snitch,
+                $"<b>{text}</color></b>"), Color.white,
                 spr: TOSRoleIcons.Snitch.LoadAsset());
 
             notif1.Text.SetOutlineThickness(0.35f);
@@ -117,8 +117,8 @@ public sealed class SnitchRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSus
                 text = "The impostors know of your whereabouts, and know you're the Egotist!";
             }
 
-            var notif1 = Helpers.CreateAndShowNotification(
-                $"<b>{TownOfSushiColors.Snitch.ToTextColor()}{text}</color></b>", Color.white,
+            var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Snitch,
+                $"<b>{text}</color></b>"), Color.white,
                 spr: TOSRoleIcons.Snitch.LoadAsset());
 
             notif1.Text.SetOutlineThickness(0.35f);
@@ -134,8 +134,8 @@ public sealed class SnitchRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSus
                 text = "The Snitch can now help you as the Egotist!";
             }
 
-            var notif1 = Helpers.CreateAndShowNotification(
-                $"<b>{TownOfSushiColors.Snitch.ToTextColor()}{text}</color></b>", Color.white,
+            var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Snitch,
+                $"<b>{text}</color></b>"), Color.white,
                 spr: TOSRoleIcons.Snitch.LoadAsset());
 
             notif1.Text.SetOutlineThickness(0.35f);
@@ -151,8 +151,8 @@ public sealed class SnitchRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSus
                 text = "You have revealed the impostors, who can help your win condition!";
             }
 
-            var notif1 = Helpers.CreateAndShowNotification(
-                $"<b>{TownOfSushiColors.Snitch.ToTextColor()}{text}</color></b>", Color.white,
+            var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Snitch,
+                $"<b>{text}</color></b>"), Color.white,
                 spr: TOSRoleIcons.Snitch.LoadAsset());
 
             notif1.Text.SetOutlineThickness(0.35f);

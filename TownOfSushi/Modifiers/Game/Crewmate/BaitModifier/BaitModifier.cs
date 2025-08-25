@@ -59,7 +59,7 @@ public sealed class BaitModifier : TOSGameModifier, IWikiDiscoverable
             killer.CmdReportDeadBody(target.Data);
 
             var notif1 = Helpers.CreateAndShowNotification(
-                $"<b>{TownOfSushiColors.Bait.ToTextColor()}{target.Data.PlayerName} was a Bait, causing you to self report.</color></b>",
+                MiscUtils.ColorString(TownOfSushiColors.Bait, $"<b>{target.Data.PlayerName} was a Bait, causing you to self report.</b>"),
                 Color.white, spr: TOSModifierIcons.Bait.LoadAsset());
 
             notif1.Text.SetOutlineThickness(0.35f);

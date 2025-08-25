@@ -128,8 +128,8 @@ public sealed class CrusaderRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfS
         {
             foreach (var crusader in CustomRoleUtils.GetActiveRolesOfType<CrusaderRole>())
             {
-                var notif = Helpers.CreateAndShowNotification(
-                    $"<b>{TownOfSushiColors.Crusader.ToTextColor()}{crusader?.Fortified?.Data.PlayerName}, was fortified by a Crusader!</b></color>",
+                var notif = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Crusader,
+                    $"<b>{crusader?.Fortified?.Data.PlayerName}, was fortified by a Crusader!</b>"),
                     Color.white, spr: TOSRoleIcons.Crusader.LoadAsset());
 
                 notif.Text.SetOutlineThickness(0.35f);

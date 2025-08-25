@@ -31,8 +31,8 @@ public sealed class SeerRevealButton : TownOfSushiRoleButton<SeerRole, PlayerCon
             Target.AddModifier<SeerFirstCheckModifier>();
             Role.InvestigatedFirst = true;
 
-            var notif1 = Helpers.CreateAndShowNotification(
-            $"<b>{TownOfSushiColors.Seer.ToTextColor()}You selected {Target.Data.PlayerName} as your <color=green>first target.</color></b>",
+            var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Seer,
+            $"<b>You selected {Target.Data.PlayerName} as your <color=green>first target.</b>"),
             Color.white, spr: TOSModifierIcons.Aftermath.LoadAsset());
 
             notif1.Text.SetOutlineThickness(0.35f);
@@ -42,8 +42,8 @@ public sealed class SeerRevealButton : TownOfSushiRoleButton<SeerRole, PlayerCon
         {
             Target.AddModifier<SeerSecondCheckModifier>();
 
-            var notif1 = Helpers.CreateAndShowNotification(
-                $"<b>{TownOfSushiColors.Seer.ToTextColor()}You selected {Target.Data.PlayerName} as your <color=green>second target.</color></b>",
+            var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Seer,
+                $"<b>You selected {Target.Data.PlayerName} as your <color=green>second target.</b>"),
                 Color.white, spr: TOSModifierIcons.Aftermath.LoadAsset());
 
             notif1.Text.SetOutlineThickness(0.35f);

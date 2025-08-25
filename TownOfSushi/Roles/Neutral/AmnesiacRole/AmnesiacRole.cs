@@ -35,7 +35,7 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
             OptionGroupSingleton<ExecutionerOptions>.Instance.OnTargetDeath is BecomeOptions.Amnesiac)
         || (MiscUtils.GetPotentialRoles()
                 .Contains(RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<RomanticRole>())) &&
-            OptionGroupSingleton<RomanticOptions>.Instance.OnTargetDeath is RomanticBecomeOptions.Amnesiac);
+            OptionGroupSingleton<RomanticOptions>.Instance.OnTargetDeath is BecomeOptions.Amnesiac);
 
     public CustomRoleConfiguration Configuration => new(this)
     {
@@ -109,7 +109,7 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
             if (player.AmOwner)
             {
                 var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>{target.CachedPlayerData.PlayerName} was an {TownOfSushiColors.Amnesiac.ToTextColor()}Amnesiac</color>, so their role cannot be picked up.</b>",
+                    $"<b>{target.CachedPlayerData.PlayerName} was an " + MiscUtils.ColorString(TownOfSushiColors.Amnesiac, $"<b>Amnesiac</b>") + ", so their role cannot be picked up.</b>",
                     Color.white, new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Amnesiac.LoadAsset());
                 notif1.Text.SetOutlineThickness(0.35f);
             }

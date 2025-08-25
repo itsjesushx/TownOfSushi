@@ -60,8 +60,8 @@ public static class ExecutionerEvents
             exe.TargetVoted = true;
             if (exe.Player.AmOwner)
             {
-                var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>You have successfully won as the {TownOfSushiColors.Executioner.ToTextColor()}Executioner</color>, as your target was exiled!</b>",
+                var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Executioner,
+                    $"<b>You have successfully won as the Executioner, as your target was exiled!</b>"),
                     Color.white, spr: TOSRoleIcons.Executioner.LoadAsset());
 
                 notif1.Text.SetOutlineThickness(0.35f);
@@ -73,8 +73,8 @@ public static class ExecutionerEvents
                 {
                     CustomButtonSingleton<ExeTormentButton>.Instance.SetActive(true, exe);
                     DeathHandlerModifier.RpcUpdateDeathHandler(PlayerControl.LocalPlayer, "Victorious", DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetTrue, lockInfo: DeathHandlerOverride.SetTrue);
-                    var notif2 = Helpers.CreateAndShowNotification(
-                        $"<b>You have one round to torment a player of your choice to death, choose wisely.</b>",
+                    var notif2 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Executioner,
+                        $"<b>You have one round to torment a player of your choice to death, choose wisely.</b>"),
                         Color.white);
 
                     notif2.Text.SetOutlineThickness(0.35f);
@@ -88,8 +88,8 @@ public static class ExecutionerEvents
             }
             else
             {
-                var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>The {TownOfSushiColors.Executioner.ToTextColor()}Executioner</color>, {exe.Player.Data.PlayerName}, has successfully won, as their target was exiled!</b>",
+                var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Executioner,
+                    $"<b>The Executioner, {exe.Player.Data.PlayerName}, has successfully won, as their target was exiled!</b>"),
                     Color.white, spr: TOSRoleIcons.Executioner.LoadAsset());
 
                 notif1.Text.SetOutlineThickness(0.35f);

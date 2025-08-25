@@ -54,8 +54,8 @@ public static class MonarchEvents
             if (source.AmOwner)
             {
                 Coroutines.Start(MiscUtils.CoFlash(TownOfSushiColors.Monarch, PlaySound: true));
-                var notif1 = Helpers.CreateAndShowNotification(
-                $"<b>{TownOfSushiColors.Monarch.ToTextColor()}You cannot kill {target.Data.PlayerName} (Monarch) while Knighted.</color></b>",
+                var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Monarch,
+                $"<b>You cannot kill {target.Data.PlayerName} because they are the Monarch who knighted you.</color></b>"),
                 Color.white, spr: TOSCrewAssets.KnightSprite.LoadAsset());
                 notif1.Text.SetOutlineThickness(0.35f);
                 notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
@@ -63,8 +63,8 @@ public static class MonarchEvents
             else if (target.AmOwner)
             {
                 Coroutines.Start(MiscUtils.CoFlash(TownOfSushiColors.Monarch, PlaySound: true));
-                var notif2 = Helpers.CreateAndShowNotification(
-                $"<b>{TownOfSushiColors.Monarch.ToTextColor()}{source.Data.PlayerName} tried to kill you.</color></b>",
+                var notif2 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Monarch,
+                $"<b>{source.Data.PlayerName} tried to kill you.</color></b>"),
                 Color.white, spr: TOSCrewAssets.KnightSprite.LoadAsset());
                 notif2.Text.SetOutlineThickness(0.35f);
                 notif2.transform.localPosition = new Vector3(0f, 1f, -20f);
@@ -102,16 +102,16 @@ public static class MonarchEvents
             ResetButtonTimer(source, button);
             if (source.AmOwner)
             {
-                var notif1 = Helpers.CreateAndShowNotification(
-                $"<b>{TownOfSushiColors.Monarch.ToTextColor()}You cannot interact with {target.Data.PlayerName} (Monarch) while Knighted.</color></b>",
+                var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Monarch,
+                $"<b>You cannot interact with {target.Data.PlayerName} (Monarch) while Knighted.</color></b>"),
                 Color.white, spr: TOSCrewAssets.KnightSprite.LoadAsset());
                 notif1.Text.SetOutlineThickness(0.35f);
                 notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
             }
             else if (target.AmOwner)
             {
-                var notif2 = Helpers.CreateAndShowNotification(
-                $"<b>{TownOfSushiColors.Monarch.ToTextColor()}{source.Data.PlayerName} tried to interact with you.</color></b>",
+                var notif2 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Monarch,
+                $"<b>{source.Data.PlayerName} tried to interact with you.</color></b>"),
                 Color.white, spr: TOSCrewAssets.KnightSprite.LoadAsset());
                 notif2.Text.SetOutlineThickness(0.35f);
                 notif2.transform.localPosition = new Vector3(0f, 1f, -20f);

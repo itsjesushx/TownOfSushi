@@ -44,8 +44,8 @@ public sealed class JailedModifier(byte jailorId) : BaseModifier
 
             MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, text, false, true);
 
-            var notif1 = Helpers.CreateAndShowNotification(
-                $"<b>{TownOfSushiColors.Jailor.ToTextColor()}{text}</color></b>", Color.white,
+            var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Jailor,
+                $"<b>{text}</b>"), Color.white,
                 spr: TOSRoleIcons.Jailor.LoadAsset());
 
             notif1.Text.SetOutlineThickness(0.35f);

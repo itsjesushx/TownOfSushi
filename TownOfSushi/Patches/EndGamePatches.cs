@@ -111,8 +111,7 @@ public static class EndGamePatches
 
             if (killedPlayers > 0 && !playerControl.IsCrewmate() && !playerControl.Is(RoleAlignment.NeutralEvil))
             {
-                playerRoleString.Append(TownOfSushiPlugin.Culture,
-                    $" |{TownOfSushiColors.Impostor.ToTextColor()} Kills: {killedPlayers}</color>");
+                playerRoleString.Append(MiscUtils.ColorString(TownOfSushiColors.Impostor, $" | Kills: {killedPlayers}"));
             }
 
             if (GameHistory.PlayerStats.TryGetValue(playerControl.PlayerId, out var stats))
@@ -120,8 +119,7 @@ public static class EndGamePatches
                 if (killedPlayers > 0 && playerControl.IsCrewmate() && stats.CorrectKills <= 0 &&
                     stats.IncorrectKills <= 0 && !playerControl.Is(RoleAlignment.NeutralEvil))
                 {
-                    playerRoleString.Append(TownOfSushiPlugin.Culture,
-                        $" |{TownOfSushiColors.Impostor.ToTextColor()} Kills: {killedPlayers}</color>");
+                    playerRoleString.Append(MiscUtils.ColorString(TownOfSushiColors.Impostor, $" | Kills: {killedPlayers}"));
                 }
 
                 if (stats.CorrectKills > 0)
@@ -132,8 +130,8 @@ public static class EndGamePatches
 
                 if (stats.IncorrectKills > 0)
                 {
-                    playerRoleString.Append(TownOfSushiPlugin.Culture,
-                        $" | {TownOfSushiColors.Impostor.ToTextColor()}Mis-kills: {stats.IncorrectKills}</color>");
+                    playerRoleString.Append(MiscUtils.ColorString(TownOfSushiColors.Impostor,
+                        $" | Mis-kills: {stats.IncorrectKills}"));
                 }
 
                 if (stats.CorrectAssassinKills > 0)
@@ -144,8 +142,8 @@ public static class EndGamePatches
 
                 if (stats.IncorrectAssassinKills > 0)
                 {
-                    playerRoleString.Append(TownOfSushiPlugin.Culture,
-                        $" | {TownOfSushiColors.Impostor.ToTextColor()}Misguesses: {stats.IncorrectAssassinKills}</color>");
+                    playerRoleString.Append(MiscUtils.ColorString(TownOfSushiColors.Impostor,
+                        $" | Misguesses: {stats.IncorrectAssassinKills}"));
                 }
             }
             if (playerControl.TryGetModifier<DeathHandlerModifier>(out var deathHandler))

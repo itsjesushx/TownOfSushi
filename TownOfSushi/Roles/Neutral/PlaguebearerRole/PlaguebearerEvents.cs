@@ -60,7 +60,7 @@ public static class PlaguebearerEvents
             if (pest.Player.AmOwner)
             {
                 var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>The crew know of the {TownOfSushiColors.Pestilence.ToTextColor()}Pestilence</color>.</b>",
+                    $"<b>The crew know of the "+ MiscUtils.ColorString(TownOfSushiColors.Pestilence, "Pestilence.</b>"),
                     Color.white, spr: TOSRoleIcons.Pestilence.LoadAsset());
 
                 notif1.Text.SetOutlineThickness(0.35f);
@@ -69,7 +69,7 @@ public static class PlaguebearerEvents
             else
             {
                 var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>The {TownOfSushiColors.Plaguebearer.ToTextColor()}plague</color> has consumed the crew. {TownOfSushiColors.Pestilence.ToTextColor()}Pestilence</color>, Horseman of the Apocalypse, has emerged!</b>",
+                    $"<b>The plague has consumed the crew."+ MiscUtils.ColorString(TownOfSushiColors.Pestilence, "Pestilence") + ", Horseman of the Apocalypse, has emerged!</b>",
                     Color.white, spr: TOSRoleIcons.Pestilence.LoadAsset());
 
                 notif1.Text.SetOutlineThickness(0.35f);

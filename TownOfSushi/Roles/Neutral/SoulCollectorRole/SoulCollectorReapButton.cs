@@ -30,7 +30,7 @@ public sealed class SoulCollectorReapButton : TownOfSushiRoleButton<SoulCollecto
         PlayerControl.LocalPlayer.RpcCustomMurder(Target, createDeadBody: false);
 
         var notif1 = Helpers.CreateAndShowNotification(
-            $"<b>{TownOfSushiColors.SoulCollector.ToTextColor()}You have taken {Target.Data.PlayerName}'s soul from their body, leaving a soulless player behind.</color></b>",
+            MiscUtils.ColorString(TownOfSushiColors.SoulCollector, $"<b>You have taken {Target.Data.PlayerName}'s soul from their body, leaving a soulless player behind.</b>"),
             Color.white, spr: TOSRoleIcons.SoulCollector.LoadAsset());
 
         notif1.Text.SetOutlineThickness(0.35f);

@@ -22,7 +22,7 @@ public static class CelebrityEvents
             Coroutines.Start(MiscUtils.CoFlash(TownOfSushiColors.Celebrity, PlaySound: true));
 
             var notif1 = Helpers.CreateAndShowNotification(
-            $"<b>{TownOfSushiColors.Celebrity.ToTextColor()}The Celebrity, {celeb.Player.Data.PlayerName}, has been killed! Everyone will get info at the start of the meeting</b></color>", Color.white,
+            MiscUtils.ColorString(TownOfSushiColors.Celebrity, $"<b>The Celebrity, {celeb.Player.Data.PlayerName}, has been killed! Everyone will get info at the start of the meeting</b>"), Color.white,
             new Vector3(0f, 1f, -20f), spr: TOSModifierIcons.Celebrity.LoadAsset());
             notif1.Text.SetOutlineThickness(0.35f);
 

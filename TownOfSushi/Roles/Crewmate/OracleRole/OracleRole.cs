@@ -161,8 +161,8 @@ public sealed class OracleRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSus
         if (oracle.AmOwner)
         {
             Coroutines.Start(MiscUtils.CoFlash(TownOfSushiColors.Oracle));
-            var notif1 = Helpers.CreateAndShowNotification(
-                $"<b>Your blessing has saved {TownOfSushiColors.Oracle.ToTextColor()}{target.Data.PlayerName}</color> from getting guessed!</b>",
+            var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Oracle,
+                $"<b>Your blessing has saved {target.Data.PlayerName} from getting guessed!</b>"),
                 Color.white, spr: TOSRoleIcons.Oracle.LoadAsset());
             notif1.Text.SetOutlineThickness(0.35f);
             notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
@@ -170,8 +170,8 @@ public sealed class OracleRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSus
         else if (source.AmOwner)
         {
             Coroutines.Start(MiscUtils.CoFlash(TownOfSushiColors.Oracle));
-            var notif1 = Helpers.CreateAndShowNotification(
-                $"<b>{TownOfSushiColors.ImpSoft.ToTextColor()}{target.Data.PlayerName}</color> survived due to being blessed by an {TownOfSushiColors.Oracle.ToTextColor()}Oracle</color>!</b>",
+            var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Oracle,
+                $"<b>{target.Data.PlayerName}</color> survived due to being blessed by an Oracle!</b>"),
                 Color.white, spr: TOSRoleIcons.Oracle.LoadAsset());
             notif1.Text.SetOutlineThickness(0.35f);
             notif1.transform.localPosition = new Vector3(0f, 1f, -20f);

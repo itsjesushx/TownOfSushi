@@ -50,8 +50,8 @@ public sealed class DetectiveRevealButton : TownOfSushiRoleButton<DetectiveRole,
                 possiblyGood = "possibly";
             }
 
-            var notif1 = Helpers.CreateAndShowNotification(
-                $"<b>{TownOfSushiColors.ImpSoft.ToTextColor()}You have revealed that {target.Data.PlayerName} is {possiblyGood} evil!</color></b>",
+            var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(Palette.ImpostorRed,
+                $"<b>You have revealed that {target.Data.PlayerName} is {possiblyGood} evil!</b>"),
                 Color.white, spr: TOSRoleIcons.Detective.LoadAsset());
             notif1.Text.SetOutlineThickness(0.35f);
             notif1.transform.localPosition = new Vector3(0f, 1f, -20f);

@@ -49,8 +49,8 @@ public sealed class ViperRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfSush
         {
             if (target.HasModifier<ArmoredModifier>() && target.TryGetModifier<ArmoredModifier>(out var armor) && armor.isActive)
             {
-                var notif1 = Helpers.CreateAndShowNotification(
-                $"<b>{TownOfSushiColors.ImpSoft.ToTextColor()}{target.Data.PlayerName} was protected because of their armour!.</b></color>",
+                var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.ImpSoft,
+                $"<b>{target.Data.PlayerName} was protected because of their armour!.</b>"),
                 Color.white, spr: TOSImpAssets.PoisonSprite.LoadAsset());
 
                 notif1.Text.SetOutlineThickness(0.35f);
@@ -58,8 +58,8 @@ public sealed class ViperRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfSush
             }
             else
             {
-                var notif1 = Helpers.CreateAndShowNotification(
-                $"<b>{TownOfSushiColors.ImpSoft.ToTextColor()}{target.Data.PlayerName}, has been successfully poisoned. They are dead.</b></color>",
+                var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.ImpSoft,
+                $"<b>{target.Data.PlayerName}, has been successfully poisoned. They are dead.</b>"),
                 Color.white, spr: TOSImpAssets.PoisonSprite.LoadAsset());
 
                 notif1.Text.SetOutlineThickness(0.35f);

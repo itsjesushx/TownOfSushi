@@ -233,8 +233,8 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCre
                 SafeShotsLeft--;
                 Coroutines.Start(MiscUtils.CoFlash(TownOfSushiColors.Impostor));
 
-                var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>{TownOfSushiColors.Vigilante.ToTextColor()}Your Multi Shot has prevented you from dying this meeting! You have {SafeShotsLeft} safe shot(s) left!</color></b>",
+                var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Vigilante,
+                    $"<b>Your Multi Shot has prevented you from dying this meeting! You have {SafeShotsLeft} safe shot(s) left!</color></b>"),
                     Color.white, spr: TOSRoleIcons.Vigilante.LoadAsset());
 
                 notif1.Text.SetOutlineThickness(0.35f);

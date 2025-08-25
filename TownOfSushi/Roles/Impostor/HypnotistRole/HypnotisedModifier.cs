@@ -91,8 +91,8 @@ public sealed class HypnotisedModifier(PlayerControl hypnotist) : BaseModifier
 
         if (Player.AmOwner)
         {
-            var notif1 = Helpers.CreateAndShowNotification(
-                $"<b>{TownOfSushiColors.ImpSoft.ToTextColor()}You are under a Mass Hysteria!</color></b>", Color.white,
+            var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.ImpSoft,
+                $"<b>You are under a Mass Hysteria!</b>"), Color.white,
                 spr: TOSRoleIcons.Hypnotist.LoadAsset());
 
             notif1.Text.SetOutlineThickness(0.35f);

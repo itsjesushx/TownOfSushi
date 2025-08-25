@@ -4,102 +4,107 @@ namespace TownOfSushi;
 
 public static class TownOfSushiColors
 {
-    public static Color Inquisitor = new(0.85f, 0.26f, 0.57f, 1f);
-
     public static bool UseBasic { get; set; } = TownOfSushiPlugin.UseCrewmateTeamColor.Value;
 
-    // Crew Colors
-    public static Color Crewmate => Palette.CrewmateRoleBlue;
+    #region Crew Colors
+    public static readonly Color32 Crewmate = Palette.CrewmateRoleBlue;
 
-    public static Color Monarch => UseBasic ? Palette.CrewmateBlue : new(1f, 0.5f, 0f, 1f);
-    public static Color Mayor => UseBasic ? Palette.CrewmateBlue : new Color(0.44f, 0.31f, 0.66f, 1f);
-    public static Color Engineer => UseBasic ? Palette.CrewmateBlue : new Color(1f, 0.65f, 0.04f, 1f);
-    public static Color Swapper => UseBasic ? Palette.CrewmateBlue : new Color(0.4f, 0.9f, 0.4f, 1f);
-    public static Color Investigator => UseBasic ? Palette.CrewmateBlue : new Color(0f, 0.7f, 0.7f, 1f);
-    public static Color Medic => UseBasic ? Palette.CrewmateBlue : new(0.4f, 0.9f, 0.7f, 1f);
-    public static Color Detective => UseBasic ? Palette.CrewmateBlue : new Color(1f, 0.8f, 0.5f, 1f);
-    public static Color Administrator => UseBasic ? Palette.CrewmateBlue : new Color(0.8f, 0.64f, 0.8f, 1f);
-    public static Color Snitch => UseBasic ? Palette.CrewmateBlue : new Color(0.83f, 0.69f, 0.22f, 1f);
-    public static Color Altruist => UseBasic ? Palette.CrewmateBlue : new Color(0.4f, 0f, 0f, 1f);
-    public static Color Vigilante => UseBasic ? Palette.CrewmateBlue : new Color(1f, 1f, 0.6f, 1f);
-    public static Color Veteran => UseBasic ? Palette.CrewmateBlue : new Color(0.6f, 0.5f, 0.25f, 1f);
-    public static Color Haunter => UseBasic ? Palette.CrewmateBlue : new Color(0.83f, 0.83f, 0.83f, 1f);
-    public static Color Transporter => UseBasic ? Palette.CrewmateBlue : new Color(0f, 0.93f, 1f, 1f);
-    public static Color Medium => UseBasic ? Palette.CrewmateBlue : new Color(0.65f, 0.5f, 1f, 1f);
-    public static Color Mystic => UseBasic ? Palette.CrewmateBlue : new Color(0.3f, 0.6f, 0.9f, 1f);
-    public static Color Trapper => UseBasic ? Palette.CrewmateBlue : new Color(0.65f, 0.82f, 0.7f, 1f);
-    public static Color Inspector => UseBasic ? Palette.CrewmateBlue : new Color(0.3f, 0.3f, 1f, 1f);
-    public static Color Imitator => UseBasic ? Palette.CrewmateBlue : new Color(0.7f, 0.85f, 0.3f, 1f);
-    public static Color Prosecutor => UseBasic ? Palette.CrewmateBlue : new Color(0.7f, 0.5f, 0f, 1f);
-    public static Color Oracle => UseBasic ? Palette.CrewmateBlue : new Color(0.75f, 0f, 0.75f, 1f);
-    public static Color Aurial => UseBasic ? Palette.CrewmateBlue : new Color(0.7f, 0.3f, 0.6f, 1f);
-    public static Color Politician => UseBasic ? Palette.CrewmateBlue : new Color(0.4f, 0f, 0.6f, 1f);
-    public static Color Operative => UseBasic ? Palette.CrewmateBlue : new(0f, 0.78f, 0.41f, 1f);
-    public static Color Crusader => UseBasic ? Palette.CrewmateBlue : new Color(0.6f, 0f, 1f, 1f);
-    public static Color Jailor => UseBasic ? Palette.CrewmateBlue : new Color(0.65f, 0.65f, 0.65f, 1f);
-    public static Color Hunter => UseBasic ? Palette.CrewmateBlue : new Color(0.16f, 0.67f, 0.53f, 1f);
-    public static Color Tracker => UseBasic ? Palette.CrewmateBlue : new Color(0f, 0.6f, 0f, 1f);
-    public static Color Lookout => UseBasic ? Palette.CrewmateBlue : new Color(0.2f, 1f, 0.4f, 1f);
-    public static Color Deputy => UseBasic ? Palette.CrewmateBlue : new Color(1f, 0.8f, 0f, 1f);
-    public static Color Plumber => UseBasic ? Palette.CrewmateBlue : new Color(0.8f, 0.4f, 0f, 1f);
-    public static Color Cleric => UseBasic ? Palette.CrewmateBlue : new Color(0f, 1f, 0.7f, 1f);
-    public static Color Seer => UseBasic ? Palette.CrewmateBlue : new Color(0.7f, 0.6f, 0.4f, 1f);
+    public static Color32 Monarch => UseBasic ? Palette.CrewmateBlue : new(255, 128, 0, byte.MaxValue);
+    public static Color32 Mayor => UseBasic ? Palette.CrewmateBlue : new Color32(112, 79, 168, byte.MaxValue);
+    public static Color32 Engineer => UseBasic ? Palette.CrewmateBlue : new Color32(255, 166, 10, byte.MaxValue);
+    public static Color32 Swapper => UseBasic ? Palette.CrewmateBlue : new Color32(102, 230, 102, byte.MaxValue);
+    public static Color32 Investigator => UseBasic ? Palette.CrewmateBlue : new Color32(0, 179, 179, byte.MaxValue);
+    public static Color32 Medic => UseBasic ? Palette.CrewmateBlue : new(102, 230, 179, byte.MaxValue);
+    public static Color32 Detective => UseBasic ? Palette.CrewmateBlue : new Color32(255, 204, 128, byte.MaxValue);
+    public static Color32 Administrator => UseBasic ? Palette.CrewmateBlue : new Color32(204, 163, 204, byte.MaxValue);
+    public static Color32 Snitch => UseBasic ? Palette.CrewmateBlue : new Color32(212, 176, 56, byte.MaxValue);
+    public static Color32 Altruist => UseBasic ? Palette.CrewmateBlue : new Color32(102, 0, 0, byte.MaxValue);
+    public static Color32 Vigilante => UseBasic ? Palette.CrewmateBlue : new Color32(255, 255, 153, byte.MaxValue);
+    public static Color32 Veteran => UseBasic ? Palette.CrewmateBlue : new Color32(153, 128, 64, byte.MaxValue);
+    public static Color32 Haunter => UseBasic ? Palette.CrewmateBlue : new Color32(212, 212, 212, byte.MaxValue);
+    public static Color32 Transporter => UseBasic ? Palette.CrewmateBlue : new Color32(0, 237, 255, byte.MaxValue);
+    public static Color32 Medium => UseBasic ? Palette.CrewmateBlue : new Color32(166, 128, 255, byte.MaxValue);
+    public static Color32 Mystic => UseBasic ? Palette.CrewmateBlue : new Color32(76, 153, 230, byte.MaxValue);
+    public static Color32 Trapper => UseBasic ? Palette.CrewmateBlue : new Color32(166, 209, 179, byte.MaxValue);
+    public static Color32 Inspector => UseBasic ? Palette.CrewmateBlue : new Color32(76, 76, 255, byte.MaxValue);
+    public static Color32 Imitator => UseBasic ? Palette.CrewmateBlue : new Color32(179, 217, 76, byte.MaxValue);
+    public static Color32 Prosecutor => UseBasic ? Palette.CrewmateBlue : new Color32(179, 128, 0, byte.MaxValue);
+    public static Color32 Oracle => UseBasic ? Palette.CrewmateBlue : new Color32(191, 0, 191, byte.MaxValue);
+    public static Color32 Aurial => UseBasic ? Palette.CrewmateBlue : new Color32(179, 76, 153, byte.MaxValue);
+    public static Color32 Politician => UseBasic ? Palette.CrewmateBlue : new Color32(102, 0, 153, byte.MaxValue);
+    public static Color32 Operative => UseBasic ? Palette.CrewmateBlue : new(0, 199, 105, byte.MaxValue);
+    public static Color32 Crusader => UseBasic ? Palette.CrewmateBlue : new Color32(153, 0, 255, byte.MaxValue);
+    public static Color32 Jailor => UseBasic ? Palette.CrewmateBlue : new Color32(166, 166, 166, byte.MaxValue);
+    public static Color32 Hunter => UseBasic ? Palette.CrewmateBlue : new Color32(41, 171, 135, byte.MaxValue);
+    public static Color32 Tracker => UseBasic ? Palette.CrewmateBlue : new Color32(0, 153, 0, byte.MaxValue);
+    public static Color32 Lookout => UseBasic ? Palette.CrewmateBlue : new Color32(51, 255, 102, byte.MaxValue);
+    public static Color32 Deputy => UseBasic ? Palette.CrewmateBlue : new Color32(255, 204, 0, byte.MaxValue);
+    public static Color32 Plumber => UseBasic ? Palette.CrewmateBlue : new Color32(204, 102, 0, byte.MaxValue);
+    public static Color32 Cleric => UseBasic ? Palette.CrewmateBlue : new Color32(0, 255, 179, byte.MaxValue);
+    public static Color32 Seer => UseBasic ? Palette.CrewmateBlue : new Color32(179, 153, 102, byte.MaxValue);
 
-    // Neutral Colors
-    public static Color Neutral => Color.gray;
-    public static Color Jester => new(1f, 0.75f, 0.8f, 1f);
-    public static Color Executioner => new(0.39f, 0.23f, 0.12f, 1f);
-    public static Color Glitch => Color.green;
-    public static Color Arsonist => new(1f, 0.3f, 0f, 1f);
-    public static Color Pyromaniac => new(0.9f, 0.4f, 0.2f, 1f);
-    public static Color Amnesiac => new(0.5f, 0.7f, 1f, 1f);
-    public static Color Juggernaut => new(0.55f, 0f, 0.3f, 1f);
-    public static Color Protector => new(0.7f, 1f, 1f, 1f);
-    public static Color Plaguebearer => new(0.9f, 1f, 0.7f, 1f);
-    public static Color Pestilence => new(0.3f, 0.3f, 0.3f, 1f);
-    public static Color Werewolf => new(0.66f, 0.4f, 0.16f, 1f);
-    public static Color Predator = new(0.2f, 0.4f, 1f, 1f);
-    public static Color Doomsayer => new(0f, 1f, 0.5f, 1f);
-    public static Color Vampire = new Color(0.15f, 0.15f, 0.15f, 1f);
-    public static Color SoulCollector => new(0.6f, 1f, 0.8f, 1f);
-    public static Color GuardianAngel => new(0.7f, 1f, 1f, 1f);
-    public static Color Hitman = new(0f, 0.7f, 0.9f, 1f);
-    public static Color Agent = new(0.4f, 0.4f, 0.8f, 1f);
-    public static Color Phantom => new(0.4f, 0.16f, 0.38f, 1f);
-    public static Color Mercenary => new(0.55f, 0.4f, 0.6f, 1f);
-    public static Color Eclipsal => new(0.5f, 0.3f, 0.3f, 1f);
-    public static Color Scavenger => new(0.6f, 0.3f, 0.2f, 1f);
-    public static Color Romantic => new(1f, 0f, 0.8f, 1f);
-    public static Color Thief => new(0.3f, 0.5f, 0.2f, 1f);
+    #endregion
 
-    // Impostor Colors
-    public static Color Impostor => Palette.ImpostorRed;
-    public static Color ImpSoft => new(0.84f, 0.25f, 0.26f, 1f);
+    #region Neutral Colors
+    public static readonly Color32 Neutral = Color.gray;
+    public static readonly Color32 Jester = new(255, 191, 204, byte.MaxValue);
+    public static readonly Color32 Executioner = new(204, 204, 204, byte.MaxValue);
+    public static readonly Color32 Glitch = Color.green;
+    public static readonly Color32 Arsonist = new(255, 77, 0, byte.MaxValue);
+    public static readonly Color32 Pyromaniac = new(230, 102, 51, byte.MaxValue);
+    public static readonly Color32 Amnesiac = new(128, 179, 255, byte.MaxValue);
+    public static readonly Color32 Juggernaut = new(140, 0, 77, byte.MaxValue);
+    public static readonly Color32 Inquisitor = new(217, 66, 145, byte.MaxValue);
+    public static readonly Color32 Protector = new(179, 255, 255, byte.MaxValue);
+    public static readonly Color32 Plaguebearer = new(230, 255, 179, byte.MaxValue);
+    public static readonly Color32 Pestilence = new(77, 77, 77, byte.MaxValue);
+    public static readonly Color32 Werewolf = new(168, 102, 41, byte.MaxValue);
+    public static readonly Color32 Predator = new(51, 102, 255, byte.MaxValue);
+    public static readonly Color32 Doomsayer = new(0, 255, 128, byte.MaxValue);
+    public static readonly Color32 Vampire = new Color32(38, 38, 38, byte.MaxValue);
+    public static readonly Color32 SoulCollector = new(153, 255, 204, byte.MaxValue);
+    public static readonly Color32 GuardianAngel = new(179, 255, 255, byte.MaxValue);
+    public static readonly Color32 Hitman = new(0, 179, 230, byte.MaxValue);
+    public static readonly Color32 Agent = new(102, 102, 204, byte.MaxValue);
+    public static readonly Color32 Phantom = new(102, 41, 97, byte.MaxValue);
+    public static readonly Color32 Mercenary = new(140, 102, 153, byte.MaxValue);
+    public static readonly Color32 Eclipsal = new(128, 77, 77, byte.MaxValue);
+    public static readonly Color32 Scavenger = new(153, 77, 51, byte.MaxValue);
+    public static readonly Color32 Romantic = new(255, 0, 204, byte.MaxValue);
+    public static readonly Color32 Thief = new(77, 128, 51, byte.MaxValue);
+    #endregion
 
-    // Modifiers
-    public static Color Bait => new(0.2f, 0.7f, 0.7f, 1f);
-    public static Color Aftermath => new(0.65f, 1f, 0.65f, 1f);
-    public static Color Diseased => Color.grey;
-    public static Color Torch => new(1f, 1f, 0.6f, 1f);
-    public static Color ButtonBarry => new(0.7f, 0.2f, 0.8f, 1f);
-    public static Color Giant => new(1f, 0.7f, 0.3f, 1f);
-    public static Color Lover => new(1f, 0.4f, 0.8f, 1f);
-    public static Color Sleuth => new(0.5f, 0.2f, 0.2f, 1f);
-    public static Color Tiebreaker => new(0.6f, 0.9f, 0.6f, 1f);
-    public static Color Paranoiac => new(1f, 0f, 0.5f, 1f);
-    public static Color Drunk => new(0.1f, 0.3f, 0.2f, 1f);
-    public static Color Multitasker => new(1f, 0.5f, 0.3f, 1f);
-    public static Color Frosty => new(0.6f, 1f, 1f, 1f);
-    public static Color SixthSense => new(0.85f, 1f, 0.55f, 1f);
-    public static Color Shy => new(1f, 0.7f, 0.8f, 1f);
-    public static Color Mini => new(0.8f, 1f, 0.9f, 1f);
-    public static Color Camouflaged => Color.gray;
-    public static Color Satellite => new(0f, 0.6f, 0.8f, 1f);
-    public static Color Egotist => new(0.4f, 0.6f, 0.4f, 1f);
-    public static Color Taskmaster => new(0.58f, 0.84f, 0.93f, 1f);
-    public static Color Celebrity => new(1f, 0.6f, 0.6f, 1f);
-    public static Color Lazy => new(0.9f, 0.9f, 0.8f, 1f);
-    public static Color Decay => new(0.67f, 0.5f, 0.41f, 1f);
-    public static Color Noisemaker => new(0.91f, 0.41f, 0.62f, 1f);
-    public static Color Scout => new(0.27f, 0.38f, 0.34f, 1f);
+    #region Impostor Colors
+    public static readonly Color32 Impostor = Palette.ImpostorRed;
+    public static readonly Color32 ImpSoft = new(214, 64, 66, byte.MaxValue);
+    #endregion
+
+    #region Modifier Colors
+    public static readonly Color32 Bait = new(51, 179, 179, byte.MaxValue);
+    public static readonly Color32 Aftermath = new(166, 255, 166, byte.MaxValue);
+    public static readonly Color32 Diseased = Color.grey;
+    public static readonly Color32 Torch = new(255, 255, 153, byte.MaxValue);
+    public static readonly Color32 ButtonBarry = new(179, 51, 204, byte.MaxValue);
+    public static readonly Color32 Giant = new(255, 179, 77, byte.MaxValue);
+    public static readonly Color32 Lover = new(255, 102, 204, byte.MaxValue);
+    public static readonly Color32 Sleuth = new(128, 51, 51, byte.MaxValue);
+    public static readonly Color32 Tiebreaker = new(153, 230, 153, byte.MaxValue);
+    public static readonly Color32 Paranoiac = new(255, 0, 128, byte.MaxValue);
+    public static readonly Color32 Drunk = new(26, 77, 51, byte.MaxValue);
+    public static readonly Color32 Multitasker = new(255, 128, 77, byte.MaxValue);
+    public static readonly Color32 Frosty = new(153, 255, 255, byte.MaxValue);
+    public static readonly Color32 SixthSense = new(217, 255, 140, byte.MaxValue);
+    public static readonly Color32 Shy = new(255, 179, 204, byte.MaxValue);
+    public static readonly Color32 Mini = new(204, 255, 230, byte.MaxValue);
+    public static readonly Color32 Camouflaged = Color.gray;
+    public static readonly Color32 Satellite = new(0, 153, 204, byte.MaxValue);
+    public static readonly Color32 Egotist = new(102, 153, 102, byte.MaxValue);
+    public static readonly Color32 Taskmaster = new(148, 214, 237, byte.MaxValue);
+    public static readonly Color32 Celebrity = new(255, 153, 153, byte.MaxValue);
+    public static readonly Color32 Lazy = new(230, 230, 204, byte.MaxValue);
+    public static readonly Color32 Decay = new(171, 128, 105, byte.MaxValue);
+    public static readonly Color32 Noisemaker = new(232, 105, 158, byte.MaxValue);
+    public static readonly Color32 Scout = new(69, 97, 87, byte.MaxValue);
+
+    #endregion
 }

@@ -321,22 +321,22 @@ public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
             (!OptionGroupSingleton<GeneralOptions>.Instance.FFAImpostorMode || player.AmOwner))
         {
             var text =
-                $"<b>The Ambassador has decided to retrain {ambassador.SelectedPlr.PlayerName} into {TownOfSushiColors.ImpSoft.ToTextColor()}{ambassador.SelectedRole.NiceName}</color></b>";
+                MiscUtils.ColorString(TownOfSushiColors.Impostor, $"<b>The Ambassador has decided to retrain {ambassador.SelectedPlr.PlayerName} into {ambassador.SelectedRole.NiceName}</b>");
             if (ambassador.SelectedPlr.Object.AmOwner && player.AmOwner)
             {
                 text =
-                    $"<b>You have decided to retrain yourself into {TownOfSushiColors.ImpSoft.ToTextColor()}{ambassador.SelectedRole.NiceName}</color></b>";
+                    MiscUtils.ColorString(TownOfSushiColors.Impostor, $"<b>You have decided to retrain yourself into {ambassador.SelectedRole.NiceName}</b>");
             }
             else if (ambassador.SelectedPlr.Object == player)
             {
                 text =
-                    $"<b>The Ambassador has decided to retrain themselves into {TownOfSushiColors.ImpSoft.ToTextColor()}{ambassador.SelectedRole.NiceName}</color></b>";
+                    MiscUtils.ColorString(TownOfSushiColors.Impostor, $"<b>The Ambassador has decided to retrain themselves into {ambassador.SelectedRole.NiceName}</b>");
 
             }
             else if (ambassador.SelectedPlr.Object.AmOwner)
             {
                 text =
-                    $"<b>The Ambassador has decided to retrain you into {TownOfSushiColors.ImpSoft.ToTextColor()}{ambassador.SelectedRole.NiceName}</color></b>";
+                    MiscUtils.ColorString(TownOfSushiColors.Impostor, $"<b>The Ambassador has decided to retrain you into {ambassador.SelectedRole.NiceName}</b>");
 
             }
             var notif1 = Helpers.CreateAndShowNotification(text, Color.white, spr: ambassador.SelectedRole.RoleIconWhite != null ? ambassador.SelectedRole.RoleIconWhite : TOSRoleIcons.Ambassador.LoadAsset());

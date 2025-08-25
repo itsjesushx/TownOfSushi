@@ -46,7 +46,7 @@ public sealed class InquisitorInquireButton : TownOfSushiRoleButton<InquisitorRo
         Target.AddModifier<InquisitorInquiredModifier>();
 
         var notif1 = Helpers.CreateAndShowNotification(
-            $"<b>{TownOfSushiColors.Inquisitor.ToTextColor()}You will know if {Target.Data.PlayerName} is a heretic during the next meeting.</color></b>",
+            MiscUtils.ColorString(TownOfSushiColors.Inquisitor, $"<b>You will know if {Target.Data.PlayerName} is a heretic during the next meeting.</b>"),
             Color.white, spr: TOSRoleIcons.Inquisitor.LoadAsset());
 
         notif1.Text.SetOutlineThickness(0.35f);

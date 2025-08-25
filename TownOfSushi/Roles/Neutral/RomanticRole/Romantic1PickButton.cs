@@ -23,7 +23,7 @@ public sealed class RomanticPickButton : TownOfSushiRoleButton<RomanticRole, Pla
         RomanticRole.RpcSetRomanticBeloved(PlayerControl.LocalPlayer, Target);
         
         var notif1 = Helpers.CreateAndShowNotification(
-            $"<b>{TownOfSushiColors.Romantic.ToTextColor()}You fell in love with {Target.Data.PlayerName}. Protect them at any cost!</b></color>", Color.white, spr: TOSRoleIcons.Romantic.LoadAsset());
+            MiscUtils.ColorString(TownOfSushiColors.Romantic, $"<b>You fell in love with {Target.Data.PlayerName}. Protect them at any cost!</b>"), Color.white, spr: TOSRoleIcons.Romantic.LoadAsset());
         notif1.Text.SetOutlineThickness(0.35f);
             notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
 

@@ -80,8 +80,8 @@ public sealed class PlumberBlockButton : TownOfSushiRoleButton<PlumberRole, Vent
             return;
         }
 
-        var notif1 = Helpers.CreateAndShowNotification(
-            $"<b>{TownOfSushiColors.Plumber.ToTextColor()}This vent will be blocked at the beginning of the next round.</b></color>",
+        var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Plumber,
+            $"<b>This vent will be blocked at the beginning of the next round.</b>"),
             Color.white, new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Plumber.LoadAsset());
         notif1.Text.SetOutlineThickness(0.35f);
 

@@ -34,7 +34,7 @@ public sealed class JesterRole(IntPtr cppPtr)
             OptionGroupSingleton<ExecutionerOptions>.Instance.OnTargetDeath is BecomeOptions.Jester)
         || (MiscUtils.GetPotentialRoles()
                 .Contains(RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<RomanticRole>())) &&
-            OptionGroupSingleton<RomanticOptions>.Instance.OnTargetDeath is RomanticBecomeOptions.Jester);
+            OptionGroupSingleton<RomanticOptions>.Instance.OnTargetDeath is BecomeOptions.Jester);
     public CustomRoleConfiguration Configuration => new(this)
     {
         CanUseVent = OptionGroupSingleton<JesterOptions>.Instance.CanVent,

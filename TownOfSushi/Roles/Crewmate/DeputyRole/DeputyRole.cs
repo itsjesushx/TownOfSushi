@@ -139,8 +139,8 @@ public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCrewRo
                 MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title,
                     "You missed your shot! You lost half your vision. Next time you miss you will die.", false, true);
 
-                var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>{TownOfSushiColors.Deputy.ToTextColor()}You missed your shot! You lost half your vision. Next time you miss you will die.</b>",
+                var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Deputy,
+                    $"<b>You missed your shot! You lost half your vision. Next time you miss you will die.</b>"),
                     Color.white, new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Deputy.LoadAsset());
                 notif1.Text.SetOutlineThickness(0.35f);
 
@@ -150,8 +150,8 @@ public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCrewRo
             else
             {
                 // Second miss: suicide
-                var notif2 = Helpers.CreateAndShowNotification(
-                    $"<b>{TownOfSushiColors.Deputy.ToTextColor()}You missed again... and paid the price.</b>",
+                var notif2 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Deputy,
+                    $"<b>You missed again... and paid the price.</b>"),
                     Color.white, new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Deputy.LoadAsset());
                 notif2.Text.SetOutlineThickness(0.35f);
 

@@ -78,16 +78,16 @@ public sealed class InspectorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
 
             var deadPlayer = InvestigatingScene?.DeadPlayer!;
 
-            var notif1 = Helpers.CreateAndShowNotification(
-                $"<b>{TownOfSushiColors.Inspector.ToTextColor()}{player.Data.PlayerName} was at the scene of {deadPlayer.Data.PlayerName}'s death!\nThey might be the killer or a witness.</b></color>",
+            var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Inspector,
+                $"<b>{player.Data.PlayerName} was at the scene of {deadPlayer.Data.PlayerName}'s death!\nThey might be the killer or a witness.</b>"),
                 Color.white, new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Inspector.LoadAsset());
             notif1.Text.SetOutlineThickness(0.35f);
         }
         else
         {
             Coroutines.Start(MiscUtils.CoFlash(Color.green));
-            var notif1 = Helpers.CreateAndShowNotification(
-                $"<b>{TownOfSushiColors.Inspector.ToTextColor()}{player.Data.PlayerName} was not at the scene of the crime.</b></color>",
+            var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Inspector,
+                $"<b>{player.Data.PlayerName} was not at the scene of the crime.</b>"),
                 Color.white, new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Inspector.LoadAsset());
             notif1.Text.SetOutlineThickness(0.35f);
         }

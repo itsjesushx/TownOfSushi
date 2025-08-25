@@ -23,7 +23,7 @@ public static class EgotistEvents
             {
                 PlayerControl.LocalPlayer.RpcPlayerExile();
                 var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>You have successfully won as the {TownOfSushiColors.Egotist.ToTextColor()}Egotist</color>, as no more crewmates remain!</b>",
+                    MiscUtils.ColorString(TownOfSushiColors.Egotist, $"<b>You have successfully won as the Egotist") + ", as no more crewmates remain!</b>",
                     Color.white, spr: TOSModifierIcons.Egotist.LoadAsset());
 
                 notif1.Text.SetOutlineThickness(0.35f);
@@ -32,7 +32,7 @@ public static class EgotistEvents
             else
             {
                 var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>The {TownOfSushiColors.Egotist.ToTextColor()}Egotist</color>, {ego.Player.Data.PlayerName}, has successfully won, as no more crewmates remain!</b>",
+                    MiscUtils.ColorString(TownOfSushiColors.Egotist, $"<b>The Egotist") + $", {ego.Player.Data.PlayerName}, has successfully won, as no more crewmates remain!</b>",
                     Color.white, spr: TOSModifierIcons.Egotist.LoadAsset());
 
                 notif1.Text.SetOutlineThickness(0.35f);

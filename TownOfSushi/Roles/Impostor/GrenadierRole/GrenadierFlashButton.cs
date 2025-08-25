@@ -27,8 +27,8 @@ public sealed class GrenadierFlashButton : TownOfSushiRoleButton<GrenadierRole>,
         }
 
         PlayerControl.LocalPlayer.RpcAddModifier<GrenadierFlashModifier>(PlayerControl.LocalPlayer);
-        var notif1 = Helpers.CreateAndShowNotification(
-            $"<b>{TownOfSushiColors.ImpSoft.ToTextColor()}All players around you are now flashbanged!</color></b>", Color.white,
+        var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.ImpSoft,
+            $"<b>All players around you are now flashbanged!</b>"), Color.white,
             spr: TOSRoleIcons.Grenadier.LoadAsset());
         
         notif1.Text.SetOutlineThickness(0.35f);

@@ -38,7 +38,7 @@ public static class InquisitorEvents
             {
                 Coroutines.Start(MiscUtils.CoFlash(TownOfSushiColors.Inquisitor, alpha: 0.1f));
                 var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>{TownOfSushiColors.Inquisitor.ToTextColor()}A Heretic has perished!</b></color>", Color.white,
+                    MiscUtils.ColorString(TownOfSushiColors.Inquisitor, $"<b>A Heretic has perished!</b>"), Color.white,
                     spr: TOSRoleIcons.Inquisitor.LoadAsset());
                 notif1.Text.SetOutlineThickness(0.35f);
                 notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
@@ -47,7 +47,7 @@ public static class InquisitorEvents
             {
                 Coroutines.Start(MiscUtils.CoFlash(TownOfSushiColors.Inquisitor, alpha: 0.4f));
                 var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>{TownOfSushiColors.Inquisitor.ToTextColor()}{victim.Data.PlayerName} was not a heretic!\nYou can no longer vanquish players.</b></color>",
+                    MiscUtils.ColorString(TownOfSushiColors.Inquisitor, $"<b>{victim.Data.PlayerName} was not a heretic!\nYou can no longer vanquish players.</b>"),
                     Color.white, spr: TOSRoleIcons.Inquisitor.LoadAsset());
                 notif1.Text.SetOutlineThickness(0.35f);
                 notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
@@ -56,7 +56,7 @@ public static class InquisitorEvents
             {
                 Coroutines.Start(MiscUtils.CoFlash(TownOfSushiColors.Doomsayer, alpha: 0.4f));
                 var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>{TownOfSushiColors.Inquisitor.ToTextColor()}{victim.Data.PlayerName} was a heretic!</b></color>",
+                    MiscUtils.ColorString(TownOfSushiColors.Inquisitor, $"<b>{victim.Data.PlayerName} was a heretic!</b>"),
                     Color.white, spr: TOSRoleIcons.Inquisitor.LoadAsset());
                 notif1.Text.SetOutlineThickness(0.35f);
                 notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
@@ -92,7 +92,7 @@ public static class InquisitorEvents
             {
                 PlayerControl.LocalPlayer.RpcPlayerExile();
                 var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>You have successfully won as the {TownOfSushiColors.Inquisitor.ToTextColor()}Inquisitor</color>, as all Heretics have perished!</b>",
+                    MiscUtils.ColorString(TownOfSushiColors.Inquisitor, $"<b>You have successfully won as the Inquisitor, as all Heretics have perished!</b>"),
                     Color.white, spr: TOSRoleIcons.Inquisitor.LoadAsset());
 
                 notif1.Text.SetOutlineThickness(0.35f);
@@ -102,7 +102,7 @@ public static class InquisitorEvents
             else
             {
                 var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>The {TownOfSushiColors.Inquisitor.ToTextColor()}Inquisitor</color>, {inquis.Player.Data.PlayerName}, has successfully won, as all Heretics have perished!</b>",
+                    MiscUtils.ColorString(TownOfSushiColors.Inquisitor, $"<b>The Inquisitor, {inquis.Player.Data.PlayerName}, has successfully won, as all Heretics have perished!</b>"),
                     Color.white, spr: TOSRoleIcons.Inquisitor.LoadAsset());
 
                 notif1.Text.SetOutlineThickness(0.35f);

@@ -150,7 +150,7 @@ public abstract class AssassinModifier : ExcludedGameModifier
                 Coroutines.Start(MiscUtils.CoFlash(TownOfSushiColors.Impostor));
 
                 var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>{TownOfSushiColors.ImpSoft.ToTextColor()}Your Double Shot has prevented you from dying this meeting!</color></b>",
+                    MiscUtils.ColorString(TownOfSushiColors.ImpSoft, $"<b>Your Double Shot has prevented you from dying this meeting!</b>"),
                     Color.white, spr: TOSModifierIcons.DoubleShot.LoadAsset());
 
                 notif1.Text.SetOutlineThickness(0.35f);

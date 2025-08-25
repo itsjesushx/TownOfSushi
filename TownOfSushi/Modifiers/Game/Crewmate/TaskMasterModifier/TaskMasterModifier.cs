@@ -67,7 +67,7 @@ public sealed class TaskmasterModifier : TOSGameModifier, IWikiDiscoverable
                 taskText = taskText.Replace(Environment.NewLine, "");
 
                 var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>{TownOfSushiColors.Taskmaster.ToTextColor()}The task '{taskText}' has been completed for you.</b></color>",
+                    MiscUtils.ColorString(TownOfSushiColors.Taskmaster, $"<b>The task '{taskText}' has been completed for you.</b>"),
                     Color.white, spr: TOSModifierIcons.Taskmaster.LoadAsset());
                 notif1.Text.SetOutlineThickness(0.35f);
                 notif1.transform.localPosition = new Vector3(0f, 1f, -20f);

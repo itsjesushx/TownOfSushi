@@ -22,7 +22,7 @@ public static class TelepathEvents
             {
                 Coroutines.Start(MiscUtils.CoFlash(TownOfSushiColors.ImpSoft, alpha: 0.4f));
                 var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>{TownOfSushiColors.ImpSoft.ToTextColor()}Your teammate, {victim.Data.PlayerName}, attempted to shoot {assassin.LastAttemptedVictim!.Data.PlayerName} as {assassin.LastGuessedItem}, but failed!</b></color>",
+                    MiscUtils.ColorString(TownOfSushiColors.ImpSoft, $"<b>Your teammate, {victim.Data.PlayerName}, attempted to shoot {assassin.LastAttemptedVictim!.Data.PlayerName} as {assassin.LastGuessedItem}, but failed!</b>"),
                     Color.white, spr: TOSModifierIcons.Telepath.LoadAsset());
                 notif1.Text.SetOutlineThickness(0.35f);
                 notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
@@ -31,7 +31,7 @@ public static class TelepathEvents
             {
                 Coroutines.Start(MiscUtils.CoFlash(TownOfSushiColors.ImpSoft, alpha: 0.05f));
                 var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>{TownOfSushiColors.ImpSoft.ToTextColor()}Your teammate, {source.Data.PlayerName}, shot {victim.Data.PlayerName} as {victim.GetRoleWhenAlive().TeamColor.ToTextColor()}{victim.GetRoleWhenAlive().NiceName}</color>!</b></color>",
+                    MiscUtils.ColorString(TownOfSushiColors.ImpSoft, $"<b>Your teammate, {source.Data.PlayerName}, shot {victim.Data.PlayerName} as {victim.GetRoleWhenAlive().TeamColor.ToTextColor()}{victim.GetRoleWhenAlive().NiceName}!</b>"),
                     Color.white, spr: TOSModifierIcons.Telepath.LoadAsset());
                 notif1.Text.SetOutlineThickness(0.35f);
                 notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
@@ -40,7 +40,7 @@ public static class TelepathEvents
             {
                 Coroutines.Start(MiscUtils.CoFlash(TownOfSushiColors.ImpSoft, alpha: 0.05f));
                 var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>{TownOfSushiColors.ImpSoft.ToTextColor()}Your teammate, {source.Data.PlayerName}, has killed.</b></color>",
+                    MiscUtils.ColorString(TownOfSushiColors.ImpSoft, $"<b>Your teammate, {source.Data.PlayerName}, has killed.</b>"),
                     Color.white, spr: TOSModifierIcons.Telepath.LoadAsset());
                 notif1.Text.SetOutlineThickness(0.35f);
                 notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
@@ -53,7 +53,7 @@ public static class TelepathEvents
             {
                 Coroutines.Start(MiscUtils.CoFlash(TownOfSushiColors.ImpSoft, alpha: 0.4f));
                 var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>{TownOfSushiColors.ImpSoft.ToTextColor()}Your teammate, {victim.Data.PlayerName}, has been murdered!.</b></color>",
+                    MiscUtils.ColorString(TownOfSushiColors.ImpSoft, $"<b>Your teammate, {victim.Data.PlayerName}, has been murdered!.</b>"),
                     Color.white, spr: TOSModifierIcons.Telepath.LoadAsset());
                 notif1.Text.SetOutlineThickness(0.35f);
                 notif1.transform.localPosition = new Vector3(0f, 1f, -20f);

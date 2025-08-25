@@ -232,7 +232,7 @@ public sealed class PhantomTOSRole(IntPtr cppPtr)
             if (Player.AmOwner)
             {
                 var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>{TownOfSushiColors.Phantom.ToTextColor()}You are now clickable by players!</b></color>", Color.white,
+                    MiscUtils.ColorString(TownOfSushiColors.Phantom, $"<b>You are now clickable by players!</b>"), Color.white,
                     new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Phantom.LoadAsset());
                 notif1.Text.SetOutlineThickness(0.35f);
             }

@@ -271,8 +271,8 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
             TaskStage = GhostTaskStage.Clickable;
             if (Player.AmOwner)
             {
-                var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>{TownOfSushiColors.Haunter.ToTextColor()}You are now clickable by players!</b></color>", Color.white,
+                var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Haunter,
+                    $"<b>You are now clickable by players!</b>"), Color.white,
                     new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Haunter.LoadAsset());
                 notif1.Text.SetOutlineThickness(0.35f);
             }
@@ -285,8 +285,8 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
             if (Player.AmOwner)
             {
                 Coroutines.Start(MiscUtils.CoFlash(RoleColor));
-                var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>{TownOfSushiColors.Haunter.ToTextColor()}You have alerted the Killers!</b></color>", Color.white,
+                var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Haunter,
+                    $"<b>You have alerted the Killers!</b>"), Color.white,
                     new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Haunter.LoadAsset());
                 notif1.Text.SetOutlineThickness(0.35f);
             }
@@ -296,8 +296,8 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
                 Coroutines.Start(MiscUtils.CoFlash(RoleColor));
 
                 Player.AddModifier<HaunterArrowModifier>(PlayerControl.LocalPlayer, RoleColor);
-                var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>{TownOfSushiColors.Haunter.ToTextColor()}A Haunter is loose, catch them before they reveal you!</b></color>",
+                var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Haunter,
+                    $"<b>A Haunter is loose, catch them before they reveal you!</b>"),
                     Color.white, new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Haunter.LoadAsset());
                 notif1.Text.SetOutlineThickness(0.35f);
             }
@@ -310,8 +310,8 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
             if (Player.AmOwner)
             {
                 Coroutines.Start(MiscUtils.CoFlash(Color.white));
-                var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>{TownOfSushiColors.Haunter.ToTextColor()}You have revealed the Killers!</b></color>", Color.white,
+                var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Haunter,
+                    $"<b>You have revealed the Killers!</b>"), Color.white,
                     new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Haunter.LoadAsset());
                 notif1.Text.SetOutlineThickness(0.35f);
             }
@@ -321,8 +321,8 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
                 Coroutines.Start(MiscUtils.CoFlash(Color.white));
 
                 Player.AddModifier<HaunterArrowModifier>(PlayerControl.LocalPlayer, RoleColor);
-                var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>{TownOfSushiColors.Haunter.ToTextColor()}The Haunter has completed their tasks!</b></color>",
+                var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Haunter,
+                    $"<b>The Haunter has completed their tasks!</b>"),
                     Color.white, new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Haunter.LoadAsset());
                 notif1.Text.SetOutlineThickness(0.35f);
             }

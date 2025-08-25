@@ -35,8 +35,8 @@ public sealed class AmbusherPursueButton : TownOfSushiRoleButton<AmbusherRole, P
 
         TOSAudio.PlaySound(TOSAudio.TrackerActivateSound);
 
-        var notif1 = Helpers.CreateAndShowNotification(
-            $"<b>{TownOfSushiColors.ImpSoft.ToTextColor()}You are now pursuing {Target.Data.PlayerName}. Ambush anyone near them at any time you wish.</b></color>",
+        var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Impostor,
+            $"<b>You are now pursuing {Target.Data.PlayerName}. Ambush anyone near them at any time you wish.</b>"),
             Color.white, spr: TOSRoleIcons.Ambusher.LoadAsset());
         notif1.Text.SetOutlineThickness(0.35f);
         notif1.transform.localPosition = new Vector3(0f, 1f, -20f);

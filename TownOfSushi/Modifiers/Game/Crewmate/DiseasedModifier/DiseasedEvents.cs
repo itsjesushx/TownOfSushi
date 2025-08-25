@@ -23,7 +23,7 @@ public static class DiseasedEvents
         if (source.AmOwner)
         {
             var notif1 = Helpers.CreateAndShowNotification(
-                $"<b>{TownOfSushiColors.Diseased.ToTextColor()}{@event.Target.Data.PlayerName} was Diseased, causing your kill cooldown to multiply by {Math.Round(cdMultiplier, 2)}.</color></b>",
+                MiscUtils.ColorString(TownOfSushiColors.Diseased, $"<b>{@event.Target.Data.PlayerName} was Diseased, causing your kill cooldown to multiply by {Math.Round(cdMultiplier, 2)}.</b>"),
                 Color.white, spr: TOSModifierIcons.Diseased.LoadAsset());
 
             notif1.Text.SetOutlineThickness(0.35f);

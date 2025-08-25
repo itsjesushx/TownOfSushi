@@ -60,7 +60,7 @@ public sealed class DisperserModifier : TOSGameModifier, IWikiDiscoverable
         DispersePlayersToCoordinates(coordinates);
 
         var notif1 = Helpers.CreateAndShowNotification(
-            $"<b>{TownOfSushiColors.ImpSoft.ToTextColor()}Everyone has been dispersed to a vent!</color></b>", Color.white,
+            MiscUtils.ColorString(TownOfSushiColors.ImpSoft, $"<b>Everyone has been dispersed to a vent!</b>"), Color.white,
             spr: TOSModifierIcons.Disperser.LoadAsset());
 
         notif1.Text.SetOutlineThickness(0.35f);

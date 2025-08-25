@@ -26,7 +26,7 @@ public static class AftermathEvents
         }
 
         var notif1 = Helpers.CreateAndShowNotification(
-            $"<b>{TownOfSushiColors.Aftermath.ToTextColor()}{@event.Target.Data.PlayerName} was an Aftermath, forcing you to use your ability.</color></b>",
+            MiscUtils.ColorString(TownOfSushiColors.Aftermath, $"<b>{@event.Target.Data.PlayerName} was an Aftermath, forcing you to use your ability.</b>"),
             Color.white, spr: TOSModifierIcons.Aftermath.LoadAsset());
 
         notif1.Text.SetOutlineThickness(0.35f);

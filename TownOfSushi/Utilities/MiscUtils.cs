@@ -97,6 +97,16 @@ public static class MiscUtils
             player.HasModifier<FirstDeadShield>() ||
             (player.Data.Role is PestilenceRole);
     }
+    public static string ColorString(Color c, string s)
+    {
+        return string.Format("<color=#{0:X2}{1:X2}{2:X2}{3:X2}>{4}</color>", ToByte(c.r), ToByte(c.g), ToByte(c.b), ToByte(c.a), s);
+    }
+
+    private static byte ToByte(float f)
+    {
+        f = Mathf.Clamp01(f);
+        return (byte)(f * 255);
+    }
 
     public static string AppendOptionsText(Type classType)
     {
@@ -107,8 +117,7 @@ public static class MiscUtils
         }
 
         var builder = new StringBuilder();
-        builder.AppendLine(CultureInfo.InvariantCulture,
-            $"\n<size=50%> \n</size><b>{TownOfSushiColors.Vigilante.ToTextColor()}Options</color></b>");
+        builder.AppendLine(ColorString(TownOfSushiColors.Vigilante, $"\n<size=50%> \n</size><b>Options</b>"));
 
         foreach (var option in options)
         {
@@ -669,7 +678,7 @@ public static class MiscUtils
         
         Coroutines.Start(CoFlash(TownOfSushiColors.ImpSoft));
         var notif1 = Helpers.CreateAndShowNotification(
-            $"<b>{TownOfSushiColors.ImpSoft.ToTextColor()}{player.Data.PlayerName}, the lobby host, has committed suicide!</b></color>", Color.white,
+            ColorString(TownOfSushiColors.ImpSoft, $"<b>{player.Data.PlayerName}, the lobby host, has committed suicide!</b>"), Color.white,
             new Vector3(0f, 1f, -20f), spr: MiraAssets.Empty.LoadAsset());
         notif1.Text.SetOutlineThickness(0.35f);
     }

@@ -14,7 +14,7 @@ using UnityEngine;
 namespace TownOfSushi.Roles.Neutral;
 
 public sealed class ThiefRole(IntPtr cppPtr)
-    : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant
+    : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant, IGuessable
 {
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<VigilanteRole>());
     public string RoleName => "Thief";
@@ -23,6 +23,17 @@ public sealed class ThiefRole(IntPtr cppPtr)
     public Color RoleColor => TownOfSushiColors.Thief;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralBenign;
+    // This is so the role can be guessed without requiring it to be enabled normally
+    public bool CanBeGuessed =>
+        (MiscUtils.GetPotentialRoles()
+             .Contains(RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<GuardianAngelTOSRole>())) &&
+         OptionGroupSingleton<GuardianAngelOptions>.Instance.OnTargetDeath is BecomeOptions.Thief)
+        || (MiscUtils.GetPotentialRoles()
+                .Contains(RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<ExecutionerRole>())) &&
+            OptionGroupSingleton<ExecutionerOptions>.Instance.OnTargetDeath is BecomeOptions.Thief)
+        || (MiscUtils.GetPotentialRoles()
+                .Contains(RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<RomanticRole>())) &&
+            OptionGroupSingleton<RomanticOptions>.Instance.OnTargetDeath is BecomeOptions.Thief);
 
     public CustomRoleConfiguration Configuration => new(this)
     {
@@ -67,7 +78,7 @@ public sealed class ThiefRole(IntPtr cppPtr)
             if (player.AmOwner)
             {
                 var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>{target.CachedPlayerData.PlayerName} is a {TownOfSushiColors.Thief.ToTextColor()}Thief</color> as well! so their role cannot be stolen.</b>",
+                    MiscUtils.ColorString(TownOfSushiColors.Thief, $"<b>{target.CachedPlayerData.PlayerName} is a Thief") +" as well! so their role cannot be stolen.</b>",
                     Color.white, new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Thief.LoadAsset());
                 notif1.Text.SetOutlineThickness(0.35f);
             }
