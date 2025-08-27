@@ -111,30 +111,24 @@ public sealed class CrusaderRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfS
     }
 
     [MethodRpc((uint)TownOfSushiRpc.CrusaderFortifyMurder, SendImmediately = true)]
-    public static void RpcCrusaderFortifyMurder(PlayerControl player, PlayerControl source, PlayerControl target)
+    public static void RpcCrusaderFortifyMurder(PlayerControl target, PlayerControl attacker)
     {
-        if (player.Data.Role is not CrusaderRole crus)
+        if (!target.HasModifier<CrusaderFortifiedModifier>())
         {
-            Logger<TownOfSushiPlugin>.Error("RpcCrusaderFortifyMurder - Invalid crusader");
+            Logger<TownOfSushiPlugin>.Error("RpcCrusaderFortifyMurder - Source doesn't own fortified modifier");
             return;
         }
 
-        if (crus.Fortified != null && !crus.Fortified.HasDied())
-        {
-            crus.Fortified.RpcCustomMurder(source);
-        }
+        target.RpcCustomMurder(attacker);
 
-        if (source.AmOwner)
+        if (attacker.AmOwner)
         {
-            foreach (var crusader in CustomRoleUtils.GetActiveRolesOfType<CrusaderRole>())
-            {
-                var notif = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Crusader,
-                    $"<b>{crusader?.Fortified?.Data.PlayerName}, was fortified by a Crusader!</b>"),
-                    Color.white, spr: TOSRoleIcons.Crusader.LoadAsset());
+            var notif = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Crusader,
+                $"<b>{target.Data.PlayerName}, was fortified by a Crusader!</b>"),
 
+                Color.white, spr: TOSRoleIcons.Crusader.LoadAsset());
                 notif.Text.SetOutlineThickness(0.35f);
                 notif.transform.localPosition = new Vector3(0f, 1f, -20f);
-            }
         }
     }
 

@@ -85,6 +85,18 @@ public sealed class ThiefRole(IntPtr cppPtr)
             return;
         }
 
+        if (!target.IsKillerRole())
+        {
+            if (player.AmOwner)
+            {
+                var notif1 = Helpers.CreateAndShowNotification(
+                    MiscUtils.ColorString(TownOfSushiColors.Thief, $"<b>{target.CachedPlayerData.PlayerName} was not a killer so you can't steal their role!</b>"),
+                    Color.white, new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Thief.LoadAsset());
+                notif1.Text.SetOutlineThickness(0.35f);
+            }
+            return;
+        }
+
         var TOSAbilityEvent = new TOSAbilityEvent(AbilityType.ThiefPreSteal, player, target);
         MiraEventManager.InvokeEvent(TOSAbilityEvent);
 

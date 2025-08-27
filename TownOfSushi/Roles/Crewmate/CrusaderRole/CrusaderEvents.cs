@@ -148,9 +148,9 @@ public static class CrusaderEvents
         // Find the crusader which fortified the target
         var crusader = target.GetModifier<CrusaderFortifiedModifier>()?.Crusader.GetRole<CrusaderRole>();
 
-        if (crusader != null && source.AmOwner)
+        if (crusader != null && source.AmOwner && !crusader.Player.HasDied())
         {
-            CrusaderRole.RpcCrusaderFortifyMurder(crusader.Player, source, target);
+            CrusaderRole.RpcCrusaderFortifyMurder(target, source);
         }
     }
 }

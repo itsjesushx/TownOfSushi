@@ -20,8 +20,8 @@ public sealed class WarlockCurseButton : TownOfSushiRoleButton<WarlockRole, Play
         }
 
         WarlockRole.RpcCurse(PlayerControl.LocalPlayer, Target);
-        var notif1 = Helpers.CreateAndShowNotification(
-            $"<b>{TownOfSushiColors.ImpSoft.ToTextColor()}You have cursed {Target.Data.PlayerName}. Once you click your custom kill button, they will be forced to kill the nearest player. But beware, it can also be you!</b></color>",
+        var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.ImpSoft,
+            $"<b>You have cursed {Target.Data.PlayerName}. Once you click your custom kill button, they will be forced to kill the nearest player. But beware, it can also be you!</b>"),
             Color.white, spr: TOSRoleIcons.Warlock.LoadAsset());
         notif1.Text.SetOutlineThickness(0.35f);
         notif1.transform.localPosition = new Vector3(0f, 1f, -20f);

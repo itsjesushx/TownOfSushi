@@ -39,8 +39,8 @@ public sealed class EclipsalBlindModifier(PlayerControl player) : DisabledModifi
         EclipseBack.SetActive(false);
         if (Player.AmOwner && !Eclipsal.AmOwner)
         {
-            var notif1 = Helpers.CreateAndShowNotification(
-                $"<b>{TownOfSushiColors.ImpSoft.ToTextColor()}You were blinded by an Eclipsal!</color></b>", Color.white,
+            var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Eclipsal,
+                $"<b>You were blinded by an Eclipsal!</b>"), Color.white,
                 spr: TOSRoleIcons.Eclipsal.LoadAsset());
 
             notif1.Text.SetOutlineThickness(0.35f);
@@ -61,7 +61,7 @@ public sealed class EclipsalBlindModifier(PlayerControl player) : DisabledModifi
 
         var opts = OptionGroupSingleton<EclipsalOptions>.Instance;
 
-        if (PlayerControl.LocalPlayer.IsImpostor())
+        if (PlayerControl.LocalPlayer.Data.Role is EclipsalRole || PlayerControl.LocalPlayer.HasDied())
         {
             Player.cosmetics.currentBodySprite.BodySprite.material.SetColor(ShaderID.VisorColor, Color.black);
         }
@@ -80,7 +80,7 @@ public sealed class EclipsalBlindModifier(PlayerControl player) : DisabledModifi
         }
 
         EclipseBack?.SetActive(false);
-        if ((PlayerControl.LocalPlayer.IsImpostor() || (PlayerControl.LocalPlayer.HasDied() &&
+        if ((PlayerControl.LocalPlayer.Data.Role is EclipsalRole || (PlayerControl.LocalPlayer.HasDied() &&
                                                         OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow)) &&
             EclipseBack?.gameObject != null)
         {
@@ -104,7 +104,7 @@ public sealed class EclipsalBlindModifier(PlayerControl player) : DisabledModifi
 
         VisionPerc = 1f;
 
-        if (PlayerControl.LocalPlayer.IsImpostor() || (PlayerControl.LocalPlayer.HasDied() &&
+        if (PlayerControl.LocalPlayer.Data.Role is EclipsalRole || (PlayerControl.LocalPlayer.HasDied() &&
                                                        OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow))
         {
             Player.cosmetics.currentBodySprite.BodySprite.material.SetColor(ShaderID.VisorColor, Palette.VisorColor);

@@ -517,7 +517,7 @@ public static class HudManagerPatches
 
                 if (!string.IsNullOrEmpty(roleName))
                 {
-                    playerName = $"{roleName}\n{color.ToTextColor()}<size=92%>{playerName}</size></color>";
+                    playerName = $"{color.ToTextColor()}<size=92%>{playerName}</size></color>\n{roleName}";
                 }
 
                 playerVA.NameText.text = playerName;
@@ -673,7 +673,7 @@ public static class HudManagerPatches
 
                 if (!string.IsNullOrEmpty(roleName))
                 {
-                    playerName = $"{roleName}\n{color.ToTextColor()}{playerName}</color>";
+                    playerName = $"{color.ToTextColor()}{playerName}\n{roleName}</color>";
                 }
 
                 player.cosmetics.nameText.text = playerName;

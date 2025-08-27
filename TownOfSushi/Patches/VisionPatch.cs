@@ -9,7 +9,6 @@ namespace TownOfSushi.Patches;
 public static class VisionPatch
 {
     public static bool NerfMe { get; set; }
-
     public static void Postfix(ShipStatus __instance, NetworkedPlayerInfo player, ref float __result)
     {
         if (player == null || player.IsDead)

@@ -84,8 +84,8 @@ public sealed class WarlockRole(IntPtr cppPtr)
             target.RpcCustomMurder(player, teleportMurderer: true);
             if (player.AmOwner)
             {
-                var notif2 = Helpers.CreateAndShowNotification(
-                $"<b>{TownOfSushiColors.Crusader.ToTextColor()}{player.Data.PlayerName} has tried to kill {target.Data.PlayerName}, but they are fortified! Your murder attempt backfired.</b></color>",
+                var notif2 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Crusader,
+                $"<b>{player.Data.PlayerName} has tried to kill {target.Data.PlayerName}, but they are fortified! Your murder attempt backfired.</b>"),
                 Color.white, spr: TOSRoleIcons.Crusader.LoadAsset());
                 notif2.Text.SetOutlineThickness(0.35f);
                 notif2.transform.localPosition = new Vector3(0f, 1f, -20f);
@@ -97,8 +97,8 @@ public sealed class WarlockRole(IntPtr cppPtr)
 
         if (player.AmOwner)
         {
-            var notif3 = Helpers.CreateAndShowNotification(
-            $"<b>{TownOfSushiColors.ImpSoft.ToTextColor()}{player.Data.PlayerName} has killed {target.Data.PlayerName}.</b></color>",
+            var notif3 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.ImpSoft,
+            $"<b>{player.Data.PlayerName} has killed {target.Data.PlayerName}.</b>"),
             Color.white, spr: TOSRoleIcons.Warlock.LoadAsset());
             notif3.Text.SetOutlineThickness(0.35f);
             notif3.transform.localPosition = new Vector3(0f, 1f, -20f);
