@@ -47,7 +47,7 @@ public class TOSAbilityEvent : MiraEvent
 
 public enum AbilityType
 {
-    AltruistRevive,
+    RetributionistRevive,
     ClericBarrier,
     Poison,
     ClericCleanse,

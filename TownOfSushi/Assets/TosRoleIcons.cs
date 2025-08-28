@@ -30,7 +30,7 @@ public static class TOSRoleIcons
     public static LoadableAsset<Sprite> Veteran { get; } = new LoadableResourceAsset($"{iconPath}.Veteran.png");
     public static LoadableAsset<Sprite> Vigilante { get; } = new LoadableResourceAsset($"{iconPath}.Vigilante.png");
 
-    public static LoadableAsset<Sprite> Altruist { get; } = new LoadableResourceAsset($"{iconPath}.Altruist.png");
+    public static LoadableAsset<Sprite> Retributionist { get; } = new LoadableResourceAsset($"{iconPath}.Retributionist.png");
     public static LoadableAsset<Sprite> Cleric { get; } = new LoadableResourceAsset($"{iconPath}.Cleric.png");
     public static LoadableAsset<Sprite> Medic { get; } = new LoadableResourceAsset($"{iconPath}.Medic.png");
     public static LoadableAsset<Sprite> Oracle { get; } = new LoadableResourceAsset($"{iconPath}.Oracle.png");

@@ -14,20 +14,20 @@ using UnityEngine;
 
 namespace TownOfSushi.Roles.Crewmate;
 
-public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
+public sealed class RetributionistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
 {
     public override bool IsAffectedByComms => false;
-    public string RoleName => "Altruist";
+    public string RoleName => "Retributionist";
     public string RoleDescription => "Revive Dead Crewmates";
     public string RoleLongDescription => "Revive dead crewmates in groups";
-    public Color RoleColor => TownOfSushiColors.Altruist;
+    public Color RoleColor => TownOfSushiColors.Retributionist;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateProtective;
 
     public CustomRoleConfiguration Configuration => new(this)
     {
-        IntroSound = TOSAudio.AltruistReviveSound,
-        Icon = TOSRoleIcons.Altruist
+        IntroSound = TOSAudio.RetributionistReviveSound,
+        Icon = TOSRoleIcons.Retributionist
     };
 
     [HideFromIl2Cpp]
@@ -39,7 +39,7 @@ public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfS
     public string GetAdvancedDescription()
     {
         return
-            "The Altruist is a Crewmate Protective role can revive dead players in groups. However, their location and the revived players' locations will be revealed to all Impostors." +
+            "The Retributionist is a Crewmate Protective role can revive dead players in groups. However, their location and the revived players' locations will be revealed to all Impostors." +
             MiscUtils.AppendOptionsText(GetType());
     }
 
@@ -56,7 +56,7 @@ public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfS
     {
         RoleBehaviourStubs.OnMeetingStart(this);
 
-        Logger<TownOfSushiPlugin>.Error($"AltruistRole.OnMeetingStart");
+        Logger<TownOfSushiPlugin>.Error($"RetributionistRole.OnMeetingStart");
 
         ClearArrows();
     }
@@ -65,7 +65,7 @@ public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfS
     {
         RoleBehaviourStubs.OnVotingComplete(this);
 
-        CustomButtonSingleton<AltruistReviveButton>.Instance.RevivedInRound = false;
+        CustomButtonSingleton<RetributionistReviveButton>.Instance.RevivedInRound = false;
     }
 
     public override void OnDeath(DeathReason reason)
@@ -85,15 +85,15 @@ public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfS
     [HideFromIl2Cpp]
     public static void ClearArrows()
     {
-        Logger<TownOfSushiPlugin>.Error($"AltruistRole.ClearArrows");
+        Logger<TownOfSushiPlugin>.Error($"RetributionistRole.ClearArrows");
 
         if (PlayerControl.LocalPlayer.IsImpostor() || PlayerControl.LocalPlayer.Is(RoleAlignment.NeutralKilling))
         {
-            Logger<TownOfSushiPlugin>.Error($"AltruistRole.ClearArrows BadGuys Only");
+            Logger<TownOfSushiPlugin>.Error($"RetributionistRole.ClearArrows BadGuys Only");
 
-            foreach (var playerWithArrow in ModifierUtils.GetPlayersWithModifier<AltruistArrowModifier>())
+            foreach (var playerWithArrow in ModifierUtils.GetPlayersWithModifier<RetributionistArrowModifier>())
             {
-                playerWithArrow.RemoveModifier<AltruistArrowModifier>();
+                playerWithArrow.RemoveModifier<RetributionistArrowModifier>();
             }
         }
     }
@@ -119,13 +119,13 @@ public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfS
         if (body != null)
         {
             position = new Vector2(body.transform.localPosition.x, body.transform.localPosition.y + 0.3636f);
-            if (OptionGroupSingleton<AltruistOptions>.Instance.HideAtBeginningOfRevive)
+            if (OptionGroupSingleton<RetributionistOptions>.Instance.HideAtBeginningOfRevive)
             {
                 Destroy(body.gameObject);
             }
         }
 
-        yield return new WaitForSeconds(OptionGroupSingleton<AltruistOptions>.Instance.ReviveDuration);
+        yield return new WaitForSeconds(OptionGroupSingleton<RetributionistOptions>.Instance.ReviveDuration);
 
         if (!MeetingHud.Instance)
         {
@@ -181,21 +181,21 @@ public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfS
 
             body = FindObjectsOfType<DeadBody>()
                 .FirstOrDefault(b => b.ParentId == dead.PlayerId);
-            if (!OptionGroupSingleton<AltruistOptions>.Instance.HideAtBeginningOfRevive && body != null)
+            if (!OptionGroupSingleton<RetributionistOptions>.Instance.HideAtBeginningOfRevive && body != null)
             {
                 Destroy(body.gameObject);
             }
 
             if (PlayerControl.LocalPlayer.IsImpostor() || PlayerControl.LocalPlayer.Is(RoleAlignment.NeutralKilling))
             {
-                if (Player.HasModifier<AltruistArrowModifier>())
+                if (Player.HasModifier<RetributionistArrowModifier>())
                 {
-                    Player.RemoveModifier<AltruistArrowModifier>();
+                    Player.RemoveModifier<RetributionistArrowModifier>();
                 }
 
-                if (!dead.HasModifier<AltruistArrowModifier>() && dead != PlayerControl.LocalPlayer)
+                if (!dead.HasModifier<RetributionistArrowModifier>() && dead != PlayerControl.LocalPlayer)
                 {
-                    dead.AddModifier<AltruistArrowModifier>(PlayerControl.LocalPlayer, Color.white);
+                    dead.AddModifier<RetributionistArrowModifier>(PlayerControl.LocalPlayer, Color.white);
                 }
             }
         }
@@ -203,26 +203,26 @@ public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfS
         Player.moveable = true;
     }
 
-    [MethodRpc((uint)TownOfSushiRpc.AltruistRevive, SendImmediately = true)]
+    [MethodRpc((uint)TownOfSushiRpc.RetributionistRevive, SendImmediately = true)]
     public static void RpcRevive(PlayerControl alt, PlayerControl target)
     {
-        if (alt.Data.Role is not AltruistRole role)
+        if (alt.Data.Role is not RetributionistRole role)
         {
-            Logger<TownOfSushiPlugin>.Error("RpcRevive - Invalid altruist");
+            Logger<TownOfSushiPlugin>.Error("RpcRevive - Invalid retributionist");
             return;
         }
 
         if (PlayerControl.LocalPlayer.IsImpostor() || PlayerControl.LocalPlayer.Is(RoleAlignment.NeutralKilling))
         {
-            Coroutines.Start(MiscUtils.CoFlash(TownOfSushiColors.Altruist));
+            Coroutines.Start(MiscUtils.CoFlash(TownOfSushiColors.Retributionist));
 
-            if (!alt.HasModifier<AltruistArrowModifier>())
+            if (!alt.HasModifier<RetributionistArrowModifier>())
             {
-                alt.AddModifier<AltruistArrowModifier>(PlayerControl.LocalPlayer, TownOfSushiColors.Impostor);
+                alt.AddModifier<RetributionistArrowModifier>(PlayerControl.LocalPlayer, TownOfSushiColors.Impostor);
             }
         }
 
-        var TOSAbilityEvent = new TOSAbilityEvent(AbilityType.AltruistRevive, alt, target);
+        var TOSAbilityEvent = new TOSAbilityEvent(AbilityType.RetributionistRevive, alt, target);
         MiraEventManager.InvokeEvent(TOSAbilityEvent);
 
         Coroutines.Start(role.CoRevivePlayer(target));

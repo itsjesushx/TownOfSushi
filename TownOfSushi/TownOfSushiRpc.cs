@@ -44,7 +44,7 @@ public enum TownOfSushiRpc : uint
     SetTraitor,
     DragBody,
     DropBody,
-    AltruistRevive,
+    RetributionistRevive,
     Prosecute,
     SetExeTarget,
     AddInquisTarget,

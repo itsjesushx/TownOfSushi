@@ -13,7 +13,6 @@ public sealed class NeutralModifierOptions : AbstractOptionGroup
 
     [ModdedNumberOption("Double Shot Amount", 0, 5)]
     public float DoubleShotAmount { get; set; } = 0;
-
     public ModdedNumberOption DoubleShotChance { get; } =
         new("Double Shot Chance", 50f, 0, 100f, 10f, MiraNumberSuffixes.Percent)
         {

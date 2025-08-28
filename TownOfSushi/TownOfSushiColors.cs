@@ -18,7 +18,7 @@ public static class TownOfSushiColors
     public static Color32 Detective => UseBasic ? Palette.CrewmateBlue : new Color32(255, 204, 128, byte.MaxValue);
     public static Color32 Administrator => UseBasic ? Palette.CrewmateBlue : new Color32(204, 163, 204, byte.MaxValue);
     public static Color32 Snitch => UseBasic ? Palette.CrewmateBlue : new Color32(212, 176, 56, byte.MaxValue);
-    public static Color32 Altruist => UseBasic ? Palette.CrewmateBlue : new Color32(102, 0, 0, byte.MaxValue);
+    public static Color32 Retributionist => UseBasic ? Palette.CrewmateBlue : new Color32(102, 0, 0, byte.MaxValue);
     public static Color32 Vigilante => UseBasic ? Palette.CrewmateBlue : new Color32(255, 255, 153, byte.MaxValue);
     public static Color32 Veteran => UseBasic ? Palette.CrewmateBlue : new Color32(153, 128, 64, byte.MaxValue);
     public static Color32 Haunter => UseBasic ? Palette.CrewmateBlue : new Color32(212, 212, 212, byte.MaxValue);

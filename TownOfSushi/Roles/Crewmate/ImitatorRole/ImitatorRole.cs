@@ -58,7 +58,7 @@ public sealed class ImitatorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfS
             + "Janitor ⇨ Inspector\n"
             + $"Miner ⇨ Engineer | "
             + "BountyHunter ⇨ Tracker\n"
-            + "Undertaker ⇨ Altruist | "
+            + "Undertaker ⇨ Retributionist | "
             + $"Hexblade ⇨ Veteran",
             TOSImpAssets.DragSprite),
     ];

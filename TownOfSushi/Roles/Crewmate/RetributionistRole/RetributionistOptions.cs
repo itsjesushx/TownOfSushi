@@ -2,9 +2,9 @@ using MiraAPI.GameOptions.Attributes;
 
 namespace TownOfSushi.Roles.Crewmate;
 
-public sealed class AltruistOptions : AbstractOptionGroup<AltruistRole>
+public sealed class RetributionistOptions : AbstractOptionGroup<RetributionistRole>
 {
-    public override string GroupName => "Altruist";
+    public override string GroupName => "Retributionist";
 
     [ModdedNumberOption("Revive Duration", 1f, 15f, 1f, MiraNumberSuffixes.Seconds)]
     public float ReviveDuration { get; set; } = 10f;

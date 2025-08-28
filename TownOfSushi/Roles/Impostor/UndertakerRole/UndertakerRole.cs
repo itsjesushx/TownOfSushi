@@ -28,7 +28,7 @@ public sealed class UndertakerRole(IntPtr cppPtr)
                                                      (Player != null && MiscUtils.ImpAliveCount == 1));
     }
 
-    public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<AltruistRole>());
+    public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<RetributionistRole>());
     public string RoleName => "Undertaker";
     public string RoleDescription => "Drag Bodies And Hide Them";
     public string RoleLongDescription => "Drag bodies around to hide them from being reported";
