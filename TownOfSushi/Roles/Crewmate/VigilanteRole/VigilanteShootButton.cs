@@ -129,12 +129,6 @@ public sealed class VigilanteShootButton : TownOfSushiRoleButton<VigilanteRole, 
         {
             switch (alignment)
             {
-                case RoleAlignment.ImpostorConcealing:
-                case RoleAlignment.ImpostorKilling:
-                case RoleAlignment.ImpostorSupport:
-                    PlayerControl.LocalPlayer.RpcCustomMurder(Target);
-                    break;
-
                 case RoleAlignment.NeutralBenign:
                 case RoleAlignment.CrewmateInvestigative:
                 case RoleAlignment.CrewmateKilling:
@@ -160,7 +154,14 @@ public sealed class VigilanteShootButton : TownOfSushiRoleButton<VigilanteRole, 
 
                     break;
                 default:
-                    Misfire();
+                    if (Target.IsImpostor())
+                    {
+                        PlayerControl.LocalPlayer.RpcCustomMurder(Target);
+                    }
+                    else
+                    {
+                        Misfire();
+                    }
                     break;
             }
         }

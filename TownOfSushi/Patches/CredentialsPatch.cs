@@ -42,7 +42,7 @@ Originally Coded by <color=#B2FEFE>AU-Avengers</color>";
         public static class VersionShowerUpdate
         {
             public static SpriteRenderer renderer;
-            internal static void Postfix(VersionShower __instance)
+            internal static void Postfix()
             {
                 var TOSLogo = new GameObject("bannerLogo_TOS");
 

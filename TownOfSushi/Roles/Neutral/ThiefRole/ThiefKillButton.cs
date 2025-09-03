@@ -40,7 +40,7 @@ public sealed class ThiefKillButton : TownOfSushiRoleButton<ThiefRole, PlayerCon
             return;
         }
 
-        if (Target.IsCrewmate() || Target.IsNeutral() && !Target.Is(RoleAlignment.NeutralKilling) && Target.Data.Role is not ThiefRole)
+        if (Target.IsCrewmate() || Target.IsNeutral() && !Target.Is(RoleAlignment.NeutralKilling))
         {
             PlayerControl.LocalPlayer.RpcCustomMurder(PlayerControl.LocalPlayer);
         }

@@ -1,6 +1,4 @@
 ﻿using MiraAPI.Hud;
-using MiraAPI.Networking;
-using TownOfSushi.Events;
 using TownOfSushi.Modifiers;
 using TownOfSushi.Buttons;
 using UnityEngine;
@@ -39,14 +37,12 @@ public sealed class ExeTormentButton : TownOfSushiButton
 
                 if (plr != null && ModifierUtils.GetActiveModifiers<MisfortuneTargetModifier>().Any())
                 {
-                    PlayerControl.LocalPlayer.RpcCustomMurder(plr, teleportMurderer: false);
-                    DeathHandlerModifier.RpcUpdateDeathHandler(plr, "Tormented", DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetTrue, $"By {PlayerControl.LocalPlayer.Data.PlayerName}", lockInfo: DeathHandlerOverride.SetTrue);
+                    PlayerControl.LocalPlayer.RpcGhostRoleMurder(plr);
 
                     foreach (var mod in ModifierUtils.GetActiveModifiers<MisfortuneTargetModifier>())
                     {
                         mod.ModifierComponent?.RemoveModifier(mod);
                     }
-
                     Show = false;
                 }
             });

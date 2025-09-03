@@ -2,6 +2,7 @@
 
 public enum TownOfSushiRpc : uint
 {
+    GhostRoleMurder,
     RemoveSpawns,
 
     UpdateDeathHandler,

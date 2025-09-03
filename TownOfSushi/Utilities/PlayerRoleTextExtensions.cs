@@ -78,24 +78,27 @@ public static class PlayerRoleTextExtensions
     public static string UpdateProtectionSymbols(this string name, PlayerControl player, bool hidden = false)
     {
         var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
-        if ((player.HasModifier<GuardianAngelTargetModifier>(x => x.OwnerId == PlayerControl.LocalPlayer.PlayerId) &&
-             PlayerControl.LocalPlayer.IsRole<GuardianAngelTOSRole>())
-            || (player.HasModifier<GuardianAngelTargetModifier>() &&
-                ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !hidden)
-                 || (player.AmOwner &&
-                     OptionGroupSingleton<GuardianAngelOptions>.Instance.GATargetKnows))))
+        if (player.Data != null && !player.Data.Disconnected &&
+            ((player.HasModifier<GuardianAngelTargetModifier>(x => x.OwnerId == PlayerControl.LocalPlayer.PlayerId) &&
+              PlayerControl.LocalPlayer.IsRole<GuardianAngelTOSRole>())
+             || (player.HasModifier<GuardianAngelTargetModifier>() &&
+                 ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !hidden)
+                  || (player.AmOwner &&
+                      OptionGroupSingleton<GuardianAngelOptions>.Instance.GATargetKnows)))))
         {
-            name += (player.HasModifier<GuardianAngelProtectModifier>() && OptionGroupSingleton<GuardianAngelOptions>.Instance.ShowProtect is not ProtectOptions.GA)
+            name += (player.HasModifier<GuardianAngelProtectModifier>() &&
+                     OptionGroupSingleton<GuardianAngelOptions>.Instance.ShowProtect is not ProtectOptions.GA)
                 ? "<color=#FFD900> ★</color>"
                 : "<color=#B3FFFF> ★</color>";
         }
 
-        if ((player.HasModifier<RomanticProtectModifier>(x => x.Romantic == PlayerControl.LocalPlayer) &&
-             PlayerControl.LocalPlayer.IsRole<RomanticRole>())
-            || (player.HasModifier<RomanticProtectModifier>() &&
-                ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !hidden)
-                 || (player.AmOwner &&
-                     OptionGroupSingleton<RomanticOptions>.Instance.RomanticTargetKnows))))
+        if (player.Data != null && !player.Data.Disconnected &&
+            ((player.HasModifier<RomanticBelovedModifier>(x => x.OwnerId == PlayerControl.LocalPlayer.PlayerId) &&
+              PlayerControl.LocalPlayer.IsRole<RomanticRole>())
+             || (player.HasModifier<RomanticBelovedModifier>() &&
+                 ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !hidden)
+                  || (player.AmOwner &&
+                      OptionGroupSingleton<GuardianAngelOptions>.Instance.GATargetKnows)))))
         {
             
             name += (player.HasModifier<RomanticProtectModifier>() && OptionGroupSingleton<RomanticOptions>.Instance.ShowProtect is not RomanticProtectOptions.Romantic)

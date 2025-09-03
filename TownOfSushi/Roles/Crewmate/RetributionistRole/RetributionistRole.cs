@@ -127,7 +127,7 @@ public sealed class RetributionistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), IT
 
         yield return new WaitForSeconds(OptionGroupSingleton<RetributionistOptions>.Instance.ReviveDuration);
 
-        if (!MeetingHud.Instance)
+        if (!MeetingHud.Instance && !Player.HasDied())
         {
             GameHistory.ClearMurder(dead);
 
@@ -224,7 +224,6 @@ public sealed class RetributionistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), IT
 
         var TOSAbilityEvent = new TOSAbilityEvent(AbilityType.RetributionistRevive, alt, target);
         MiraEventManager.InvokeEvent(TOSAbilityEvent);
-
         Coroutines.Start(role.CoRevivePlayer(target));
     }
 }

@@ -12,6 +12,7 @@ global using TownOfSushi.Modifiers.Game.Universal;
 global using TownOfSushi.Modifiers.Game.Impostor;
 global using TownOfSushi.Modifiers.Game.Crewmate;
 global using TownOfSushi.Modifiers.Game.Neutral;
+global using TownOfSushi.Networking;
 
 global using TownOfUs.Modules.Wiki;
 
