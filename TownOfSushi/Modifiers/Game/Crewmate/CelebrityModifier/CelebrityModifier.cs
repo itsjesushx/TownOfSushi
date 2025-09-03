@@ -114,7 +114,7 @@ public sealed class CelebrityModifier : TOSGameModifier, IWikiDiscoverable
             case ExecutionerRole:
                 cod = "tormented";
                 break;
-            case PhantomRole:
+            case PhantomTOSRole:
                 cod = "spooked";
                 break;
             case ViperRole:

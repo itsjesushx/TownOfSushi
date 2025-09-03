@@ -9,9 +9,9 @@ public static class EngineerEvents
     [RegisterEvent]
     public static void CompleteTaskEvent(CompleteTaskEvent @event)
     {
-        if (@event.Player.AmOwner && @event.Player.Data.Role is EngineerRole &&
-            OptionGroupSingleton<EngineerOptions>.Instance.TaskUses &&
-            (int)OptionGroupSingleton<EngineerOptions>.Instance.MaxVents != 0)
+        var opt = OptionGroupSingleton<EngineerOptions>.Instance;
+        if (@event.Player.AmOwner && @event.Player.Data.Role is EngineerTOSRole &&
+            opt.TaskUses && (int)opt.MaxVents != 0)
         {
             var button = CustomButtonSingleton<EngineerVentButton>.Instance;
             ++button.UsesLeft;

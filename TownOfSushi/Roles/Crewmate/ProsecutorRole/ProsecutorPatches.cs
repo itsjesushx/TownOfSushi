@@ -9,6 +9,12 @@ public static class ProsecutorPatches
     [HarmonyPatch(typeof(PlayerVoteArea), nameof(PlayerVoteArea.VoteForMe))]
     public static bool VotePatch(PlayerVoteArea __instance)
     {
+        // Players who are dead can no longer vote, and dead player can't be voted either
+        var votedPlayer = __instance.GetPlayer();
+        if (PlayerControl.LocalPlayer.HasDied() || (votedPlayer != null && votedPlayer.HasDied()))
+        {
+            return false;
+        }
         if (PlayerControl.LocalPlayer.Data.Role is not ProsecutorRole prosecutor)
         {
             return true;

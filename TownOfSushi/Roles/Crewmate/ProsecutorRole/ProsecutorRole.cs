@@ -17,6 +17,7 @@ public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCr
     public PlayerVoteArea? ProsecuteButton { get; private set; }
     public bool HasProsecuted { get; private set; }
     public byte ProsecuteVictim { get; set; } = byte.MaxValue;
+    public bool HideProsButton { get; set; }
     public bool SelectingProsecuteVictim { get; set; }
     public int ProsecutionsCompleted { get; set; }
 
@@ -34,7 +35,7 @@ public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCr
             return;
         }
 
-        ProsecuteButton.gameObject.SetActive(meeting.SkipVoteButton.gameObject.active && !SelectingProsecuteVictim);
+        ProsecuteButton.gameObject.SetActive(!HideProsButton && meeting.state == MeetingHud.VoteStates.NotVoted && !SelectingProsecuteVictim);
 
         if (!ProsecuteButton.gameObject.active)
         {
