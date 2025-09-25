@@ -6,6 +6,7 @@ using TownOfSushi.Modifiers;
 using TownOfSushi.Modules;
 using TownOfSushi.Buttons;
 using UnityEngine;
+using Il2CppInterop.Runtime.Attributes;
 
 namespace TownOfSushi.Roles.Neutral;
 
@@ -21,6 +22,7 @@ public sealed class PyromaniacIgniteButton : TownOfSushiRoleButton<PyromaniacRol
     private static List<PlayerControl> PlayersInRange => Helpers.GetClosestPlayers(PlayerControl.LocalPlayer,
         OptionGroupSingleton<PyromaniacOptions>.Instance.IgniteRadius.Value * ShipStatus.Instance.MaxLightRadius);
 
+    [HideFromIl2Cpp]
     public Ignite? Ignite { get; set; }
 
     public override bool CanUse()

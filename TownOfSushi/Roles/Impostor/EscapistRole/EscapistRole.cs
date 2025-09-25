@@ -16,7 +16,9 @@ namespace TownOfSushi.Roles.Impostor;
 public sealed class EscapistRole(IntPtr cppPtr)
     : ImpostorRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant
 {
+    [HideFromIl2Cpp]
     public Vector2? MarkedLocation { get; set; }
+    [HideFromIl2Cpp]
     public GameObject? EscapeMark { get; set; }
 
     public void FixedUpdate()

@@ -28,6 +28,7 @@ public sealed class AmbusherRole(IntPtr cppPtr)
     public Color RoleColor => TownOfSushiColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorKilling;
+    [HideFromIl2Cpp]
     public PlayerControl? Pursued { get; set; }
 
     public CustomRoleConfiguration Configuration => new(this)

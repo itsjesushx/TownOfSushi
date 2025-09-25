@@ -1,7 +1,6 @@
 ﻿using MiraAPI.Hud;
 using Reactor.Networking.Rpc;
 using TownOfSushi.Buttons;
-using TownOfSushi.Networking;
 using UnityEngine;
 
 namespace TownOfSushi.Modifiers.Game.Impostor;

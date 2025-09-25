@@ -1,5 +1,6 @@
 ﻿using AmongUs.GameOptions;
 using HarmonyLib;
+using Il2CppInterop.Runtime.Attributes;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -21,6 +22,7 @@ public sealed class PlayerStats(byte playerId)
 // body report class for when medic/Inspector reports a body
 public sealed class BodyReport
 {
+    [HideFromIl2Cpp]
     public PlayerControl? Killer { get; set; }
     public PlayerControl? Reporter { get; set; }
     public PlayerControl? Body { get; set; }
