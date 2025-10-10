@@ -9,7 +9,7 @@ public sealed class SoulCollectorReapButton : TownOfSushiRoleButton<SoulCollecto
     IKillButton
 {
     public override string Name => "Reap";
-    public override string Keybind => Keybinds.PrimaryAction;
+    public override BaseKeybind Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.SoulCollector;
     public override float Cooldown => OptionGroupSingleton<SoulCollectorOptions>.Instance.KillCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TOSNeutAssets.ReapSprite;

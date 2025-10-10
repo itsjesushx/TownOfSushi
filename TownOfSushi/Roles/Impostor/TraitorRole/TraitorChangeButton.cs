@@ -10,7 +10,7 @@ namespace TownOfSushi.Roles.Impostor;
 public sealed class TraitorChangeButton : TownOfSushiRoleButton<TraitorRole>
 {
     public override string Name => "Change Role";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Impostor;
     public override float Cooldown => 1f;
     public override ButtonLocation Location => ButtonLocation.BottomLeft;

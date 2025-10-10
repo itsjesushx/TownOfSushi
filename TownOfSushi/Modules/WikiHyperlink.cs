@@ -2,6 +2,7 @@ using AmongUs.GameOptions;
 using Reactor.Utilities.Attributes;
 using UnityEngine;
 using TMPro;
+using TownOfSushi.Modules.Wiki;
 
 namespace TownOfSushi.Modules.Components;
 

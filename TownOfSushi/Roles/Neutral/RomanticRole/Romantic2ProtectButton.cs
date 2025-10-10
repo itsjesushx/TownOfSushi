@@ -6,7 +6,7 @@ namespace TownOfSushi.Roles.Neutral;
 public sealed class RomanticProtectButton : TownOfSushiRoleButton<RomanticRole>
 {
     public override string Name => "Protect";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Romantic;
     public override float Cooldown => OptionGroupSingleton<RomanticOptions>.Instance.ProtectCooldown + MapCooldown;
     public override float EffectDuration => OptionGroupSingleton<RomanticOptions>.Instance.ProtectDuration;

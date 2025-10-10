@@ -6,6 +6,7 @@ using TownOfSushi.Modifiers;
 using TownOfSushi.Modules;
 using TownOfSushi.Buttons;
 using UnityEngine;
+using Il2CppInterop.Runtime.Attributes;
 
 namespace TownOfSushi.Roles.Neutral;
 
@@ -13,7 +14,7 @@ public sealed class PyromaniacIgniteButton : TownOfSushiRoleButton<PyromaniacRol
 {
     public PlayerControl? ClosestTarget;
     public override string Name => "Ignite";
-    public override string Keybind => Keybinds.PrimaryAction;
+    public override BaseKeybind Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Pyromaniac;
     public override float Cooldown => OptionGroupSingleton<PyromaniacOptions>.Instance.DouseCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TOSNeutAssets.IgniteButtonSprite;
@@ -21,6 +22,7 @@ public sealed class PyromaniacIgniteButton : TownOfSushiRoleButton<PyromaniacRol
     private static List<PlayerControl> PlayersInRange => Helpers.GetClosestPlayers(PlayerControl.LocalPlayer,
         OptionGroupSingleton<PyromaniacOptions>.Instance.IgniteRadius.Value * ShipStatus.Instance.MaxLightRadius);
 
+    [HideFromIl2Cpp]
     public Ignite? Ignite { get; set; }
 
     public override bool CanUse()

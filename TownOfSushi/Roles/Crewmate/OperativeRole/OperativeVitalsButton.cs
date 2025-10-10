@@ -10,7 +10,7 @@ public sealed class OperativeButton : TownOfSushiButton
 {
     public VitalsMinigame? vitals;
     public override string Name => "Vitals";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Operative;
     public override float Cooldown => OptionGroupSingleton<OperativeOptions>.Instance.VitalsDisplayCooldown + MapCooldown;
     public float AvailableCharge { get; set; } = OptionGroupSingleton<OperativeOptions>.Instance.VitalsStartingCharge;

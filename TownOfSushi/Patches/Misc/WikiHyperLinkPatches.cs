@@ -5,6 +5,7 @@ using MiraAPI.Modifiers.Types;
 using UnityEngine;
 using TMPro;
 using TownOfSushi.Modules.Components;
+using TownOfSushi.Modules.Wiki;
 
 namespace TownOfSushi.Patches.Misc;
 
@@ -51,7 +52,7 @@ public static class WikiHyperLinkPatches
                 else
                 {
                     // Non-custom roles (aka vanilla ones) can also be tagged, but they have no wiki entries.
-                    role = RoleManager.Instance.AllRoles.FirstOrDefault(x => x.NiceName.Equals(key, StringComparison.OrdinalIgnoreCase));
+                    role = RoleManager.Instance.AllRoles.ToArray().FirstOrDefault(x => x.NiceName.Equals(key, StringComparison.OrdinalIgnoreCase));
                     if (role != null)
                     {
                         replacement = $"{fontTag}<b>{role.TeamColor.ToTextColor()}{role.NiceName}</color></b></font>";

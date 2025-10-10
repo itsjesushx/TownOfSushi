@@ -9,7 +9,7 @@ public sealed class PredatorKillButton : TownOfSushiRoleButton<PredatorRole, Pla
     IKillButton
 {
     public override string Name => "Kill";
-    public override string Keybind => Keybinds.PrimaryAction;
+    public override BaseKeybind Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Predator;
     public override float Cooldown => OptionGroupSingleton<PredatorOptions>.Instance.TerminateKillCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TOSNeutAssets.PredatorKillSprite;

@@ -135,7 +135,7 @@ public static class DeathEventHandlers
                 case WerewolfRole:
                     cod = "Mauled";
                     break;
-                case ViperRole:
+                case PoisonerRole:
                     cod = "poisoned";
                     break;
                 case JesterRole:

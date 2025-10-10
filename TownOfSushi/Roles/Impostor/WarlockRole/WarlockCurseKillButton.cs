@@ -7,7 +7,7 @@ namespace TownOfSushi.Roles.Impostor;
 public sealed class WarlockCurseKillButton : TownOfSushiRoleButton<WarlockRole, PlayerControl>
 {
     public override string Name => "Kill";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Impostor;
     public override float Cooldown => 0.001f;
     public override float InitialCooldown => 0.001f;

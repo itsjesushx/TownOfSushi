@@ -762,7 +762,7 @@ public static class TOSRoleManagerPatches
         if (/*!player.Data.Role.IsImpostor && */specialRolesAllowed && !player.HasModifier<BasicGhostModifier>())
             // Logger<TownOfSushiPlugin>.Message($"AssignRoleOnDeathPatch - !player.Data.Role.IsImpostor: '{!player.Data.Role.IsImpostor}' specialRolesAllowed: {specialRolesAllowed}");
         {
-            RoleManager.TryAssignSpecialGhostRoles(player);
+            RoleManager.TryAssignSpecialGhostRoles(player, specialRolesAllowed);
         }
 
         if (!RoleManager.IsGhostRole(player.Data.Role.Role))

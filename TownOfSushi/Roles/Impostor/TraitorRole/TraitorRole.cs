@@ -8,7 +8,9 @@ public sealed class TraitorRole(IntPtr cppPtr)
     : ImpostorRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ISpawnChange
 {
     [HideFromIl2Cpp] public List<RoleBehaviour> ChosenRoles { get; } = [];
+    [HideFromIl2Cpp]
     public RoleBehaviour? RandomRole { get; set; }
+    [HideFromIl2Cpp]
     public RoleBehaviour? SelectedRole { get; set; }
     public bool NoSpawn => true;
     public string RoleName => "Traitor";

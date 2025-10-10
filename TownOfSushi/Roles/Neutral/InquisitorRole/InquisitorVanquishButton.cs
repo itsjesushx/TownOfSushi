@@ -9,7 +9,7 @@ public sealed class InquisitorVanquishButton : TownOfSushiRoleButton<InquisitorR
     IKillButton
 {
     public override string Name => "Vanquish";
-    public override string Keybind => Keybinds.PrimaryAction;
+    public override BaseKeybind Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Inquisitor;
     public override float Cooldown => OptionGroupSingleton<InquisitorOptions>.Instance.VanquishCooldown;
     public override LoadableAsset<Sprite> Sprite => TOSNeutAssets.InquisKillSprite;

@@ -7,7 +7,7 @@ namespace TownOfSushi.Roles.Crewmate;
 public sealed class DetectiveRevealButton : TownOfSushiRoleButton<DetectiveRole, PlayerControl>
 {
     public override string Name => "Reveal";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Detective;
     public override float Cooldown => OptionGroupSingleton<DetectiveOptions>.Instance.DetectiveCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TOSCrewAssets.DetectiveSprite;

@@ -8,7 +8,7 @@ namespace TownOfSushi.Modifiers.Game.Universal;
 public sealed class BarryButton : TownOfSushiButton
 {
     public override string Name => "Button";
-    public override string Keybind => Keybinds.ModifierAction;
+    public override BaseKeybind Keybind => Keybinds.ModifierAction;
     public override Color TextOutlineColor => TownOfSushiColors.ButtonBarry;
     public override float Cooldown => OptionGroupSingleton<ButtonBarryOptions>.Instance.Cooldown + MapCooldown;
     public override int MaxUses => (int)OptionGroupSingleton<ButtonBarryOptions>.Instance.MaxNumButtons;

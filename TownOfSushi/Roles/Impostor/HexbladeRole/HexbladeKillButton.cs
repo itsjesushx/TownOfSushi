@@ -9,7 +9,7 @@ namespace TownOfSushi.Roles.Impostor;
 public sealed class HexbladeKillButton : TownOfSushiRoleButton<HexbladeRole, PlayerControl>, IDiseaseableButton, IKillButton
 {
     public override string Name => "Kill";
-    public override string Keybind => Keybinds.PrimaryAction;
+    public override BaseKeybind Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Impostor;
     public override float Cooldown => PlayerControl.LocalPlayer.GetKillCooldown() + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TOSAssets.KillSprite;

@@ -9,7 +9,7 @@ namespace TownOfSushi.Roles.Neutral;
 public sealed class VampireBiteButton : TownOfSushiRoleButton<VampireRole, PlayerControl>, IDiseaseableButton, IKillButton
 {
     public override string Name => "Bite";
-    public override string Keybind => Keybinds.PrimaryAction;
+    public override BaseKeybind Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Vampire;
     public override float Cooldown => OptionGroupSingleton<VampireOptions>.Instance.BiteCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TOSNeutAssets.BiteSprite;

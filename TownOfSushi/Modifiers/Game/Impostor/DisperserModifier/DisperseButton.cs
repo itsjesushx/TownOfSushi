@@ -1,7 +1,6 @@
 ﻿using MiraAPI.Hud;
 using Reactor.Networking.Rpc;
 using TownOfSushi.Buttons;
-using TownOfSushi.Networking;
 using UnityEngine;
 
 namespace TownOfSushi.Modifiers.Game.Impostor;
@@ -9,7 +8,7 @@ namespace TownOfSushi.Modifiers.Game.Impostor;
 public sealed class DisperseButton : TownOfSushiButton
 {
     public override string Name => "Disperse";
-    public override string Keybind => Keybinds.ModifierAction;
+    public override BaseKeybind Keybind => Keybinds.ModifierAction;
     public override Color TextOutlineColor => TownOfSushiColors.Impostor;
     public override float Cooldown => 0.001f + MapCooldown;
     public override int MaxUses => 1;

@@ -7,7 +7,7 @@ namespace TownOfSushi.Roles.Neutral;
 public sealed class RomanticPickButton : TownOfSushiRoleButton<RomanticRole, PlayerControl>
 {
     public override string Name => "Create Lover";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Romantic;
     public override float Cooldown => OptionGroupSingleton<RomanticOptions>.Instance.PickCooldown;
     public override LoadableAsset<Sprite> Sprite => TOSNeutAssets.RomanticPick;

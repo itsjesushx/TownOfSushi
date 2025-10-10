@@ -10,6 +10,7 @@ namespace TownOfSushi.Roles.Impostor;
 
 public sealed class MorphlingRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
 {
+    [HideFromIl2Cpp]
     public PlayerControl? Sampled { get; set; }
     public string RoleName => "Morphling";
     public string RoleDescription => "Transform Into Crewmates";

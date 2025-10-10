@@ -10,7 +10,7 @@ public sealed class OracleConfessButton : TownOfSushiRoleButton<OracleRole, Play
 {
     public override string Name => "Confess";
     public override Color TextOutlineColor => TownOfSushiColors.Oracle;
-    public override string Keybind => Keybinds.PrimaryAction;
+    public override BaseKeybind Keybind => Keybinds.PrimaryAction;
     public override float Cooldown => OptionGroupSingleton<OracleOptions>.Instance.ConfessCooldown;
     public override LoadableAsset<Sprite> Sprite => TOSCrewAssets.ConfessSprite;
 

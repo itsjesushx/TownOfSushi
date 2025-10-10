@@ -8,7 +8,7 @@ namespace TownOfSushi.Roles.Neutral;
 public sealed class PhantomSpookButton : TownOfSushiButton
 {
     public override string Name => "Spook";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Phantom;
     public override float Cooldown => 0.01f;
     public override LoadableAsset<Sprite> Sprite => TOSNeutAssets.PhantomSpookSprite;

@@ -13,6 +13,7 @@ namespace TownOfSushi.Roles.Crewmate;
 public sealed class SnitchRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
 {
     private Dictionary<byte, ArrowBehaviour>? _snitchArrows;
+    [HideFromIl2Cpp]
     public ArrowBehaviour? SnitchRevealArrow { get; private set; }
     public bool CompletedAllTasks { get; private set; }
     public bool OnLastTask { get; private set; }

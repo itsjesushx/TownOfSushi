@@ -7,7 +7,7 @@ namespace TownOfSushi.Roles.Neutral;
 public sealed class PlaguebearerInfectButton : TownOfSushiRoleButton<PlaguebearerRole, PlayerControl>
 {
     public override string Name => "Infect";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Plaguebearer;
     public override float Cooldown => OptionGroupSingleton<PlaguebearerOptions>.Instance.InfectCooldown;
     public override LoadableAsset<Sprite> Sprite => TOSNeutAssets.InfectSprite;

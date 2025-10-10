@@ -7,7 +7,7 @@ namespace TownOfSushi.Modifiers.Game.Crewmate;
 public sealed class AdministratorAdminTableModifierButton : TownOfSushiButton
 {
     public override string Name => "Admin";
-    public override string Keybind => Keybinds.ModifierAction;
+    public override BaseKeybind Keybind => Keybinds.ModifierAction;
     public override Color TextOutlineColor => TownOfSushiColors.Administrator;
     public override float Cooldown => OptionGroupSingleton<AdministratorOptions>.Instance.DisplayCooldown.Value + MapCooldown;
     public float AvailableCharge { get; set; } = OptionGroupSingleton<AdministratorOptions>.Instance.StartingCharge.Value;

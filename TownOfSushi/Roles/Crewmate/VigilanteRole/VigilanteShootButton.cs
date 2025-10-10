@@ -13,7 +13,7 @@ namespace TownOfSushi.Roles.Crewmate;
 public sealed class VigilanteShootButton : TownOfSushiRoleButton<VigilanteRole, PlayerControl>, IKillButton
 {
     public override string Name => "Shoot";
-    public override string Keybind => Keybinds.PrimaryAction;
+    public override BaseKeybind Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Vigilante;
     public override float Cooldown => OptionGroupSingleton<VigilanteOptions>.Instance.KillCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TOSCrewAssets.VigilanteShootSprite;

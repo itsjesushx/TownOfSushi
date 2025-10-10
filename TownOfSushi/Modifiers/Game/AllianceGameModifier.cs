@@ -6,6 +6,7 @@ namespace TownOfSushi.Modifiers.Game;
 [MiraIgnore]
 public abstract class AllianceGameModifier : GameModifier
 {
+    public virtual string LocaleKey => "KEY_MISS";
     public virtual string IntroInfo => $"Alliance: {ModifierName}";
     public virtual string Symbol => "?";
     public virtual float IntroSize => 4f;

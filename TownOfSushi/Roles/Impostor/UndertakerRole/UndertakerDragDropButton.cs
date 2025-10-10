@@ -6,7 +6,7 @@ namespace TownOfSushi.Roles.Impostor;
 public sealed class UndertakerDragDropButton : TownOfSushiRoleButton<UndertakerRole, DeadBody>, IAftermathableBodyButton
 {
     public override string Name => "Drag";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Impostor;
     public override float Cooldown => OptionGroupSingleton<UndertakerOptions>.Instance.DragCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TOSImpAssets.DragSprite;

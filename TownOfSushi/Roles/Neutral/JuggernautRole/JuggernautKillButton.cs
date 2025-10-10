@@ -9,7 +9,7 @@ public sealed class JuggernautKillButton : TownOfSushiRoleButton<JuggernautRole,
     IKillButton
 {
     public override string Name => "Kill";
-    public override string Keybind => Keybinds.PrimaryAction;
+    public override BaseKeybind Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Juggernaut;
     public override LoadableAsset<Sprite> Sprite => TOSNeutAssets.JuggKillSprite;
     public override float Cooldown => GetCooldown();

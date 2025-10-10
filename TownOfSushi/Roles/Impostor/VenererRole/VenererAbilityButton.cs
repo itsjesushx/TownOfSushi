@@ -8,7 +8,7 @@ public sealed class VenererAbilityButton : TownOfSushiRoleButton<VenererRole>, I
 {
     private VenererAbility _queuedAbility = VenererAbility.None;
     public override Color TextOutlineColor => TownOfSushiColors.Impostor;
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override LoadableAsset<Sprite> Sprite => TOSImpAssets.NoAbilitySprite;
     public override float Cooldown => OptionGroupSingleton<VenererOptions>.Instance.AbilityCooldown;
     public override float EffectDuration => OptionGroupSingleton<VenererOptions>.Instance.AbilityDuration;

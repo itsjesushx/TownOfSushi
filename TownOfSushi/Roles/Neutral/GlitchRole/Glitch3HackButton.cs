@@ -8,7 +8,7 @@ namespace TownOfSushi.Roles.Neutral;
 public sealed class GlitchHackButton : TownOfSushiRoleButton<GlitchRole, PlayerControl>, IAftermathablePlayerButton
 {
     public override string Name => "Hack";
-    public override string Keybind => "tos.ActionCustom";
+    public override BaseKeybind Keybind => Keybinds.TertiaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Glitch;
     public override float Cooldown => OptionGroupSingleton<GlitchOptions>.Instance.HackCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TOSNeutAssets.HackSprite;

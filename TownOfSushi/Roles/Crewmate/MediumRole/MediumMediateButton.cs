@@ -7,7 +7,7 @@ namespace TownOfSushi.Roles.Crewmate;
 public sealed class MediumMediateButton : TownOfSushiRoleButton<MediumRole>
 {
     public override string Name => "Mediate";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Medium;
     public override float Cooldown => OptionGroupSingleton<MediumOptions>.Instance.MediateCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TOSCrewAssets.MediateSprite;

@@ -8,7 +8,7 @@ namespace TownOfSushi.Roles.Impostor;
 public sealed class MinerPlaceVentButton : TownOfSushiRoleButton<MinerRole>, IAftermathableButton
 {
     public override string Name => "Mine";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Impostor;
     public override float Cooldown => OptionGroupSingleton<MinerOptions>.Instance.MineCooldown + MapCooldown;
 

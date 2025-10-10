@@ -6,7 +6,7 @@ namespace TownOfSushi.Roles.Crewmate;
 public sealed class SeerRevealButton : TownOfSushiRoleButton<SeerRole, PlayerControl>
 {
     public override string Name => "Check";
-    public override string Keybind => Keybinds.PrimaryAction;
+    public override BaseKeybind Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Seer;
     public override float Cooldown => OptionGroupSingleton<SeerOptions>.Instance.SeerCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TOSCrewAssets.SeerButton;

@@ -10,9 +10,9 @@ using MiraAPI.Events;
 
 namespace TownOfSushi.Roles.Impostor;
 
-public sealed class ViperRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
+public sealed class PoisonerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
 {
-    public string RoleName => "Viper";
+    public string RoleName => "Poisoner";
     public string RoleDescription => "Poison other players and kill them after some seconds.";
     public string RoleLongDescription => "Poison other players to let them die after a few seconds.";
     public Color RoleColor => TownOfSushiColors.Impostor;
@@ -20,13 +20,13 @@ public sealed class ViperRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfSush
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorKilling;
     public CustomRoleConfiguration Configuration => new(this)
     {
-        CanUseVent = OptionGroupSingleton<ViperOptions>.Instance.CanUseVents,
+        CanUseVent = OptionGroupSingleton<PoisonerOptions>.Instance.CanUseVents,
         Icon = TOSImpAssets.PoisonSprite,
         IntroSound = CustomRoleUtils.GetIntroSound(RoleTypes.Shapeshifter),
     };
     public void FixedUpdate()
     {
-        if (Player == null || Player.Data.Role is not ViperRole || Player.HasDied() || !Player.AmOwner || MeetingHud.Instance || (!HudManager.Instance.UseButton.isActiveAndEnabled && !HudManager.Instance.PetButton.isActiveAndEnabled)) return;
+        if (Player == null || Player.Data.Role is not PoisonerRole || Player.HasDied() || !Player.AmOwner || MeetingHud.Instance || (!HudManager.Instance.UseButton.isActiveAndEnabled && !HudManager.Instance.PetButton.isActiveAndEnabled)) return;
         HudManager.Instance.KillButton.ToggleVisible(false);
     }
 
@@ -39,9 +39,9 @@ public sealed class ViperRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfSush
     [MethodRpc((uint)TownOfSushiRpc.MurderPoisonedPlayer, SendImmediately = true)]
     public static void RpcMurderPoisoned(PlayerControl source, PlayerControl target)
     {
-        if (source.Data.Role is not ViperRole || !target.HasModifier<ViperPoisonedModifier>())
+        if (source.Data.Role is not PoisonerRole || !target.HasModifier<PoisonerPoisonedModifier>())
         {
-            Logger<TownOfSushiPlugin>.Error("RpcMurderPoisonedPlayer - Invalid Viper/Poisoned");
+            Logger<TownOfSushiPlugin>.Error("RpcMurderPoisonedPlayer - Invalid Poisoner/Poisoned");
             return;
         }
 
@@ -72,7 +72,7 @@ public sealed class ViperRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfSush
     [MethodRpc((uint)TownOfSushiRpc.SetPoisonedPlayer, SendImmediately = true)]
     public static void RpcSetPoisoned(PlayerControl source, PlayerControl target)
     {
-        var modifier = new ViperPoisonedModifier(source.PlayerId);
+        var modifier = new PoisonerPoisonedModifier(source.PlayerId);
         target.AddModifier(modifier);
         var TOSAbilityEvent = new TOSAbilityEvent(AbilityType.Poison, source, target);
         MiraEventManager.InvokeEvent(TOSAbilityEvent);
@@ -80,7 +80,7 @@ public sealed class ViperRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfSush
 
     public string GetAdvancedDescription()
     {
-        return $"The Viper is an Impostor killing role that can poison other players, poisoned players will die after {OptionGroupSingleton<ViperOptions>.Instance.PoisonDelay} second(s)."
+        return $"The Poisoner is an Impostor killing role that can poison other players, poisoned players will die after {OptionGroupSingleton<PoisonerOptions>.Instance.PoisonDelay} second(s)."
             + MiscUtils.AppendOptionsText(GetType());
     }
 

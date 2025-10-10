@@ -8,7 +8,7 @@ namespace TownOfSushi.Roles.Neutral;
 public sealed class JesterHauntButton : TownOfSushiButton
 {
     public override string Name => "Haunt";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Jester;
     public override float Cooldown => 0.01f;
     public override LoadableAsset<Sprite> Sprite => TOSNeutAssets.JesterHauntSprite;

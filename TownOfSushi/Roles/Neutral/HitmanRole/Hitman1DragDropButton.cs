@@ -6,7 +6,7 @@ namespace TownOfSushi.Roles.Neutral;
 public sealed class HitmanDragDropButton : TownOfSushiRoleButton<HitmanRole, DeadBody>, IAftermathableBodyButton
 {
     public override string Name => "Drag";
-    public override string Keybind => "tos.ActionCustom";
+    public override BaseKeybind Keybind => Keybinds.TertiaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Impostor;
     public override float Cooldown => OptionGroupSingleton<AgentOptions>.Instance.DragCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TOSNeutAssets.DragSprite;

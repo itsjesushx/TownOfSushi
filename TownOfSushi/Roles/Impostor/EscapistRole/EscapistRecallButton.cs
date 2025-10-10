@@ -9,7 +9,7 @@ namespace TownOfSushi.Roles.Impostor;
 public sealed class EscapistRecallButton : TownOfSushiRoleButton<EscapistRole>, IAftermathableButton
 {
     public override string Name => "Recall";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Impostor;
     public override float Cooldown => OptionGroupSingleton<EscapistOptions>.Instance.RecallCooldown + MapCooldown;
     public override int MaxUses => (int)OptionGroupSingleton<EscapistOptions>.Instance.MaxEscapes;

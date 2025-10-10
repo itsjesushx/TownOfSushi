@@ -5,7 +5,7 @@ namespace TownOfSushi.Roles.Neutral;
 public sealed class AmnesiacVestButton : TownOfSushiRoleButton<AmnesiacRole>
 {
     public override string Name => "Safeguard";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Amnesiac;
     public override float Cooldown => OptionGroupSingleton<AmnesiacOptions>.Instance.VestCooldown;
     public override float EffectDuration => OptionGroupSingleton<AmnesiacOptions>.Instance.VestDuration;

@@ -8,7 +8,7 @@ namespace TownOfSushi.Roles.Crewmate;
 public sealed class ClericBarrierButton : TownOfSushiRoleButton<ClericRole, PlayerControl>
 {
     public override string Name => "Barrier";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Cleric;
     public override float Cooldown => OptionGroupSingleton<ClericOptions>.Instance.BarrierCooldown + MapCooldown;
     public override float EffectDuration => OptionGroupSingleton<ClericOptions>.Instance.BarrierDuration;

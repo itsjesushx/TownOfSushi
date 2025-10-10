@@ -9,7 +9,7 @@ public sealed class OracleBlessButton : TownOfSushiRoleButton<OracleRole, Player
 {
     public override string Name => "Bless";
     public override Color TextOutlineColor => TownOfSushiColors.Oracle;
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override float Cooldown => OptionGroupSingleton<OracleOptions>.Instance.BlessCooldown;
     public override LoadableAsset<Sprite> Sprite => TOSCrewAssets.BlessSprite;
 

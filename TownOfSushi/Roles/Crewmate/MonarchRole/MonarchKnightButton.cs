@@ -7,7 +7,7 @@ namespace TownOfSushi.Roles.Crewmate;
 public sealed class KnightButton : TownOfSushiRoleButton<MonarchRole, PlayerControl>
 {
     public override string Name => "Knight";
-    public override string Keybind => Keybinds.PrimaryAction;
+    public override BaseKeybind Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Monarch;
     public override float Cooldown => OptionGroupSingleton<MonarchOptions>.Instance.KnightCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TOSCrewAssets.KnightSprite;

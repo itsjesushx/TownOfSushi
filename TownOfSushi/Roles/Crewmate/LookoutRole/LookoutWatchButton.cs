@@ -7,7 +7,7 @@ namespace TownOfSushi.Roles.Crewmate;
 public sealed class WatchButton : TownOfSushiRoleButton<LookoutRole, PlayerControl>
 {
     public override string Name => "Watch";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Lookout;
     public override float Cooldown => OptionGroupSingleton<LookoutOptions>.Instance.WatchCooldown + MapCooldown;
     public override int MaxUses => (int)OptionGroupSingleton<LookoutOptions>.Instance.MaxWatches;

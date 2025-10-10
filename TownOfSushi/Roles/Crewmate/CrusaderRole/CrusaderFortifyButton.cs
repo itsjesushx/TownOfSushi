@@ -7,7 +7,7 @@ namespace TownOfSushi.Roles.Crewmate;
 public sealed class CrusaderFortifyButton : TownOfSushiRoleButton<CrusaderRole, PlayerControl>
 {
     public override string Name => "Fortify";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Crusader;
     public override float Cooldown => 0.001f + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TOSCrewAssets.FortifySprite;

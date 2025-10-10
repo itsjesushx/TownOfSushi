@@ -7,7 +7,7 @@ namespace TownOfSushi.Roles.Crewmate;
 public sealed class TransporterTransportButton : TownOfSushiRoleButton<TransporterRole>
 {
     public override string Name => "Transport";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Transporter;
 
     public override float Cooldown =>

@@ -32,7 +32,7 @@
 - [Hexblade](#hexblade)  
 - [Undertaker](#undertaker)  
 - [Bomber](#bomber)  
-- [Viper](#viper)  
+- [Poisoner](#poisoner)  
 - [Bounty Hunter](#bounty-hunter)  
 - [Warlock](#warlock)  
 
@@ -972,19 +972,19 @@ These vents only connect to each other, forming a new passway.
 | Mine Cooldown | The cooldown of the Miner's Mine button | Time | 25s |
 
 -----------------------
-## Viper
+## Poisoner
 ### **Team: Impostors**
 ### **Alignment: Killing**
 
-The Viper is an Impostor who has to poison another play instead of kill.\
+The Poisoner is an Impostor who has to poison another play instead of kill.\
 When they poison a player, the poisoned player dies either upon the start of the next meeting or after a set duration.\
-If the Viper is alive within the 4 last players, their kills will be direct rather than delayed.
+If the Poisoner is alive within the 4 last players, their kills will be direct rather than delayed.
 
 ### Game Options
 | Name | Description | Type | Default |
 |----------|:-------------:|:------:|:------:|
-| Viper | The percentage probability of the Viper appearing | Percentage | 0% |
-| Poison Cooldown | The cooldown of the Viper's Poison button | Time | 25s |
+| Poisoner | The percentage probability of the Poisoner appearing | Percentage | 0% |
+| Poison Cooldown | The cooldown of the Poisoner's Poison button | Time | 25s |
 | Poison Delay | The delay of the kill after being poisoned | Time | 5s |
 
 -----------------------
@@ -999,7 +999,7 @@ The Warlock can still perform normal kills, but the two buttons share the same C
 \
 **NOTE:**
 - The Warlock can always kill their Impostor mates (and even themself) using the "cursed kill"
-- If there is a Warlock in the game, there can't be a Viper
+- If there is a Warlock in the game, there can't be a Poisoner
 - Performing a normal kill, doesn't lift the curse
 
 ### Game Options
@@ -1143,7 +1143,7 @@ If they voted another player, they will get voted out.
 
 ## Aftermath
 ### **Applied to: Crewmates**
-Killing the Aftermath All their killer to use their ability. If the Viper kills the Aftermath, they will Suicide.
+Killing the Aftermath All their killer to use their ability. If the Poisoner kills the Aftermath, they will Suicide.
 ### Game Options
 | Name | Description | Type | Default |
 |----------|:-------------:|:------:|:------:|

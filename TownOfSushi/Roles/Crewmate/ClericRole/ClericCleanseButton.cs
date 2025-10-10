@@ -8,7 +8,7 @@ namespace TownOfSushi.Roles.Crewmate;
 public sealed class ClericCleanseButton : TownOfSushiRoleButton<ClericRole, PlayerControl>
 {
     public override string Name => "Cleanse";
-    public override string Keybind => Keybinds.PrimaryAction;
+    public override BaseKeybind Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Cleric;
     public override float Cooldown => OptionGroupSingleton<ClericOptions>.Instance.CleanseCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TOSCrewAssets.CleanseSprite;

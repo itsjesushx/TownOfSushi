@@ -6,7 +6,7 @@ namespace TownOfSushi.Roles.Neutral;
 public sealed class EclipsalBlindButton : TownOfSushiRoleButton<EclipsalRole>, IAftermathableButton
 {
     public override string Name => "Blind";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Impostor;
     public override float Cooldown => OptionGroupSingleton<EclipsalOptions>.Instance.BlindCooldown + MapCooldown;
     public override float EffectDuration => OptionGroupSingleton<EclipsalOptions>.Instance.BlindDuration;

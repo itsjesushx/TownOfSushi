@@ -7,7 +7,7 @@ namespace TownOfSushi.Roles.Neutral;
 public sealed class PredatorTerminateButton : TownOfSushiRoleButton<PredatorRole>, IAftermathableButton
 {
     public override string Name => "Terminate";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Predator;
     public override float Cooldown => OptionGroupSingleton<PredatorOptions>.Instance.TerminateCooldown + MapCooldown;
     public override float EffectDuration => OptionGroupSingleton<PredatorOptions>.Instance.TerminateDuration;

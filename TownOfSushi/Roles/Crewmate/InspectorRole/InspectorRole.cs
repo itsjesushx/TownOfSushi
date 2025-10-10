@@ -12,7 +12,7 @@ namespace TownOfSushi.Roles.Crewmate;
 public sealed class InspectorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
 {
     public override bool IsAffectedByComms => false;
-
+    [HideFromIl2Cpp]
     public CrimeSceneComponent? InvestigatingScene { get; set; }
 
     [HideFromIl2Cpp] public List<byte> InvestigatedPlayers { get; init; } = new();

@@ -8,9 +8,8 @@ public sealed class EngineerVentButton : TownOfSushiRoleButton<EngineerTOSRole, 
 {
     private static readonly ContactFilter2D Filter = Helpers.CreateFilter(Constants.Usables);
     public override string Name => "Vent";
-    public override string Keybind => Keybinds.VentAction;
+    public override BaseKeybind Keybind => Keybinds.VentAction;
     public override Color TextOutlineColor => TownOfSushiColors.Engineer;
-
     public override float Cooldown =>
         OptionGroupSingleton<EngineerOptions>.Instance.VentCooldown + 0.001f + MapCooldown;
 

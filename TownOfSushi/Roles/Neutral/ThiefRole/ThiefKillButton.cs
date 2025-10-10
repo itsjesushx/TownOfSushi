@@ -9,7 +9,7 @@ public sealed class ThiefKillButton : TownOfSushiRoleButton<ThiefRole, PlayerCon
     IKillButton
 {
     public override string Name => "Kill";
-    public override string Keybind => Keybinds.PrimaryAction;
+    public override BaseKeybind Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Thief;
     public override float Cooldown => OptionGroupSingleton<ThiefOptions>.Instance.KillCooldown;
     public override LoadableAsset<Sprite> Sprite => TOSAssets.KillSprite;

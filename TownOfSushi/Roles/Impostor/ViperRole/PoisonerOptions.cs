@@ -2,9 +2,9 @@ using MiraAPI.GameOptions.Attributes;
 
 namespace TownOfSushi.Roles.Impostor;
 
-public sealed class ViperOptions : AbstractOptionGroup<ViperRole>
+public sealed class PoisonerOptions : AbstractOptionGroup<PoisonerRole>
 {
-    public override string GroupName => "Viper";
+    public override string GroupName => "Poisoner";
 
     [ModdedNumberOption("Poison Cooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float PoisonCooldown { get; set; } = 25f;

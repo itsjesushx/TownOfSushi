@@ -6,7 +6,7 @@ namespace TownOfSushi.Roles.Impostor;
 public sealed class BomberPlantButton : TownOfSushiRoleButton<BomberRole>, IAftermathableButton, IDiseaseableButton
 {
     public override string Name => "Place";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Impostor;
     public override float Cooldown => PlayerControl.LocalPlayer.GetKillCooldown() + MapCooldown;
     public override float EffectDuration => OptionGroupSingleton<BomberOptions>.Instance.DetonateDelay;

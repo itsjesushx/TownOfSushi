@@ -16,6 +16,8 @@ using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 using TownOfSushi.Events;
 using Reactor.Utilities;
+using TownOfSushi.Modules.Wiki;
+using MiraAPI.Modifiers.Types;
 
 namespace TownOfSushi.Utilities;
 
@@ -82,6 +84,185 @@ public static class MiscUtils
             AccessTools.Field(typeof(ModdedOptionsManager), "Groups").GetValue(null) as List<AbstractOptionGroup>;
 
         return optionGroups?.FirstOrDefault(x => x.OptionableType == classType)?.Children;
+    }
+    public static ModifierFaction GetModifierFaction(this AllianceGameModifier mod)
+    {
+        return mod.FactionType;
+    }
+    public static ModifierFaction GetModifierFaction(this TOSGameModifier mod)
+    {
+        return mod.FactionType;
+    }
+    public static ModifierFaction GetModifierFaction(this UniversalGameModifier mod)
+    {
+        return mod.FactionType;
+    }
+    public static ModifierFaction GetModifierFaction(this GameModifier mod)
+    {
+        return GetModifierFaction(mod as BaseModifier);
+    }
+    public static string GetParsedModifierFaction(BaseModifier modifier)
+    {
+        var localeName = $"{modifier.GetModifierFaction()}";
+        var localizedName = localeName;
+
+        return localizedName;
+    }
+    public static ModifierFaction GetModifierFaction(this BaseModifier mod)
+    {
+        if (mod is TOSGameModifier touMod)
+        {
+            return touMod.FactionType;
+        }
+        else if (mod is AllianceGameModifier allyMod)
+        {
+            return allyMod.FactionType;
+        }
+        else if (mod is UniversalGameModifier uniMod)
+        {
+            return uniMod.FactionType;
+        }
+
+        if (SoftWikiEntries.ModifierEntries.ContainsKey(mod))
+        {
+            var name = SoftWikiEntries.ModifierEntries.FirstOrDefault(x => x.Key == mod).Value.TeamName;
+            if (Enum.TryParse<ModifierFaction>(name, out var modFaction))
+            {
+                return modFaction;
+            }
+        }
+
+        return ModifierFaction.External;
+    }
+    public static RoleAlignment GetRoleAlignment(this ICustomRole role)
+    {
+        if (role is ITownOfSushiRole touRole)
+        {
+            return touRole.RoleAlignment;
+        }
+
+        var alignments = Enum.GetValues<RoleAlignment>();
+        foreach (var alignment in alignments)
+        {
+            var roleAlignment = alignment;
+            if (role.RoleOptionsGroup.Name.Replace("Roles", "") == roleAlignment.ToDisplayString())
+            {
+                return roleAlignment;
+            }
+        }
+
+        var basicRole = role as RoleBehaviour;
+        if (basicRole!.IsNeutral())
+        {
+            return RoleAlignment.NeutralOutlier;
+        }
+        else if (basicRole!.IsImpostor())
+        {
+            return RoleAlignment.ImpostorSupport;
+        }
+        else
+        {
+            return RoleAlignment.CrewmateSupport;
+        }
+    }
+    public static string GetParsedRoleAlignment(ICustomRole role, bool coloredText = false)
+    {
+        var localeName = $"{role.GetRoleAlignment()}";
+        var localizedName = localeName;
+
+        if (coloredText)
+        {
+            if (localizedName.Contains("Crewmate"))
+            {
+                localizedName = $"<color=#68ACF4>{localizedName}";
+            }
+            else if (localizedName.Contains("Impostor"))
+            {
+                localizedName = $"<color=#D63F42>{localizedName}";
+            }
+            else if (localizedName.Contains("Neutral"))
+            {
+                localizedName = $"<color=#8A8A8A>{localizedName}";
+            }
+            else if (localizedName.Contains("Game"))
+            {
+                localizedName = $"<color=#888888>{localizedName}";
+            }
+            else
+            {
+                localizedName = $"<color=#FFFFFF>{localizedName}";
+            }
+
+            localizedName += "</color>";
+        }
+        
+        return localizedName;
+    }
+    public static string GetParsedRoleAlignment(RoleBehaviour role, bool coloredText = false)
+    {
+        var localeName = $"{role.GetRoleAlignment()}";
+        var localizedName = localeName;
+
+        if (coloredText)
+        {
+            if (localizedName.Contains("Crewmate"))
+            {
+                localizedName = $"<color=#68ACF4>{localizedName}";
+            }
+            else if (localizedName.Contains("Impostor"))
+            {
+                localizedName = $"<color=#D63F42>{localizedName}";
+            }
+            else if (localizedName.Contains("Neutral"))
+            {
+                localizedName = $"<color=#8A8A8A>{localizedName}";
+            }
+            else if (localizedName.Contains("Game"))
+            {
+                localizedName = $"<color=#888888>{localizedName}";
+            }
+            else
+            {
+                localizedName = $"<color=#FFFFFF>{localizedName}";
+            }
+
+            localizedName += "</color>";
+        }
+        
+        return localizedName;
+    }
+    public static string GetParsedRoleAlignment(RoleAlignment roleAlignment, bool coloredText = false)
+    {
+        var localeName = $"{roleAlignment}";
+        var localizedName = localeName;
+
+        if (coloredText)
+        {
+            if (localizedName.Contains("Crewmate"))
+            {
+                localizedName = $"<color=#68ACF4>{localizedName}";
+            }
+            else if (localizedName.Contains("Impostor"))
+            {
+                localizedName = $"<color=#D63F42>{localizedName}";
+            }
+            else if (localizedName.Contains("Neutral"))
+            {
+                localizedName = $"<color=#8A8A8A>{localizedName}";
+            }
+            else if (localizedName.Contains("Game"))
+            {
+                localizedName = $"<color=#888888>{localizedName}";
+            }
+            else
+            {
+                localizedName = $"<color=#FFFFFF>{localizedName}";
+            }
+
+            localizedName += "</color>";
+        }
+        
+        return localizedName;
     }
     public static bool IsProtected(this PlayerControl player)
     {
@@ -252,7 +433,7 @@ public static class MiscUtils
 
     public static IEnumerable<RoleBehaviour> GetRegisteredGhostRoles()
     {
-        var baseGhostRoles = RoleManager.Instance.AllRoles.Where(x => x.IsDead && AllRoles.All(y => y.Role != x.Role));
+        var baseGhostRoles = RoleManager.Instance.AllRoles.ToArray().Where(x => x.IsDead && AllRoles.All(y => y.Role != x.Role));
         var ghostRoles = AllRoles.Where(x => x.IsDead).Union(baseGhostRoles);
 
         return ghostRoles;
@@ -262,7 +443,7 @@ public static class MiscUtils
     {
         // we want to prioritize the custom roles because the role has the right RoleColour/TeamColor
         var role = AllRoles.FirstOrDefault(x => x.Role == roleType) ??
-                   RoleManager.Instance.AllRoles.FirstOrDefault(x => x.Role == roleType);
+                   RoleManager.Instance.AllRoles.ToArray().FirstOrDefault(x => x.Role == roleType);
 
         return role;
     }
@@ -330,17 +511,17 @@ public static class MiscUtils
     {
         var currentGameOptions = GameOptionsManager.Instance.CurrentGameOptions;
         var roleOptions = currentGameOptions.RoleOptions;
-        var assignmentData = RoleManager.Instance.AllRoles.Select(role =>
+        var assignmentData = RoleManager.Instance.AllRoles.ToArray().Select(role =>
             new RoleManager.RoleAssignmentData(role, roleOptions.GetNumPerGame(role.Role),
                 roleOptions.GetChancePerGame(role.Role))).ToList();
 
         var roleList = assignmentData.Where(x => x is { Chance: > 0, Count: > 0, Role: ICustomRole }).Select(x => x.Role);
 
-        var crewmateRole = RoleManager.Instance.AllRoles.FirstOrDefault(x => x.Role == RoleTypes.Crewmate);
+        var crewmateRole = RoleManager.Instance.AllRoles.ToArray().FirstOrDefault(x => x.Role == RoleTypes.Crewmate);
         roleList = roleList.AddItem(crewmateRole!);
         //Logger<TownOfSushiPlugin>.Error($"GetPotentialRoles - crewmateRole: '{crewmateRole?.NiceName}'");
 
-        var impostorRole = RoleManager.Instance.AllRoles.FirstOrDefault(x => x.Role == RoleTypes.Impostor);
+        var impostorRole = RoleManager.Instance.AllRoles.ToArray().FirstOrDefault(x => x.Role == RoleTypes.Impostor);
         roleList = roleList.AddItem(impostorRole!);
         //Logger<TownOfSushiPlugin>.Error($"GetPotentialRoles - impostorRole: '{impostorRole?.NiceName}'");
 

@@ -9,7 +9,7 @@ namespace TownOfSushi.Roles.Neutral;
 public sealed class ScavengerButton : TownOfSushiButton
 {
     public override string Name => "Scavenge";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Scavenger;
     public override float Cooldown => OptionGroupSingleton<ScavengerOptions>.Instance.ScavengeCooldown + MapCooldown;
     public override float EffectDuration => OptionGroupSingleton<ScavengerOptions>.Instance.ScavengeDuration;

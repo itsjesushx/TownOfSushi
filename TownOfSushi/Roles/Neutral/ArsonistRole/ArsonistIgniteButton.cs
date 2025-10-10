@@ -9,7 +9,7 @@ namespace TownOfSushi.Roles.Neutral;
 public sealed class ArsonistIgniteButton : TownOfSushiRoleButton<ArsonistRole>
 {
     public override string Name => "Ignite";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Arsonist;
     public override float Cooldown => 10f;
     public override LoadableAsset<Sprite> Sprite => TOSNeutAssets.IgniteButtonSprite;

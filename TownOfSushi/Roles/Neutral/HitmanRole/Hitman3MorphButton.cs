@@ -9,7 +9,7 @@ namespace TownOfSushi.Roles.Neutral;
 public sealed class HitmanMorphButton : TownOfSushiRoleButton<HitmanRole>, IAftermathableButton
 {
     public override string Name => "Morph";
-    public override string Keybind =>Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Hitman;
     public override float Cooldown => OptionGroupSingleton<AgentOptions>.Instance.MorphCooldown + MapCooldown;
     public override float EffectDuration => OptionGroupSingleton<AgentOptions>.Instance.MorphDuration;

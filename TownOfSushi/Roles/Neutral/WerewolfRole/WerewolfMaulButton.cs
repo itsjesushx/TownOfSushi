@@ -7,7 +7,7 @@ namespace TownOfSushi.Buttons.Neutral;
 public sealed class WerewolfMaulButton : TownOfSushiRoleButton<WerewolfRole, PlayerControl>, IDiseaseableButton, IKillButton
 {
     public override string Name => "Maul";
-    public override string Keybind => Keybinds.PrimaryAction;
+    public override BaseKeybind Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Werewolf;
     public override float Cooldown => OptionGroupSingleton<WerewolfOptions>.Instance.MaulCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TOSNeutAssets.MaulSprite;

@@ -6,7 +6,7 @@ namespace TownOfSushi.Roles.Crewmate;
 public sealed class InspectorExamineButton : TownOfSushiRoleButton<InspectorRole, PlayerControl>
 {
     public override string Name => "Examine";
-    public override string Keybind => Keybinds.PrimaryAction;
+    public override BaseKeybind Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Inspector;
     public override float Cooldown => OptionGroupSingleton<InspectorOptions>.Instance.ExamineCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TOSCrewAssets.ExamineSprite;

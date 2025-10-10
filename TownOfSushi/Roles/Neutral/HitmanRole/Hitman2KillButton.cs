@@ -8,7 +8,7 @@ namespace TownOfSushi.Roles.Neutral;
 public sealed class HitmanKillButton : TownOfSushiRoleButton<HitmanRole, PlayerControl>, IDiseaseableButton, IKillButton
 {
     public override string Name => "Kill";
-    public override string Keybind => Keybinds.PrimaryAction;
+    public override BaseKeybind Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Hitman;
     public override float Cooldown => OptionGroupSingleton<AgentOptions>.Instance.KillCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TOSNeutAssets.HitmanKillSprite;

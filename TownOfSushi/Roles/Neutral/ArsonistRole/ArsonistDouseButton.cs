@@ -6,7 +6,7 @@ namespace TownOfSushi.Roles.Neutral;
 public sealed class ArsonistDouseButton : TownOfSushiRoleButton<ArsonistRole, PlayerControl>
 {
     public override string Name => "Douse";
-    public override string Keybind => Keybinds.PrimaryAction;
+    public override BaseKeybind Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Arsonist;
     public override float Cooldown => OptionGroupSingleton<ArsonistOptions>.Instance.DouseCooldown + MapCooldown;
     public override float EffectDuration => OptionGroupSingleton<ArsonistOptions>.Instance.DouseDuration;

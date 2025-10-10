@@ -6,10 +6,10 @@ namespace TownOfSushi.Modifiers.Game;
 [MiraIgnore]
 public abstract class TOSGameModifier : GameModifier
 {
+    public virtual string LocaleKey => "KEY_MISS";
     public virtual string IntroInfo => $"Modifier: {ModifierName}";
     public virtual float IntroSize => 2.8f;
     public virtual ModifierFaction FactionType => ModifierFaction.Universal;
-
     public virtual int CustomAmount => GetAmountPerGame();
     public virtual int CustomChance => GetAssignmentChance();
 

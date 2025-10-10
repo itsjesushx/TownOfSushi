@@ -7,7 +7,7 @@ namespace TownOfSushi.Roles.Impostor;
 public sealed class WarlockCurseButton : TownOfSushiRoleButton<WarlockRole, PlayerControl>
 {
     public override string Name => "Curse";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Impostor;
     public override float Cooldown => OptionGroupSingleton<WarlockOptions>.Instance.CurseCooldown;
     public override LoadableAsset<Sprite> Sprite => TOSImpAssets.WarlockCurseButton;

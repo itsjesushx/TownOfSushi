@@ -8,7 +8,7 @@ namespace TownOfSushi.Roles.Neutral;
 public sealed class GlitchKillButton : TownOfSushiRoleButton<GlitchRole, PlayerControl>, IDiseaseableButton, IKillButton
 {
     public override string Name => "Kill";
-    public override string Keybind => Keybinds.PrimaryAction;
+    public override BaseKeybind Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Glitch;
     public override float Cooldown => OptionGroupSingleton<GlitchOptions>.Instance.KillCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TOSNeutAssets.GlitchKillSprite;

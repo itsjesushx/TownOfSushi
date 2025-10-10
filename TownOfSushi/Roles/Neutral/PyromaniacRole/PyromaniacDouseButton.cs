@@ -8,7 +8,7 @@ namespace TownOfSushi.Roles.Neutral;
 public sealed class PyromaniacDouseButton : TownOfSushiRoleButton<PyromaniacRole, PlayerControl>
 {
     public override string Name => "Douse";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Pyromaniac;
     public override float Cooldown => OptionGroupSingleton<PyromaniacOptions>.Instance.DouseCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TOSNeutAssets.DouseButtonSprite;

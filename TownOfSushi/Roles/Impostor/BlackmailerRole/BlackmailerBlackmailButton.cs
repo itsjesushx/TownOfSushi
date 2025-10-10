@@ -7,7 +7,7 @@ public sealed class BlackmailerBlackmailButton : TownOfSushiRoleButton<Blackmail
     IAftermathablePlayerButton
 {
     public override string Name => "Blackmail";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Impostor;
     public override float Cooldown => OptionGroupSingleton<BlackmailerOptions>.Instance.BlackmailCooldown;
     public override int MaxUses => (int)OptionGroupSingleton<BlackmailerOptions>.Instance.MaxBlackmails;

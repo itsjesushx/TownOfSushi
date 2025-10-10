@@ -8,7 +8,7 @@ namespace TownOfSushi.Roles.Crewmate;
 public sealed class TrackerTrackButton : TownOfSushiRoleButton<TrackerTOSRole, PlayerControl>
 {
     public override string Name => "Track";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Tracker;
     public override float Cooldown => OptionGroupSingleton<TrackerOptions>.Instance.TrackCooldown + MapCooldown;
     public override int MaxUses => (int)OptionGroupSingleton<TrackerOptions>.Instance.MaxTracks;

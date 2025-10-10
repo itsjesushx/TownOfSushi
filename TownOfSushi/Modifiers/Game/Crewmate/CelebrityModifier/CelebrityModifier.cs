@@ -117,7 +117,7 @@ public sealed class CelebrityModifier : TOSGameModifier, IWikiDiscoverable
             case PhantomTOSRole:
                 cod = "spooked";
                 break;
-            case ViperRole:
+            case PoisonerRole:
                 cod = "poisoned";
                 break;
         }
@@ -135,12 +135,12 @@ public sealed class CelebrityModifier : TOSGameModifier, IWikiDiscoverable
         if (source == player)
         {
             celeb.DeathMessage =
-                $"The Celebrity, {player.GetDefaultAppearance().PlayerName}, was killed! Location: {celeb.StoredRoom}, Death: By Suicide, Time: ";
+                $"The &Celebrity, {player.GetDefaultAppearance().PlayerName}, was killed! Location: {celeb.StoredRoom}, Death: By Suicide, Time: ";
         }
         else
         {
             celeb.DeathMessage =
-                $"The Celebrity, {player.GetDefaultAppearance().PlayerName}, was {cod}! Location: {celeb.StoredRoom}, Death: By the #{role.NiceName.ToLowerInvariant().Replace(" ", "-")}, Time: ";
+                $"The &Celebrity, {player.GetDefaultAppearance().PlayerName}, was {cod}! Location: {celeb.StoredRoom}, Death: By the #{role.NiceName.ToLowerInvariant().Replace(" ", "-")}, Time: ";
         }
     }
 

@@ -14,6 +14,7 @@ namespace TownOfSushi.Roles.Crewmate;
 
 public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCrewRole, IWikiDiscoverable
 {
+    [HideFromIl2Cpp]
     public PlayerVoteArea? ProsecuteButton { get; private set; }
     public bool HasProsecuted { get; private set; }
     public byte ProsecuteVictim { get; set; } = byte.MaxValue;

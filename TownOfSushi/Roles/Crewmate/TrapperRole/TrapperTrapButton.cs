@@ -7,7 +7,7 @@ namespace TownOfSushi.Roles.Crewmate;
 public sealed class TrapperTrapButton : TownOfSushiRoleButton<TrapperRole>
 {
     public override string Name => "Trap";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Trapper;
     public override float Cooldown => OptionGroupSingleton<TrapperOptions>.Instance.TrapCooldown + MapCooldown;
     public override int MaxUses => (int)OptionGroupSingleton<TrapperOptions>.Instance.MaxTraps;

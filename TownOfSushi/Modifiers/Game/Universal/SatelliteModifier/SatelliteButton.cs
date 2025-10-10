@@ -9,7 +9,7 @@ namespace TownOfSushi.Modifiers.Game.Universal;
 public sealed class SatelliteButton : TownOfSushiButton
 {
     public override string Name => "Broadcast";
-    public override string Keybind => Keybinds.ModifierAction;
+    public override BaseKeybind Keybind => Keybinds.ModifierAction;
     public override Color TextOutlineColor => TownOfSushiColors.Satellite;
     public override float Cooldown => OptionGroupSingleton<SatelliteOptions>.Instance.Cooldown + MapCooldown;
     public override int MaxUses => (int)OptionGroupSingleton<SatelliteOptions>.Instance.MaxNumCast;
