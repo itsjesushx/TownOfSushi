@@ -1,6 +1,10 @@
 <Project>
     <ItemGroup>
+<<<<<<< HEAD
         <PackageReference Include="AllOfUs.MiraAPI" Version="0.3.0" />
+=======
+        <PackageReference Include="AllOfUs.MiraAPI" Version="0.2.1-ci.660" />
+>>>>>>> 0e5bb6909e0aa580b894961d6a1f9c14952c39d4
         <PackageReference Include="Reactor" Version="2.3.1" />
         <PackageReference Include="BepInEx.Unity.IL2CPP" Version="6.0.0-be.735" Private="false" ExcludeAssets="runtime;native" />
         <PackageReference Include="AmongUs.GameLibs.Steam" Version="2025.9.9" PrivateAssets="all" />
