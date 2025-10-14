@@ -56,13 +56,13 @@ public static class PlayerJoinPatch
             }
 
             var title =
-                $"<color=#8BFDFD>System (Toggleable In Options)</color>\n<size=62%>{factionText}{GameHistory.EndGameSummary}</size>";
+                $"<color=#8BFDFD>Automated Message (Toggleable In Options)</color>\n<size=62%>{factionText}{GameHistory.EndGameSummary}</size>";
             MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, msg);
         }
 
         if (!SentOnce && TownOfSushiPlugin.ShowWelcomeMessage.Value)
         {
-            var name = "<color=#8BFDFD>System</color>";
+            var name = "<color=#8BFDFD>Automated Message</color>";
             var msg =
                 $"Welcome to Town of Sushi v{TownOfSushiPlugin.Version}!\nUse the wiki (the globe icon) to get more info on roles or modifiers, where you can use the searchbar. Otherwise use /help in the chat to get a list of commands.\nYou can also disable this message through your options menu.";
             MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, name, msg, true);

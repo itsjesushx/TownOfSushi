@@ -115,6 +115,15 @@ public static class PlayerRoleTextExtensions
             name += "<color=#7EFBC2> +</color>";
         }
 
+        if ((player.HasModifier<BodyGuardGuardedModifier>(x => x.BodyGuard.AmOwner) &&
+             PlayerControl.LocalPlayer.IsRole<BodyGuardRole>())
+            || (player.HasModifier<BodyGuardGuardedModifier>() &&
+                ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !hidden)
+                 || (player.AmOwner && player.TryGetModifier<BodyGuardGuardedModifier>(out var bod) && bod.VisibleSymbol))))
+        {
+            name += "<color=#0D4D33> [+]</color>";
+        }
+
         if ((player.HasModifier<MonarchKnightedModifier>(x => x.Monarch.AmOwner) &&
              PlayerControl.LocalPlayer.IsRole<MonarchRole>())
             || (player.HasModifier<MonarchKnightedModifier>() &&

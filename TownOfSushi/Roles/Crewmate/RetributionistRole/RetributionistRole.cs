@@ -22,7 +22,7 @@ public sealed class RetributionistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), IT
     public string RoleLongDescription => "Revive dead crewmates in groups";
     public Color RoleColor => TownOfSushiColors.Retributionist;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
-    public RoleAlignment RoleAlignment => RoleAlignment.CrewmateProtective;
+    public RoleAlignment RoleAlignment => RoleAlignment.CrewmateSupport;
 
     public CustomRoleConfiguration Configuration => new(this)
     {

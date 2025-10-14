@@ -57,16 +57,17 @@
 - [Engineer](#engineer)  
 - [Vigilante](#vigilante)  
 - [Oracle](#oracle)  
-- [Coroner](#coroner)  
+- [Inspector](#inspector)  
 - [Mystic](#mystic)  
 - [Veteran](#veteran)  
 - [Medic](#medic)  
 - [Imitator](#imitator)  
 - [Detective](#detective)
-- [Coroner](#coroner)
+- [Inspector](#inspector)
 - [Spy](#spy)
 - [Tracker](#tracker)  
-- [Lookout](#lookout)  
+- [Lookout](#lookout)
+- [BodyGuard](#bodyGuard)
 - [Trapper](#trapper)  
 - [Seer](#seer)  
 - [Deputy](#deputy)  
@@ -247,23 +248,23 @@ Delete these files and you're good to go!
 -----------------------
 # Roles
 # Crewmate Roles
-## Coroner
+## Inspector
 ### **Team: Crewmates**
-The Coroner can inspect bodies and then examine players.\
-The Coroner must first find a body and inspect it.\
-During the same or following rounds the Coroner can then examine players to see if they were the killer.\
+The Inspector can inspect bodies and then examine players.\
+The Inspector must first find a body and inspect it.\
+During the same or following rounds the Inspector can then examine players to see if they were the killer.\
 If the examined player is the killer they will receive a red flash, else the flash will be green.\
-If the killer of the inspected player dies, the following round the examine button will disable indicating to the Coroner the killer is dead.
+If the killer of the inspected player dies, the following round the examine button will disable indicating to the Inspector the killer is dead.
 
 ### Game Options
 | Name | Description | Type | Default |
 |----------|:-------------:|:------:|:------:|
-| Coroner Chance | The percentage probability of the Coroner appearing | Percentage | 0% |
-| Examine Cooldown | The cooldown of the Coroner's Examine button | Time | 25s |
-| Show Coroner Reports | Whether the Coroner should get information when reporting a body | Toggle | True |
-| Time Where Coroner Reports Will Have Role | If a body has been dead for shorter than this amount, the Coroner's report will contain the killer's role | Time | 15s |
-| Time Where Coroner Reports Will Have Faction | If a body has been dead for shorter than this amount, the Coroner's report will contain the killer's faction | Time | 30s |
-| Can Detect Last Killer | Whether the Coroner can also detect the last player who killed (resets on round start) | Toggle | False |
+| Inspector Chance | The percentage probability of the Inspector appearing | Percentage | 0% |
+| Examine Cooldown | The cooldown of the Inspector's Examine button | Time | 25s |
+| Show Inspector Reports | Whether the Inspector should get information when reporting a body | Toggle | True |
+| Time Where Inspector Reports Will Have Role | If a body has been dead for shorter than this amount, the Inspector's report will contain the killer's role | Time | 15s |
+| Time Where Inspector Reports Will Have Faction | If a body has been dead for shorter than this amount, the Inspector's report will contain the killer's faction | Time | 30s |
+| Can Detect Last Killer | Whether the Inspector can also detect the last player who killed (resets on round start) | Toggle | False |
 
 -----------------------
 ## Lookout
@@ -476,7 +477,22 @@ If the Fortified person gets a kill attempt, they will kill the attemper.
 | Name | Description | Type | Default |
 |----------|:-------------:|:------:|:------:|
 | Crusader | The percentage probability of the Crusader appearing | Percentage | 0% |
-| Fortify Cooldown | The cooldown of the Crusader's Fortify button | Time | 10s |
+| Show Fortify | Who sees the fortified player | Option | Crusader |
+-----------------------
+
+## BodyGuard
+### **Team: Crewmates**
+The BodyGuard is a Crewmate that can guard other players.\
+BodyGuarded players cannot be interacted with.\
+If someone tries to interact with a BodyGuarded player,\
+Both the BodyGuard and the interactor receive an alert.\
+If the BodyGuarded person gets a kill attempt, they will kill the BodyGuard instead.
+
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| BodyGuard | The percentage probability of the BodyGuard appearing | Percentage | 0% |
+| Show BodyGuard | Who sees the BodyGuarded player | Option | BodyGuard |
 -----------------------
 
 ## Engineer

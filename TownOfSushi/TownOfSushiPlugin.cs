@@ -91,9 +91,9 @@ public partial class TownOfSushiPlugin : BasePlugin, IMiraPlugin
         IL2CPPChainloader.Instance.Finished +=
             ModNewsFetcher.CheckForNews; // Checks for mod announcements after everything is loaded to avoid Epic Games crashing
 
-        var path = Path.GetDirectoryName(Assembly.GetAssembly(typeof(TownOfSushiPlugin))!.Location) + "\\touhats.catalog";
+        var path = Path.GetDirectoryName(Assembly.GetAssembly(typeof(TownOfSushiPlugin))!.Location) + "\\toshats.catalog";
         AddressablesLoader.RegisterCatalog(path);
-        AddressablesLoader.RegisterHats("touhats");
+        AddressablesLoader.RegisterHats("toshats");
 
         ClassInjector.RegisterTypeInIl2Cpp<Debugger>();
         ClassInjector.RegisterTypeInIl2Cpp<Component>();

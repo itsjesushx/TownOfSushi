@@ -9,7 +9,7 @@ public sealed class SeerRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushi
     public string RoleName => "Seer";
     public string RoleDescription => "Check the faction of 2 players";
     public string RoleLongDescription => "Check the faction of 2 players to see if they match";
-    public Color RoleColor => TownOfSushiColors.Detective;
+    public Color RoleColor => TownOfSushiColors.Seer;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateInvestigative;
     public bool InvestigatedFirst { get; set; }
