@@ -12,6 +12,9 @@ public static class TOSCrewAssets
     public static LoadableAsset<Sprite> InspectSprite { get; } =
         new LoadableResourceAsset($"{ButtonPath}.InspectButton.png");
 
+    public static LoadableAsset<Sprite> GuardSprite { get; } =
+        new LoadableResourceAsset($"{ButtonPath}.GuardButton.png");
+
     public static LoadableAsset<Sprite> ExamineSprite { get; } =
         new LoadableResourceAsset($"{ButtonPath}.ExamineButton.png");
 

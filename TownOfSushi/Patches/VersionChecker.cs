@@ -1,4 +1,4 @@
-using System.Text.Json;
+/*using System.Text.Json;
 using HarmonyLib;
 using Twitch;
 using UnityEngine;
@@ -98,4 +98,4 @@ public static class TextBoxPatch
             Application.Quit();
         }
     }
-}
+}*/

@@ -1305,9 +1305,13 @@ The Saboteur is an Impostor with a passive sabotage cooldown reduction.
 |----------|:-------------:|:------:|:------:|
 | Camouflaged Comms | Whether everyone becomes camouflaged when Comms are sabotaged | Toggle | False |
 | Impostors can see the roles of their team | Whether Impostors are able to see which Impostor roles their teammates have | Toggle | False |
+| Impostors don't know each other | Whether Impostors are able to see their teammates | Toggle | False |
+| Impostors have a private meeting chat | Whether Impostors are able to see chat with their teammates mid meeting privately | Toggle | False |
+| Vampires have a private meeting chat | Whether Vampires are able to see chat with their teammates mid meeting privately | Toggle | False |
 | Dead can see everyone's roles and Votes | Whether dead players are able to see the roles and votes of everyone else | Toggle | False |
 | Game Start Cooldowns | The cooldown for all roles at the start of the game | Time | 10s |
 | Parallel Medbay Scans | Whether players have to wait for others to scan | Toggle | False |
+| Disable Medbay Scan Walk | Whether the medbay animation of the scan task will be visible or not | No / Emergency / Always | No |
 | Disable Meeting Skip Button | Whether the meeting button is disabled | No / Emergency / Always | No |
 | First Death Shield Next Game | Whether the first player to die gets a shield for the first round next game | Toggle | False |
 
@@ -1334,6 +1338,7 @@ If they guess wrong, they die instead.
 | Number of Neutral Killing Assassins | How many Neutral Killers can Assassinate | Number | 1 |
 | Amnesiac Turned Impostor Can Assassinate | Whether former Amnesiacs now Impostor can Assassinate | Toggle | False |
 | Amnesiac Turned Neutral Killing Can Assassinate | Whether former Amnesiacs now Neutral Killers can Assassinate | Toggle | False |
+| Thief Can Assassinate | Whether former Thiefs now Killers can Assassinate | Toggle | False |
 | Assassin Kill | The number of kill the Assassin can do with his ability | Number | 1 |
 | Assassin Guess Crewmate | Whether the Assassin can Guess "Crewmate" | Toggle | False |
 | Assassin Multiple Kill  | Whether the Assassin can kill more than once per meeting | Toggle | False |
