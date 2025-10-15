@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using MiraAPI.LocalSettings;
+using UnityEngine;
 
 namespace TownOfSushi;
 
@@ -6,7 +7,7 @@ public static class TownOfSushiColors
 {
     public static Color Inquisitor = new(0.85f, 0.26f, 0.57f, 1f);
 
-    public static bool UseBasic { get; set; } = TownOfSushiPlugin.UseCrewmateTeamColor.Value;
+    public static bool UseBasic { get; set; } = LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.UseCrewmateTeamColorToggle.Value;
 
     // Crew Colors
     public static Color Crewmate => Palette.CrewmateRoleBlue;

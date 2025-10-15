@@ -1,4 +1,5 @@
 using MiraAPI.Events;
+using MiraAPI.LocalSettings;
 using TownOfSushi.Events.TOSEvents;
 using TownOfSushi.Modifiers;
 using TownOfSushi.Modules;
@@ -19,7 +20,7 @@ public sealed class BodyGuardGuardedModifier(PlayerControl BodyGuard) : BaseShie
         get
         {
             var showFort = OptionGroupSingleton<BodyGuardOptions>.Instance.ShowGuarded;
-            return !TownOfSushiPlugin.ShowShieldHud.Value || showFort is BGProtectOptions.BodyGuard;
+            return !LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.ShowShieldHudToggle.Value || showFort is BGProtectOptions.BodyGuard;
         }
     }
 

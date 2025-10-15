@@ -1,4 +1,5 @@
 using HarmonyLib;
+using MiraAPI.LocalSettings;
 using TMPro;
 using UnityEngine;
 
@@ -14,7 +15,7 @@ public static class DarkModePatches
     {
         public static void Postfix(ChatBubble __instance)
         {
-            if (!TownOfSushiPlugin.EnableDarkMode.Value)
+            if (!LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.EnableDarkMode.Value)
             {
                 return;
             }
@@ -41,7 +42,7 @@ public static class DarkModePatches
     {
         public static void Postfix(ChatController __instance)
         {
-            if (!TownOfSushiPlugin.EnableDarkMode.Value)
+            if (!LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.EnableDarkMode.Value)
             {
                 return;
             }
@@ -55,7 +56,7 @@ public static class DarkModePatches
     {
         public static void Postfix(FreeChatInputField __instance)
         {
-            if (!TownOfSushiPlugin.EnableDarkMode.Value)
+            if (!LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.EnableDarkMode.Value)
             {
                 return;
             }
@@ -75,7 +76,7 @@ public static class DarkModePatches
     {
         public static void Postfix(MeetingHud __instance)
         {
-            if (!TownOfSushiPlugin.EnableDarkMode.Value)
+            if (!LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.EnableDarkMode.Value)
             {
                 return;
             }

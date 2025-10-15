@@ -13,54 +13,33 @@ public sealed class AdministratorOptions : AbstractOptionGroup<AdministratorModi
     [ModdedNumberOption("Administrator Amount", 0, 5)]
     public float AdministratorAmount { get; set; } = 0;
 
-    public ModdedNumberOption AdministratorChance { get; } =
-        new("Administrator Chance", 50f, 0, 100f, 10f, MiraNumberSuffixes.Percent)
-        {
-            Visible = () => OptionGroupSingleton<AdministratorOptions>.Instance.AdministratorAmount > 0
-        };
+    [ModdedNumberOption("Administrator Chance", 0, 100, 10f, MiraNumberSuffixes.Percent)]
+    public float AdministratorChance { get; set; } = 50f;
 
     [ModdedEnumOption("Who Sees Dead Bodies On Admin", typeof(AdminDeadPlayers),
         ["Nobody", "Administrator", "Everyone But Administrator", "Everyone"])]
     public AdminDeadPlayers WhoSeesDead { get; set; } = AdminDeadPlayers.Nobody;
 
-    [ModdedEnumOption("Allow Portable Admin Table For", typeof(PortableAdmin),
-        ["Role", "Modifier", "Role & Modifier", "Disabled"])]
-    public PortableAdmin HasPortableAdmin { get; set; } = PortableAdmin.Both;
+    [ModdedToggleOption("Administrator Has Portable Admin")]
+    public bool HasPortableAdmin { get; set; } = false;
 
-    public ModdedToggleOption MoveWithMenu { get; } = new("Move While Using Portable Admin", true)
-    {
-        Visible = () => OptionGroupSingleton<AdministratorOptions>.Instance.HasPortableAdmin is not PortableAdmin.None
-    };
+    [ModdedToggleOption("Move While Using Portable Admin")]
+    public bool MoveWithMenu { get; set; } = false;
 
-    public ModdedNumberOption StartingCharge { get; } =
-        new("Starting Charge", 20f, 0f, 30f, 2.5f, MiraNumberSuffixes.Seconds)
-        {
-            Visible = () => OptionGroupSingleton<AdministratorOptions>.Instance.HasPortableAdmin is not PortableAdmin.None
-        };
+    [ModdedNumberOption("Starting Charge", 20f, 30f, 2.5f, MiraNumberSuffixes.Seconds)]
+    public float StartingCharge { get; set; } = 20f;
 
-    public ModdedNumberOption RoundCharge { get; } =
-        new("Battery Charged Each Round", 15f, 0f, 30f, 2.5f, MiraNumberSuffixes.Seconds)
-        {
-            Visible = () => OptionGroupSingleton<AdministratorOptions>.Instance.HasPortableAdmin is not PortableAdmin.None
-        };
+    [ModdedNumberOption("Battery Charged Each Round", 15f, 30f, 2.5f, MiraNumberSuffixes.Seconds)]
+    public float RoundCharge { get; set; } = 15f;
 
-    public ModdedNumberOption TaskCharge { get; } =
-        new("Battery Charged Per Task", 10f, 0f, 30f, 2.5f, MiraNumberSuffixes.Seconds)
-        {
-            Visible = () => OptionGroupSingleton<AdministratorOptions>.Instance.HasPortableAdmin is not PortableAdmin.None
-        };
+    [ModdedNumberOption("Battery Charged Per Task", 10f, 30f, 2.5f, MiraNumberSuffixes.Seconds)]
+    public float TaskCharge { get; set; } = 10f;
 
-    public ModdedNumberOption DisplayCooldown { get; } = new("Portable Admin Display Cooldown", 15f, 0f, 30f, 5f,
-        MiraNumberSuffixes.Seconds)
-    {
-        Visible = () => OptionGroupSingleton<AdministratorOptions>.Instance.HasPortableAdmin is not PortableAdmin.None
-    };
+    [ModdedNumberOption("Portable Admin Display Cooldown", 15f, 30f, 5f, MiraNumberSuffixes.Seconds)]
+    public float DisplayCooldown { get; set; } = 15f;
 
-    public ModdedNumberOption DisplayDuration { get; } = new("Portable Admin Display Duration", 15f, 0f, 30f, 5f,
-        MiraNumberSuffixes.Seconds, zeroInfinity: true)
-    {
-        Visible = () => OptionGroupSingleton<AdministratorOptions>.Instance.HasPortableAdmin is not PortableAdmin.None
-    };
+    [ModdedNumberOption("Portable Admin Display Duration", 15f, 30f, 5f, MiraNumberSuffixes.Seconds, zeroInfinity: true)]
+    public float DisplayDuration { get; set; } = 15f;
 }
 
 public enum PortableAdmin

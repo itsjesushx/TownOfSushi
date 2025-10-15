@@ -240,23 +240,23 @@ public static class MiscUtils
         {
             if (localizedName.Contains("Crewmate"))
             {
-                localizedName = $"<color=#68ACF4>{localizedName}";
+                localizedName = $" <color=#68ACF4>{localizedName}";
             }
             else if (localizedName.Contains("Impostor"))
             {
-                localizedName = $"<color=#D63F42>{localizedName}";
+                localizedName = $" <color=#D63F42>{localizedName}";
             }
             else if (localizedName.Contains("Neutral"))
             {
-                localizedName = $"<color=#8A8A8A>{localizedName}";
+                localizedName = $" <color=#8A8A8A>{localizedName}";
             }
             else if (localizedName.Contains("Game"))
             {
-                localizedName = $"<color=#888888>{localizedName}";
+                localizedName = $" <color=#888888>{localizedName}";
             }
             else
             {
-                localizedName = $"<color=#FFFFFF>{localizedName}";
+                localizedName = $" <color=#FFFFFF>{localizedName}";
             }
 
             localizedName += "</color>";
@@ -876,7 +876,7 @@ public static class MiscUtils
             foreach (var alignment in alignments)
             {
                 var roleAlignment = alignment;
-                if (customRole.RoleOptionsGroup.Name.Replace(" Roles", "") == roleAlignment.ToDisplayString())
+                if (customRole.RoleOptionsGroup.Name.Replace(" Roles", " ") == roleAlignment.ToDisplayString())
                 {
                     return roleAlignment;
                 }

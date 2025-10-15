@@ -13,7 +13,7 @@ $@"<color=#B2FEFE>TownOfSushi</color> v{TownOfSushiPlugin.Version}{TownOfSushiPl
         public static string MainScreenText =
     $@"Created by <color=#B2FEFE>Jesushi</color> with help of <color=#B2FEFE>50IQ</color>
 <size=90%>Emotionally Helped by <color=#B2FEFE>döll</color>
-Helped by <color=#B2FEFE>Cake</color>, <color=#B2FEFE>AlchlcDvl</color>
+Beta testing help by <color=#B2FEFE>Cake</color>
 Originally Coded by <color=#B2FEFE>AU-Avengers</color>";
 
         [HarmonyPatch(typeof(PingTracker), nameof(PingTracker.Update))]

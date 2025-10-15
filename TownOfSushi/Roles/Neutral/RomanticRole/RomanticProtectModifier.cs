@@ -3,6 +3,7 @@ using TownOfSushi.Events.TOSEvents;
 using TownOfSushi.Options;
 using TownOfSushi.Modifiers;
 using UnityEngine;
+using MiraAPI.LocalSettings;
 
 namespace TownOfSushi.Roles.Neutral;
 
@@ -22,7 +23,7 @@ public sealed class RomanticProtectModifier(PlayerControl romantic) : BaseShield
             var showProtectEveryone = showProtect == RomanticProtectOptions.Everyone;
             var showProtectSelf = PlayerControl.LocalPlayer.PlayerId == Player.PlayerId &&
                 showProtect is RomanticProtectOptions.SelfAndRomantic;
-            return !TownOfSushiPlugin.ShowShieldHud.Value && (!showProtectEveryone || !showProtectSelf);
+            return !LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.ShowShieldHudToggle.Value && (!showProtectEveryone || !showProtectSelf);
         }
     }
 

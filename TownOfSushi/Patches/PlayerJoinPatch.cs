@@ -1,5 +1,6 @@
 using System.Collections;
 using HarmonyLib;
+using MiraAPI.LocalSettings;
 using Reactor.Utilities;
 using TownOfSushi.Modules;
 using UnityEngine;
@@ -46,7 +47,7 @@ public static class PlayerJoinPatch
         TOSRoleManagerPatches.ReplaceRoleManager = false;
 
         var time = 0f;
-        if (GameHistory.EndGameSummary != string.Empty && TownOfSushiPlugin.ShowSummaryMessage.Value)
+        if (GameHistory.EndGameSummary != string.Empty && LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.ShowSummaryMessageToggle.Value)
         {
             var factionText = string.Empty;
             var msg = string.Empty;
@@ -60,7 +61,7 @@ public static class PlayerJoinPatch
             MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, msg);
         }
 
-        if (!SentOnce && TownOfSushiPlugin.ShowWelcomeMessage.Value)
+        if (!SentOnce && LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.ShowWelcomeMessageToggle.Value)
         {
             var name = "<color=#8BFDFD>Automated Message</color>";
             var msg =
@@ -68,7 +69,7 @@ public static class PlayerJoinPatch
             MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, name, msg, true);
             time = 5f;
         }
-        else if (!TownOfSushiPlugin.ShowWelcomeMessage.Value)
+        else if (!LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.ShowWelcomeMessageToggle.Value)
         {
             time = 2.48f;
         }

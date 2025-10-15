@@ -197,6 +197,13 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
                 Color.white, new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Amnesiac.LoadAsset());
             notif1.Text.SetOutlineThickness(0.35f);
         }
+        else
+        {
+            var notif1 = Helpers.CreateAndShowNotification(
+                MiscUtils.ColorString(TownOfSushiColors.Amnesiac, $"<b>The Amnesiac has remembered a role from the death!</color>.</b>"),
+                Color.white, new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Amnesiac.LoadAsset());
+            notif1.Text.SetOutlineThickness(0.35f);
+        }
 
         if (roleWhenAlive is not VampireRole && (roleWhenAlive.MaxCount <= 1 || (roleWhenAlive.MaxCount <= PlayerControl.AllPlayerControls
                 .ToArray().Count(x => x.Data.Role.Role == roleWhenAlive.Role))))

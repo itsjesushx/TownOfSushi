@@ -95,6 +95,7 @@ public class LocalizedLocalSliderSetting : LocalSliderSetting
         newSlider.Title.GetComponent<TextTranslatorTMP>().Destroy();
         newSlider.gameObject.SetActive(true);
         newSlider.Bar.color = Tab!.TabAppearance.SliderColor;
+        TownOfSushiLocalSettings.LocalizedSliders.TryAdd(this, LocaleKey);
         SliderObject = newSlider;
 
         if (order == 2)

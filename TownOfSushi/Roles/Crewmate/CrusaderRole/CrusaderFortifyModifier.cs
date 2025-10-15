@@ -23,7 +23,7 @@ public sealed class CrusaderFortifiedModifier(PlayerControl Crusader) : BaseShie
         get
         {
             var showFort = OptionGroupSingleton<CrusaderOptions>.Instance.ShowFortified;
-            return !TownOfSushiPlugin.ShowShieldHud.Value || showFort is FortifyOptions.Crusader;
+            return !MiraAPI.LocalSettings.LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.ShowShieldHudToggle.Value || showFort is FortifyOptions.Crusader;
         }
     }
 

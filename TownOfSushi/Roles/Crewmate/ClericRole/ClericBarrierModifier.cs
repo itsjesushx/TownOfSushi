@@ -1,4 +1,5 @@
 ﻿using MiraAPI.Events;
+using MiraAPI.LocalSettings;
 using PowerTools;
 using Reactor.Utilities.Extensions;
 using TownOfSushi.Events.TOSEvents;
@@ -24,7 +25,7 @@ public sealed class ClericBarrierModifier(PlayerControl cleric) : BaseShieldModi
         get
         {
             var showBarrier = OptionGroupSingleton<ClericOptions>.Instance.ShowBarriered;
-            return !TownOfSushiPlugin.ShowShieldHud.Value || (showBarrier is BarrierOptions.Cleric);
+            return !LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.ShowShieldHudToggle.Value || (showBarrier is BarrierOptions.Cleric);
         }
     }
 

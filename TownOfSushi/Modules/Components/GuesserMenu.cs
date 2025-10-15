@@ -1,6 +1,7 @@
 ﻿using AmongUs.GameOptions;
 using HarmonyLib;
 using Il2CppInterop.Runtime.Attributes;
+using MiraAPI.LocalSettings;
 
 using MiraAPI.Patches.Stubs;
 
@@ -154,7 +155,7 @@ public sealed class GuesserMenu(IntPtr cppPtr) : Minigame(cppPtr)
         }
         
         var newRoleList = roles.OrderBy(x =>
-            TownOfSushiPlugin.SortGuessingByAlignment.Value
+            LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.SortGuessingByAlignmentToggle.Value
                 ? x.GetRoleAlignment().ToDisplayString() + x.NiceName
                 : x.NiceName).ToList();
 

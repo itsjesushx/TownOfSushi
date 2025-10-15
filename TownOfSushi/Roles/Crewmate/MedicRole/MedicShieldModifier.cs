@@ -1,4 +1,5 @@
 ﻿using MiraAPI.Events;
+using MiraAPI.LocalSettings;
 using Reactor.Utilities.Extensions;
 using TownOfSushi.Events.TOSEvents;
 using TownOfSushi.Modifiers;
@@ -23,7 +24,7 @@ public sealed class MedicShieldModifier(PlayerControl medic) : BaseShieldModifie
         get
         {
             var showShielded = OptionGroupSingleton<MedicOptions>.Instance.ShowShielded;
-            return !TownOfSushiPlugin.ShowShieldHud.Value || (showShielded is MedicOption.Medic or MedicOption.Nobody);
+            return !LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.ShowShieldHudToggle.Value || (showShielded is MedicOption.Medic or MedicOption.Nobody);
         }
     }
 

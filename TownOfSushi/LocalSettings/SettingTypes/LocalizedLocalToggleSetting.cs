@@ -35,6 +35,7 @@ public class LocalizedLocalToggleSetting : LocalToggleSetting
         var rollover = toggleObject.GetComponent<ButtonRolloverHandler>();
         toggleObject.gameObject.SetActive(true);
         var localeName = Name;
+        TownOfSushiLocalSettings.LocalizedToggles.TryAdd(toggleObject, localeName);
 
         if (last && order == 1)
         {

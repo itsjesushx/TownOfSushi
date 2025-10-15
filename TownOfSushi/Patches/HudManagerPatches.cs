@@ -16,6 +16,7 @@ using UnityEngine.UI;
 using Color = UnityEngine.Color;
 using Object = UnityEngine.Object;
 using TownOfSushi.Roles.Impostor.Venerer;
+using MiraAPI.LocalSettings;
 
 namespace TownOfSushi.Patches;
 
@@ -39,7 +40,7 @@ public static class HudManagerPatches
         }
 
         yield return new WaitForSeconds(0.01f);
-        ResizeUI(TownOfSushiPlugin.ButtonUIFactor.Value);
+        ResizeUI(LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.ButtonUIFactorSlider.Value);
     }
 
     public static void ResizeUI(float scaleFactor)

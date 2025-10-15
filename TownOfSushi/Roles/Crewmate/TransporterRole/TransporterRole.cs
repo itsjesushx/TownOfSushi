@@ -2,6 +2,7 @@
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.Events;
 using MiraAPI.Hud;
+using MiraAPI.LocalSettings;
 using MiraAPI.Networking;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
@@ -239,7 +240,7 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
                 }
             }
 
-            TownOfSushiColors.UseBasic = TownOfSushiPlugin.UseCrewmateTeamColor.Value;
+            TownOfSushiColors.UseBasic = LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.UseCrewmateTeamColorToggle.Value;
         }
 
         if (play1.AmOwner && t1 is PlayerControl || play2.AmOwner && t2 is PlayerControl)

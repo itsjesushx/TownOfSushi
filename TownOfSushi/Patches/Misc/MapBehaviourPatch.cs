@@ -1,4 +1,5 @@
 using HarmonyLib;
+using MiraAPI.LocalSettings;
 using TownOfSushi.Modules;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -53,7 +54,7 @@ public static class ShowVentsPatch
                 BodyIcons.Clear();
             }
 
-        if (!TownOfSushiPlugin.ShowVents.Value)
+        if (!LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.ShowVentsToggle.Value)
         {
             foreach (var icon in VentIcons.Values.Where(x => x))
             {

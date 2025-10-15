@@ -11,6 +11,6 @@ public static class SaveFilePatches
     [HarmonyPatch(typeof(SettingsData), nameof(SettingsData.FileName), MethodType.Getter)]
     public static void Postfix(ref string __result)
     {
-        __result += "_TOUMira";
+        __result += "_TOS";
     }
 }

@@ -98,7 +98,8 @@
 - [Pestilence](#plaguebearer)  
 - [Executioner](#executioner)  
 - [Romantic](#romantic)  
-- [Amnesiac](#amnesiac)  
+- [Amnesiac](#amnesiac)
+- [Eclipsal](#eclipsal)
 - [Agent](#agent)  
 - [Hitman](#hitman)  
 - [Glitch](#glitch)  
@@ -781,6 +782,23 @@ Else they will kill the bitten player.
 | Maximum Vampires Per Game | The maximum amount of players that can be Vampires | Number | 2 |
 | Can Convert Neutral Benign Roles | Whether Neutral Benign Roles can be turned into Vampires | Toggle | False |
 | Can Convert Neutral Evil Roles | Whether Neutral Evil Roles can be turned into Vampires | Toggle | False |
+
+-----------------------
+## Eclipsal
+### **Team: Neutral (Killing)**
+
+The Eclipsal is a neutral killer role that can make people blind.\
+Blinded people cannot use their abilities or report dead bodies until the effect is gone.
+
+### Game Options
+
+| Name | Description | Type | Default |
+|------|-------------|------|---------|
+| Eclipsal | The percentage probability of the Eclipsal appearing | Percentage | 0% |
+| Blind Cooldown | The cooldown on the Eclipsal's blind button | Time | 30s |
+| Blind Duration | How does the blind effect stay on people | Time | 10s |
+| Eclipsal Can Vent | Toggles the Eclipsal's ability to vent | Toggle | False|
+
 -----------------------
 ## Serial Killer
 ### **Team: Neutral (Killing)**

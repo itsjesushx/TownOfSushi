@@ -1,4 +1,5 @@
 ﻿using MiraAPI.Events;
+using MiraAPI.LocalSettings;
 using TownOfSushi.Events.TOSEvents;
 using TownOfSushi.Modifiers;
 using TownOfSushi.Modules;
@@ -22,7 +23,7 @@ public sealed class GuardianAngelProtectModifier(PlayerControl guardianAngel) : 
         get
         {
             var showProtect = OptionGroupSingleton<GuardianAngelOptions>.Instance.ShowProtect;
-            return !TownOfSushiPlugin.ShowShieldHud.Value || !OptionGroupSingleton<GuardianAngelOptions>.Instance.GATargetKnows || showProtect is ProtectOptions.GA;
+            return !LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.ShowShieldHudToggle.Value || !OptionGroupSingleton<GuardianAngelOptions>.Instance.GATargetKnows || showProtect is ProtectOptions.GA;
         }
     }
 
