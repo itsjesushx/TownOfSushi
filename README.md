@@ -24,7 +24,8 @@
 
 - [Escapist](#escapist)  
 - [Grenadier](#grenadier)  
-- [Janitor](#janitor)  
+- [Janitor](#janitor)
+- [Consigliere](#consigliere)
 - [Morphling](#morphling)  
 - [Venerer](#venerer)  
 - [Miner](#miner)  
@@ -984,12 +985,27 @@ This prevents the blackmailed person from speaking during the next meeting.
 ## Janitor
 ### **Team: Impostors**
 The Janitor is an Impostor that can clean up bodies.\
-Both their Kill and Clean ability have a shared cooldown, meaning they have to choose which one they want to use.
+Depending on settings, both their Kill and Clean ability may have a shared cooldown, meaning they have to choose which one they want to use.
 
 ### Game Options
 | Name | Description | Type | Default |
 |----------|:-------------:|:------:|:------:|
 | Janitor | The percentage probability of the Janitor appearing | Percentage | 0% |
+| Share Cooldowns | Whether the Janitor's abilities reset when using any of them | Toggle | False |
+
+-----------------------
+
+## Consigliere
+### **Team: Impostors**
+The Consigliere is an Impostor that can reveal the roles of any player.\
+Both their Kill and Reveal ability have a shared cooldown, meaning they have to choose which one they want to use.
+
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Consigliere | The percentage probability of the Consigliere appearing | Percentage | 0% |
+| Reveal Cooldown | The cooldown of the Consigliere's Reveal button | Time | 25s |
+| Reveal Delay | The time the Consigliere's has to stay close to the player they want to reveal | Time | 3s |
 
 -----------------------
 

@@ -37,19 +37,19 @@ public sealed class AdministratorModifier : TOSGameModifier, IWikiDiscoverable
         }
 
         CustomButtonSingleton<AdministratorAdminTableModifierButton>.Instance.AvailableCharge =
-            OptionGroupSingleton<AdministratorOptions>.Instance.StartingCharge.Value;
+            OptionGroupSingleton<AdministratorOptions>.Instance.StartingCharge;
     }
 
     public static void OnRoundStart()
     {
         CustomButtonSingleton<AdministratorAdminTableModifierButton>.Instance.AvailableCharge +=
-            OptionGroupSingleton<AdministratorOptions>.Instance.RoundCharge.Value;
+            OptionGroupSingleton<AdministratorOptions>.Instance.RoundCharge;
     }
 
     public static void OnTaskComplete()
     {
         CustomButtonSingleton<AdministratorAdminTableModifierButton>.Instance.AvailableCharge +=
-            OptionGroupSingleton<AdministratorOptions>.Instance.TaskCharge.Value;
+            OptionGroupSingleton<AdministratorOptions>.Instance.TaskCharge;
     }
 
     public override int GetAssignmentChance()

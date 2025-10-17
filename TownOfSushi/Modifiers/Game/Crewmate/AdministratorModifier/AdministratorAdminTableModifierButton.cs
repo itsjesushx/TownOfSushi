@@ -9,8 +9,8 @@ public sealed class AdministratorAdminTableModifierButton : TownOfSushiButton
     public override string Name => "Admin";
     public override BaseKeybind Keybind => Keybinds.ModifierAction;
     public override Color TextOutlineColor => TownOfSushiColors.Administrator;
-    public override float Cooldown => OptionGroupSingleton<AdministratorOptions>.Instance.DisplayCooldown.Value + MapCooldown;
-    public float AvailableCharge { get; set; } = OptionGroupSingleton<AdministratorOptions>.Instance.StartingCharge.Value;
+    public override float Cooldown => OptionGroupSingleton<AdministratorOptions>.Instance.DisplayCooldown + MapCooldown;
+    public float AvailableCharge { get; set; } = OptionGroupSingleton<AdministratorOptions>.Instance.StartingCharge;
     public bool usingPortable { get; set; }
 
     public override float EffectDuration
@@ -22,9 +22,9 @@ public sealed class AdministratorAdminTableModifierButton : TownOfSushiButton
                 return AvailableCharge;
             }
 
-            return AvailableCharge < OptionGroupSingleton<AdministratorOptions>.Instance.DisplayDuration.Value
+            return AvailableCharge < OptionGroupSingleton<AdministratorOptions>.Instance.DisplayDuration
                 ? AvailableCharge
-                : OptionGroupSingleton<AdministratorOptions>.Instance.DisplayDuration.Value;
+                : OptionGroupSingleton<AdministratorOptions>.Instance.DisplayDuration;
         }
     }
 
@@ -87,9 +87,7 @@ public sealed class AdministratorAdminTableModifierButton : TownOfSushiButton
     {
         return PlayerControl.LocalPlayer != null &&
                PlayerControl.LocalPlayer.HasModifier<AdministratorModifier>() &&
-               !PlayerControl.LocalPlayer.Data.IsDead &&
-               OptionGroupSingleton<AdministratorOptions>.Instance.HasPortableAdmin is PortableAdmin.Modifier
-                   or PortableAdmin.Both;
+               !PlayerControl.LocalPlayer.Data.IsDead;
     }
 
     public override bool CanUse()
@@ -102,7 +100,7 @@ public sealed class AdministratorAdminTableModifierButton : TownOfSushiButton
     public override void CreateButton(Transform parent)
     {
         base.CreateButton(parent);
-        AvailableCharge = OptionGroupSingleton<AdministratorOptions>.Instance.StartingCharge.Value;
+        AvailableCharge = OptionGroupSingleton<AdministratorOptions>.Instance.StartingCharge;
         Button!.transform.localPosition =
             new Vector3(Button.transform.localPosition.x, Button.transform.localPosition.y, -150f);
     }

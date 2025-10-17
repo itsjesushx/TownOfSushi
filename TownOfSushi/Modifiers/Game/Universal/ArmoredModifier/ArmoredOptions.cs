@@ -8,7 +8,7 @@ namespace TownOfSushi.Modifiers.Game.Universal
     {
         public override string GroupName => "Armored";
         public override uint GroupPriority => 29;
-        public override Color GroupColor => ArmoredModifier.Color;
+        public override Color GroupColor => TownOfSushiColors.Armored;
         [ModdedNumberOption("Armored Amount", 0, 5)]
         public float ArmoredAmount { get; set; } = 0;
 

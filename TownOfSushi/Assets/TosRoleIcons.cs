@@ -67,6 +67,8 @@ public static class TOSRoleIcons
 
     public static LoadableAsset<Sprite> Pestilence { get; } = new LoadableResourceAsset($"{iconPath}.Pestilence.png");
 
+    public static LoadableAsset<Sprite> Consigliere { get; } = new LoadableResourceAsset($"{iconPath}.Consigliere.png");
+
     public static LoadableAsset<Sprite> SoulCollector { get; } =
         new LoadableResourceAsset($"{iconPath}.SoulCollector.png");
 

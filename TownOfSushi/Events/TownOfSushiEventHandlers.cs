@@ -449,6 +449,10 @@ public static class TownOfSushiEventHandlers
                     var bombButton = CustomButtonSingleton<BomberPlantButton>.Instance;
                     bombButton.ResetCooldownAndOrEffect();
                     break;
+                case ConsigliereRole:
+                    var consigButton = CustomButtonSingleton<ConsigliereRevealButton>.Instance;
+                    consigButton.ResetCooldownAndOrEffect();
+                    break;
                 case JanitorRole:
                     if (OptionGroupSingleton<JanitorOptions>.Instance.ResetCooldowns)
                     {

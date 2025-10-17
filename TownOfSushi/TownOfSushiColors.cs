@@ -95,6 +95,7 @@ public static class TownOfSushiColors
     public static Color Shy => new(1f, 0.7f, 0.8f, 1f);
     public static Color Mini => new(0.8f, 1f, 0.9f, 1f);
     public static Color Camouflaged => Color.gray;
+    public static Color Armored => new(0.58f, 0.53f, 0.32f, 1f);
     public static Color Satellite => new(0f, 0.6f, 0.8f, 1f);
     public static Color Egotist => new(0.4f, 0.6f, 0.4f, 1f);
     public static Color Taskmaster => new(0.58f, 0.84f, 0.93f, 1f);

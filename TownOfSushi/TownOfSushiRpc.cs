@@ -8,6 +8,7 @@ public enum TownOfSushiRpc : uint
     UpdateDeathHandler,
     SetMap,
     ChangeRole,
+    AddReveal,
     PlayerExile,
     SetPos,
     SendLoveChat,

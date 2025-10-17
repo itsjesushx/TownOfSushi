@@ -55,7 +55,7 @@ public enum AbilityType
     WarlockCurseKill,
     BodyGuardProtect,
     DeputyCamp,
-
+    ConsigliereReveal,
     // InspectorExamine,
     // InspectorInspect,
     EngineerFix,

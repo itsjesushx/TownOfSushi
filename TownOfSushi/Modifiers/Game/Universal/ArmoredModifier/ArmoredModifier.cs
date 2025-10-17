@@ -5,11 +5,10 @@ namespace TownOfSushi.Modifiers.Game.Universal;
 public sealed class ArmoredModifier : UniversalGameModifier, IWikiDiscoverable
 {
     public static LoadableAsset<Sprite> Icon { get; } = TOSModifierIcons.Armored;
-    public static Color Color => new(0.58f, 0.53f, 0.32f, 1f);
     public override string ModifierName => "Armored";
     public override LoadableAsset<Sprite>? ModifierIcon => Icon;
     public override ModifierFaction FactionType => ModifierFaction.UniversalUtility;
-    public override Color FreeplayFileColor => Color; // Hex Color = #948851
+    public override Color FreeplayFileColor => TownOfSushiColors.Armored; // Hex Color = #948851
 
     public bool isActive = true;
 

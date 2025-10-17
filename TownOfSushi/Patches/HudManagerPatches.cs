@@ -379,6 +379,7 @@ public static class HudManagerPatches
                     (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow) ||
                     GuardianAngelTOSRole.GASeesRoleVisibilityFlag(player) ||
                     RomanticRole.RomamticSeesRoleVisibilityFlag(player) ||
+                    ConsigliereRole.ConsigliereSeesRoleVisibilityFlag(player) ||
                     SleuthModifier.SleuthVisibilityFlag(player) ||
                     revealMods.Any(x => x.Visible && x.RevealRole))
                 {
@@ -499,6 +500,7 @@ public static class HudManagerPatches
                            ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow) ||
                             GuardianAngelTOSRole.GASeesRoleVisibilityFlag(player) ||
                             RomanticRole.RomamticSeesRoleVisibilityFlag(player) ||
+                            ConsigliereRole.ConsigliereSeesRoleVisibilityFlag(player) ||
                             SleuthModifier.SleuthVisibilityFlag(player) ||
                            revealMods.Any(x => x.Visible && x.RevealRole)))))
                     {
@@ -571,6 +573,7 @@ public static class HudManagerPatches
                     (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && isVisible) ||
                     GuardianAngelTOSRole.GASeesRoleVisibilityFlag(player) ||
                     RomanticRole.RomamticSeesRoleVisibilityFlag(player) ||
+                    ConsigliereRole.ConsigliereSeesRoleVisibilityFlag(player) ||
                     revealMods.Any(x => x.Visible && x.RevealRole))
                 {
                     color = role.TeamColor;
