@@ -80,11 +80,5 @@ public sealed class ToBecomeTraitorModifier : ExcludedGameModifier, IAssignableT
         {
             player.AddModifier<ImpostorAssassinModifier>();
         }
-
-        if (SnitchRole.IsTargetOfSnitch(player))
-        {
-            CustomRoleUtils.GetActiveRolesOfType<SnitchRole>().ToList()
-                .ForEach(snitch => snitch.AddSnitchTraitorArrows());
-        }
     }
 }

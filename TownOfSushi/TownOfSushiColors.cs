@@ -20,7 +20,6 @@ public static class TownOfSushiColors
     public static Color Medic => UseBasic ? Palette.CrewmateBlue : new(0.4f, 0.9f, 0.7f, 1f);
     public static Color Detective => UseBasic ? Palette.CrewmateBlue : new Color(1f, 0.8f, 0.5f, 1f);
     public static Color Administrator => UseBasic ? Palette.CrewmateBlue : new Color(0.8f, 0.64f, 0.8f, 1f);
-    public static Color Snitch => UseBasic ? Palette.CrewmateBlue : new Color(0.83f, 0.69f, 0.22f, 1f);
     public static Color Retributionist => UseBasic ? Palette.CrewmateBlue : new Color(0.4f, 0f, 0f, 1f);
     public static Color Vigilante => UseBasic ? Palette.CrewmateBlue : new Color(1f, 1f, 0.6f, 1f);
     public static Color Veteran => UseBasic ? Palette.CrewmateBlue : new Color(0.6f, 0.5f, 0.25f, 1f);

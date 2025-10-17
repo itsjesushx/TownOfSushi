@@ -42,7 +42,6 @@ public sealed class ImitatorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfS
             TOSCrewAssets.InspectSprite),
         new("Neutral Counterparts",
             $"Amnesiac ⇨ Medic | "
-            + "Exe ⇨ Snitch\n"
             + $"Glitch ⇨ Vigilante | "
             + "GA ⇨ Cleric | "
             + "Inquis ⇨ Oracle\n"

@@ -20,7 +20,6 @@ public static class TOSRoleIcons
     public static LoadableAsset<Sprite> Lookout { get; } = new LoadableResourceAsset($"{iconPath}.Lookout.png");
     public static LoadableAsset<Sprite> Mystic { get; } = new LoadableResourceAsset($"{iconPath}.Mystic.png");
     public static LoadableAsset<Sprite> Detective { get; } = new LoadableResourceAsset($"{iconPath}.Detective.png");
-    public static LoadableAsset<Sprite> Snitch { get; } = new LoadableResourceAsset($"{iconPath}.Snitch.png");
     public static LoadableAsset<Sprite> Administrator { get; } = new LoadableResourceAsset($"{iconPath}.Administrator.png");
     public static LoadableAsset<Sprite> Tracker { get; } = new LoadableResourceAsset($"{iconPath}.Tracker.png");
     public static LoadableAsset<Sprite> Trapper { get; } = new LoadableResourceAsset($"{iconPath}.Trapper.png");
