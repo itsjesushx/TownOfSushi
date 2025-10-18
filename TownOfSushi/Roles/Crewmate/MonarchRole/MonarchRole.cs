@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace TownOfSushi.Roles.Crewmate;
 
-public sealed class MonarchRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
+public sealed class MonarchRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue
 {
     public string RoleName => "Monarch";
     public string RoleDescription => "Knight Players To Help The Crew";
@@ -12,6 +12,7 @@ public sealed class MonarchRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSu
     public Color RoleColor => TownOfSushiColors.Monarch;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateSupport;
+    public MysticClueType MysticHintType => MysticClueType.Perception;
     public CustomRoleConfiguration Configuration => new(this)
     {
         Icon = TOSCrewAssets.KnightSprite,

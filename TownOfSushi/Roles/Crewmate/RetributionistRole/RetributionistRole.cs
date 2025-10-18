@@ -14,11 +14,12 @@ using UnityEngine;
 
 namespace TownOfSushi.Roles.Crewmate;
 
-public sealed class RetributionistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
+public sealed class RetributionistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue
 {
     public override bool IsAffectedByComms => false;
     public string RoleName => "Retributionist";
     public string RoleDescription => "Revive Dead Crewmates";
+    public MysticClueType MysticHintType => MysticClueType.Death;
     public string RoleLongDescription => "Revive dead crewmates in groups";
     public Color RoleColor => TownOfSushiColors.Retributionist;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;

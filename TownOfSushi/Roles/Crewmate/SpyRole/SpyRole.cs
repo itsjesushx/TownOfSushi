@@ -4,11 +4,12 @@ using UnityEngine;
 
 namespace TownOfSushi.Roles.Crewmate;
 
-public sealed class SpyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
+public sealed class SpyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue
 {
     public string RoleName => "Spy";
     public string RoleDescription => "A Crewmate who is seen as an Impostor by the Impostors.";
     public string RoleLongDescription => "Trick the Impostors into trusting you";
+    public MysticClueType MysticHintType => MysticClueType.Trickster;
     public Color RoleColor => TownOfSushiColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateSupport;

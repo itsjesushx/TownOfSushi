@@ -26,7 +26,7 @@ public sealed class HunterStalkButton : TownOfSushiRoleButton<HunterRole, Player
         var notif1 = Helpers.CreateAndShowNotification(
             $"<b>If {Target.Data.PlayerName} uses an ability, you will be able to kill them at any time in the round.</b>",
             Color.white, new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Hunter.LoadAsset());
-        notif1.Text.SetOutlineThickness(0.35f);
+        notif1.AdjustNotification();
 
         Target.RpcAddModifier<HunterStalkedModifier>(PlayerControl.LocalPlayer);
         OverrideName("Stalking");

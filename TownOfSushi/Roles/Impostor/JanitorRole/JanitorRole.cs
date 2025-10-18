@@ -12,7 +12,7 @@ using UnityEngine;
 namespace TownOfSushi.Roles.Impostor;
 
 public sealed class JanitorRole(IntPtr cppPtr)
-    : ImpostorRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant
+    : ImpostorRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant, IMysticClue
 {
     public void FixedUpdate()
     {
@@ -35,6 +35,7 @@ public sealed class JanitorRole(IntPtr cppPtr)
                                          (OptionGroupSingleton<JanitorOptions>.Instance.CleanDelay == 0
                                              ? string.Empty
                                              : "\n<b>You must stay next to the body while cleaning.</b>");
+    public MysticClueType MysticHintType => MysticClueType.Death;
 
     public Color RoleColor => TownOfSushiColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;

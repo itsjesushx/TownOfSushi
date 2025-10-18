@@ -9,12 +9,13 @@ using UnityEngine;
 
 namespace TownOfSushi.Roles.Crewmate;
 
-public sealed class HunterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCrewRole, IWikiDiscoverable
+public sealed class HunterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCrewRole, IWikiDiscoverable, IMysticClue
 {
     public override bool IsAffectedByComms => false;
     [HideFromIl2Cpp]
     public PlayerControl? LastVoted { get; set; }
     [HideFromIl2Cpp] public List<PlayerControl> CaughtPlayers { get; } = [];
+    public MysticClueType MysticHintType => MysticClueType.Hunter;
 
     public string RoleName => "Hunter";
     public string RoleDescription => "Stalk The <color=#FF0000FF>Impostor</color>";

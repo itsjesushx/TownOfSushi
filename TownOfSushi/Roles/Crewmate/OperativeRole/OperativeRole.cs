@@ -5,12 +5,13 @@ using MiraAPI.Hud;
 
 namespace TownOfSushi.Roles.Crewmate;
 
-public sealed class OperativeRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
+public sealed class OperativeRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue
 {
     public override bool IsAffectedByComms => true;
     public string RoleName => "Operative";
     public string RoleDescription => "Acess Admin table and Vitals from anywhere";
     public string RoleLongDescription => "Acess devices around the map from anywhere";
+    public MysticClueType MysticHintType => MysticClueType.Perception;
     public Color RoleColor => TownOfSushiColors.Operative;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateInvestigative;

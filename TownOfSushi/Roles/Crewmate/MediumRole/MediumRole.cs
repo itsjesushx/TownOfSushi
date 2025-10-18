@@ -9,11 +9,13 @@ using UnityEngine;
 
 namespace TownOfSushi.Roles.Crewmate;
 
-public sealed class MediumRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
+public sealed class MediumRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue
 {
     public override bool IsAffectedByComms => false;
 
     [HideFromIl2Cpp] public List<MediatedModifier> MediatedPlayers { get; } = new();
+
+    public MysticClueType MysticHintType => MysticClueType.Death;
 
     public string RoleName => "Medium";
     public string RoleDescription => "Watch The Spooky Ghosts";

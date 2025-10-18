@@ -13,7 +13,7 @@ using Random = System.Random;
 namespace TownOfSushi.Roles.Neutral;
 
 public sealed class PlaguebearerRole(IntPtr cppPtr)
-    : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant
+    : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant, IMysticClue
 {
     public void FixedUpdate()
     {
@@ -48,6 +48,7 @@ public sealed class PlaguebearerRole(IntPtr cppPtr)
     public string RoleDescription => "Infect Everyone To Become <color=#4D4D4DFF>Pestilence</color>";
     public string RoleLongDescription => "Infect everyone to become <color=#4D4D4DFF>Pestilence</color>";
     public Color RoleColor => TownOfSushiColors.Plaguebearer;
+    public MysticClueType MysticHintType => MysticClueType.Fearmonger;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralKilling;
 

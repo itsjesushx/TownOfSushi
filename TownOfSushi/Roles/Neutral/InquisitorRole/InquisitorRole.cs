@@ -14,7 +14,7 @@ using UnityEngine;
 
 namespace TownOfSushi.Roles.Neutral;
 
-public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable,
+public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue,
     IAssignableTargets, ICrewVariant
 {
     public bool CanVanquish { get; set; } = true;
@@ -22,6 +22,7 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
     [HideFromIl2Cpp] public List<PlayerControl> Targets { get; set; } = [];
 
     [HideFromIl2Cpp] public List<RoleBehaviour> TargetRoles { get; set; } = [];
+    public MysticClueType MysticHintType => MysticClueType.Hunter;
 
     public bool TargetsDead { get; set; }
     public int Priority { get; set; } = 5;

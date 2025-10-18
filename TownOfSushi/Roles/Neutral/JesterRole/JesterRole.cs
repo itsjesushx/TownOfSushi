@@ -9,7 +9,7 @@ using UnityEngine;
 namespace TownOfSushi.Roles.Neutral;
 
 public sealed class JesterRole(IntPtr cppPtr)
-    : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant, IGuessable
+    : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant, IGuessable, IMysticClue
 {
     public bool Voted { get; set; }
     public bool AboutToWin { get; set; }
@@ -18,6 +18,7 @@ public sealed class JesterRole(IntPtr cppPtr)
     [HideFromIl2Cpp] public List<byte> Voters { get; } = [];
 
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<PlumberRole>());
+    public MysticClueType MysticHintType => MysticClueType.Trickster;
     public string RoleName => "Jester";
     public string RoleDescription => "Get voted out!";
     public string RoleLongDescription => "Be as suspicious as possible, and get voted out!";

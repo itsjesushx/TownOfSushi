@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace TownOfSushi.Roles.Crewmate;
 
-public sealed class VeteranRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCrewRole, IWikiDiscoverable
+public sealed class VeteranRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCrewRole, IWikiDiscoverable, IMysticClue
 {
     public override bool IsAffectedByComms => false;
 
@@ -14,6 +14,7 @@ public sealed class VeteranRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCrewR
     public string RoleName => "Veteran";
     public string RoleDescription => "Alert To Kill Anyone Who Interacts With You";
     public string RoleLongDescription => "Alert to kill whoever who interacts with you.";
+    public MysticClueType MysticHintType => MysticClueType.Trickster;
     public Color RoleColor => TownOfSushiColors.Veteran;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateKilling;

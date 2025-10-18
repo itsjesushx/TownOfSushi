@@ -34,9 +34,7 @@ public sealed class SeerRevealButton : TownOfSushiRoleButton<SeerRole, PlayerCon
             var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Seer,
             $"<b>You selected {Target.Data.PlayerName} as your <color=green>first target.</b>"),
             Color.white, spr: TOSModifierIcons.Aftermath.LoadAsset());
-
-            notif1.Text.SetOutlineThickness(0.35f);
-            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);    
+            notif1.AdjustNotification();    
         }
         else if (!PlayerControl.AllPlayerControls.ToArray().Any(p => !p.HasDied() && p.HasModifier<SeerSecondCheckModifier>()))
         {
@@ -45,9 +43,7 @@ public sealed class SeerRevealButton : TownOfSushiRoleButton<SeerRole, PlayerCon
             var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Seer,
                 $"<b>You selected {Target.Data.PlayerName} as your <color=green>second target.</b>"),
                 Color.white, spr: TOSModifierIcons.Aftermath.LoadAsset());
-
-            notif1.Text.SetOutlineThickness(0.35f);
-            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);    
+            notif1.AdjustNotification();    
         }
 
         TOSAudio.PlaySound(TOSAudio.QuestionSound);

@@ -9,12 +9,13 @@ using Color = UnityEngine.Color;
 
 namespace TownOfSushi.Roles.Crewmate;
 
-public sealed class AurialRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
+public sealed class AurialRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue
 {
     private readonly Dictionary<(Vector3, int), ArrowBehaviour> _senseArrows = new();
     public string RoleName => "Aurial";
     public string RoleDescription => "Sense Disturbances In Your Aura.";
     public string RoleLongDescription => "Any player abilities used within your aura you will sense";
+    public MysticClueType MysticHintType => MysticClueType.Perception;
     public Color RoleColor => TownOfSushiColors.Aurial;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateInvestigative;

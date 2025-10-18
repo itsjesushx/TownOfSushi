@@ -12,11 +12,12 @@ using UnityEngine;
 
 namespace TownOfSushi.Roles.Neutral;
 
-public sealed class VampireRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
+public sealed class VampireRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue
 {
     public string RoleName => "Vampire";
     public string RoleDescription => "Convert Crewmates And Kill The Rest";
     public string RoleLongDescription => "Bite all other players";
+    public MysticClueType MysticHintType => MysticClueType.Death;
     public Color RoleColor => TownOfSushiColors.Vampire;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralKilling;

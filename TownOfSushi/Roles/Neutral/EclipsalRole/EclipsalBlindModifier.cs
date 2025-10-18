@@ -43,8 +43,8 @@ public sealed class EclipsalBlindModifier(PlayerControl player) : DisabledModifi
                 $"<b>You were blinded by an Eclipsal!</b>"), Color.white,
                 spr: TOSRoleIcons.Eclipsal.LoadAsset());
 
-            notif1.Text.SetOutlineThickness(0.35f);
-            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+            
+            notif1.AdjustNotification();
         }
     }
 

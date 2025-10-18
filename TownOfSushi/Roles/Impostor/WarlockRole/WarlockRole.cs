@@ -13,12 +13,13 @@ using TownOfSushi.Modifiers;
 namespace TownOfSushi.Roles.Impostor;
 
 public sealed class WarlockRole(IntPtr cppPtr)
-    : ImpostorRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant
+    : ImpostorRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant, IMysticClue
 {
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<TransporterRole>());
     public string RoleName => "Warlock";
     public string RoleDescription => "Curse Someone To Make Them Kill Someone Else";
     public string RoleLongDescription => "Curse a player and force them to kill for you.";
+    public MysticClueType MysticHintType => MysticClueType.Fearmonger;
     public Color RoleColor => TownOfSushiColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorConcealing;
@@ -87,8 +88,8 @@ public sealed class WarlockRole(IntPtr cppPtr)
                 var notif2 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Crusader,
                 $"<b>{player.Data.PlayerName} has tried to kill {target.Data.PlayerName}, but they are fortified! Your murder attempt backfired.</b>"),
                 Color.white, spr: TOSRoleIcons.Crusader.LoadAsset());
-                notif2.Text.SetOutlineThickness(0.35f);
-                notif2.transform.localPosition = new Vector3(0f, 1f, -20f);
+                
+                notif2.AdjustNotification();
             }
         }
 
@@ -100,8 +101,7 @@ public sealed class WarlockRole(IntPtr cppPtr)
             var notif3 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.ImpSoft,
             $"<b>{player.Data.PlayerName} has killed {target.Data.PlayerName}.</b>"),
             Color.white, spr: TOSRoleIcons.Warlock.LoadAsset());
-            notif3.Text.SetOutlineThickness(0.35f);
-            notif3.transform.localPosition = new Vector3(0f, 1f, -20f);
+            notif3.AdjustNotification();
         }
 
         // Root the warlock

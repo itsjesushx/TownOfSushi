@@ -8,11 +8,11 @@ using UnityEngine;
 
 namespace TownOfSushi.Roles.Crewmate;
 
-public sealed class PoliticianRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCrewRole, IWikiDiscoverable
+public sealed class PoliticianRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCrewRole, IWikiDiscoverable, IMysticClue
 {
     private MeetingMenu meetingMenu;
     public override bool IsAffectedByComms => false;
-
+    public MysticClueType MysticHintType => MysticClueType.Trickster;
     public bool CanCampaign { get; set; } = true;
     public string RoleName => "Politician";
     public string RoleDescription => "Campaign To Become The Mayor!";

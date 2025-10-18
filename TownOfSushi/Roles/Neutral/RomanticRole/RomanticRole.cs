@@ -9,11 +9,12 @@ using UnityEngine;
 
 namespace TownOfSushi.Roles.Neutral;
 
-public sealed class RomanticRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
+public sealed class RomanticRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue
 {
     public string RoleName => "Romantic";
     public string RoleDescription => TargetString();
     public string RoleLongDescription => TargetString();
+    public MysticClueType MysticHintType => MysticClueType.Protective;
     public PlayerControl? Target { get; set; }
     public bool HasBeloved { get; set; }
     public Color RoleColor => TownOfSushiColors.Romantic;

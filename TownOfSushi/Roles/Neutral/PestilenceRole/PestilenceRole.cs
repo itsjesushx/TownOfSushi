@@ -9,10 +9,11 @@ using UnityEngine;
 namespace TownOfSushi.Roles.Neutral;
 
 public sealed class PestilenceRole(IntPtr cppPtr)
-    : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IUnguessable, ICrewVariant
+    : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IUnguessable, ICrewVariant, IMysticClue
 {
     public bool Announced { get; set; }
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<AurialRole>());
+    public MysticClueType MysticHintType => MysticClueType.Fearmonger;
     public string RoleName => "Pestilence";
     public string RoleDescription => "Horseman Of The Apocalypse!";
     public string RoleLongDescription => "Kill everyone in your path that interacts with you!";

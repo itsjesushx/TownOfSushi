@@ -18,6 +18,8 @@ using TownOfSushi.Events;
 using Reactor.Utilities;
 using TownOfSushi.Modules.Wiki;
 using MiraAPI.Modifiers.Types;
+using AmongUs.Data;
+using TMPro;
 
 namespace TownOfSushi.Utilities;
 
@@ -861,7 +863,7 @@ public static class MiscUtils
         var notif1 = Helpers.CreateAndShowNotification(
             ColorString(TownOfSushiColors.ImpSoft, $"<b>{player.Data.PlayerName}, the lobby host, has committed suicide!</b>"), Color.white,
             new Vector3(0f, 1f, -20f), spr: MiraAssets.Empty.LoadAsset());
-        notif1.Text.SetOutlineThickness(0.35f);
+        notif1.AdjustNotification();
     }
 
     public static RoleAlignment GetRoleAlignment(this RoleBehaviour role)
@@ -895,30 +897,53 @@ public static class MiscUtils
             return RoleAlignment.CrewmateSupport;
         }
     }
+    private static List<SupportedLangs> _languagesToBold = new List<SupportedLangs>
+    {
+        SupportedLangs.Russian,
+        SupportedLangs.Japanese,
+        SupportedLangs.SChinese,
+        SupportedLangs.TChinese,
+        SupportedLangs.Korean
+    };
+    public static void AdjustNotification(this LobbyNotificationMessage notification)
+    {
+        if (!_languagesToBold.Contains(DataManager.Settings.Language.CurrentLanguage))
+        {
+            notification.Text.fontStyle = FontStyles.Bold;
+            notification.Text.SetOutlineThickness(0.35f);
+        }
+    }
 
+    public static SpriteRenderer FlashRenderer;
     public static IEnumerator CoFlash(Color color, float waitfor = 1f, float alpha = 0.3f, bool PlaySound = false)
     {
         color.a = alpha;
-        if (HudManager.InstanceExists && HudManager.Instance.FullScreen)
+        if (HudManager.InstanceExists && HudManager.Instance.FullScreen && !FlashRenderer)
         {
-            var fullscreen = HudManager.Instance.FullScreen;
-            fullscreen.enabled = true;
-            fullscreen.gameObject.SetActive(true);
-            fullscreen.color = color;
+            FlashRenderer = Object.Instantiate(HudManager.Instance.FullScreen,
+            HudManager.Instance.FullScreen.transform.parent);
         }
 
         if (PlaySound) SoundManager.Instance.PlaySound(ShipStatus.Instance.SabotageSound, false, 1f);
 
+        FlashRenderer.enabled = true;
+        FlashRenderer.gameObject.SetActive(true);
+        FlashRenderer.color = color;
+
         yield return new WaitForSeconds(waitfor);
 
-        if (HudManager.InstanceExists && HudManager.Instance.FullScreen)
+        if (HudManager.InstanceExists && HudManager.Instance.FullScreen && !FlashRenderer)
         {
-            var fullscreen = HudManager.Instance.FullScreen;
-            if (!fullscreen.color.Equals(color)) yield break;
-
-            fullscreen.color = new Color(1f, 0f, 0f, 0.37254903f);
-            fullscreen.enabled = false;
+            FlashRenderer = Object.Instantiate(HudManager.Instance.FullScreen,
+            HudManager.Instance.FullScreen.transform.parent);
         }
+        if (!FlashRenderer.color.Equals(color))
+        {
+            yield break;
+        }
+
+        FlashRenderer.color = new Color(1f, 0f, 0f, 0.37254903f);
+        FlashRenderer.enabled = false;
     }
 
     public static IEnumerator FadeOut(SpriteRenderer? rend, float delay = 0.01f, float decrease = 0.01f)

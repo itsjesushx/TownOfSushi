@@ -53,8 +53,8 @@ public sealed class DetectiveRevealButton : TownOfSushiRoleButton<DetectiveRole,
             var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(Palette.ImpostorRed,
                 $"<b>You have revealed that {target.Data.PlayerName} is {possiblyGood} evil!</b>"),
                 Color.white, spr: TOSRoleIcons.Detective.LoadAsset());
-            notif1.Text.SetOutlineThickness(0.35f);
-            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+            
+            notif1.AdjustNotification();
 
             if (options.ShowCrewmateKillingAsRed)
             {
@@ -108,8 +108,8 @@ public sealed class DetectiveRevealButton : TownOfSushiRoleButton<DetectiveRole,
             var notif1 = Helpers.CreateAndShowNotification(
                 $"<b>{Palette.CrewmateBlue.ToTextColor()}You have revealed that {target.Data.PlayerName} is {possiblyGood} good!</color></b>",
                 Color.white, spr: TOSRoleIcons.Detective.LoadAsset());
-            notif1.Text.SetOutlineThickness(0.35f);
-            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+            
+            notif1.AdjustNotification();
 
             if (!options.ShowNeutralBenignAsRed)
             {
@@ -135,8 +135,8 @@ public sealed class DetectiveRevealButton : TownOfSushiRoleButton<DetectiveRole,
             possibleAlignment.Append(impString);
             var notif2 =
                 Helpers.CreateAndShowNotification($"<b>They must be a {possibleAlignment}</b>", Palette.CrewmateBlue);
-            notif2.Text.SetOutlineThickness(0.35f);
-            notif2.transform.localPosition = new Vector3(0f, 1f, -20f);
+            
+            notif2.AdjustNotification();
         }
     }
 

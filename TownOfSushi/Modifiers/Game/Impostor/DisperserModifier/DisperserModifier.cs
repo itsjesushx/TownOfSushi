@@ -63,8 +63,8 @@ public sealed class DisperserModifier : TOSGameModifier, IWikiDiscoverable
             MiscUtils.ColorString(TownOfSushiColors.ImpSoft, $"<b>Everyone has been dispersed to a vent!</b>"), Color.white,
             spr: TOSModifierIcons.Disperser.LoadAsset());
 
-        notif1.Text.SetOutlineThickness(0.35f);
-        notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+        
+        notif1.AdjustNotification();
     }
 
     public static void DispersePlayersToCoordinates(Dictionary<byte, Vector2> coordinates)

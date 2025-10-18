@@ -6,12 +6,13 @@ using UnityEngine;
 namespace TownOfSushi.Roles.Impostor;
 
 public sealed class HexbladeRole(IntPtr cppPtr)
-    : ImpostorRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant
+    : ImpostorRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant, IMysticClue
 {
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<VeteranRole>());
     public string RoleName => "Hexblade";
     public string RoleDescription => "Charge Up Your Kill Button To Multi Kill";
     public string RoleLongDescription => "Kill people in small bursts";
+    public MysticClueType MysticHintType => MysticClueType.Relentless;
     public Color RoleColor => TownOfSushiColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorKilling;

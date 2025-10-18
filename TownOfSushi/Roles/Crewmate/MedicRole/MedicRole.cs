@@ -14,12 +14,14 @@ using UnityEngine;
 
 namespace TownOfSushi.Roles.Crewmate;
 
-public sealed class MedicRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
+public sealed class MedicRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue
 {
     private MeetingMenu meetingMenu;
     public override bool IsAffectedByComms => false;
     [HideFromIl2Cpp]
     public PlayerControl? Shielded { get; set; }
+
+    public MysticClueType MysticHintType => MysticClueType.Protective;
 
     public void FixedUpdate()
     {

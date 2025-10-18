@@ -95,8 +95,8 @@ public sealed class HypnotisedModifier(PlayerControl hypnotist) : BaseModifier
                 $"<b>You are under a Mass Hysteria!</b>"), Color.white,
                 spr: TOSRoleIcons.Hypnotist.LoadAsset());
 
-            notif1.Text.SetOutlineThickness(0.35f);
-            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+            
+            notif1.AdjustNotification();
         }
 
         HysteriaActive = true;

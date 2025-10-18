@@ -13,10 +13,10 @@ using System.Globalization;
 
 namespace TownOfSushi.Roles.Crewmate;
 
-public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
+public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue
 {
     public override bool IsAffectedByComms => false;
-
+    public MysticClueType MysticHintType => MysticClueType.Trickster;
     [HideFromIl2Cpp] public List<int> FutureBlocks { get; set; } = [];
     // Blocked vent, remaining rounds
     [HideFromIl2Cpp] public static List<KeyValuePair<int, int>> VentsBlocked { get; set; } = [];

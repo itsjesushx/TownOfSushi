@@ -57,8 +57,8 @@ public static class MonarchEvents
                 var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Monarch,
                 $"<b>You cannot kill {target.Data.PlayerName} because they are the Monarch who knighted you.</color></b>"),
                 Color.white, spr: TOSCrewAssets.KnightSprite.LoadAsset());
-                notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                
+                notif1.AdjustNotification();
             }
             else if (target.AmOwner)
             {
@@ -66,8 +66,8 @@ public static class MonarchEvents
                 var notif2 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Monarch,
                 $"<b>{source.Data.PlayerName} tried to kill you.</color></b>"),
                 Color.white, spr: TOSCrewAssets.KnightSprite.LoadAsset());
-                notif2.Text.SetOutlineThickness(0.35f);
-                notif2.transform.localPosition = new Vector3(0f, 1f, -20f);
+                
+                notif2.AdjustNotification();
             }
         }
     }
@@ -105,16 +105,16 @@ public static class MonarchEvents
                 var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Monarch,
                 $"<b>You cannot interact with {target.Data.PlayerName} (Monarch) while Knighted.</color></b>"),
                 Color.white, spr: TOSCrewAssets.KnightSprite.LoadAsset());
-                notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                
+                notif1.AdjustNotification();
             }
             else if (target.AmOwner)
             {
                 var notif2 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Monarch,
                 $"<b>{source.Data.PlayerName} tried to interact with you.</color></b>"),
                 Color.white, spr: TOSCrewAssets.KnightSprite.LoadAsset());
-                notif2.Text.SetOutlineThickness(0.35f);
-                notif2.transform.localPosition = new Vector3(0f, 1f, -20f);
+                
+                notif2.AdjustNotification();
             }
         }
     }

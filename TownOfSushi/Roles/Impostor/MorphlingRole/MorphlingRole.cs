@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace TownOfSushi.Roles.Impostor;
 
-public sealed class MorphlingRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
+public sealed class MorphlingRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue
 {
     [HideFromIl2Cpp]
     public PlayerControl? Sampled { get; set; }
@@ -17,6 +17,7 @@ public sealed class MorphlingRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
 
     public string RoleLongDescription =>
         "Sample players and morph into them to disguise yourself.\nYour sample clears at the beginning of every round.";
+    public MysticClueType MysticHintType => MysticClueType.Perception;
 
     public Color RoleColor => TownOfSushiColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;

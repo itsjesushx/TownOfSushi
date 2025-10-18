@@ -7,15 +7,16 @@ using UnityEngine;
 namespace TownOfSushi.Roles.Neutral;
 
 public sealed class GlitchRole(IntPtr cppPtr)
-    : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant
+    : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant, IMysticClue
 {
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<VigilanteRole>());
-    public string RoleName => "Glitch";
+    public string RoleName => "The Glitch";
     public string RoleDescription => "Murder, Mimic, Hack... Data Lost";
     public string RoleLongDescription => "Murder everyone to win with your abilities!";
     public Color RoleColor => TownOfSushiColors.Glitch;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralKilling;
+    public MysticClueType MysticHintType => MysticClueType.Perception;
 
     public CustomRoleConfiguration Configuration => new(this)
     {

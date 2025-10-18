@@ -16,11 +16,12 @@ using TownOfSushi.Events;
 
 namespace TownOfSushi.Roles.Crewmate;
 
-public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCrewRole, IWikiDiscoverable
+public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCrewRole, IWikiDiscoverable, IMysticClue
 {
     private GameObject? executeButton;
     private TMP_Text? usesText;
     public override bool IsAffectedByComms => false;
+    public MysticClueType MysticHintType => MysticClueType.Relentless;
 
     public int Executes { get; set; } = (int)OptionGroupSingleton<JailorOptions>.Instance.MaxExecutes;
 
@@ -234,8 +235,8 @@ public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCrewRo
             var notif1 = Helpers.CreateAndShowNotification(
                 $"<b>{text}</b>", Color.white, spr: TOSRoleIcons.Jailor.LoadAsset());
 
-            notif1.Text.SetOutlineThickness(0.35f);
-            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+            
+            notif1.AdjustNotification();
         }
 
         return Listener;

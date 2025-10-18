@@ -274,7 +274,7 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
                 var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Haunter,
                     $"<b>You are now clickable by players!</b>"), Color.white,
                     new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Haunter.LoadAsset());
-                notif1.Text.SetOutlineThickness(0.35f);
+                notif1.AdjustNotification();
             }
         }
 
@@ -288,7 +288,7 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
                 var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Haunter,
                     $"<b>You have alerted the Killers!</b>"), Color.white,
                     new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Haunter.LoadAsset());
-                notif1.Text.SetOutlineThickness(0.35f);
+                notif1.AdjustNotification();
             }
             else if (IsTargetOfHaunter(PlayerControl.LocalPlayer))
             {
@@ -299,7 +299,7 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
                 var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Haunter,
                     $"<b>A Haunter is loose, catch them before they reveal you!</b>"),
                     Color.white, new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Haunter.LoadAsset());
-                notif1.Text.SetOutlineThickness(0.35f);
+                notif1.AdjustNotification();
             }
         }
 
@@ -313,7 +313,7 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
                 var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Haunter,
                     $"<b>You have revealed the Killers!</b>"), Color.white,
                     new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Haunter.LoadAsset());
-                notif1.Text.SetOutlineThickness(0.35f);
+                notif1.AdjustNotification();
             }
             else if (IsTargetOfHaunter(PlayerControl.LocalPlayer))
             {
@@ -324,7 +324,7 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
                 var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Haunter,
                     $"<b>The Haunter has completed their tasks!</b>"),
                     Color.white, new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Haunter.LoadAsset());
-                notif1.Text.SetOutlineThickness(0.35f);
+                notif1.AdjustNotification();
             }
         }
         if (TownOfSushiPlugin.IsDevBuild) Logger<TownOfSushiPlugin>.Error($"Haunter Stage for '{Player.Data.PlayerName}': {TaskStage.ToDisplayString()} - ({completedTasks} / {realTasks.Count})");

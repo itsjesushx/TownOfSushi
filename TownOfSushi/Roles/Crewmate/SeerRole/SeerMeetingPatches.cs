@@ -37,8 +37,8 @@ public static class SeerMeetingStartPatch
         var notif1 = Helpers.CreateAndShowNotification(
                 $"<b>{Palette.CrewmateBlue.ToTextColor()}{msg}</color></b>",
                 Color.white, spr: TOSRoleIcons.Detective.LoadAsset());
-        notif1.Text.SetOutlineThickness(0.35f);
-        notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+        
+        notif1.AdjustNotification();
 
         var title = $"<color=#{TownOfSushiColors.Seer.ToHtmlStringRGBA()}>Seer Feedback</color>";
         MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, msg, false, true);

@@ -2,11 +2,12 @@ using System.Globalization;
 using System.Text;
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
+
 using UnityEngine;
 
 namespace TownOfSushi.Roles.Neutral;
 
-public sealed class ArsonistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
+public sealed class ArsonistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue
 {
     public string RoleName => "Arsonist";
     public string RoleDescription => "Douse Players And Ignite The Light";
@@ -14,6 +15,7 @@ public sealed class ArsonistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSu
     public string RoleLongDescription => "Douse players in gasoline and ignite them to win with your abilities!";
 
     public Color RoleColor => TownOfSushiColors.Arsonist;
+    public MysticClueType MysticHintType => MysticClueType.Fearmonger;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralEvil;
     public bool Wins { get; set; }

@@ -63,8 +63,8 @@ public static class PlaguebearerEvents
                     $"<b>The crew know of the "+ MiscUtils.ColorString(TownOfSushiColors.Pestilence, "Pestilence.</b>"),
                     Color.white, spr: TOSRoleIcons.Pestilence.LoadAsset());
 
-                notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                
+                notif1.AdjustNotification();
             }
             else
             {
@@ -72,8 +72,8 @@ public static class PlaguebearerEvents
                     $"<b>The plague has consumed the crew."+ MiscUtils.ColorString(TownOfSushiColors.Pestilence, "Pestilence") + ", Horseman of the Apocalypse, has emerged!</b>",
                     Color.white, spr: TOSRoleIcons.Pestilence.LoadAsset());
 
-                notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                
+                notif1.AdjustNotification();
             }
         }
     }

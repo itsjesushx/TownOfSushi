@@ -13,11 +13,12 @@ using UnityEngine;
 
 namespace TownOfSushi.Roles.Impostor;
 
-public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
+public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue
 {
     public string RoleName => "Ambassador";
     public string RoleDescription => "Lead The Impostors To Victory";
     public string RoleLongDescription => "Retrain yourself or fellow impostors into other roles\n<b>Imp Killing cannot be a Power role</b>\n<b>Imp Concealing/Support cannot be a Killing/Power role</b>";
+    public MysticClueType MysticHintType => MysticClueType.Insight;
     public Color RoleColor => TownOfSushiColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorPower;
@@ -142,8 +143,8 @@ public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
                     $"<b>You or the impostor you are trying to retrain must have at least {(int)opt.KillsNeeded} kills.</b>";
                 var notif1 = Helpers.CreateAndShowNotification(text, Color.white, spr: TOSRoleIcons.Ambassador.LoadAsset());
 
-                notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                
+                notif1.AdjustNotification();
                 return;
             }
         }
@@ -262,8 +263,8 @@ public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
                 }
                 var notif1 = Helpers.CreateAndShowNotification(text, Color.white, spr: newRole.RoleIconWhite ?? TOSRoleIcons.Ambassador.LoadAsset());
 
-                notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                
+                notif1.AdjustNotification();
             }
         }
         else if (PlayerControl.LocalPlayer.IsImpostor() &&
@@ -279,8 +280,8 @@ public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
             }
             var notif1 = Helpers.CreateAndShowNotification(text, Color.white, spr: newRole.RoleIconWhite ?? TOSRoleIcons.Ambassador.LoadAsset());
 
-            notif1.Text.SetOutlineThickness(0.35f);
-            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+            
+            notif1.AdjustNotification();
         }
     }
 
@@ -302,8 +303,8 @@ public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
                     $"<b>Ambassador retraining for {ambassador.SelectedPlr.PlayerName} was cancelled</b>";
                 var notif1 = Helpers.CreateAndShowNotification(text, Color.white, spr: TOSRoleIcons.Ambassador.LoadAsset());
 
-                notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                
+                notif1.AdjustNotification();
                 if (ambassador.Player.AmOwner)
                 {
                     ambassador.meetingMenu.Actives[ambassador.SelectedPlr.PlayerId] = false;
@@ -341,8 +342,8 @@ public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
             }
             var notif1 = Helpers.CreateAndShowNotification(text, Color.white, spr: ambassador.SelectedRole.RoleIconWhite != null ? ambassador.SelectedRole.RoleIconWhite : TOSRoleIcons.Ambassador.LoadAsset());
 
-            notif1.Text.SetOutlineThickness(0.35f);
-            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+            
+            notif1.AdjustNotification();
         }
     }
 

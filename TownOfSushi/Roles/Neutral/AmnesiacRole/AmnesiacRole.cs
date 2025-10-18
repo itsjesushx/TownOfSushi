@@ -13,15 +13,17 @@ using MiraAPI.Hud;
 using MiraAPI.Patches.Stubs;
 using TownOfSushi.Modifiers;
 
+
 namespace TownOfSushi.Roles.Neutral;
 
 public sealed class AmnesiacRole(IntPtr cppPtr)
-    : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant, IGuessable
+    : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant, IGuessable, IMysticClue
 {
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<MysticRole>());
     public string RoleName => "Amnesiac";
     public string RoleDescription => "Remember a role after a meeting or survive the game to win.";
     public string RoleLongDescription => "Remember a role after a meeting or survive until the end to win.";
+    public MysticClueType MysticHintType => MysticClueType.Death;
     public Color RoleColor => TownOfSushiColors.Amnesiac;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralBenign;
@@ -111,7 +113,7 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
                 var notif1 = Helpers.CreateAndShowNotification(
                     $"<b>{target.CachedPlayerData.PlayerName} was an " + MiscUtils.ColorString(TownOfSushiColors.Amnesiac, $"<b>Amnesiac</b>") + ", so their role cannot be picked up.</b>",
                     Color.white, new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Amnesiac.LoadAsset());
-                notif1.Text.SetOutlineThickness(0.35f);
+                notif1.AdjustNotification();
             }
 
             return;
@@ -195,14 +197,14 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
             var notif1 = Helpers.CreateAndShowNotification(
                 $"<b>You remembered that you were like {target.Data.PlayerName}, the {player.Data.Role.TeamColor.ToTextColor()}{player.Data.Role.NiceName}</color>.</b>",
                 Color.white, new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Amnesiac.LoadAsset());
-            notif1.Text.SetOutlineThickness(0.35f);
+            notif1.AdjustNotification();
         }
         else
         {
             var notif1 = Helpers.CreateAndShowNotification(
                 MiscUtils.ColorString(TownOfSushiColors.Amnesiac, $"<b>The Amnesiac has remembered a role from the death!</color>.</b>"),
                 Color.white, new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Amnesiac.LoadAsset());
-            notif1.Text.SetOutlineThickness(0.35f);
+            notif1.AdjustNotification();
         }
 
         if (roleWhenAlive is not VampireRole && (roleWhenAlive.MaxCount <= 1 || (roleWhenAlive.MaxCount <= PlayerControl.AllPlayerControls

@@ -25,9 +25,7 @@ public static class DiseasedEvents
             var notif1 = Helpers.CreateAndShowNotification(
                 MiscUtils.ColorString(TownOfSushiColors.Diseased, $"<b>{@event.Target.Data.PlayerName} was Diseased, causing your kill cooldown to multiply by {Math.Round(cdMultiplier, 2)}.</b>"),
                 Color.white, spr: TOSModifierIcons.Diseased.LoadAsset());
-
-            notif1.Text.SetOutlineThickness(0.35f);
-            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+            notif1.AdjustNotification();
         }
 
         source.SetKillTimer(source.GetKillCooldown() * cdMultiplier);

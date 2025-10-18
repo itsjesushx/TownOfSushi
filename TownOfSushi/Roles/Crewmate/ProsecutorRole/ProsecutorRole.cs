@@ -12,10 +12,11 @@ using UnityEngine.Events;
 
 namespace TownOfSushi.Roles.Crewmate;
 
-public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCrewRole, IWikiDiscoverable
+public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCrewRole, IWikiDiscoverable, IMysticClue
 {
     [HideFromIl2Cpp]
     public PlayerVoteArea? ProsecuteButton { get; private set; }
+    public MysticClueType MysticHintType => MysticClueType.Fearmonger;
     public bool HasProsecuted { get; private set; }
     public byte ProsecuteVictim { get; set; } = byte.MaxValue;
     public bool HideProsButton { get; set; }

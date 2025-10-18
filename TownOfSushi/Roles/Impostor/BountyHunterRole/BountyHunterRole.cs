@@ -12,13 +12,14 @@ using UnityEngine;
 namespace TownOfSushi.Roles.Impostor;
 
 public sealed class BountyHunterRole(IntPtr cppPtr)
-    : ImpostorRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant
+    : ImpostorRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant, IMysticClue
 {
     public bool GameStarted { get; set; }
     public float TimeRemaining { get; set; }
     [HideFromIl2Cpp]
     public PlayerControl? Target { get; set; }
     public bool Scavenging { get; set; }
+    public MysticClueType MysticHintType => MysticClueType.Hunter;
 
     public void FixedUpdate()
     {

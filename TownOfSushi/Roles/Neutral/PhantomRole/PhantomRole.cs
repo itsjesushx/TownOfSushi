@@ -234,7 +234,7 @@ public sealed class PhantomTOSRole(IntPtr cppPtr)
                 var notif1 = Helpers.CreateAndShowNotification(
                     MiscUtils.ColorString(TownOfSushiColors.Phantom, $"<b>You are now clickable by players!</b>"), Color.white,
                     new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Phantom.LoadAsset());
-                notif1.Text.SetOutlineThickness(0.35f);
+                notif1.AdjustNotification();
             }
         }
 

@@ -11,6 +11,9 @@ public static class TOSCrewAssets
     // THIS FILE SHOULD ONLY HOLD BUTTONS AND ROLE BANNERS, EVERYTHING ELSE BELONGS IN TOSAssets.cs
     public static LoadableAsset<Sprite> InspectSprite { get; } =
         new LoadableResourceAsset($"{ButtonPath}.InspectButton.png");
+    
+    public static LoadableAsset<Sprite> Observe { get; } =
+        new LoadableResourceAsset($"{ButtonPath}.ObserveButton.png");
 
     public static LoadableAsset<Sprite> GuardSprite { get; } =
         new LoadableResourceAsset($"{ButtonPath}.GuardButton.png");

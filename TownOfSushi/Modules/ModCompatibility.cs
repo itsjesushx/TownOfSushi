@@ -385,6 +385,18 @@ public static class ModCompatibility
     {
         if (!IL2CPPChainloader.Instance.Plugins.TryGetValue(LevelImpostorGuid, out var value))
         {
+
+
+
+
+
+
+
+
+
+
+
+
             return;
         }
 
@@ -413,7 +425,7 @@ public static class ModCompatibility
         MapObjectData = LITypes.First(x => x.Name == "MapObjectData");
 
         var compatType = typeof(ModCompatibility);
-        var harmony = new Harmony("tos.levelimposter.patch");
+        var harmony = new Harmony("tou.levelimposter.patch");
         harmony.Patch(killAllPlayersMethod,
             new HarmonyMethod(AccessTools.Method(compatType, nameof(KillAllPlayersPrefix))));
         harmony.Patch(canUseMethod, new HarmonyMethod(AccessTools.Method(compatType, nameof(TriggerPrefix))),

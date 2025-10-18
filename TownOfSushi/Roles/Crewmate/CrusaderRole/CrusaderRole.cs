@@ -9,11 +9,12 @@ using MiraAPI.Networking;
 
 namespace TownOfSushi.Roles.Crewmate;
 
-public sealed class CrusaderRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
+public sealed class CrusaderRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue
 {
     public override bool IsAffectedByComms => false;
 
     public PlayerControl? Fortified { get; set; }
+    public MysticClueType MysticHintType => MysticClueType.Protective;
 
     public void FixedUpdate()
     {
@@ -127,8 +128,7 @@ public sealed class CrusaderRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfS
                 $"<b>{target.Data.PlayerName}, was fortified by a Crusader!</b>"),
 
                 Color.white, spr: TOSRoleIcons.Crusader.LoadAsset());
-                notif.Text.SetOutlineThickness(0.35f);
-                notif.transform.localPosition = new Vector3(0f, 1f, -20f);
+                notif.AdjustNotification();
         }
     }
 

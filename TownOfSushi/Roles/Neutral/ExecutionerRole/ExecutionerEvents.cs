@@ -64,8 +64,8 @@ public static class ExecutionerEvents
                     $"<b>You have successfully won as the Executioner, as your target was exiled!</b>"),
                     Color.white, spr: TOSRoleIcons.Executioner.LoadAsset());
 
-                notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                
+                notif1.AdjustNotification();
 
                 PlayerControl.LocalPlayer.RpcPlayerExile();
 
@@ -77,7 +77,7 @@ public static class ExecutionerEvents
                         $"<b>You have one round to torment a player of your choice to death, choose wisely.</b>"),
                         Color.white);
 
-                    notif2.Text.SetOutlineThickness(0.35f);
+                    
                     notif2.transform.localPosition = new Vector3(0f, 0.85f, -20f);
                 }
                 else
@@ -92,8 +92,8 @@ public static class ExecutionerEvents
                     $"<b>The Executioner, {exe.Player.Data.PlayerName}, has successfully won, as their target was exiled!</b>"),
                     Color.white, spr: TOSRoleIcons.Executioner.LoadAsset());
 
-                notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                
+                notif1.AdjustNotification();
             }
         }
     }

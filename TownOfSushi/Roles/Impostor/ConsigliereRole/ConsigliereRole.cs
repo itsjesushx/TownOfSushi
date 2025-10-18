@@ -10,7 +10,7 @@ using UnityEngine;
 namespace TownOfSushi.Roles.Impostor;
 
 public sealed class ConsigliereRole(IntPtr cppPtr)
-    : ImpostorRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant
+    : ImpostorRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant, IMysticClue
 {
 
     public void FixedUpdate()
@@ -32,6 +32,7 @@ public sealed class ConsigliereRole(IntPtr cppPtr)
     public string RoleName => "Consigliere";
     public string RoleDescription => "Reveal player's roles";
     public string RoleLongDescription => "Examine players to find out their role";
+    public MysticClueType MysticHintType => MysticClueType.Insight;
     public Color RoleColor => TownOfSushiColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorConcealing;

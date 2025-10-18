@@ -24,7 +24,7 @@ public static class CelebrityEvents
             var notif1 = Helpers.CreateAndShowNotification(
             MiscUtils.ColorString(TownOfSushiColors.Celebrity, $"<b>The Celebrity, {celeb.Player.Data.PlayerName}, has been killed! Everyone will get info at the start of the meeting</b>"), Color.white,
             new Vector3(0f, 1f, -20f), spr: TOSModifierIcons.Celebrity.LoadAsset());
-            notif1.Text.SetOutlineThickness(0.35f);
+            notif1.AdjustNotification();
 
             if (!MeetingHud.Instance)
             {

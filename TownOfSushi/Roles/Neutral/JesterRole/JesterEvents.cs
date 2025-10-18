@@ -37,8 +37,8 @@ public static class JesterEvents
                     $"<b>You have successfully won as the" + MiscUtils.ColorString(TownOfSushiColors.Jester, " Jester") + ", by getting voted out!</b>",
                     Color.white, spr: TOSRoleIcons.Jester.LoadAsset());
 
-                notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                
+                notif1.AdjustNotification();
                 if (OptionGroupSingleton<JesterOptions>.Instance.JestWin is JestWinOptions.Haunts)
                 {
                     CustomButtonSingleton<JesterHauntButton>.Instance.SetActive(true, jester);
@@ -47,7 +47,7 @@ public static class JesterEvents
                         $"<b>You have one round to haunt a player of your choice to death, choose wisely.</b>",
                         Color.white);
 
-                    notif2.Text.SetOutlineThickness(0.35f);
+                    
                     notif2.transform.localPosition = new Vector3(0f, 0.85f, -20f);
                 }
                 else
@@ -61,8 +61,8 @@ public static class JesterEvents
                     $"<b>The" + MiscUtils.ColorString(TownOfSushiColors.Jester, "Jester") + $"{jester.Player.Data.PlayerName}, has successfully won, as they were voted out!</b>",
                     Color.white, spr: TOSRoleIcons.Jester.LoadAsset());
 
-                notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                
+                notif1.AdjustNotification();
             }
         }
     }

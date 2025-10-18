@@ -4,11 +4,12 @@ using UnityEngine;
 
 namespace TownOfSushi.Roles.Crewmate;
 
-public sealed class SeerRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
+public sealed class SeerRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue
 {
     public string RoleName => "Seer";
     public string RoleDescription => "Check the faction of 2 players";
     public string RoleLongDescription => "Check the faction of 2 players to see if they match";
+    public MysticClueType MysticHintType => MysticClueType.Perception;
     public Color RoleColor => TownOfSushiColors.Seer;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateInvestigative;

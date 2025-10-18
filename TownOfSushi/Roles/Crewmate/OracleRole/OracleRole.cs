@@ -10,12 +10,13 @@ using UnityEngine;
 
 namespace TownOfSushi.Roles.Crewmate;
 
-public sealed class OracleRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
+public sealed class OracleRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue
 {
     public override bool IsAffectedByComms => false;
     public string RoleName => "Oracle";
     public string RoleDescription => "Get Other Player's To Confess Their Sins";
     public string RoleLongDescription => "Get another player to confess on your passing";
+    public MysticClueType MysticHintType => MysticClueType.Perception;
     public Color RoleColor => TownOfSushiColors.Oracle;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateProtective;
@@ -164,8 +165,8 @@ public sealed class OracleRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSus
             var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Oracle,
                 $"<b>Your blessing has saved {target.Data.PlayerName} from getting guessed!</b>"),
                 Color.white, spr: TOSRoleIcons.Oracle.LoadAsset());
-            notif1.Text.SetOutlineThickness(0.35f);
-            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+            
+            notif1.AdjustNotification();
         }
         else if (source.AmOwner)
         {
@@ -173,8 +174,8 @@ public sealed class OracleRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSus
             var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Oracle,
                 $"<b>{target.Data.PlayerName}</color> survived due to being blessed by an Oracle!</b>"),
                 Color.white, spr: TOSRoleIcons.Oracle.LoadAsset());
-            notif1.Text.SetOutlineThickness(0.35f);
-            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+            
+            notif1.AdjustNotification();
         }
     }
 }

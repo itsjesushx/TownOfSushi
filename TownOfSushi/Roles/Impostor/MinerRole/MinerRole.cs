@@ -12,7 +12,7 @@ using UnityEngine;
 namespace TownOfSushi.Roles.Impostor;
 
 public sealed class MinerRole(IntPtr cppPtr)
-    : ImpostorRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant
+    : ImpostorRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant, IMysticClue
 {
     [HideFromIl2Cpp] public List<Vent> Vents { get; set; } = [];
 
@@ -33,8 +33,9 @@ public sealed class MinerRole(IntPtr cppPtr)
 
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<EngineerTOSRole>());
     public string RoleName => "Miner";
-    public string RoleDescription => "From The Top, Make It Drop, That's A Vent";
+    public string RoleDescription => "From The Top, Make It Drop, That's A Vent.";
     public string RoleLongDescription => "Place interconnected vents around the map";
+    public MysticClueType MysticHintType => MysticClueType.Fearmonger;
     public Color RoleColor => TownOfSushiColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorSupport;

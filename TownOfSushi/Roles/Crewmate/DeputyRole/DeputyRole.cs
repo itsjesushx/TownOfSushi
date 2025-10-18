@@ -9,13 +9,14 @@ using UnityEngine;
 
 namespace TownOfSushi.Roles.Crewmate;
 
-public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCrewRole, IWikiDiscoverable
+public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCrewRole, IWikiDiscoverable, IMysticClue
 {
     private MeetingMenu meetingMenu;
     public string RoleName => "Deputy";
     public string RoleDescription => "Execute killers mid-meeting!";
     public string RoleLongDescription => "Execute suspicious players.";
     public Color RoleColor => TownOfSushiColors.Deputy;
+    public MysticClueType MysticHintType => MysticClueType.Relentless;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateKilling;
     public bool IsPowerCrew => true;
@@ -142,7 +143,7 @@ public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCrewRo
                 var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Deputy,
                     $"<b>You missed your shot! You lost half your vision. Next time you miss you will die.</b>"),
                     Color.white, new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Deputy.LoadAsset());
-                notif1.Text.SetOutlineThickness(0.35f);
+                notif1.AdjustNotification();
 
                 // Apply vision penalty using a modifier
                 Player.AddModifier<DeputyLowVisionModifier>();
@@ -153,7 +154,7 @@ public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCrewRo
                 var notif2 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Deputy,
                     $"<b>You missed again... and paid the price.</b>"),
                     Color.white, new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Deputy.LoadAsset());
-                notif2.Text.SetOutlineThickness(0.35f);
+                notif2.AdjustNotification();
 
                 Player.RpcCustomMurder(Player, createDeadBody: false, teleportMurderer: false);
             }

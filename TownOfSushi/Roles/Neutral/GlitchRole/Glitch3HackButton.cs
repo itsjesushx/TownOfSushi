@@ -31,7 +31,7 @@ public sealed class GlitchHackButton : TownOfSushiRoleButton<GlitchRole, PlayerC
         var notif1 = Helpers.CreateAndShowNotification(
             $"<b>Once {Target.Data.PlayerName} attempts to use an ability, all their abilities will get disabled.</b>",
             Color.white, new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Glitch.LoadAsset());
-        notif1.Text.SetOutlineThickness(0.35f);
+        notif1.AdjustNotification();
 
         TOSAudio.PlaySound(TOSAudio.HackedSound);
         Target.RpcAddModifier<GlitchHackedModifier>(PlayerControl.LocalPlayer.PlayerId);

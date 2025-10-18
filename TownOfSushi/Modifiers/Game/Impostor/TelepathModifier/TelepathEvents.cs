@@ -24,8 +24,8 @@ public static class TelepathEvents
                 var notif1 = Helpers.CreateAndShowNotification(
                     MiscUtils.ColorString(TownOfSushiColors.ImpSoft, $"<b>Your teammate, {victim.Data.PlayerName}, attempted to shoot {assassin.LastAttemptedVictim!.Data.PlayerName} as {assassin.LastGuessedItem}, but failed!</b>"),
                     Color.white, spr: TOSModifierIcons.Telepath.LoadAsset());
-                notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                
+                notif1.AdjustNotification();
             }
             else if (source.IsImpostor() && source != victim && options.KnowCorrectGuess && MeetingHud.Instance)
             {
@@ -33,8 +33,8 @@ public static class TelepathEvents
                 var notif1 = Helpers.CreateAndShowNotification(
                     MiscUtils.ColorString(TownOfSushiColors.ImpSoft, $"<b>Your teammate, {source.Data.PlayerName}, shot {victim.Data.PlayerName} as {victim.GetRoleWhenAlive().TeamColor.ToTextColor()}{victim.GetRoleWhenAlive().NiceName}!</b>"),
                     Color.white, spr: TOSModifierIcons.Telepath.LoadAsset());
-                notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                
+                notif1.AdjustNotification();
             }
             else if (source.IsImpostor() && source != victim)
             {
@@ -42,8 +42,8 @@ public static class TelepathEvents
                 var notif1 = Helpers.CreateAndShowNotification(
                     MiscUtils.ColorString(TownOfSushiColors.ImpSoft, $"<b>Your teammate, {source.Data.PlayerName}, has killed.</b>"),
                     Color.white, spr: TOSModifierIcons.Telepath.LoadAsset());
-                notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                
+                notif1.AdjustNotification();
                 if (options.KnowKillLocation)
                 {
                     victim?.AddModifier<TelepathDeathNotifierModifier>(PlayerControl.LocalPlayer);
@@ -55,8 +55,8 @@ public static class TelepathEvents
                 var notif1 = Helpers.CreateAndShowNotification(
                     MiscUtils.ColorString(TownOfSushiColors.ImpSoft, $"<b>Your teammate, {victim.Data.PlayerName}, has been murdered!.</b>"),
                     Color.white, spr: TOSModifierIcons.Telepath.LoadAsset());
-                notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                
+                notif1.AdjustNotification();
                 if (options.KnowDeathLocation)
                 {
                     victim?.AddModifier<TelepathDeathNotifierModifier>(PlayerControl.LocalPlayer);

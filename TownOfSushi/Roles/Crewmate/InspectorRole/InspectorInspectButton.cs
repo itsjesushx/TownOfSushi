@@ -35,7 +35,7 @@ public sealed class InspectorInspectButton : TownOfSushiRoleButton<InspectorRole
         var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Inspector,
             $"<b>You have inspected the crime scene of {Target.DeadPlayer!.Data.PlayerName}. The killer or anyone that steps foot in the crime scene will flash red when examined.</b>"),
             Color.white, new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Inspector.LoadAsset());
-        notif1.Text.SetOutlineThickness(0.35f);
+        notif1.AdjustNotification();
         // TOSAudio.PlaySound(TOSAudio.QuestionSound);
     }
 }

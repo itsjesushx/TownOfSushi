@@ -6,12 +6,13 @@ using UnityEngine;
 
 namespace TownOfSushi.Roles.Crewmate;
 
-public sealed class LookoutRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
+public sealed class LookoutRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue
 {
     public override bool IsAffectedByComms => false;
     public string RoleName => "Lookout";
     public string RoleDescription => "Keep Your Eyes Wide Open";
     public string RoleLongDescription => "Watch other crewmates to see what roles interact with them";
+    public MysticClueType MysticHintType => MysticClueType.Hunter;
     public Color RoleColor => TownOfSushiColors.Lookout;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateInvestigative;

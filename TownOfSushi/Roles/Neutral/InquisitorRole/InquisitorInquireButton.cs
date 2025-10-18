@@ -49,7 +49,7 @@ public sealed class InquisitorInquireButton : TownOfSushiRoleButton<InquisitorRo
             MiscUtils.ColorString(TownOfSushiColors.Inquisitor, $"<b>You will know if {Target.Data.PlayerName} is a heretic during the next meeting.</b>"),
             Color.white, spr: TOSRoleIcons.Inquisitor.LoadAsset());
 
-        notif1.Text.SetOutlineThickness(0.35f);
-        notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+        
+        notif1.AdjustNotification();
     }
 }

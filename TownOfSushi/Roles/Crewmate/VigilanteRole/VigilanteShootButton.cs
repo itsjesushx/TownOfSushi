@@ -55,8 +55,8 @@ public sealed class VigilanteShootButton : TownOfSushiRoleButton<VigilanteRole, 
         var notif1 = Helpers.CreateAndShowNotification("<b>You have lost the ability to shoot!</b>", Color.white,
             spr: TOSRoleIcons.Vigilante.LoadAsset());
 
-        notif1.Text.SetOutlineThickness(0.35f);
-        notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+        
+        notif1.AdjustNotification();
 
         Coroutines.Start(MiscUtils.CoFlash(Color.red));
     }

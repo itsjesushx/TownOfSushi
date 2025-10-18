@@ -31,7 +31,7 @@ public sealed class GrenadierFlashButton : TownOfSushiRoleButton<GrenadierRole>,
             $"<b>All players around you are now flashbanged!</b>"), Color.white,
             spr: TOSRoleIcons.Grenadier.LoadAsset());
         
-        notif1.Text.SetOutlineThickness(0.35f);
+        
         notif1.transform.localPosition = new Vector3(0f, 1f, -150f);
 
         Coroutines.Start(

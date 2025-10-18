@@ -152,9 +152,7 @@ public abstract class AssassinModifier : ExcludedGameModifier
                 var notif1 = Helpers.CreateAndShowNotification(
                     MiscUtils.ColorString(TownOfSushiColors.ImpSoft, $"<b>Your Double Shot has prevented you from dying this meeting!</b>"),
                     Color.white, spr: TOSModifierIcons.DoubleShot.LoadAsset());
-
-                notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                notif1.AdjustNotification();
 
                 shapeMenu.Close();
                 LastGuessedItem = string.Empty;

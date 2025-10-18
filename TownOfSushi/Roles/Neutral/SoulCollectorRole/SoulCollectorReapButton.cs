@@ -33,8 +33,8 @@ public sealed class SoulCollectorReapButton : TownOfSushiRoleButton<SoulCollecto
             MiscUtils.ColorString(TownOfSushiColors.SoulCollector, $"<b>You have taken {Target.Data.PlayerName}'s soul from their body, leaving a soulless player behind.</b>"),
             Color.white, spr: TOSRoleIcons.SoulCollector.LoadAsset());
 
-        notif1.Text.SetOutlineThickness(0.35f);
-        notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+        
+        notif1.AdjustNotification();
     }
 
     public override PlayerControl? GetTarget()

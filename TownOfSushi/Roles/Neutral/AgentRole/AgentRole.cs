@@ -5,15 +5,17 @@ using UnityEngine;
 using Reactor.Utilities;
 using MiraAPI.Patches.Stubs;
 
+
 namespace TownOfSushi.Roles.Neutral;
 
-public sealed class AgentRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant
+public sealed class AgentRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant, IMysticClue
 {
     public string RoleName => "Agent";
     public string RoleDescription => "Finish Your Tasks To Get New Abilities";
     public string RoleLongDescription => "Finish your tasks to become the Hitman. \nAnother role with better abilities!";
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<MediumRole>());
     public Color RoleColor => TownOfSushiColors.Agent;
+    public MysticClueType MysticHintType => MysticClueType.Trickster;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralKilling;
     public bool HasImpostorVision => OptionGroupSingleton<AgentOptions>.Instance.HasImpostorVision;

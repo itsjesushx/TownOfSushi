@@ -7,12 +7,13 @@ using UnityEngine;
 
 namespace TownOfSushi.Roles.Crewmate;
 
-public sealed class TrackerTOSRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
+public sealed class TrackerTOSRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue
 {
     public override bool IsAffectedByComms => false;
     public string RoleName => "Tracker";
     public string RoleDescription => "Track Everyone's Movement";
     public string RoleLongDescription => "Track suspicious players to see where they go";
+    public MysticClueType MysticHintType => MysticClueType.Hunter;
     public Color RoleColor => TownOfSushiColors.Tracker;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateInvestigative;

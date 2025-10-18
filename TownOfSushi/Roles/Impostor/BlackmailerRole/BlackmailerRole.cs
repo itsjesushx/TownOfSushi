@@ -8,8 +8,9 @@ using UnityEngine;
 
 namespace TownOfSushi.Roles.Impostor;
 
-public sealed class BlackmailerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
+public sealed class BlackmailerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue
 {
+    public MysticClueType MysticHintType => MysticClueType.Insight;
     public void FixedUpdate()
     {
         if (Player == null || Player.Data.Role is not BlackmailerRole || Player.HasDied() || !Player.AmOwner ||

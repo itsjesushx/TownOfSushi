@@ -26,8 +26,8 @@ public static class EgotistEvents
                     MiscUtils.ColorString(TownOfSushiColors.Egotist, $"<b>You have successfully won as the Egotist") + ", as no more crewmates remain!</b>",
                     Color.white, spr: TOSModifierIcons.Egotist.LoadAsset());
 
-                notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                
+                notif1.AdjustNotification();
             }
             else
             {
@@ -35,8 +35,8 @@ public static class EgotistEvents
                     MiscUtils.ColorString(TownOfSushiColors.Egotist, $"<b>The Egotist") + $", {ego.Player.Data.PlayerName}, has successfully won, as no more crewmates remain!</b>",
                     Color.white, spr: TOSModifierIcons.Egotist.LoadAsset());
 
-                notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                
+                notif1.AdjustNotification();
             }
         }
     }

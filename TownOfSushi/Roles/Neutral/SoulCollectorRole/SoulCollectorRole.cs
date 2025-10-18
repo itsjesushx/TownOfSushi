@@ -7,12 +7,13 @@ using UnityEngine;
 namespace TownOfSushi.Roles.Neutral;
 
 public sealed class SoulCollectorRole(IntPtr cppPtr)
-    : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant
+    : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant, IMysticClue
 {
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<MediumRole>());
     public string RoleName => "Soul Collector";
     public string RoleDescription => "Reap The Souls From Your Crewmates";
     public string RoleLongDescription => "Reap the souls of others, leaving behind a lasting image";
+    public MysticClueType MysticHintType => MysticClueType.Death;
     public Color RoleColor => TownOfSushiColors.SoulCollector;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralKilling;

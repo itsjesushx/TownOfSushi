@@ -4,7 +4,7 @@ namespace TownOfSushi.Roles.Neutral;
 
 public sealed class GlitchOptions : AbstractOptionGroup<GlitchRole>
 {
-    public override string GroupName => "Glitch";
+    public override string GroupName => "The Glitch";
 
     [ModdedNumberOption("Kill Cooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float KillCooldown { get; set; } = 25f;

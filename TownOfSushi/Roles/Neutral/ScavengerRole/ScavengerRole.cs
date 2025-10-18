@@ -14,12 +14,13 @@ using UnityEngine;
 
 namespace TownOfSushi.Roles.Neutral;
 
-public sealed class ScavengerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
+public sealed class ScavengerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue
 {
     public string RoleName => "Scavenger";
     public string RoleDescription => "Eat dead bodies around the map in order to get your win!";
     public string RoleLongDescription => $"Eat {OptionGroupSingleton<ScavengerOptions>.Instance.EatNeed} bodies to win";
     public Color RoleColor => TownOfSushiColors.Scavenger;
+    public MysticClueType MysticHintType => MysticClueType.Death;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralEvil;
     public CustomRoleConfiguration Configuration => new(this)

@@ -29,8 +29,8 @@ public sealed class TraitorCacheModifier : BaseModifier, ICachedRole
                 $"<b>You are a new role, and you are only guessable as Traitor now!</b>"),
                 Color.white, spr: TOSRoleIcons.Traitor.LoadAsset());
 
-            notif1.Text.SetOutlineThickness(0.35f);
-            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+            
+            notif1.AdjustNotification();
         }
 
         var TOSAbilityEvent = new TOSAbilityEvent(AbilityType.TraitorChangeRole, Player);

@@ -10,11 +10,12 @@ using MiraAPI.Events;
 
 namespace TownOfSushi.Roles.Impostor;
 
-public sealed class PoisonerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
+public sealed class PoisonerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue
 {
     public string RoleName => "Poisoner";
     public string RoleDescription => "Poison other players and kill them after some seconds.";
     public string RoleLongDescription => "Poison other players to let them die after a few seconds.";
+    public MysticClueType MysticHintType => MysticClueType.Relentless;
     public Color RoleColor => TownOfSushiColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorKilling;
@@ -53,8 +54,8 @@ public sealed class PoisonerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfS
                 $"<b>{target.Data.PlayerName} was protected because of their armour!.</b>"),
                 Color.white, spr: TOSImpAssets.PoisonSprite.LoadAsset());
 
-                notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                
+                notif1.AdjustNotification();
             }
             else
             {
@@ -62,8 +63,8 @@ public sealed class PoisonerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfS
                 $"<b>{target.Data.PlayerName}, has been successfully poisoned. They are dead.</b>"),
                 Color.white, spr: TOSImpAssets.PoisonSprite.LoadAsset());
 
-                notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                
+                notif1.AdjustNotification();
             }
             source.RpcCustomMurder(target, teleportMurderer: false);
         }

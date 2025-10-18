@@ -29,8 +29,8 @@ public static class AftermathEvents
             MiscUtils.ColorString(TownOfSushiColors.Aftermath, $"<b>{@event.Target.Data.PlayerName} was an Aftermath, forcing you to use your ability.</b>"),
             Color.white, spr: TOSModifierIcons.Aftermath.LoadAsset());
 
-        notif1.Text.SetOutlineThickness(0.35f);
-        notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+        
+        notif1.AdjustNotification();
 
         switch (button)
         {

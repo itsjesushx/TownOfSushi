@@ -15,11 +15,12 @@ using MiraAPI.Modifiers.Types;
 
 namespace TownOfSushi.Roles.Neutral;
 
-public sealed class GuardianAngelTOSRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable,
+public sealed class GuardianAngelTOSRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue,
     IAssignableTargets, ICrewVariant
 {
     public PlayerControl? Target { get; set; }
     public int Priority { get; set; } = 1;
+    public MysticClueType MysticHintType => MysticClueType.Protective;
 
     public void AssignTargets()
     {

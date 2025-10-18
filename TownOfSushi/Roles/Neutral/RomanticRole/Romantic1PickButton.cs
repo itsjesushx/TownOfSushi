@@ -24,8 +24,8 @@ public sealed class RomanticPickButton : TownOfSushiRoleButton<RomanticRole, Pla
         
         var notif1 = Helpers.CreateAndShowNotification(
             MiscUtils.ColorString(TownOfSushiColors.Romantic, $"<b>You fell in love with {Target.Data.PlayerName}. Protect them at any cost!</b>"), Color.white, spr: TOSRoleIcons.Romantic.LoadAsset());
-        notif1.Text.SetOutlineThickness(0.35f);
-            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+        
+            notif1.AdjustNotification();
 
         SetActive(false, Role);
         CustomButtonSingleton<RomanticProtectButton>.Instance.SetActive(true, Role);

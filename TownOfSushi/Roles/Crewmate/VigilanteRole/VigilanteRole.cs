@@ -18,7 +18,7 @@ using Reactor.Networking.Attributes;
 
 namespace TownOfSushi.Roles.Crewmate;
 
-public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCrewRole, IWikiDiscoverable
+public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCrewRole, IWikiDiscoverable, IMysticClue
 {
     private MeetingMenu meetingMenu;
     public override bool IsAffectedByComms => false;
@@ -28,6 +28,7 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCre
     public string RoleName => "Vigilante";
     public string RoleDescription => "Kill evildoers by any means possible";
     public string RoleLongDescription => "Guess the roles of impostors mid-meeting to kill them! Or shoot them mid round!";
+    public MysticClueType MysticHintType => MysticClueType.Relentless;
     public Color RoleColor => TownOfSushiColors.Vigilante;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateKilling;
@@ -237,8 +238,8 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCre
                     $"<b>Your Multi Shot has prevented you from dying this meeting! You have {SafeShotsLeft} safe shot(s) left!</color></b>"),
                     Color.white, spr: TOSRoleIcons.Vigilante.LoadAsset());
 
-                notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                
+                notif1.AdjustNotification();
 
                 shapeMenu.Close();
 

@@ -20,8 +20,8 @@ public static class FrostyEvents
                 MiscUtils.ColorString(TownOfSushiColors.Frosty, $"<b>{@event.Target.Data.PlayerName} was Frosty, causing you to be slower for {Math.Round(OptionGroupSingleton<FrostyOptions>.Instance.ChillDuration, 2)} seconds.</b>"),
                 Color.white, spr: TOSModifierIcons.Frosty.LoadAsset());
 
-            notif1.Text.SetOutlineThickness(0.35f);
-            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+            
+            notif1.AdjustNotification();
         }
 
         @event.Source.AddModifier<FrozenModifier>();

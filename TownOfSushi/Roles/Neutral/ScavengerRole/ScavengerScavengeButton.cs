@@ -31,7 +31,7 @@ public sealed class ScavengerButton : TownOfSushiButton
         if (deadBodies.Count == 0)
         {
             var notif1 = Helpers.CreateAndShowNotification($"<b>No bodies were found on the map.</b>", Color.white, new Vector3(0f, 1f, -20f), spr: TOSNeutAssets.ScavengeSprite.LoadAsset());
-            notif1.Text.SetOutlineThickness(0.35f);
+            notif1.AdjustNotification();
         }
     }
     public override void OnEffectEnd()

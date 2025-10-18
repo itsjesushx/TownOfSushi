@@ -41,8 +41,8 @@ public sealed class VenererAbilityButton : TownOfSushiRoleButton<VenererRole>, I
                 $"<b>You have unlocked the {ability.ToString()} ability for getting a kill. {(EffectActive ? "You must wait until your current ability is over." : string.Empty)}</b>"),
                 Color.white, spr: TOSRoleIcons.Venerer.LoadAsset());
 
-            notif1.Text.SetOutlineThickness(0.35f);
-            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+            
+            notif1.AdjustNotification();
         }
 
         if (EffectActive)

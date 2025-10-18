@@ -14,12 +14,13 @@ using UnityEngine;
 namespace TownOfSushi.Roles.Neutral;
 
 public sealed class ThiefRole(IntPtr cppPtr)
-    : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant, IGuessable
+    : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant, IGuessable, IMysticClue
 {
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<VigilanteRole>());
     public string RoleName => "Thief";
     public string RoleDescription => "Murder an evildoer to gain their role.";
     public string RoleLongDescription => "Murder evildoers but not crewmates to get a new role";
+    public MysticClueType MysticHintType => MysticClueType.Hunter;
     public Color RoleColor => TownOfSushiColors.Thief;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralBenign;
@@ -80,7 +81,7 @@ public sealed class ThiefRole(IntPtr cppPtr)
                 var notif1 = Helpers.CreateAndShowNotification(
                     MiscUtils.ColorString(TownOfSushiColors.Thief, $"<b>{target.CachedPlayerData.PlayerName} is a Thief") +" as well! so their role cannot be stolen.</b>",
                     Color.white, new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Thief.LoadAsset());
-                notif1.Text.SetOutlineThickness(0.35f);
+                notif1.AdjustNotification();
             }
             return;
         }
@@ -92,7 +93,7 @@ public sealed class ThiefRole(IntPtr cppPtr)
                 var notif1 = Helpers.CreateAndShowNotification(
                     MiscUtils.ColorString(TownOfSushiColors.Thief, $"<b>{target.CachedPlayerData.PlayerName} was not a killer so you can't steal their role!</b>"),
                     Color.white, new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Thief.LoadAsset());
-                notif1.Text.SetOutlineThickness(0.35f);
+                notif1.AdjustNotification();
             }
             return;
         }
@@ -143,7 +144,7 @@ public sealed class ThiefRole(IntPtr cppPtr)
             var notif1 = Helpers.CreateAndShowNotification(
                 $"<b>{target.Data.PlayerName}'s role was {player.Data.Role.TeamColor.ToTextColor()}{player.Data.Role.NiceName}</color>. You have stolen their role!</b>",
                 Color.white, new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Thief.LoadAsset());
-            notif1.Text.SetOutlineThickness(0.35f);
+            notif1.AdjustNotification();
         }
 
         if (target.IsCrewmate())

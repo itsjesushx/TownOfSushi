@@ -7,12 +7,13 @@ using UnityEngine;
 
 namespace TownOfSushi.Roles.Crewmate;
 
-public sealed class ClericRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
+public sealed class ClericRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue
 {
     public override bool IsAffectedByComms => false;
     public string RoleName => "Cleric";
     public string RoleDescription => "Save The Crewmates";
     public string RoleLongDescription => "Barrier and Cleanse crewmates";
+    public MysticClueType MysticHintType => MysticClueType.Protective;
     public Color RoleColor => TownOfSushiColors.Cleric;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateProtective;

@@ -31,8 +31,8 @@ public sealed class MorphlingSampleButton : TownOfSushiRoleButton<MorphlingRole,
         var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.ImpSoft,
             $"<b>You have sampled {Target.Data.PlayerName}. The sample will be reset after this round.</b>"),
             Color.white, spr: TOSRoleIcons.Morphling.LoadAsset());
-        notif1.Text.SetOutlineThickness(0.35f);
-        notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+        
+        notif1.AdjustNotification();
 
         CustomButtonSingleton<MorphlingMorphButton>.Instance.SetActive(true, Role);
         CustomButtonSingleton<MorphlingMorphButton>.Instance.ResetCooldownAndOrEffect();

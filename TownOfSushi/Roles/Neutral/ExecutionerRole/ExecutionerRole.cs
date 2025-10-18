@@ -15,11 +15,12 @@ using Random = System.Random;
 namespace TownOfSushi.Roles.Neutral;
 
 public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable,
-    IAssignableTargets, ICrewVariant
+    IAssignableTargets, ICrewVariant, IMysticClue
 {
     public PlayerControl? Target { get; set; }
     public bool TargetVoted { get; set; }
     public bool AboutToWin { get; set; }
+    public MysticClueType MysticHintType => MysticClueType.Trickster;
 
     [HideFromIl2Cpp]
     public List<byte> Voters { get; set; } = [];

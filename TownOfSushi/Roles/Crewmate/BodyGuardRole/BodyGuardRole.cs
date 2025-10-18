@@ -9,12 +9,12 @@ using MiraAPI.Networking;
 
 namespace TownOfSushi.Roles.Crewmate;
 
-public sealed class BodyGuardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
+public sealed class BodyGuardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue
 {
     public override bool IsAffectedByComms => false;
 
     public PlayerControl? Guarded { get; set; }
-
+    public MysticClueType MysticHintType => MysticClueType.Protective;
     public void FixedUpdate()
     {
         if (Player == null || Player.Data.Role is not BodyGuardRole)
@@ -133,8 +133,7 @@ public sealed class BodyGuardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
                 $"<b>{target.Data.PlayerName}, was protected by a BodyGuard! They died with you as well!</b>"),
 
                 Color.white, spr: TOSRoleIcons.BodyGuard.LoadAsset());
-            notif.Text.SetOutlineThickness(0.35f);
-            notif.transform.localPosition = new Vector3(0f, 1f, -20f);
+            notif.AdjustNotification();
         }
         if (bodyGuardPlayer.AmOwner)
         {
@@ -142,8 +141,7 @@ public sealed class BodyGuardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
                 $"<b>{target.Data.PlayerName}, your protectee, has survived thanks to you! you died protecting them</b>"),
 
                 Color.white, spr: TOSRoleIcons.BodyGuard.LoadAsset());
-                notif.Text.SetOutlineThickness(0.35f);
-                notif.transform.localPosition = new Vector3(0f, 1f, -20f);
+                notif.AdjustNotification();
         }
     }
 

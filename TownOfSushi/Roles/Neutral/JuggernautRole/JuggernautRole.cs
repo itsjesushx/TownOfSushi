@@ -7,12 +7,13 @@ using UnityEngine;
 
 namespace TownOfSushi.Roles.Neutral;
 
-public sealed class JuggernautRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
+public sealed class JuggernautRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue
 {
     public int KillCount { get; set; }
     public string RoleName => "Juggernaut";
     public string RoleDescription => "Your Power Grows With Every Kill";
     public string RoleLongDescription => "With each kill your kill cooldown decreases";
+    public MysticClueType MysticHintType => MysticClueType.Relentless;
     public Color RoleColor => TownOfSushiColors.Juggernaut;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralKilling;

@@ -10,11 +10,12 @@ using UnityEngine;
 namespace TownOfSushi.Roles.Impostor;
 
 public sealed class HypnotistRole(IntPtr cppPtr)
-    : ImpostorRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant
+    : ImpostorRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant, IMysticClue
 {
     private MeetingMenu meetingMenu;
 
     public bool HysteriaActive { get; set; }
+    public MysticClueType MysticHintType => MysticClueType.Fearmonger;
 
     public void FixedUpdate()
     {

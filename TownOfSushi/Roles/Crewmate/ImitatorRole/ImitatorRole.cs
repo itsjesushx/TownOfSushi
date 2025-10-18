@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace TownOfSushi.Roles.Crewmate;
 
-public sealed class ImitatorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
+public sealed class ImitatorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue
 {
     public string RoleName => "Imitator";
     public string RoleDescription => "Use Dead Roles To Benefit The Crew";
@@ -13,6 +13,7 @@ public sealed class ImitatorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfS
     public Color RoleColor => TownOfSushiColors.Imitator;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateSupport;
+    public MysticClueType MysticHintType => MysticClueType.Perception;
 
     public CustomRoleConfiguration Configuration => new(this)
     {

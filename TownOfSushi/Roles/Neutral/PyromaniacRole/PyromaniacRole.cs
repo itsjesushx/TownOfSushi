@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace TownOfSushi.Roles.Neutral;
 
-public sealed class PyromaniacRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
+public sealed class PyromaniacRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue
 {
     public string RoleName => "Pyromaniac";
     public string RoleDescription => "Douse Players And Ignite The Light";
@@ -16,6 +16,8 @@ public sealed class PyromaniacRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
     public string RoleLongDescription => OptionGroupSingleton<PyromaniacOptions>.Instance.LegacyPyromaniac
         ? "Douse players and ignite the closest one to kill all doused targets"
         : "Douse players and ignite to kill all nearby doused targets";
+
+    public MysticClueType MysticHintType => MysticClueType.Fearmonger;
 
     public Color RoleColor => TownOfSushiColors.Pyromaniac;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;

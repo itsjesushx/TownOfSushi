@@ -4,13 +4,14 @@ using UnityEngine;
 
 namespace TownOfSushi.Roles.Neutral;
 
-public sealed class EclipsalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
+public sealed class EclipsalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue
 {
     public string RoleName => "Eclipsal";
     public string RoleDescription => "Block Out The Light";
     public string RoleLongDescription => "Make crewmates unable to see, slowly returning their vision to normal.";
     public Color RoleColor => TownOfSushiColors.Eclipsal;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
+    public MysticClueType MysticHintType => MysticClueType.Perception;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralKilling;
 
     public CustomRoleConfiguration Configuration => new(this)

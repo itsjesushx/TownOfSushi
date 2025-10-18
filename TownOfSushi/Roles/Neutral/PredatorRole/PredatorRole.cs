@@ -7,10 +7,11 @@ using UnityEngine;
 namespace TownOfSushi.Roles.Neutral;
 
 public sealed class PredatorRole(IntPtr cppPtr)
-    : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant
+    : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant, IMysticClue
 {
     public bool Terminating { get; set; }
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<HunterRole>());
+    public MysticClueType MysticHintType => MysticClueType.Relentless;
     public string RoleName => "Predator";
     public string RoleDescription => "Terminate To Kill Everyone";
     public string RoleLongDescription => "Terminate to kill everyone in your path";

@@ -62,8 +62,8 @@ public sealed class BaitModifier : TOSGameModifier, IWikiDiscoverable
                 MiscUtils.ColorString(TownOfSushiColors.Bait, $"<b>{target.Data.PlayerName} was a Bait, causing you to self report.</b>"),
                 Color.white, spr: TOSModifierIcons.Bait.LoadAsset());
 
-            notif1.Text.SetOutlineThickness(0.35f);
-            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+            
+            notif1.AdjustNotification();
         }
     }
 }

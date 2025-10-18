@@ -40,8 +40,8 @@ public static class InquisitorEvents
                 var notif1 = Helpers.CreateAndShowNotification(
                     MiscUtils.ColorString(TownOfSushiColors.Inquisitor, $"<b>A Heretic has perished!</b>"), Color.white,
                     spr: TOSRoleIcons.Inquisitor.LoadAsset());
-                notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                
+                notif1.AdjustNotification();
             }
             else if (!victim.HasModifier<InquisitorHereticModifier>() && !victim.AmOwner && source.AmOwner)
             {
@@ -49,8 +49,8 @@ public static class InquisitorEvents
                 var notif1 = Helpers.CreateAndShowNotification(
                     MiscUtils.ColorString(TownOfSushiColors.Inquisitor, $"<b>{victim.Data.PlayerName} was not a heretic!\nYou can no longer vanquish players.</b>"),
                     Color.white, spr: TOSRoleIcons.Inquisitor.LoadAsset());
-                notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                
+                notif1.AdjustNotification();
             }
             else if (victim.HasModifier<InquisitorHereticModifier>() && !victim.AmOwner && source.AmOwner)
             {
@@ -58,8 +58,8 @@ public static class InquisitorEvents
                 var notif1 = Helpers.CreateAndShowNotification(
                     MiscUtils.ColorString(TownOfSushiColors.Inquisitor, $"<b>{victim.Data.PlayerName} was a heretic!</b>"),
                     Color.white, spr: TOSRoleIcons.Inquisitor.LoadAsset());
-                notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                
+                notif1.AdjustNotification();
             }
         }
 
@@ -95,8 +95,8 @@ public static class InquisitorEvents
                     MiscUtils.ColorString(TownOfSushiColors.Inquisitor, $"<b>You have successfully won as the Inquisitor, as all Heretics have perished!</b>"),
                     Color.white, spr: TOSRoleIcons.Inquisitor.LoadAsset());
 
-                notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                
+                notif1.AdjustNotification();
                 DeathHandlerModifier.RpcUpdateDeathHandler(PlayerControl.LocalPlayer, "Victorious", DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse, lockInfo: DeathHandlerOverride.SetTrue);
             }
             else
@@ -105,8 +105,8 @@ public static class InquisitorEvents
                     MiscUtils.ColorString(TownOfSushiColors.Inquisitor, $"<b>The Inquisitor, {inquis.Player.Data.PlayerName}, has successfully won, as all Heretics have perished!</b>"),
                     Color.white, spr: TOSRoleIcons.Inquisitor.LoadAsset());
 
-                notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                
+                notif1.AdjustNotification();
             }
         }
     }

@@ -9,13 +9,14 @@ using UnityEngine;
 
 namespace TownOfSushi.Roles.Crewmate;
 
-public sealed class InspectorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
+public sealed class InspectorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue
 {
     public override bool IsAffectedByComms => false;
     [HideFromIl2Cpp]
     public CrimeSceneComponent? InvestigatingScene { get; set; }
 
     [HideFromIl2Cpp] public List<byte> InvestigatedPlayers { get; init; } = new();
+    public MysticClueType MysticHintType => MysticClueType.Hunter;
 
     public string RoleName => "Inspector";
     public string RoleDescription => "Inspect Crime Scenes To Catch The Killer";
@@ -81,7 +82,7 @@ public sealed class InspectorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
             var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Inspector,
                 $"<b>{player.Data.PlayerName} was at the scene of {deadPlayer.Data.PlayerName}'s death!\nThey might be the killer or a witness.</b>"),
                 Color.white, new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Inspector.LoadAsset());
-            notif1.Text.SetOutlineThickness(0.35f);
+            notif1.AdjustNotification();
         }
         else
         {
@@ -89,7 +90,7 @@ public sealed class InspectorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
             var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Inspector,
                 $"<b>{player.Data.PlayerName} was not at the scene of the crime.</b>"),
                 Color.white, new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Inspector.LoadAsset());
-            notif1.Text.SetOutlineThickness(0.35f);
+            notif1.AdjustNotification();
         }
     }
 

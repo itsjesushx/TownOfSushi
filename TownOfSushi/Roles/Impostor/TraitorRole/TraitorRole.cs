@@ -5,7 +5,7 @@ using UnityEngine;
 namespace TownOfSushi.Roles.Impostor;
 
 public sealed class TraitorRole(IntPtr cppPtr)
-    : ImpostorRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ISpawnChange
+    : ImpostorRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ISpawnChange, IMysticClue
 {
     [HideFromIl2Cpp] public List<RoleBehaviour> ChosenRoles { get; } = [];
     [HideFromIl2Cpp]
@@ -16,6 +16,7 @@ public sealed class TraitorRole(IntPtr cppPtr)
     public string RoleName => "Traitor";
     public string RoleDescription => "Betray The Crewmates!";
     public string RoleLongDescription => "Betray the Crewmates!";
+    public MysticClueType MysticHintType => MysticClueType.Trickster;
     public Color RoleColor => TownOfSushiColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorPower;

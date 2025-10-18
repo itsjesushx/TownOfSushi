@@ -11,7 +11,7 @@ using UnityEngine;
 namespace TownOfSushi.Roles.Impostor;
 
 public sealed class UndertakerRole(IntPtr cppPtr)
-    : ImpostorRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant
+    : ImpostorRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant, IMysticClue
 {
     public void FixedUpdate()
     {
@@ -32,6 +32,7 @@ public sealed class UndertakerRole(IntPtr cppPtr)
     public string RoleName => "Undertaker";
     public string RoleDescription => "Drag Bodies And Hide Them";
     public string RoleLongDescription => "Drag bodies around to hide them from being reported";
+    public MysticClueType MysticHintType => MysticClueType.Death;
     public Color RoleColor => TownOfSushiColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorSupport;

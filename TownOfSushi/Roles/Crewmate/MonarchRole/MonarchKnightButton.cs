@@ -43,6 +43,6 @@ public sealed class KnightButton : TownOfSushiRoleButton<MonarchRole, PlayerCont
         Target.RpcAddModifier<MonarchKnightedModifier>(PlayerControl.LocalPlayer);
         Usable = false;
         var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Monarch,$"<b>You have knighted{Target.Data.PlayerName}, they will have an extra vote each meeting as long as you're alive.</color></b>"), Color.white, new Vector3(0f, 1f, -20f), spr: TOSCrewAssets.KnightSprite.LoadAsset());
-        notif1.Text.SetOutlineThickness(0.35f);
+        notif1.AdjustNotification();
     }
 }

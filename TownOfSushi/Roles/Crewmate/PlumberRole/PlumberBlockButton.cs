@@ -83,8 +83,7 @@ public sealed class PlumberBlockButton : TownOfSushiRoleButton<PlumberRole, Vent
         var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Plumber,
             $"<b>This vent will be blocked at the beginning of the next round.</b>"),
             Color.white, new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Plumber.LoadAsset());
-        notif1.Text.SetOutlineThickness(0.35f);
-
+            notif1.AdjustNotification();
         PlumberRole.RpcPlumberBlockVent(PlayerControl.LocalPlayer, Target.Id);
 
         var flush = CustomButtonSingleton<PlumberFlushButton>.Instance;

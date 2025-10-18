@@ -4,12 +4,13 @@ using UnityEngine;
 
 namespace TownOfSushi.Roles.Crewmate;
 
-public sealed class DetectiveRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable
+public sealed class DetectiveRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue
 {
     public override bool IsAffectedByComms => false;
     public string RoleName => "Detective";
     public string RoleDescription => "Reveal The Alliance Of Other Players";
     public string RoleLongDescription => "Reveal alliances of other players to find the Impostors";
+    public MysticClueType MysticHintType => MysticClueType.Insight;
     public Color RoleColor => TownOfSushiColors.Detective;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateInvestigative;

@@ -27,8 +27,8 @@ public static class PhantomEvents
                     MiscUtils.ColorString(TownOfSushiColors.Phantom, $"<b>You have successfully won as the Phantom, as you finished your tasks postmortem!</b>"),
                     Color.white, spr: TOSRoleIcons.Phantom.LoadAsset());
 
-                notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                
+                notif1.AdjustNotification();
                 HudManagerPatches.ZoomButton.SetActive(true);
             }
             else
@@ -37,8 +37,8 @@ public static class PhantomEvents
                     MiscUtils.ColorString(TownOfSushiColors.Phantom, $"<b>The Phantom, {phantom.Player.Data.PlayerName}, has successfully won, as they completed their tasks postmortem!</b>"),
                     Color.white, spr: TOSRoleIcons.Phantom.LoadAsset());
 
-                notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                
+                notif1.AdjustNotification();
             }
         }
     }
