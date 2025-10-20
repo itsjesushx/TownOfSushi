@@ -57,7 +57,7 @@ public class TownOfSushiLocalSettings(ConfigFile config) : LocalSettingsTab(conf
   [LocalizedLocalToggleSetting]
   public ConfigEntry<bool> ShowShieldHudToggle { get; private set; } = config.Bind("UI/Visuals", "Show Shield Hud", true);
   [LocalizedLocalToggleSetting]
-  public ConfigEntry<bool> OffsetButtonsToggle { get; private set; } = config.Bind("UI/Visuals", "OffsetButtons", false);
+  public ConfigEntry<bool> OffsetButtonsToggle { get; private set; } = config.Bind("UI/Visuals", "Offset Buttons", false);
   [LocalizedLocalSliderSetting(min: 0.5f, max: 1.5f, suffixType: MiraNumberSuffixes.Multiplier, formatString: "0.00", displayValue: true)]
   public ConfigEntry<float> ButtonUIFactorSlider { get; private set; } = config.Bind("UI/Visuals", "Button UI Factor", 0.75f);
 
@@ -87,7 +87,7 @@ public class TownOfSushiLocalSettings(ConfigFile config) : LocalSettingsTab(conf
   public ConfigEntry<bool> ShowSummaryMessageToggle { get; private set; } = config.Bind("Miscellaneous", "Show Summary Message", true);
 
   [LocalizedLocalToggleSetting]
-    public ConfigEntry<bool> VanillaWikiEntriesToggle { get; private set; } = config.Bind("Miscellaneous", "Show Vanilla Wiki Entries", false);
+  public ConfigEntry<bool> VanillaWikiEntriesToggle { get; private set; } = config.Bind("Miscellaneous", "Show Vanilla Wiki Entries", false);
 }
 
 public enum ArrowStyleType
