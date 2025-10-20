@@ -6,6 +6,8 @@ using Reactor.Networking.Attributes;
 using Reactor.Utilities;
 using UnityEngine;
 using MiraAPI.Networking;
+using TownOfSushi.Events;
+using TownOfSushi.Modifiers;
 
 namespace TownOfSushi.Roles.Crewmate;
 
@@ -125,7 +127,8 @@ public sealed class BodyGuardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
         }
 
         bodyGuardPlayer.RpcCustomMurder(attacker);
-        attacker.RpcCustomMurder(bodyGuardPlayer);
+        bodyGuardPlayer.RpcCustomMurder(bodyGuardPlayer);
+        DeathHandlerModifier.RpcUpdateDeathHandler(bodyGuardPlayer, "Killed", DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse, $"By {attacker.Data.PlayerName}", lockInfo: DeathHandlerOverride.SetTrue);
 
         if (attacker.AmOwner)
         {

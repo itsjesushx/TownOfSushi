@@ -13,7 +13,7 @@ public sealed class AgentRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushi
     public string RoleName => "Agent";
     public string RoleDescription => "Finish Your Tasks To Get New Abilities";
     public string RoleLongDescription => "Finish your tasks to become the Hitman. \nAnother role with better abilities!";
-    public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<MediumRole>());
+    public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<BodyGuardRole>());
     public Color RoleColor => TownOfSushiColors.Agent;
     public MysticClueType MysticHintType => MysticClueType.Trickster;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
@@ -38,8 +38,8 @@ public sealed class AgentRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushi
         if (CompletedAllTasks && Player.AmOwner)
         {
             Coroutines.Start(MiscUtils.CoFlash(Color.blue, alpha: 0.5f, PlaySound: true));
-            Player.ChangeRole(RoleId.Get<HitmanRole>());
         }
+        Player.RpcChangeRole(RoleId.Get<HitmanRole>());
     }
 
     public override void Deinitialize(PlayerControl targetPlayer)
@@ -48,7 +48,7 @@ public sealed class AgentRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushi
         if (Player.AmOwner)
         {
             HudManager.Instance.ImpostorVentButton.graphic.sprite = TOSAssets.VentSprite.LoadAsset();
-            HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(TownOfSushiColors.Impostor);
+            HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(TownOfSushiColors.Agent);
         }
     }
 
@@ -77,7 +77,7 @@ public sealed class AgentRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushi
 
     public string GetAdvancedDescription()
     {
-        return "The Agent is a Neutral Benign role that has to finish their tasks in order to become a Hitman. Their tasks do not count for a task win." + MiscUtils.AppendOptionsText(GetType());
+        return "The Agent is a Neutral Killing role that has to finish their tasks in order to become a Hitman. Their tasks do not count for a task win." + MiscUtils.AppendOptionsText(GetType());
     }
 
     [HideFromIl2Cpp]

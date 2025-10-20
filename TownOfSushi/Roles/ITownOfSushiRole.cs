@@ -136,7 +136,7 @@ public interface ITownOfSushiRole : ICustomRole
 
     public static StringBuilder SetNewTabText(ICustomRole role)
     {
-        return TOSRoleUtils.SetDeadTabText(role);
+        return TOSRoleUtils.SetTabText(role);
     }
     public static StringBuilder SetDeadTabText(ICustomRole role)
     {

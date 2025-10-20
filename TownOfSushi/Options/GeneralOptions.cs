@@ -56,8 +56,8 @@ public sealed class GeneralOptions : AbstractOptionGroup
 
     [ModdedToggleOption("Parallel Medbay Scans")]
     public bool ParallelMedbay { get; set; } = true;
-    [ModdedToggleOption("Disable Medbay Scan Walk Animation")]
-    public bool DisableMedbayAnimation { get; set; } = false;
+   /* [ModdedToggleOption("Disable Medbay Scan Walk Animation")]
+    public bool DisableMedbayAnimation { get; set; } = false;*/
 
     [ModdedEnumOption("Disable Meeting Skip Button", typeof(SkipState))]
     public SkipState SkipButtonDisable { get; set; } = SkipState.No;

@@ -17,6 +17,8 @@ public sealed class VampireRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSus
     public string RoleName => "Vampire";
     public string RoleDescription => "Convert Crewmates And Kill The Rest";
     public string RoleLongDescription => "Bite all other players";
+    public string YouAreText => "You Are A";
+    public string YouWereText => "You Were A";
     public MysticClueType MysticHintType => MysticClueType.Death;
     public Color RoleColor => TownOfSushiColors.Vampire;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;

@@ -17,7 +17,8 @@ public sealed class PestilenceRole(IntPtr cppPtr)
     public string RoleName => "Pestilence";
     public string RoleDescription => "Horseman Of The Apocalypse!";
     public string RoleLongDescription => "Kill everyone in your path that interacts with you!";
-    public string YouAreText => "You are";
+    public string YouAreText => "You Are";
+    public string YouWereText => "You Were";
     public Color RoleColor => TownOfSushiColors.Pestilence;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralKilling;

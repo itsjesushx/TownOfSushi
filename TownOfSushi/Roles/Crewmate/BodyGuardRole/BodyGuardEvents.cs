@@ -54,7 +54,8 @@ public static class BodyGuardEvents
         }
         // Adding Warlock's button to check because:
         // Warlock's curse button somehow breaks when interacting with BodyGuard's protectee so this is the easiest way to fix it
-        if (button is IKillButton || button == CustomButtonSingleton<WarlockCurseButton>.Instance)
+        if (button is IKillButton || button == CustomButtonSingleton<WarlockCurseButton>.Instance 
+        || button == CustomButtonSingleton<PoisonerButton>.Instance)
         {
             CheckForBodyGuardProtectMurder(@event, source, target);
         }
