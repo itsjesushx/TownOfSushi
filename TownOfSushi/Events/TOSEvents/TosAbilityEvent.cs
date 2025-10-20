@@ -47,22 +47,23 @@ public class TOSAbilityEvent : MiraEvent
 
 public enum AbilityType
 {
-    AltruistRevive,
+    RetributionistRevive,
     ClericBarrier,
+    Poison,
     ClericCleanse,
     WarlockCurse,
     WarlockCurseKill,
+    BodyGuardProtect,
     DeputyCamp,
-
-    // DetectiveExamine,
-    // DetectiveInspect,
+    ConsigliereReveal,
+    // InspectorExamine,
+    // InspectorInspect,
     EngineerFix,
 
     // EngineerVent,
     HunterStalk,
     JailorJail,
     LookoutWatch,
-    WitchCurse,
     MedicShield,
     MediumMediate,
     OracleBless,
@@ -77,8 +78,8 @@ public enum AbilityType
 
     MonarchKnight,
 
-    // SeerReveal,
-    // SheriffShoot,
+    // DetectiveReveal,
+    // VigilanteShoot,
     // TrackerTrack,
     TransporterTransport,
     RomanticProtect,
@@ -125,8 +126,9 @@ public enum AbilityType
     ScavengerEat,
     ArsonistDouse,
     PlaguebearerInfect,
-    SurvivorVest,
+    AmnesiacVest,
 
-    VampireBite
-    // PredatorTerminate
+    VampireBite,
+    ThiefPreSteal,
+    ThiefPostSteal
 }

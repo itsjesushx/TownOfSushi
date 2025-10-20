@@ -3,9 +3,7 @@ using RCoroutines = Reactor.Utilities.Coroutines;
 using System.Collections;
 using UnityEngine;
 using HarmonyLib;
-using MiraAPI.Modifiers;
 using MiraAPI.Modifiers.Types;
-using TownOfSushi.Utilities;
 
 namespace TownOfSushi.Modules.Debugger;
 

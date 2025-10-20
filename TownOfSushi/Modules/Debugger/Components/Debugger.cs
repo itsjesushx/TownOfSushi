@@ -4,10 +4,7 @@ using Il2CppInterop.Runtime.Attributes;
 using InnerNet;
 using MiraAPI.Hud;
 using MiraAPI.Networking;
-using TownOfSushi.Buttons.Modifiers;
 using TownOfSushi.Modules.Debugger.Embedded.ReactorImGui;
-using TownOfSushi.Utilities;
-
 using UnityEngine;
 
 namespace TownOfSushi.Modules.Debugger.Components;
@@ -15,7 +12,7 @@ public class Debugger : MonoBehaviour
 {
     [HideFromIl2Cpp]
     public DragWindow Window { get; }
-    public static bool IsDebuggerActive => AmongUsClient.Instance.NetworkMode == NetworkModes.LocalGame || AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay;
+    public static bool IsDebuggerActive => AmongUsClient.Instance.NetworkMode == NetworkModes.LocalGame;
     public bool WindowEnabled { get; set; } = true;
     public Debugger(IntPtr ptrs) : base(ptrs)
     {

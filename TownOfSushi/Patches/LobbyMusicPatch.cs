@@ -1,4 +1,5 @@
 using HarmonyLib;
+using MiraAPI.LocalSettings;
 
 namespace TownOfSushi.Patches
 {
@@ -11,7 +12,7 @@ namespace TownOfSushi.Patches
         {
             Func<ISoundPlayer, bool> uglyMusic = x => x.Name.Equals("MapTheme", StringComparison.Ordinal);
             ISoundPlayer LobbyMusic = SoundManager.Instance.soundPlayers.Find(uglyMusic);
-            if (TownOfSushiPlugin.DisableLobbyMusic.Value)
+            if (LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.DisableLobbyMusic.Value)
             {
                 if (LobbyMusic == null) return;
                 SoundManager.Instance.StopNamedSound("MapTheme");

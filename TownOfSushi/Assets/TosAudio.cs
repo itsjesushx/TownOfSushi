@@ -1,4 +1,3 @@
-using MiraAPI.Utilities.Assets;
 using UnityEngine;
 
 namespace TownOfSushi.Assets;
@@ -35,14 +34,11 @@ public static class TOSAudio
     public static LoadableAsset<AudioClip> OtherIntroSound { get; } =
         new LoadableAudioResourceAsset($"{AudioPath}.OtherIntro.wav");
 
-    public static LoadableAsset<AudioClip> SheriffIntroSound { get; } =
-        new LoadableAudioResourceAsset($"{AudioPath}.SheriffIntro.wav");
-
     public static LoadableAsset<AudioClip> VigiIntroSound { get; } =
         new LoadableAudioResourceAsset($"{AudioPath}.VigilanteIntro.wav");
 
-    public static LoadableAsset<AudioClip> AltruistReviveSound { get; } =
-        new LoadableAudioResourceAsset($"{AudioPath}.Altruist.wav");
+    public static LoadableAsset<AudioClip> RetributionistReviveSound { get; } =
+        new LoadableAudioResourceAsset($"{AudioPath}.Retributionist.wav");
 
     public static LoadableAsset<AudioClip> JailSound { get; } = new LoadableAudioResourceAsset($"{AudioPath}.Jail.wav");
 

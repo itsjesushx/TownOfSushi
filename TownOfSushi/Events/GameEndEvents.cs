@@ -1,12 +1,10 @@
 using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.GameEnd;
-using MiraAPI.Roles;
 using Reactor.Utilities.Extensions;
 using TownOfSushi.GameOver;
 using TownOfSushi.Modules;
 using TownOfSushi.Patches;
-using TownOfSushi.Roles;
 
 namespace TownOfSushi.Events;
 

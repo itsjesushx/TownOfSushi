@@ -1,17 +1,12 @@
 ﻿using System.Globalization;
 using HarmonyLib;
-using MiraAPI.GameOptions;
 using MiraAPI.Hud;
-using MiraAPI.Modifiers;
+using MiraAPI.LocalSettings;
 using MiraAPI.PluginLoading;
-using MiraAPI.Utilities;
 using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
-using Rewired;
 using TownOfSushi.Modifiers;
-using TownOfSushi.Modifiers.Neutral;
 using TownOfSushi.Options;
-using TownOfSushi.Utilities;
 using UnityEngine;
 
 namespace TownOfSushi.Buttons;
@@ -28,30 +23,33 @@ public abstract class TownOfSushiButton : CustomActionButton
     public override ButtonLocation Location => ButtonLocation.BottomRight;
 
     public override string CooldownTimerFormatString =>
-        Timer <= 10f && TownOfSushiPlugin.PreciseCooldowns.Value ? "0.0" : "0";
+        Timer <= 10f && LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.PreciseCooldownsToggle.Value ? "0.0" : "0";
 
     public virtual bool UsableInDeath => false;
     public virtual bool ShouldPauseInVent => true;
-
-    /// <summary>
-    ///     Gets the keybind used for the button.<br />
-    ///     Use ActionQuaternary for primary abilities, ActionSecondary for secondary abilities or kill buttons,
-    ///     tos.ActionCustom for tertiary abilities, and tos.ActionCustom2 for modifier buttons.
-    /// </summary>
-    public virtual string Keybind => string.Empty;
-
-    private PassiveButton PassiveComp { get; set; }
+    
+    public PassiveButton PassiveComp { get; set; }
 
     public virtual int ConsoleBind()
     {
-        return Keybind switch
+        var bind = -1;
+        if (Keybind == Keybinds.PrimaryAction)
         {
-            Keybinds.PrimaryAction => Keybinds.PrimaryConsole,
-            Keybinds.SecondaryAction => Keybinds.SecondaryConsole,
-            Keybinds.ModifierAction => Keybinds.ModifierConsole,
-            Keybinds.VentAction => Keybinds.VentConsole,
-            _ => -1
-        };
+            bind = Keybinds.PrimaryConsole;
+        }
+        else if (Keybind == Keybinds.SecondaryAction)
+        {
+            bind = Keybinds.SecondaryConsole;
+        }
+        else if (Keybind == Keybinds.ModifierAction)
+        {
+            bind = Keybinds.ModifierConsole;
+        }
+        else if (Keybind == Keybinds.VentAction)
+        {
+            bind = Keybinds.VentConsole;
+        }
+        return bind;
     }
 
     public override void FixedUpdateHandler(PlayerControl playerControl)
@@ -121,7 +119,7 @@ public abstract class TownOfSushiButton : CustomActionButton
             Button.usesRemainingSprite.color = TextOutlineColor;
         }
 
-        TownOfSushiColors.UseBasic = TownOfSushiPlugin.UseCrewmateTeamColor.Value;
+        TownOfSushiColors.UseBasic = LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.UseCrewmateTeamColorToggle.Value;
 
         PassiveComp = Button.GetComponent<PassiveButton>();
     }
@@ -136,7 +134,7 @@ public abstract class TownOfSushiButton : CustomActionButton
             Button!.usesRemainingSprite.color = TextOutlineColor;
         }
 
-        TownOfSushiColors.UseBasic = TownOfSushiPlugin.UseCrewmateTeamColor.Value;
+        TownOfSushiColors.UseBasic = LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.UseCrewmateTeamColorToggle.Value;
     }
 
     public override bool CanUse()
@@ -145,13 +143,18 @@ public abstract class TownOfSushiButton : CustomActionButton
         {
             return false;
         }
-        
+
+        if (HudManager.Instance.Chat.IsOpenOrOpening || MeetingHud.Instance)
+        {
+            return false;
+        }
+
         if (PlayerControl.LocalPlayer.HasDied() && !UsableInDeath)
         {
             return false;
         }
 
-        if (!PlayerControl.LocalPlayer.CanMove || PlayerControl.LocalPlayer.HasModifier<DisabledModifier>())
+        if (!PlayerControl.LocalPlayer.CanMove || PlayerControl.LocalPlayer.GetModifiers<DisabledModifier>().Any(x => !x.CanUseAbilities))
         {
             return false;
         }
@@ -168,18 +171,12 @@ public abstract class TownOfSushiButton : CustomActionButton
 
         Button?.gameObject.SetActive(HudManager.Instance.UseButton.isActiveAndEnabled ||
                                      HudManager.Instance.PetButton.isActiveAndEnabled);
-
-        if (CanUse() && Keybind != string.Empty && (ReInput.players.GetPlayer(0).GetButtonDown(Keybind) ||
-                                                    ConsoleJoystick.player.GetButtonDown(ConsoleBind())))
-        {
-            PassiveComp.OnClick.Invoke();
-        }
     }
 
     public override void ClickHandler()
     {
         if (!CanClick() || PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>() ||
-            PlayerControl.LocalPlayer.HasModifier<DisabledModifier>())
+            PlayerControl.LocalPlayer.GetModifiers<DisabledModifier>().Any(x => !x.CanUseAbilities))
         {
             return;
         }
@@ -198,7 +195,7 @@ public abstract class TownOfSushiButton : CustomActionButton
                 }
             }
 
-            TownOfSushiColors.UseBasic = TownOfSushiPlugin.UseCrewmateTeamColor.Value;
+            TownOfSushiColors.UseBasic = LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.UseCrewmateTeamColorToggle.Value;
         }
 
         OnClick();
@@ -227,30 +224,33 @@ public abstract class TownOfSushiTargetButton<T> : CustomActionButton<T> where T
     public override ButtonLocation Location => ButtonLocation.BottomRight;
 
     public override string CooldownTimerFormatString =>
-        Timer <= 10f && TownOfSushiPlugin.PreciseCooldowns.Value ? "0.0" : "0";
+        Timer <= 10f && LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.PreciseCooldownsToggle.Value ? "0.0" : "0";
 
     public virtual bool ShouldPauseInVent => true;
     public virtual bool UsableInDeath => false;
 
-    /// <summary>
-    ///     Gets the keybind used for the button.
-    ///     Use ActionQuaternary for primary abilities, ActionSecondary for secondary abilities or kill buttons,
-    ///     tos.ActionCustom for tertiary abilities, and tos.ActionCustom2 for modifier buttons.
-    /// </summary>
-    public virtual string Keybind => string.Empty;
-
-    private PassiveButton PassiveComp { get; set; }
+    public PassiveButton PassiveComp { get; set; }
 
     public virtual int ConsoleBind()
     {
-        return Keybind switch
+        var bind = -1;
+        if (Keybind == Keybinds.PrimaryAction)
         {
-            Keybinds.PrimaryAction => Keybinds.PrimaryConsole,
-            Keybinds.SecondaryAction => Keybinds.SecondaryConsole,
-            Keybinds.ModifierAction => Keybinds.ModifierConsole,
-            Keybinds.VentAction => Keybinds.VentConsole,
-            _ => -1
-        };
+            bind = Keybinds.PrimaryConsole;
+        }
+        else if (Keybind == Keybinds.SecondaryAction)
+        {
+            bind = Keybinds.SecondaryConsole;
+        }
+        else if (Keybind == Keybinds.ModifierAction)
+        {
+            bind = Keybinds.ModifierConsole;
+        }
+        else if (Keybind == Keybinds.VentAction)
+        {
+            bind = Keybinds.VentConsole;
+        }
+        return bind;
     }
 
     public override void FixedUpdateHandler(PlayerControl playerControl)
@@ -308,8 +308,13 @@ public abstract class TownOfSushiTargetButton<T> : CustomActionButton<T> where T
         {
             return false;
         }
-        
-        if (!PlayerControl.LocalPlayer.CanMove || PlayerControl.LocalPlayer.HasModifier<DisabledModifier>())
+
+        if (HudManager.Instance.Chat.IsOpenOrOpening || MeetingHud.Instance)
+        {
+            return false;
+        }
+
+        if (!PlayerControl.LocalPlayer.CanMove || PlayerControl.LocalPlayer.GetModifiers<DisabledModifier>().Any(x => !x.CanUseAbilities))
         {
             return false;
         }
@@ -349,7 +354,7 @@ public abstract class TownOfSushiTargetButton<T> : CustomActionButton<T> where T
             Button.usesRemainingSprite.color = TextOutlineColor;
         }
 
-        TownOfSushiColors.UseBasic = TownOfSushiPlugin.UseCrewmateTeamColor.Value;
+        TownOfSushiColors.UseBasic = LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.UseCrewmateTeamColorToggle.Value;
 
         PassiveComp = Button.GetComponent<PassiveButton>();
     }
@@ -364,7 +369,7 @@ public abstract class TownOfSushiTargetButton<T> : CustomActionButton<T> where T
             Button!.usesRemainingSprite.color = TextOutlineColor;
         }
 
-        TownOfSushiColors.UseBasic = TownOfSushiPlugin.UseCrewmateTeamColor.Value;
+        TownOfSushiColors.UseBasic = LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.UseCrewmateTeamColorToggle.Value;
     }
 
     public override void ClickHandler()
@@ -386,7 +391,7 @@ public abstract class TownOfSushiTargetButton<T> : CustomActionButton<T> where T
                     }
                 }
 
-                TownOfSushiColors.UseBasic = TownOfSushiPlugin.UseCrewmateTeamColor.Value;
+                TownOfSushiColors.UseBasic = LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.UseCrewmateTeamColorToggle.Value;
             }
 
             OnClick();
@@ -411,12 +416,6 @@ public abstract class TownOfSushiTargetButton<T> : CustomActionButton<T> where T
 
         Button?.gameObject.SetActive(HudManager.Instance.UseButton.isActiveAndEnabled ||
                                      HudManager.Instance.PetButton.isActiveAndEnabled);
-
-        if (CanUse() && Keybind != string.Empty && (ReInput.players.GetPlayer(0).GetButtonDown(Keybind) ||
-                                                    ConsoleJoystick.player.GetButtonDown(ConsoleBind())))
-        {
-            PassiveComp.OnClick.Invoke();
-        }
     }
 }
 
@@ -466,7 +465,7 @@ public abstract class TownOfSushiRoleButton<TRole, TTarget> : TownOfSushiTargetB
         if (target is PlayerControl playerTarget)
         {
             return base.IsTargetValid(target) && !playerTarget.inVent &&
-                   !(playerTarget.TryGetModifier<DisabledModifier>(out var mod) && !mod.CanBeInteractedWith);
+                   !playerTarget.GetModifiers<DisabledModifier>().Any(mod => !mod.CanBeInteractedWith);
         }
 
         return base.IsTargetValid(target);

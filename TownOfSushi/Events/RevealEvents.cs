@@ -1,5 +1,4 @@
 using MiraAPI.Events;
-using MiraAPI.Modifiers;
 using TownOfSushi.Events.TOSEvents;
 using TownOfSushi.Modifiers;
 

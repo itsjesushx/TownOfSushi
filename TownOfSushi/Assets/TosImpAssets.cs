@@ -1,4 +1,3 @@
-using MiraAPI.Utilities.Assets;
 using UnityEngine;
 
 namespace TownOfSushi.Assets;
@@ -14,6 +13,9 @@ public static class TOSImpAssets
 
     public static LoadableAsset<Sprite> RecallSprite { get; } =
         new LoadableResourceAsset($"{ButtonPath}.RecallButton.png");
+    
+    public static LoadableAsset<Sprite> ConsigliereRevealSprite { get; } =
+        new LoadableResourceAsset($"{ButtonPath}.ConsigliereReveal.png");
     
     public static LoadableAsset<Sprite> AmbushSprite { get; } =
         new LoadableResourceAsset($"{ButtonPath}.AmbushButton.png");

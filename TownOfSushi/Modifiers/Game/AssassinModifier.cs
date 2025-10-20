@@ -1,20 +1,11 @@
 ﻿using HarmonyLib;
-using MiraAPI.GameOptions;
-using MiraAPI.Modifiers;
 using MiraAPI.Networking;
 using MiraAPI.PluginLoading;
-using MiraAPI.Roles;
-using MiraAPI.Utilities;
 using Reactor.Utilities;
 using TownOfSushi.Events;
-using TownOfSushi.Modifiers.Crewmate;
 using TownOfSushi.Modules;
 using TownOfUs.Modules.Components;
 using TownOfSushi.Options;
-using TownOfSushi.Roles;
-using TownOfSushi.Roles.Crewmate;
-using TownOfSushi.Roles.Neutral;
-using TownOfSushi.Utilities;
 using UnityEngine;
 
 namespace TownOfSushi.Modifiers.Game;
@@ -159,11 +150,9 @@ public abstract class AssassinModifier : ExcludedGameModifier
                 Coroutines.Start(MiscUtils.CoFlash(TownOfSushiColors.Impostor));
 
                 var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>{TownOfSushiColors.ImpSoft.ToTextColor()}Your Double Shot has prevented you from dying this meeting!</color></b>",
+                    MiscUtils.ColorString(TownOfSushiColors.ImpSoft, $"<b>Your Double Shot has prevented you from dying this meeting!</b>"),
                     Color.white, spr: TOSModifierIcons.DoubleShot.LoadAsset());
-
-                notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                notif1.AdjustNotification();
 
                 shapeMenu.Close();
                 LastGuessedItem = string.Empty;
@@ -211,6 +200,7 @@ public abstract class AssassinModifier : ExcludedGameModifier
                (votePlayer?.Data.Role is MayorRole mayor && mayor.Revealed) ||
                (votePlayer?.GetModifiers<RevealModifier>().Any(x => x.Visible && x.RevealRole) == true) ||
                (Player.IsLover() && votePlayer?.IsLover() == true) ||
+               (Player.Data.Role is ConsigliereRole && votePlayer?.HasModifier<ConsigliereRevealedModifier>() == true) ||
                votePlayer?.HasModifier<JailedModifier>() == true;
     }
 

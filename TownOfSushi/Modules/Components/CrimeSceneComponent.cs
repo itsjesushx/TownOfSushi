@@ -3,8 +3,8 @@ using AmongUs.GameOptions;
 using HarmonyLib;
 using Il2CppInterop.Runtime.Attributes;
 using Reactor.Utilities.Attributes;
-using TownOfSushi.Roles.Crewmate;
-using TownOfSushi.Utilities;
+
+
 using UnityEngine;
 
 namespace TownOfUs.Modules.Components;
@@ -83,7 +83,7 @@ public sealed class CrimeSceneComponent(nint cppPtr) : MonoBehaviour(cppPtr)
         _crimeScenes.Add(scene);
 
         scene.gameObject.SetActive(false);
-        if (PlayerControl.LocalPlayer.Data.Role is DetectiveRole)
+        if (PlayerControl.LocalPlayer.Data.Role is InspectorRole)
         {
             scene.gameObject.SetActive(true);
         }

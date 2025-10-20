@@ -1,10 +1,7 @@
 using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
 using TownOfSushi.Options;
-using MiraAPI.GameOptions;
 using UnityEngine;
-using MiraAPI.Modifiers;
-using TownOfSushi.Modifiers.Game.Universal;
 
 namespace TownOfSushi.Events
 {
@@ -16,7 +13,7 @@ namespace TownOfSushi.Events
             if (!OptionGroupSingleton<TownOfSushiMapOptions>.Instance.EnableRandomSpawns)
                 return;
 
-            SetRandomSpawns(player => !(player.Data.Disconnected || player.Data.IsDead));
+            SetRandomSpawns(player => !player.HasDied());
         }
 
         [RegisterEvent]
@@ -25,7 +22,7 @@ namespace TownOfSushi.Events
             if (!OptionGroupSingleton<TownOfSushiMapOptions>.Instance.EnableRandomSpawns || !@event.TriggeredByIntro)
                 return;
 
-            SetRandomSpawns(player => !(player.Data.Disconnected || player.Data.IsDead || player.HasModifier<LazyModifier>()));
+            SetRandomSpawns(player => !(player.HasDied() || player.HasModifier<LazyModifier>()));
         }
 
         private static readonly System.Random rnd = new System.Random((int)DateTime.Now.Ticks);

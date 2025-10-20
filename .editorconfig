@@ -80,3 +80,81 @@ dotnet_diagnostic.CA1051.severity = none
 
 # CS0108: Member hides inherited member; missing new keyword
 dotnet_diagnostic.CS0108.severity = none
+
+# S2486: Generic exceptions should not be ignored
+dotnet_diagnostic.S2486.severity = none
+
+# S108: Nested blocks of code should not be left empty
+dotnet_diagnostic.S108.severity = none
+
+# S1144: Unused private types or members should be removed
+dotnet_diagnostic.S1144.severity = none
+
+# CA1305: Specify IFormatProvider
+dotnet_diagnostic.CA1305.severity = silent
+
+# IDE0320: Make anonymous function static
+dotnet_diagnostic.IDE0320.severity = none
+
+# CS8601: Possible null reference assignment.
+dotnet_diagnostic.CS8601.severity = silent
+
+# S3267: Loops should be simplified with "LINQ" expressions
+dotnet_diagnostic.S3267.severity = none
+
+# IDE0057: Use range operator
+dotnet_diagnostic.IDE0057.severity = none
+
+# CS8603: Possible null reference return.
+dotnet_diagnostic.CS8603.severity = silent
+
+# CA1310: Specify StringComparison for correctness
+dotnet_diagnostic.CA1310.severity = none
+
+# CA1865: Use char overload
+dotnet_diagnostic.CA1865.severity = silent
+
+# S3963: "static" fields should be initialized inline
+dotnet_diagnostic.S3963.severity = silent
+
+# CS8625: Cannot convert null literal to non-nullable reference type.
+dotnet_diagnostic.CS8625.severity = silent
+
+# CS8600: Converting null literal or possible null value to non-nullable type.
+dotnet_diagnostic.CS8600.severity = silent
+
+# CA2022: Avoid inexact read with 'Stream.Read'
+dotnet_diagnostic.CA2022.severity = none
+
+# CS8602: Dereference of a possibly null reference.
+dotnet_diagnostic.CS8602.severity = none
+
+# S2674: The length returned from a stream read should be checked
+dotnet_diagnostic.S2674.severity = silent
+
+# S4136: Method overloads should be grouped together
+dotnet_diagnostic.S4136.severity = silent
+
+# CA1806: Do not ignore method results
+dotnet_diagnostic.CA1806.severity = none
+
+# S2201: Methods without side effects should not have their return values ignored
+dotnet_diagnostic.S2201.severity = none
+
+# IDE0058: Expression value is never used
+dotnet_diagnostic.IDE0058.severity = none
+
+# CA1869: Cache and reuse 'JsonSerializerOptions' instances
+dotnet_diagnostic.CA1869.severity = none
+
+# CS8604: Possible null reference argument.
+dotnet_diagnostic.CS8604.severity = none
+
+# S1168: Empty arrays and collections should be returned instead of null
+dotnet_diagnostic.S1168.severity = none
+
+# IDE0078: Use pattern matching
+dotnet_diagnostic.IDE0078.severity = none
+
+# CA1854: Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method
+dotnet_diagnostic.CA1854.severity = none

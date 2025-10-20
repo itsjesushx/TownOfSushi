@@ -1,10 +1,7 @@
 using System.Collections;
 using HarmonyLib;
-using MiraAPI.Modifiers;
 using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
-using TownOfSushi.Modifiers.Crewmate;
-using TownOfSushi.Modifiers.Impostor;
 using UnityEngine;
 
 namespace TownOfSushi.Patches.Misc;

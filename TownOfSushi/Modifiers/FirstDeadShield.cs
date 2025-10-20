@@ -1,10 +1,8 @@
-using MiraAPI.GameOptions;
-using MiraAPI.Utilities.Assets;
+using MiraAPI.LocalSettings;
 using Reactor.Utilities.Extensions;
 using TownOfSushi.Modules.Anims;
 using TownOfSushi.Options;
 using TownOfSushi.Patches;
-using TownOfSushi.Utilities;
 using UnityEngine;
 
 namespace TownOfSushi.Modifiers;
@@ -14,7 +12,7 @@ public sealed class FirstDeadShield : ExcludedGameModifier, IAnimated
     public override string ModifierName => "First Death Shield";
     public override LoadableAsset<Sprite>? ModifierIcon => TOSModifierIcons.FirstRoundShield;
 
-    public override bool HideOnUi => !TownOfSushiPlugin.ShowShieldHud.Value;
+    public override bool HideOnUi => !LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.ShowShieldHudToggle.Value;
     public override Color FreeplayFileColor => new Color32(100, 220, 100, 255);
 
     public GameObject? FirstRoundShield { get; set; }

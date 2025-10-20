@@ -1,6 +1,4 @@
-﻿using MiraAPI.Modifiers;
-
-namespace TownOfSushi.Modifiers;
+﻿namespace TownOfSushi.Modifiers;
 
 public sealed class IndirectAttackerModifier(bool ignoreShield) : BaseModifier
 {

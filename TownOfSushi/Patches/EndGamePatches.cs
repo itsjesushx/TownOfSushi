@@ -1,19 +1,13 @@
 using System.Text;
 using AmongUs.GameOptions;
 using HarmonyLib;
-using MiraAPI.Modifiers;
 using MiraAPI.Modifiers.Types;
-using MiraAPI.Roles;
-using MiraAPI.Utilities;
 using Reactor.Utilities.Extensions;
 using TMPro;
 using TownOfSushi.Events;
 using TownOfSushi.Modifiers;
 using TownOfSushi.Modifiers.Game;
 using TownOfSushi.Modules;
-using TownOfSushi.Roles;
-using TownOfSushi.Roles.Neutral;
-using TownOfSushi.Utilities;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -117,8 +111,7 @@ public static class EndGamePatches
 
             if (killedPlayers > 0 && !playerControl.IsCrewmate() && !playerControl.Is(RoleAlignment.NeutralEvil))
             {
-                playerRoleString.Append(TownOfSushiPlugin.Culture,
-                    $" |{TownOfSushiColors.Impostor.ToTextColor()} Kills: {killedPlayers}</color>");
+                playerRoleString.Append(" | " + MiscUtils.ColorString(TownOfSushiColors.Impostor, $"Kills: {killedPlayers}"));
             }
 
             if (GameHistory.PlayerStats.TryGetValue(playerControl.PlayerId, out var stats))
@@ -126,8 +119,7 @@ public static class EndGamePatches
                 if (killedPlayers > 0 && playerControl.IsCrewmate() && stats.CorrectKills <= 0 &&
                     stats.IncorrectKills <= 0 && !playerControl.Is(RoleAlignment.NeutralEvil))
                 {
-                    playerRoleString.Append(TownOfSushiPlugin.Culture,
-                        $" |{TownOfSushiColors.Impostor.ToTextColor()} Kills: {killedPlayers}</color>");
+                    playerRoleString.Append(" | " + MiscUtils.ColorString(TownOfSushiColors.Impostor, $"Kills: {killedPlayers}"));
                 }
 
                 if (stats.CorrectKills > 0)
@@ -138,8 +130,8 @@ public static class EndGamePatches
 
                 if (stats.IncorrectKills > 0)
                 {
-                    playerRoleString.Append(TownOfSushiPlugin.Culture,
-                        $" | {TownOfSushiColors.Impostor.ToTextColor()}Mis-kills: {stats.IncorrectKills}</color>");
+                    playerRoleString.Append(" | " + MiscUtils.ColorString(TownOfSushiColors.Impostor,
+                        $"Mis-kills: {stats.IncorrectKills}"));
                 }
 
                 if (stats.CorrectAssassinKills > 0)
@@ -150,8 +142,8 @@ public static class EndGamePatches
 
                 if (stats.IncorrectAssassinKills > 0)
                 {
-                    playerRoleString.Append(TownOfSushiPlugin.Culture,
-                        $" | {TownOfSushiColors.Impostor.ToTextColor()}Misguesses: {stats.IncorrectAssassinKills}</color>");
+                    playerRoleString.Append(" | " + MiscUtils.ColorString(TownOfSushiColors.Impostor,
+                        $"Misguesses: {stats.IncorrectAssassinKills}"));
                 }
             }
             if (playerControl.TryGetModifier<DeathHandlerModifier>(out var deathHandler))
@@ -229,31 +221,41 @@ public static class EndGamePatches
         winText.text = $"\n{winText.text}";
         winText.transform.localScale = new Vector3(1.1f, 1.1f, 1f);
 
-        var roleSummaryText1 = new StringBuilder();
-        var roleSummaryText2 = new StringBuilder();
-        var roleSummaryTextFull = new StringBuilder();
-        var roleSummaryBackup = new StringBuilder();
-        roleSummaryText1.AppendLine("<size=125%><u><b>Game Stats:</b></u></size>");
-        roleSummaryText1.AppendLine();
-        roleSummaryTextFull.AppendLine("<size=125%><u><b>Game Stats:</b></u></size>");
-        roleSummaryTextFull.AppendLine();
-        var count = 0;
+        // Winner/Loser summary
+        var winnerList = new StringBuilder();
+        var loserList = new StringBuilder();
+        winnerList.AppendLine("<size=105%><color=#00FF00FF><b>★ - Winners List - ★</b></color></size>");
+        loserList.AppendLine("<size=105%><color=#FF0000FF><b>◆ - Losers List - ◆</b></color></size>");
+
         foreach (var data in EndGameData.PlayerRecords)
         {
-            var role = string.Join(" ", data.RoleString);
-            if (count % 2 == 0)
-            {
-                roleSummaryText2.AppendLine(TownOfSushiPlugin.Culture, $"<size=70%>{data.PlayerName} - {role}</size>");
-            }
+            string playerLine = $"<size=70%>{data.PlayerName}: {data.RoleString}</size>";
+            if (data.Winner)
+                winnerList.AppendLine(playerLine);
             else
-            {
-                roleSummaryText1.AppendLine(TownOfSushiPlugin.Culture, $"<size=70%>{data.PlayerName} - {role}</size>");
-            }
-
-            count++;
-            roleSummaryBackup.AppendLine(TownOfSushiPlugin.Culture, $"<size=70%>{data.PlayerName} - {role}</size>");
-            roleSummaryTextFull.AppendLine(TownOfSushiPlugin.Culture, $"<size=70%>{data.PlayerName} - {role}</size>");
+                loserList.AppendLine(playerLine);
         }
+
+        // Separate text blocks for split mode
+        var splitWinners = new StringBuilder();
+        splitWinners.AppendLine();
+        splitWinners.Append(winnerList);
+
+        var splitLosers = new StringBuilder();
+        splitLosers.AppendLine("<size=125%><u><b>Game Stats:</b></u></size>");
+        splitLosers.AppendLine();
+        splitLosers.Append(loserList);
+
+        // Combined summary for left mode
+        var fullSummary = new StringBuilder();
+        fullSummary.AppendLine("<size=125%><u><b>Game Stats:</b></u></size>");
+        fullSummary.AppendLine();
+        fullSummary.Append(winnerList);
+        fullSummary.AppendLine();
+        fullSummary.Append(loserList);
+
+        // Backup for GameHistory
+        var roleSummaryBackup = new StringBuilder(fullSummary.ToString());
 
         var roleSummaryTextMesh = roleSummary.GetComponent<TMP_Text>();
         roleSummaryTextMesh.alignment = TextAlignmentOptions.TopLeft;
@@ -275,24 +277,18 @@ public static class EndGamePatches
         roleSummaryTextMeshLeft.fontSizeMin = 1.1f;
         roleSummaryTextMeshLeft.fontSizeMax = 1.1f;
         roleSummaryTextMeshLeft.fontSize = 1.1f;
-        /* var controllerHandler = Object.FindObjectOfType<ControllerDisconnectHandler>();
-        if (controllerHandler != null)
-        {
-            roleSummaryTextMesh.font = controllerHandler.ContinueText.GetComponent<TMP_Text>().font;
-            roleSummaryTextMesh.fontStyle = FontStyles.Bold;
-        } */
 
         var roleSummaryTextMeshRectTransform = roleSummaryTextMesh.GetComponent<RectTransform>();
-        roleSummaryTextMeshRectTransform.anchoredPosition = new Vector2(position.x + 3.5f, position.y - 0.1f);
-        roleSummaryTextMesh.text = roleSummaryText1.ToString();
+        roleSummaryTextMeshRectTransform.anchoredPosition = new Vector2(position.x + 8.8f, position.y - 0.1f);
+        roleSummaryTextMesh.text = splitWinners.ToString();
 
         var roleSummaryTextMeshRectTransform2 = roleSummaryTextMesh2.GetComponent<RectTransform>();
-        roleSummaryTextMeshRectTransform2.anchoredPosition = new Vector2(position.x + 8.8f, position.y - 0.1f);
-        roleSummaryTextMesh2.text = roleSummaryText2.ToString();
+        roleSummaryTextMeshRectTransform2.anchoredPosition = new Vector2(position.x + 3.5f, position.y - 0.1f);
+        roleSummaryTextMesh2.text = splitLosers.ToString();
 
         var roleSummaryTextMeshRectTransformLeft = roleSummaryTextMeshLeft.GetComponent<RectTransform>();
         roleSummaryTextMeshRectTransformLeft.anchoredPosition = new Vector2(position.x + 3.5f, position.y - 0.1f);
-        roleSummaryTextMeshLeft.text = roleSummaryTextFull.ToString();
+        roleSummaryTextMeshLeft.text = fullSummary.ToString();
 
         GameHistory.EndGameSummary = roleSummaryBackup.ToString();
 

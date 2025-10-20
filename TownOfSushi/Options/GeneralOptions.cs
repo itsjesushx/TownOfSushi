@@ -1,7 +1,5 @@
-﻿using MiraAPI.GameOptions;
-using MiraAPI.GameOptions.Attributes;
+﻿using MiraAPI.GameOptions.Attributes;
 using MiraAPI.GameOptions.OptionTypes;
-using MiraAPI.Utilities;
 
 namespace TownOfSushi.Options;
 
@@ -21,8 +19,15 @@ public sealed class GeneralOptions : AbstractOptionGroup
     [ModdedToggleOption("Camouflage Comms")]
     public bool CamouflageComms { get; set; } = true;
 
-    [ModdedToggleOption("Kill Anyone During Camouflage")]
-    public bool KillDuringCamoComms { get; set; } = true;
+    public ModdedToggleOption KillDuringCamoComms { get; set; } = new("Kill Anyone During Camouflage", true)
+    {
+        Visible = () => OptionGroupSingleton<GeneralOptions>.Instance.CamouflageComms
+    };
+
+    public ModdedToggleOption CamoKillScreens { get; set; } = new("Camouflage Kill Screens During Comms", false)
+    {
+        Visible = () => OptionGroupSingleton<GeneralOptions>.Instance.CamouflageComms
+    };
 
     [ModdedToggleOption("Impostors Don't Know Each Other")]
     public bool FFAImpostorMode { get; set; } = false;
@@ -51,8 +56,8 @@ public sealed class GeneralOptions : AbstractOptionGroup
 
     [ModdedToggleOption("Parallel Medbay Scans")]
     public bool ParallelMedbay { get; set; } = true;
-    [ModdedToggleOption("Disable Medbay Scan Walk Animation")]
-    public bool DisableMedbayAnimation { get; set; } = false;
+   /* [ModdedToggleOption("Disable Medbay Scan Walk Animation")]
+    public bool DisableMedbayAnimation { get; set; } = false;*/
 
     [ModdedEnumOption("Disable Meeting Skip Button", typeof(SkipState))]
     public SkipState SkipButtonDisable { get; set; } = SkipState.No;

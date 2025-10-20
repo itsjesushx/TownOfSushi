@@ -1,4 +1,3 @@
-using MiraAPI.Utilities.Assets;
 using UnityEngine;
 
 namespace TownOfSushi.Assets;
@@ -9,7 +8,8 @@ public static class TOSRoleIcons
 
     // THIS FILE SHOULD ONLY HOLD ROLE ICONS
     public static LoadableAsset<Sprite> Aurial { get; } = new LoadableResourceAsset($"{iconPath}.Aurial.png");
-    public static LoadableAsset<Sprite> Detective { get; } = new LoadableResourceAsset($"{iconPath}.Detective.png");
+    public static LoadableAsset<Sprite> Inspector { get; } = new LoadableResourceAsset($"{iconPath}.Inspector.png");
+    public static LoadableAsset<Sprite> BodyGuard { get; } = new LoadableResourceAsset($"{iconPath}.BodyGuard.png");
     public static LoadableAsset<Sprite> Haunter { get; } = new LoadableResourceAsset($"{iconPath}.Haunter.png");
 
     public static LoadableAsset<Sprite> Warlock { get; } = new LoadableResourceAsset($"{iconPath}.Warlock.png");
@@ -19,8 +19,7 @@ public static class TOSRoleIcons
 
     public static LoadableAsset<Sprite> Lookout { get; } = new LoadableResourceAsset($"{iconPath}.Lookout.png");
     public static LoadableAsset<Sprite> Mystic { get; } = new LoadableResourceAsset($"{iconPath}.Mystic.png");
-    public static LoadableAsset<Sprite> Seer { get; } = new LoadableResourceAsset($"{iconPath}.Seer.png");
-    public static LoadableAsset<Sprite> Snitch { get; } = new LoadableResourceAsset($"{iconPath}.Snitch.png");
+    public static LoadableAsset<Sprite> Detective { get; } = new LoadableResourceAsset($"{iconPath}.Detective.png");
     public static LoadableAsset<Sprite> Administrator { get; } = new LoadableResourceAsset($"{iconPath}.Administrator.png");
     public static LoadableAsset<Sprite> Tracker { get; } = new LoadableResourceAsset($"{iconPath}.Tracker.png");
     public static LoadableAsset<Sprite> Trapper { get; } = new LoadableResourceAsset($"{iconPath}.Trapper.png");
@@ -28,11 +27,10 @@ public static class TOSRoleIcons
     public static LoadableAsset<Sprite> Deputy { get; } = new LoadableResourceAsset($"{iconPath}.Deputy.png");
     public static LoadableAsset<Sprite> Hunter { get; } = new LoadableResourceAsset($"{iconPath}.Hunter.png");
     public static LoadableAsset<Sprite> Jailor { get; } = new LoadableResourceAsset($"{iconPath}.Jailor.png");
-    public static LoadableAsset<Sprite> Sheriff { get; } = new LoadableResourceAsset($"{iconPath}.Sheriff.png");
     public static LoadableAsset<Sprite> Veteran { get; } = new LoadableResourceAsset($"{iconPath}.Veteran.png");
     public static LoadableAsset<Sprite> Vigilante { get; } = new LoadableResourceAsset($"{iconPath}.Vigilante.png");
 
-    public static LoadableAsset<Sprite> Altruist { get; } = new LoadableResourceAsset($"{iconPath}.Altruist.png");
+    public static LoadableAsset<Sprite> Retributionist { get; } = new LoadableResourceAsset($"{iconPath}.Retributionist.png");
     public static LoadableAsset<Sprite> Cleric { get; } = new LoadableResourceAsset($"{iconPath}.Cleric.png");
     public static LoadableAsset<Sprite> Medic { get; } = new LoadableResourceAsset($"{iconPath}.Medic.png");
     public static LoadableAsset<Sprite> Oracle { get; } = new LoadableResourceAsset($"{iconPath}.Oracle.png");
@@ -53,7 +51,6 @@ public static class TOSRoleIcons
 
     public static LoadableAsset<Sprite> GuardianAngel { get; } =
         new LoadableResourceAsset($"{iconPath}.GuardianAngel.png");
-    public static LoadableAsset<Sprite> Survivor { get; } = new LoadableResourceAsset($"{iconPath}.Survivor.png");
     
     public static LoadableAsset<Sprite> Executioner { get; } = new LoadableResourceAsset($"{iconPath}.Executioner.png");
     public static LoadableAsset<Sprite> Inquisitor { get; } = new LoadableResourceAsset($"{iconPath}.Inquisitor.png");
@@ -69,12 +66,18 @@ public static class TOSRoleIcons
 
     public static LoadableAsset<Sprite> Pestilence { get; } = new LoadableResourceAsset($"{iconPath}.Pestilence.png");
 
+    public static LoadableAsset<Sprite> Consigliere { get; } = new LoadableResourceAsset($"{iconPath}.Consigliere.png");
+
     public static LoadableAsset<Sprite> SoulCollector { get; } =
         new LoadableResourceAsset($"{iconPath}.SoulCollector.png");
 
     public static LoadableAsset<Sprite> Vampire { get; } = new LoadableResourceAsset($"{iconPath}.Vampire.png");
     public static LoadableAsset<Sprite> Predator { get; } = new LoadableResourceAsset($"{iconPath}.Predator.png");
     public static LoadableAsset<Sprite> Werewolf { get; } = new LoadableResourceAsset($"{iconPath}.Werewolf.png");
+
+    public static LoadableAsset<Sprite> Ambassador { get; } = new LoadableBundleAsset<Sprite>("Ambassador", TOSAssets.MainBundle);
+
+    public static LoadableAsset<Sprite> Thief { get; } = new LoadableResourceAsset($"{iconPath}.Thief.png");
 
     public static LoadableAsset<Sprite> Hitman { get; } = new LoadableResourceAsset($"{iconPath}.Hitman.png");
 

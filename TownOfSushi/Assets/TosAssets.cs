@@ -1,4 +1,4 @@
-using MiraAPI.Utilities.Assets;
+using MiraAPI.LocalSettings;
 using Reactor.Utilities;
 using UnityEngine;
 
@@ -13,6 +13,18 @@ public static class TOSAssets
 
     public static readonly LoadableAsset<GameObject> RoleSelectionGame =
         new LoadableBundleAsset<GameObject>("SelectRoleGame", MainBundle);
+    
+    public static readonly LoadableAsset<GameObject> AltRoleSelectionGame =
+        new LoadableBundleAsset<GameObject>("AmbassadorRoleGame", MainBundle);
+    
+    public static readonly LoadableAsset<GameObject> ConfirmMinigame =
+        new LoadableBundleAsset<GameObject>("AmbassadorConfirmGame", MainBundle);
+
+    public static LoadableAsset<Sprite> RetrainSprite { get; } =
+        new LoadableBundleAsset<Sprite>("Retrain.png", MainBundle);
+    
+    public static LoadableAsset<Sprite> RetrainCleanSprite { get; } =
+        new LoadableBundleAsset<Sprite>("RetrainClean.png", MainBundle);
 
     public static LoadableAsset<GameObject> WikiPrefab { get; } =
         new LoadableBundleAsset<GameObject>("IngameWiki", MainBundle);
@@ -187,39 +199,19 @@ public static class TOSAssets
         get
         {
             var sprite = ArrowBasicSprite;
-            switch (TownOfSushiPlugin.ArrowStyle.Value)
+            switch (LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.ArrowStyleEnum.Value)
             {
-                case 1:
+                case ArrowStyleType.DarkGlow:
                     sprite = ArrowDarkOutSprite;
                     break;
-                case 2:
+                case ArrowStyleType.ColorGlow:
                     sprite = ArrowLightOutSprite;
                     break;
-                case 3:
+                case ArrowStyleType.Legacy:
                     sprite = ArrowLegacySprite;
                     break;
             }
             return sprite;
-        }
-    }
-    public static string ArrowSpriteName
-    {
-        get
-        {
-            var name = "Default";
-            switch (TownOfSushiPlugin.ArrowStyle.Value)
-            {
-                case 1:
-                    name = "Dark Glow";
-                    break;
-                case 2:
-                    name = "Color Glow";
-                    break;
-                case 3:
-                    name = "Legacy";
-                    break;
-            }
-            return name;
         }
     }
 

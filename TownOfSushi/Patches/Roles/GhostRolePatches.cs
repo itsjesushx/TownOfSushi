@@ -1,7 +1,5 @@
 using HarmonyLib;
 using Rewired.Utils;
-using TownOfSushi.Roles;
-using TownOfSushi.Utilities;
 
 namespace TownOfSushi.Patches.Roles;
 

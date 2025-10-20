@@ -1,8 +1,5 @@
 ﻿using HarmonyLib;
-using MiraAPI.GameOptions;
-using MiraAPI.Modifiers;
-using TownOfSushi.Modifiers.Impostor.Venerer;
-using TownOfSushi.Options.Roles.Impostor;
+using TownOfSushi.Roles.Impostor.Venerer;
 using TownOfSushi.Utilities.Appearances;
 
 namespace TownOfSushi.Patches;

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace TownOfSushi.Extensions;
+namespace TownOfSushi.Interfaces;
 
 public interface IColoredModifier
 {

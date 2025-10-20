@@ -1,9 +1,7 @@
 using HarmonyLib;
-using MiraAPI.GameOptions;
 using Reactor.Networking.Attributes;
 using Reactor.Networking.Rpc;
 using TownOfSushi.Options;
-using TownOfSushi.Utilities;
 
 namespace TownOfSushi.Patches.Options;
 

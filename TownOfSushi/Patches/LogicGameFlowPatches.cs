@@ -1,20 +1,13 @@
 ﻿using HarmonyLib;
 using MiraAPI.GameEnd;
-using MiraAPI.GameOptions;
-using MiraAPI.Modifiers;
 using MiraAPI.Modifiers.Types;
-using MiraAPI.Roles;
-using MiraAPI.Utilities;
 using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
+using TownOfSushi.Events;
 using TownOfSushi.GameOver;
-using TownOfSushi.Modifiers.Crewmate;
+using TownOfSushi.Modifiers;
 using TownOfSushi.Modifiers.Game;
-using TownOfSushi.Modifiers.Game.Alliance;
 using TownOfSushi.Options;
-using TownOfSushi.Options.Roles.Impostor;
-using TownOfSushi.Roles;
-using TownOfSushi.Utilities;
 
 namespace TownOfSushi.Patches;
 
@@ -76,8 +69,9 @@ public static class LogicGameFlowPatches
         for (var i = 0; i < __instance.AllPlayers.Count; i++)
         {
             var playerInfo = __instance.AllPlayers.ToArray()[i];
-            if (!playerInfo.Disconnected && playerInfo.Tasks != null && playerInfo.Object &&
-                (GameOptionsManager.Instance.currentNormalGameOptions.GhostsDoTasks || !playerInfo.IsDead) &&
+            if (playerInfo.Disconnected || !playerInfo.Object || playerInfo.Tasks == null || playerInfo.Object == null) continue;
+            
+            if ((GameOptionsManager.Instance.currentNormalGameOptions.GhostsDoTasks || !playerInfo.IsDead) &&
                 !playerInfo._object.IsImpostor() &&
                 !(
                     (playerInfo._object.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.DoesTasks)
@@ -125,6 +119,11 @@ public static class LogicGameFlowPatches
         
         // Prevents game end on exile screen
         if (ExileController.Instance)
+        {
+            return false;
+        }
+
+        if (DeathHandlerModifier.IsCoroutineRunning || DeathEventHandlers.IsDeathRecent)
         {
             return false;
         }

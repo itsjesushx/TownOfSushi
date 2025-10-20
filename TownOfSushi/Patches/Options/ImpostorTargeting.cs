@@ -1,10 +1,6 @@
 using HarmonyLib;
-using MiraAPI.GameOptions;
-using MiraAPI.Modifiers;
 using TownOfSushi.Modifiers;
 using TownOfSushi.Options;
-using TownOfSushi.Options.Modifiers.Alliance;
-using TownOfSushi.Utilities;
 using TownOfSushi.Utilities.Appearances;
 
 namespace TownOfSushi.Patches.Options;

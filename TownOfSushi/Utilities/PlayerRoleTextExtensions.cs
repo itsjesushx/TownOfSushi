@@ -1,16 +1,6 @@
-﻿using MiraAPI.GameOptions;
-using MiraAPI.Modifiers;
-using TownOfSushi.Modifiers;
-using TownOfSushi.Modifiers.Crewmate;
-using TownOfSushi.Modifiers.Game.Alliance;
-using TownOfSushi.Modifiers.Impostor;
-using TownOfSushi.Modifiers.Neutral;
+﻿using TownOfSushi.Modifiers;
 using TownOfSushi.Modules;
 using TownOfSushi.Options;
-using TownOfSushi.Options.Roles.Neutral;
-using TownOfSushi.Roles.Crewmate;
-using TownOfSushi.Roles.Impostor;
-using TownOfSushi.Roles.Neutral;
 using UnityEngine;
 
 namespace TownOfSushi.Utilities;
@@ -30,11 +20,11 @@ public static class PlayerRoleTextExtensions
             color = Color.black;
         }
 
-        if (player.HasModifier<SeerGoodRevealModifier>() && PlayerControl.LocalPlayer.IsRole<SeerRole>())
+        if (player.HasModifier<DetectiveGoodRevealModifier>() && PlayerControl.LocalPlayer.IsRole<DetectiveRole>())
         {
             color = Color.green;
         }
-        else if (player.HasModifier<SeerEvilRevealModifier>() && PlayerControl.LocalPlayer.IsRole<SeerRole>())
+        else if (player.HasModifier<DetectiveEvilRevealModifier>() && PlayerControl.LocalPlayer.IsRole<DetectiveRole>())
         {
             color = Color.red;
         }
@@ -71,12 +61,6 @@ public static class PlayerRoleTextExtensions
             name += "<color=#29AB87> &</color>";
         }
 
-        if ((player.HasModifier<WitchSpelledModifier>() && PlayerControl.LocalPlayer.IsRole<WitchRole>() && !PlayerControl.LocalPlayer.HasDied())
-            || (player.HasModifier<WitchSpelledModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !hidden))
-        {
-            name += "<color=#FF0000> [†]</color>";
-        }
-
         if ((player.HasModifier<WarlockCursedModifier>() && PlayerControl.LocalPlayer.IsRole<WarlockRole>() && !PlayerControl.LocalPlayer.HasDied())
             || (player.HasModifier<WarlockCursedModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !hidden))
         {
@@ -94,24 +78,27 @@ public static class PlayerRoleTextExtensions
     public static string UpdateProtectionSymbols(this string name, PlayerControl player, bool hidden = false)
     {
         var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
-        if ((player.HasModifier<GuardianAngelTargetModifier>(x => x.OwnerId == PlayerControl.LocalPlayer.PlayerId) &&
-             PlayerControl.LocalPlayer.IsRole<GuardianAngelTOSRole>())
-            || (player.HasModifier<GuardianAngelTargetModifier>() &&
-                ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !hidden)
-                 || (player.AmOwner &&
-                     OptionGroupSingleton<GuardianAngelOptions>.Instance.GATargetKnows))))
+        if (player.Data != null && !player.Data.Disconnected &&
+            ((player.HasModifier<GuardianAngelTargetModifier>(x => x.OwnerId == PlayerControl.LocalPlayer.PlayerId) &&
+              PlayerControl.LocalPlayer.IsRole<GuardianAngelTOSRole>())
+             || (player.HasModifier<GuardianAngelTargetModifier>() &&
+                 ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !hidden)
+                  || (player.AmOwner &&
+                      OptionGroupSingleton<GuardianAngelOptions>.Instance.GATargetKnows)))))
         {
-            name += (player.HasModifier<GuardianAngelProtectModifier>() && OptionGroupSingleton<GuardianAngelOptions>.Instance.ShowProtect is not ProtectOptions.GA)
+            name += (player.HasModifier<GuardianAngelProtectModifier>() &&
+                     OptionGroupSingleton<GuardianAngelOptions>.Instance.ShowProtect is not ProtectOptions.GA)
                 ? "<color=#FFD900> ★</color>"
                 : "<color=#B3FFFF> ★</color>";
         }
 
-        if ((player.HasModifier<RomanticProtectModifier>(x => x.Romantic == PlayerControl.LocalPlayer) &&
-             PlayerControl.LocalPlayer.IsRole<RomanticRole>())
-            || (player.HasModifier<RomanticProtectModifier>() &&
-                ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !hidden)
-                 || (player.AmOwner &&
-                     OptionGroupSingleton<RomanticOptions>.Instance.RomanticTargetKnows))))
+        if (player.Data != null && !player.Data.Disconnected &&
+            ((player.HasModifier<RomanticBelovedModifier>(x => x.OwnerId == PlayerControl.LocalPlayer.PlayerId) &&
+              PlayerControl.LocalPlayer.IsRole<RomanticRole>())
+             || (player.HasModifier<RomanticBelovedModifier>() &&
+                 ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !hidden)
+                  || (player.AmOwner &&
+                      OptionGroupSingleton<GuardianAngelOptions>.Instance.GATargetKnows)))))
         {
             
             name += (player.HasModifier<RomanticProtectModifier>() && OptionGroupSingleton<RomanticOptions>.Instance.ShowProtect is not RomanticProtectOptions.Romantic)
@@ -126,6 +113,15 @@ public static class PlayerRoleTextExtensions
                  || (player.AmOwner && player.TryGetModifier<MedicShieldModifier>(out var med) && med.VisibleSymbol))))
         {
             name += "<color=#7EFBC2> +</color>";
+        }
+
+        if ((player.HasModifier<BodyGuardGuardedModifier>(x => x.BodyGuard.AmOwner) &&
+             PlayerControl.LocalPlayer.IsRole<BodyGuardRole>())
+            || (player.HasModifier<BodyGuardGuardedModifier>() &&
+                ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !hidden)
+                 || (player.AmOwner && player.TryGetModifier<BodyGuardGuardedModifier>(out var bod) && bod.VisibleSymbol))))
+        {
+            name += "<color=#0D4D33> [+]</color>";
         }
 
         if ((player.HasModifier<MonarchKnightedModifier>(x => x.Monarch.AmOwner) &&

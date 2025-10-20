@@ -1,10 +1,7 @@
-using System.Diagnostics.CodeAnalysis;
+//using System.Diagnostics.CodeAnalysis;
 using HarmonyLib;
-using MiraAPI.GameOptions;
-using MiraAPI.Modifiers;
-using TownOfSushi.Modifiers.Game.Universal;
 using TownOfSushi.Options;
-using UnityEngine;
+//using UnityEngine;
 
 namespace TownOfSushi.Patches.Options;
 
@@ -33,7 +30,7 @@ public static class MedScanMinigameFixedUpdatePatch
         {
             __instance.completeString = __instance.completeString.Replace("3' 6\"", "1' 9\"").Replace("92lb", "46lb");
         }
-    }
+    }/*
     [HarmonyPatch(typeof(MedScanMinigame._WalkToPad_d__16), nameof(MedScanMinigame._WalkToPad_d__16.MoveNext))]
     static class MedbayAnimationPatch_WalkToPad
     {
@@ -100,5 +97,5 @@ public static class MedScanMinigameFixedUpdatePatch
             }
             return false;
         }
-    }
+    }*/
 }

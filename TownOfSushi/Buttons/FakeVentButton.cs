@@ -1,6 +1,5 @@
 ﻿using MiraAPI.Hud;
-using MiraAPI.Roles;
-using MiraAPI.Utilities.Assets;
+using MiraAPI.LocalSettings;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -38,7 +37,7 @@ public sealed class FakeVentButton : CustomActionButton
 
     public override bool Enabled(RoleBehaviour? role)
     {
-        return TownOfSushiPlugin.OffsetButtons.Value && Show && HudManager.InstanceExists && !MeetingHud.Instance &&
+        return LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.OffsetButtonsToggle.Value && Show && HudManager.InstanceExists && !MeetingHud.Instance &&
                role != null && !role.IsImpostor
                && (!role.CanVent || (role is ICustomRole customRole && !customRole.Configuration.CanUseVent));
     }

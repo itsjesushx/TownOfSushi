@@ -1,9 +1,5 @@
-﻿using System.Globalization;
-using System.Text;
+﻿using System.Text;
 using Il2CppInterop.Runtime.Attributes;
-using MiraAPI.Roles;
-using MiraAPI.Utilities;
-using TownOfSushi.Utilities;
 
 namespace TownOfSushi.Roles;
 
@@ -13,6 +9,7 @@ public interface ITownOfSushiRole : ICustomRole
 
     bool HasImpostorVision => false;
     public virtual bool MetWinCon => false;
+    public virtual string LocaleKey => "KEY_MISS";
     public virtual string YouAreText
     {
         get
@@ -34,6 +31,31 @@ public interface ITownOfSushiRole : ICustomRole
             }
 
             return $"You are{prefix}";
+        }
+    }
+
+    public virtual string YouWereText
+    {
+        get
+        {
+            var prefix = "A";
+            if (RoleName.StartsWithVowel())
+            {
+                prefix = "An";
+            }
+
+            if (Configuration.MaxRoleCount is 0 or 1)
+            {
+                prefix = "The";
+            }
+
+            if (RoleName.StartsWith("the", StringComparison.OrdinalIgnoreCase) ||
+                LocaleKey.StartsWith("the", StringComparison.OrdinalIgnoreCase))
+            {
+                prefix = "";
+            }
+
+            return $"You Were {prefix}";
         }
     }
 
@@ -71,9 +93,19 @@ public interface ITownOfSushiRole : ICustomRole
                 return TOSRoleGroups.ImpKiller;
             }
 
+            if (RoleAlignment == RoleAlignment.ImpostorPower)
+            {
+                return TOSRoleGroups.ImpPower;
+            }
+
             if (RoleAlignment == RoleAlignment.NeutralEvil)
             {
                 return TOSRoleGroups.NeutralEvil;
+            }
+
+            if (RoleAlignment == RoleAlignment.NeutralOutlier)
+            {
+                return TOSRoleGroups.NeutralOutlier;
             }
 
             if (RoleAlignment == RoleAlignment.NeutralKilling)
@@ -104,96 +136,15 @@ public interface ITownOfSushiRole : ICustomRole
 
     public static StringBuilder SetNewTabText(ICustomRole role)
     {
-        var alignment = role is ITownOfSushiRole touRole
-            ? touRole.RoleAlignment.ToDisplayString()
-            : "Custom";
-
-        if (alignment.Contains("Crewmate"))
-        {
-            alignment = alignment.Replace("Crewmate", "<color=#68ACF4>Crewmate");
-        }
-        else if (alignment.Contains("Impostor"))
-        {
-            alignment = alignment.Replace("Impostor", "<color=#D63F42>Impostor");
-        }
-        else if (alignment.Contains("Neutral"))
-        {
-            alignment = alignment.Replace("Neutral", "<color=#8A8A8A>Neutral");
-        }
-
-        var prefix = " a";
-        if (role.RoleName.StartsWithVowel())
-        {
-            prefix = " an";
-        }
-
-        if (role.Configuration.MaxRoleCount is 0 or 1)
-        {
-            prefix = " the";
-        }
-
-        if (role.RoleName.StartsWith("the", StringComparison.OrdinalIgnoreCase))
-        {
-            prefix = "";
-        }
-
-        var stringB = new StringBuilder();
-        stringB.AppendLine(CultureInfo.InvariantCulture,
-            $"{role.RoleColor.ToTextColor()}You are{prefix}<b> {role.RoleName}.</b></color>");
-        stringB.AppendLine(CultureInfo.InvariantCulture, $"<size=60%>Alignment: <b>{alignment}</color></b></size>");
-        stringB.Append("<size=70%>");
-        stringB.AppendLine(CultureInfo.InvariantCulture, $"{role.RoleLongDescription}");
-
-        return stringB;
+        return TOSRoleUtils.SetTabText(role);
     }
-
     public static StringBuilder SetDeadTabText(ICustomRole role)
     {
-        var alignment = role is ITownOfSushiRole touRole
-            ? touRole.RoleAlignment.ToDisplayString()
-            : "Custom";
-
-        if (alignment.Contains("Crewmate"))
-        {
-            alignment = alignment.Replace("Crewmate", "<color=#68ACF4>Crewmate");
-        }
-        else if (alignment.Contains("Impostor"))
-        {
-            alignment = alignment.Replace("Impostor", "<color=#D63F42>Impostor");
-        }
-        else if (alignment.Contains("Neutral"))
-        {
-            alignment = alignment.Replace("Neutral", "<color=#8A8A8A>Neutral");
-        }
-
-        var prefix = " a";
-        if (role.RoleName.StartsWithVowel())
-        {
-            prefix = " an";
-        }
-
-        if (role.Configuration.MaxRoleCount is 0 or 1)
-        {
-            prefix = " the";
-        }
-
-        if (role.RoleName.StartsWith("the", StringComparison.OrdinalIgnoreCase))
-        {
-            prefix = "";
-        }
-
-        var stringB = new StringBuilder();
-        stringB.AppendLine(CultureInfo.InvariantCulture,
-            $"{role.RoleColor.ToTextColor()}You were{prefix}<b> {role.RoleName}.</b></color>");
-        stringB.AppendLine(CultureInfo.InvariantCulture, $"<size=60%>Alignment: <b>{alignment}</color></b></size>");
-        stringB.Append("<size=70%>");
-        stringB.AppendLine(CultureInfo.InvariantCulture, $"{role.RoleLongDescription}");
-
-        return stringB;
+        return TOSRoleUtils.SetDeadTabText(role);
     }
 
     [HideFromIl2Cpp]
-    public StringBuilder SetTabText()
+    StringBuilder SetTabText()
     {
         return SetNewTabText(this);
     }
@@ -204,11 +155,13 @@ public enum RoleAlignment
     CrewmateInvestigative,
     CrewmateKilling,
     CrewmateProtective,
+    ImpostorPower,
     CrewmatePower,
     CrewmateSupport,
     ImpostorConcealing,
     ImpostorKilling,
     ImpostorSupport,
+    NeutralOutlier,
     NeutralBenign,
     NeutralEvil,
     NeutralKilling

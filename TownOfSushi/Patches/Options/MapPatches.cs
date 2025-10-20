@@ -1,7 +1,5 @@
 ﻿using AmongUs.GameOptions;
 using HarmonyLib;
-using MiraAPI.GameOptions;
-using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
 using Reactor.Networking.Rpc;
 using Reactor.Utilities;

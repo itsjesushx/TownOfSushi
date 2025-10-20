@@ -1,6 +1,5 @@
 ﻿using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
-using MiraAPI.GameOptions;
 using TownOfSushi.Options;
 using TownOfSushi.Patches;
 

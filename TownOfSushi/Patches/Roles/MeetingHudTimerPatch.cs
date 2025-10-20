@@ -1,11 +1,7 @@
 using HarmonyLib;
-using MiraAPI.GameOptions;
-using MiraAPI.Modifiers;
+using TownOfSushi.Events;
 using TownOfSushi.Modifiers.Game;
 using TownOfSushi.Options;
-using TownOfSushi.Options.Roles.Crewmate;
-using TownOfSushi.Roles.Crewmate;
-using TownOfSushi.Utilities;
 
 namespace TownOfSushi.Patches.Roles;
 
@@ -20,6 +16,18 @@ public static class MeetingHudTimerPatch
         if (PlayerControl.LocalPlayer == null || PlayerControl.LocalPlayer.Data == null || PlayerControl.LocalPlayer.HasDied()) return;
         switch (PlayerControl.LocalPlayer.Data.Role)
         {
+            case AmbassadorRole ambass:
+                var ambassOpt = OptionGroupSingleton<AmbassadorOptions>.Instance;
+                newText = $"\n{ambass.RetrainsAvailable} / {ambassOpt.MaxRetrains} Retrains Remaining";
+                if (DeathEventHandlers.CurrentRound < (int)ambassOpt.RoundWhenAvailable)
+                {
+                    newText = $"{newText} | Retrain on Round {(int)ambassOpt.RoundWhenAvailable}";
+                }
+                else if (ambass.RoundsCooldown > 0)
+                {
+                    newText = $"{newText} | Round Cooldown: {ambass.RoundsCooldown} / {(int)ambassOpt.RoundCooldown}";
+                }
+                break;
             case ProsecutorRole pros:
                 var prosecutes = OptionGroupSingleton<ProsecutorOptions>.Instance.MaxProsecutions - pros.ProsecutionsCompleted;
                 newText = $"\n{prosecutes} / {OptionGroupSingleton<ProsecutorOptions>.Instance.MaxProsecutions} Prosecutions Remaining";
@@ -29,9 +37,6 @@ public static class MeetingHudTimerPatch
                 break;
             case MayorRole mayor:
                 newText = mayor.Revealed ? "\nYou unleash 3 votes at once!" : "\nReveal yourself to get 3 total votes!";
-                break;
-            case DeputyRole dep:
-                if (dep.Killer) newText = "\nShoot a player successfully if they are the killer!";
                 break;
             case VigilanteRole vigi:
                 newText = $"\n{vigi.MaxKills} / {(int)OptionGroupSingleton<VigilanteOptions>.Instance.VigilanteKills} Guesses Remaining";

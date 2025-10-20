@@ -1,5 +1,4 @@
 using HarmonyLib;
-using MiraAPI.GameOptions;
 using TownOfSushi.Options;
 
 namespace TownOfSushi.Patches.PrefabSwitching;

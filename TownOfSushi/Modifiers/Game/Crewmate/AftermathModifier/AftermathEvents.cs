@@ -1,0 +1,48 @@
+using MiraAPI.Events;
+using MiraAPI.Events.Vanilla.Gameplay;
+using MiraAPI.Hud;
+using TownOfSushi.Buttons;
+using UnityEngine;
+
+namespace TownOfSushi.Modifiers.Game.Crewmate;
+
+public static class AftermathEvents
+{
+    [RegisterEvent]
+    public static void AftermathDeathEvent(AfterMurderEvent @event)
+    {
+        var source = @event.Source;
+
+        if (!@event.Target.HasModifier<AftermathModifier>() || !source.AmOwner || MeetingHud.Instance)
+        {
+            return;
+        }
+
+        var button = CustomButtonManager.Buttons.Where(x => x.Enabled(source.Data.Role) && x.Timer <= 0)
+            .OfType<IAftermathableButton>().FirstOrDefault();
+        if (button == null)
+        {
+            return;
+        }
+
+        var notif1 = Helpers.CreateAndShowNotification(
+            MiscUtils.ColorString(TownOfSushiColors.Aftermath, $"<b>{@event.Target.Data.PlayerName} was an Aftermath, forcing you to use your ability.</b>"),
+            Color.white, spr: TOSModifierIcons.Aftermath.LoadAsset());
+
+        
+        notif1.AdjustNotification();
+
+        switch (button)
+        {
+            case IAftermathablePlayerButton playerButton:
+                playerButton.Target = source;
+                break;
+            case IAftermathableBodyButton bodyButton:
+                bodyButton.Target =
+                    source.GetNearestDeadBody(2f); // By logic, the closest body *should* be the one that just appeared
+                break;
+        }
+
+        button.ClickHandler();
+    }
+}

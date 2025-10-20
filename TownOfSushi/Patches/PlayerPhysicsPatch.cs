@@ -1,7 +1,5 @@
 using HarmonyLib;
 using Il2CppInterop.Runtime.Attributes;
-using MiraAPI.Modifiers;
-using TownOfSushi.Modifiers.Game.Universal;
 
 namespace TownOfSushi.Patches
 {

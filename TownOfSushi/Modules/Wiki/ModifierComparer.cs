@@ -1,5 +1,3 @@
-using MiraAPI.Modifiers;
-
 namespace TownOfUs.Modules.Wiki;
 
 public class ModifierComparer(IEnumerable<uint> activeModifiers) : IComparer<BaseModifier>

@@ -1,6 +1,4 @@
 ﻿using HarmonyLib;
-using MiraAPI.Modifiers;
-using TownOfSushi.Modifiers.Game.Universal;
 
 namespace TownOfSushi.Patches.Modifiers;
 

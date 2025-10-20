@@ -1,7 +1,4 @@
 ﻿using Il2CppInterop.Runtime.Attributes;
-using MiraAPI.Modifiers;
-using MiraAPI.Utilities.Assets;
-using TownOfSushi.Utilities;
 using UnityEngine;
 
 namespace TownOfUs.Modules.Wiki;

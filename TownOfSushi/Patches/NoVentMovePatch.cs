@@ -1,37 +1,19 @@
 using HarmonyLib;
-using MiraAPI.GameOptions;
-using TownOfSushi.Options.Roles.Crewmate;
-using TownOfSushi.Roles.Crewmate;
-using TownOfSushi.Roles.Neutral;
 
 namespace TownOfSushi.Patches;
 
-[HarmonyPatch]
-public static class NoVentMovePatch
+[HarmonyPatch(typeof(Vent), nameof(Vent.SetButtons))]
+public static class EnterVentPatch
 {
-    [HarmonyPatch(typeof(Vent), nameof(Vent.SetButtons))]
-    [HarmonyPrefix]
-    public static bool EnterVent()
+    public static bool Prefix(Vent __instance)
     {
-        if (PlayerControl.LocalPlayer == null)
-        {
-            return true;
-        }
+        var player = PlayerControl.LocalPlayer;
 
-        if (PlayerControl.LocalPlayer.Data == null)
-        {
-            return true;
-        }
-
-        if (PlayerControl.LocalPlayer.Data.Role is JesterRole)
-        {
+        if (player.Data.Role is JesterRole)
             return false;
-        }
-        if (PlayerControl.LocalPlayer.Data.Role is SpyRole && !OptionGroupSingleton<SpyOptions>.Instance.SpyChangeVents)
-        {
-            return false;
-        }
-
-        return true;
+        else if (player.Data.Role is SpyRole)
+            return OptionGroupSingleton<SpyOptions>.Instance.SpyChangeVents;
+        else
+            return true;
     }
 }

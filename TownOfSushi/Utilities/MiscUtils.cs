@@ -6,29 +6,20 @@ using System.Text;
 using System.Text.RegularExpressions;
 using AmongUs.GameOptions;
 using HarmonyLib;
-using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.OptionTypes;
-using MiraAPI.Modifiers;
-using MiraAPI.Roles;
-using MiraAPI.Utilities;
 using TownOfSushi.Modifiers;
 using TownOfSushi.Modifiers.Game;
 using TownOfSushi.Modules;
-using TownOfUs.Modules.Wiki;
 using TownOfSushi.Options;
-using TownOfSushi.Options.Roles.Neutral;
-using TownOfSushi.Roles;
-using TownOfSushi.Roles.Neutral;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
-using TownOfSushi.Modifiers.Neutral;
-using TownOfSushi.Modifiers.Crewmate;
-using TownOfSushi.Modifiers.Game.Universal;
 using TownOfSushi.Events;
-using MiraAPI.Utilities.Assets;
 using Reactor.Utilities;
-using TownOfSushi.Roles.Crewmate;
+using TownOfSushi.Modules.Wiki;
+using MiraAPI.Modifiers.Types;
+using AmongUs.Data;
+using TMPro;
 
 namespace TownOfSushi.Utilities;
 
@@ -41,6 +32,21 @@ public static class MiscUtils
         (x.Data.Role is ITOSCrewRole { IsPowerCrew: true } &&
          !(x.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.CrewContinuesGame) &&
          OptionGroupSingleton<GeneralOptions>.Instance.CrewKillersContinue));
+
+    public static bool IsKillerRole(this PlayerControl player)
+    {
+        return !player.HasDied() && player.Is(RoleAlignment.NeutralKilling) || player.IsImpostor();
+    }
+
+    public static bool IsCrewKiller(this PlayerControl player)
+    {
+        return !player.HasDied() && player.Is(RoleAlignment.CrewmateKilling);
+    }
+
+    public static bool IsPassiveNeutral(this PlayerControl player)
+    {
+        return !player.HasDied() && player.Is(RoleAlignment.NeutralEvil) || player.Is(RoleAlignment.NeutralBenign);
+    }
 
     public static int RealKillersAliveCount => Helpers.GetAlivePlayers().Count(x =>
         x.IsImpostor() || x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis &&
@@ -81,11 +87,191 @@ public static class MiscUtils
 
         return optionGroups?.FirstOrDefault(x => x.OptionableType == classType)?.Children;
     }
+    public static ModifierFaction GetModifierFaction(this AllianceGameModifier mod)
+    {
+        return mod.FactionType;
+    }
+    public static ModifierFaction GetModifierFaction(this TOSGameModifier mod)
+    {
+        return mod.FactionType;
+    }
+    public static ModifierFaction GetModifierFaction(this UniversalGameModifier mod)
+    {
+        return mod.FactionType;
+    }
+    public static ModifierFaction GetModifierFaction(this GameModifier mod)
+    {
+        return GetModifierFaction(mod as BaseModifier);
+    }
+    public static string GetParsedModifierFaction(BaseModifier modifier)
+    {
+        var localeName = $"{modifier.GetModifierFaction()}";
+        var localizedName = localeName;
+
+        return localizedName;
+    }
+    public static ModifierFaction GetModifierFaction(this BaseModifier mod)
+    {
+        if (mod is TOSGameModifier touMod)
+        {
+            return touMod.FactionType;
+        }
+        else if (mod is AllianceGameModifier allyMod)
+        {
+            return allyMod.FactionType;
+        }
+        else if (mod is UniversalGameModifier uniMod)
+        {
+            return uniMod.FactionType;
+        }
+
+        if (SoftWikiEntries.ModifierEntries.ContainsKey(mod))
+        {
+            var name = SoftWikiEntries.ModifierEntries.FirstOrDefault(x => x.Key == mod).Value.TeamName;
+            if (Enum.TryParse<ModifierFaction>(name, out var modFaction))
+            {
+                return modFaction;
+            }
+        }
+
+        return ModifierFaction.External;
+    }
+    public static RoleAlignment GetRoleAlignment(this ICustomRole role)
+    {
+        if (role is ITownOfSushiRole touRole)
+        {
+            return touRole.RoleAlignment;
+        }
+
+        var alignments = Enum.GetValues<RoleAlignment>();
+        foreach (var alignment in alignments)
+        {
+            var roleAlignment = alignment;
+            if (role.RoleOptionsGroup.Name.Replace("Roles", "") == roleAlignment.ToDisplayString())
+            {
+                return roleAlignment;
+            }
+        }
+
+        var basicRole = role as RoleBehaviour;
+        if (basicRole!.IsNeutral())
+        {
+            return RoleAlignment.NeutralOutlier;
+        }
+        else if (basicRole!.IsImpostor())
+        {
+            return RoleAlignment.ImpostorSupport;
+        }
+        else
+        {
+            return RoleAlignment.CrewmateSupport;
+        }
+    }
+    public static string GetParsedRoleAlignment(ICustomRole role, bool coloredText = false)
+    {
+        var localeName = $"{role.GetRoleAlignment()}";
+        var localizedName = localeName;
+
+        if (coloredText)
+        {
+            if (localizedName.Contains("Crewmate"))
+            {
+                localizedName = $"<color=#68ACF4>{localizedName}";
+            }
+            else if (localizedName.Contains("Impostor"))
+            {
+                localizedName = $"<color=#D63F42>{localizedName}";
+            }
+            else if (localizedName.Contains("Neutral"))
+            {
+                localizedName = $"<color=#8A8A8A>{localizedName}";
+            }
+            else if (localizedName.Contains("Game"))
+            {
+                localizedName = $"<color=#888888>{localizedName}";
+            }
+            else
+            {
+                localizedName = $"<color=#FFFFFF>{localizedName}";
+            }
+
+            localizedName += "</color>";
+        }
+        
+        return localizedName;
+    }
+    public static string GetParsedRoleAlignment(RoleBehaviour role, bool coloredText = false)
+    {
+        var localeName = $"{role.GetRoleAlignment()}";
+        var localizedName = localeName;
+
+        if (coloredText)
+        {
+            if (localizedName.Contains("Crewmate"))
+            {
+                localizedName = $"<color=#68ACF4>{localizedName}";
+            }
+            else if (localizedName.Contains("Impostor"))
+            {
+                localizedName = $"<color=#D63F42>{localizedName}";
+            }
+            else if (localizedName.Contains("Neutral"))
+            {
+                localizedName = $"<color=#8A8A8A>{localizedName}";
+            }
+            else if (localizedName.Contains("Game"))
+            {
+                localizedName = $"<color=#888888>{localizedName}";
+            }
+            else
+            {
+                localizedName = $"<color=#FFFFFF>{localizedName}";
+            }
+
+            localizedName += "</color>";
+        }
+        
+        return localizedName;
+    }
+    public static string GetParsedRoleAlignment(RoleAlignment roleAlignment, bool coloredText = false)
+    {
+        var localeName = $"{roleAlignment}";
+        var localizedName = localeName;
+
+        if (coloredText)
+        {
+            if (localizedName.Contains("Crewmate"))
+            {
+                localizedName = $" <color=#68ACF4>{localizedName}";
+            }
+            else if (localizedName.Contains("Impostor"))
+            {
+                localizedName = $" <color=#D63F42>{localizedName}";
+            }
+            else if (localizedName.Contains("Neutral"))
+            {
+                localizedName = $" <color=#8A8A8A>{localizedName}";
+            }
+            else if (localizedName.Contains("Game"))
+            {
+                localizedName = $" <color=#888888>{localizedName}";
+            }
+            else
+            {
+                localizedName = $" <color=#FFFFFF>{localizedName}";
+            }
+
+            localizedName += "</color>";
+        }
+        
+        return localizedName;
+    }
     public static bool IsProtected(this PlayerControl player)
     {
         return
             player.HasModifier<GuardianAngelProtectModifier>() ||
-            player.HasModifier<SurvivorVestModifier>() ||
+            player.HasModifier<AmnesiacVestModifier>() ||
+            player.HasModifier<InvulnerabilityModifier>() ||
             player.HasModifier<ClericBarrierModifier>() ||
             player.HasModifier<BaseShieldModifier>() ||
             player.HasModifier<MedicShieldModifier>() ||
@@ -93,6 +279,16 @@ public static class MiscUtils
             (player.HasModifier<ArmoredModifier>() && player.TryGetModifier<ArmoredModifier>(out var armor) && armor.isActive) ||
             player.HasModifier<FirstDeadShield>() ||
             (player.Data.Role is PestilenceRole);
+    }
+    public static string ColorString(Color c, string s)
+    {
+        return string.Format("<color=#{0:X2}{1:X2}{2:X2}{3:X2}>{4}</color>", ToByte(c.r), ToByte(c.g), ToByte(c.b), ToByte(c.a), s);
+    }
+
+    private static byte ToByte(float f)
+    {
+        f = Mathf.Clamp01(f);
+        return (byte)(f * 255);
     }
 
     public static string AppendOptionsText(Type classType)
@@ -104,8 +300,7 @@ public static class MiscUtils
         }
 
         var builder = new StringBuilder();
-        builder.AppendLine(CultureInfo.InvariantCulture,
-            $"\n<size=50%> \n</size><b>{TownOfSushiColors.Vigilante.ToTextColor()}Options</color></b>");
+        builder.AppendLine(ColorString(TownOfSushiColors.Vigilante, $"\n<size=50%> \n</size><b>Options</b>"));
 
         foreach (var option in options)
         {
@@ -240,7 +435,7 @@ public static class MiscUtils
 
     public static IEnumerable<RoleBehaviour> GetRegisteredGhostRoles()
     {
-        var baseGhostRoles = RoleManager.Instance.AllRoles.Where(x => x.IsDead && AllRoles.All(y => y.Role != x.Role));
+        var baseGhostRoles = RoleManager.Instance.AllRoles.ToArray().Where(x => x.IsDead && AllRoles.All(y => y.Role != x.Role));
         var ghostRoles = AllRoles.Where(x => x.IsDead).Union(baseGhostRoles);
 
         return ghostRoles;
@@ -250,7 +445,7 @@ public static class MiscUtils
     {
         // we want to prioritize the custom roles because the role has the right RoleColour/TeamColor
         var role = AllRoles.FirstOrDefault(x => x.Role == roleType) ??
-                   RoleManager.Instance.AllRoles.FirstOrDefault(x => x.Role == roleType);
+                   RoleManager.Instance.AllRoles.ToArray().FirstOrDefault(x => x.Role == roleType);
 
         return role;
     }
@@ -291,21 +486,44 @@ public static class MiscUtils
         return role?.NiceName ?? (roleType == RoleTypes.Crewmate ? "Crewmate" : "Impostor");
     }
 
+    public static void SetSizeLimit(this SpriteRenderer sprite, float scale)
+    {
+        if (sprite.bounds.size.x < sprite.bounds.size.y)
+        {
+            sprite.size = new Vector2(scale * sprite.bounds.size.x / sprite.bounds.size.y, scale);
+        }
+        else
+        {
+            sprite.size = new Vector2(scale, scale * sprite.bounds.size.y / sprite.bounds.size.x);
+        }
+        sprite.tileMode = SpriteTileMode.Adaptive;
+    }
+    
+    public static void SetSizeLimit(this GameObject spriteObj, float scale)
+    {
+        if (!spriteObj.TryGetComponent<SpriteRenderer>(out var sprite))
+        {
+            return;
+        }
+
+        sprite.SetSizeLimit(scale);
+    }
+
     public static IEnumerable<RoleBehaviour> GetPotentialRoles()
     {
         var currentGameOptions = GameOptionsManager.Instance.CurrentGameOptions;
         var roleOptions = currentGameOptions.RoleOptions;
-        var assignmentData = RoleManager.Instance.AllRoles.Select(role =>
+        var assignmentData = RoleManager.Instance.AllRoles.ToArray().Select(role =>
             new RoleManager.RoleAssignmentData(role, roleOptions.GetNumPerGame(role.Role),
                 roleOptions.GetChancePerGame(role.Role))).ToList();
 
-        var roleList = assignmentData.Where(x => x is { Chance: > 0, Role: ICustomRole }).Select(x => x.Role);
+        var roleList = assignmentData.Where(x => x is { Chance: > 0, Count: > 0, Role: ICustomRole }).Select(x => x.Role);
 
-        var crewmateRole = RoleManager.Instance.AllRoles.FirstOrDefault(x => x.Role == RoleTypes.Crewmate);
+        var crewmateRole = RoleManager.Instance.AllRoles.ToArray().FirstOrDefault(x => x.Role == RoleTypes.Crewmate);
         roleList = roleList.AddItem(crewmateRole!);
         //Logger<TownOfSushiPlugin>.Error($"GetPotentialRoles - crewmateRole: '{crewmateRole?.NiceName}'");
 
-        var impostorRole = RoleManager.Instance.AllRoles.FirstOrDefault(x => x.Role == RoleTypes.Impostor);
+        var impostorRole = RoleManager.Instance.AllRoles.ToArray().FirstOrDefault(x => x.Role == RoleTypes.Impostor);
         roleList = roleList.AddItem(impostorRole!);
         //Logger<TownOfSushiPlugin>.Error($"GetPotentialRoles - impostorRole: '{impostorRole?.NiceName}'");
 
@@ -643,34 +861,89 @@ public static class MiscUtils
         
         Coroutines.Start(CoFlash(TownOfSushiColors.ImpSoft));
         var notif1 = Helpers.CreateAndShowNotification(
-            $"<b>{TownOfSushiColors.ImpSoft.ToTextColor()}{player.Data.PlayerName}, the lobby host, has committed suicide!</b></color>", Color.white,
+            ColorString(TownOfSushiColors.ImpSoft, $"<b>{player.Data.PlayerName}, the lobby host, has committed suicide!</b>"), Color.white,
             new Vector3(0f, 1f, -20f), spr: MiraAssets.Empty.LoadAsset());
-        notif1.Text.SetOutlineThickness(0.35f);
+        notif1.AdjustNotification();
     }
 
+    public static RoleAlignment GetRoleAlignment(this RoleBehaviour role)
+    {
+        if (role is ITownOfSushiRole touRole)
+        {
+            return touRole.RoleAlignment;
+        }
+        else if (role is ICustomRole customRole)
+        {
+            var alignments = Enum.GetValues<RoleAlignment>();
+            foreach (var alignment in alignments)
+            {
+                var roleAlignment = alignment;
+                if (customRole.RoleOptionsGroup.Name.Replace(" Roles", " ") == roleAlignment.ToDisplayString())
+                {
+                    return roleAlignment;
+                }
+            }
+        }
+        if (role.IsNeutral())
+        {
+            return RoleAlignment.NeutralOutlier;
+        }
+        else if (role.IsImpostor())
+        {
+            return RoleAlignment.ImpostorSupport;
+        }
+        else
+        {
+            return RoleAlignment.CrewmateSupport;
+        }
+    }
+    private static List<SupportedLangs> _languagesToBold = new List<SupportedLangs>
+    {
+        SupportedLangs.Russian,
+        SupportedLangs.Japanese,
+        SupportedLangs.SChinese,
+        SupportedLangs.TChinese,
+        SupportedLangs.Korean
+    };
+    public static void AdjustNotification(this LobbyNotificationMessage notification)
+    {
+        if (!_languagesToBold.Contains(DataManager.Settings.Language.CurrentLanguage))
+        {
+            notification.Text.fontStyle = FontStyles.Bold;
+            notification.Text.SetOutlineThickness(0.35f);
+        }
+    }
+
+    public static SpriteRenderer FlashRenderer;
     public static IEnumerator CoFlash(Color color, float waitfor = 1f, float alpha = 0.3f, bool PlaySound = false)
     {
         color.a = alpha;
-        if (HudManager.InstanceExists && HudManager.Instance.FullScreen)
+        if (HudManager.InstanceExists && HudManager.Instance.FullScreen && !FlashRenderer)
         {
-            var fullscreen = HudManager.Instance.FullScreen;
-            fullscreen.enabled = true;
-            fullscreen.gameObject.SetActive(true);
-            fullscreen.color = color;
+            FlashRenderer = Object.Instantiate(HudManager.Instance.FullScreen,
+            HudManager.Instance.FullScreen.transform.parent);
         }
 
         if (PlaySound) SoundManager.Instance.PlaySound(ShipStatus.Instance.SabotageSound, false, 1f);
 
+        FlashRenderer.enabled = true;
+        FlashRenderer.gameObject.SetActive(true);
+        FlashRenderer.color = color;
+
         yield return new WaitForSeconds(waitfor);
 
-        if (HudManager.InstanceExists && HudManager.Instance.FullScreen)
+        if (HudManager.InstanceExists && HudManager.Instance.FullScreen && !FlashRenderer)
         {
-            var fullscreen = HudManager.Instance.FullScreen;
-            if (!fullscreen.color.Equals(color)) yield break;
-
-            fullscreen.color = new Color(1f, 0f, 0f, 0.37254903f);
-            fullscreen.enabled = false;
+            FlashRenderer = Object.Instantiate(HudManager.Instance.FullScreen,
+            HudManager.Instance.FullScreen.transform.parent);
         }
+        if (!FlashRenderer.color.Equals(color))
+        {
+            yield break;
+        }
+
+        FlashRenderer.color = new Color(1f, 0f, 0f, 0.37254903f);
+        FlashRenderer.enabled = false;
     }
 
     public static IEnumerator FadeOut(SpriteRenderer? rend, float delay = 0.01f, float decrease = 0.01f)

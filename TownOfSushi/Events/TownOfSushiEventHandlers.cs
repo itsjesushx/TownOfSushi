@@ -1,4 +1,4 @@
-﻿﻿using System.Collections;
+﻿﻿﻿using System.Collections;
 using System.Globalization;
 using HarmonyLib;
 using MiraAPI.Events;
@@ -8,42 +8,192 @@ using MiraAPI.Events.Vanilla.Meeting;
 using MiraAPI.Events.Vanilla.Meeting.Voting;
 using MiraAPI.Events.Vanilla.Player;
 using MiraAPI.Events.Vanilla.Usables;
-using MiraAPI.GameOptions;
 using MiraAPI.Hud;
-using MiraAPI.Modifiers;
+using MiraAPI.Modifiers.ModifierDisplay;
 using MiraAPI.Modifiers.Types;
-using MiraAPI.Utilities;
 using PowerTools;
 using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
-using TownOfSushi.Buttons;
-using TownOfSushi.Buttons.Crewmate;
-using TownOfSushi.Buttons.Impostor;
-using TownOfSushi.Buttons.Modifiers;
-using TownOfSushi.Buttons.Neutral;
-using TownOfSushi.Events.TOSEvents;
-using TownOfSushi.Modifiers;
-using TownOfSushi.Modifiers.Game.Universal;
-using TownOfSushi.Modifiers.Neutral;
-using TownOfSushi.Modules;
-using TownOfSushi.Modules.Anims;
-using TownOfSushi.Options;
-using TownOfSushi.Options.Modifiers.Universal;
-using TownOfSushi.Options.Roles.Crewmate;
-using TownOfSushi.Options.Roles.Impostor;
-using TownOfSushi.Patches;
-using TownOfSushi.Roles;
-using TownOfSushi.Roles.Crewmate;
-using TownOfSushi.Roles.Impostor;
-using TownOfSushi.Utilities;
+using TMPro;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
+using TownOfSushi.Options;
+using TownOfSushi.Modifiers.Game;
+using TownOfSushi.Modules;
+using TownOfSushi.Buttons;
+using TownOfSushi.Modifiers;
+using TownOfSushi.Patches;
+using TownOfSushi.Events.TOSEvents;
+using TownOfSushi.Modules.Anims;
 
 namespace TownOfSushi.Events;
 
 public static class TownOfSushiEventHandlers
 {
+    internal static TextMeshPro ModifierText;
+
+    public static void RunModChecks()
+    {
+        var option = OptionGroupSingleton<GeneralOptions>.Instance.ModifierReveal;
+        var modifier = PlayerControl.LocalPlayer.GetModifiers<AllianceGameModifier>().FirstOrDefault();
+        var uniModifier = PlayerControl.LocalPlayer.GetModifiers<UniversalGameModifier>().FirstOrDefault();
+
+        if (modifier != null && option is ModReveal.Alliance)
+        {
+            ModifierText.text = $"<size={modifier.IntroSize}>{modifier.IntroInfo}</size>";
+
+            ModifierText.color = MiscUtils.GetRoleColour(modifier.ModifierName.Replace(" ", string.Empty));
+            if (modifier is IColoredModifier colorMod)
+            {
+                ModifierText.color = colorMod.ModifierColor;
+            }
+        }
+        else if (uniModifier != null && option is ModReveal.Universal)
+        {
+            ModifierText.text = $"<size=4><color=#FFFFFF>Modifier: </color>{uniModifier.ModifierName}</size>";
+
+            ModifierText.color = MiscUtils.GetRoleColour(uniModifier.ModifierName.Replace(" ", string.Empty));
+            if (uniModifier is IColoredModifier colorMod)
+            {
+                ModifierText.color = colorMod.ModifierColor;
+            }
+        }
+        else
+        {
+            ModifierText.text = string.Empty;
+        }
+    }
+
+    [RegisterEvent(1000)]
+    public static void IntroRoleRevealEventHandler(IntroRoleRevealEvent @event)
+    {
+        var instance = @event.IntroCutscene;
+        
+        if (ModCompatibility.IsSubmerged())
+        {
+            Coroutines.Start(ModCompatibility.WaitMeeting(ModCompatibility.ResetTimers));
+        }
+        
+        if (PlayerControl.LocalPlayer.Data.Role is ITownOfSushiRole custom)
+        {
+            instance.RoleText.text = custom.RoleName;
+            instance.YouAreText.text = custom.YouAreText;
+            instance.RoleBlurbText.text = custom.RoleDescription;
+        }
+
+        var teamModifier = PlayerControl.LocalPlayer.GetModifiers<TOSGameModifier>().FirstOrDefault();
+        if (teamModifier != null && OptionGroupSingleton<GeneralOptions>.Instance.TeamModifierReveal)
+        {
+            var color = MiscUtils.GetRoleColour(teamModifier.ModifierName.Replace(" ", string.Empty));
+            if (teamModifier is IColoredModifier colorMod)
+            {
+                color = colorMod.ModifierColor;
+            }
+
+            instance.RoleBlurbText.text =
+                $"<size={teamModifier.IntroSize}>\n</size>{instance.RoleBlurbText.text}\n<size={teamModifier.IntroSize}><color=#{color.ToHtmlStringRGBA()}>{teamModifier.IntroInfo}</color></size>";
+        }
+    }
+    [RegisterEvent]
+    public static void IntroBeginEventHandler(IntroBeginEvent @event)
+    {
+        var cutscene = @event.IntroCutscene;
+        Coroutines.Start(CoChangeModifierText(cutscene));
+    }
+
+    public static IEnumerator CoChangeModifierText(IntroCutscene cutscene)
+    {
+        yield return new WaitForSeconds(0.01f);
+        
+        ModifierText =
+            Object.Instantiate(cutscene.RoleText, cutscene.RoleText.transform.parent, false);
+        
+        if (PlayerControl.LocalPlayer.Data.Role is ITownOfSushiRole custom)
+        {
+            cutscene.RoleText.text = custom.RoleName;
+            cutscene.YouAreText.text = custom.YouAreText;
+            cutscene.RoleBlurbText.text = custom.RoleDescription;
+        }
+
+        var teamModifier = PlayerControl.LocalPlayer.GetModifiers<TOSGameModifier>().FirstOrDefault();
+        if (teamModifier != null && OptionGroupSingleton<GeneralOptions>.Instance.TeamModifierReveal)
+        {
+            var color = MiscUtils.GetRoleColour(teamModifier.ModifierName.Replace(" ", string.Empty));
+            if (teamModifier is IColoredModifier colorMod)
+            {
+                ModifierText.color = colorMod.ModifierColor;
+            }
+
+            cutscene.RoleBlurbText.text =
+                $"<size={teamModifier.IntroSize}>\n</size>{cutscene.RoleBlurbText.text}\n<size={teamModifier.IntroSize}><color=#{color.ToHtmlStringRGBA()}>{teamModifier.IntroInfo}</color></size>";
+        }
+
+        RunModChecks();
+
+        ModifierText.transform.position =
+            cutscene.transform.position - new Vector3(0f, 1.6f, -10f);
+        ModifierText.gameObject.SetActive(true);
+        ModifierText.color.SetAlpha(0.8f);
+    }
+    
+    [RegisterEvent]
+    public static void IntroEndEventHandler(IntroEndEvent @event)
+    {
+        HudManager.Instance.SetHudActive(false);
+        HudManager.Instance.SetHudActive(true);
+
+        foreach (var button in CustomButtonManager.Buttons.Where(x => x.Enabled(PlayerControl.LocalPlayer.Data.Role)))
+        {
+            if (button is FakeVentButton)
+            {
+                continue;
+            }
+
+            button.SetTimer(OptionGroupSingleton<GeneralOptions>.Instance.GameStartCd);
+        }
+
+        if (PlayerControl.LocalPlayer.IsImpostor())
+        {
+            PlayerControl.LocalPlayer.SetKillTimer(OptionGroupSingleton<GeneralOptions>.Instance.GameStartCd);
+        }
+
+        var modsTab = ModifierDisplayComponent.Instance;
+        if (modsTab != null && !modsTab.IsOpen && PlayerControl.LocalPlayer.GetModifiers<GameModifier>()
+                .Any(x => !x.HideOnUi && x.GetDescription() != string.Empty))
+        {
+            modsTab.ToggleTab();
+        }
+
+        var panelThing = HudManager.Instance.TaskStuff.transform.FindChild("RolePanel");
+        if (panelThing != null)
+        {
+            var panel = panelThing.gameObject.GetComponent<TaskPanelBehaviour>();
+            var role = PlayerControl.LocalPlayer.Data.Role as ICustomRole;
+            if (role == null)
+            {
+                return;
+            }
+
+            panel.open = true;
+
+            var tabText = panel.tab.gameObject.GetComponentInChildren<TextMeshPro>();
+            var ogPanel = HudManager.Instance.TaskStuff.transform.FindChild("TaskPanel").gameObject
+                .GetComponent<TaskPanelBehaviour>();
+            if (tabText.text != role.RoleName)
+            {
+                tabText.text = role.RoleName;
+            }
+
+            var y = ogPanel.taskText.textBounds.size.y + 1;
+            panel.closedPosition = new Vector3(ogPanel.closedPosition.x, ogPanel.open ? y + 0.2f : 2f,
+                ogPanel.closedPosition.z);
+            panel.openPosition = new Vector3(ogPanel.openPosition.x, ogPanel.open ? y : 2f, ogPanel.openPosition.z);
+
+            panel.SetTaskText(role.SetTabText().ToString());
+        }
+    }
+
     [RegisterEvent]
     public static void StartMeetingEventHandler(StartMeetingEvent @event)
     {
@@ -63,6 +213,7 @@ public static class TownOfSushiEventHandlers
         jestButton.Show = false;
         phantomButton.Show = false;
     }
+    
     [RegisterEvent]
     public static void RoundStartHandler(RoundStartEvent @event)
     {
@@ -102,8 +253,8 @@ public static class TownOfSushiEventHandlers
         CustomButtonSingleton<HunterStalkButton>.Instance.ExtraUses = 0;
         CustomButtonSingleton<HunterStalkButton>.Instance.SetUses((int)OptionGroupSingleton<HunterOptions>.Instance
             .StalkUses);
-        CustomButtonSingleton<SheriffShootButton>.Instance.Usable =
-            OptionGroupSingleton<SheriffOptions>.Instance.FirstRoundUse;
+        CustomButtonSingleton<VigilanteShootButton>.Instance.Usable =
+            OptionGroupSingleton<VigilanteOptions>.Instance.FirstRoundUse;
         CustomButtonSingleton<VeteranAlertButton>.Instance.ExtraUses = 0;
         CustomButtonSingleton<VeteranAlertButton>.Instance.SetUses((int)OptionGroupSingleton<VeteranOptions>.Instance
             .MaxNumAlerts);
@@ -123,7 +274,7 @@ public static class TownOfSushiEventHandlers
             engiVent.Button?.usesRemainingText.gameObject.SetActive(true);
             engiVent.Button?.usesRemainingSprite.gameObject.SetActive(true);
         }
-
+        
         var medicShield = CustomButtonSingleton<MedicShieldButton>.Instance;
         medicShield.SetUses(OptionGroupSingleton<MedicOptions>.Instance.ChangeTarget ? (int)OptionGroupSingleton<MedicOptions>.Instance.MedicShieldUses : 0);
         if ((int)OptionGroupSingleton<MedicOptions>.Instance.MedicShieldUses == 0 || !OptionGroupSingleton<MedicOptions>.Instance.ChangeTarget)
@@ -148,9 +299,9 @@ public static class TownOfSushiEventHandlers
         CustomButtonSingleton<HexbladeKillButton>.Instance.BurstActive = false;
 
         CustomButtonSingleton<BarryButton>.Instance.Usable =
-            OptionGroupSingleton<ButtonBarryOptions>.Instance.FirstRoundUse;
+            OptionGroupSingleton<ButtonBarryOptions>.Instance.FirstRoundUse || TutorialManager.InstanceExists;
         CustomButtonSingleton<SatelliteButton>.Instance.Usable =
-            OptionGroupSingleton<SatelliteOptions>.Instance.FirstRoundUse;
+            OptionGroupSingleton<SatelliteOptions>.Instance.FirstRoundUse || TutorialManager.InstanceExists;
     }
 
     [RegisterEvent]
@@ -166,17 +317,17 @@ public static class TownOfSushiEventHandlers
         {
             foreach (var button in CustomButtonManager.Buttons)
             {
-                if (button is TownOfSushiTargetButton<PlayerControl> TOSPlayerButton && TOSPlayerButton.Target != null)
+                if (button is TownOfSushiTargetButton<PlayerControl> touPlayerButton && touPlayerButton.Target != null)
                 {
-                    TOSPlayerButton.Target.cosmetics.currentBodySprite.BodySprite.SetOutline(null);
+                    touPlayerButton.Target.cosmetics.currentBodySprite.BodySprite.SetOutline(null);
                 }
-                else if (button is TownOfSushiTargetButton<DeadBody> TOSBodyButton && TOSBodyButton.Target != null)
+                else if (button is TownOfSushiTargetButton<DeadBody> touBodyButton && touBodyButton.Target != null)
                 {
-                    TOSBodyButton.Target.bodyRenderers.Do(x => x.SetOutline(null));
+                    touBodyButton.Target.bodyRenderers.Do(x => x.SetOutline(null));
                 }
-                else if (button is TownOfSushiTargetButton<Vent> TOSVentButton && TOSVentButton.Target != null)
+                else if (button is TownOfSushiTargetButton<Vent> touVentButton && touVentButton.Target != null)
                 {
-                    TOSVentButton.Target.SetOutline(false, true, player.Data.Role.TeamColor);
+                    touVentButton.Target.SetOutline(false, true, player.Data.Role.TeamColor);
                 }
             }
             HudManager.Instance.SetHudActive(false);
@@ -298,16 +449,17 @@ public static class TownOfSushiEventHandlers
                     var bombButton = CustomButtonSingleton<BomberPlantButton>.Instance;
                     bombButton.ResetCooldownAndOrEffect();
                     break;
+                case ConsigliereRole:
+                    var consigButton = CustomButtonSingleton<ConsigliereRevealButton>.Instance;
+                    consigButton.ResetCooldownAndOrEffect();
+                    break;
                 case JanitorRole:
                     if (OptionGroupSingleton<JanitorOptions>.Instance.ResetCooldowns)
                     {
                         var cleanButton = CustomButtonSingleton<JanitorCleanButton>.Instance;
                         cleanButton.ResetCooldownAndOrEffect();
                     }
-                    break;
-                case WarlockRole:
-                    CustomButtonSingleton<WarlockCurseButton>.Instance.ResetCooldownAndOrEffect();
-                    CustomButtonSingleton<WarlockCurseKillButton>.Instance.SetTimer(OptionGroupSingleton<WarlockOptions>.Instance.CurseCooldown);
+
                     break;
             }
         }
@@ -470,6 +622,30 @@ public static class TownOfSushiEventHandlers
 
     public static void HandleMeetingMurder(MeetingHud instance, PlayerControl source, PlayerControl target)
     {
+        if (MeetingHud.Instance.CurrentState == MeetingHud.VoteStates.Animating)
+        {
+            if (target.AmOwner)
+            {
+                MeetingMenu.Instances.Do(x => x.HideButtons());
+                Coroutines.Start(CoHideHud());
+            }
+            // hide meeting menu button for victim
+            else if (!source.AmOwner && !target.AmOwner)
+            {
+                MeetingMenu.Instances.Do(x => x.HideSingle(target.PlayerId));
+            }
+            var targetVoteAreaEarly = instance.playerStates.First(x => x.TargetPlayerId == target.PlayerId);
+
+            if (!targetVoteAreaEarly)
+            {
+                return;
+            }
+
+            targetVoteAreaEarly.AmDead = true;
+            targetVoteAreaEarly.Overlay.gameObject.SetActive(true);
+            targetVoteAreaEarly.XMark.gameObject.SetActive(true);
+            return;
+        }
         var timer = (int)OptionGroupSingleton<GeneralOptions>.Instance.AddedMeetingDeathTimer;
         if (timer > 0 && timer <= 15)
         {

@@ -1,15 +1,16 @@
 ﻿using AmongUs.GameOptions;
 using HarmonyLib;
 using Il2CppInterop.Runtime.Attributes;
-using MiraAPI.Modifiers;
+using MiraAPI.LocalSettings;
+
 using MiraAPI.Patches.Stubs;
-using MiraAPI.Utilities;
-using MiraAPI.Utilities.Assets;
+
+
 using Reactor.Utilities.Attributes;
 using Reactor.Utilities.Extensions;
 using TownOfSushi;
-using TownOfSushi.Roles;
-using TownOfSushi.Utilities;
+
+
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -137,14 +138,30 @@ public sealed class GuesserMenu(IntPtr cppPtr) : Minigame(cppPtr)
         onModifierClick = modifierClickHandler;
         potentialVictims = [];
 
-        var roles = MiscUtils.GetPotentialRoles().Where(roleMatch).OrderBy(x =>
-            x is ITownOfSushiRole TOSRole && TownOfSushiPlugin.SortGuessingByAlignment.Value
-                ? TOSRole.RoleAlignment.ToDisplayString() + x.NiceName
+        var roles = MiscUtils.GetPotentialRoles().Where(roleMatch).ToList();
+        
+        // This code adds Amne, Surv, Jester, and Merc based on Guardian Angel and Executioner Death settings
+        var allRoles = MiscUtils.AllRoles.Where(roleMatch).Where(x => x is IGuessable && !roles.Contains(x)).ToList();
+
+        if (allRoles.Count > 0)
+        {
+            foreach (var addedRole in allRoles)
+            {
+                if (addedRole is IGuessable guessable && guessable.CanBeGuessed)
+                {
+                    roles.Add(addedRole);
+                }
+            }
+        }
+        
+        var newRoleList = roles.OrderBy(x =>
+            LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.SortGuessingByAlignmentToggle.Value
+                ? x.GetRoleAlignment().ToDisplayString() + x.NiceName
                 : x.NiceName).ToList();
 
-        for (var i = 0; i < roles.Count; i++)
+        for (var i = 0; i < newRoleList.Count; i++)
         {
-            var role = roles[i];
+            var role = newRoleList[i];
             var num = i % 3;
             var num2 = i / 3 % 5;
 
@@ -164,7 +181,7 @@ public sealed class GuesserMenu(IntPtr cppPtr) : Minigame(cppPtr)
 
             for (var i = 0; i < modifiers.Count; i++)
             {
-                var index = roles.Count + i;
+                var index = newRoleList.Count + i;
                 var modifier = modifiers[i];
                 var num = index % 3;
                 var num2 = index / 3 % 5;

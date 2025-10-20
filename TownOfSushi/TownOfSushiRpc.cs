@@ -2,18 +2,26 @@
 
 public enum TownOfSushiRpc : uint
 {
+    GhostRoleMurder,
     RemoveSpawns,
 
     UpdateDeathHandler,
     SetMap,
     ChangeRole,
+    AddReveal,
     PlayerExile,
     SetPos,
     SendLoveChat,
     SendJailorChat,
+    RetrainConfirm,
+    RetrainImpostor,
     SendJaileeChat,
     SendImpTeamChat,
     SendVampTeamChat,
+    BodyGuardGuardMurder,
+    BodyGuardGuard,
+    ClearBodyGuardGuard,
+    BodyGuardNotify,
     UpdateCelebrityKilled,
     ClericBarrierAttacked,
     Transport,
@@ -42,7 +50,7 @@ public enum TownOfSushiRpc : uint
     SetTraitor,
     DragBody,
     DropBody,
-    AltruistRevive,
+    RetributionistRevive,
     Prosecute,
     SetExeTarget,
     AddInquisTarget,
@@ -66,7 +74,7 @@ public enum TownOfSushiRpc : uint
     ButtonBarry,
     LookoutSeePlayer,
     AnimateNewReveal,
-    SheriffMisfire,
+    VigilanteMisfire,
     WerewolfMaul,
     WiitchSetCursedPlayer,
     MurderCursedPlayer,
@@ -79,5 +87,6 @@ public enum TownOfSushiRpc : uint
     HostCallMeeting,
     SetPoisonedPlayer,
     MurderPoisonedPlayer,
-    AmbushPlayer
+    AmbushPlayer,
+    StealRole
 }

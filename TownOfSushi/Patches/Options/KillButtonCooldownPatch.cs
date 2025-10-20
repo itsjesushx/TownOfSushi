@@ -1,5 +1,6 @@
 using System.Globalization;
 using HarmonyLib;
+using MiraAPI.LocalSettings;
 
 namespace TownOfSushi.Patches.Options;
 
@@ -20,7 +21,7 @@ public static class KillButtonCooldownPatch
             return;
         }
 
-        if (!TownOfSushiPlugin.PreciseCooldowns.Value)
+        if (!LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.PreciseCooldownsToggle.Value)
         {
             return;
         }

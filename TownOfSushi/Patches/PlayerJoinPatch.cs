@@ -1,8 +1,8 @@
 using System.Collections;
 using HarmonyLib;
+using MiraAPI.LocalSettings;
 using Reactor.Utilities;
 using TownOfSushi.Modules;
-using TownOfSushi.Utilities;
 using UnityEngine;
 
 namespace TownOfSushi.Patches;
@@ -12,7 +12,6 @@ public static class PlayerJoinPatch
 {
     public static bool SentOnce { get; private set; }
     public static HudManager HUD => HudManager.Instance;
-
     public static void Postfix()
     {
         Coroutines.Start(CoSendJoinMsg());
@@ -48,7 +47,7 @@ public static class PlayerJoinPatch
         TOSRoleManagerPatches.ReplaceRoleManager = false;
 
         var time = 0f;
-        if (GameHistory.EndGameSummary != string.Empty && TownOfSushiPlugin.ShowSummaryMessage.Value)
+        if (GameHistory.EndGameSummary != string.Empty && LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.ShowSummaryMessageToggle.Value)
         {
             var factionText = string.Empty;
             var msg = string.Empty;
@@ -58,19 +57,19 @@ public static class PlayerJoinPatch
             }
 
             var title =
-                $"<color=#8BFDFD>System (Toggleable In Options)</color>\n<size=62%>{factionText}{GameHistory.EndGameSummary}</size>";
+                $"<color=#8BFDFD>Automated Message (Toggleable In Options)</color>\n<size=62%>{factionText}{GameHistory.EndGameSummary}</size>";
             MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, msg);
         }
 
-        if (!SentOnce && TownOfSushiPlugin.ShowWelcomeMessage.Value)
+        if (!SentOnce && LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.ShowWelcomeMessageToggle.Value)
         {
-            var name = "<color=#8BFDFD>System</color>";
+            var name = "<color=#8BFDFD>Automated Message</color>";
             var msg =
                 $"Welcome to Town of Sushi v{TownOfSushiPlugin.Version}!\nUse the wiki (the globe icon) to get more info on roles or modifiers, where you can use the searchbar. Otherwise use /help in the chat to get a list of commands.\nYou can also disable this message through your options menu.";
             MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, name, msg, true);
             time = 5f;
         }
-        else if (!TownOfSushiPlugin.ShowWelcomeMessage.Value)
+        else if (!LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.ShowWelcomeMessageToggle.Value)
         {
             time = 2.48f;
         }

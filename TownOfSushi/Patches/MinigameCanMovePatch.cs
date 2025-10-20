@@ -1,12 +1,5 @@
 ﻿using HarmonyLib;
-using MiraAPI.GameOptions;
 using MiraAPI.Hud;
-using TownOfSushi.Buttons.Crewmate;
-using TownOfSushi.Options.Modifiers.Crewmate;
-using TownOfSushi.Options.Roles.Crewmate;
-using TownOfSushi.Options.Roles.Neutral;
-using TownOfSushi.Roles.Crewmate;
-using TownOfSushi.Roles.Neutral;
 
 namespace TownOfSushi.Patches;
 
