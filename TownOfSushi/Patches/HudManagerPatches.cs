@@ -188,7 +188,7 @@ public static class HudManagerPatches
         var isValid = MeetingHud.Instance &&
                       (PlayerControl.LocalPlayer.IsJailed() || PlayerControl.LocalPlayer.Data.Role is JailorRole ||
                        (PlayerControl.LocalPlayer.IsImpostor() && genOpt is
-                           { FFAImpostorMode: false, ImpostorChat.Value: true } && !MiscUtils.SpyInGame()) ||
+                           { ImpostorChat: true } && !MiscUtils.SpyInGame()) ||
                        (PlayerControl.LocalPlayer.Data.Role is VampireRole && genOpt.VampireChat));
 
         if (!TeamChatButton)
@@ -342,8 +342,7 @@ public static class HudManagerPatches
                 var playerName = player.GetDefaultAppearance().PlayerName ?? "Unknown";
                 var playerColor = Color.white;
 
-                if (PlayerControl.LocalPlayer.IsImpostor() && PlayerControl.LocalPlayer != player &&
-                !genOpt.FFAImpostorMode && (player.IsImpostor() || player.Data.Role is SpyRole && MiscUtils.SpyInGame()))
+                if (PlayerControl.LocalPlayer.IsImpostor() && PlayerControl.LocalPlayer != player && (player.IsImpostor() || player.Data.Role is SpyRole && MiscUtils.SpyInGame()))
                 {
                     playerColor = Color.red;
                 }
@@ -373,8 +372,7 @@ public static class HudManagerPatches
                 var roleName = "";
 
                 if (player.AmOwner ||
-                    (PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() && genOpt is
-                    { FFAImpostorMode: false } && !MiscUtils.SpyInGame()) ||
+                    (PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() && !MiscUtils.SpyInGame()) ||
                     (PlayerControl.LocalPlayer.GetRoleWhenAlive() is VampireRole && role is VampireRole) ||
                     (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow) ||
                     GuardianAngelTOSRole.GASeesRoleVisibilityFlag(player) ||
@@ -493,8 +491,7 @@ public static class HudManagerPatches
 
                 if (player?.Data?.Disconnected == true)
                 {
-                    if (!((PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() && genOpt is
-                        { FFAImpostorMode: false } && !MiscUtils.SpyInGame()) ||
+                    if (!((PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() && !MiscUtils.SpyInGame()) ||
                           (PlayerControl.LocalPlayer.GetRoleWhenAlive() is VampireRole && role is VampireRole) ||
                           (!TutorialManager.InstanceExists &&
                            ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow) ||
@@ -544,8 +541,7 @@ public static class HudManagerPatches
                 var playerName = player.GetAppearance().PlayerName ?? "Unknown";
                 var playerColor = Color.white;
 
-                if (PlayerControl.LocalPlayer.IsImpostor() && PlayerControl.LocalPlayer != player &&
-                !genOpt.FFAImpostorMode && (player.IsImpostor() || player.Data.Role is SpyRole && MiscUtils.SpyInGame()))
+                if (PlayerControl.LocalPlayer.IsImpostor() && PlayerControl.LocalPlayer != player && (player.IsImpostor() || player.Data.Role is SpyRole && MiscUtils.SpyInGame()))
                 {
                     playerColor = Color.red;
                 }
@@ -567,8 +563,7 @@ public static class HudManagerPatches
                 var roleName = "";
                 var canSeeDeathReason = false;
                 if (player.AmOwner ||
-                    (PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() && genOpt is
-                    { FFAImpostorMode: false } && !MiscUtils.SpyInGame()) ||
+                    (PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() && !MiscUtils.SpyInGame()) ||
                     (PlayerControl.LocalPlayer.GetRoleWhenAlive() is VampireRole && role is VampireRole) ||
                     (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && isVisible) ||
                     GuardianAngelTOSRole.GASeesRoleVisibilityFlag(player) ||

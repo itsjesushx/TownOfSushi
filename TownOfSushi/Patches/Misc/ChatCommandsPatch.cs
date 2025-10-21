@@ -218,9 +218,8 @@ public static class ChatPatches
                 return false;
             }
 
-            if (PlayerControl.LocalPlayer.IsImpostor() &&
-                genOpt is { FFAImpostorMode: false, ImpostorChat.Value: true }
-                && !MiscUtils.SpyInGame()) // Impostors don't have a chat if spy exists!!!
+            if (PlayerControl.LocalPlayer.IsImpostor() && genOpt is { ImpostorChat: true } 
+            && !MiscUtils.SpyInGame()) // Impostors don't have a chat if spy exists!!!
             {
                 TeamChatPatches.RpcSendImpTeamChat(PlayerControl.LocalPlayer, textRegular);
                 MiscUtils.AddTeamChat(PlayerControl.LocalPlayer.Data,

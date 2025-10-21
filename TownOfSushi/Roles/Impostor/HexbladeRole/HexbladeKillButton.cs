@@ -123,8 +123,7 @@ public sealed class HexbladeKillButton : TownOfSushiRoleButton<HexbladeRole, Pla
         var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
         var closePlayer = PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
 
-        var includePostors = genOpt.FFAImpostorMode ||
-                             (PlayerControl.LocalPlayer.IsLover() &&
+        var includePostors = (PlayerControl.LocalPlayer.IsLover() &&
                               OptionGroupSingleton<LoversOptions>.Instance.LoverKillTeammates) ||
                              (genOpt.KillDuringCamoComms &&
                               closePlayer?.GetAppearanceType() == TownOfSushiAppearances.Camouflage);

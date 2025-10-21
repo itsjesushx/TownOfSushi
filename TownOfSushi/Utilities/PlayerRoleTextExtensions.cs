@@ -210,7 +210,7 @@ public static class PlayerRoleTextExtensions
         if ((player.HasModifier<BlackmailedModifier>(x => x.BlackMailerId == PlayerControl.LocalPlayer.PlayerId) &&
              PlayerControl.LocalPlayer.IsRole<BlackmailerRole>())
             || (player.HasModifier<BlackmailedModifier>() && PlayerControl.LocalPlayer.IsImpostor() &&
-                genOpt.ImpsKnowRoles && !genOpt.FFAImpostorMode)
+                genOpt.ImpsKnowRoles)
             || (player.HasModifier<BlackmailedModifier>() && PlayerControl.LocalPlayer.HasDied() &&
                 genOpt.TheDeadKnow && !hidden))
         {
@@ -220,7 +220,7 @@ public static class PlayerRoleTextExtensions
         if ((player.HasModifier<HypnotisedModifier>(x => x.Hypnotist.AmOwner) &&
              PlayerControl.LocalPlayer.IsRole<HypnotistRole>())
             || (player.HasModifier<HypnotisedModifier>() && PlayerControl.LocalPlayer.IsImpostor() &&
-                genOpt.ImpsKnowRoles && !genOpt.FFAImpostorMode)
+                genOpt.ImpsKnowRoles)
             || (player.HasModifier<HypnotisedModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow &&
                 !hidden))
         {

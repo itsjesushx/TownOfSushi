@@ -193,8 +193,7 @@ public abstract class AssassinModifier : ExcludedGameModifier
         return voteArea?.TargetPlayerId == Player.PlayerId ||
                Player.Data.IsDead ||
                voteArea!.AmDead ||
-               (Player.IsImpostor() && votePlayer?.IsImpostor() == true &&
-                !OptionGroupSingleton<GeneralOptions>.Instance.FFAImpostorMode) && !MiscUtils.SpyInGame() ||
+               Player.IsImpostor() && votePlayer?.IsImpostor() == true && !MiscUtils.SpyInGame() ||
                (voteArea.GetPlayer()?.Data.Role is MonarchRole && Player.HasModifier<MonarchKnightedModifier>()) ||
                (Player.Data.Role is VampireRole && votePlayer?.Data.Role is VampireRole) ||
                (votePlayer?.Data.Role is MayorRole mayor && mayor.Revealed) ||
