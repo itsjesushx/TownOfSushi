@@ -68,7 +68,7 @@
 - [Spy](#spy)
 - [Tracker](#tracker)  
 - [Lookout](#lookout)
-- [BodyGuard](#bodyGuard)
+- [Bodyguard](#bodyguard)
 - [Trapper](#trapper)  
 - [Seer](#seer)  
 - [Deputy](#deputy)  
@@ -482,19 +482,19 @@ If the Fortified person gets a kill attempt, they will kill the attemper.
 | Show Fortify | Who sees the fortified player | Option | Crusader |
 -----------------------
 
-## BodyGuard
+## Bodyguard
 ### **Team: Crewmates**
-The BodyGuard is a Crewmate that can guard other players.\
-BodyGuarded players cannot be interacted with.\
-If someone tries to interact with a BodyGuarded player,\
-Both the BodyGuard and the interactor receive an alert.\
-If the BodyGuarded person gets a kill attempt, they will kill the BodyGuard instead.
+The Bodyguard is a Crewmate that can guard other players.\
+Bodyguarded players cannot be interacted with.\
+If someone tries to interact with a Bodyguarded player,\
+Both the Bodyguard and the interactor receive an alert.\
+If the Bodyguarded person gets a kill attempt, they will kill the Bodyguard instead.
 
 ### Game Options
 | Name | Description | Type | Default |
 |----------|:-------------:|:------:|:------:|
-| BodyGuard | The percentage probability of the BodyGuard appearing | Percentage | 0% |
-| Show BodyGuard | Who sees the BodyGuarded player | Option | BodyGuard |
+| Bodyguard | The percentage probability of the Bodyguard appearing | Percentage | 0% |
+| Show Bodyguard | Who sees the Bodyguarded player | Option | Bodyguard |
 -----------------------
 
 ## Engineer

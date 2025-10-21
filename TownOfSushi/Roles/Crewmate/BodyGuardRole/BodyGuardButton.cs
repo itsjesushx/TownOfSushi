@@ -4,11 +4,11 @@ using UnityEngine;
 
 namespace TownOfSushi.Roles.Crewmate;
 
-public sealed class BodyGuardGuardButton : TownOfSushiRoleButton<BodyGuardRole, PlayerControl>
+public sealed class BodyguardGuardButton : TownOfSushiRoleButton<BodyguardRole, PlayerControl>
 {
     public override string Name => "Guard";
     public override BaseKeybind Keybind => Keybinds.PrimaryAction;
-    public override Color TextOutlineColor => TownOfSushiColors.BodyGuard;
+    public override Color TextOutlineColor => TownOfSushiColors.Bodyguard;
     public override float Cooldown => 0.001f + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TOSCrewAssets.GuardSprite;
 
@@ -26,10 +26,10 @@ public sealed class BodyGuardGuardButton : TownOfSushiRoleButton<BodyGuardRole, 
     {
         if (Target == null)
         {
-            Logger<TownOfSushiPlugin>.Error("BodyGuard Guard: Target is null");
+            Logger<TownOfSushiPlugin>.Error("Bodyguard Guard: Target is null");
             return;
         }
 
-        BodyGuardRole.RpcBodyGuardGuard(PlayerControl.LocalPlayer, Target);
+        BodyguardRole.RpcBodyguardGuard(PlayerControl.LocalPlayer, Target);
     }
 }
