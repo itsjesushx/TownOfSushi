@@ -117,7 +117,6 @@
 - [Button Barry](#button-barry)  
 - [Tiebreaker](#tiebreaker)  
 - [Administrator](#administrator)  
-- [Drunk](#drunk)  
 - [Paranoiac](#Paranoiac)  
 - [Sleuth](#sleuth)  
 
@@ -1116,16 +1115,6 @@ They are also smaller than everyone else.
 |----------|:-------------:|:------:|:------:|
 | Mini Chance | The percentage probability of the Mini appearing | Percentage | 0% |
 | Mini Speed | How fast the Mini moves in comparison to normal | Multiplier | 1.25x |
-
------------------------
-
-## Drunk
-### **Applied to: All**
-The Drunk is a player who has inverted controls.\
-If the Drunk hits the Up KeyCode they will go down etc.
-| Name | Description | Type | Default |
-|----------|:-------------:|:------:|:------:|
-| Drunk | The percentage probability of the Drunk appearing | Percentage | 0% |
 
 -----------------------
 

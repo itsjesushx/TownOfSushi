@@ -87,7 +87,6 @@ public static class TownOfSushiColors
     public static Color Sleuth => new(0.5f, 0.2f, 0.2f, 1f);
     public static Color Tiebreaker => new(0.6f, 0.9f, 0.6f, 1f);
     public static Color Paranoiac => new(1f, 0f, 0.5f, 1f);
-    public static Color Drunk => new(0.1f, 0.3f, 0.2f, 1f);
     public static Color Multitasker => new(1f, 0.5f, 0.3f, 1f);
     public static Color Frosty => new(0.6f, 1f, 1f, 1f);
     public static Color SixthSense => new(0.85f, 1f, 0.55f, 1f);

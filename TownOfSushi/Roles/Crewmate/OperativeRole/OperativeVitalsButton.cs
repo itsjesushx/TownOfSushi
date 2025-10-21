@@ -93,6 +93,7 @@ public sealed class OperativeButton : TownOfSushiButton
     {
         return Timer <= 0 && !EffectActive && AvailableCharge > 0f &&
                !PlayerControl.LocalPlayer.HasModifier<DisabledModifier>() &&
+               !MeetingHud.Instance && !ExileController.Instance && // for some reason you can open vitals during meetings or exiles
                !PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>();
     }
 
