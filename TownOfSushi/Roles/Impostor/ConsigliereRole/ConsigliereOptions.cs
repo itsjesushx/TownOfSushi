@@ -13,6 +13,8 @@ public sealed class ConsigliereOptions : AbstractOptionGroup<ConsigliereRole>
 
     [ModdedNumberOption("Reveal Duration", 3f, 15f, 1f, MiraNumberSuffixes.Seconds)]
     public float RevealDuration { get; set; } = 5f;
+    [ModdedToggleOption("Consigliere Teammates Can See Role On Reveal")]
+    public bool ConsigliereShowRoleImp { get; set; } = true;
 
     [ModdedToggleOption("Consigliere Can Kill With Teammate")]
     public bool ConsigliereKill { get; set; } = true;
