@@ -8,7 +8,7 @@ public sealed class ImpostorDoubleShotOptions : AbstractOptionGroup<ImpostorDoub
 {
     public override string GroupName => "Impostor Double Shot";
     public override Color GroupColor => TownOfSushiColors.Impostor;
-    public override uint GroupPriority => 50;
+    public override uint GroupPriority => 59;
 
     [ModdedNumberOption("Impostor Double Shot Amount", 0, 5)]
     public float ImpostorDoubleShotAmount { get; set; } = 0;

@@ -11,7 +11,7 @@ namespace TownOfSushi.Patches
         public static string ModName =
 $@"<color=#B2FEFE>TownOfSushi</color> v{TownOfSushiPlugin.Version}{TownOfSushiPlugin.DevString}";
         public static string MainScreenText =
-    $@"Created by <color=#B2FEFE>Jesushi</color> with help of <color=#B2FEFE>50IQ</color>
+    $@"Created by <color=#B2FEFE>Charlton</color> with help of <color=#B2FEFE>50IQ</color>
 <size=90%>Emotionally Helped by <color=#B2FEFE>döll</color>
 Beta testing help by <color=#B2FEFE>Cake</color>
 Originally Coded by <color=#B2FEFE>AU-Avengers</color>";
@@ -45,6 +45,8 @@ Originally Coded by <color=#B2FEFE>AU-Avengers</color>";
             internal static void Postfix()
             {
                 var TOSLogo = new GameObject("bannerLogo_TOS");
+
+                if (TOSLogo == null) return;
 
                 TOSLogo.transform.SetParent(GameObject.Find("RightPanel").transform, false);
                 TOSLogo.transform.localPosition = new Vector3(-0.4f, 1f, 5f);

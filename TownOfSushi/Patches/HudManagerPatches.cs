@@ -625,8 +625,7 @@ public static class HudManagerPatches
                     }
                 }
 
-                if (((taskOpt.ShowTaskRound && player.AmOwner) || (PlayerControl.LocalPlayer.HasDied() &&
-                                                                   taskOpt.ShowTaskDead && isVisible)) && (player.IsCrewmate() ||
+                if (PlayerControl.LocalPlayer.HasDied() && taskOpt.ShowTaskDead && isVisible && (player.IsCrewmate() ||
                         player.Data.Role is PhantomTOSRole))
                 {
                     if (roleName != string.Empty)
@@ -643,7 +642,7 @@ public static class HudManagerPatches
 
                 if (canSeeDeathReason)
                 {
-                    playerName += $"\n<size=75%> </size>";
+                    roleName += $"\n<size=75%> </size>";
                 }
 
                 if (player.AmOwner && player.Data.Role is IGhostRole { GhostActive: true })

@@ -121,7 +121,7 @@ public static class ChatPatches
             List<string> randomNames =
             [
                 "Ess", "fizz", "lekiller", "SheDemon", "Apple", "Nich", "Cake", "Sanya", "50IQ", "Stabby", "Hannah", "Diamant",
-                "Reverie", "Rowgard", "doll", "Zack", "Ocean", "GlitchShot", "Lily", "Ace", "Jesushi", "Alina", "Angel",
+                "Reverie", "Rowgard", "doll", "Zack", "Ocean", "GlitchShot", "Lily", "Ace", "Charlton", "Alina", "Angel",
                 "snax", "RufusZeno", "IraM", "Kate"
             ];
 

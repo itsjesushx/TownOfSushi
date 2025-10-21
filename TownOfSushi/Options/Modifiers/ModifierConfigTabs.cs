@@ -38,5 +38,5 @@ public sealed class NeutralOptions : AbstractOptionGroup
     public override string GroupName => "Neutral Modifier Configs";
     public override Color GroupColor => TownOfSushiColors.Neutral;
     public override bool ShowInModifiersMenu => true;
-    public override uint GroupPriority => 50;
+    public override uint GroupPriority => 60;
 }
