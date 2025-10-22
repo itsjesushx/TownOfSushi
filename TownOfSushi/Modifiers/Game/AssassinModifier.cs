@@ -200,6 +200,9 @@ public abstract class AssassinModifier : ExcludedGameModifier
                (votePlayer?.GetModifiers<RevealModifier>().Any(x => x.Visible && x.RevealRole) == true) ||
                (Player.IsLover() && votePlayer?.IsLover() == true) ||
                (Player.Data.Role is ConsigliereRole && votePlayer?.HasModifier<ConsigliereRevealedModifier>() == true) ||
+               (Player.Data.Role is not ConsigliereRole && Player.IsImpostor() 
+               && OptionGroupSingleton<ConsigliereOptions>.Instance.ConsigliereShowRoleImp 
+               && votePlayer?.HasModifier<ConsigliereRevealedModifier>() == true) ||
                votePlayer?.HasModifier<JailedModifier>() == true;
     }
 

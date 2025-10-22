@@ -169,7 +169,7 @@ public static class MiscUtils
     }
     public static string GetParsedRoleAlignment(ICustomRole role, bool coloredText = false)
     {
-        var localeName = $"{role.GetRoleAlignment()}";
+        var localeName = $"{role.GetRoleAlignment().ToDisplayString()}";
         var localizedName = localeName;
 
         if (coloredText)
@@ -202,7 +202,7 @@ public static class MiscUtils
     }
     public static string GetParsedRoleAlignment(RoleBehaviour role, bool coloredText = false)
     {
-        var localeName = $"{role.GetRoleAlignment()}";
+        var localeName = $"{role.GetRoleAlignment().ToDisplayString()}";
         var localizedName = localeName;
 
         if (coloredText)
@@ -235,30 +235,30 @@ public static class MiscUtils
     }
     public static string GetParsedRoleAlignment(RoleAlignment roleAlignment, bool coloredText = false)
     {
-        var localeName = $"{roleAlignment}";
+        var localeName = $"{roleAlignment.ToDisplayString()}";
         var localizedName = localeName;
 
         if (coloredText)
         {
             if (localizedName.Contains("Crewmate"))
             {
-                localizedName = $" <color=#68ACF4>{localizedName}";
+                localizedName = $"<color=#68ACF4>{localizedName}";
             }
             else if (localizedName.Contains("Impostor"))
             {
-                localizedName = $" <color=#D63F42>{localizedName}";
+                localizedName = $"<color=#D63F42>{localizedName}";
             }
             else if (localizedName.Contains("Neutral"))
             {
-                localizedName = $" <color=#8A8A8A>{localizedName}";
+                localizedName = $"<color=#8A8A8A>{localizedName}";
             }
             else if (localizedName.Contains("Game"))
             {
-                localizedName = $" <color=#888888>{localizedName}";
+                localizedName = $"<color=#888888>{localizedName}";
             }
             else
             {
-                localizedName = $" <color=#FFFFFF>{localizedName}";
+                localizedName = $"<color=#FFFFFF>{localizedName}";
             }
 
             localizedName += "</color>";
@@ -878,12 +878,27 @@ public static class MiscUtils
             foreach (var alignment in alignments)
             {
                 var roleAlignment = alignment;
-                if (customRole.RoleOptionsGroup.Name.Replace(" Roles", " ") == roleAlignment.ToDisplayString())
+                if (customRole.RoleOptionsGroup.Name.Replace(" Roles", "") == roleAlignment.ToDisplayString())
                 {
                     return roleAlignment;
                 }
             }
         }
+        if (role.Role is RoleTypes.Tracker or RoleTypes.Detective)
+        {
+            return RoleAlignment.CrewmateInvestigative;
+        }
+
+        if (role.Role is RoleTypes.Shapeshifter or RoleTypes.Phantom)
+        {
+            return RoleAlignment.ImpostorConcealing;
+        }
+
+        if (role.Role is RoleTypes.Viper)
+        {
+            return RoleAlignment.ImpostorSupport;
+        }
+
         if (role.IsNeutral())
         {
             return RoleAlignment.NeutralOutlier;
