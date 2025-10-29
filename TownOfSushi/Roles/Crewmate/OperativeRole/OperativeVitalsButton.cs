@@ -35,7 +35,8 @@ public sealed class OperativeButton : TownOfSushiButton
     {
         return PlayerControl.LocalPlayer != null &&
                PlayerControl.LocalPlayer.Data.Role is OperativeRole &&
-               !PlayerControl.LocalPlayer.Data.IsDead;
+               !PlayerControl.LocalPlayer.Data.IsDead &&
+               !MeetingHud.Instance && !ExileController.Instance; // for some reason you can open vitals during meetings or exiles;
     }
 
     public override void CreateButton(Transform parent)

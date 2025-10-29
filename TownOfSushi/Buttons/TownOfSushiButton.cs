@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+﻿
 using HarmonyLib;
 using MiraAPI.Hud;
 using MiraAPI.LocalSettings;

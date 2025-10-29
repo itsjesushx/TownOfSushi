@@ -10,7 +10,7 @@
 ### ***- This mod is just a hobby so updates may not be so fast.***
 ### ***- This mod is NOT for mobile and console versions.***
 ### ***- This README page is currently under editing, most things here are either missing or subject to change.***
-### ***- Join the [Discord Server](https://discord.gg/pRMRJKR2Tc) for suggestions or any problems!***
+### ***- Join the [Discord Server](https://discord.gg/xUMnSD4cHf) for suggestions or any problems!***
 
 [**Installation**](#installation)
 - [Requirements](#requirements)
@@ -68,7 +68,7 @@
 - [Spy](#spy)
 - [Tracker](#tracker)  
 - [Lookout](#lookout)
-- [BodyGuard](#bodyGuard)
+- [Bodyguard](#bodyGuard)
 - [Trapper](#trapper)  
 - [Seer](#seer)  
 - [Deputy](#deputy)  
@@ -117,7 +117,6 @@
 - [Button Barry](#button-barry)  
 - [Tiebreaker](#tiebreaker)  
 - [Administrator](#administrator)  
-- [Drunk](#drunk)  
 - [Paranoiac](#Paranoiac)  
 - [Sleuth](#sleuth)  
 
@@ -483,19 +482,19 @@ If the Fortified person gets a kill attempt, they will kill the attemper.
 | Show Fortify | Who sees the fortified player | Option | Crusader |
 -----------------------
 
-## BodyGuard
+## Bodyguard
 ### **Team: Crewmates**
-The BodyGuard is a Crewmate that can guard other players.\
-BodyGuarded players cannot be interacted with.\
-If someone tries to interact with a BodyGuarded player,\
-Both the BodyGuard and the interactor receive an alert.\
-If the BodyGuarded person gets a kill attempt, they will kill the BodyGuard instead.
+The Bodyguard is a Crewmate that can guard other players.\
+Bodyguarded players cannot be interacted with.\
+If someone tries to interact with a Bodyguarded player,\
+Both the Bodyguard and the interactor receive an alert.\
+If the Bodyguarded person gets a kill attempt, they will kill the Bodyguard instead.
 
 ### Game Options
 | Name | Description | Type | Default |
 |----------|:-------------:|:------:|:------:|
-| BodyGuard | The percentage probability of the BodyGuard appearing | Percentage | 0% |
-| Show BodyGuard | Who sees the BodyGuarded player | Option | BodyGuard |
+| Bodyguard | The percentage probability of the Bodyguard appearing | Percentage | 0% |
+| Show Bodyguard | Who sees the Bodyguarded player | Option | Bodyguard |
 -----------------------
 
 ## Engineer
@@ -1116,16 +1115,6 @@ They are also smaller than everyone else.
 |----------|:-------------:|:------:|:------:|
 | Mini Chance | The percentage probability of the Mini appearing | Percentage | 0% |
 | Mini Speed | How fast the Mini moves in comparison to normal | Multiplier | 1.25x |
-
------------------------
-
-## Drunk
-### **Applied to: All**
-The Drunk is a player who has inverted controls.\
-If the Drunk hits the Up KeyCode they will go down etc.
-| Name | Description | Type | Default |
-|----------|:-------------:|:------:|:------:|
-| Drunk | The percentage probability of the Drunk appearing | Percentage | 0% |
 
 -----------------------
 

@@ -1,4 +1,5 @@
 using MiraAPI.GameOptions.Attributes;
+using MiraAPI.GameOptions.OptionTypes;
 
 namespace TownOfSushi.Roles.Neutral;
 
@@ -18,12 +19,10 @@ public sealed class VampireOptions : AbstractOptionGroup<VampireRole>
     [ModdedToggleOption("New Vampires Can Assassinate")]
     public bool CanGuessAsNewVamp { get; set; } = true;
 
-    [ModdedEnumOption("Valid Conversions", typeof(BiteOptions),
-    [
-        "Crewmates", "Crew & NBs", "Crew & NEs", "Crew, NBs & NEs", "Crew & Lovers", "Crew, Lovers & NBs",
-        "Crew, Lovers & NEs", "Crew, Lovers, NBs & NEs"
-    ])]
-    public BiteOptions ConvertOptions { get; set; } = BiteOptions.CrewNeutralBenignAndNeutralEvil;
+    public ModdedEnumOption<ValidBites> ValidConversions { get; } = new("Valid Neutral Conversions", ValidBites.BenignAndEvil,
+        ["Only Crew", "Benign", "Evils", "Outliers", "Benign & Evil", "Benign & Outlier", "Evil & Outlier", "Non-Killer Neutrals"]);
+
+    public ModdedToggleOption ConvertLovers { get; set; } = new("Can Convert Lovers", false);
 
     [ModdedToggleOption("New Vampires Can Convert")]
     public bool CanConvertAsNewVamp { get; set; } = true;
@@ -32,14 +31,14 @@ public sealed class VampireOptions : AbstractOptionGroup<VampireRole>
     public bool CanVent { get; set; } = true;
 }
 
-public enum BiteOptions
+public enum ValidBites
 {
-    OnlyCrewmates,
-    CrewAndNeutralBenign,
-    CrewAndNeutralEvil,
-    CrewNeutralBenignAndNeutralEvil,
-    CrewAndLovers,
-    CrewLoversAndNeutralBenign,
-    CrewLoversAndNeutralEvil,
-    CrewLoversNeutralBenignAndNeutralEvil
+    NeutralBenign,
+    NeutralEvil,
+    NeutralOutlier,
+    BenignAndEvil,
+    BenignAndOutlier,
+    EvilAndOutlier,
+    OnlyCrew,
+    NonKillerNeutrals,
 }

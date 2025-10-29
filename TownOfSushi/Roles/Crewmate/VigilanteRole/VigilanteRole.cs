@@ -1,4 +1,4 @@
-using System.Globalization;
+
 using System.Text;
 using AmongUs.GameOptions;
 using HarmonyLib;
@@ -49,24 +49,24 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCre
 
         if (CustomButtonSingleton<VigilanteShootButton>.Instance.FailedShot)
         {
-            stringB.AppendLine(CultureInfo.InvariantCulture, $"<b>You can no longer shoot.</b>");
+            stringB.AppendLine(TownOfSushiPlugin.Culture, $"<b>You can no longer shoot.</b>");
         }
         else
         {
             switch (missType)
             {
                 case MisfireOptions.Both:
-                    stringB.AppendLine(CultureInfo.InvariantCulture, $"<b>Misfiring kills you and your target.</b>");
+                    stringB.AppendLine(TownOfSushiPlugin.Culture, $"<b>Misfiring kills you and your target.</b>");
                     break;
                 case MisfireOptions.Vigilante:
-                    stringB.AppendLine(CultureInfo.InvariantCulture, $"<b>Misfiring will lead to suicide.</b>");
+                    stringB.AppendLine(TownOfSushiPlugin.Culture, $"<b>Misfiring will lead to suicide.</b>");
                     break;
                 case MisfireOptions.Target:
-                    stringB.AppendLine(CultureInfo.InvariantCulture,
+                    stringB.AppendLine(TownOfSushiPlugin.Culture,
                         $"<b>Misfiring will lead to your target's death,\nat the cost of your ability to kill. You can still guess.</b>");
                     break;
                 default:
-                    stringB.AppendLine(CultureInfo.InvariantCulture,
+                    stringB.AppendLine(TownOfSushiPlugin.Culture,
                         $"<b>Misfiring will prevent you from shooting again. You can still guess.</b>");
                     break;
             }
@@ -74,8 +74,8 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCre
 
         if (PlayerControl.LocalPlayer.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.GetsPunished)
         {
-            stringB.AppendLine(CultureInfo.InvariantCulture, $"<b>You may shoot without repercussions.</b>");
-            stringB.AppendLine(CultureInfo.InvariantCulture, $"You can also guess Crewmates.");
+            stringB.AppendLine(TownOfSushiPlugin.Culture, $"<b>You may shoot without repercussions.</b>");
+            stringB.AppendLine(TownOfSushiPlugin.Culture, $"You can also guess Crewmates.");
         }
 
         if ((int)OptionGroupSingleton<VigilanteOptions>.Instance.MultiShots > 0)
@@ -83,7 +83,7 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCre
             var newText = SafeShotsLeft == 0
                 ? "You have no more safe shots left."
                 : $"{SafeShotsLeft} safe shot(s) left.";
-            stringB.AppendLine(CultureInfo.InvariantCulture, $"{newText}");
+            stringB.AppendLine(TownOfSushiPlugin.Culture, $"{newText}");
         }
 
         return stringB;

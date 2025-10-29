@@ -1,4 +1,4 @@
-using System.Globalization;
+
 using System.Text;
 
 namespace TownOfSushi.Utilities;
@@ -16,12 +16,12 @@ public static class TOSRoleUtils
         }
 
         var stringB = new StringBuilder();
-        stringB.AppendLine(CultureInfo.InvariantCulture,
+        stringB.AppendLine(TownOfSushiPlugin.Culture,
             $"{role.RoleColor.ToTextColor()}{youAre}<b> {role.RoleName}.</b></color>");
-        stringB.AppendLine(CultureInfo.InvariantCulture,
+        stringB.AppendLine(TownOfSushiPlugin.Culture,
             $"<size=60%>Alignment: <b>{MiscUtils.GetParsedRoleAlignment(alignment, true)}</b></size>");
         stringB.Append("<size=70%>");
-        stringB.AppendLine(CultureInfo.InvariantCulture, $"{role.RoleLongDescription}");
+        stringB.AppendLine(TownOfSushiPlugin.Culture, $"{role.RoleLongDescription}");
 
         return stringB;
     }
@@ -37,12 +37,12 @@ public static class TOSRoleUtils
         }
 
         var stringB = new StringBuilder();
-        stringB.AppendLine(CultureInfo.InvariantCulture,
+        stringB.AppendLine(TownOfSushiPlugin.Culture,
             $"{role.RoleColor.ToTextColor()}{youAre}<b> {role.RoleName}.</b></color>");
-        stringB.AppendLine(CultureInfo.InvariantCulture,
+        stringB.AppendLine(TownOfSushiPlugin.Culture,
             $"<size=60%>Alignment: <b>{MiscUtils.GetParsedRoleAlignment(alignment, true)}</b></size>");
         stringB.Append("<size=70%>");
-        stringB.AppendLine(CultureInfo.InvariantCulture, $"{role.RoleLongDescription}");
+        stringB.AppendLine(TownOfSushiPlugin.Culture, $"{role.RoleLongDescription}");
 
         return stringB;
     }

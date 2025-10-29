@@ -115,11 +115,11 @@ public static class PlayerRoleTextExtensions
             name += "<color=#7EFBC2> +</color>";
         }
 
-        if ((player.HasModifier<BodyGuardGuardedModifier>(x => x.BodyGuard.AmOwner) &&
-             PlayerControl.LocalPlayer.IsRole<BodyGuardRole>())
-            || (player.HasModifier<BodyGuardGuardedModifier>() &&
+        if ((player.HasModifier<BodyguardGuardedModifier>(x => x.Bodyguard.AmOwner) &&
+             PlayerControl.LocalPlayer.IsRole<BodyguardRole>())
+            || (player.HasModifier<BodyguardGuardedModifier>() &&
                 ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !hidden)
-                 || (player.AmOwner && player.TryGetModifier<BodyGuardGuardedModifier>(out var bod) && bod.VisibleSymbol))))
+                 || (player.AmOwner && player.TryGetModifier<BodyguardGuardedModifier>(out var bod) && bod.VisibleSymbol))))
         {
             name += "<color=#0D4D33> [+]</color>";
         }
@@ -210,7 +210,7 @@ public static class PlayerRoleTextExtensions
         if ((player.HasModifier<BlackmailedModifier>(x => x.BlackMailerId == PlayerControl.LocalPlayer.PlayerId) &&
              PlayerControl.LocalPlayer.IsRole<BlackmailerRole>())
             || (player.HasModifier<BlackmailedModifier>() && PlayerControl.LocalPlayer.IsImpostor() &&
-                genOpt.ImpsKnowRoles && !genOpt.FFAImpostorMode)
+                genOpt.ImpsKnowRoles)
             || (player.HasModifier<BlackmailedModifier>() && PlayerControl.LocalPlayer.HasDied() &&
                 genOpt.TheDeadKnow && !hidden))
         {
@@ -220,7 +220,7 @@ public static class PlayerRoleTextExtensions
         if ((player.HasModifier<HypnotisedModifier>(x => x.Hypnotist.AmOwner) &&
              PlayerControl.LocalPlayer.IsRole<HypnotistRole>())
             || (player.HasModifier<HypnotisedModifier>() && PlayerControl.LocalPlayer.IsImpostor() &&
-                genOpt.ImpsKnowRoles && !genOpt.FFAImpostorMode)
+                genOpt.ImpsKnowRoles)
             || (player.HasModifier<HypnotisedModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow &&
                 !hidden))
         {

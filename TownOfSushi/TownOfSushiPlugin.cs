@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+﻿
 using System.Reflection;
 using BepInEx;
 using BepInEx.Configuration;

@@ -18,7 +18,6 @@ public static class ImpostorTargeting
             !(!loveOpt.LoversKillEachOther && target?.Object?.IsLover() == true && PlayerControl.LocalPlayer.IsLover()) &&
             !(target?.Object?.TryGetModifier<DisabledModifier>(out var mod) == true && !mod.CanBeInteractedWith) &&
             (target?.Object?.IsImpostor() == false ||
-             genOpt.FFAImpostorMode ||
              (PlayerControl.LocalPlayer.IsLover() && loveOpt.LoverKillTeammates) ||
              (genOpt.KillDuringCamoComms && target?.Object?.GetAppearanceType() == TownOfSushiAppearances.Camouflage));
     }

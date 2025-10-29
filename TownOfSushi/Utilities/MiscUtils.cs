@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.ObjectModel;
-using System.Globalization;
+
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -169,7 +169,7 @@ public static class MiscUtils
     }
     public static string GetParsedRoleAlignment(ICustomRole role, bool coloredText = false)
     {
-        var localeName = $"{role.GetRoleAlignment()}";
+        var localeName = $"{role.GetRoleAlignment().ToDisplayString()}";
         var localizedName = localeName;
 
         if (coloredText)
@@ -202,7 +202,7 @@ public static class MiscUtils
     }
     public static string GetParsedRoleAlignment(RoleBehaviour role, bool coloredText = false)
     {
-        var localeName = $"{role.GetRoleAlignment()}";
+        var localeName = $"{role.GetRoleAlignment().ToDisplayString()}";
         var localizedName = localeName;
 
         if (coloredText)
@@ -878,11 +878,25 @@ public static class MiscUtils
             foreach (var alignment in alignments)
             {
                 var roleAlignment = alignment;
-                if (customRole.RoleOptionsGroup.Name.Replace(" Roles", " ") == roleAlignment.ToDisplayString())
+                if (customRole.RoleOptionsGroup.Name.Replace(" Roles", "") == roleAlignment.ToDisplayString())
                 {
                     return roleAlignment;
                 }
             }
+        }
+        if (role.Role is RoleTypes.Tracker or RoleTypes.Detective)
+        {
+            return RoleAlignment.CrewmateInvestigative;
+        }
+
+        if (role.Role is RoleTypes.Shapeshifter or RoleTypes.Phantom)
+        {
+            return RoleAlignment.ImpostorConcealing;
+        }
+
+        if (role.Role is RoleTypes.Viper)
+        {
+            return RoleAlignment.ImpostorSupport;
         }
         if (role.IsNeutral())
         {

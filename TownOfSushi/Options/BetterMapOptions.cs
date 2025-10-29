@@ -2,7 +2,7 @@ using MiraAPI.GameOptions.Attributes;
 
 namespace TownOfSushi.Options;
 
-public sealed class BetterMapOptions : AbstractOptionGroup
+public sealed class BetterPolusOptions: AbstractOptionGroup
 {
     public override string GroupName => "Better Polus";
     public override uint GroupPriority => 5;
@@ -15,15 +15,17 @@ public sealed class BetterMapOptions : AbstractOptionGroup
     [ModdedToggleOption("Better Polus Vent Network")]
     public bool BPVentNetwork { get; set; } = false;
 
-    [ModdedToggleOption("Polus: Vitals Moved To Lab")]
+    [ModdedToggleOption("Vitals Moved To Lab")]
     public bool BPVitalsInLab { get; set; } = false;
 
-    [ModdedToggleOption("Polus: Cold Temp Moved To Death Valley")]
+    [ModdedToggleOption("Cold Temp Moved To Death Valley")]
     public bool BPTempInDeathValley { get; set; } = false;
 
-    [ModdedToggleOption("Polus: Reboot Wifi And Chart Course Swapped")]
+    [ModdedToggleOption("Reboot Wifi And Chart Course Swapped")]
     public bool BPSwapWifiAndChart { get; set; } = false;
 
-    [ModdedToggleOption("Polus: Add Custom Specimen Vent")]
+    [ModdedToggleOption("Add Custom Specimen Vent")]
     public bool BPCustomSpeciVent { get; set; } = false;
+    [ModdedToggleOption("Airship Doors Are Polus Doors")]
+    public bool AirshipDoors { get; set; } = false;
 }

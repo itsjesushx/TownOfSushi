@@ -60,7 +60,7 @@ public static class BetterPolus
 
     public static void AdjustPolus()
     {
-        var options = OptionGroupSingleton<BetterMapOptions>.Instance;
+        var options = OptionGroupSingleton<BetterPolusOptions>.Instance;
         if (IsObjectsFetched && IsRoomsFetched)
         {
             if (options.BPVitalsInLab)
@@ -323,7 +323,7 @@ public static class TaskTextUpdates
 
         if (BetterPolus.IsObjectsFetched && BetterPolus.IsAdjustmentsDone)
         {
-            var opts = OptionGroupSingleton<BetterMapOptions>.Instance;
+            var opts = OptionGroupSingleton<BetterPolusOptions>.Instance;
 
             if (!PlayerControl.LocalPlayer || PlayerControl.LocalPlayer.myTasks == null ||
                 PlayerControl.LocalPlayer.myTasks.Count == 0)

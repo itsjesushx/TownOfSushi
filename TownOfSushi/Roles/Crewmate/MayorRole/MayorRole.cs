@@ -1,5 +1,5 @@
 using System.Collections;
-using System.Globalization;
+
 using System.Text;
 using AmongUs.GameOptions;
 using HarmonyLib;
@@ -47,12 +47,12 @@ public sealed class MayorRole(IntPtr cppPtr)
         var stringB = ITownOfSushiRole.SetNewTabText(this);
         if (!Revealed)
         {
-            stringB.AppendLine(CultureInfo.InvariantCulture, $"<b>Reveal yourself whenever you wish.</b>");
+            stringB.AppendLine(TownOfSushiPlugin.Culture, $"<b>Reveal yourself whenever you wish.</b>");
         }
 
         if (PlayerControl.LocalPlayer.HasModifier<EgotistModifier>())
         {
-            stringB.AppendLine(CultureInfo.InvariantCulture, $"<b>The Impostors know your true motives.</b>");
+            stringB.AppendLine(TownOfSushiPlugin.Culture, $"<b>The Impostors know your true motives.</b>");
         }
 
         return stringB;

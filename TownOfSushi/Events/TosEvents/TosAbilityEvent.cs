@@ -53,7 +53,7 @@ public enum AbilityType
     ClericCleanse,
     WarlockCurse,
     WarlockCurseKill,
-    BodyGuardProtect,
+    BodyguardProtect,
     DeputyCamp,
     ConsigliereReveal,
     // InspectorExamine,

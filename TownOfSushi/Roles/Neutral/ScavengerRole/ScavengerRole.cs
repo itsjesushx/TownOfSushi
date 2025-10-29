@@ -5,7 +5,7 @@ using MiraAPI.Patches.Stubs;
 using Reactor.Networking.Attributes;
 using Reactor.Networking.Rpc;
 using Reactor.Utilities;
-using System.Globalization;
+
 using System.Text;
 using TownOfSushi.Events.TOSEvents;
 using TownOfSushi.Modules;
@@ -83,7 +83,7 @@ public sealed class ScavengerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfS
     {
         var stringB = ITownOfSushiRole.SetNewTabText(this);
 
-        stringB.Append(CultureInfo.InvariantCulture, $"\n<b>Eaten bodies:</b> {EatenBodies}");
+        stringB.Append(TownOfSushiPlugin.Culture, $"\n<b>Eaten bodies:</b> {EatenBodies}");
 
         return stringB;
     }

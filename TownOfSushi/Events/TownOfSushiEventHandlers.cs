@@ -1,5 +1,5 @@
 ﻿﻿﻿using System.Collections;
-using System.Globalization;
+
 using HarmonyLib;
 using MiraAPI.Events;
 using System.Text;
@@ -225,10 +225,10 @@ public static class TownOfSushiEventHandlers
         if (FirstDeadPatch.PlayerNames.Count > 0)
         {
             var stringB = new StringBuilder();
-            stringB.Append(CultureInfo.InvariantCulture, $"List Of Players That Died In Order: ");
+            stringB.Append(TownOfSushiPlugin.Culture, $"List Of Players That Died In Order: ");
             foreach (var playername in FirstDeadPatch.PlayerNames)
             {
-                stringB.Append(CultureInfo.InvariantCulture, $"{playername}, ");
+                stringB.Append(TownOfSushiPlugin.Culture, $"{playername}, ");
             }
             
             stringB = stringB.Remove(stringB.Length - 2, 2);

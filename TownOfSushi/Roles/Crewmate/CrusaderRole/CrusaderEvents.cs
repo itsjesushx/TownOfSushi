@@ -131,20 +131,6 @@ public static class CrusaderEvents
         if (!target.HasModifier<CrusaderFortifiedModifier>() || source == target || MeetingHud.Instance || (source.TryGetModifier<IndirectAttackerModifier>(out var indirect) && indirect.IgnoreShield)) return;
         @event.Cancel();
 
-        // The reason this exists is that otherwise, players can brute force through the crusader fort if they spam fast enough
-        if (@event is MiraButtonClickEvent buttonClick)
-        {
-            var button = buttonClick.Button as CustomActionButton<PlayerControl>;
-            if (button != null)
-            {
-                button.Timer += 1f;
-            }
-        }
-        if (@event is BeforeMurderEvent && source.IsImpostor())
-        {
-            source.SetKillTimer(source.killTimer + 1f);
-        }
-
         // Find the crusader which fortified the target
         var crusader = target.GetModifier<CrusaderFortifiedModifier>()?.Crusader.GetRole<CrusaderRole>();
 

@@ -62,8 +62,15 @@ public sealed class ConsigliereRole(IntPtr cppPtr)
 
     public static bool ConsigliereSeesRoleVisibilityFlag(PlayerControl player)
     {
-        return PlayerControl.LocalPlayer.IsRole<ConsigliereRole>() 
+        var consigKnows = PlayerControl.LocalPlayer.IsRole<ConsigliereRole>()
         && player.HasModifier<ConsigliereRevealedModifier>();
+
+        var impsKnow = PlayerControl.LocalPlayer.IsImpostor()
+        && !PlayerControl.LocalPlayer.IsRole<ConsigliereRole>()
+        && OptionGroupSingleton<ConsigliereOptions>.Instance.ConsigliereShowRoleImp 
+        && player.HasModifier<ConsigliereRevealedModifier>();
+
+        return consigKnows || impsKnow;
     }
 
     public string GetAdvancedDescription()

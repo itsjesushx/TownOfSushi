@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+﻿
 using System.Text;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.Hud;
@@ -40,16 +40,16 @@ public sealed class HunterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCrewRo
         var stalkedPlayer = ModifierUtils.GetPlayersWithModifier<HunterStalkedModifier>(x => x.Hunter.AmOwner)
             .FirstOrDefault();
         var stalked = stalkedPlayer != null && !stalkedPlayer.HasDied() ? stalkedPlayer.Data.PlayerName : "Nobody";
-        stringB.AppendLine(CultureInfo.InvariantCulture, $"Stalking: <b>{stalked}</b>");
+        stringB.AppendLine(TownOfSushiPlugin.Culture, $"Stalking: <b>{stalked}</b>");
         if (CaughtPlayers.Count != 0)
         {
-            stringB.AppendLine(CultureInfo.InvariantCulture, $"<b>Caught Players:</b>");
+            stringB.AppendLine(TownOfSushiPlugin.Culture, $"<b>Caught Players:</b>");
         }
 
         foreach (var player in CaughtPlayers)
         {
             var newText = $"<b><size=80%>{player.Data.PlayerName}</size></b>";
-            stringB.AppendLine(CultureInfo.InvariantCulture, $"{newText}");
+            stringB.AppendLine(TownOfSushiPlugin.Culture, $"{newText}");
         }
 
         return stringB;
