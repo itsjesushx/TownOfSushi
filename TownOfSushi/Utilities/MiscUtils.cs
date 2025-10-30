@@ -235,30 +235,30 @@ public static class MiscUtils
     }
     public static string GetParsedRoleAlignment(RoleAlignment roleAlignment, bool coloredText = false)
     {
-        var localeName = $"{roleAlignment}";
+        var localeName = $"{roleAlignment.ToDisplayString()}";
         var localizedName = localeName;
 
         if (coloredText)
         {
             if (localizedName.Contains("Crewmate"))
             {
-                localizedName = $" <color=#68ACF4>{localizedName}";
+                localizedName = $"<color=#68ACF4>{localizedName}";
             }
             else if (localizedName.Contains("Impostor"))
             {
-                localizedName = $" <color=#D63F42>{localizedName}";
+                localizedName = $"<color=#D63F42>{localizedName}";
             }
             else if (localizedName.Contains("Neutral"))
             {
-                localizedName = $" <color=#8A8A8A>{localizedName}";
+                localizedName = $"<color=#8A8A8A>{localizedName}";
             }
             else if (localizedName.Contains("Game"))
             {
-                localizedName = $" <color=#888888>{localizedName}";
+                localizedName = $"<color=#888888>{localizedName}";
             }
             else
             {
-                localizedName = $" <color=#FFFFFF>{localizedName}";
+                localizedName = $"<color=#FFFFFF>{localizedName}";
             }
 
             localizedName += "</color>";

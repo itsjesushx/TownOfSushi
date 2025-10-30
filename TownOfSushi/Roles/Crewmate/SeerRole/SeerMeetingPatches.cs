@@ -34,6 +34,11 @@ public static class SeerMeetingStartPatch
             ? $"<b><color=green>{firstPlayer.Data.PlayerName} and {secondPlayer.Data.PlayerName} have the SAME faction!</color></b>"
             : $"<b><color=red>{firstPlayer.Data.PlayerName} and {secondPlayer.Data.PlayerName} are a DIFFERENT faction!</color></b>";
 
+        if (OptionGroupSingleton<SeerOptions>.Instance.ShowFaction)
+        {
+            msg += $"\n Factions found: {firstPlayer.GetRoleWhenAlive().GetRoleAlignment().ToDisplayString()} & {secondPlayer.GetRoleWhenAlive().GetRoleAlignment().ToDisplayString()}";
+        }
+
         var notif1 = Helpers.CreateAndShowNotification(
                 $"<b>{Palette.CrewmateBlue.ToTextColor()}{msg}</color></b>",
                 Color.white, spr: TOSRoleIcons.Detective.LoadAsset());

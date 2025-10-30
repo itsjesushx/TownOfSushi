@@ -4,17 +4,43 @@ using MiraAPI.Events;
 using MiraAPI.Hud;
 using MiraAPI.LocalSettings;
 using MiraAPI.Networking;
+using MiraAPI.Patches.Stubs;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
+using Reactor.Utilities.Extensions;
 using TownOfSushi.Events.TOSEvents;
 using TownOfSushi.Modifiers;
 using TownOfSushi.Modules;
+using TownOfSushi.Modules.Anims;
+using TownOfSushi.Options;
 using UnityEngine;
 
 namespace TownOfSushi.Roles.Crewmate;
 
 public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue
 {
+    [HideFromIl2Cpp]
+    public Vector2? MarkedLocation { get; set; }
+    [HideFromIl2Cpp]
+    public GameObject? EscapeMark { get; set; }
+    public void FixedUpdate()
+    {
+        if (Player == null || Player.Data.Role is not TransporterRole || Player.HasDied())
+        {
+            return;
+        }
+
+        if (EscapeMark != null)
+        {
+            EscapeMark.SetActive(PlayerControl.LocalPlayer.Data.Role is TransporterRole ||
+             PlayerControl.LocalPlayer.HasDied() && OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow);
+            if (MarkedLocation == null)
+            {
+                EscapeMark.gameObject.Destroy();
+                EscapeMark = null;
+            }
+        }
+    }
     public override bool IsAffectedByComms => false;
     public string RoleName => "Transporter";
     public string RoleDescription => "Choose Two Players To Swap Locations";
@@ -29,6 +55,12 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
         Icon = TOSRoleIcons.Transporter,
         IntroSound = TOSAudio.TimeLordIntroSound
     };
+
+    public override void Deinitialize(PlayerControl targetPlayer)
+    {
+        RoleBehaviourStubs.Deinitialize(this, targetPlayer);
+        EscapeMark?.gameObject.Destroy();
+    }
 
     [HideFromIl2Cpp]
     public StringBuilder SetTabText()
@@ -250,6 +282,7 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
                 $"<b>You were transported!</color></b>"), Color.white,
                 spr: TOSRoleIcons.Transporter.LoadAsset());
             notif1.AdjustNotification();
+            Coroutines.Start(MiscUtils.CoFlash(TownOfSushiColors.Transporter));
             
             if (Minigame.Instance != null)
             {
@@ -417,7 +450,7 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
 
     public static void Transport(MonoBehaviour mono, Vector3 position)
     {
-        
+
         var player = mono.TryCast<PlayerControl>();
         if (player != null && player.HasModifier<LazyModifier>())
         {
@@ -459,5 +492,34 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
         {
             MiscUtils.SnapPlayerCamera(PlayerControl.LocalPlayer);
         }
+    }
+    [MethodRpc((uint)TownOfSushiRpc.TPRecall, SendImmediately = true)]
+    public static void RpcRecall(PlayerControl player)
+    {
+        if (player.Data.Role is not TransporterRole)
+        {
+            Logger<TownOfSushiPlugin>.Error("RpcRecall - Invalid Transporter");
+            return;
+        }
+
+        var TOSAbilityEvent = new TOSAbilityEvent(AbilityType.TransporterRecall, player);
+        MiraEventManager.InvokeEvent(TOSAbilityEvent);
+    }
+
+    [MethodRpc((uint)TownOfSushiRpc.TPMarkLocatiom, SendImmediately = true)]
+    public static void RpcMarkLocation(PlayerControl player, Vector2 pos)
+    {
+        if (player.Data.Role is not TransporterRole henry)
+        {
+            Logger<TownOfSushiPlugin>.Error("RpcMarkLocation - Invalid Transporter");
+            return;
+        }
+        var TOSAbilityEvent = new TOSAbilityEvent(AbilityType.TransporterMark, player);
+        MiraEventManager.InvokeEvent(TOSAbilityEvent);
+
+        henry.MarkedLocation = pos;
+        henry.EscapeMark = AnimStore.SpawnAnimAtPlayer(player, TOSAssets.EscapistMarkPrefab.LoadAsset());
+        henry.EscapeMark.transform.localPosition = new Vector3(pos.x, pos.y + 0.3f, 0.1f);
+        henry.EscapeMark.SetActive(false);
     }
 }

@@ -4,7 +4,6 @@ using TownOfSushi.Modules;
 using UnityEngine;
 
 namespace TownOfSushi.Modifiers.Game.Crewmate;
-
 public sealed class SwapperModifier : TOSGameModifier, IWikiDiscoverable
 {
     private MeetingMenu meetingMenu;
@@ -39,6 +38,24 @@ public sealed class SwapperModifier : TOSGameModifier, IWikiDiscoverable
     public override int GetAmountPerGame()
     {
         return 1;
+    }
+    public override void OnActivate()
+    {
+        base.OnActivate();
+
+        if (Player.AmOwner)
+        {
+            meetingMenu = new MeetingMenu(Player.Data.Role, SetActive, MeetingAbilityType.Toggle, TOSAssets.SwapActive,
+                TOSAssets.SwapInactive, IsExempt)
+            {
+                Position = new Vector3(-0.40f, 0f, -3f)
+            };
+        }
+
+        if (!OptionGroupSingleton<SwapperOptions>.Instance.CanButton)
+        {
+            Player.RemainingEmergencies = 0;
+        }
     }
 
     public override bool IsModifierValidOn(RoleBehaviour role)

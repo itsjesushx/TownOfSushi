@@ -3,6 +3,6 @@
     "InternalVersions": { // Keep internal versions in order if multiple
       "50632950": "2025.6.10"
     },
-    "ModVersion": "3.0.0"
+    "ModVersion": "1.0.1"
   }
 ]

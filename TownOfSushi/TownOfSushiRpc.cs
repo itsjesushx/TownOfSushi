@@ -41,6 +41,8 @@ public enum TownOfSushiRpc : uint
     Blackmail,
     Recall,
     MarkLocation,
+    TPRecall,
+    TPMarkLocatiom,
     Disperse,
     Mediate,
     VampireBite,
