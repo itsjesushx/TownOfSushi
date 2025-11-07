@@ -10,7 +10,7 @@
 ### ***- This mod is just a hobby so updates may not be so fast.***
 ### ***- This mod is NOT for mobile and console versions.***
 ### ***- This README page is currently under editing, most things here are either missing or subject to change.***
-### ***- Join the [Discord Server](https://discord.gg/pRMRJKR2Tc) for suggestions or any problems!***
+### ***- Join the [Discord Server](https://discord.gg/xUMnSD4cHf) for suggestions or any problems!***
 
 [**Installation**](#installation)
 - [Requirements](#requirements)
@@ -68,7 +68,7 @@
 - [Spy](#spy)
 - [Tracker](#tracker)  
 - [Lookout](#lookout)
-- [BodyGuard](#bodyGuard)
+- [Bodyguard](#bodyGuard)
 - [Trapper](#trapper)  
 - [Seer](#seer)  
 - [Deputy](#deputy)  
@@ -103,7 +103,8 @@
 - [Eclipsal](#eclipsal)
 - [Agent](#agent)  
 - [Hitman](#hitman)  
-- [Glitch](#glitch)  
+- [Glitch](#glitch)
+- [Thief](#thief)
 - [Serial Killer](#serial-killer)  
 - [Juggernaut](#juggernaut)  
 
@@ -117,9 +118,15 @@
 - [Button Barry](#button-barry)  
 - [Tiebreaker](#tiebreaker)  
 - [Administrator](#administrator)  
-- [Drunk](#drunk)  
 - [Paranoiac](#Paranoiac)  
 - [Sleuth](#sleuth)  
+
+</details>
+
+<details>
+<summary><strong>Universal Killing Modifiers</strong></summary>
+
+- [Ruthless](#ruthless)  
 
 </details>
 
@@ -135,13 +142,8 @@
 # Releases
 | Among Us - Version| Mod Version | Link |
 |----------|-------------|-----------------|
-| V2025.17.0.1s & V2025.17.0.1e | v3.0.0 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/v3.0.0/TOS.v3.0.0.zip) |
-| V2024.10.29s & V2024.10.29e | v2.2.0 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/v2.2.0/TOS.v2.2.0.zip) |
-| V2024.10.29s & V2024.10.29e | v2.0.0 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/v2.0.0/TOS.v2.0.0.zip) |
-| V2024.10.29s & V2024.10.29e | v1.6.0 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/v1.6.0/TOS.v1.6.0.zip) |
-| V2024.10.29s & V2024.10.29e | v1.2.1 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/v1.2.1/TOS.v1.2.1.zip) |
-| V2024.10.29s & V2024.10.29e | v1.2.0 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/v1.2.0/TOS.v1.2.0.zip) |
-| V2024.10.29s & V2024.10.29e | v1.0.0 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/v1.0.0/TownOfSushi.v1.0.0.zip) |
+| v2025.17.0.1s & v2025.17.0.1e | v1.0.1 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/1.0.1/TOS.v1.0.1.zip) |
+| v2025.17.0.1s & v2025.17.0.1e  | v1.0.0 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/1.0.0/TOS.v3.0.0.zip) |
 
 -----------------------
 # Installation
@@ -483,19 +485,19 @@ If the Fortified person gets a kill attempt, they will kill the attemper.
 | Show Fortify | Who sees the fortified player | Option | Crusader |
 -----------------------
 
-## BodyGuard
+## Bodyguard
 ### **Team: Crewmates**
-The BodyGuard is a Crewmate that can guard other players.\
-BodyGuarded players cannot be interacted with.\
-If someone tries to interact with a BodyGuarded player,\
-Both the BodyGuard and the interactor receive an alert.\
-If the BodyGuarded person gets a kill attempt, they will kill the BodyGuard instead.
+The Bodyguard is a Crewmate that can guard other players.\
+Bodyguarded players cannot be interacted with.\
+If someone tries to interact with a Bodyguarded player,\
+Both the Bodyguard and the interactor receive an alert.\
+If the Bodyguarded person gets a kill attempt, they will kill the Bodyguard instead.
 
 ### Game Options
 | Name | Description | Type | Default |
 |----------|:-------------:|:------:|:------:|
-| BodyGuard | The percentage probability of the BodyGuard appearing | Percentage | 0% |
-| Show BodyGuard | Who sees the BodyGuarded player | Option | BodyGuard |
+| Bodyguard | The percentage probability of the Bodyguard appearing | Percentage | 0% |
+| Show Bodyguard | Who sees the Bodyguarded player | Option | Bodyguard |
 -----------------------
 
 ## Engineer
@@ -801,6 +803,30 @@ Blinded people cannot use their abilities or report dead bodies until the effect
 | Blind Duration | How does the blind effect stay on people | Time | 10s |
 | Eclipsal Can Vent | Toggles the Eclipsal's ability to vent | Toggle | False|
 
+-----------------------
+## Thief
+### **Team: Neutral (Benign)**
+The Thief has to kill another killer (Impostor, Neutral Killer and if enabled Vigilante)
+in order to have a win condition.\
+If the Thief doesn't kill another killer they will lose the game.\
+If the Thief kills one of the other killers, the Thief overtakes their role (e.g. Morphling) and joins their team (in this case
+team Impostor). They then have the new Role's win condition (e.g. Impostor-Win).\
+If the Thief tries to kill any non-killing role (Crewmate or Neutral), they die similar to a misfiring Vigilante.\
+\
+**NOTE**
+- If the option "Thief Can Kill Vigilante" is On, the Thief has tasks which will ONLY begin to count, if they kill
+the Vigilante. While the Thief hasn't fired, their tasks do not count towards the taskwin.
+- If the option "Thief Can Kill Vigilante" is Off, the Thief will not have tasks. 
+
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Thief Spawn Chance | The percentage probability of the Thief appearing | Percentage | 0% |
+| Thief Cooldown | - | Time | 25s |
+| Thief Can Kill Vigilante | - | Toggle | False |
+| Thief Has Impostor Vision | - | Toggle | False |
+| Thief Can Use Vents | - | Toggle | False |
+| Thief Can Guess To Steal Role | - | Toggle | False |
 -----------------------
 ## Serial Killer
 ### **Team: Neutral (Killing)**
@@ -1119,16 +1145,6 @@ They are also smaller than everyone else.
 
 -----------------------
 
-## Drunk
-### **Applied to: All**
-The Drunk is a player who has inverted controls.\
-If the Drunk hits the Up KeyCode they will go down etc.
-| Name | Description | Type | Default |
-|----------|:-------------:|:------:|:------:|
-| Drunk | The percentage probability of the Drunk appearing | Percentage | 0% |
-
------------------------
-
 ## Paranoiac
 ### **Applied to: All**
 The Paranoiac is a crewmate who knows where the closest player is to them.
@@ -1242,6 +1258,18 @@ The Giant is a gigantic Crewmate, that has a decreased walk speed.
 |----------|:-------------:|:------:|:------:|
 | Giant | The percentage probability of the Giant appearing | Percentage | 0% |
 | Speed | How fast the Giant moves in comparison to normal | Multiplier | 0.75x |
+
+-----------------------
+
+## Ruthless
+### **Applied to: Killers Only**
+The Ruthless allows the player with the modifier to kill anyone even if they are protected.\
+Protection such as Guardian Angel protect, Amnesiac Vest, Medic/Cleric/Crusader/Bodyguard inmunity.
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Ruthless | The percentage probability of the Ruthless appearing | Percentage | 0% |
+| Ruthless Amount | The number of players that can get the Ruthless modifier | Quantity | 0 |
 
 -----------------------
 ## Disperser
