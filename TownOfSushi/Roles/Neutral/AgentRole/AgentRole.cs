@@ -13,7 +13,7 @@ public sealed class AgentRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushi
     public string RoleName => "Agent";
     public string RoleDescription => "Finish Your Tasks To Get New Abilities";
     public string RoleLongDescription => "Finish your tasks to become the Hitman. \nAnother role with better abilities!";
-    public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<BodyGuardRole>());
+    public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<BodyguardRole>());
     public Color RoleColor => TownOfSushiColors.Agent;
     public MysticClueType MysticHintType => MysticClueType.Trickster;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;

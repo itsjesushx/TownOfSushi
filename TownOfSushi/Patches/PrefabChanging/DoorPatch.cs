@@ -22,3 +22,23 @@ public static class AirshipDoors
         }
     }
 }
+
+[HarmonyPatch]
+public static class PolusDoors
+{
+    [HarmonyPatch(typeof(PolusShipStatus), nameof(PolusShipStatus.OnEnable))]
+    [HarmonyPostfix]
+    public static void Postfix(PolusShipStatus __instance)
+    {
+        if (!OptionGroupSingleton<BetterPolusOptions>.Instance.AirshipDoors)
+        {
+            return;
+        }
+
+        var airshipDoors = PrefabLoader.Airship.GetComponentInChildren<DoorConsole>().MinigamePrefab;
+        foreach (var door in __instance.GetComponentsInChildren<DoorConsole>())
+        {
+            door.MinigamePrefab = airshipDoors;
+        }
+    }
+}

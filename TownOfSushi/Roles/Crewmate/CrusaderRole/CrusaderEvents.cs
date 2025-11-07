@@ -4,6 +4,7 @@ using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Hud;
 using TownOfSushi.Buttons;
 using TownOfSushi.Modifiers;
+using TownOfSushi.Modifiers.Game.Killer;
 using TownOfSushi.Modules;
 using TownOfSushi.Options;
 
@@ -53,6 +54,10 @@ public static class CrusaderEvents
         {
             return;
         }
+        if (source.HasModifier<RuthlessModifier>())
+        {
+            return;
+        }
         // Adding Warlock's button to check because:
         // 2. Warlock's curse button somehow breaks when interacting with Crusader's fortify so this is the easiest way to fix it
         if (button is IKillButton || button == CustomButtonSingleton<WarlockCurseButton>.Instance)
@@ -70,6 +75,11 @@ public static class CrusaderEvents
     {
         var source = @event.Source;
         var target = @event.Target;
+
+        if (source.HasModifier<RuthlessModifier>())
+        {
+            return;
+        }
 
         CheckForCrusaderFortify(@event, source, target);
         CheckForCrusaderFortifyMurder(@event, source, target);
@@ -130,20 +140,6 @@ public static class CrusaderEvents
     {
         if (!target.HasModifier<CrusaderFortifiedModifier>() || source == target || MeetingHud.Instance || (source.TryGetModifier<IndirectAttackerModifier>(out var indirect) && indirect.IgnoreShield)) return;
         @event.Cancel();
-
-        // The reason this exists is that otherwise, players can brute force through the crusader fort if they spam fast enough
-        if (@event is MiraButtonClickEvent buttonClick)
-        {
-            var button = buttonClick.Button as CustomActionButton<PlayerControl>;
-            if (button != null)
-            {
-                button.Timer += 1f;
-            }
-        }
-        if (@event is BeforeMurderEvent && source.IsImpostor())
-        {
-            source.SetKillTimer(source.killTimer + 1f);
-        }
 
         // Find the crusader which fortified the target
         var crusader = target.GetModifier<CrusaderFortifiedModifier>()?.Crusader.GetRole<CrusaderRole>();

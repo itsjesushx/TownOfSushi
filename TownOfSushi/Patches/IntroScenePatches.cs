@@ -9,7 +9,6 @@ using TownOfSushi.Buttons;
 using TownOfSushi.Modifiers.Game;
 using TownOfSushi.Options;
 using UnityEngine;
-using Object = Il2CppSystem.Object;
 using TownOfSushi.Modules;
 
 namespace TownOfSushi.Patches;
@@ -17,26 +16,6 @@ namespace TownOfSushi.Patches;
 [HarmonyPatch]
 public static class IntroScenePatches
 {
-    [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginImpostor))]
-    [HarmonyPrefix]
-    public static bool ImpostorBeginPatch(IntroCutscene __instance)
-    {
-        if ( /* OptionGroupSingleton<GeneralOptions>.Instance.ImpsKnowRoles &&  */
-            !OptionGroupSingleton<GeneralOptions>.Instance.FFAImpostorMode)
-        {
-            return true;
-        }
-
-        __instance.TeamTitle.text =
-            DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.Impostor, Array.Empty<Object>());
-        __instance.TeamTitle.color = Palette.ImpostorRed;
-
-        var player = __instance.CreatePlayer(0, 1, PlayerControl.LocalPlayer.Data, true);
-        __instance.ourCrewmate = player;
-
-        return false;
-    }
-
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
     [HarmonyPrefix]
     public static void IntroCutsceneOnDestroyPatch()
@@ -93,7 +72,7 @@ public static class IntroScenePatches
 
             panel.SetTaskText(role.SetTabText().ToString());
         }
-        if (GameOptionsManager.Instance.currentNormalGameOptions.MapId == 2 && OptionGroupSingleton<BetterMapOptions>.Instance.BPCustomSpeciVent)
+        if (GameOptionsManager.Instance.currentNormalGameOptions.MapId == 2 && OptionGroupSingleton<BetterPolusOptions>.Instance.BPCustomSpeciVent)
         {
             var list = GameObject.FindObjectsOfType<Vent>().ToList();
             var adminVent = list.FirstOrDefault(x => x.gameObject.name == "AdminVent");

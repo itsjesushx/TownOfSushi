@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+﻿
 using System.Text;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.Patches.Stubs;
@@ -48,7 +48,7 @@ public sealed class CrusaderRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfS
 
         if (Fortified != null)
         {
-            stringB.Append(CultureInfo.InvariantCulture,
+            stringB.Append(TownOfSushiPlugin.Culture,
                 $"\n<b>Fortified: </b>{Color.white.ToTextColor()}{Fortified.Data.PlayerName}</color>");
         }
 

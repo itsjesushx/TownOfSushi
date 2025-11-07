@@ -29,18 +29,11 @@ public sealed class GeneralOptions : AbstractOptionGroup
         Visible = () => OptionGroupSingleton<GeneralOptions>.Instance.CamouflageComms
     };
 
-    [ModdedToggleOption("Impostors Don't Know Each Other")]
-    public bool FFAImpostorMode { get; set; } = false;
-
-    public ModdedToggleOption ImpsKnowRoles { get; set; } = new("Impostors Know Each Other's Roles", true)
-    {
-        Visible = () => !OptionGroupSingleton<GeneralOptions>.Instance.FFAImpostorMode
-    };
-
-    public ModdedToggleOption ImpostorChat { get; set; } = new("Impostors Get A Private Meeting Chat", true)
-    {
-        Visible = () => !OptionGroupSingleton<GeneralOptions>.Instance.FFAImpostorMode
-    };
+    [ModdedToggleOption("Impostors Know Each Other's Roles")]
+    public bool ImpsKnowRoles { get; set; } = true;
+    
+    [ModdedToggleOption("Impostors Get A Private Meeting Chat")]
+    public bool ImpostorChat { get; set; } = true;
 
     [ModdedToggleOption("Vampires Get A Private Meeting Chat")]
     public bool VampireChat { get; set; } = true;

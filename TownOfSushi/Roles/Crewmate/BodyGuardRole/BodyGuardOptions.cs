@@ -2,18 +2,18 @@ using MiraAPI.GameOptions.Attributes;
 
 namespace TownOfSushi.Roles.Crewmate;
 
-public sealed class BodyGuardOptions : AbstractOptionGroup<BodyGuardRole>
+public sealed class BodyguardOptions : AbstractOptionGroup<BodyguardRole>
 {
-    public override string GroupName => "BodyGuard";
+    public override string GroupName => "Bodyguard";
 
-    [ModdedEnumOption("Show Protected Player", typeof(BGProtectOptions), ["Protected", "BodyGuard", "Protected + BodyGuard", "Everyone"])]
-    public BGProtectOptions ShowGuarded { get; set; } = BGProtectOptions.SelfAndBodyGuard;
+    [ModdedEnumOption("Show Protected Player", typeof(BGProtectOptions), ["Protected", "Bodyguard", "Protected + Bodyguard", "Everyone"])]
+    public BGProtectOptions ShowGuarded { get; set; } = BGProtectOptions.SelfAndBodyguard;
 }
 
 public enum BGProtectOptions
 {
     Self,
-    BodyGuard,
-    SelfAndBodyGuard,
+    Bodyguard,
+    SelfAndBodyguard,
     Everyone
 }

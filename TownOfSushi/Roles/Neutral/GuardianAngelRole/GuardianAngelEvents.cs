@@ -5,6 +5,7 @@ using MiraAPI.Events.Vanilla.Player;
 using MiraAPI.Hud;
 using TownOfSushi.Buttons;
 using TownOfSushi.Modifiers;
+using TownOfSushi.Modifiers.Game.Killer;
 using TownOfSushi.Options;
 
 namespace TownOfSushi.Roles.Neutral;
@@ -83,6 +84,11 @@ public static class GuardianAngelEvents
             return false;
         }
 
+        if (source.HasModifier<RuthlessModifier>())
+        {
+            return false;
+        }
+
         @event.Cancel();
 
         return true;
@@ -96,6 +102,11 @@ public static class GuardianAngelEvents
 
         // Reset impostor kill cooldown if they attack a shielded player
         if (!source.AmOwner || !source.IsImpostor())
+        {
+            return;
+        }
+
+        if (source.HasModifier<RuthlessModifier>())
         {
             return;
         }

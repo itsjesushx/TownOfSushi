@@ -18,6 +18,6 @@ public sealed class NeutralKillerAssassinModifier : AssassinModifier
 
     public override bool IsModifierValidOn(RoleBehaviour role)
     {
-        return role is ITownOfSushiRole { RoleAlignment: RoleAlignment.NeutralKilling };
+        return role is ITownOfSushiRole { RoleAlignment: RoleAlignment.NeutralKilling } || role is ThiefRole && OptionGroupSingleton<ThiefOptions>.Instance.GuessToSteal;
     }
 }

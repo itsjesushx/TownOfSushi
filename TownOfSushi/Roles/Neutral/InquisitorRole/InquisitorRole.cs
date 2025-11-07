@@ -1,5 +1,5 @@
 using System.Collections;
-using System.Globalization;
+
 using System.Text;
 using AmongUs.GameOptions;
 using HarmonyLib;
@@ -146,11 +146,11 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
     public StringBuilder SetTabText()
     {
         var stringB = ITownOfSushiRole.SetNewTabText(this);
-        stringB.AppendLine(CultureInfo.InvariantCulture, $"<b>The roles of your Heretics:</b>");
+        stringB.AppendLine(TownOfSushiPlugin.Culture, $"<b>The roles of your Heretics:</b>");
         foreach (var role in TargetRoles)
         {
             var newText = $"<b><size=80%>{role.TeamColor.ToTextColor()}{role.NiceName}</size></b>";
-            stringB.AppendLine(CultureInfo.InvariantCulture, $"{newText}");
+            stringB.AppendLine(TownOfSushiPlugin.Culture, $"{newText}");
         }
 
         return stringB;

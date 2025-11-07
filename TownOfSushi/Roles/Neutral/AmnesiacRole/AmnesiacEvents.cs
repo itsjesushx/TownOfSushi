@@ -6,6 +6,7 @@ using TownOfSushi.Buttons;
 using TownOfSushi.Options;
 using UnityEngine;
 using TownOfSushi.Modules;
+using TownOfSushi.Modifiers.Game.Killer;
 
 namespace TownOfSushi.Roles.Neutral;
 
@@ -16,8 +17,13 @@ public static class AmnesiacEvents
     {
         var button = @event.Button as CustomActionButton<PlayerControl>;
         var target = button?.Target;
+        var source = PlayerControl.LocalPlayer;
 
         if (target == null || button == null || !button.CanClick())
+        {
+            return;
+        }
+        if (source.HasModifier<RuthlessModifier>())
         {
             return;
         }
@@ -82,6 +88,11 @@ public static class AmnesiacEvents
 
         // Reset impostor kill cooldown if they attack a shielded player
         if (!source.AmOwner || !source.IsImpostor())
+        {
+            return;
+        }
+
+        if (source.HasModifier<RuthlessModifier>())
         {
             return;
         }

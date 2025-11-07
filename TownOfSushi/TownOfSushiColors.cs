@@ -12,7 +12,7 @@ public static class TownOfSushiColors
     // Crew Colors
     public static Color Crewmate => Palette.CrewmateRoleBlue;
     public static Color Monarch => UseBasic ? Palette.CrewmateBlue : new(1f, 0.5f, 0f, 1f);
-    public static Color BodyGuard => UseBasic ? Palette.CrewmateBlue : new(0.05f, 0.3f, 0.2f, 1f);
+    public static Color Bodyguard => UseBasic ? Palette.CrewmateBlue : new(0.05f, 0.3f, 0.2f, 1f);
     public static Color Mayor => UseBasic ? Palette.CrewmateBlue : new Color(0.44f, 0.31f, 0.66f, 1f);
     public static Color Engineer => UseBasic ? Palette.CrewmateBlue : new Color(1f, 0.65f, 0.04f, 1f);
     public static Color Swapper => UseBasic ? Palette.CrewmateBlue : new Color(0.4f, 0.9f, 0.4f, 1f);
@@ -87,7 +87,6 @@ public static class TownOfSushiColors
     public static Color Sleuth => new(0.5f, 0.2f, 0.2f, 1f);
     public static Color Tiebreaker => new(0.6f, 0.9f, 0.6f, 1f);
     public static Color Paranoiac => new(1f, 0f, 0.5f, 1f);
-    public static Color Drunk => new(0.1f, 0.3f, 0.2f, 1f);
     public static Color Multitasker => new(1f, 0.5f, 0.3f, 1f);
     public static Color Frosty => new(0.6f, 1f, 1f, 1f);
     public static Color SixthSense => new(0.85f, 1f, 0.55f, 1f);

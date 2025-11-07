@@ -9,7 +9,7 @@ using Reactor.Utilities;
 using TownOfSushi.Events.TOSEvents;
 using TownOfSushi.Modules;
 using UnityEngine;
-using System.Globalization;
+
 
 namespace TownOfSushi.Roles.Crewmate;
 
@@ -51,11 +51,11 @@ public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSu
         var stringB = ITownOfSushiRole.SetNewTabText(this);
         var duration = (int)OptionGroupSingleton<PlumberOptions>.Instance.BarricadeRoundDuration;
         var text = duration == 0 ? "Barricades Stay Forever." : $"Barricades Stay For {duration} Round(s)";
-        stringB.Append(CultureInfo.InvariantCulture,
+        stringB.Append(TownOfSushiPlugin.Culture,
             $"\n<b><size=60%>Note: {text}</size></b>");
         if (VentsBlocked.Count > 0 || FutureBlocks.Count > 0)
         {
-            stringB.Append(CultureInfo.InvariantCulture,
+            stringB.Append(TownOfSushiPlugin.Culture,
                 $"\n<b>Vents List:</b>");
 
             if (VentsBlocked.Count > 0)
@@ -65,7 +65,7 @@ public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSu
                     var vent = Helpers.GetVentById(ventPair.Key);
                     if (vent == null) continue;
                     var text2 = duration == 0 ? string.Empty : $": {ventPair.Value} Round(s) Remaining";
-                    stringB.Append(CultureInfo.InvariantCulture,
+                    stringB.Append(TownOfSushiPlugin.Culture,
                         $"\n{MiscUtils.GetRoomName(vent.transform.position)} Vent{text2}");
                 }
             }
@@ -76,7 +76,7 @@ public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSu
                     var vent = Helpers.GetVentById(ventId);
                     if (vent == null) continue;
                         
-                    stringB.Append(CultureInfo.InvariantCulture,
+                    stringB.Append(TownOfSushiPlugin.Culture,
                         $"\n<color=#BFBFBF>{MiscUtils.GetRoomName(vent.transform.position)} Vent: Preparing...</color>");
                 }
             }

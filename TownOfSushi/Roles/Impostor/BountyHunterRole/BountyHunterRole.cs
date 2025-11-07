@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using System.Globalization;
+
 using System.Text;
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
@@ -106,10 +106,10 @@ public sealed class BountyHunterRole(IntPtr cppPtr)
         if (Target != null && Scavenging)
         {
             stringB.Append("\n<b>Scavenge Time:</b> ");
-            stringB.Append(CultureInfo.InvariantCulture,
-                $"{Color.white.ToTextColor()}{TimeRemaining.ToString("0", CultureInfo.InvariantCulture)}</color>");
+            stringB.Append(TownOfSushiPlugin.Culture,
+                $"{Color.white.ToTextColor()}{TimeRemaining.ToString("0", TownOfSushiPlugin.Culture)}</color>");
             stringB.Append("\n\n<b>Current Target:</b> ");
-            stringB.Append(CultureInfo.InvariantCulture,
+            stringB.Append(TownOfSushiPlugin.Culture,
                 $"{Color.white.ToTextColor()}{Target.Data.PlayerName}</color>");
         }
 

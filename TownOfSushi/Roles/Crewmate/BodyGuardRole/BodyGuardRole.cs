@@ -1,4 +1,4 @@
-using System.Globalization;
+
 using System.Text;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.Patches.Stubs;
@@ -11,7 +11,7 @@ using TownOfSushi.Modifiers;
 
 namespace TownOfSushi.Roles.Crewmate;
 
-public sealed class BodyGuardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue
+public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue
 {
     public override bool IsAffectedByComms => false;
 
@@ -19,7 +19,7 @@ public sealed class BodyGuardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
     public MysticClueType MysticHintType => MysticClueType.Protective;
     public void FixedUpdate()
     {
-        if (Player == null || Player.Data.Role is not BodyGuardRole)
+        if (Player == null || Player.Data.Role is not BodyguardRole)
         {
             return;
         }
@@ -29,17 +29,17 @@ public sealed class BodyGuardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
             Clear();
         }
     }
-    public string RoleName => "BodyGuard";
+    public string RoleName => "Bodyguard";
     public string RoleDescription => "Guard Crewmates to prevent their death";
     public string RoleLongDescription => "Guard crewmates to prevent any interactions with them";
-    public Color RoleColor => TownOfSushiColors.BodyGuard;
+    public Color RoleColor => TownOfSushiColors.Bodyguard;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateProtective;
 
     public CustomRoleConfiguration Configuration => new(this)
     {
         IntroSound = TOSAudio.WarlockCurse,
-        Icon = TOSRoleIcons.BodyGuard
+        Icon = TOSRoleIcons.Bodyguard
     };
 
     [HideFromIl2Cpp]
@@ -49,7 +49,7 @@ public sealed class BodyGuardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
 
         if (Guarded != null)
         {
-            stringB.Append(CultureInfo.InvariantCulture,
+            stringB.Append(TownOfSushiPlugin.Culture,
                 $"\n<b>Guarded: </b>{Color.white.ToTextColor()}{Guarded.Data.PlayerName}</color>");
         }
 
@@ -59,7 +59,7 @@ public sealed class BodyGuardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
     public string GetAdvancedDescription()
     {
         return
-            "The BodyGuard is a Crewmate Protective role that can guard players to prevent them from being interacted with. If the interaction counts as killing, the interacter and BodyGuard will die along. "
+            "The Bodyguard is a Crewmate Protective role that can guard players to prevent them from being interacted with. If the interaction counts as killing, the interacter and Bodyguard will die along. "
             + MiscUtils.AppendOptionsText(GetType());
     }
 
@@ -67,8 +67,8 @@ public sealed class BodyGuardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
     public List<CustomButtonWikiDescription> Abilities { get; } =
     [
         new("Guard",
-            "Guard a player to prevent them from being interacted with. If anyone tries to interact with a Guarded player, the ability will not work. If the interaction counts as killing, the interacter and BodyGuard will die along.",
-            TOSRoleIcons.BodyGuard)
+            "Guard a player to prevent them from being interacted with. If anyone tries to interact with a Guarded player, the ability will not work. If the interaction counts as killing, the interacter and Bodyguard will die along.",
+            TOSRoleIcons.Bodyguard)
     ];
 
     public void Clear()
@@ -92,37 +92,37 @@ public sealed class BodyGuardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
 
     public void SetGuardedPlayer(PlayerControl? player)
     {
-        Guarded?.RemoveModifier<BodyGuardGuardedModifier>();
+        Guarded?.RemoveModifier<BodyguardGuardedModifier>();
 
         Guarded = player;
 
-        Guarded?.AddModifier<BodyGuardGuardedModifier>(Player);
+        Guarded?.AddModifier<BodyguardGuardedModifier>(Player);
     }
 
-    [MethodRpc((uint)TownOfSushiRpc.BodyGuardGuard, SendImmediately = true)]
-    public static void RpcBodyGuardGuard(PlayerControl player, PlayerControl target)
+    [MethodRpc((uint)TownOfSushiRpc.BodyguardGuard, SendImmediately = true)]
+    public static void RpcBodyguardGuard(PlayerControl player, PlayerControl target)
     {
-        if (player.Data.Role is not BodyGuardRole)
+        if (player.Data.Role is not BodyguardRole)
         {
-            Logger<TownOfSushiPlugin>.Error("RpcBodyGuardGuard - Invalid BodyGuard");
+            Logger<TownOfSushiPlugin>.Error("RpcBodyguardGuard - Invalid Bodyguard");
             return;
         }
 
-        var BodyGuard = player.GetRole<BodyGuardRole>();
-        BodyGuard?.SetGuardedPlayer(target);
+        var Bodyguard = player.GetRole<BodyguardRole>();
+        Bodyguard?.SetGuardedPlayer(target);
     }
 
-    [MethodRpc((uint)TownOfSushiRpc.BodyGuardGuardMurder, SendImmediately = true)]
-    public static void RpcBodyGuardGuardMurder(PlayerControl bodyGuardPlayer, PlayerControl target, PlayerControl attacker)
+    [MethodRpc((uint)TownOfSushiRpc.BodyguardGuardMurder, SendImmediately = true)]
+    public static void RpcBodyguardGuardMurder(PlayerControl bodyGuardPlayer, PlayerControl target, PlayerControl attacker)
     {
-        if (!target.HasModifier<BodyGuardGuardedModifier>())
+        if (!target.HasModifier<BodyguardGuardedModifier>())
         {
-            Logger<TownOfSushiPlugin>.Error("RpcBodyGuardGuardMurder - Source doesn't own Guarded modifier");
+            Logger<TownOfSushiPlugin>.Error("RpcBodyguardGuardMurder - Source doesn't own Guarded modifier");
             return;
         }
-        if (bodyGuardPlayer.Data.Role is not BodyGuardRole)
+        if (bodyGuardPlayer.Data.Role is not BodyguardRole)
         {
-            Logger<TownOfSushiPlugin>.Error("RpcBodyGuardGuardMurder - Invalid BodyGuard");
+            Logger<TownOfSushiPlugin>.Error("RpcBodyguardGuardMurder - Invalid Bodyguard");
             return;
         }
 
@@ -132,53 +132,53 @@ public sealed class BodyGuardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
 
         if (attacker.AmOwner)
         {
-            var notif = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.BodyGuard,
-                $"<b>{target.Data.PlayerName}, was protected by a BodyGuard! They died with you as well!</b>"),
+            var notif = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Bodyguard,
+                $"<b>{target.Data.PlayerName}, was protected by a Bodyguard! They died with you as well!</b>"),
 
-                Color.white, spr: TOSRoleIcons.BodyGuard.LoadAsset());
+                Color.white, spr: TOSRoleIcons.Bodyguard.LoadAsset());
             notif.AdjustNotification();
         }
         if (bodyGuardPlayer.AmOwner)
         {
-            var notif = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.BodyGuard,
+            var notif = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Bodyguard,
                 $"<b>{target.Data.PlayerName}, your protectee, has survived thanks to you! you died protecting them</b>"),
 
-                Color.white, spr: TOSRoleIcons.BodyGuard.LoadAsset());
+                Color.white, spr: TOSRoleIcons.Bodyguard.LoadAsset());
                 notif.AdjustNotification();
         }
     }
 
-    [MethodRpc((uint)TownOfSushiRpc.ClearBodyGuardGuard, SendImmediately = true)]
-    public static void RpcClearBodyGuardGuard(PlayerControl player)
+    [MethodRpc((uint)TownOfSushiRpc.ClearBodyguardGuard, SendImmediately = true)]
+    public static void RpcClearBodyguardGuard(PlayerControl player)
     {
-        if (player.Data.Role is not BodyGuardRole)
+        if (player.Data.Role is not BodyguardRole)
         {
-            Logger<TownOfSushiPlugin>.Error("RpcClearBodyGuardGuard - Invalid BodyGuard");
+            Logger<TownOfSushiPlugin>.Error("RpcClearBodyguardGuard - Invalid Bodyguard");
             return;
         }
 
-        var BodyGuard = player.GetRole<BodyGuardRole>();
-        BodyGuard?.SetGuardedPlayer(null);
+        var Bodyguard = player.GetRole<BodyguardRole>();
+        Bodyguard?.SetGuardedPlayer(null);
     }
 
-    [MethodRpc((uint)TownOfSushiRpc.BodyGuardNotify, SendImmediately = true)]
-    public static void RpcBodyGuardNotify(PlayerControl player, PlayerControl source, PlayerControl target)
+    [MethodRpc((uint)TownOfSushiRpc.BodyguardNotify, SendImmediately = true)]
+    public static void RpcBodyguardNotify(PlayerControl player, PlayerControl source, PlayerControl target)
     {
-        if (player.Data.Role is not BodyGuardRole)
+        if (player.Data.Role is not BodyguardRole)
         {
-            Logger<TownOfSushiPlugin>.Error("RpcBodyGuardNotify - Invalid BodyGuard");
+            Logger<TownOfSushiPlugin>.Error("RpcBodyguardNotify - Invalid Bodyguard");
             return;
         }
 
-        // Logger<TownOfSushiPlugin>.Error("RpcBodyGuardNotify");
+        // Logger<TownOfSushiPlugin>.Error("RpcBodyguardNotify");
         if (player.AmOwner)
         {
-            Coroutines.Start(MiscUtils.CoFlash(TownOfSushiColors.BodyGuard));
+            Coroutines.Start(MiscUtils.CoFlash(TownOfSushiColors.Bodyguard));
         }
 
         if (source.AmOwner)
         {
-            Coroutines.Start(MiscUtils.CoFlash(TownOfSushiColors.BodyGuard));
+            Coroutines.Start(MiscUtils.CoFlash(TownOfSushiColors.Bodyguard));
         }
     }
 }

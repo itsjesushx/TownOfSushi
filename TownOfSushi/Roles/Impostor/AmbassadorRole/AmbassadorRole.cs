@@ -1,4 +1,4 @@
-using System.Globalization;
+
 using System.Text;
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
@@ -8,7 +8,6 @@ using Reactor.Utilities;
 using TownOfSushi.Events;
 using TownOfSushi.Modules;
 using TownOfUs.Modules.Components;
-using TownOfSushi.Options;
 using UnityEngine;
 
 namespace TownOfSushi.Roles.Impostor;
@@ -44,7 +43,7 @@ public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
     {
         var stringB = ITownOfSushiRole.SetNewTabText(this);
 
-        stringB.AppendLine(CultureInfo.InvariantCulture, $"{RetrainsAvailable} / {OptionGroupSingleton<AmbassadorOptions>.Instance.MaxRetrains} Retrains Remaining");
+        stringB.AppendLine(TownOfSushiPlugin.Culture, $"{RetrainsAvailable} / {OptionGroupSingleton<AmbassadorOptions>.Instance.MaxRetrains} Retrains Remaining");
 
         return stringB;
     }
@@ -207,8 +206,7 @@ public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
     private bool IsExempt(PlayerVoteArea voteArea)
     {
         return Player.Data.IsDead || voteArea.AmDead || voteArea.GetPlayer()?.IsImpostor() == false ||
-               voteArea.GetPlayer()?.HasModifier<AmbassadorRetrainedModifier>() == true
-               || OptionGroupSingleton<GeneralOptions>.Instance.FFAImpostorMode && !Player.AmOwner;
+               voteArea.GetPlayer()?.HasModifier<AmbassadorRetrainedModifier>() == true;
     }
 
     [MethodRpc((uint)TownOfSushiRpc.RetrainConfirm, SendImmediately = true)]
@@ -249,8 +247,7 @@ public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
             player.AddModifier<AmbassadorRetrainedModifier>((ushort)player.Data.Role.Role);
             player.ChangeRole(role);
 
-            if (PlayerControl.LocalPlayer.IsImpostor() &&
-                (!OptionGroupSingleton<GeneralOptions>.Instance.FFAImpostorMode || ambassador.AmOwner))
+            if (PlayerControl.LocalPlayer.IsImpostor() && ambassador.AmOwner)
             {
                 var text =
                     $"<b>{player.Data.PlayerName} has now been retrained into {newRole.NiceName}!</b>";
@@ -267,8 +264,7 @@ public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
                 notif1.AdjustNotification();
             }
         }
-        else if (PlayerControl.LocalPlayer.IsImpostor() &&
-                 (!OptionGroupSingleton<GeneralOptions>.Instance.FFAImpostorMode || ambassador.AmOwner))
+        else if (PlayerControl.LocalPlayer.IsImpostor() && ambassador.AmOwner)
         {
             var text =
                 $"<b>{player.Data.PlayerName} has denied their retrain into {newRole.NiceName}!</b>";
@@ -296,8 +292,7 @@ public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
 
         if (playerId == byte.MaxValue || role == 0)
         {
-            if (PlayerControl.LocalPlayer.IsImpostor() && ambassador.SelectedPlr != null &&
-                (!OptionGroupSingleton<GeneralOptions>.Instance.FFAImpostorMode || player.AmOwner))
+            if (PlayerControl.LocalPlayer.IsImpostor() && ambassador.SelectedPlr != null && player.AmOwner)
             {
                 var text =
                     $"<b>Ambassador retraining for {ambassador.SelectedPlr.PlayerName} was cancelled</b>";
@@ -318,8 +313,7 @@ public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
 
         ambassador.SelectedPlr = GameData.Instance.GetPlayerById(playerId);
         ambassador.SelectedRole = RoleManager.Instance.GetRole((RoleTypes)role);
-        if (PlayerControl.LocalPlayer.IsImpostor() &&
-            (!OptionGroupSingleton<GeneralOptions>.Instance.FFAImpostorMode || player.AmOwner))
+        if (PlayerControl.LocalPlayer.IsImpostor() && player.AmOwner)
         {
             var text =
                 MiscUtils.ColorString(TownOfSushiColors.Impostor, $"<b>The Ambassador has decided to retrain {ambassador.SelectedPlr.PlayerName} into {ambassador.SelectedRole.NiceName}</b>");

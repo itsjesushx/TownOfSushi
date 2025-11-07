@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Globalization;
 using System.Text;
 using HarmonyLib;
 using InnerNet;
@@ -27,6 +26,7 @@ public static class HudManagerPatches
     public static GameObject WikiButton;
     public static GameObject RoleList;
     public static GameObject TeamChatButton;
+    public static GameObject SubmergedFloorButton;
 
     public static bool Zooming;
     public static bool CamouflageCommsEnabled;
@@ -188,7 +188,7 @@ public static class HudManagerPatches
         var isValid = MeetingHud.Instance &&
                       (PlayerControl.LocalPlayer.IsJailed() || PlayerControl.LocalPlayer.Data.Role is JailorRole ||
                        (PlayerControl.LocalPlayer.IsImpostor() && genOpt is
-                           { FFAImpostorMode: false, ImpostorChat.Value: true } && !MiscUtils.SpyInGame()) ||
+                           { ImpostorChat: true } && !MiscUtils.SpyInGame()) ||
                        (PlayerControl.LocalPlayer.Data.Role is VampireRole && genOpt.VampireChat));
 
         if (!TeamChatButton)
@@ -342,8 +342,7 @@ public static class HudManagerPatches
                 var playerName = player.GetDefaultAppearance().PlayerName ?? "Unknown";
                 var playerColor = Color.white;
 
-                if (PlayerControl.LocalPlayer.IsImpostor() && PlayerControl.LocalPlayer != player &&
-                !genOpt.FFAImpostorMode && (player.IsImpostor() || player.Data.Role is SpyRole && MiscUtils.SpyInGame()))
+                if (PlayerControl.LocalPlayer.IsImpostor() && PlayerControl.LocalPlayer != player && (player.IsImpostor() || player.Data.Role is SpyRole && MiscUtils.SpyInGame()))
                 {
                     playerColor = Color.red;
                 }
@@ -373,8 +372,7 @@ public static class HudManagerPatches
                 var roleName = "";
 
                 if (player.AmOwner ||
-                    (PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() && genOpt is
-                    { FFAImpostorMode: false } && !MiscUtils.SpyInGame()) ||
+                    (PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() && !MiscUtils.SpyInGame()) ||
                     (PlayerControl.LocalPlayer.GetRoleWhenAlive() is VampireRole && role is VampireRole) ||
                     (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow) ||
                     GuardianAngelTOSRole.GASeesRoleVisibilityFlag(player) ||
@@ -493,8 +491,7 @@ public static class HudManagerPatches
 
                 if (player?.Data?.Disconnected == true)
                 {
-                    if (!((PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() && genOpt is
-                        { FFAImpostorMode: false } && !MiscUtils.SpyInGame()) ||
+                    if (!((PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() && !MiscUtils.SpyInGame()) ||
                           (PlayerControl.LocalPlayer.GetRoleWhenAlive() is VampireRole && role is VampireRole) ||
                           (!TutorialManager.InstanceExists &&
                            ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow) ||
@@ -544,8 +541,7 @@ public static class HudManagerPatches
                 var playerName = player.GetAppearance().PlayerName ?? "Unknown";
                 var playerColor = Color.white;
 
-                if (PlayerControl.LocalPlayer.IsImpostor() && PlayerControl.LocalPlayer != player &&
-                !genOpt.FFAImpostorMode && (player.IsImpostor() || player.Data.Role is SpyRole && MiscUtils.SpyInGame()))
+                if (PlayerControl.LocalPlayer.IsImpostor() && PlayerControl.LocalPlayer != player && (player.IsImpostor() || player.Data.Role is SpyRole && MiscUtils.SpyInGame()))
                 {
                     playerColor = Color.red;
                 }
@@ -567,8 +563,7 @@ public static class HudManagerPatches
                 var roleName = "";
                 var canSeeDeathReason = false;
                 if (player.AmOwner ||
-                    (PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() && genOpt is
-                    { FFAImpostorMode: false } && !MiscUtils.SpyInGame()) ||
+                    (PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() && !MiscUtils.SpyInGame()) ||
                     (PlayerControl.LocalPlayer.GetRoleWhenAlive() is VampireRole && role is VampireRole) ||
                     (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && isVisible) ||
                     GuardianAngelTOSRole.GASeesRoleVisibilityFlag(player) ||
@@ -630,8 +625,7 @@ public static class HudManagerPatches
                     }
                 }
 
-                if (((taskOpt.ShowTaskRound && player.AmOwner) || (PlayerControl.LocalPlayer.HasDied() &&
-                                                                   taskOpt.ShowTaskDead && isVisible)) && (player.IsCrewmate() ||
+                if ((PlayerControl.LocalPlayer.HasDied() && taskOpt.ShowTaskDead && isVisible) && (player.IsCrewmate() ||
                         player.Data.Role is PhantomTOSRole))
                 {
                     if (roleName != string.Empty)
@@ -648,7 +642,7 @@ public static class HudManagerPatches
 
                 if (canSeeDeathReason)
                 {
-                    playerName += $"\n<size=75%> </size>";
+                    roleName += $"\n<size=75%> </size>";
                 }
 
                 if (player.AmOwner && player.Data.Role is IGhostRole { GhostActive: true })
@@ -791,11 +785,11 @@ public static class HudManagerPatches
             }
             else
             {
-                rolelistBuilder.AppendLine(CultureInfo.InvariantCulture,
+                rolelistBuilder.AppendLine(TownOfSushiPlugin.Culture,
                     $"<color=#999999>Neutral</color> Benigns: {list.MinNeutralBenign.Value} Min, {list.MaxNeutralBenign.Value} Max");
-                rolelistBuilder.AppendLine(CultureInfo.InvariantCulture,
+                rolelistBuilder.AppendLine(TownOfSushiPlugin.Culture,
                     $"<color=#999999>Neutral</color> Evils: {list.MinNeutralEvil.Value} Min, {list.MaxNeutralEvil.Value} Max");
-                rolelistBuilder.AppendLine(CultureInfo.InvariantCulture,
+                rolelistBuilder.AppendLine(TownOfSushiPlugin.Culture,
                     $"<color=#999999>Neutral</color> Killers: {list.MinNeutralKiller.Value} Min, {list.MaxNeutralKiller.Value} Max");
                 objText.text = $"<color=#FFD700>Neutral Faction List:</color>\n{rolelistBuilder}";
             }
@@ -817,7 +811,7 @@ public static class HudManagerPatches
             ZoomButton = Object.Instantiate(instance.MapButton.gameObject, instance.MapButton.transform.parent);
             ZoomButton.GetComponent<PassiveButton>().OnClick = new Button.ButtonClickedEvent();
             ZoomButton.GetComponent<PassiveButton>().OnClick.AddListener(new Action(ButtonClickZoom));
-            ZoomButton.name = "Zoom";
+            ZoomButton.name = "ZoomButton";
             ZoomButton.transform.Find("Background").localPosition = Vector3.zero;
             ZoomButton.transform.Find("Inactive").GetComponent<SpriteRenderer>().sprite =
                 TOSAssets.ZoomMinus.LoadAsset();
@@ -856,6 +850,56 @@ public static class HudManagerPatches
             TOSAssets.TeamChatSelected.LoadAsset();
     }
 
+    public static void UpdateSubmergedButtons(HudManager instance)
+    {
+        if (ModCompatibility.IsSubmerged())
+        {
+            if (!SubmergedFloorButton)
+            {
+                SubmergedFloorButton = instance.MapButton.transform.parent.Find(instance.MapButton.name + "(Clone)")
+                    .gameObject;
+            }
+            if (SubmergedFloorButton && PlayerControl.LocalPlayer.Data.Role is IGhostRole ghost)
+            {
+                SubmergedFloorButton.SetActive(ghost.Caught);
+            }
+        }
+    }
+    public static void UpdateColorblindText()
+    {
+        Vector3 colorBlindTextMeetingInitialLocalPos = new Vector3(0.3384f, -0.16666f, -0.01f);
+        Vector3 colorBlindTextMeetingInitialLocalScale = new Vector3(0.9f, 1f, 1f);
+
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        {
+            UpdateMeetingColorBlindText(player, colorBlindTextMeetingInitialLocalPos, colorBlindTextMeetingInitialLocalScale);
+            UpdateRoundColorBlindText(player);
+        }
+    }
+
+    private static void UpdateMeetingColorBlindText(PlayerControl player, Vector3 initialPos, Vector3 initialScale)
+    {
+        PlayerVoteArea playerVoteArea = MeetingHud.Instance?.playerStates?.FirstOrDefault(x => x.TargetPlayerId == player.PlayerId);
+        if (playerVoteArea != null && playerVoteArea.ColorBlindName.gameObject.active)
+        {
+            playerVoteArea.ColorBlindName.transform.localPosition = initialPos + new Vector3(0f, 0.4f, 0f);
+            playerVoteArea.ColorBlindName.transform.localScale = initialScale * 0.8f;
+        }
+
+        if (player == null || player.cosmetics.colorBlindText == null || playerVoteArea == null) return;
+        var playerData = GameData.Instance.GetPlayerById(playerVoteArea.TargetPlayerId);
+        Color playerColor = Palette.PlayerColors[playerData?.DefaultOutfit.ColorId ?? 0];
+        playerVoteArea.ColorBlindName.color = playerColor;
+    }
+
+    private static void UpdateRoundColorBlindText(PlayerControl player)
+    {
+        if (player.cosmetics.colorBlindText != null && player.cosmetics.showColorBlindText && player.cosmetics.colorBlindText.gameObject.active)
+        {
+            player.cosmetics.colorBlindText.transform.localPosition = new Vector3(0, -1.4f, 0f);
+        }
+    }
+
     public static void CreateWikiButton(HudManager instance)
     {
         var isChatButtonVisible = HudManager.Instance.Chat.isActiveAndEnabled;
@@ -863,6 +907,7 @@ public static class HudManagerPatches
         if (!WikiButton)
         {
             WikiButton = Object.Instantiate(instance.MapButton.gameObject, instance.MapButton.transform.parent);
+            WikiButton.name = "WikiButton";
             WikiButton.GetComponent<PassiveButton>().OnClick = new Button.ButtonClickedEvent();
             WikiButton.GetComponent<PassiveButton>().OnClick.AddListener((UnityAction)(() =>
             {
@@ -913,6 +958,7 @@ public static class HudManagerPatches
         CreateZoomButton(__instance);
         CreateTeamChatButton(__instance);
         CreateWikiButton(__instance);
+        UpdateColorblindText();
 
         UpdateRoleList(__instance);
 
@@ -944,6 +990,7 @@ public static class HudManagerPatches
         UpdateCamouflageComms();
         UpdateRoleNameText();
         UpdateGhostRoles(__instance);
+        UpdateSubmergedButtons(__instance);
     }
 
     [HarmonyPostfix]

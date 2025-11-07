@@ -34,14 +34,15 @@ public sealed class ThiefRole(IntPtr cppPtr)
             OptionGroupSingleton<ExecutionerOptions>.Instance.OnTargetDeath is BecomeOptions.Thief)
         || (MiscUtils.GetPotentialRoles()
                 .Contains(RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<RomanticRole>())) &&
-            OptionGroupSingleton<RomanticOptions>.Instance.OnTargetDeath is BecomeOptions.Thief);
+            OptionGroupSingleton<RomanticOptions>.Instance.OnTargetDeath is BecomeOptions.Thief);       
 
     public CustomRoleConfiguration Configuration => new(this)
     {
         CanUseVent = OptionGroupSingleton<ThiefOptions>.Instance.CanVent,
         IntroSound = CustomRoleUtils.GetIntroSound(RoleTypes.Impostor),
         Icon = TOSRoleIcons.Thief,
-        GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>()
+        GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
+        TasksCountForProgress = OptionGroupSingleton<ThiefOptions>.Instance.CanStealVigilante
     };
 
     public bool HasImpostorVision => OptionGroupSingleton<ThiefOptions>.Instance.HasImpostorVision;
@@ -86,7 +87,7 @@ public sealed class ThiefRole(IntPtr cppPtr)
             return;
         }
 
-        if (!target.IsKillerRole())
+        if (!target.IsKillerRole() && roleWhenAlive is not VigilanteRole)
         {
             if (player.AmOwner)
             {
@@ -97,7 +98,7 @@ public sealed class ThiefRole(IntPtr cppPtr)
             }
             return;
         }
-
+        
         var TOSAbilityEvent = new TOSAbilityEvent(AbilityType.ThiefPreSteal, player, target);
         MiraEventManager.InvokeEvent(TOSAbilityEvent);
 
@@ -197,6 +198,6 @@ public sealed class ThiefRole(IntPtr cppPtr)
         }
 
         var console = usable.TryCast<Console>()!;
-        return console == null || console.AllowImpostor;
+        return console == null || console.AllowImpostor || OptionGroupSingleton<ThiefOptions>.Instance.CanStealVigilante;
     }
 }

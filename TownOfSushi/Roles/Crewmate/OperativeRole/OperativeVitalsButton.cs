@@ -10,7 +10,7 @@ public sealed class OperativeButton : TownOfSushiButton
 {
     public VitalsMinigame? vitals;
     public override string Name => "Vitals";
-    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfSushiColors.Operative;
     public override float Cooldown => OptionGroupSingleton<OperativeOptions>.Instance.VitalsDisplayCooldown + MapCooldown;
     public float AvailableCharge { get; set; } = OptionGroupSingleton<OperativeOptions>.Instance.VitalsStartingCharge;
@@ -35,7 +35,8 @@ public sealed class OperativeButton : TownOfSushiButton
     {
         return PlayerControl.LocalPlayer != null &&
                PlayerControl.LocalPlayer.Data.Role is OperativeRole &&
-               !PlayerControl.LocalPlayer.Data.IsDead;
+               !PlayerControl.LocalPlayer.Data.IsDead &&
+               !MeetingHud.Instance && !ExileController.Instance; // for some reason you can open vitals during meetings or exiles;
     }
 
     public override void CreateButton(Transform parent)

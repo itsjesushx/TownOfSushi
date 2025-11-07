@@ -1,4 +1,4 @@
-using System.Globalization;
+
 using System.Text;
 using AmongUs.GameOptions;
 using HarmonyLib;
@@ -56,7 +56,7 @@ public static class HauntMenuMinigamePatch
                     modifierTextBuilder.Append(", ");
                 }
 
-                modifierTextBuilder.Append(CultureInfo.InvariantCulture,
+                modifierTextBuilder.Append(TownOfSushiPlugin.Culture,
                     $"{color.ToTextColor()}{modifier.ModifierName}</color>");
                 first = false;
             }

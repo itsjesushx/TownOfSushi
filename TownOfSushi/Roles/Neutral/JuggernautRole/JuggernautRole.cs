@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+﻿
 using System.Text;
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
@@ -33,7 +33,7 @@ public sealed class JuggernautRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
     {
         var stringB = ITownOfSushiRole.SetNewTabText(this);
 
-        stringB.Append(CultureInfo.InvariantCulture, $"\n<b>Kill Count:</b> {KillCount}");
+        stringB.Append(TownOfSushiPlugin.Culture, $"\n<b>Kill Count:</b> {KillCount}");
 
         return stringB;
     }

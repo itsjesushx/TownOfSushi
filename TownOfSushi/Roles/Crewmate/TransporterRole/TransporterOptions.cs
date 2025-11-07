@@ -20,4 +20,13 @@ public sealed class TransporterOptions : AbstractOptionGroup<TransporterRole>
 
     [ModdedToggleOption("Get More Uses From Completing Tasks")]
     public bool TaskUses { get; set; } = true;
+
+    [ModdedToggleOption("Transporter Can Transport Themselves Without Anyone Else")]
+    public bool TransportSelf { get; set; } = false;
+
+    [ModdedNumberOption("Transporter Recall Uses Per Game", 0f, 15f, 1f, MiraNumberSuffixes.None, "0", true)]
+    public float MaxEscapes { get; set; } = 0f;
+
+    [ModdedNumberOption("Transporter Recall Cooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
+    public float RecallCooldown { get; set; } = 25f;
 }

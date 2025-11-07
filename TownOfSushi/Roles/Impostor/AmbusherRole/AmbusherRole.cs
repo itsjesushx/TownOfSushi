@@ -1,5 +1,5 @@
 using System.Collections;
-using System.Globalization;
+
 using System.Text;
 using Il2CppInterop.Runtime;
 using Il2CppInterop.Runtime.Attributes;
@@ -68,7 +68,7 @@ public sealed class AmbusherRole(IntPtr cppPtr)
 
         if (Pursued)
         {
-            stringB.Append(CultureInfo.InvariantCulture,
+            stringB.Append(TownOfSushiPlugin.Culture,
                 $"\n<b>Pursuing:</b> {Pursued!.Data.Color.ToTextColor()}{Pursued.Data.PlayerName}</color>");
         }
 

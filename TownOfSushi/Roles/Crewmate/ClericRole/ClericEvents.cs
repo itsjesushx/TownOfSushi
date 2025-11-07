@@ -5,6 +5,7 @@ using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Meeting;
 using MiraAPI.Hud;
 using TownOfSushi.Modifiers;
+using TownOfSushi.Modifiers.Game.Killer;
 using TownOfSushi.Options;
 
 namespace TownOfSushi.Roles.Crewmate;
@@ -75,6 +76,11 @@ public static class ClericEvents
             return false;
         }
 
+        if (source.HasModifier<RuthlessModifier>())
+        {
+            return false;
+        }
+
         @event.Cancel();
 
         var cleric = target.GetModifier<ClericBarrierModifier>()?.Cleric.GetRole<ClericRole>();
@@ -95,6 +101,10 @@ public static class ClericEvents
 
         // Reset impostor kill cooldown if they attack a shielded player
         if (!source.AmOwner || !source.IsImpostor())
+        {
+            return;
+        }
+        if (source.HasModifier<RuthlessModifier>())
         {
             return;
         }

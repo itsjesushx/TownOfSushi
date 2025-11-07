@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+﻿
 using System.Text;
 using HarmonyLib;
 using Il2CppInterop.Runtime.Attributes;
@@ -81,12 +81,12 @@ public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCr
         var text = ITownOfSushiRole.SetNewTabText(this);
         if (PlayerControl.LocalPlayer.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.GetsPunished)
         {
-            text.AppendLine(CultureInfo.InvariantCulture, $"<b>You may prosecute crew.</b>");
+            text.AppendLine(TownOfSushiPlugin.Culture, $"<b>You may prosecute crew.</b>");
         }
 
         var prosecutes = OptionGroupSingleton<ProsecutorOptions>.Instance.MaxProsecutions - ProsecutionsCompleted;
         var newText = prosecutes == 1 ? "1 Prosecution Remaining." : $"\n{prosecutes} Prosecutions Remaining.";
-        text.AppendLine(CultureInfo.InvariantCulture, $"{newText}");
+        text.AppendLine(TownOfSushiPlugin.Culture, $"{newText}");
         return text;
     }
 

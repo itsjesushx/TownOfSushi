@@ -6,6 +6,7 @@ using MiraAPI.Events.Vanilla.Player;
 using MiraAPI.Hud;
 using TownOfSushi.Buttons;
 using TownOfSushi.Modifiers;
+using TownOfSushi.Modifiers.Game.Killer;
 using TownOfSushi.Modules;
 using TownOfSushi.Options;
 
@@ -54,6 +55,11 @@ public static class MedicEvents
         var source = @event.Source;
         var target = @event.Target;
 
+        if (source.HasModifier<RuthlessModifier>())
+        {
+            return;
+        }
+
         if (CheckForMedicShield(@event, source, target))
         {
             ResetButtonTimer(source);
@@ -67,6 +73,11 @@ public static class MedicEvents
         var button = @event.Button as CustomActionButton<PlayerControl>;
         var target = button?.Target;
         if (target == null || button is not IKillButton)
+        {
+            return;
+        }
+
+        if (source.HasModifier<RuthlessModifier>())
         {
             return;
         }

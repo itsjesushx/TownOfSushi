@@ -1,4 +1,4 @@
-using System.Globalization;
+
 using HarmonyLib;
 using Reactor.Utilities.Extensions;
 using TownOfSushi.Modules;
@@ -13,7 +13,7 @@ public static class ChatPatches
     // ReSharper disable once InconsistentNaming
     public static bool Prefix(ChatController __instance)
     {
-        var text = __instance.freeChatField.Text.ToLower(CultureInfo.InvariantCulture);
+        var text = __instance.freeChatField.Text.ToLower(TownOfSushiPlugin.Culture);
         var textRegular = __instance.freeChatField.Text.WithoutRichText();
 
         if (textRegular.Length < 1 || textRegular.Length > 100)
@@ -94,7 +94,7 @@ public static class ChatPatches
                     msg =
                         "The player name must be at least 1 character long, and cannot be more than 12 characters long!";
                 }
-                else if (PlayerControl.AllPlayerControls.ToArray().Any(x => x.Data.PlayerName.ToLower(CultureInfo.InvariantCulture).Trim() == textRegular.ToLower(CultureInfo.InvariantCulture).Trim() && x.Data.PlayerId != PlayerControl.LocalPlayer.PlayerId))
+                else if (PlayerControl.AllPlayerControls.ToArray().Any(x => x.Data.PlayerName.ToLower(TownOfSushiPlugin.Culture).Trim() == textRegular.ToLower(TownOfSushiPlugin.Culture).Trim() && x.Data.PlayerId != PlayerControl.LocalPlayer.PlayerId))
                 {
                     msg = $"Another player has a name too similar to {textRegular}! Please try a different name.";
                 }
@@ -121,7 +121,7 @@ public static class ChatPatches
             List<string> randomNames =
             [
                 "Ess", "fizz", "lekiller", "SheDemon", "Apple", "Nich", "Cake", "Sanya", "50IQ", "Stabby", "Hannah", "Diamant",
-                "Reverie", "Rowgard", "doll", "Zack", "Ocean", "GlitchShot", "Lily", "Ace", "Jesushi", "Alina", "Angel",
+                "Reverie", "Rowgard", "doll", "Zack", "Ocean", "GlitchShot", "Lily", "Ace", "Charlton", "Alina", "Angel",
                 "snax", "RufusZeno", "IraM", "Kate"
             ];
 
@@ -219,7 +219,7 @@ public static class ChatPatches
             }
 
             if (PlayerControl.LocalPlayer.IsImpostor() &&
-                genOpt is { FFAImpostorMode: false, ImpostorChat.Value: true }
+                genOpt is {ImpostorChat: true }
                 && !MiscUtils.SpyInGame()) // Impostors don't have a chat if spy exists!!!
             {
                 TeamChatPatches.RpcSendImpTeamChat(PlayerControl.LocalPlayer, textRegular);

@@ -9,7 +9,7 @@ public static class TOSRoleIcons
     // THIS FILE SHOULD ONLY HOLD ROLE ICONS
     public static LoadableAsset<Sprite> Aurial { get; } = new LoadableResourceAsset($"{iconPath}.Aurial.png");
     public static LoadableAsset<Sprite> Inspector { get; } = new LoadableResourceAsset($"{iconPath}.Inspector.png");
-    public static LoadableAsset<Sprite> BodyGuard { get; } = new LoadableResourceAsset($"{iconPath}.BodyGuard.png");
+    public static LoadableAsset<Sprite> Bodyguard { get; } = new LoadableResourceAsset($"{iconPath}.Bodyguard.png");
     public static LoadableAsset<Sprite> Haunter { get; } = new LoadableResourceAsset($"{iconPath}.Haunter.png");
 
     public static LoadableAsset<Sprite> Warlock { get; } = new LoadableResourceAsset($"{iconPath}.Warlock.png");

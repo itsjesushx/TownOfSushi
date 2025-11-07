@@ -1,4 +1,4 @@
-using System.Globalization;
+
 using System.Text;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.Patches.Stubs;
@@ -35,7 +35,7 @@ public sealed class PoliticianRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCr
         var stringB = ITownOfSushiRole.SetNewTabText(this);
         if (PlayerControl.LocalPlayer.HasModifier<EgotistModifier>())
         {
-            stringB.AppendLine(CultureInfo.InvariantCulture,
+            stringB.AppendLine(TownOfSushiPlugin.Culture,
                 $"<b>The Impostors will know your true motives when revealed.</b>");
         }
 

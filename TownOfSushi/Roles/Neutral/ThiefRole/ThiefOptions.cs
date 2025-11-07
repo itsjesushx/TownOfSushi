@@ -11,7 +11,13 @@ public sealed class ThiefOptions : AbstractOptionGroup<ThiefRole>
 
     [ModdedToggleOption("Thief Can Vent")]
     public bool CanVent { get; set; } = false;
-    
+
     [ModdedToggleOption("Thief Has Impostor Vision")]
     public bool HasImpostorVision { get; set; } = false;
+
+    [ModdedToggleOption("Can Guess To Steal")]
+    public bool GuessToSteal { get; set; } = false;
+
+    [ModdedToggleOption("Can Steal Vigilante")]
+    public bool CanStealVigilante { get; set; } = false;
 }

@@ -4,40 +4,41 @@ using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Hud;
 using TownOfSushi.Buttons;
 using TownOfSushi.Modifiers;
+using TownOfSushi.Modifiers.Game.Killer;
 using TownOfSushi.Modules;
 using TownOfSushi.Options;
 
 namespace TownOfSushi.Roles.Crewmate;
 
-public static class BodyGuardEvents
+public static class BodyguardEvents
 {
     [RegisterEvent]
     public static void RoundStartEventHandler(RoundStartEvent @event)
     {
-        var BodyGuardForts = ModifierUtils.GetActiveModifiers<BodyGuardGuardedModifier>();
+        var BodyguardForts = ModifierUtils.GetActiveModifiers<BodyguardGuardedModifier>();
 
-        if (!BodyGuardForts.Any())
+        if (!BodyguardForts.Any())
         {
             return;
         }
 
-        foreach (var mod in BodyGuardForts)
+        foreach (var mod in BodyguardForts)
         {
             var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
-            var show = OptionGroupSingleton<BodyGuardOptions>.Instance.ShowGuarded;
+            var show = OptionGroupSingleton<BodyguardOptions>.Instance.ShowGuarded;
 
             var showShieldedEveryone = show == BGProtectOptions.Everyone;
             var showShieldedSelf = PlayerControl.LocalPlayer.PlayerId == mod.Player.PlayerId &&
-                                   show is BGProtectOptions.Self or BGProtectOptions.SelfAndBodyGuard;
-            var showShieldedBodyGuard = PlayerControl.LocalPlayer.PlayerId == mod.BodyGuard.PlayerId &&
-                                     show is BGProtectOptions.BodyGuard or BGProtectOptions.SelfAndBodyGuard;
+                                   show is BGProtectOptions.Self or BGProtectOptions.SelfAndBodyguard;
+            var showShieldedBodyguard = PlayerControl.LocalPlayer.PlayerId == mod.Bodyguard.PlayerId &&
+                                     show is BGProtectOptions.Bodyguard or BGProtectOptions.SelfAndBodyguard;
 
             var body = UnityEngine.Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x =>
                 x.ParentId == PlayerControl.LocalPlayer.PlayerId && !TutorialManager.InstanceExists);
             var fakePlayer = FakePlayer.FakePlayers.FirstOrDefault(x =>
                 x.PlayerId == PlayerControl.LocalPlayer.PlayerId && !TutorialManager.InstanceExists);
 
-            mod.ShowFort = showShieldedEveryone || showShieldedSelf || showShieldedBodyGuard || (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body);
+            mod.ShowFort = showShieldedEveryone || showShieldedSelf || showShieldedBodyguard || (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body);
         }
     }
 
@@ -53,15 +54,15 @@ public static class BodyGuardEvents
             return;
         }
         // Adding Warlock's button to check because:
-        // Warlock's curse button somehow breaks when interacting with BodyGuard's protectee so this is the easiest way to fix it
+        // Warlock's curse button somehow breaks when interacting with Bodyguard's protectee so this is the easiest way to fix it
         if (button is IKillButton || button == CustomButtonSingleton<WarlockCurseButton>.Instance 
         || button == CustomButtonSingleton<PoisonerButton>.Instance)
         {
-            CheckForBodyGuardProtectMurder(@event, source, target);
+            CheckForBodyguardProtectMurder(@event, source, target);
         }
         else
         {
-            CheckForBodyGuardProtect(@event, source, target);
+            CheckForBodyguardProtect(@event, source, target);
         }
     }
 
@@ -71,8 +72,8 @@ public static class BodyGuardEvents
         var source = @event.Source;
         var target = @event.Target;
 
-        CheckForBodyGuardProtect(@event, source, target);
-        CheckForBodyGuardProtectMurder(@event, source, target);
+        CheckForBodyguardProtect(@event, source, target);
+        CheckForBodyguardProtectMurder(@event, source, target);
     }
 
     [RegisterEvent]
@@ -80,47 +81,57 @@ public static class BodyGuardEvents
     {
         var victim = @event.Target;
 
-        foreach (var BodyGuard in CustomRoleUtils.GetActiveRolesOfType<BodyGuardRole>())
+        foreach (var Bodyguard in CustomRoleUtils.GetActiveRolesOfType<BodyguardRole>())
         {
-            if (victim == BodyGuard.Guarded)
+            if (victim == Bodyguard.Guarded)
             {
-                BodyGuard.Clear();
+                Bodyguard.Clear();
             }
         }
     }
 
-    private static void CheckForBodyGuardProtect(MiraCancelableEvent @event, PlayerControl source, PlayerControl target)
+    private static void CheckForBodyguardProtect(MiraCancelableEvent @event, PlayerControl source, PlayerControl target)
     {
         if (MeetingHud.Instance || ExileController.Instance)
         {
             return;
         }
 
-        if (!target.HasModifier<BodyGuardGuardedModifier>() || source == target ||
+        if (!target.HasModifier<BodyguardGuardedModifier>() || source == target ||
             (source.TryGetModifier<IndirectAttackerModifier>(out var indirect) && indirect.IgnoreShield))
+        {
+            return;
+        }
+
+        if (source.HasModifier<RuthlessModifier>())
         {
             return;
         }
 
         @event.Cancel();
 
-        var BodyGuard = target.GetModifier<BodyGuardGuardedModifier>()?.BodyGuard.GetRole<BodyGuardRole>();
+        var Bodyguard = target.GetModifier<BodyguardGuardedModifier>()?.Bodyguard.GetRole<BodyguardRole>();
 
-        if (BodyGuard != null && source.AmOwner)
+        if (Bodyguard != null && source.AmOwner)
         {
-            BodyGuardRole.RpcBodyGuardNotify(BodyGuard.Player, source, target);
+            BodyguardRole.RpcBodyguardNotify(Bodyguard.Player, source, target);
         }
     }
-    private static void CheckForBodyGuardProtectMurder(MiraCancelableEvent @event, PlayerControl source, PlayerControl target)
+    private static void CheckForBodyguardProtectMurder(MiraCancelableEvent @event, PlayerControl source, PlayerControl target)
     {
-        if (!target.HasModifier<BodyGuardGuardedModifier>() || source == target || MeetingHud.Instance || (source.TryGetModifier<IndirectAttackerModifier>(out var indirect) && indirect.IgnoreShield)) return;
+        if (!target.HasModifier<BodyguardGuardedModifier>() || source == target || MeetingHud.Instance || (source.TryGetModifier<IndirectAttackerModifier>(out var indirect) && indirect.IgnoreShield)) return;
         @event.Cancel();
 
-        var BodyGuard = target.GetModifier<BodyGuardGuardedModifier>()?.BodyGuard.GetRole<BodyGuardRole>();
-
-        if (BodyGuard != null && source.AmOwner && !BodyGuard.Player.HasDied())
+        if (source.HasModifier<RuthlessModifier>())
         {
-            BodyGuardRole.RpcBodyGuardGuardMurder(BodyGuard.Player, target, source);
+            return;
+        }
+
+        var Bodyguard = target.GetModifier<BodyguardGuardedModifier>()?.Bodyguard.GetRole<BodyguardRole>();
+
+        if (Bodyguard != null && source.AmOwner && !Bodyguard.Player.HasDied())
+        {
+            BodyguardRole.RpcBodyguardGuardMurder(Bodyguard.Player, target, source);
         }
     }
 }

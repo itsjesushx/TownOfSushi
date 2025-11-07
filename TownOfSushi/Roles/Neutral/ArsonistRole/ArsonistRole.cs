@@ -1,4 +1,4 @@
-using System.Globalization;
+
 using System.Text;
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
@@ -11,7 +11,6 @@ public sealed class ArsonistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSu
 {
     public string RoleName => "Arsonist";
     public string RoleDescription => "Douse Players And Ignite The Light";
-
     public string RoleLongDescription => "Douse players in gasoline and ignite them to win with your abilities!";
 
     public Color RoleColor => TownOfSushiColors.Arsonist;
@@ -51,7 +50,7 @@ public sealed class ArsonistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSu
             stringB.Append("\n<b>Players Doused:</b>");
             foreach (var plr in allDoused)
             {
-                stringB.Append(CultureInfo.InvariantCulture,
+                stringB.Append(TownOfSushiPlugin.Culture,
                     $"\n{Color.white.ToTextColor()}{plr.Data.PlayerName}</color>");
             }
         }
@@ -91,5 +90,15 @@ public sealed class ArsonistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSu
     public override bool DidWin(GameOverReason gameOverReason)
     {
         return WinConditionMet();
+    }
+    public override bool CanUse(IUsable usable)
+    {
+        if (!GameManager.Instance.LogicUsables.CanUse(usable, Player))
+        {
+            return false;
+        }
+
+        var console = usable.TryCast<Console>()!;
+        return console == null || console.AllowImpostor;
     }
 }

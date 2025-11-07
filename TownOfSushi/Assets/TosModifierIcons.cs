@@ -13,7 +13,7 @@ public static class TOSModifierIcons
     public static LoadableAsset<Sprite> Celebrity { get; } = new LoadableResourceAsset($"{iconPath}.Celebrity.png");
 
     // Probably should be replaced in the future for a better icon.
-    public static LoadableAsset<Sprite> Drunk { get; } = new LoadableResourceAsset($"{iconPath}.Drunk.png");
+    public static LoadableAsset<Sprite> Swapper { get; } = new LoadableResourceAsset($"{iconPath}.Swapper.png");
 
 
     public static LoadableAsset<Sprite> Diseased { get; } = new LoadableResourceAsset($"{iconPath}.Diseased.png");

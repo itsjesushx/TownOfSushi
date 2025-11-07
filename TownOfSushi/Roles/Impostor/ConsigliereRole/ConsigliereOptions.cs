@@ -16,4 +16,6 @@ public sealed class ConsigliereOptions : AbstractOptionGroup<ConsigliereRole>
 
     [ModdedToggleOption("Consigliere Can Kill With Teammate")]
     public bool ConsigliereKill { get; set; } = true;
+    [ModdedToggleOption("Consigliere Teammates Can See Role On Reveal")]
+    public bool ConsigliereShowRoleImp { get; set; } = true;
 }

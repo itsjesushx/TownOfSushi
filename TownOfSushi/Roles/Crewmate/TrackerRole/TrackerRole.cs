@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+﻿
 using System.Text;
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
@@ -41,7 +41,7 @@ public sealed class TrackerTOSRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownO
         stringB.Append("\n<b>Tracked Players:</b>");
         foreach (var plr in playerControls)
         {
-            stringB.Append(CultureInfo.InvariantCulture, $"\n{plr.Data.PlayerName}");
+            stringB.Append(TownOfSushiPlugin.Culture, $"\n{plr.Data.PlayerName}");
         }
 
         return stringB;

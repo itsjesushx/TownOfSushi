@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.ObjectModel;
-using System.Globalization;
+
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -20,6 +20,8 @@ using TownOfSushi.Modules.Wiki;
 using MiraAPI.Modifiers.Types;
 using AmongUs.Data;
 using TMPro;
+using Reactor.Utilities.Extensions;
+using BepInEx.Unity.IL2CPP.Utils;
 
 namespace TownOfSushi.Utilities;
 
@@ -46,6 +48,10 @@ public static class MiscUtils
     public static bool IsPassiveNeutral(this PlayerControl player)
     {
         return !player.HasDied() && player.Is(RoleAlignment.NeutralEvil) || player.Is(RoleAlignment.NeutralBenign);
+    }
+    public static bool IsNeutralKiller(this PlayerControl player)
+    {
+        return !player.HasDied() && player.Is(RoleAlignment.NeutralKilling);
     }
 
     public static int RealKillersAliveCount => Helpers.GetAlivePlayers().Count(x =>
@@ -105,10 +111,9 @@ public static class MiscUtils
     }
     public static string GetParsedModifierFaction(BaseModifier modifier)
     {
-        var localeName = $"{modifier.GetModifierFaction()}";
-        var localizedName = localeName;
+        var localeName = $"{modifier.GetModifierFaction().ToDisplayString()}";
 
-        return localizedName;
+        return localeName;
     }
     public static ModifierFaction GetModifierFaction(this BaseModifier mod)
     {
@@ -169,7 +174,7 @@ public static class MiscUtils
     }
     public static string GetParsedRoleAlignment(ICustomRole role, bool coloredText = false)
     {
-        var localeName = $"{role.GetRoleAlignment()}";
+        var localeName = $"{role.GetRoleAlignment().ToDisplayString()}";
         var localizedName = localeName;
 
         if (coloredText)
@@ -197,12 +202,12 @@ public static class MiscUtils
 
             localizedName += "</color>";
         }
-        
+
         return localizedName;
     }
     public static string GetParsedRoleAlignment(RoleBehaviour role, bool coloredText = false)
     {
-        var localeName = $"{role.GetRoleAlignment()}";
+        var localeName = $"{role.GetRoleAlignment().ToDisplayString()}";
         var localizedName = localeName;
 
         if (coloredText)
@@ -235,30 +240,30 @@ public static class MiscUtils
     }
     public static string GetParsedRoleAlignment(RoleAlignment roleAlignment, bool coloredText = false)
     {
-        var localeName = $"{roleAlignment}";
+        var localeName = $"{roleAlignment.ToDisplayString()}";
         var localizedName = localeName;
 
         if (coloredText)
         {
             if (localizedName.Contains("Crewmate"))
             {
-                localizedName = $" <color=#68ACF4>{localizedName}";
+                localizedName = $"<color=#68ACF4>{localizedName}";
             }
             else if (localizedName.Contains("Impostor"))
             {
-                localizedName = $" <color=#D63F42>{localizedName}";
+                localizedName = $"<color=#D63F42>{localizedName}";
             }
             else if (localizedName.Contains("Neutral"))
             {
-                localizedName = $" <color=#8A8A8A>{localizedName}";
+                localizedName = $"<color=#8A8A8A>{localizedName}";
             }
             else if (localizedName.Contains("Game"))
             {
-                localizedName = $" <color=#888888>{localizedName}";
+                localizedName = $"<color=#888888>{localizedName}";
             }
             else
             {
-                localizedName = $" <color=#FFFFFF>{localizedName}";
+                localizedName = $"<color=#FFFFFF>{localizedName}";
             }
 
             localizedName += "</color>";
@@ -356,6 +361,30 @@ public static class MiscUtils
         }
 
         return builder.ToString();
+    }
+
+    public static IEnumerator CoTextToast(string text, float delay)
+    {
+        GameObject taskOverlay = Object.Instantiate(HudManager.Instance.TaskCompleteOverlay.gameObject, HudManager.Instance.transform);
+        taskOverlay.SetActive(true);
+        taskOverlay.GetComponentInChildren<TextTranslatorTMP>().DestroyImmediate();
+        taskOverlay.GetComponentInChildren<TextMeshPro>().text = text;
+
+        yield return Effects.Slide2D(taskOverlay.transform, new Vector2(0f, -8f), Vector2.zero, 0.25f);
+
+        for (float time = 0f; time < delay; time += Time.deltaTime)
+        {
+            yield return null;
+        }
+
+        yield return Effects.Slide2D(taskOverlay.transform, Vector2.zero, new Vector2(0f, 8f), 0.25f);
+
+        taskOverlay.SetActive(true);
+        taskOverlay.Destroy();
+    }
+    public static void ShowTextToast(string text, float delay = 1.25f)
+    {
+        HudManager.Instance.StartCoroutine(CoTextToast(text, delay));
     }
 
     public static string GetRoomName(Vector3 position)
@@ -878,11 +907,25 @@ public static class MiscUtils
             foreach (var alignment in alignments)
             {
                 var roleAlignment = alignment;
-                if (customRole.RoleOptionsGroup.Name.Replace(" Roles", " ") == roleAlignment.ToDisplayString())
+                if (customRole.RoleOptionsGroup.Name.Replace(" Roles", "") == roleAlignment.ToDisplayString())
                 {
                     return roleAlignment;
                 }
             }
+        }
+        if (role.Role is RoleTypes.Tracker or RoleTypes.Detective)
+        {
+            return RoleAlignment.CrewmateInvestigative;
+        }
+
+        if (role.Role is RoleTypes.Shapeshifter or RoleTypes.Phantom)
+        {
+            return RoleAlignment.ImpostorConcealing;
+        }
+
+        if (role.Role is RoleTypes.Viper)
+        {
+            return RoleAlignment.ImpostorSupport;
         }
         if (role.IsNeutral())
         {

@@ -1,5 +1,5 @@
 ﻿﻿﻿using System.Collections;
-using System.Globalization;
+
 using HarmonyLib;
 using MiraAPI.Events;
 using System.Text;
@@ -212,6 +212,21 @@ public static class TownOfSushiEventHandlers
         exeButton.Show = false;
         jestButton.Show = false;
         phantomButton.Show = false;
+
+        if (DestroyableSingleton<HudManager>.Instance.FullScreen == null) return;
+        
+        DestroyableSingleton<HudManager>.Instance.FullScreen.gameObject.SetActive(true);
+        DestroyableSingleton<HudManager>.Instance.FullScreen.enabled = true;
+        var color = Color.black;
+
+        DestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(0.8f, new Action<float>((p) =>
+        {
+            DestroyableSingleton<HudManager>.Instance.FullScreen.color = new Color(color.r, color.g, color.b, Mathf.Clamp01(1 - p));
+            if (p == 1)
+            {
+                DestroyableSingleton<HudManager>.Instance.FullScreen.enabled = false;
+            }
+        })));
     }
     
     [RegisterEvent]
@@ -225,10 +240,10 @@ public static class TownOfSushiEventHandlers
         if (FirstDeadPatch.PlayerNames.Count > 0)
         {
             var stringB = new StringBuilder();
-            stringB.Append(CultureInfo.InvariantCulture, $"List Of Players That Died In Order: ");
+            stringB.Append(TownOfSushiPlugin.Culture, $"List Of Players That Died In Order: ");
             foreach (var playername in FirstDeadPatch.PlayerNames)
             {
-                stringB.Append(CultureInfo.InvariantCulture, $"{playername}, ");
+                stringB.Append(TownOfSushiPlugin.Culture, $"{playername}, ");
             }
             
             stringB = stringB.Remove(stringB.Length - 2, 2);

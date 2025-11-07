@@ -97,7 +97,8 @@ public sealed class SecurityButton : TownOfSushiButton
     {
         return Timer <= 0 && !EffectActive && AvailableCharge > 0f &&
                !PlayerControl.LocalPlayer.HasModifier<DisabledModifier>() &&
-               !PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>();
+               !MeetingHud.Instance && !ExileController.Instance // for some reason you can open security during meetings or exiles
+               && !PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>();
     }
 
     public override void ClickHandler()

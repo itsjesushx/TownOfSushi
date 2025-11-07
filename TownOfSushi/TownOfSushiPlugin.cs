@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+﻿
 using System.Reflection;
 using BepInEx;
 using BepInEx.Configuration;
@@ -11,6 +11,7 @@ using Reactor;
 using Reactor.Localization;
 using Reactor.Networking;
 using Reactor.Networking.Attributes;
+using TownOfSushi.Modules;
 using TownOfSushi.Modules.Debugger.Components;
 using TownOfSushi.Patches.Misc;
 using static TownOfSushi.Modules.Debugger.Embedded.ReactorCoroutines.Coroutines;
@@ -83,6 +84,7 @@ public partial class TownOfSushiPlugin : BasePlugin, IMiraPlugin
         ClassInjector.RegisterTypeInIl2Cpp<Component>();
         AddComponent<Component>();
         Debugger = AddComponent<Debugger>();
+        AddComponent<ModUpdateBehaviour>();
 
         GameSummaryMode = Config.Bind("LocalSettings", "GameSummaryMode", 1,
             "How the Game Summary appears in the Win Screen. 0 is to the left, 1 is split, and 2 is hidden.");

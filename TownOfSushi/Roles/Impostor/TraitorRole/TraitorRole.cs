@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using Il2CppInterop.Runtime.Attributes;
+using MiraAPI.Hud;
 using UnityEngine;
 
 namespace TownOfSushi.Roles.Impostor;
@@ -20,6 +21,18 @@ public sealed class TraitorRole(IntPtr cppPtr)
     public Color RoleColor => TownOfSushiColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorPower;
+     public override void Initialize(PlayerControl player)
+    {
+        MiraAPI.Patches.Stubs.RoleBehaviourStubs.Initialize(this, player);
+        if (Player.AmOwner)
+        {
+            foreach (var button in CustomButtonManager.Buttons.Where(x => x.Enabled(PlayerControl.LocalPlayer.Data.Role)))
+            {
+                button.SetTimer(button.Cooldown);
+            }
+            Player.SetKillTimer(Player.GetKillCooldown());
+        }
+    }
 
     public CustomRoleConfiguration Configuration => new(this)
     {

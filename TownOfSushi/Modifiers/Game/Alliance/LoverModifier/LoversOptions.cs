@@ -18,7 +18,7 @@ public sealed class LoversOptions : AbstractOptionGroup<LoverModifier>
         Visible = () => OptionGroupSingleton<LoversOptions>.Instance.LoversChance > 0
     };
 
-    public ModdedNumberOption LovingImpPercent { get; } = new("Evil Lover Probability", 0f, 100f, 10f, 10f, MiraNumberSuffixes.Percent)
+    public ModdedNumberOption LovingImpPercent { get; } = new("Evil Lover Probability", 50f, 0, 100f, 10f, MiraNumberSuffixes.Percent)
     {
         Visible = () => OptionGroupSingleton<LoversOptions>.Instance.LoversChance > 0
     };

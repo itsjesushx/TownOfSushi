@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Immutable;
-using System.Globalization;
+
 using System.Reflection;
 using System.Text.Json;
 using AmongUs.Data;
@@ -122,7 +122,7 @@ public static class ModNewsFetcher
                     ? newsElement.GetProperty("Date").GetString()!
                     : "Unknown Date";
                 var numberString = newsElement.GetProperty("Number").GetString();
-                var number = numberString != null ? int.Parse(numberString, CultureInfo.InvariantCulture) : 0;
+                var number = numberString != null ? int.Parse(numberString, TownOfSushiPlugin.Culture) : 0;
                 var shortTitle = numberString != null && newsElement.GetProperty("ShortTitle").GetString() != null
                     ? newsElement.GetProperty("ShortTitle").GetString()!
                     : "No Short Title";
@@ -185,7 +185,7 @@ public static class ModNewsFetcher
                 ? newsElement.GetProperty("Date").GetString()!
                 : "Unknown Date";
             var numberString = newsElement.GetProperty("Number").GetString();
-            var number = numberString != null ? int.Parse(numberString, CultureInfo.InvariantCulture) : 0;
+            var number = numberString != null ? int.Parse(numberString, TownOfSushiPlugin.Culture) : 0;
             var shortTitle = numberString != null && newsElement.GetProperty("ShortTitle").GetString() != null
                 ? newsElement.GetProperty("ShortTitle").GetString()!
                 : "No Short Title";
@@ -220,8 +220,8 @@ public static class ModNewsFetcher
 
             var finalAllNews = AllModNews.Select(n => n.ToAnnouncement()).ToList();
             finalAllNews.AddRange(aRange.Where(news => AllModNews.All(x => x.Number != news.Number)));
-            finalAllNews.Sort((a1, a2) => DateTime.Compare(DateTime.Parse(a2.Date, CultureInfo.InvariantCulture),
-                DateTime.Parse(a1.Date, CultureInfo.InvariantCulture)));
+            finalAllNews.Sort((a1, a2) => DateTime.Compare(DateTime.Parse(a2.Date, TownOfSushiPlugin.Culture),
+                DateTime.Parse(a1.Date, TownOfSushiPlugin.Culture)));
 
             aRange = new Il2CppReferenceArray<Announcement>(finalAllNews.Count);
 

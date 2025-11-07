@@ -165,8 +165,7 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
 
         foreach (var player in players.SelectMany(_ => players))
         {
-            if (player.IsImpostor() || (player.Is(RoleAlignment.NeutralKilling) &&
-                                        OptionGroupSingleton<LoversOptions>.Instance.NeutralLovers))
+            if (player.IsImpostor() || player.Is(RoleAlignment.NeutralKilling))
             {
                 impostors.Add(player);
             }

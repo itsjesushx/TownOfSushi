@@ -8,19 +8,19 @@ using UnityEngine;
 
 namespace TownOfSushi.Roles.Crewmate;
 
-public sealed class BodyGuardGuardedModifier(PlayerControl BodyGuard) : BaseShieldModifier
+public sealed class BodyguardGuardedModifier(PlayerControl Bodyguard) : BaseShieldModifier
 {
     public override string ModifierName => "Guarded";
-    public override LoadableAsset<Sprite>? ModifierIcon => TOSRoleIcons.BodyGuard;
-    public override string ShieldDescription => "You are protected by a BodyGuard!\nNo one can interact with you.";
+    public override LoadableAsset<Sprite>? ModifierIcon => TOSRoleIcons.Bodyguard;
+    public override string ShieldDescription => "You are protected by a Bodyguard!\nNo one can interact with you.";
     public bool ShowFort { get; set; }
 
     public override bool HideOnUi
     {
         get
         {
-            var showFort = OptionGroupSingleton<BodyGuardOptions>.Instance.ShowGuarded;
-            return !LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.ShowShieldHudToggle.Value || showFort is BGProtectOptions.BodyGuard;
+            var showFort = OptionGroupSingleton<BodyguardOptions>.Instance.ShowGuarded;
+            return !LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.ShowShieldHudToggle.Value || showFort is BGProtectOptions.Bodyguard;
         }
     }
 
@@ -28,36 +28,36 @@ public sealed class BodyGuardGuardedModifier(PlayerControl BodyGuard) : BaseShie
     {
         get
         {
-            var show = OptionGroupSingleton<BodyGuardOptions>.Instance.ShowGuarded;
+            var show = OptionGroupSingleton<BodyguardOptions>.Instance.ShowGuarded;
             var showShieldedEveryone = show == BGProtectOptions.Everyone;
             var showShieldedSelf = PlayerControl.LocalPlayer.PlayerId == Player.PlayerId &&
-                                   show is BGProtectOptions.Self or BGProtectOptions.SelfAndBodyGuard;
+                                   show is BGProtectOptions.Self or BGProtectOptions.SelfAndBodyguard;
             return showShieldedSelf || showShieldedEveryone;
         }
     }
 
-    public PlayerControl BodyGuard { get; } = BodyGuard;
+    public PlayerControl Bodyguard { get; } = Bodyguard;
 
     public override void OnActivate()
     {
         base.OnActivate();
-        var TOSAbilityEvent = new TOSAbilityEvent(AbilityType.BodyGuardProtect, BodyGuard, Player);
+        var TOSAbilityEvent = new TOSAbilityEvent(AbilityType.BodyguardProtect, Bodyguard, Player);
         MiraEventManager.InvokeEvent(TOSAbilityEvent);
         
         var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
-        var show = OptionGroupSingleton<BodyGuardOptions>.Instance.ShowGuarded;
+        var show = OptionGroupSingleton<BodyguardOptions>.Instance.ShowGuarded;
 
         var showShieldedEveryone = show == BGProtectOptions.Everyone;
         var showShieldedSelf = PlayerControl.LocalPlayer.PlayerId == Player.PlayerId &&
-                               show is BGProtectOptions.Self or BGProtectOptions.SelfAndBodyGuard;
-        var showShieldedBodyGuard = PlayerControl.LocalPlayer.PlayerId == BodyGuard.PlayerId &&
-                                 show is BGProtectOptions.BodyGuard or BGProtectOptions.SelfAndBodyGuard;
+                               show is BGProtectOptions.Self or BGProtectOptions.SelfAndBodyguard;
+        var showShieldedBodyguard = PlayerControl.LocalPlayer.PlayerId == Bodyguard.PlayerId &&
+                                 show is BGProtectOptions.Bodyguard or BGProtectOptions.SelfAndBodyguard;
 
         var body = UnityEngine.Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x =>
             x.ParentId == PlayerControl.LocalPlayer.PlayerId && !TutorialManager.InstanceExists);
         var fakePlayer = FakePlayer.FakePlayers.FirstOrDefault(x =>
             x.PlayerId == PlayerControl.LocalPlayer.PlayerId && !TutorialManager.InstanceExists);
         
-        ShowFort = showShieldedEveryone || showShieldedSelf || showShieldedBodyGuard || (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body);
+        ShowFort = showShieldedEveryone || showShieldedSelf || showShieldedBodyguard || (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body);
     }
 }
