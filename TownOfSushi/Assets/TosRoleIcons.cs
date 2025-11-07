@@ -11,7 +11,6 @@ public static class TOSRoleIcons
     public static LoadableAsset<Sprite> Inspector { get; } = new LoadableResourceAsset($"{iconPath}.Inspector.png");
     public static LoadableAsset<Sprite> Bodyguard { get; } = new LoadableResourceAsset($"{iconPath}.Bodyguard.png");
     public static LoadableAsset<Sprite> Haunter { get; } = new LoadableResourceAsset($"{iconPath}.Haunter.png");
-
     public static LoadableAsset<Sprite> Warlock { get; } = new LoadableResourceAsset($"{iconPath}.Warlock.png");
 
     public static LoadableAsset<Sprite> Investigator { get; } =

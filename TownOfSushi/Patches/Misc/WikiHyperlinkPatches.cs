@@ -4,8 +4,8 @@ using HarmonyLib;
 using MiraAPI.Modifiers.Types;
 using UnityEngine;
 using TMPro;
-using TownOfSushi.Modules.Components;
 using TownOfSushi.Modules.Wiki;
+using TownOfUs.Modules.Components;
 
 namespace TownOfSushi.Patches.Misc;
 

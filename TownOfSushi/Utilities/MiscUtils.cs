@@ -22,6 +22,7 @@ using AmongUs.Data;
 using TMPro;
 using Reactor.Utilities.Extensions;
 using BepInEx.Unity.IL2CPP.Utils;
+using TownOfSushi.Patches.Misc;
 
 namespace TownOfSushi.Utilities;
 
@@ -617,6 +618,7 @@ public static class MiscUtils
         pooledBubble.votedMark.enabled = false;
         pooledBubble.Xmark.enabled = false;
         pooledBubble.TextArea.text = message;
+        pooledBubble.TextArea.text = WikiHyperLinkPatches.CheckForTags(message, pooledBubble.TextArea);
         pooledBubble.TextArea.ForceMeshUpdate(true, true);
         pooledBubble.Background.size = new Vector2(5.52f,
             0.2f + pooledBubble.NameText.GetNotDumbRenderedHeight() + pooledBubble.TextArea.GetNotDumbRenderedHeight());

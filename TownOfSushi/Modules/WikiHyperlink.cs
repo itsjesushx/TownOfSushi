@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 using TownOfSushi.Modules.Wiki;
 
-namespace TownOfSushi.Modules.Components;
+namespace TownOfUs.Modules.Components;
 
 [RegisterInIl2Cpp]
 public class WikiHyperlink(IntPtr cppPtr) : MonoBehaviour(cppPtr)

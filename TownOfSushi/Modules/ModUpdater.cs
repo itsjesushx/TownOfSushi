@@ -1,13 +1,9 @@
 using System.Collections;
-using System.Reflection;
 using AmongUs.Data;
 using Assets.InnerNet;
 using BepInEx;
-using BepInEx.Bootstrap;
-using BepInEx.Unity.IL2CPP;
 using BepInEx.Unity.IL2CPP.Utils;
 using Il2CppInterop.Runtime.Attributes;
-using Mono.Cecil;
 using Newtonsoft.Json.Linq;
 using Reactor.Utilities;
 using Twitch;
@@ -23,7 +19,6 @@ namespace TownOfSushi.Modules
 
     public class ModUpdateBehaviour : MonoBehaviour
     {
-        public static readonly bool CheckForSubmergedUpdates = true;
         public static bool showPopUp = true;
         public static bool updateInProgress;
 
@@ -51,10 +46,9 @@ namespace TownOfSushi.Modules
         }
 
         public UpdateData TOSUpdate;
-        public UpdateData SubmergedUpdate;
 
         [HideFromIl2Cpp]
-        public UpdateData RequiredUpdateData => TOSUpdate ?? SubmergedUpdate;
+        public UpdateData RequiredUpdateData => TOSUpdate;
 
         public void Awake() {
             if (Instance) Destroy(this);
@@ -90,26 +84,21 @@ namespace TownOfSushi.Modules
 
             var text = button.transform.GetComponentInChildren<TMPro.TMP_Text>();
             string t = "Update Town of Sushi";
-            if (TOSUpdate is null && SubmergedUpdate is not null) t = ModCompatibility.IsSubmerged() ? $"Update Submerged" : $"Download Submerged";
-
             StartCoroutine(Effects.Lerp(0.1f, (System.Action<float>)(p => text.SetText(t))));
             passiveButton.OnMouseOut.AddListener((Action)(() => text.color = Color.cyan));
             passiveButton.OnMouseOver.AddListener((Action)(() => text.color = Color.cyan));
 
-            var isSubmerged = TOSUpdate == null;
-            var announcement = $"<size=150%>A new {(isSubmerged ? "Submerged" : "Town of Sushi")} update to {(isSubmerged ? SubmergedUpdate.Tag : TOSUpdate.Tag)} is available</size>\n{(isSubmerged ? SubmergedUpdate.Content : TOSUpdate.Content)}";
+            var announcement = $"<size=150%>A new Town of Sushi update to {TOSUpdate.Tag} is available</size>\n{TOSUpdate.Content}";
             var mgr = FindObjectOfType<MainMenuManager>(true);            
-
-            if (isSubmerged && !ModCompatibility.IsSubmerged()) showPopUp = false;
-            if (showPopUp) mgr.StartCoroutine(CoShowAnnouncement(announcement, shortTitle: isSubmerged ? "Submerged Update" : "Town of Sushi Update", date: isSubmerged ? SubmergedUpdate.TimeString : TOSUpdate.TimeString));
+            if (showPopUp) mgr.StartCoroutine(CoShowAnnouncement(announcement, shortTitle: "Town of Sushi Update", date: TOSUpdate.TimeString));
             showPopUp = false;
         }
 
         [HideFromIl2Cpp]
-        public IEnumerator CoUpdate() {
+        public IEnumerator CoUpdate() 
+        {
             updateInProgress = true;
-            var isSubmerged = TOSUpdate is null;
-            var updateName = isSubmerged ? "Submerged" : "Town of Sushi";
+            var updateName = "Town of Sushi";
 
             var popup = Instantiate(TwitchManager.Instance.TwitchPopup);
             popup.TextAreaTMP.fontSize *= 0.7f;
@@ -178,15 +167,6 @@ namespace TownOfSushi.Modules
             {
                 Instance.TOSUpdate = TOSUpdateCheck.Result;
             }
-            if (CheckForSubmergedUpdates) 
-            {
-                var submergedUpdateCheck = Task.Run(() => GetGithubUpdate("SubmergedAmongUs", "Submerged"));
-                while (!submergedUpdateCheck.IsCompleted) yield return null;
-                if (submergedUpdateCheck.Result != null && (!ModCompatibility.IsSubmerged() || submergedUpdateCheck.Result.IsNewer(ModCompatibility.SubVersion))) 
-                {
-                    Instance.SubmergedUpdate = submergedUpdateCheck.Result;
-                }
-            }
             Instance.OnSceneLoaded(SceneManager.GetActiveScene(), LoadSceneMode.Single);
         }
 
@@ -211,36 +191,10 @@ namespace TownOfSushi.Modules
             }
         }
 
-        private bool TryUpdateSubmergedInternally() {
-            if (SubmergedUpdate == null) return false;
-            try {
-                if (!ModCompatibility.IsSubmerged()) return false;
-                var thisAsm = Assembly.GetCallingAssembly();
-                var resourceName = thisAsm.GetManifestResourceNames().FirstOrDefault(s => s.EndsWith("Submerged.dll"));
-                if (resourceName == default) return false;
-
-                using var submergedStream = thisAsm.GetManifestResourceStream(resourceName)!;
-                var asmDef = AssemblyDefinition.ReadAssembly(submergedStream, TypeLoader.ReaderParameters);
-                var pluginType = asmDef.MainModule.Types.FirstOrDefault(t => t.IsSubtypeOf(typeof(BasePlugin)));
-                var info = IL2CPPChainloader.ToPluginInfo(pluginType, "");
-                if (SubmergedUpdate.IsNewer(info.Metadata.Version)) return false;
-                File.Delete(ModCompatibility.SubAssembly.Location);
-
-            }
-            catch (Exception e) 
-            {
-                Logger<TownOfSushiPlugin>.Error(e);
-                return false;
-            }
-            return true;
-        }
-
 
         [HideFromIl2Cpp]
         public async Task<bool> DownloadUpdate() {
-            var isSubmerged = TOSUpdate is null;
-            if (isSubmerged && TryUpdateSubmergedInternally()) return true;
-            var data = isSubmerged ? SubmergedUpdate : TOSUpdate;
+            var data = TOSUpdate;
 
             var client = new HttpClient();
             client.DefaultRequestHeaders.Add("User-Agent", "Town of Sushi Updater");
@@ -264,7 +218,7 @@ namespace TownOfSushi.Modules
             if (downloadURI.Length == 0) return false;
 
             var res = await client.GetAsync(downloadURI, HttpCompletionOption.ResponseContentRead);
-            string filePath = Path.Combine(Paths.PluginPath, isSubmerged ? "Submerged.dll" : "TownOfSushi.dll");
+            string filePath = Path.Combine(Paths.PluginPath, "TownOfSushi.dll");
             if (File.Exists(filePath + ".old")) File.Delete(filePath + ".old");
             if (File.Exists(filePath)) File.Move(filePath, filePath + ".old");
 
