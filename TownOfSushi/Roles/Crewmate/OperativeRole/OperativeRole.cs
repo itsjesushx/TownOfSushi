@@ -18,7 +18,7 @@ public sealed class OperativeRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
     public CustomRoleConfiguration Configuration => new(this)
     {
         Icon = TOSRoleIcons.Operative,
-        IntroSound = TOSAudio.TrackerActivateSound
+        IntroSound = TOSAudio.SonarActivateSound
     };
 
     [HideFromIl2Cpp]

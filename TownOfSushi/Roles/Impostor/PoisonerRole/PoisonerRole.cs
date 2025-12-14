@@ -13,7 +13,7 @@ namespace TownOfSushi.Roles.Impostor;
 public sealed class PoisonerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue
 {
     public string RoleName => "Poisoner";
-    public string RoleDescription => "Poison other players and kill them after some seconds.";
+    public string RoleDescription => "Poison a player to kill them after a few seconds";
     public string RoleLongDescription => "Poison other players to let them die after a few seconds.";
     public MysticClueType MysticHintType => MysticClueType.Relentless;
     public Color RoleColor => TownOfSushiColors.Impostor;
@@ -45,6 +45,15 @@ public sealed class PoisonerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfS
             Logger<TownOfSushiPlugin>.Error("RpcMurderPoisonedPlayer - Invalid Poisoner/Poisoned");
             return;
         }
+        if (target.IsProtected())
+        {
+            var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.ImpSoft,
+            $"<b>{target.Data.PlayerName} is protected and survived the poison.</b>"),
+            Color.white, spr: TOSImpAssets.PoisonSprite.LoadAsset());            
+            notif1.AdjustNotification();
+            target.RemoveModifier<PoisonerPoisonedModifier>();
+            return;
+        }
 
         if (target != null && !target.Data.IsDead && source.AmOwner)
         {
@@ -52,18 +61,14 @@ public sealed class PoisonerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfS
             {
                 var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.ImpSoft,
                 $"<b>{target.Data.PlayerName} was protected because of their armour!.</b>"),
-                Color.white, spr: TOSImpAssets.PoisonSprite.LoadAsset());
-
-                
+                Color.white, spr: TOSImpAssets.PoisonSprite.LoadAsset());                
                 notif1.AdjustNotification();
             }
             else
             {
                 var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.ImpSoft,
                 $"<b>{target.Data.PlayerName}, has been successfully poisoned. They are dead.</b>"),
-                Color.white, spr: TOSImpAssets.PoisonSprite.LoadAsset());
-
-                
+                Color.white, spr: TOSImpAssets.PoisonSprite.LoadAsset());                
                 notif1.AdjustNotification();
             }
             source.RpcCustomMurder(target, teleportMurderer: false);

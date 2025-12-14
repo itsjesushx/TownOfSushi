@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace TownOfSushi.Roles.Neutral;
 
-public sealed class RomanticRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue
+public sealed class RomanticRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushiRole, IMysticClue, IWikiDiscoverable
 {
     public string RoleName => "Romantic";
     public string RoleDescription => TargetString();
@@ -110,7 +110,7 @@ public sealed class RomanticRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSu
         return romMod.Player.Data.Role.DidWin(gameOverReason) || romMod.Player.GetModifiers<GameModifier>().Any(x => x.DidWin(gameOverReason) == true);
     }
 
-    public static bool RomamticSeesRoleVisibilityFlag(PlayerControl player)
+    public static bool RomanticSeesRoleVisibilityFlag(PlayerControl player)
     {
         var romKnowsTargetRole = OptionGroupSingleton<RomanticOptions>.Instance.RomanticKnowsTargetRole &&
         PlayerControl.LocalPlayer.IsRole<RomanticRole>() &&
@@ -121,19 +121,18 @@ public sealed class RomanticRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSu
 
         return romTargetKnows || romKnowsTargetRole;
     }
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities { get; } =
+    [
+        new("Protect",
+            "Protect your beloved from getting killed.",
+            TOSNeutAssets.ProtectSprite)
+    ];
 
     public string GetAdvancedDescription()
     {
-        return "The Romantic is a Neutral Benign role that can pick a target to be their beloved, once they gain a beloved they get a protect button that works like a Guardian Angel protect button. If the beloved wins, so does the Romantic." + MiscUtils.AppendOptionsText(GetType());
+        return
+            "The Romantic is a Neutral Benign that needs to protect their beloved from dying. The Romantic is the one that chooses their lover." +
+            MiscUtils.AppendOptionsText(GetType());
     }
-
-    [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } = [
-        new("Protect",
-            "Protect your beloved from attacks",
-            TOSNeutAssets.RomanticPick),
-        new("Pick",
-            "Create a beloved in order to get a win condition",
-            TOSNeutAssets.RomanticProtect)
-    ];
 }

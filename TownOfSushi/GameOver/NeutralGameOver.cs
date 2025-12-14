@@ -23,7 +23,7 @@ public sealed class NeutralGameOver : CustomGameOver
 
         Logger<TownOfSushiPlugin>.Error($"VerifyCondition - mainRole: '{mainRole.NiceName}', IsDead: '{role.IsDead}'");
 
-        if (role.IsDead && role is not PhantomTOSRole or HaunterRole)
+        if (role.IsDead && role is not SpectreRole or HaunterRole)
         {
             mainRole = role.Player.GetRoleWhenAlive();
 

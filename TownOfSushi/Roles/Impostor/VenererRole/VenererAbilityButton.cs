@@ -37,11 +37,10 @@ public sealed class VenererAbilityButton : TownOfSushiRoleButton<VenererRole>, I
 
         if (ability != VenererAbility.None && PlayerControl.LocalPlayer.Data.Role is VenererRole)
         {
-            var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.ImpSoft,
-                $"<b>You have unlocked the {ability.ToString()} ability for getting a kill. {(EffectActive ? "You must wait until your current ability is over." : string.Empty)}</b>"),
-                Color.white, spr: TOSRoleIcons.Venerer.LoadAsset());
+            var notif1 = Helpers.CreateAndShowNotification(
+                $"<b>{TownOfSushiColors.ImpSoft.ToTextColor()}You have unlocked the {ability.ToString()} ability for getting a kill. {(EffectActive ? "You must wait until your current ability is over." : string.Empty)}</color></b>",
+                Color.white, new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Venerer.LoadAsset());
 
-            
             notif1.AdjustNotification();
         }
 
@@ -103,6 +102,11 @@ public sealed class VenererAbilityButton : TownOfSushiRoleButton<VenererRole>, I
 
         UpdateButton(_queuedAbility);
         _queuedAbility = VenererAbility.None;
+    }
+    
+    public void AftermathHandler()
+    {
+        ClickHandler();
     }
 
     protected override void OnClick()

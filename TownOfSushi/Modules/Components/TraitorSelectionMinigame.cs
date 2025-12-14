@@ -3,14 +3,10 @@ using System.Diagnostics.CodeAnalysis;
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.Patches.Stubs;
-
-
 using Reactor.Utilities;
 using Reactor.Utilities.Attributes;
 using Reactor.Utilities.Extensions;
 using TMPro;
-
-
 using TownOfSushi;
 using UnityEngine;
 using UnityEngine.Events;

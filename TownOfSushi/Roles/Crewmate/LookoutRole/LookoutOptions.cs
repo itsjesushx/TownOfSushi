@@ -10,14 +10,11 @@ public sealed class LookoutOptions : AbstractOptionGroup<LookoutRole>
     [ModdedNumberOption("Watch Cooldown", 1f, 30f, 1f, MiraNumberSuffixes.Seconds)]
     public float WatchCooldown { get; set; } = 20f;
 
-    [ModdedNumberOption("Max Players That Can Be Watched", 1f, 15f, 1f, MiraNumberSuffixes.None, "0")]
-    public float MaxWatches { get; set; } = 5;
+    [ModdedNumberOption("Watch Duration", 3f, 10f, 1f, MiraNumberSuffixes.Seconds)]
+    public float WatchDuration { get; set; } = 5f;
 
-    [ModdedToggleOption("Lookout Watches Reset After Each Round")]
-    public bool LoResetOnNewRound { get; set; } = true;
-
-    public ModdedToggleOption TaskUses { get; } = new("Get More Uses From Completing Tasks", false)
-    {
-        Visible = () => !OptionGroupSingleton<LookoutOptions>.Instance.LoResetOnNewRound
-    };
+    [ModdedToggleOption("Get More Uses From Completing Tasks")]
+    public bool TaskUses { get; set; } = false;
+    [ModdedNumberOption("Max Number Of Watches", 1f, 15f, 1f, MiraNumberSuffixes.None, "0")]
+    public float MaxWatches { get; set; } = 5f;
 }

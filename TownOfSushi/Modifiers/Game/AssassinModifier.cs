@@ -161,8 +161,24 @@ public abstract class AssassinModifier : ExcludedGameModifier
                 return;
             }
 
-            Player.RpcCustomMurder(victim, createDeadBody: false, teleportMurderer: false, showKillAnim: false,
+            if (victim.IsProtected() && OptionGroupSingleton<AssassinOptions>.Instance.CantGuessProtectedPlayer)
+            {
+                Coroutines.Start(MiscUtils.CoFlash(TownOfSushiColors.Impostor));
+
+                var notif1 = Helpers.CreateAndShowNotification(
+                    MiscUtils.ColorString(TownOfSushiColors.ImpSoft, $"<b>{victim.cosmetics.nameText} is Protected. You cannot guess them until their protector dies!</b>"),
+                    Color.white, spr: TOSRoleIcons.Medic.LoadAsset());
+                notif1.AdjustNotification();
+
+                meetingMenu?.HideButtons();
+                shapeMenu.Close();
+                return;
+            }
+            else
+            {
+                Player.RpcCustomMurder(victim, createDeadBody: false, teleportMurderer: false, showKillAnim: false,
                 playKillSound: false);
+            }
 
             if (Player.Data.Role is ThiefRole && OptionGroupSingleton<ThiefOptions>.Instance.GuessToSteal)
             {

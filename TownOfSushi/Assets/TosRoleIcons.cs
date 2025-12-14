@@ -18,9 +18,9 @@ public static class TOSRoleIcons
 
     public static LoadableAsset<Sprite> Lookout { get; } = new LoadableResourceAsset($"{iconPath}.Lookout.png");
     public static LoadableAsset<Sprite> Mystic { get; } = new LoadableResourceAsset($"{iconPath}.Mystic.png");
-    public static LoadableAsset<Sprite> Detective { get; } = new LoadableResourceAsset($"{iconPath}.Detective.png");
+    public static LoadableAsset<Sprite> Seer { get; } = new LoadableResourceAsset($"{iconPath}.Seer.png");
     public static LoadableAsset<Sprite> Administrator { get; } = new LoadableResourceAsset($"{iconPath}.Administrator.png");
-    public static LoadableAsset<Sprite> Tracker { get; } = new LoadableResourceAsset($"{iconPath}.Tracker.png");
+    public static LoadableAsset<Sprite> Sonar { get; } = new LoadableResourceAsset($"{iconPath}.Sonar.png");
     public static LoadableAsset<Sprite> Trapper { get; } = new LoadableResourceAsset($"{iconPath}.Trapper.png");
 
     public static LoadableAsset<Sprite> Deputy { get; } = new LoadableResourceAsset($"{iconPath}.Deputy.png");
@@ -46,15 +46,14 @@ public static class TOSRoleIcons
     public static LoadableAsset<Sprite> Operative { get; } = new LoadableResourceAsset($"{iconPath}.Operative.png");
     public static LoadableAsset<Sprite> Transporter { get; } = new LoadableResourceAsset($"{iconPath}.Transporter.png");
 
-    public static LoadableAsset<Sprite> Amnesiac { get; } = new LoadableResourceAsset($"{iconPath}.Amnesiac.png");
+    public static LoadableAsset<Sprite> Informant { get; } = new LoadableResourceAsset($"{iconPath}.Informant.png");
 
-    public static LoadableAsset<Sprite> GuardianAngel { get; } =
-        new LoadableResourceAsset($"{iconPath}.GuardianAngel.png");
+    public static LoadableAsset<Sprite> Amnesiac { get; } = new LoadableResourceAsset($"{iconPath}.Amnesiac.png");
     
     public static LoadableAsset<Sprite> Executioner { get; } = new LoadableResourceAsset($"{iconPath}.Executioner.png");
     public static LoadableAsset<Sprite> Inquisitor { get; } = new LoadableResourceAsset($"{iconPath}.Inquisitor.png");
     public static LoadableAsset<Sprite> Jester { get; } = new LoadableResourceAsset($"{iconPath}.Jester.png");
-    public static LoadableAsset<Sprite> Phantom { get; } = new LoadableResourceAsset($"{iconPath}.Phantom.png");
+    public static LoadableAsset<Sprite> Spectre { get; } = new LoadableResourceAsset($"{iconPath}.Spectre.png");
 
     public static LoadableAsset<Sprite> Pyromaniac { get; } = new LoadableResourceAsset($"{iconPath}.Pyromaniac.png");
     public static LoadableAsset<Sprite> Glitch { get; } = new LoadableResourceAsset($"{iconPath}.Glitch.png");
@@ -67,14 +66,9 @@ public static class TOSRoleIcons
 
     public static LoadableAsset<Sprite> Consigliere { get; } = new LoadableResourceAsset($"{iconPath}.Consigliere.png");
 
-    public static LoadableAsset<Sprite> SoulCollector { get; } =
-        new LoadableResourceAsset($"{iconPath}.SoulCollector.png");
-
     public static LoadableAsset<Sprite> Vampire { get; } = new LoadableResourceAsset($"{iconPath}.Vampire.png");
     public static LoadableAsset<Sprite> Predator { get; } = new LoadableResourceAsset($"{iconPath}.Predator.png");
     public static LoadableAsset<Sprite> Werewolf { get; } = new LoadableResourceAsset($"{iconPath}.Werewolf.png");
-
-    public static LoadableAsset<Sprite> Ambassador { get; } = new LoadableBundleAsset<Sprite>("Ambassador", TOSAssets.MainBundle);
 
     public static LoadableAsset<Sprite> Thief { get; } = new LoadableResourceAsset($"{iconPath}.Thief.png");
 
@@ -86,7 +80,6 @@ public static class TOSRoleIcons
     public static LoadableAsset<Sprite> Morphling { get; } = new LoadableResourceAsset($"{iconPath}.Morphling.png");
     public static LoadableAsset<Sprite> Swooper { get; } = new LoadableResourceAsset($"{iconPath}.Swooper.png");
     public static LoadableAsset<Sprite> Venerer { get; } = new LoadableResourceAsset($"{iconPath}.Venerer.png");
-    public static LoadableAsset<Sprite> Ambusher { get; } = new LoadableResourceAsset($"{iconPath}.Ambusher.png");
 
     public static LoadableAsset<Sprite> Bomber { get; } = new LoadableResourceAsset($"{iconPath}.Bomber.png");
     public static LoadableAsset<Sprite> BountyHunter { get; } = new LoadableResourceAsset($"{iconPath}.BountyHunter.png");

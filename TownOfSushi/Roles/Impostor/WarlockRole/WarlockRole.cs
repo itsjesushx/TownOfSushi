@@ -17,7 +17,7 @@ public sealed class WarlockRole(IntPtr cppPtr)
 {
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<TransporterRole>());
     public string RoleName => "Warlock";
-    public string RoleDescription => "Curse Someone To Make Them Kill Someone Else";
+    public string RoleDescription => "Curse someone to make them kill someone else";
     public string RoleLongDescription => "Curse a player and force them to kill for you.";
     public MysticClueType MysticHintType => MysticClueType.Fearmonger;
     public Color RoleColor => TownOfSushiColors.Impostor;
@@ -79,6 +79,8 @@ public sealed class WarlockRole(IntPtr cppPtr)
         if (player.Data.Role is not WarlockRole warlock) return;
         if (target == null || target.IsProtected() || target.HasDied()) return;
 
+        player.RpcAddModifier<IndirectAttackerModifier>(false);
+
         // IsProtected() doesn't cover fortify because interactions against fortified players depend on the intentions
         if (target.HasModifier<CrusaderFortifiedModifier>())
         {
@@ -86,7 +88,7 @@ public sealed class WarlockRole(IntPtr cppPtr)
             if (player.AmOwner)
             {
                 var notif2 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Crusader,
-                $"<b>{player.Data.PlayerName} has tried to kill {target.Data.PlayerName}, but they are fortified! Your murder attempt backfired.</b>"),
+                $"<b>{source.Data.PlayerName} has tried to kill {target.Data.PlayerName}, but they are fortified! Your murder attempt backfired.</b>"),
                 Color.white, spr: TOSRoleIcons.Crusader.LoadAsset());
                 
                 notif2.AdjustNotification();
@@ -99,7 +101,7 @@ public sealed class WarlockRole(IntPtr cppPtr)
         if (player.AmOwner)
         {
             var notif3 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.ImpSoft,
-            $"<b>{player.Data.PlayerName} has killed {target.Data.PlayerName}.</b>"),
+            $"<b>{source.Data.PlayerName} has killed {target.Data.PlayerName}.</b>"),
             Color.white, spr: TOSRoleIcons.Warlock.LoadAsset());
             notif3.AdjustNotification();
         }
@@ -124,6 +126,7 @@ public sealed class WarlockRole(IntPtr cppPtr)
         // Reset state
         player.SetKillTimer(player.GetKillCooldown());
         source.RemoveModifier<WarlockCursedModifier>();
+        player.RpcRemoveModifier<IndirectAttackerModifier>();
         warlock.CursedPlayer = null;
 
         var TOSAbilityEvent = new TOSAbilityEvent(AbilityType.WarlockCurseKill, source, target);

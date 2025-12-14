@@ -12,7 +12,7 @@ namespace TownOfSushi.Roles.Neutral;
 public sealed class WerewolfRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant, IMysticClue
 {
     public string RoleName => "Werewolf";
-    public string RoleDescription => "Maul To Kill Everyone";
+    public string RoleDescription => "Maul to kill everyone close to you";
     public string RoleLongDescription => "Maul to kill nearby players within a radius";
     public MysticClueType MysticHintType => MysticClueType.Fearmonger;
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<HunterRole>());

@@ -14,6 +14,23 @@ public sealed class SwooperSwoopButton : TownOfSushiRoleButton<SwooperRole>, IAf
     public override int MaxUses => (int)OptionGroupSingleton<SwooperOptions>.Instance.MaxSwoops;
     public override LoadableAsset<Sprite> Sprite => TOSImpAssets.SwoopSprite;
 
+    public void AftermathHandler()
+    {
+        if (!EffectActive)
+        {
+            PlayerControl.LocalPlayer.RpcAddModifier<SwoopModifier>();
+            UsesLeft--;
+            if (MaxUses != 0)
+            {
+                Button?.SetUsesRemaining(UsesLeft);
+            }
+        }
+        else
+        {
+            OnEffectEnd();
+        }
+    }
+
     public override void ClickHandler()
     {
         if (!CanUse())
@@ -41,9 +58,19 @@ public sealed class SwooperSwoopButton : TownOfSushiRoleButton<SwooperRole>, IAf
 
     public override bool CanUse()
     {
-        return ((Timer <= 0 && !EffectActive) || (EffectActive && Timer <= EffectDuration - 2f)) &&
-               !PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>() &&
-               !PlayerControl.LocalPlayer.HasModifier<DisabledModifier>();
+        if (HudManager.Instance.Chat.IsOpenOrOpening || MeetingHud.Instance)
+        {
+            return false;
+        }
+
+        if (PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>() || PlayerControl.LocalPlayer
+                .GetModifiers<DisabledModifier>().Any(x => !x.CanUseAbilities))
+        {
+            return false;
+        }
+
+        return ((Timer <= 0 && !EffectActive && (MaxUses == 0 || UsesLeft > 0)) ||
+                (EffectActive && Timer <= EffectDuration - 2f));
     }
 
     protected override void OnClick()

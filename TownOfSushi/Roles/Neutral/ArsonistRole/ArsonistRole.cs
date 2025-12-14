@@ -10,7 +10,7 @@ namespace TownOfSushi.Roles.Neutral;
 public sealed class ArsonistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue
 {
     public string RoleName => "Arsonist";
-    public string RoleDescription => "Douse Players And Ignite The Light";
+    public string RoleDescription => "Douse and ignite everyone to win";
     public string RoleLongDescription => "Douse players in gasoline and ignite them to win with your abilities!";
 
     public Color RoleColor => TownOfSushiColors.Arsonist;

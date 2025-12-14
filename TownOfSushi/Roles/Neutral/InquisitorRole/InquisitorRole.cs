@@ -102,7 +102,7 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
 
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<OracleRole>());
     public string RoleName => "Inquisitor";
-    public string RoleDescription => "Vanquish The Heretics!";
+    public string RoleDescription => "Vanquish the heretics!";
 
     public string RoleLongDescription =>
         "Vanquish your Heretics or get them killed.\nYou will win after every heretic dies.\nIf they're all dead after a meeting ends,\nyou'll leave & announce your victory.";

@@ -1,7 +1,5 @@
 ﻿using MiraAPI.Networking;
 using TownOfSushi.Buttons;
-using TownOfSushi.Options;
-using TownOfSushi.Utilities.Appearances;
 using UnityEngine;
 
 namespace TownOfSushi.Roles.Impostor;
@@ -120,13 +118,8 @@ public sealed class HexbladeKillButton : TownOfSushiRoleButton<HexbladeRole, Pla
 
     public override PlayerControl? GetTarget()
     {
-        var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
-        var closePlayer = PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
-
-        var includePostors = (PlayerControl.LocalPlayer.IsLover() &&
-                              OptionGroupSingleton<LoversOptions>.Instance.LoverKillTeammates) ||
-                             (genOpt.KillDuringCamoComms &&
-                              closePlayer?.GetAppearanceType() == TownOfSushiAppearances.Camouflage);
+        var includePostors = PlayerControl.LocalPlayer.IsLover() &&
+                              OptionGroupSingleton<LoversOptions>.Instance.LoverKillTeammates;
         if (!OptionGroupSingleton<LoversOptions>.Instance.LoversKillEachOther && PlayerControl.LocalPlayer.IsLover())
         {
             return PlayerControl.LocalPlayer.GetClosestLivingPlayer(includePostors, Distance, false, x => !x.IsLover());

@@ -7,7 +7,7 @@ namespace TownOfSushi.Roles.Crewmate;
 public sealed class MonarchRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue
 {
     public string RoleName => "Monarch";
-    public string RoleDescription => "Knight Players To Help The Crew";
+    public string RoleDescription => "Knight players to help crewmates";
     public string RoleLongDescription => "Knight players to give them an extra vote during meetings.";
     public Color RoleColor => TownOfSushiColors.Monarch;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;

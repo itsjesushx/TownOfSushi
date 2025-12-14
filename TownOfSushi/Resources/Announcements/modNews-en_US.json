@@ -13,8 +13,8 @@
         "\n\n- Special thanks to @Windyways for the help!",
         "\n\n-First release, but here's the changes i've done so far from TOU-M:",
         "\n\n- QoL Changes",
-        "\n\n- Seer was reworked.",
-        "\n\n- Detective was renamed to Inspector.",
+        "\n\n- Analyzer was reworked.",
+        "\n\n- Seer was renamed to Inspector.",
         "\n\n-Glitch is back to -The Glitch-",
         "\n\n-Investigator's ability to see footsteps is now a separate modifier. This change also renames current Investigator to Inspector.",
         "\n\n-Replaced Flash with Mini.",
@@ -26,7 +26,7 @@
         "\n\n-Sheriff & Vigilante are the same role now",
         "\n\n-  New Roles",
         "\n\n-Warlock (Impostor Killing)",
-        "\n\n-Detective (Crew Investigative)",
+        "\n\n-Seer (Crew Investigative)",
         "\n\n-Poisoner(Impostor Killing)",
         "\n\n-Consigliere (Impostor Concealing)",
         "\n\n-Agent/Hitman (Neutral Killing)",
@@ -87,7 +87,7 @@
         "\n\n- New Option: Consigliere Teammates Can See Role on Reveal.",
         "\n\n- New option to make Airship doors act like Polus doors.",
         "\n\n- New option that blocks dead impostors from sabotaging.",
-        "\n\n- New option for Seer to know what the 2 factions are when checking targets.",
+        "\n\n- New option for Analyzer to know what the 2 factions are when checking targets.",
         "\n\n- New Thief option: Can guess to steal role.",
         "\n\n- New Thief option: Can Kill Sheriff.",
         "\n\n- Added a new option for Transporter to self-transport.",
@@ -101,6 +101,59 @@
         "\n\n**Full Changelog:** <link=https://github.com/itsjesushx/TownOfSushi/compare/v1.0.0...v1.0.1>Compare v1.0.0 → v1.0.1</link>",
         "\n\n**All Commits:** <link=https://github.com/itsjesushx/TownOfSushi/commits/v1.0.1>GitHub Commits</link>"
       ]
-    }
+    },
+    {
+      "Date": "2025-11-05T18:00:00Z",
+      "Number": "100003",
+      "ShortTitle": "TOS v1.0.2",
+      "SubTitle": "Huge Changes & Bug Fixes!",
+      "Title": "Town of Sushi v1.0.2",
+      "Text": [
+      "\r<b>Town Of Sushi v1.0.2 Changelog:</b>",
+    
+      "\n\n## New Roles",
+      "\n\n- Wizard (Impostor Concealing)",
+      "\n\n- Informant (Crew Investigative)",
+    
+      "\n\n## Bug Fixes",
+      "\n\n- Fixed Romantic missing a wiki description.",
+      "\n\n- Amnesiac can no longer acquire roles from ejected players.",
+      "\n\n- Fixed a random crash caused by keybind interactions.",
+      "\n\n- Warlock's curse button now correctly resets after a kill.",
+      "\n\n- Fixed incorrect Romantic option checks.",
+      "\n\n- Chat notifications now respect the user's dark mode setting.",
+      "\n\n- Maps are now displayed with the correct color for each player.",
+      "\n\n- Poisoner no longer receives the successful kill message if the kill is blocked by protection.",
+
+      "\n\n## QoL Changes",
+      "\n\n- Eclipsal blinded people cannot report by clicking bodies anymore",
+      "\n\n- Changed Oracle's Color.",
+      "\n\n- Analyzer now has a new setting to choose what extra info they get when checking players (Faction, Alignment, None).",
+      "\n\n- Town of Sushi Tracker renamed to Sonar.",
+      "\n\n- Town of Sushi Phantom renamed to Spectre.",
+      "\n\n- Seer renamed to Analyzer.",
+      "\n\n- Detective renamed to Seer.",
+      "\n\n- Vanilla roles can now be toggled alongside Town of Sushi roles.",
+      "\n\n- Lookout has been reworked.",
+      "\n\n- Meeting abilities (including guesses) can no longer be used within the final 10 seconds of a meeting.",
+
+      "\n\n## Additions",
+      "\n\n- Haunter: New Arrow Update Interval option.",
+      "\n\n- Lovers: New option allowing both lovers to know their partner's role.",
+      "\n\n- Quick Chat button re-added.",
+      "\n\n- Assassin: New option — Assassin cannot guess protected players.",
+      "\n\n- Analyzer: New setting defining extra info type (Faction / Alignment / None).",
+
+      "\n\n## Removals",
+      "\n\n- Ambassador.",
+      "\n\n- Ambusher.",
+      "\n\n- Soul Collector.",
+      "\n\n- Guardian Angel.",
+      "\n\n- Camouflage Comms Settings.",
+    
+      "\n\n★ <link=https://github.com/itsjesushx/TownOfSushi/releases/tag/1.0.2>TOS v1.0.2 Download</link>",
+      "\n\n**Full Changelog:** <link=https://github.com/itsjesushx/TownOfSushi/compare/v1.0.0...v1.0.2>Compare v1.0.0 → v1.0.2</link>"
+    ]
+  }
   ]
 }

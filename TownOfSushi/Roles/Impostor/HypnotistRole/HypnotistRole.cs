@@ -34,7 +34,7 @@ public sealed class HypnotistRole(IntPtr cppPtr)
 
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<LookoutRole>());
     public string RoleName => "Hypnotist";
-    public string RoleDescription => "Hypnotize Crewmates";
+    public string RoleDescription => "Hypnotize players and make them go insane";
     public string RoleLongDescription => "Hypnotize crewmates and drive them insane";
     public Color RoleColor => TownOfSushiColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;

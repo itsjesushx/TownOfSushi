@@ -15,7 +15,7 @@ namespace TownOfSushi.Roles.Neutral;
 public sealed class VampireRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue
 {
     public string RoleName => "Vampire";
-    public string RoleDescription => "Convert Crewmates And Kill The Rest";
+    public string RoleDescription => "Convert crewmates and kill the rest";
     public string RoleLongDescription => "Bite all other players";
     public string YouAreText => "You Are A";
     public string YouWereText => "You Were A";

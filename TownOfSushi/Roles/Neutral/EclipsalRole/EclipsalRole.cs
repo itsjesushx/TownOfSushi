@@ -7,7 +7,7 @@ namespace TownOfSushi.Roles.Neutral;
 public sealed class EclipsalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue
 {
     public string RoleName => "Eclipsal";
-    public string RoleDescription => "Block Out The Light";
+    public string RoleDescription => "Blind people and sneakily kill everyone";
     public string RoleLongDescription => "Make crewmates unable to see, slowly returning their vision to normal.";
     public Color RoleColor => TownOfSushiColors.Eclipsal;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;

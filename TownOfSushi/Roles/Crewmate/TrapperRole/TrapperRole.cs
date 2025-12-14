@@ -16,7 +16,7 @@ public sealed class TrapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSu
     public MysticClueType MysticHintType => MysticClueType.Insight;
 
     public string RoleName => "Trapper";
-    public string RoleDescription => "Catch Killers In The Act";
+    public string RoleDescription => "Catch everyones' role in your Traps";
     public string RoleLongDescription => "Place traps around the map, revealing roles within them";
     public Color RoleColor => TownOfSushiColors.Trapper;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;

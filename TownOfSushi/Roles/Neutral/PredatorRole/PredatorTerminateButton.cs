@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace TownOfSushi.Roles.Neutral;
 
-public sealed class PredatorTerminateButton : TownOfSushiRoleButton<PredatorRole>, IAftermathableButton
+public sealed class PredatorTerminateButton : TownOfSushiRoleButton<PredatorRole>
 {
     public override string Name => "Terminate";
     public override BaseKeybind Keybind => Keybinds.SecondaryAction;

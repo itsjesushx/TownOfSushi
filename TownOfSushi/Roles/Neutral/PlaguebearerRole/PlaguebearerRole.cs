@@ -45,7 +45,7 @@ public sealed class PlaguebearerRole(IntPtr cppPtr)
 
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<AurialRole>());
     public string RoleName => "Plaguebearer";
-    public string RoleDescription => "Infect Everyone To Become <color=#4D4D4DFF>Pestilence</color>";
+    public string RoleDescription => "Infect everyone to become <color=#4D4D4DFF>Pestilence</color>";
     public string RoleLongDescription => "Infect everyone to become <color=#4D4D4DFF>Pestilence</color>";
     public Color RoleColor => TownOfSushiColors.Plaguebearer;
     public MysticClueType MysticHintType => MysticClueType.Fearmonger;

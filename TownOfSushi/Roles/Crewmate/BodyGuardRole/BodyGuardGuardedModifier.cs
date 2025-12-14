@@ -2,7 +2,6 @@ using MiraAPI.Events;
 using MiraAPI.LocalSettings;
 using TownOfSushi.Events.TOSEvents;
 using TownOfSushi.Modifiers;
-using TownOfSushi.Modules;
 using TownOfSushi.Options;
 using UnityEngine;
 
@@ -55,9 +54,7 @@ public sealed class BodyguardGuardedModifier(PlayerControl Bodyguard) : BaseShie
 
         var body = UnityEngine.Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x =>
             x.ParentId == PlayerControl.LocalPlayer.PlayerId && !TutorialManager.InstanceExists);
-        var fakePlayer = FakePlayer.FakePlayers.FirstOrDefault(x =>
-            x.PlayerId == PlayerControl.LocalPlayer.PlayerId && !TutorialManager.InstanceExists);
         
-        ShowFort = showShieldedEveryone || showShieldedSelf || showShieldedBodyguard || (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body);
+        ShowFort = showShieldedEveryone || showShieldedSelf || showShieldedBodyguard || (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body);
     }
 }

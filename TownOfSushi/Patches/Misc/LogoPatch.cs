@@ -2,6 +2,7 @@ using AmongUs.GameOptions;
 using HarmonyLib;
 using Reactor.Localization.Utilities;
 using TownOfSushi.Modules.Wiki;
+using UnityEngine;
 
 namespace TownOfSushi.Patches.Misc;
 
@@ -43,6 +44,34 @@ public static class LogoPatch
         foreach (var role in vanillaRoles)
         {
             SoftWikiEntries.RegisterVanillaRoleEntry(role);
+        }
+
+        var newLogo = GameObject.Find("LOGO-AU");
+        var sizer = GameObject.Find("Sizer");
+        if (newLogo != null)
+        {
+            newLogo.GetComponent<SpriteRenderer>().sprite = TOSAssets.Banner.LoadAsset();
+        }
+
+        if (sizer != null)
+        {
+            sizer.GetComponent<AspectSize>().PercentWidth = 0.3f;
+        }
+
+        var menuBg = GameObject.Find("BackgroundTexture");
+
+        if (menuBg != null)
+        {
+            var render = menuBg.GetComponent<SpriteRenderer>();
+            render.flipY = true;
+            render.color = new Color(1f, 1f, 1f, 0.65f);
+        }
+
+        var tint = GameObject.Find("MainUI").transform.GetChild(0).gameObject;
+        if (tint != null)
+        {
+            tint.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.1f);
+            tint.transform.localScale = new Vector3(7.5f, 7.5f, 1f);
         }
     }
 }

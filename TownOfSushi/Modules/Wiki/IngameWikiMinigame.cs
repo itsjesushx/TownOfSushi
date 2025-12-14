@@ -1,5 +1,4 @@
-﻿﻿using AmongUs.GameOptions;
-using HarmonyLib;
+﻿﻿using HarmonyLib;
 using Il2CppInterop.Runtime.Attributes;
 using Il2CppInterop.Runtime.InteropTypes.Fields;
 using MiraAPI.LocalSettings;
@@ -327,14 +326,14 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
         SearchPageText.Value.text = _modifiersSelected ? "Modifiers" : "Roles";
         SearchPageIcon.Value.sprite = _modifiersSelected
             ? TOSModifierIcons.Bait.LoadAsset()
-            : TOSRoleIcons.Warlock.LoadAsset();
+            : TOSRoleIcons.Hexblade.LoadAsset();
         if (!SearchIcon)
         {
             SearchIcon = Instantiate(SearchPageIcon.Value.gameObject, Instance.gameObject.transform);
             SearchIcon.transform.localPosition += new Vector3(0.625f, 0.796f, -1.1f);
             SearchIcon.transform.localScale *= 0.25f;
             var renderer = SearchIcon.GetComponent<SpriteRenderer>();
-            renderer.sprite = TOSRoleIcons.Detective.LoadAsset();
+            renderer.sprite = TOSRoleIcons.Seer.LoadAsset();
             SearchIcon.name = "SearchboxIcon";
         }
 
@@ -450,12 +449,12 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
             var aliveRole = PlayerControl.LocalPlayer.GetRoleWhenAlive();
             if (aliveRole != null)
             {
-                SearchPageIcon.Value.sprite = aliveRole.RoleIconSolid ?? TOSRoleIcons.Warlock.LoadAsset();
+                SearchPageIcon.Value.sprite = aliveRole.RoleIconSolid ?? TOSRoleIcons.Hexblade.LoadAsset();
             }
 
             var comparer = new RoleComparer(roleList);
             var allRoles = MiscUtils.AllRoles.ToList();
-            if (LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.VanillaWikiEntriesToggle.Value)
+           /* if (LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.VanillaWikiEntriesToggle.Value)
             {
                 // allRoles.Add(RoleManager.Instance.GetRole(RoleTypes.Crewmate));
                 allRoles.Add(RoleManager.Instance.GetRole(RoleTypes.Scientist));
@@ -468,7 +467,7 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
                 allRoles.Add(RoleManager.Instance.GetRole(RoleTypes.Shapeshifter));
                 allRoles.Add(RoleManager.Instance.GetRole(RoleTypes.Phantom));
                 allRoles.Add(RoleManager.Instance.GetRole(RoleTypes.Viper));
-            }
+            }*/
             var roles = allRoles.OrderBy(x => x, comparer);
 
             foreach (var role in roles)

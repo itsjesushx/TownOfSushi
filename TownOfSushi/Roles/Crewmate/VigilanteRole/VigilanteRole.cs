@@ -27,7 +27,7 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCre
     public int SafeShotsLeft { get; set; }
     public string RoleName => "Vigilante";
     public string RoleDescription => "Kill evildoers by any means possible";
-    public string RoleLongDescription => "Guess the roles of impostors mid-meeting to kill them! Or shoot them mid round!";
+    public string RoleLongDescription => "Guess the roles of impostors mid-meeting to kill them!\nOr shoot them mid round!";
     public MysticClueType MysticHintType => MysticClueType.Relentless;
     public Color RoleColor => TownOfSushiColors.Vigilante;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;

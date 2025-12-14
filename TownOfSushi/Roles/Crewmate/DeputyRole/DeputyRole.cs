@@ -67,37 +67,16 @@ public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCrewRo
         {
             meetingMenu.HideButtons();
         }
-
-        Clear();
-    }
-
-    public override void OnDeath(DeathReason reason)
-    {
-        RoleBehaviourStubs.OnDeath(this, reason);
-
-        Clear();
     }
 
     public override void Deinitialize(PlayerControl targetPlayer)
     {
         RoleBehaviourStubs.Deinitialize(this, targetPlayer);
 
-        Clear();
-
         if (Player.AmOwner)
         {
             meetingMenu?.Dispose();
             meetingMenu = null!;
-        }
-    }
-
-    public void Clear()
-    {
-        var player = ModifierUtils.GetPlayersWithModifier<DeputyCampedModifier>(x => x.Deputy.AmOwner).FirstOrDefault();
-
-        if (player != null && Player.AmOwner)
-        {
-            player.RpcRemoveModifier<DeputyCampedModifier>();
         }
     }
 
@@ -121,11 +100,7 @@ public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCrewRo
     {
         var target = GameData.Instance.GetPlayerById(voteArea.TargetPlayerId).Object;
 
-        if (target.IsKillerRole() && !target.IsProtected())
-        {
-            Player.RpcCustomMurder(target, createDeadBody: false, teleportMurderer: false);
-        }
-        else if (target.IsPassiveNeutral() && !target.IsProtected())
+        if (!target.IsCrewmate() && !target.IsProtected())
         {
             Player.RpcCustomMurder(target, createDeadBody: false, teleportMurderer: false);
         }
@@ -146,7 +121,7 @@ public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCrewRo
                 notif1.AdjustNotification();
 
                 // Apply vision penalty using a modifier
-                Player.AddModifier<DeputyLowVisionModifier>();
+                Player.AddModifier<DeputyLowVisionModifier>(Player.PlayerId);
             }
             else
             {
@@ -164,8 +139,6 @@ public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCrewRo
         {
             meetingMenu?.HideButtons();
         }
-
-        Clear();
     }
 
     public bool IsExempt(PlayerVoteArea voteArea)

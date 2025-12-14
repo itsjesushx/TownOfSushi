@@ -4,7 +4,6 @@ using PowerTools;
 using Reactor.Utilities.Extensions;
 using TownOfSushi.Events.TOSEvents;
 using TownOfSushi.Modifiers;
-using TownOfSushi.Modules;
 using TownOfSushi.Modules.Anims;
 using TownOfSushi.Options;
 using UnityEngine;
@@ -59,10 +58,9 @@ public sealed class ClericBarrierModifier(PlayerControl cleric) : BaseShieldModi
 
         var body = UnityEngine.Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x =>
             x.ParentId == PlayerControl.LocalPlayer.PlayerId && !TutorialManager.InstanceExists);
-        var fakePlayer = FakePlayer.FakePlayers.FirstOrDefault(x =>
-            x.PlayerId == PlayerControl.LocalPlayer.PlayerId && !TutorialManager.InstanceExists);
         
-        ShowBarrier = showBarrierSelf || showBarrierCleric || (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body);
+        
+        ShowBarrier = showBarrierSelf || showBarrierCleric || (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body);
         
         ClericBarrier = AnimStore.SpawnAnimBody(Player, TOSAssets.ClericBarrier.LoadAsset(), false, -1.1f, -0.35f, 1.5f)!;
         ClericBarrier.GetComponent<SpriteAnim>().SetSpeed(2f);

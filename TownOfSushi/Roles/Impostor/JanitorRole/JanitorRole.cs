@@ -29,7 +29,7 @@ public sealed class JanitorRole(IntPtr cppPtr)
 
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<InspectorRole>());
     public string RoleName => "Janitor";
-    public string RoleDescription => "Sanitize The Ship";
+    public string RoleDescription => "Sanitize the map";
 
     public string RoleLongDescription => "Clean bodies to hide kills" +
                                          (OptionGroupSingleton<JanitorOptions>.Instance.CleanDelay == 0

@@ -21,7 +21,7 @@ public sealed class MayorRole(IntPtr cppPtr)
     private MeetingMenu meetingMenu;
     public bool Revealed { get; set; }
     public string RoleName => "Mayor";
-    public string RoleDescription => "Reveal Yourself To Save The Crew";
+    public string RoleDescription => "Reveal yourself to save the crew";
     public string RoleLongDescription => "Lead the crew to victory!";
     public MysticClueType MysticHintType => MysticClueType.Trickster;
     public Color RoleColor => TownOfSushiColors.Mayor;

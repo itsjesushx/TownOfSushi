@@ -7,7 +7,7 @@ namespace TownOfSushi.Modifiers.Game.Crewmate;
 public sealed class MultitaskerModifier : TOSGameModifier, IWikiDiscoverable
 {
     public override string ModifierName => "Multitasker";
-    public override string IntroInfo => "You can also see through tasks.";
+    public override string IntroInfo => "You can see through tasks.";
     public override LoadableAsset<Sprite>? ModifierIcon => TOSModifierIcons.Multitasker;
     public override Color FreeplayFileColor => new Color32(140, 255, 255, 255);
 

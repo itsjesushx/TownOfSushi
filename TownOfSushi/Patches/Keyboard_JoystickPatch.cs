@@ -68,12 +68,6 @@ namespace TownOfSushi.Patches
             if (AmongUsClient.Instance.AmHost)
             {
                 MeetingRoomManager.Instance.AssignSelf(player, null);
-
-                if (GameManager.Instance.CheckTaskCompletion())
-                {
-                    return;
-                }
-
                 HudManager.Instance.OpenMeetingRoom(player);
                 player.RpcStartMeeting(null);
             }

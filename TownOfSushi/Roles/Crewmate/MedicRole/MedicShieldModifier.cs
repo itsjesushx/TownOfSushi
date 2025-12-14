@@ -3,7 +3,6 @@ using MiraAPI.LocalSettings;
 using Reactor.Utilities.Extensions;
 using TownOfSushi.Events.TOSEvents;
 using TownOfSushi.Modifiers;
-using TownOfSushi.Modules;
 using TownOfSushi.Modules.Anims;
 using TownOfSushi.Options;
 using UnityEngine;
@@ -56,10 +55,9 @@ public sealed class MedicShieldModifier(PlayerControl medic) : BaseShieldModifie
 
         var body = UnityEngine.Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x =>
             x.ParentId == PlayerControl.LocalPlayer.PlayerId && !TutorialManager.InstanceExists);
-        var fakePlayer = FakePlayer.FakePlayers.FirstOrDefault(x =>
-            x.PlayerId == PlayerControl.LocalPlayer.PlayerId && !TutorialManager.InstanceExists);
         
-        ShowShield = showShieldedEveryone || showShieldedSelf || showShieldedMedic || (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body);
+        
+        ShowShield = showShieldedEveryone || showShieldedSelf || showShieldedMedic || (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body);
         
         MedicShield = AnimStore.SpawnAnimBody(Player, TOSAssets.MedicShield.LoadAsset(), false, -1.1f, -0.1f, 1.5f)!;
     }

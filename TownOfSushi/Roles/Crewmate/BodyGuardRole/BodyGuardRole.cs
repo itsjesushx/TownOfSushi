@@ -133,7 +133,7 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
         if (attacker.AmOwner)
         {
             var notif = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Bodyguard,
-                $"<b>{target.Data.PlayerName}, was protected by a Bodyguard! They died with you as well!</b>"),
+                $"<b>{target.Data.PlayerName}, was protected by a {bodyGuardPlayer.Data.PlayerName} (The Bodyguard)! They died with you as well!</b>"),
 
                 Color.white, spr: TOSRoleIcons.Bodyguard.LoadAsset());
             notif.AdjustNotification();

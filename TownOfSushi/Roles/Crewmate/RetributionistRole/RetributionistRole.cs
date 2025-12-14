@@ -18,7 +18,7 @@ public sealed class RetributionistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), IT
 {
     public override bool IsAffectedByComms => false;
     public string RoleName => "Retributionist";
-    public string RoleDescription => "Revive Dead Crewmates";
+    public string RoleDescription => "Revive dead players";
     public MysticClueType MysticHintType => MysticClueType.Death;
     public string RoleLongDescription => "Revive dead crewmates in groups";
     public Color RoleColor => TownOfSushiColors.Retributionist;

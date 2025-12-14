@@ -28,7 +28,7 @@ public sealed class ConsigliereRole(IntPtr cppPtr)
             (Player != null && MiscUtils.ImpAliveCount == 1));
     }
 
-    public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<SeerRole>());
+    public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<AnalyzerRole>());
     public string RoleName => "Consigliere";
     public string RoleDescription => "Reveal player's roles";
     public string RoleLongDescription => "Examine players to find out their role";

@@ -10,7 +10,7 @@ namespace TownOfSushi.Roles.Crewmate;
 public sealed class MysticRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue
 {
     public string RoleName => "Mystic";
-    public string RoleDescription => "Know When and Where Kills Happen";
+    public string RoleDescription => "Know information about kills and roles";
     public string RoleLongDescription => "Understand when and where kills happen";
     public Color RoleColor => TownOfSushiColors.Mystic;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;

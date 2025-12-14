@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.ObjectModel;
-
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -9,7 +8,6 @@ using HarmonyLib;
 using MiraAPI.GameOptions.OptionTypes;
 using TownOfSushi.Modifiers;
 using TownOfSushi.Modifiers.Game;
-using TownOfSushi.Modules;
 using TownOfSushi.Options;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -23,11 +21,20 @@ using TMPro;
 using Reactor.Utilities.Extensions;
 using BepInEx.Unity.IL2CPP.Utils;
 using TownOfSushi.Patches.Misc;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
 namespace TownOfSushi.Utilities;
 
 public static class MiscUtils
 {
+    public static bool IsChristmasSeason
+    {
+        get
+        {
+            var now = DateTime.Now;
+            return now.Month == 12 && now.Day >= 1 && now.Day <= 31;
+        }
+    }
     public static int KillersAliveCount => Helpers.GetAlivePlayers().Count(x => x.IsImpostor() ||
         x.Is(RoleAlignment.NeutralKilling) ||
         (x.Data.Role is InquisitorRole inquis && OptionGroupSingleton<InquisitorOptions>.Instance.StallGame &&
@@ -106,6 +113,40 @@ public static class MiscUtils
     {
         return mod.FactionType;
     }
+    public static Color GetModifierColour(TOSGameModifier modifier)
+    {
+        var color = GetRoleColour(GetLocaleKey(modifier).Replace(" ", string.Empty));
+        if (modifier is IColoredModifier colorMod)
+        {
+            color = colorMod.ModifierColor;
+        }
+
+        return color;
+    }
+    public static string GetLocaleKey(GameModifier modifier)
+    {
+        return GetLocaleKey(modifier as BaseModifier);
+    }
+
+    public static string GetLocaleKey(BaseModifier modifier)
+    {
+        var name = modifier.ModifierName;
+        if (modifier is TOSGameModifier touMod)
+        {
+            name = touMod.LocaleKey;
+        }
+        else if (modifier is AllianceGameModifier allyMod)
+        {
+            name = allyMod.LocaleKey;
+        }
+        else if (modifier is UniversalGameModifier uniMod)
+        {
+            name = uniMod.LocaleKey;
+        }
+
+        return name;
+    }
+
     public static ModifierFaction GetModifierFaction(this GameModifier mod)
     {
         return GetModifierFaction(mod as BaseModifier);
@@ -275,7 +316,6 @@ public static class MiscUtils
     public static bool IsProtected(this PlayerControl player)
     {
         return
-            player.HasModifier<GuardianAngelProtectModifier>() ||
             player.HasModifier<AmnesiacVestModifier>() ||
             player.HasModifier<InvulnerabilityModifier>() ||
             player.HasModifier<ClericBarrierModifier>() ||
@@ -413,22 +453,28 @@ public static class MiscUtils
 
     public static IEnumerable<RoleBehaviour> GetRegisteredRoles(RoleAlignment alignment)
     {
-        var roles = AllRoles.Where(x => x is ITownOfSushiRole role && role.RoleAlignment == alignment);
+        var roles = AllRoles.Where(x => x.GetRoleAlignment() == alignment);
+
         var registeredRoles = roles.ToList();
 
         switch (alignment)
         {
             case RoleAlignment.CrewmateInvestigative:
                 registeredRoles.Add(RoleManager.Instance.GetRole(RoleTypes.Tracker));
+                registeredRoles.Add(RoleManager.Instance.GetRole(RoleTypes.Detective));
                 break;
             case RoleAlignment.CrewmateSupport:
                 registeredRoles.Add(RoleManager.Instance.GetRole(RoleTypes.Crewmate));
                 registeredRoles.Add(RoleManager.Instance.GetRole(RoleTypes.Scientist));
                 registeredRoles.Add(RoleManager.Instance.GetRole(RoleTypes.Noisemaker));
-                registeredRoles.Add(RoleManager.Instance.GetRole(RoleTypes.Engineer));
+                // registeredRoles.Add(RoleManager.Instance.GetRole(RoleTypes.Engineer));
+                registeredRoles.Add(RoleManager.Instance.GetRole(RoleTypes.GuardianAngel));
                 break;
             case RoleAlignment.ImpostorSupport:
                 registeredRoles.Add(RoleManager.Instance.GetRole(RoleTypes.Impostor));
+                break;
+            case RoleAlignment.ImpostorKilling:
+                registeredRoles.Add(RoleManager.Instance.GetRole(RoleTypes.Viper));
                 break;
             case RoleAlignment.ImpostorConcealing:
                 registeredRoles.Add(RoleManager.Instance.GetRole(RoleTypes.Shapeshifter));
@@ -450,13 +496,16 @@ public static class MiscUtils
                 registeredRoles.Add(RoleManager.Instance.GetRole(RoleTypes.Crewmate));
                 registeredRoles.Add(RoleManager.Instance.GetRole(RoleTypes.Scientist));
                 registeredRoles.Add(RoleManager.Instance.GetRole(RoleTypes.Noisemaker));
-                registeredRoles.Add(RoleManager.Instance.GetRole(RoleTypes.Engineer));
+               // registeredRoles.Add(RoleManager.Instance.GetRole(RoleTypes.Engineer));
+                registeredRoles.Add(RoleManager.Instance.GetRole(RoleTypes.Detective));
                 registeredRoles.Add(RoleManager.Instance.GetRole(RoleTypes.Tracker));
+                registeredRoles.Add(RoleManager.Instance.GetRole(RoleTypes.GuardianAngel));
                 break;
             case ModdedRoleTeams.Impostor:
                 registeredRoles.Add(RoleManager.Instance.GetRole(RoleTypes.Impostor));
                 registeredRoles.Add(RoleManager.Instance.GetRole(RoleTypes.Shapeshifter));
                 registeredRoles.Add(RoleManager.Instance.GetRole(RoleTypes.Phantom));
+                registeredRoles.Add(RoleManager.Instance.GetRole(RoleTypes.Viper));
                 break;
         }
 
@@ -538,26 +587,64 @@ public static class MiscUtils
 
         sprite.SetSizeLimit(scale);
     }
+    public static IEnumerable<RoleBehaviour> AllRegisteredRoles => RoleManager.Instance.AllRoles.ToArray().Excluding(x => x.IsRoleBlacklisted());
+    public static IEnumerable<T> Excluding<T>(this IEnumerable<T> source, Func<T, bool> predicate) =>
+        source.Where(x => !predicate(x)); // Added for easier inversion and reading
+
+    public static IEnumerable<RoleBehaviour> SpawnableRoles => AllRegisteredRoles.Excluding(x => !CustomRoleUtils.CanSpawnOnCurrentMode(x));
 
     public static IEnumerable<RoleBehaviour> GetPotentialRoles()
     {
         var currentGameOptions = GameOptionsManager.Instance.CurrentGameOptions;
         var roleOptions = currentGameOptions.RoleOptions;
-        var assignmentData = RoleManager.Instance.AllRoles.ToArray().Select(role =>
+        var assignmentData = AllRegisteredRoles.Select(role =>
             new RoleManager.RoleAssignmentData(role, roleOptions.GetNumPerGame(role.Role),
                 roleOptions.GetChancePerGame(role.Role))).ToList();
 
-        var roleList = assignmentData.Where(x => x is { Chance: > 0, Count: > 0, Role: ICustomRole }).Select(x => x.Role);
+        var roleList = assignmentData.Where(x => x is { Chance: > 0, Count: > 0, Role: ICustomRole })
+            .Select(x => x.Role);
+        var array = AllRegisteredRoles;
+        if (assignmentData.FirstOrDefault(x => x.Role.Role is RoleTypes.Detective) is { Chance: > 0, Count: > 0 })
+            roleList = roleList.AddItem(
+                array.FirstOrDefault(x => x.Role == RoleTypes.Detective)!);
+        if (assignmentData.FirstOrDefault(x => x.Role.Role is RoleTypes.Tracker) is { Chance: > 0, Count: > 0 })
+            roleList = roleList.AddItem(
+                array.FirstOrDefault(x => x.Role == RoleTypes.Tracker)!);
+        if (assignmentData.FirstOrDefault(x => x.Role.Role is RoleTypes.Noisemaker) is { Chance: > 0, Count: > 0 })
+            roleList = roleList.AddItem(
+                array.FirstOrDefault(x => x.Role == RoleTypes.Noisemaker)!);
+        /*if (assignmentData.FirstOrDefault(x => x.Role.Role is RoleTypes.Engineer) is { Chance: > 0, Count: > 0 })
+            roleList = roleList.AddItem(
+                array.FirstOrDefault(x => x.Role == RoleTypes.Engineer)!);*/
+        if (assignmentData.FirstOrDefault(x => x.Role.Role is RoleTypes.Scientist) is { Chance: > 0, Count: > 0 })
+            roleList = roleList.AddItem(
+                array.FirstOrDefault(x => x.Role == RoleTypes.Scientist)!);
+        if (assignmentData.FirstOrDefault(x => x.Role.Role is RoleTypes.Shapeshifter) is
+            { Chance: > 0, Count: > 0 })
+            roleList = roleList.AddItem(
+                array.FirstOrDefault(x => x.Role == RoleTypes.Shapeshifter)!);
+        if (assignmentData.FirstOrDefault(x => x.Role.Role is RoleTypes.Phantom) is { Chance: > 0, Count: > 0 })
+            roleList = roleList.AddItem(
+                array.FirstOrDefault(x => x.Role == RoleTypes.Phantom)!);
+        if (assignmentData.FirstOrDefault(x => x.Role.Role is RoleTypes.Viper) is { Chance: > 0, Count: > 0 })
+            roleList = roleList.AddItem(
+                array.FirstOrDefault(x => x.Role == RoleTypes.Viper)!);
 
-        var crewmateRole = RoleManager.Instance.AllRoles.ToArray().FirstOrDefault(x => x.Role == RoleTypes.Crewmate);
+        var crewmateRole = AllRegisteredRoles.FirstOrDefault(x => x.Role == RoleTypes.Crewmate);
         roleList = roleList.AddItem(crewmateRole!);
-        //Logger<TownOfSushiPlugin>.Error($"GetPotentialRoles - crewmateRole: '{crewmateRole?.NiceName}'");
+        //Error($"GetPotentialRoles - crewmateRole: '{crewmateRole?.GetRoleName()}'");
 
-        var impostorRole = RoleManager.Instance.AllRoles.ToArray().FirstOrDefault(x => x.Role == RoleTypes.Impostor);
+        var impostorRole = AllRegisteredRoles.FirstOrDefault(x => x.Role == RoleTypes.Impostor);
         roleList = roleList.AddItem(impostorRole!);
-        //Logger<TownOfSushiPlugin>.Error($"GetPotentialRoles - impostorRole: '{impostorRole?.NiceName}'");
 
-        //roleList.Do(x => Logger<TownOfSushiPlugin>.Error($"GetPotentialRoles - role: '{x.NiceName}'"));
+        if (TutorialManager.InstanceExists)
+        {
+            roleList = AllRegisteredRoles;
+        }
+
+        //Error($"GetPotentialRoles - impostorRole: '{impostorRole?.GetRoleName()}'");
+
+        //roleList.Do(x => Error($"GetPotentialRoles - role: '{x.GetRoleName()}'"));
 
         return roleList;
     }
@@ -645,7 +732,7 @@ public static class MiscUtils
             chat.chatNotification.SetUp(PlayerControl.LocalPlayer, message);
         }
     }
-
+    public static float Meetingtime { get; set; }
     public static void AddTeamChat(NetworkedPlayerInfo basePlayer, string nameText, string message,
         bool showHeadsup = false, bool onLeft = true)
     {
@@ -726,6 +813,45 @@ public static class MiscUtils
         var roles = GetRegisteredRoles(alignment);
 
         return GetRolesToAssign(roles, filter);
+    }
+
+    private static Dictionary<string, Sprite> CachedSprites = new();
+    public static Sprite LoadSpriteFromResources(string path, float pixelsPerUnit, bool cache=true) 
+    {
+        try
+        {
+            if (cache && CachedSprites.TryGetValue(path + pixelsPerUnit, out var sprite)) return sprite;
+            Texture2D texture = LoadTextureFromResources(path);
+            sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f), pixelsPerUnit);
+            if (cache) sprite.hideFlags |= HideFlags.HideAndDontSave | HideFlags.DontSaveInEditor;
+            if (!cache) return sprite;
+            return CachedSprites[path + pixelsPerUnit] = sprite;
+        } 
+        catch 
+        {
+            System.Console.WriteLine("Error loading sprite from path: " + path);
+        }
+        return null;
+    }
+
+    public static unsafe Texture2D LoadTextureFromResources(string path) 
+    {
+        try 
+        {
+            Texture2D texture = new Texture2D(2, 2, TextureFormat.ARGB32, true);
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            Stream stream = assembly.GetManifestResourceStream(path);
+            var length = stream.Length;
+            var byteTexture = new Il2CppStructArray<byte>(length);
+            stream.Read(new Span<byte>(IntPtr.Add(byteTexture.Pointer, IntPtr.Size * 4).ToPointer(), (int) length));
+            ImageConversion.LoadImage(texture, byteTexture, false);
+            return texture;
+        } 
+        catch 
+        {
+            System.Console.WriteLine("Error loading texture from resources: " + path);
+        }
+        return null;
     }
 
     private static List<(ushort RoleType, int Chance)> GetRolesToAssign(IEnumerable<RoleBehaviour> roles,
@@ -927,7 +1053,7 @@ public static class MiscUtils
 
         if (role.Role is RoleTypes.Viper)
         {
-            return RoleAlignment.ImpostorSupport;
+            return RoleAlignment.ImpostorKilling;
         }
         if (role.IsNeutral())
         {
@@ -1298,15 +1424,6 @@ public static class MiscUtils
 
         return $"{color.ToTextColor()}({completed}/{totalTasks})</color>";
     }
-    /// <summary>
-    ///     Gets a FakePlayer by comparing PlayerControl.
-    /// </summary>
-    /// <param name="player">The player themselves.</param>
-    /// <returns>A fake player or null if its not found.</returns>
-    public static FakePlayer? GetFakePlayer(PlayerControl player)
-    {
-        return FakePlayer.FakePlayers.FirstOrDefault(x => x.body?.name == $"Fake {player.gameObject.name}");
-    }
 
     public static bool IsMap(byte mapid)
     {
@@ -1332,36 +1449,6 @@ public static class MiscUtils
         if (mushroom && mushroom.IsActive)
         {
             return true;
-        }
-
-        if (OptionGroupSingleton<GeneralOptions>.Instance.CamouflageComms)
-        {
-            if (!ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Comms, out var commsSystem) ||
-                commsSystem == null)
-            {
-                return false;
-            }
-
-            var isActive = false;
-            if (ShipStatus.Instance.Type == ShipStatus.MapType.Hq ||
-                ShipStatus.Instance.Type == ShipStatus.MapType.Fungle)
-            {
-                var hqSystem = commsSystem.Cast<HqHudSystemType>();
-                if (hqSystem != null)
-                {
-                    isActive = hqSystem.IsActive;
-                }
-            }
-            else
-            {
-                var hudSystem = commsSystem.Cast<HudOverrideSystemType>();
-                if (hudSystem != null)
-                {
-                    isActive = hudSystem.IsActive;
-                }
-            }
-
-            return isActive;
         }
 
         return false;

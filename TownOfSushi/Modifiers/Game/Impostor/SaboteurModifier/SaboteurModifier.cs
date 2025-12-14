@@ -5,7 +5,7 @@ namespace TownOfSushi.Modifiers.Game.Impostor;
 public sealed class SaboteurModifier : TOSGameModifier, IWikiDiscoverable
 {
     public override string ModifierName => "Saboteur";
-    public override string IntroInfo => "You also have reduced sabotage cooldowns.";
+    public override string IntroInfo => "You have reduced sabotage cooldowns";
     public override Color FreeplayFileColor => new Color32(255, 25, 25, 255);
 
     public override LoadableAsset<Sprite>? ModifierIcon => TOSModifierIcons.Saboteur;

@@ -29,7 +29,7 @@ public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCrewRo
         .FirstOrDefault(x => x.GetModifier<JailedModifier>()?.JailorId == Player.PlayerId)!;
 
     public string RoleName => "Jailor";
-    public string RoleDescription => "Jail And Execute The <color=#FF0000FF>Impostors</color>";
+    public string RoleDescription => "Jail and execute <color=#FF0000FF>Killers</color>";
     public string RoleLongDescription => "Execute evildoers in meetings but avoid crewmates";
     public Color RoleColor => TownOfSushiColors.Jailor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;

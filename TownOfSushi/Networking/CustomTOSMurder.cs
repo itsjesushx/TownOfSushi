@@ -38,7 +38,7 @@ public static class CustomTouMurderRpcs
         
         switch (role)
         {
-            case PhantomTOSRole:
+            case SpectreRole:
             cod = "Spooked";
             break;
             case JesterRole:

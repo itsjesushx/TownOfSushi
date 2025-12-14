@@ -20,11 +20,11 @@ public static class PlayerRoleTextExtensions
             color = Color.black;
         }
 
-        if (player.HasModifier<DetectiveGoodRevealModifier>() && PlayerControl.LocalPlayer.IsRole<DetectiveRole>())
+        if (player.HasModifier<SeerGoodRevealModifier>() && PlayerControl.LocalPlayer.IsRole<SeerRole>())
         {
             color = Color.green;
         }
-        else if (player.HasModifier<DetectiveEvilRevealModifier>() && PlayerControl.LocalPlayer.IsRole<DetectiveRole>())
+        else if (player.HasModifier<SeerEvilRevealModifier>() && PlayerControl.LocalPlayer.IsRole<SeerRole>())
         {
             color = Color.red;
         }
@@ -78,19 +78,6 @@ public static class PlayerRoleTextExtensions
     public static string UpdateProtectionSymbols(this string name, PlayerControl player, bool hidden = false)
     {
         var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
-        if (player.Data != null && !player.Data.Disconnected &&
-            ((player.HasModifier<GuardianAngelTargetModifier>(x => x.OwnerId == PlayerControl.LocalPlayer.PlayerId) &&
-              PlayerControl.LocalPlayer.IsRole<GuardianAngelTOSRole>())
-             || (player.HasModifier<GuardianAngelTargetModifier>() &&
-                 ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !hidden)
-                  || (player.AmOwner &&
-                      OptionGroupSingleton<GuardianAngelOptions>.Instance.GATargetKnows)))))
-        {
-            name += (player.HasModifier<GuardianAngelProtectModifier>() &&
-                     OptionGroupSingleton<GuardianAngelOptions>.Instance.ShowProtect is not ProtectOptions.GA)
-                ? "<color=#FFD900> ★</color>"
-                : "<color=#B3FFFF> ★</color>";
-        }
 
         if (player.Data != null && !player.Data.Disconnected &&
             ((player.HasModifier<RomanticBelovedModifier>(x => x.OwnerId == PlayerControl.LocalPlayer.PlayerId) &&
@@ -98,7 +85,7 @@ public static class PlayerRoleTextExtensions
              || (player.HasModifier<RomanticBelovedModifier>() &&
                  ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !hidden)
                   || (player.AmOwner &&
-                      OptionGroupSingleton<GuardianAngelOptions>.Instance.GATargetKnows)))))
+                      OptionGroupSingleton<RomanticOptions>.Instance.RomanticTargetKnows)))))
         {
             
             name += (player.HasModifier<RomanticProtectModifier>() && OptionGroupSingleton<RomanticOptions>.Instance.ShowProtect is not RomanticProtectOptions.Romantic)
@@ -115,11 +102,18 @@ public static class PlayerRoleTextExtensions
             name += "<color=#7EFBC2> +</color>";
         }
 
+        if (player.HasModifier<WizardSpelledModifier>(x => x.WizardId == PlayerControl.LocalPlayer.PlayerId) 
+        && PlayerControl.LocalPlayer.IsImpostor() || (player.HasModifier<WizardSpelledModifier>() &&
+                PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !hidden) && MeetingHud.Instance)
+        {
+            name += "<color=#FF0000> X</color>";
+        }
+
         if ((player.HasModifier<BodyguardGuardedModifier>(x => x.Bodyguard.AmOwner) &&
              PlayerControl.LocalPlayer.IsRole<BodyguardRole>())
             || (player.HasModifier<BodyguardGuardedModifier>() &&
-                ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !hidden)
-                 || (player.AmOwner && player.TryGetModifier<BodyguardGuardedModifier>(out var bod) && bod.VisibleSymbol))))
+            ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !hidden)
+             || (player.AmOwner && player.TryGetModifier<BodyguardGuardedModifier>(out var bod) && bod.VisibleSymbol))))
         {
             name += "<color=#0D4D33> [+]</color>";
         }

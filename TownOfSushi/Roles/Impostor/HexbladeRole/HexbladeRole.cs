@@ -10,7 +10,7 @@ public sealed class HexbladeRole(IntPtr cppPtr)
 {
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<VeteranRole>());
     public string RoleName => "Hexblade";
-    public string RoleDescription => "Charge Up Your Kill Button To Multi Kill";
+    public string RoleDescription => "Charge up your kill button to multi kill";
     public string RoleLongDescription => "Kill people in small bursts";
     public MysticClueType MysticHintType => MysticClueType.Relentless;
     public Color RoleColor => TownOfSushiColors.Impostor;

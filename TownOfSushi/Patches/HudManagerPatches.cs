@@ -1,8 +1,6 @@
-﻿using System.Collections;
 using System.Text;
 using HarmonyLib;
 using InnerNet;
-using Reactor.Utilities;
 using TMPro;
 using TownOfSushi.Modifiers;
 using TownOfSushi.Modules;
@@ -14,8 +12,6 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 using Color = UnityEngine.Color;
 using Object = UnityEngine.Object;
-using TownOfSushi.Roles.Impostor.Venerer;
-using MiraAPI.LocalSettings;
 
 namespace TownOfSushi.Patches;
 
@@ -29,81 +25,6 @@ public static class HudManagerPatches
     public static GameObject SubmergedFloorButton;
 
     public static bool Zooming;
-    public static bool CamouflageCommsEnabled;
-    public static bool CamouflageFootsteps;
-
-    public static IEnumerator CoResizeUI()
-    {
-        while (!HudManager.Instance)
-        {
-            yield return null;
-        }
-
-        yield return new WaitForSeconds(0.01f);
-        ResizeUI(LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.ButtonUIFactorSlider.Value);
-    }
-
-    public static void ResizeUI(float scaleFactor)
-    {
-        foreach (var aspect in HudManager.Instance.transform.FindChild("Buttons")
-                     .GetComponentsInChildren<AspectPosition>(true))
-        {
-            if (aspect.gameObject == null)
-            {
-                continue;
-            }
-
-            if (aspect.gameObject.transform.parent.name == "TopRight")
-            {
-                continue;
-            }
-
-            if (aspect.gameObject.transform.parent.transform.parent.name == "TopRight")
-            {
-                continue;
-            }
-
-            aspect.gameObject.SetActive(!aspect.isActiveAndEnabled);
-            aspect.DistanceFromEdge *= new Vector2(scaleFactor, scaleFactor);
-            aspect.gameObject.SetActive(!aspect.isActiveAndEnabled);
-        }
-
-        foreach (var button in HudManager.Instance.GetComponentsInChildren<ActionButton>(true))
-        {
-            if (button.gameObject == null)
-            {
-                continue;
-            }
-
-            button.gameObject.SetActive(!button.isActiveAndEnabled);
-            button.gameObject.transform.localScale *= scaleFactor;
-            button.gameObject.SetActive(!button.isActiveAndEnabled);
-        }
-
-        foreach (var arrange in HudManager.Instance.transform.FindChild("Buttons")
-                     .GetComponentsInChildren<GridArrange>(true))
-        {
-            if (!arrange.gameObject || !arrange.transform)
-            {
-                continue;
-            }
-
-            arrange.gameObject.SetActive(!arrange.isActiveAndEnabled);
-            arrange.CellSize = new Vector2(scaleFactor, scaleFactor);
-            arrange.gameObject.SetActive(!arrange.isActiveAndEnabled);
-            if (arrange.isActiveAndEnabled && arrange.gameObject.transform.childCount != 0)
-            {
-                try
-                {
-                    arrange.ArrangeChilds();
-                }
-                catch
-                {
-                    //Logger<TownOfSushiPlugin>.Error($"Error arranging child objects in GridArrange: {e}");
-                }
-            }
-        }
-    }
 
     public static void AdjustCameraSize(float size)
     {
@@ -214,113 +135,6 @@ public static class HudManagerPatches
         TeamChatButton.transform.Find("Active").gameObject.SetActive(false);
         TeamChatButton.transform.Find("Selected").gameObject.SetActive(true);
     }
-
-    public static bool CommsSaboActive()
-    {
-        var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
-
-        // Camo comms
-        if (!genOpt.CamouflageComms)
-        {
-            return false;
-        }
-
-        if (!ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Comms, out var commsSystem) ||
-            commsSystem == null)
-        {
-            return false;
-        }
-
-        var isActive = false;
-
-        if (ShipStatus.Instance.Type == ShipStatus.MapType.Hq || ShipStatus.Instance.Type == ShipStatus.MapType.Fungle)
-        {
-            var hqSystem = commsSystem.Cast<HqHudSystemType>();
-            if (hqSystem != null)
-            {
-                isActive = hqSystem.IsActive;
-            }
-        }
-        else
-        {
-            var hudSystem = commsSystem.Cast<HudOverrideSystemType>();
-            if (hudSystem != null)
-            {
-                isActive = hudSystem.IsActive;
-            }
-        }
-
-        return isActive;
-    }
-
-    public static void UpdateCamouflageComms()
-    {
-        var isActive = CommsSaboActive();
-
-        foreach (var player in PlayerControl.AllPlayerControls)
-        {
-            var appearanceType = player.GetAppearanceType();
-            if (isActive)
-            {
-                if (appearanceType != TownOfSushiAppearances.Swooper)
-                {
-                    player.SetCamouflage();
-                }
-            }
-            else
-            {
-                if (appearanceType == TownOfSushiAppearances.Camouflage &&
-                    !player.HasModifier<VenererCamouflageModifier>() &&
-                    !PlayerControl.LocalPlayer.IsHysteria())
-                {
-                    player.SetCamouflage(false);
-                }
-            }
-        }
-
-        if (isActive)
-        {
-           /* if (!CamouflageFootsteps)
-            {
-                foreach (var steps in ModifierUtils.GetActiveModifiers<FootstepsModifier>()
-                             .Select(mod => mod._currentSteps))
-                {
-                    if (steps != null && steps.Count > 0)
-                    {
-                        steps.DoIf(x => x.Key, x => x.Value.color = new Color(0.2f, 0.2f, 0.2f, x.Value.color.a));
-                    }
-                }
-            }*/
-
-            CamouflageCommsEnabled = true;
-
-            FakePlayer.FakePlayers.Do(x => x.Camo());
-
-            return;
-        }
-
-        /*if (CamouflageFootsteps)
-        {
-            CamouflageFootsteps = false;
-
-            foreach (var mod in ModifierUtils.GetActiveModifiers<FootstepsModifier>())
-            {
-                if (mod._currentSteps != null && mod._currentSteps.Count > 0)
-                {
-                    mod._currentSteps.DoIf(x => x.Key,
-                        x => x.Value.color = new Color(mod._footstepColor.r, mod._footstepColor.g, mod._footstepColor.b,
-                            x.Value.color.a));
-                }
-            }
-        }*/
-
-        if (CamouflageCommsEnabled)
-        {
-            CamouflageCommsEnabled = false;
-
-            FakePlayer.FakePlayers.Do(x => x.UnCamo());
-        }
-    }
     public static void UpdateRoleNameText()
     {
         var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
@@ -375,8 +189,8 @@ public static class HudManagerPatches
                     (PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() && !MiscUtils.SpyInGame()) ||
                     (PlayerControl.LocalPlayer.GetRoleWhenAlive() is VampireRole && role is VampireRole) ||
                     (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow) ||
-                    GuardianAngelTOSRole.GASeesRoleVisibilityFlag(player) ||
-                    RomanticRole.RomamticSeesRoleVisibilityFlag(player) ||
+                    LoverModifier.LoverSeesRoleVisibilityFlag(player) ||
+                    RomanticRole.RomanticSeesRoleVisibilityFlag(player) ||
                     ConsigliereRole.ConsigliereSeesRoleVisibilityFlag(player) ||
                     SleuthModifier.SleuthVisibilityFlag(player) ||
                     revealMods.Any(x => x.Visible && x.RevealRole))
@@ -395,10 +209,6 @@ public static class HudManagerPatches
                     {
                         roleName += "<size=80%><color=#FFFFFF> (<color=#262626FF>OG</color>)</color></size>";
                     }
-                    if (player.HasModifier<AmbassadorRetrainedModifier>() && player.IsImpostor())
-                    {
-                        roleName += "<size=80%><color=#FFFFFF> (<color=#D63F42>Retrained</color>)</color></size>";
-                    }
 
                     var cachedMod = player.GetModifiers<BaseModifier>().FirstOrDefault(x => x is ICachedRole);
                     if (cachedMod is ICachedRole cache && cache.Visible &&
@@ -409,14 +219,13 @@ public static class HudManagerPatches
                             : $"<size=80%>{cache.CachedRole.TeamColor.ToTextColor()}{cache.CachedRole.NiceName}</color> ({color.ToTextColor()}{player.Data.Role.NiceName}</color>)</size>";
                     }
 
-                    // Guardian Angel here is vanilla's GA, NOT Town of Sushi GA
                     if (player.Data.IsDead && role is GuardianAngelRole gaRole)
                     {
                         roleName = $"<size=80%>{gaRole.TeamColor.ToTextColor()}{gaRole?.NiceName}</color></size>";
                     }
 
                     if (SleuthModifier.SleuthVisibilityFlag(player) || (player.Data.IsDead &&
-                                                                        role is not PhantomTOSRole &&
+                                                                        role is not SpectreRole &&
                                                                         role is not GuardianAngelRole &&
                                                                         role is not HaunterRole))
                     {
@@ -427,10 +236,6 @@ public static class HudManagerPatches
                         if (PlayerControl.LocalPlayer.HasDied() && !player.HasModifier<VampireBittenModifier>() && roleWhenAlive is VampireRole)
                         {
                             roleName += "<size=80%><color=#FFFFFF> (<color=#262626FF>OG</color>)</color></size>";
-                        }
-                        if (player.HasModifier<AmbassadorRetrainedModifier>() && player.IsImpostor())
-                        {
-                            roleName += "<size=80%><color=#FFFFFF> (<color=#D63F42>Retrained</color>)</color></size>";
                         }
                     }
                     if (PlayerControl.LocalPlayer.HasDied() && player.TryGetModifier<DeathHandlerModifier>(out var deathMod))
@@ -444,7 +249,7 @@ public static class HudManagerPatches
 
                 if (((taskOpt.ShowTaskInMeetings && player.AmOwner) ||
                      (PlayerControl.LocalPlayer.HasDied() && taskOpt.ShowTaskDead)) &&
-                    (player.IsCrewmate() || player.Data.Role is PhantomTOSRole))
+                    (player.IsCrewmate() || player.Data.Role is SpectreRole))
                 {
                     if (roleName != string.Empty)
                     {
@@ -495,8 +300,8 @@ public static class HudManagerPatches
                           (PlayerControl.LocalPlayer.GetRoleWhenAlive() is VampireRole && role is VampireRole) ||
                           (!TutorialManager.InstanceExists &&
                            ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow) ||
-                            GuardianAngelTOSRole.GASeesRoleVisibilityFlag(player) ||
-                            RomanticRole.RomamticSeesRoleVisibilityFlag(player) ||
+                            RomanticRole.RomanticSeesRoleVisibilityFlag(player) ||
+                            LoverModifier.LoverSeesRoleVisibilityFlag(player) ||
                             ConsigliereRole.ConsigliereSeesRoleVisibilityFlag(player) ||
                             SleuthModifier.SleuthVisibilityFlag(player) ||
                            revealMods.Any(x => x.Visible && x.RevealRole)))))
@@ -566,8 +371,8 @@ public static class HudManagerPatches
                     (PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() && !MiscUtils.SpyInGame()) ||
                     (PlayerControl.LocalPlayer.GetRoleWhenAlive() is VampireRole && role is VampireRole) ||
                     (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && isVisible) ||
-                    GuardianAngelTOSRole.GASeesRoleVisibilityFlag(player) ||
-                    RomanticRole.RomamticSeesRoleVisibilityFlag(player) ||
+                    RomanticRole.RomanticSeesRoleVisibilityFlag(player) ||
+                    LoverModifier.LoverSeesRoleVisibilityFlag(player) ||
                     ConsigliereRole.ConsigliereSeesRoleVisibilityFlag(player) ||
                     revealMods.Any(x => x.Visible && x.RevealRole))
                 {
@@ -576,10 +381,6 @@ public static class HudManagerPatches
                     if (!player.HasModifier<VampireBittenModifier>() && player.Data.Role is VampireRole)
                     {
                         roleName += "<size=80%><color=#FFFFFF> (<color=#262626FF>OG</color>)</color></size>";
-                    }
-                    if (player.HasModifier<AmbassadorRetrainedModifier>() && player.IsImpostor())
-                    {
-                        roleName += "<size=80%><color=#FFFFFF> (<color=#D63F42>Retrained</color>)</color></size>";
                     }
 
                     var cachedMod = player.GetModifiers<BaseModifier>().FirstOrDefault(x => x is ICachedRole);
@@ -591,14 +392,13 @@ public static class HudManagerPatches
                             : $"<size=80%>{cache.CachedRole.TeamColor.ToTextColor()}{cache.CachedRole.NiceName}</color> ({color.ToTextColor()}{player.Data.Role.NiceName}</color>)</size>";
                     }
 
-                    // Guardian Angel here is vanilla's GA, NOT Town of Sushi GA
                     if (player.Data.IsDead && role is GuardianAngelRole gaRole)
                     {
                         roleName = $"<size=80%>{gaRole.TeamColor.ToTextColor()}{gaRole.NiceName}</color></size>";
                     }
 
                     if (SleuthModifier.SleuthVisibilityFlag(player) || (player.Data.IsDead &&
-                                                                        role is not PhantomTOSRole &&
+                                                                        role is not SpectreRole &&
                                                                         role is not GuardianAngelRole &&
                                                                         role is not HaunterRole))
                     {
@@ -609,10 +409,6 @@ public static class HudManagerPatches
                         if (!player.HasModifier<VampireBittenModifier>() && roleWhenAlive is VampireRole)
                         {
                             roleName += "<size=80%><color=#FFFFFF> (<color=#262626FF>OG</color>)</color></size>";
-                        }
-                        if (player.HasModifier<AmbassadorRetrainedModifier>() && player.IsImpostor())
-                        {
-                            roleName += "<size=80%><color=#FFFFFF> (<color=#D63F42>Retrained</color>)</color></size>";
                         }
                     }
                     if (PlayerControl.LocalPlayer.HasDied() && isVisible && player.TryGetModifier<DeathHandlerModifier>(out var deathMod))
@@ -626,7 +422,7 @@ public static class HudManagerPatches
                 }
 
                 if ((PlayerControl.LocalPlayer.HasDied() && taskOpt.ShowTaskDead && isVisible) && (player.IsCrewmate() ||
-                        player.Data.Role is PhantomTOSRole))
+                        player.Data.Role is SpectreRole))
                 {
                     if (roleName != string.Empty)
                     {
@@ -690,14 +486,14 @@ public static class HudManagerPatches
 
     public static void UpdateGhostRoles(HudManager instance)
     {
-        foreach (var phantom in CustomRoleUtils.GetActiveRolesOfType<PhantomTOSRole>())
+        foreach (var spectre in CustomRoleUtils.GetActiveRolesOfType<SpectreRole>())
         {
-            if (phantom.Player.Data != null && phantom.Player.Data.Disconnected)
+            if (spectre.Player.Data != null && spectre.Player.Data.Disconnected)
             {
                 continue;
             }
 
-            phantom.FadeUpdate(instance);
+            spectre.FadeUpdate(instance);
         }
 
         foreach (var haunter in CustomRoleUtils.GetActiveRolesOfType<HaunterRole>())
@@ -830,6 +626,25 @@ public static class HudManagerPatches
         }
     }
 
+    public static void PetsUpdate()
+    {
+        if (MeetingHud.Instance) return;
+
+        foreach (var data in GameData.Instance.AllPlayers)
+        {
+            if (data == null || data.Disconnected) continue;
+            var player = data.Object;
+            if (player.AmOwner || player == null) continue;
+            PetBehaviour pet = player.GetPet();
+
+            bool cantsee = !PlayerControl.LocalPlayer.Data.IsDead && !player.petting && (player.Data.IsDead || player.inVent);
+            if (pet != null)
+            {
+                pet?.Visible = !cantsee;
+            }
+        }
+    }
+
     public static void CreateTeamChatButton(HudManager instance)
     {
         if (TeamChatButton)
@@ -955,6 +770,7 @@ public static class HudManagerPatches
     [HarmonyPostfix]
     public static void HudManagerUpdatePatch(HudManager __instance)
     {
+        MiscUtils.Meetingtime -= Time.deltaTime;
         CreateZoomButton(__instance);
         CreateTeamChatButton(__instance);
         CreateWikiButton(__instance);
@@ -975,9 +791,8 @@ public static class HudManagerPatches
         // TERRIBLE FOR PERFORMANCE (FindObjectsOfType is very costly)
         var body = Object.FindObjectsOfType<DeadBody>()
             .FirstOrDefault(x => x.ParentId == PlayerControl.LocalPlayer.PlayerId);
-        var fakePlayer = FakePlayer.FakePlayers.FirstOrDefault(x => x.PlayerId == PlayerControl.LocalPlayer.PlayerId);
 
-        if (((PlayerControl.LocalPlayer.Data.IsDead && !body && !fakePlayer?.body &&
+        if (((PlayerControl.LocalPlayer.Data.IsDead && !body &&
               (PlayerControl.LocalPlayer.Data.Role is IGhostRole { Caught: true } ||
                PlayerControl.LocalPlayer.Data.Role is not IGhostRole)) || TutorialManager.InstanceExists)
             && Input.GetAxis("Mouse ScrollWheel") != 0 && !MeetingHud.Instance && Minigame.Instance == null &&
@@ -987,17 +802,9 @@ public static class HudManagerPatches
         }
 
         UpdateTeamChat();
-        UpdateCamouflageComms();
         UpdateRoleNameText();
         UpdateGhostRoles(__instance);
         UpdateSubmergedButtons(__instance);
-    }
-
-    [HarmonyPostfix]
-    [HarmonyPriority(Priority.Last)]
-    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Start))]
-    public static void HudManagerStartPatch(HudManager __instance)
-    {
-        Coroutines.Start(CoResizeUI());
+        PetsUpdate();
     }
 }

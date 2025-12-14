@@ -33,6 +33,26 @@ public sealed class UndertakerDragDropButton : TownOfSushiRoleButton<UndertakerR
         return PlayerControl.LocalPlayer?.GetNearestDeadBody(PlayerControl.LocalPlayer.MaxReportDistance / 4f);
     }
 
+    public void AftermathHandler()
+    {
+        DeadBody? deadBody = null;
+        if (PlayerControl.LocalPlayer.TryGetModifier<DragModifier>(out var dragMod))
+        {
+            deadBody = dragMod.DeadBody!;
+            UndertakerRole.RpcStopDragging(PlayerControl.LocalPlayer, dragMod.DeadBody!.transform.position);
+        }
+
+        var body = Helpers
+            .GetNearestDeadBodies(PlayerControl.LocalPlayer.GetTruePosition(), Distance, Helpers.CreateFilter(Constants.NotShipMask))
+            .Find(component => component && !component.Reported && component != deadBody);
+        if (body == null)
+        {
+            return;
+        }
+
+        UndertakerRole.RpcStartDragging(PlayerControl.LocalPlayer, body.ParentId);
+    }
+
     protected override void OnClick()
     {
         if (Target == null)
@@ -40,9 +60,9 @@ public sealed class UndertakerDragDropButton : TownOfSushiRoleButton<UndertakerR
             return;
         }
 
-        if (PlayerControl.LocalPlayer.HasModifier<DragModifier>())
+        if (PlayerControl.LocalPlayer.TryGetModifier<DragModifier>(out var dragMod))
         {
-            UndertakerRole.RpcStopDragging(PlayerControl.LocalPlayer, Target.transform.position);
+            UndertakerRole.RpcStopDragging(PlayerControl.LocalPlayer, dragMod.DeadBody!.transform.position);
             Timer = Cooldown;
         }
         else

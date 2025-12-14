@@ -19,7 +19,7 @@ public sealed class InspectorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
     public MysticClueType MysticHintType => MysticClueType.Hunter;
 
     public string RoleName => "Inspector";
-    public string RoleDescription => "Inspect Crime Scenes To Catch The Killer";
+    public string RoleDescription => "Inspect crime scenes to catch the killers";
     public string RoleLongDescription => "Inspect crime scenes, then examine players to see if they were at the scene.";
     public Color RoleColor => TownOfSushiColors.Inspector;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;

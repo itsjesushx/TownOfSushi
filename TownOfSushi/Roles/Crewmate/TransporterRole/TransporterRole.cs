@@ -43,8 +43,8 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
     }
     public override bool IsAffectedByComms => false;
     public string RoleName => "Transporter";
-    public string RoleDescription => "Choose Two Players To Swap Locations";
-    public string RoleLongDescription => "Choose two players to swap locations with one another";
+    public string RoleDescription => "Choose two players to swap locations or transport yourself";
+    public string RoleLongDescription => "Choose two players to swap locations with one another or transport yourself";
     public MysticClueType MysticHintType => MysticClueType.Fearmonger;
     public Color RoleColor => TownOfSushiColors.Transporter;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
@@ -177,9 +177,6 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
         {
             transporter.AddModifier<PlaguebearerInfectedModifier>(infectedplayer2.PlagueBearerId);
         }
-
-        LookoutEvents.CheckForLookoutWatched(transporter, play1);
-        LookoutEvents.CheckForLookoutWatched(transporter, play2);
 
         if (play1.TryGetModifier<InvulnerabilityModifier>(out var invic) && invic.AttackAllInteractions)
         {
@@ -320,14 +317,6 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
             {
                 return null;
             }
-            
-            // FAKE PLAYER MUST BE A MONO BEHAVIOUR FOR THIS TO WORK
-            /*var fakePlayer = Utilities.MiscUtils.GetFakePlayer(pc)?.body;
-
-            if (fakePlayer)
-            {
-                return fakePlayer;
-            } */
 
             if (pc.moveable || pc.inVent || (pc.TryGetModifier<DisabledModifier>(out var mod) &&
                                              (!mod.IsConsideredAlive || !mod.CanBeInteractedWith)))

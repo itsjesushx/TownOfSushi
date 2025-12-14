@@ -22,7 +22,6 @@ public static class Bindings
 
         if (!PlayerControl.LocalPlayer.Data.IsDead && !PlayerControl.LocalPlayer.IsImpostor())
         {
-
             var kill = __instance.KillButton;
             var vent = __instance.ImpostorVentButton;
 
@@ -54,60 +53,62 @@ public static class Bindings
 
         var contPlayer = ConsoleJoystick.player;
         var buttonList = CustomButtonManager.Buttons.Where(x =>
-            x.Enabled(PlayerControl.LocalPlayer.Data.Role) && x.Button != null && x.Button.isActiveAndEnabled && x.CanUse()).ToList();
+            x.Enabled(PlayerControl.LocalPlayer.Data.Role) && x.Button != null && x.Button.isActiveAndEnabled &&
+            x.CanUse()).ToList();
 
         foreach (var button in buttonList.Where(x => x is TownOfSushiButton))
         {
-            var touButton = button as TownOfSushiButton;
-            if (touButton == null || touButton.ConsoleBind() == -1)
+            var tosButton = button as TownOfSushiButton;
+            if (tosButton == null || tosButton.ConsoleBind() == -1)
             {
                 continue;
             }
-            
-            if (contPlayer.GetButtonDown(touButton.ConsoleBind()))
+
+            if (contPlayer.GetButtonDown(tosButton.ConsoleBind()))
             {
-                touButton.PassiveComp.OnClick.Invoke();
+                tosButton.PassiveComp.OnClick.Invoke();
             }
         }
+
         foreach (var button in buttonList.Where(x => x is TownOfSushiTargetButton<DeadBody>))
         {
-            var touButton = button as TownOfSushiTargetButton<DeadBody>;
-            if (touButton == null || touButton.ConsoleBind() == -1)
+            var tosButton = button as TownOfSushiTargetButton<DeadBody>;
+            if (tosButton == null || tosButton.ConsoleBind() == -1)
             {
                 continue;
             }
-            
-            if (contPlayer.GetButtonDown(touButton.ConsoleBind()))
+
+            if (contPlayer.GetButtonDown(tosButton.ConsoleBind()))
             {
-                touButton.PassiveComp.OnClick.Invoke();
+                tosButton.PassiveComp.OnClick.Invoke();
             }
         }
-        
+
         foreach (var button in buttonList.Where(x => x is TownOfSushiTargetButton<Vent>))
         {
-            var touButton = button as TownOfSushiTargetButton<Vent>;
-            if (touButton == null || touButton.ConsoleBind() == -1)
+            var tosButton = button as TownOfSushiTargetButton<Vent>;
+            if (tosButton == null || tosButton.ConsoleBind() == -1)
             {
                 continue;
             }
-            
-            if (contPlayer.GetButtonDown(touButton.ConsoleBind()))
+
+            if (contPlayer.GetButtonDown(tosButton.ConsoleBind()))
             {
-                touButton.PassiveComp.OnClick.Invoke();
+                tosButton.PassiveComp.OnClick.Invoke();
             }
         }
-        
+
         foreach (var button in buttonList.Where(x => x is TownOfSushiTargetButton<PlayerControl>))
         {
-            var touButton = button as TownOfSushiTargetButton<PlayerControl>;
-            if (touButton == null || touButton.ConsoleBind() == -1)
+            var tosButton = button as TownOfSushiTargetButton<PlayerControl>;
+            if (tosButton == null || tosButton.ConsoleBind() == -1)
             {
                 continue;
             }
-            
-            if (contPlayer.GetButtonDown(touButton.ConsoleBind()))
+
+            if (contPlayer.GetButtonDown(tosButton.ConsoleBind()))
             {
-                touButton.PassiveComp.OnClick.Invoke();
+                tosButton.PassiveComp.OnClick.Invoke();
             }
         }
     }

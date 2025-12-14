@@ -84,9 +84,9 @@ public sealed class BountyHunterRole(IntPtr cppPtr)
         }
     }
 
-    public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<TrackerTOSRole>());
+    public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<SonarRole>());
     public string RoleName => "Bounty Hunter";
-    public string RoleDescription => "Hunt Down Your Prey";
+    public string RoleDescription => "Hunt down your prey";
     public string RoleLongDescription => "Kill your given targets for a reduced kill cooldown";
     public Color RoleColor => TownOfSushiColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;

@@ -30,6 +30,7 @@ public sealed class AssassinOptions : AbstractOptionGroup
     public ModdedToggleOption ThiefTurnAssassin { get; } = new($"Thief Gets Ability", true);
 
     public ModdedToggleOption AmneTurnNeutAssassin { get; } = new($"Amnesiac Turned Neutral Killing Gets Ability", true);
+    public ModdedToggleOption CantGuessProtectedPlayer { get; } = new($"Assassin Can't Guess Protected Players", true);
 
     [ModdedToggleOption("Traitor Gets Ability")]
     public bool TraitorCanAssassin { get; set; } = true;

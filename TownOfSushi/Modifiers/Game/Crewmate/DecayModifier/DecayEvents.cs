@@ -9,7 +9,7 @@ public static class DecayEvents
     [RegisterEvent]
     public static void AfterMurderEventHandler(AfterMurderEvent @event)
     {
-        if (@event.Target.HasModifier<DecayModifier>() && !@event.Source.IsRole<SoulCollectorRole>() &&
+        if (@event.Target.HasModifier<DecayModifier>() &&
             !MeetingHud.Instance)
         {
             Coroutines.Start(DecayModifier.StartDecay(@event.Target));

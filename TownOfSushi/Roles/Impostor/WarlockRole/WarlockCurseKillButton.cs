@@ -1,4 +1,3 @@
-using MiraAPI.Hud;
 using TownOfSushi.Buttons;
 using UnityEngine;
 
@@ -14,7 +13,7 @@ public sealed class WarlockCurseKillButton : TownOfSushiRoleButton<WarlockRole, 
     public override LoadableAsset<Sprite> Sprite => TOSImpAssets.WarlockCurseKillButton;
     public override bool Enabled(RoleBehaviour? role)
     {
-        return base.Enabled(role) && Role is { CursedPlayer: not null };
+        return base.Enabled(role) && Role is not { CursedPlayer: null };
     }
     protected override void OnClick()
     {
@@ -25,9 +24,14 @@ public sealed class WarlockCurseKillButton : TownOfSushiRoleButton<WarlockRole, 
 
         WarlockRole.RpcCurseKill(Role.CursedPlayer!, Target, PlayerControl.LocalPlayer);
 
-        CustomButtonSingleton<WarlockCurseButton>.Instance.SetActive(true, Role);
-        CustomButtonSingleton<WarlockCurseButton>.Instance.ResetCooldownAndOrEffect();
-        SetActive(false, Role);
+        // Fixes the kill button not dissapearing, no idea why it happens but, it works ig
+        // Can't even see the map opening and closing anyways
+        DestroyableSingleton<HudManager>.Instance.ToggleMapVisible(new MapOptions
+        {
+            Mode = MapOptions.Modes.Normal
+        });
+        MapBehaviour.Instance.Close();
+        MapBehaviour.Instance.Close();
     }
     
     public override PlayerControl? GetTarget()

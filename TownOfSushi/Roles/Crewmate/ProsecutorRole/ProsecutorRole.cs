@@ -57,7 +57,7 @@ public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCr
         ProsecuteButton.voteComplete = meeting.SkipVoteButton.voteComplete;
     }
     public string RoleName => "Prosecutor";
-    public string RoleDescription => "Exile Players Of Your Choosing";
+    public string RoleDescription => "Exile players of your choosing";
     public string RoleLongDescription => "Choose to exile anyone you want";
     public Color RoleColor => TownOfSushiColors.Prosecutor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;

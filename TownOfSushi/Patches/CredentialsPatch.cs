@@ -9,12 +9,12 @@ namespace TownOfSushi.Patches
     public static class CredentialsPatch
     {
         public static string ModName =
-$@"<color=#B2FEFE>TownOfSushi</color> v{TownOfSushiPlugin.Version}{TownOfSushiPlugin.DevString}";
-        public static string MainScreenText =
-    $@"Created by <color=#B2FEFE>Charlton</color> with help of <color=#B2FEFE>50IQ</color>
-<size=90%>Emotionally Helped by <color=#B2FEFE>döll</color>
-Beta testing help by <color=#B2FEFE>Cake</color>
-Originally Coded by <color=#B2FEFE>AU-Avengers</color>";
+$@"<size=70%><color=#B2FEFE>TownOfSushi</color> v{TownOfSushiPlugin.Version}{TownOfSushiPlugin.DevString}</size>";
+        public static string CreditsText =
+    $@"<size=60%>Created by <color=#B2FEFE>Jesushi</color>
+Code helped by <color=#B2FEFE>whichtwix</color>, <color=#B2FEFE>50 1Q</color> & <color=#B2FEFE>lekiller</color>
+Beta testing help by <color=#B2FEFE>Cake</color> & <color=#B2FEFE>50 IQ</color>
+Originally Coded by <color=#B2FEFE>AU-Avengers</color></size>";
 
         [HarmonyPatch(typeof(PingTracker), nameof(PingTracker.Update))]
         internal static class PingTrackerPatch
@@ -26,40 +26,30 @@ Originally Coded by <color=#B2FEFE>AU-Avengers</color>";
                 var position = __instance.GetComponent<AspectPosition>();
                 DeltaTime += (Time.deltaTime - DeltaTime) * 0.1f;
 
-                string text = __instance.text.text + $" FPS: {Mathf.Round(1f / DeltaTime)}\n<size=60%>{ModName}</size>";
+                string text;
+                string pingcolor = "#FF0000";
+                if (AmongUsClient.Instance.Ping < 100) pingcolor = "#44dfcc";
+                else if (AmongUsClient.Instance.Ping < 200) pingcolor = "#f3920e";
+                else if (AmongUsClient.Instance.Ping < 400) pingcolor = "#FF0000";
+                string pingText = $"<color={pingcolor}>Ping: {AmongUsClient.Instance.Ping} ms</color>";
 
-                
+                if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
+                {
+                   text = $"{pingText} - FPS: {Mathf.Round(1f / DeltaTime)}\n{ModName}\n{CreditsText}";
+                   position.DistanceFromEdge = MeetingHud.Instance ? new Vector3(1.25f, 0.15f, 0) : new Vector3(1.55f, 0.15f, 0);
+                }
+                else
+                {
+                    text = $"{pingText} - FPS: {Mathf.Round(1f / DeltaTime)}\n{ModName}";
+                    position.DistanceFromEdge = new Vector3( 0f, 0.1f, 0);
+                }
+
                 position.Alignment = AspectPosition.EdgeAlignments.Top;
                 position.DistanceFromEdge = new Vector3(0f, 0.1f, 0);
 
                 __instance.text.text = text;
 
                 position.AdjustPosition();
-            }
-        }
-        [HarmonyPriority(Priority.VeryHigh)] // to show this message first, or be overrided if any plugins do
-        [HarmonyPatch(typeof(VersionShower), nameof(VersionShower.Start))]
-        public static class VersionShowerUpdate
-        {
-            public static SpriteRenderer renderer;
-            internal static void Postfix()
-            {
-                var TOSLogo = new GameObject("bannerLogo_TOS");
-
-                TOSLogo.transform.SetParent(GameObject.Find("RightPanel").transform, false);
-                TOSLogo.transform.localPosition = new Vector3(-0.4f, 1f, 5f);
-
-                renderer = TOSLogo.AddComponent<SpriteRenderer>();
-                renderer.sprite = TOSAssets.Banner.LoadAsset();
-
-                var CredentialObject = new GameObject("CredentialsTOS");
-                var Credentials = CredentialObject.AddComponent<TextMeshPro>();
-                Credentials.SetText($"v{TownOfSushiPlugin.Version}\n{MainScreenText}");
-                Credentials.alignment = TextAlignmentOptions.Center;
-                Credentials.fontSize *= 0.05f;
-
-                Credentials.transform.SetParent(TOSLogo.transform);
-                Credentials.transform.localPosition = Vector3.down * 1.45f;
             }
         }
     }

@@ -6,7 +6,7 @@ namespace TownOfSushi.Modifiers.Game.Crewmate;
 public sealed class ScoutModifier : TOSGameModifier, IWikiDiscoverable
 {
     public override string ModifierName => "Scout";
-    public override string IntroInfo => "You can also see farther in light but very low in dark.";
+    public override string IntroInfo => "You can see farther in light but very low in dark.";
     public override LoadableAsset<Sprite>? ModifierIcon => TOSModifierIcons.Scout;
     public override Color FreeplayFileColor => new Color32(140, 255, 255, 255);
 

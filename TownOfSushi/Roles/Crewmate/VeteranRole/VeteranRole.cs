@@ -12,7 +12,7 @@ public sealed class VeteranRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCrewR
 
     public int Alerts { get; set; }
     public string RoleName => "Veteran";
-    public string RoleDescription => "Alert To Kill Anyone Who Interacts With You";
+    public string RoleDescription => "Alert to kill anyone who interacts with you";
     public string RoleLongDescription => "Alert to kill whoever who interacts with you.";
     public MysticClueType MysticHintType => MysticClueType.Trickster;
     public Color RoleColor => TownOfSushiColors.Veteran;

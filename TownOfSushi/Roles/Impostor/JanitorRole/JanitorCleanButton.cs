@@ -26,6 +26,18 @@ public sealed class JanitorCleanButton : TownOfSushiRoleButton<JanitorRole, Dead
         return PlayerControl.LocalPlayer.GetNearestDeadBody(Distance);
     }
 
+    public void AftermathHandler()
+    {
+        var body = PlayerControl.LocalPlayer.GetNearestDeadBody(Distance);
+        if (body == null)
+        {
+            return;
+        }
+        CleaningBody = body;
+
+        OnEffectEnd();
+    }
+
     protected override void OnClick()
     {
         if (Target == null)

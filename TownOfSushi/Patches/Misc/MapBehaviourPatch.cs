@@ -6,6 +6,17 @@ using Object = UnityEngine.Object;
 
 namespace TownOfSushi.Patches.Misc;
 
+[HarmonyPatch(typeof (MapBehaviour), "FixedUpdate")]  
+public static class ChangeMapColorPatch
+{
+    public static void Postfix(MapBehaviour __instance)
+    {
+		var role = PlayerControl.LocalPlayer.GetRoleWhenAlive();
+		__instance.ColorControl.baseColor = role.TeamColor;
+		__instance.ColorControl.SetColor(role.TeamColor);
+    }
+}
+
 [HarmonyPatch]
 public static class ShowVentsPatch
 {

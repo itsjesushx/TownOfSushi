@@ -26,10 +26,9 @@ public static class AftermathEvents
         }
 
         var notif1 = Helpers.CreateAndShowNotification(
-            MiscUtils.ColorString(TownOfSushiColors.Aftermath, $"<b>{@event.Target.Data.PlayerName} was an Aftermath, forcing you to use your ability.</b>"),
-            Color.white, spr: TOSModifierIcons.Aftermath.LoadAsset());
+            $"<b>{TownOfSushiColors.Aftermath.ToTextColor()}{@event.Target.Data.PlayerName} was an Aftermath, forcing you to use your ability.</color></b>",
+            Color.white, new Vector3(0f, 1f, -20f), spr: TOSModifierIcons.Aftermath.LoadAsset());
 
-        
         notif1.AdjustNotification();
 
         switch (button)
@@ -43,6 +42,6 @@ public static class AftermathEvents
                 break;
         }
 
-        button.ClickHandler();
+        button.AftermathHandler();
     }
 }

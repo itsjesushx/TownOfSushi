@@ -233,10 +233,6 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
         {
             Player.AddModifier<BasicGhostModifier>();
         }
-        /* if (Player.AmOwner)
-        {
-            ImpostorMeter.DestroyImmediate();
-        } */
     }
 
 
@@ -295,7 +291,7 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
                 // Logger<TownOfSushiPlugin>.Error($"CheckTaskRequirements IsTargetOfHaunter");
                 Coroutines.Start(MiscUtils.CoFlash(RoleColor));
 
-                Player.AddModifier<HaunterArrowModifier>(PlayerControl.LocalPlayer, RoleColor);
+                Player.AddModifier<HaunterArrowModifier>(PlayerControl.LocalPlayer, RoleColor, OptionGroupSingleton<HaunterOptions>.Instance.UpdateInterval);
                 var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Haunter,
                     $"<b>A Haunter is loose, catch them before they reveal you!</b>"),
                     Color.white, new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Haunter.LoadAsset());
@@ -317,10 +313,9 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
             }
             else if (IsTargetOfHaunter(PlayerControl.LocalPlayer))
             {
-                // Logger<TownOfSushiPlugin>.Error($"CheckTaskRequirements IsTargetOfHaunter");
                 Coroutines.Start(MiscUtils.CoFlash(Color.white));
 
-                Player.AddModifier<HaunterArrowModifier>(PlayerControl.LocalPlayer, RoleColor);
+                Player.AddModifier<HaunterArrowModifier>(PlayerControl.LocalPlayer, RoleColor, OptionGroupSingleton<HaunterOptions>.Instance.UpdateInterval);
                 var notif1 = Helpers.CreateAndShowNotification(MiscUtils.ColorString(TownOfSushiColors.Haunter,
                     $"<b>The Haunter has completed their tasks!</b>"),
                     Color.white, new Vector3(0f, 1f, -20f), spr: TOSRoleIcons.Haunter.LoadAsset());
@@ -338,7 +333,7 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
         }
 
         return player.IsImpostor() || (player.Is(RoleAlignment.NeutralKilling) &&
-                                       OptionGroupSingleton<HaunterOptions>.Instance.RevealNeutralRoles);
+            OptionGroupSingleton<HaunterOptions>.Instance.RevealNeutralRoles);
     }
 
     public static bool HaunterVisibilityFlag(PlayerControl player)

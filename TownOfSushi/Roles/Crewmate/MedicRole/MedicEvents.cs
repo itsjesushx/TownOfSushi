@@ -7,7 +7,6 @@ using MiraAPI.Hud;
 using TownOfSushi.Buttons;
 using TownOfSushi.Modifiers;
 using TownOfSushi.Modifiers.Game.Killer;
-using TownOfSushi.Modules;
 using TownOfSushi.Options;
 
 
@@ -42,10 +41,8 @@ public static class MedicEvents
 
             var body = UnityEngine.Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x =>
                 x.ParentId == PlayerControl.LocalPlayer.PlayerId && !TutorialManager.InstanceExists);
-            var fakePlayer = FakePlayer.FakePlayers.FirstOrDefault(x =>
-                x.PlayerId == PlayerControl.LocalPlayer.PlayerId && !TutorialManager.InstanceExists);
-        
-            mod.ShowShield = showShieldedEveryone || showShieldedSelf || showShieldedMedic || (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body);
+
+            mod.ShowShield = showShieldedEveryone || showShieldedSelf || showShieldedMedic || (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body);
         }
     }
 

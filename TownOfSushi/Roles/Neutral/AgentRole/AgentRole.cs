@@ -11,7 +11,7 @@ namespace TownOfSushi.Roles.Neutral;
 public sealed class AgentRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant, IMysticClue
 {
     public string RoleName => "Agent";
-    public string RoleDescription => "Finish Your Tasks To Get New Abilities";
+    public string RoleDescription => "Finish your tasks to get new abilities";
     public string RoleLongDescription => "Finish your tasks to become the Hitman. \nAnother role with better abilities!";
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<BodyguardRole>());
     public Color RoleColor => TownOfSushiColors.Agent;

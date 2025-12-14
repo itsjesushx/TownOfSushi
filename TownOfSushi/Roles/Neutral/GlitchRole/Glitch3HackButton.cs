@@ -20,6 +20,11 @@ public sealed class GlitchHackButton : TownOfSushiRoleButton<GlitchRole, PlayerC
         return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
     }
 
+    public void AftermathHandler()
+    {
+        TOSAudio.PlaySound(TOSAudio.HackedSound);
+        PlayerControl.LocalPlayer.RpcAddModifier<GlitchHackedModifier>(PlayerControl.LocalPlayer.PlayerId);
+    }
     protected override void OnClick()
     {
         if (Target == null)

@@ -3,8 +3,6 @@ using AmongUs.GameOptions;
 using HarmonyLib;
 using Il2CppInterop.Runtime.Attributes;
 using Reactor.Utilities.Attributes;
-
-
 using UnityEngine;
 
 namespace TownOfUs.Modules.Components;

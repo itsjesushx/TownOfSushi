@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace TownOfSushi.Roles.Crewmate;
 
-public sealed class TransporterMarkButton : TownOfSushiRoleButton<TransporterRole>, IAftermathableButton
+public sealed class TransporterMarkButton : TownOfSushiRoleButton<TransporterRole>
 {
     public override string Name => "Mark Location";
     public override BaseKeybind Keybind => Keybinds.SecondaryAction;

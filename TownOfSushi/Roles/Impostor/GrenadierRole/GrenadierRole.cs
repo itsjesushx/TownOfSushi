@@ -7,7 +7,7 @@ namespace TownOfSushi.Roles.Impostor;
 public sealed class GrenadierRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue
 {
     public string RoleName => "Grenadier";
-    public string RoleDescription => "Hinder The Crewmates' Vision";
+    public string RoleDescription => "Hinder everyone's vision";
     public string RoleLongDescription => "Blind the crewmates to get sneaky kills";
     public MysticClueType MysticHintType => MysticClueType.Protective;
     public Color RoleColor => TownOfSushiColors.Impostor;

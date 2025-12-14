@@ -8,7 +8,6 @@ namespace TownOfSushi.Modifiers;
 public abstract class ArrowTargetModifier(PlayerControl owner, Color color, float updateInterval) : BaseModifier
 {
     private readonly float _updateInterval = updateInterval;
-
     private ArrowBehaviour? _arrow;
     private DateTime _time = DateTime.UnixEpoch;
     public ArrowBehaviour? Arrow => _arrow;

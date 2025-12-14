@@ -123,9 +123,6 @@ public static class DeathEventHandlers
                 case PestilenceRole:
                     cod = "Diseased";
                     break;
-                case SoulCollectorRole:
-                    cod = "Reaped";
-                    break;
                 case VampireRole:
                     cod = "bitten";
                     break;
@@ -149,7 +146,7 @@ public static class DeathEventHandlers
                     break;
             }
 
-            if (source.Data.Role is PhantomTOSRole)
+            if (source.Data.Role is SpectreRole)
             {
                 cod = "Spooked";
             }

@@ -3,8 +3,7 @@ using UnityEngine;
 
 namespace TownOfSushi.Roles.Impostor;
 
-public sealed class ConsigliereRevealButton : TownOfSushiRoleButton<ConsigliereRole, PlayerControl>,
-    IAftermathablePlayerButton
+public sealed class ConsigliereRevealButton : TownOfSushiRoleButton<ConsigliereRole, PlayerControl>
 {
     public override string Name => "Reveal";
     public override BaseKeybind Keybind => Keybinds.SecondaryAction;

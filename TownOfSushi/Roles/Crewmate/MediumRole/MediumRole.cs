@@ -18,7 +18,7 @@ public sealed class MediumRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSus
     public MysticClueType MysticHintType => MysticClueType.Death;
 
     public string RoleName => "Medium";
-    public string RoleDescription => "Watch The Spooky Ghosts";
+    public string RoleDescription => "Watch the spooky ghosts";
     public string RoleLongDescription => "Follow ghosts to get clues from them";
     public Color RoleColor => TownOfSushiColors.Medium;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;

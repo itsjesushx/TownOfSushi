@@ -44,7 +44,7 @@ public sealed class EscapistRole(IntPtr cppPtr)
 
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<TransporterRole>());
     public string RoleName => "Escapist";
-    public string RoleDescription => "Get Away From Kills With Ease";
+    public string RoleDescription => "Get away from kills with ease";
     public string RoleLongDescription => "Teleport to get away from the scene of the crime";
     public Color RoleColor => TownOfSushiColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;

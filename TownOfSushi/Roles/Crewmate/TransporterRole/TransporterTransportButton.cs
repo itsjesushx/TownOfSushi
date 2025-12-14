@@ -65,7 +65,7 @@ public sealed class TransporterTransportButton : TownOfSushiRoleButton<Transport
                 player2Menu.Begin(
                     plr2 => plr2.PlayerId != plr.PlayerId &&
                             (!plr2.HasDied() ||
-                             Helpers.GetBodyById(plr2.PlayerId) /*  || MiscUtils.GetFakePlayer(plr2)?.body */) &&
+                             Helpers.GetBodyById(plr2.PlayerId)) &&
                             (plr2.moveable || plr2.inVent),
                     plr2 =>
                     {

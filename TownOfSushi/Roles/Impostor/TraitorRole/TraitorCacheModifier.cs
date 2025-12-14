@@ -11,8 +11,7 @@ public sealed class TraitorCacheModifier : BaseModifier, ICachedRole
     public override bool HideOnUi => true;
     public bool ShowCurrentRoleFirst => true;
 
-    public bool Visible => Player.AmOwner || PlayerControl.LocalPlayer.HasDied() ||
-                           GuardianAngelTOSRole.GASeesRoleVisibilityFlag(Player) || RomanticRole.RomamticSeesRoleVisibilityFlag(Player);
+    public bool Visible => Player.AmOwner || PlayerControl.LocalPlayer.HasDied() || RomanticRole.RomanticSeesRoleVisibilityFlag(Player);
 
     public RoleBehaviour CachedRole => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<TraitorRole>());
 

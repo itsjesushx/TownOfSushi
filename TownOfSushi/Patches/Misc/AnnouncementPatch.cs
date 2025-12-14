@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Immutable;
-
 using System.Reflection;
 using System.Text.Json;
 using AmongUs.Data;
@@ -42,9 +41,6 @@ public class TOSModNews
             Id = "TOSModNews"
         };
     }
-
-    // ReSharper disable UnassignedField.Global
-    // ReSharper disable UnusedAutoPropertyAccessor.Global
     public string Date { get; set; }
     public int Number { get; set; }
     public string ShortTitle { get; set; }
@@ -52,8 +48,6 @@ public class TOSModNews
     public string Title { get; set; }
 
     public string Text { get; set; }
-    // ReSharper restore UnassignedField.Global
-    // ReSharper restore UnusedAutoPropertyAccessor.Global
 }
 
 public static class ModNewsFetcher
@@ -83,23 +77,6 @@ public static class ModNewsFetcher
             LoadTOSModNewsFromResources();
             yield break;
         }
-        /* TOSModNewsURL += TranslationController.Instance.currentLanguage.languageID switch
-        {
-            SupportedLangs.German => "de_DE.json",
-            SupportedLangs.Latam => "es_419.json",
-            SupportedLangs.Spanish => "es_ES.json",
-            SupportedLangs.Filipino => "fil_PH.json",
-            SupportedLangs.French => "fr_FR.json",
-            SupportedLangs.Italian => "it_IT.json",
-            SupportedLangs.Japanese => "ja_JP.json",
-            SupportedLangs.Korean => "ko_KR.json",
-            SupportedLangs.Dutch => "nl_NL.json",
-            SupportedLangs.Brazilian => "pt_BR.json",
-            SupportedLangs.Russian => "ru_RU.json",
-            SupportedLangs.SChinese => "zh_CN.json",
-            SupportedLangs.TChinese => "zh_TW.json",
-            _ => "en_US.json", //English and any other unsupported language
-        }; */
         TOSModNewsURL += "en_US.json";
         var request = UnityWebRequest.Get(TOSModNewsURL);
         yield return request.SendWebRequest();
@@ -150,24 +127,6 @@ public static class ModNewsFetcher
 
     private static void LoadTOSModNewsFromResources()
     {
-        /* string filename = TranslationController.Instance.currentLanguage.languageID switch
-        {
-            SupportedLangs.German => "de_DE.json",
-            SupportedLangs.Latam => "es_419.json",
-            SupportedLangs.Spanish => "es_ES.json",
-            SupportedLangs.Filipino => "fil_PH.json",
-            SupportedLangs.French => "fr_FR.json",
-            SupportedLangs.Italian => "it_IT.json",
-            SupportedLangs.Japanese => "ja_JP.json",
-            SupportedLangs.Korean => "ko_KR.json",
-            SupportedLangs.Dutch => "nl_NL.json",
-            SupportedLangs.Brazilian => "pt_BR.json",
-            SupportedLangs.Russian => "ru_RU.json",
-            SupportedLangs.SChinese => "zh_CN.json",
-            SupportedLangs.TChinese => "zh_TW.json",
-            _ => "en_US.json", //English and any other unsupported language
-        }; */
-
         var filename = "en_US.json";
 
         var assembly = Assembly.GetExecutingAssembly();

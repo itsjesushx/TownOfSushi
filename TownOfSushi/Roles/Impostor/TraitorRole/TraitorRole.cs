@@ -15,7 +15,7 @@ public sealed class TraitorRole(IntPtr cppPtr)
     public RoleBehaviour? SelectedRole { get; set; }
     public bool NoSpawn => true;
     public string RoleName => "Traitor";
-    public string RoleDescription => "Betray The Crewmates!";
+    public string RoleDescription => "Betray the crewmates!";
     public string RoleLongDescription => "Betray the Crewmates!";
     public MysticClueType MysticHintType => MysticClueType.Trickster;
     public Color RoleColor => TownOfSushiColors.Impostor;

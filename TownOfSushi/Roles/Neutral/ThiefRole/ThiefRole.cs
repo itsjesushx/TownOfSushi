@@ -18,7 +18,7 @@ public sealed class ThiefRole(IntPtr cppPtr)
 {
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<VigilanteRole>());
     public string RoleName => "Thief";
-    public string RoleDescription => "Murder an evildoer to gain their role.";
+    public string RoleDescription => "Murder an evildoer to gain their role";
     public string RoleLongDescription => "Murder evildoers but not crewmates to get a new role";
     public MysticClueType MysticHintType => MysticClueType.Hunter;
     public Color RoleColor => TownOfSushiColors.Thief;
@@ -27,9 +27,6 @@ public sealed class ThiefRole(IntPtr cppPtr)
     // This is so the role can be guessed without requiring it to be enabled normally
     public bool CanBeGuessed =>
         (MiscUtils.GetPotentialRoles()
-             .Contains(RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<GuardianAngelTOSRole>())) &&
-         OptionGroupSingleton<GuardianAngelOptions>.Instance.OnTargetDeath is BecomeOptions.Thief)
-        || (MiscUtils.GetPotentialRoles()
                 .Contains(RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<ExecutionerRole>())) &&
             OptionGroupSingleton<ExecutionerOptions>.Instance.OnTargetDeath is BecomeOptions.Thief)
         || (MiscUtils.GetPotentialRoles()
@@ -125,20 +122,6 @@ public sealed class ThiefRole(IntPtr cppPtr)
         {
             ModifierUtils.GetActiveModifiers<ArsonistDousedModifier>().Do(x => x.ModifierComponent?.RemoveModifier(x));
         }
-        /* commented this out for now as it basically makes the thief a vanilla killer if the vampire max setting is set to 2.
-        else if (player.Data.Role is VampireRole)
-        {
-            if (target.HasModifier<VampireBittenModifier>())
-            {
-                // Makes the thief stay with the bitten modifier
-                player.AddModifier<VampireBittenModifier>();
-            }
-            else
-            {
-                // Makes the og vampire a bitten vampire so to speak, yes it makes it more confusing, but that's how it is, deal with it - Atony
-                target.AddModifier<VampireBittenModifier>();
-            }
-        }*/
 
         if (player.AmOwner)
         {

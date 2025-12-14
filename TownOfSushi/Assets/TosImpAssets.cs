@@ -58,6 +58,9 @@ public static class TOSImpAssets
 
     public static LoadableAsset<Sprite> FreezeSprite { get; } =
         new LoadableResourceAsset($"{ButtonPath}.CamoSprintFreezeButton.png");
+    
+    public static LoadableAsset<Sprite> SpellSprite { get; } =
+        new LoadableResourceAsset($"{ButtonPath}.SpellButton.png");
 
     public static LoadableAsset<Sprite> PlaceSprite { get; } =
         new LoadableResourceAsset($"{ButtonPath}.PlaceButton.png");

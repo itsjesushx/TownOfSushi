@@ -120,8 +120,8 @@ public static class ChatPatches
 
             List<string> randomNames =
             [
-                "Ess", "fizz", "lekiller", "SheDemon", "Apple", "Nich", "Cake", "Sanya", "50IQ", "Stabby", "Hannah", "Diamant",
-                "Reverie", "Rowgard", "doll", "Zack", "Ocean", "GlitchShot", "Lily", "Ace", "Charlton", "Alina", "Angel",
+                "Essence", "fizz", "lekiller", "SheDemon","Nich", "Cake", "Sanya", "50IQ", "Hannah", "Diamant",
+                "Rowgard", "twoghosts", "Zack", "Ocean", "GlitchShot", "Lily", "Ace", "Jesushi", "Alina", "Angel",
                 "snax", "RufusZeno", "IraM", "Kate"
             ];
 
@@ -132,20 +132,6 @@ public static class ChatPatches
                       "/summary - Shows the previous end game summary\n</size>";
 
             MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, msg);
-
-            __instance.freeChatField.Clear();
-            __instance.quickChatMenu.Clear();
-            __instance.quickChatField.Clear();
-            __instance.UpdateChatMode();
-            return false;
-        }
-
-        if (text.Replace(" ", string.Empty).StartsWith("/jail", StringComparison.OrdinalIgnoreCase))
-        {
-            var title = "<color=#8BFDFD>System</color>";
-
-            MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title,
-                "The mod no longer supports /jail chat. Use the red in-game chat button instead.");
 
             __instance.freeChatField.Clear();
             __instance.quickChatMenu.Clear();

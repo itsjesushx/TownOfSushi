@@ -17,7 +17,7 @@ public sealed class BomberRole(IntPtr cppPtr)
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<TrapperRole>());
 
     public string RoleName => "Bomber";
-    public string RoleDescription => "Plant Bombs To Kill Multiple Crewmates At Once";
+    public string RoleDescription => "Plant bombs to kill multi-kill players";
     public string RoleLongDescription => "Plant bombs to kill several crewmates at once";
     public MysticClueType MysticHintType => MysticClueType.Relentless;
     public Color RoleColor => TownOfSushiColors.Impostor;

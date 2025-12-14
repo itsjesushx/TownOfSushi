@@ -37,4 +37,9 @@ public sealed class LoversOptions : AbstractOptionGroup<LoverModifier>
     {
         Visible = () => OptionGroupSingleton<LoversOptions>.Instance.LoversChance > 0
     };
+
+    public ModdedToggleOption KnowEachOthersRole { get; } = new("Lovers Know Each Others Role", true)
+    {
+        Visible = () => OptionGroupSingleton<LoversOptions>.Instance.LoversChance > 0
+    };
 }

@@ -14,7 +14,7 @@ namespace TownOfSushi.Roles.Neutral;
 public sealed class HitmanRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, ICrewVariant, IMysticClue
 {
     public string RoleName => "Hitman";
-    public string RoleDescription => "Murder, morph into others and drag bodies.";
+    public string RoleDescription => "Murder, morph and drag bodies";
     public string RoleLongDescription => "You are able to drag dead bodies, \nMorph into other players and kill everyone!";
     public MysticClueType MysticHintType => MysticClueType.Trickster;
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<VeteranRole>());

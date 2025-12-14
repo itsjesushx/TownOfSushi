@@ -13,7 +13,7 @@ public sealed class AurialRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSus
 {
     private readonly Dictionary<(Vector3, int), ArrowBehaviour> _senseArrows = new();
     public string RoleName => "Aurial";
-    public string RoleDescription => "Sense Disturbances In Your Aura.";
+    public string RoleDescription => "Sense disturbances in your Aura";
     public string RoleLongDescription => "Any player abilities used within your aura you will sense";
     public MysticClueType MysticHintType => MysticClueType.Perception;
     public Color RoleColor => TownOfSushiColors.Aurial;

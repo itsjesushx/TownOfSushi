@@ -13,6 +13,11 @@ public sealed class EscapistMarkButton : TownOfSushiRoleButton<EscapistRole>, IA
     public override float InitialCooldown => 0.001f;
     public override LoadableAsset<Sprite> Sprite => TOSImpAssets.MarkSprite;
 
+    public void AftermathHandler()
+    {
+        ClickHandler();
+    }
+
     public override bool Enabled(RoleBehaviour? role)
     {
         return base.Enabled(role) && Role is { MarkedLocation: null };
@@ -27,7 +32,7 @@ public sealed class EscapistMarkButton : TownOfSushiRoleButton<EscapistRole>, IA
     {
         EscapistRole.RpcMarkLocation(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.transform.position);
 
-        // TOSAudio.PlaySound(TOSAudio.EscapistMarkSound);
+        // TouAudio.PlaySound(TouAudio.EscapistMarkSound);
         CustomButtonSingleton<EscapistRecallButton>.Instance.SetActive(true, Role);
         CustomButtonSingleton<EscapistRecallButton>.Instance.ResetCooldownAndOrEffect();
         SetActive(false, Role);

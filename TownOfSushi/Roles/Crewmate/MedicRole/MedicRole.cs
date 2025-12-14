@@ -36,7 +36,7 @@ public sealed class MedicRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSush
         }
     }
     public string RoleName => "Medic";
-    public string RoleDescription => "Create A Shield To Protect A Crewmate";
+    public string RoleDescription => "Create a shield to protect a player";
     public string RoleLongDescription => "Protect a crewmate with a shield";
     public Color RoleColor => TownOfSushiColors.Medic;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;

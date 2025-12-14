@@ -11,29 +11,6 @@ public sealed class HitmanDragDropButton : TownOfSushiRoleButton<HitmanRole, Dea
     public override float Cooldown => OptionGroupSingleton<AgentOptions>.Instance.DragCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TOSNeutAssets.DragSprite;
 
-    public override DeadBody? GetTarget()
-    {
-        return PlayerControl.LocalPlayer?.GetNearestDeadBody(PlayerControl.LocalPlayer.MaxReportDistance / 4f);
-    }
-
-    protected override void OnClick()
-    {
-        if (Target == null)
-        {
-            return;
-        }
-
-        if (PlayerControl.LocalPlayer.HasModifier<HitmanDragModifier>())
-        {
-            HitmanRole.RpcStopDragging(PlayerControl.LocalPlayer, Target.transform.position);
-            Timer = Cooldown;
-        }
-        else
-        {
-            HitmanRole.RpcStartDragging(PlayerControl.LocalPlayer, Target.ParentId);
-        }
-    }
-
     public override void ClickHandler()
     {
         if (!CanClick())
@@ -51,9 +28,53 @@ public sealed class HitmanDragDropButton : TownOfSushiRoleButton<HitmanRole, Dea
         Button?.SetDisabled();
     }
 
+    public override DeadBody? GetTarget()
+    {
+        return PlayerControl.LocalPlayer?.GetNearestDeadBody(PlayerControl.LocalPlayer.MaxReportDistance / 4f);
+    }
+
+    public void AftermathHandler()
+    {
+        DeadBody? deadBody = null;
+        if (PlayerControl.LocalPlayer.TryGetModifier<DragModifier>(out var dragMod))
+        {
+            deadBody = dragMod.DeadBody!;
+            UndertakerRole.RpcStopDragging(PlayerControl.LocalPlayer, dragMod.DeadBody!.transform.position);
+        }
+
+        var body = Helpers
+            .GetNearestDeadBodies(PlayerControl.LocalPlayer.GetTruePosition(), Distance, Helpers.CreateFilter(Constants.NotShipMask))
+            .Find(component => component && !component.Reported && component != deadBody);
+        if (body == null)
+        {
+            return;
+        }
+
+        UndertakerRole.RpcStartDragging(PlayerControl.LocalPlayer, body.ParentId);
+    }
+
+    protected override void OnClick()
+    {
+        if (Target == null)
+        {
+            return;
+        }
+
+        if (PlayerControl.LocalPlayer.TryGetModifier<DragModifier>(out var dragMod))
+        {
+            UndertakerRole.RpcStopDragging(PlayerControl.LocalPlayer, dragMod.DeadBody!.transform.position);
+            Timer = Cooldown;
+        }
+        else
+        {
+            UndertakerRole.RpcStartDragging(PlayerControl.LocalPlayer, Target.ParentId);
+        }
+    }
+
     public override bool CanUse()
     {
-        return base.CanUse() && Target && !PlayerControl.LocalPlayer.inVent && (!PlayerControl.LocalPlayer.HasModifier<HitmanDragModifier>() || CanDrop());
+        return base.CanUse() && Target && !PlayerControl.LocalPlayer.inVent &&
+               (!PlayerControl.LocalPlayer.HasModifier<DragModifier>() || CanDrop());
     }
 
     private bool CanDrop()
@@ -63,7 +84,9 @@ public sealed class HitmanDragDropButton : TownOfSushiRoleButton<HitmanRole, Dea
             return false;
         }
 
-        return !PhysicsHelpers.AnythingBetween(PlayerControl.LocalPlayer.Collider, PlayerControl.LocalPlayer.Collider.bounds.center, Target.TruePosition, Constants.ShipAndAllObjectsMask, false);
+        return !PhysicsHelpers.AnythingBetween(PlayerControl.LocalPlayer.Collider,
+            PlayerControl.LocalPlayer.Collider.bounds.center, Target.TruePosition, Constants.ShipAndAllObjectsMask,
+            false);
     }
 
     public void SetDrag()

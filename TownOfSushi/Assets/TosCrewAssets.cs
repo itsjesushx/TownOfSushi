@@ -33,13 +33,13 @@ public static class TOSCrewAssets
     public static LoadableAsset<Sprite> BlessSprite { get; } =
         new LoadableResourceAsset($"{ButtonPath}.BlessButton.png");
 
-    public static LoadableAsset<Sprite> DetectiveSprite { get; } = new LoadableResourceAsset($"{ButtonPath}.DetectiveButton.png");
+    public static LoadableAsset<Sprite> SeerSprite { get; } = new LoadableResourceAsset($"{ButtonPath}.SeerButton.png");
 
     public static LoadableAsset<Sprite> TrackSprite { get; } =
         new LoadableResourceAsset($"{ButtonPath}.TrackButton.png");
 
-    public static LoadableAsset<Sprite> SeerButton { get; } =
-        new LoadableResourceAsset($"{ButtonPath}.SeerButton.png");
+    public static LoadableAsset<Sprite> AnalyzerButton { get; } =
+        new LoadableResourceAsset($"{ButtonPath}.AnalyzerButton.png");
 
     public static LoadableAsset<Sprite> TrapSprite { get; } = new LoadableResourceAsset($"{ButtonPath}.TrapButton.png");
 

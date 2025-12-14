@@ -12,6 +12,10 @@ public sealed class WarlockCurseButton : TownOfSushiRoleButton<WarlockRole, Play
     public override float Cooldown => OptionGroupSingleton<WarlockOptions>.Instance.CurseCooldown;
     public override LoadableAsset<Sprite> Sprite => TOSImpAssets.WarlockCurseButton;
     public override bool ShouldPauseInVent => false;
+    public override bool Enabled(RoleBehaviour? role)
+    {
+        return base.Enabled(role) && Role is { CursedPlayer: null };
+    }
     protected override void OnClick()
     {
         if (Target == null)

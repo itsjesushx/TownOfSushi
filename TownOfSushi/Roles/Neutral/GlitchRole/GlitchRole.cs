@@ -11,7 +11,7 @@ public sealed class GlitchRole(IntPtr cppPtr)
 {
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<VigilanteRole>());
     public string RoleName => "The Glitch";
-    public string RoleDescription => "Murder, Mimic, Hack... Data Lost";
+    public string RoleDescription => "Murder, Mimic and Hack players to eliminate them";
     public string RoleLongDescription => "Murder everyone to win with your abilities!";
     public Color RoleColor => TownOfSushiColors.Glitch;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;

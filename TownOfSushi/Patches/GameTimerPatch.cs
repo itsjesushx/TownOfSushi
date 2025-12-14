@@ -119,8 +119,8 @@ public static class GameTimerPatch
 
     public static void BeginTimer()
     {
-        Enabled = true;
         TriggerEndGame = false;
+        Enabled = true;
         GameTimer = OptionGroupSingleton<GameTimerOptions>.Instance.GameTimeLimit.GetFloatData() * 60f;
 
         if ((GameTimerType)OptionGroupSingleton<GameTimerOptions>.Instance.TimerEndOption.Value is GameTimerType

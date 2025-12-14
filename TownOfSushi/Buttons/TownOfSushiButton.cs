@@ -1,5 +1,4 @@
-﻿
-using HarmonyLib;
+﻿using HarmonyLib;
 using MiraAPI.Hud;
 using MiraAPI.LocalSettings;
 using MiraAPI.PluginLoading;
@@ -23,11 +22,13 @@ public abstract class TownOfSushiButton : CustomActionButton
     public override ButtonLocation Location => ButtonLocation.BottomRight;
 
     public override string CooldownTimerFormatString =>
-        Timer <= 10f && LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.PreciseCooldownsToggle.Value ? "0.0" : "0";
+        Timer <= 10f && LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.PreciseCooldownsToggle.Value
+            ? "0.0"
+            : "0";
 
     public virtual bool UsableInDeath => false;
     public virtual bool ShouldPauseInVent => true;
-    
+
     public PassiveButton PassiveComp { get; set; }
 
     public virtual int ConsoleBind()
@@ -49,6 +50,7 @@ public abstract class TownOfSushiButton : CustomActionButton
         {
             bind = Keybinds.VentConsole;
         }
+
         return bind;
     }
 
@@ -119,7 +121,8 @@ public abstract class TownOfSushiButton : CustomActionButton
             Button.usesRemainingSprite.color = TextOutlineColor;
         }
 
-        TownOfSushiColors.UseBasic = LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.UseCrewmateTeamColorToggle.Value;
+        TownOfSushiColors.UseBasic =
+            LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.UseCrewmateTeamColorToggle.Value;
 
         PassiveComp = Button.GetComponent<PassiveButton>();
     }
@@ -134,7 +137,8 @@ public abstract class TownOfSushiButton : CustomActionButton
             Button!.usesRemainingSprite.color = TextOutlineColor;
         }
 
-        TownOfSushiColors.UseBasic = LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.UseCrewmateTeamColorToggle.Value;
+        TownOfSushiColors.UseBasic =
+            LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.UseCrewmateTeamColorToggle.Value;
     }
 
     public override bool CanUse()
@@ -154,7 +158,8 @@ public abstract class TownOfSushiButton : CustomActionButton
             return false;
         }
 
-        if (!PlayerControl.LocalPlayer.CanMove || PlayerControl.LocalPlayer.GetModifiers<DisabledModifier>().Any(x => !x.CanUseAbilities))
+        if (!PlayerControl.LocalPlayer.CanMove ||
+            PlayerControl.LocalPlayer.GetModifiers<DisabledModifier>().Any(x => !x.CanUseAbilities))
         {
             return false;
         }
@@ -195,7 +200,8 @@ public abstract class TownOfSushiButton : CustomActionButton
                 }
             }
 
-            TownOfSushiColors.UseBasic = LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.UseCrewmateTeamColorToggle.Value;
+            TownOfSushiColors.UseBasic = LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance
+                .UseCrewmateTeamColorToggle.Value;
         }
 
         OnClick();
@@ -224,7 +230,9 @@ public abstract class TownOfSushiTargetButton<T> : CustomActionButton<T> where T
     public override ButtonLocation Location => ButtonLocation.BottomRight;
 
     public override string CooldownTimerFormatString =>
-        Timer <= 10f && LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.PreciseCooldownsToggle.Value ? "0.0" : "0";
+        Timer <= 10f && LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.PreciseCooldownsToggle.Value
+            ? "0.0"
+            : "0";
 
     public virtual bool ShouldPauseInVent => true;
     public virtual bool UsableInDeath => false;
@@ -250,6 +258,7 @@ public abstract class TownOfSushiTargetButton<T> : CustomActionButton<T> where T
         {
             bind = Keybinds.VentConsole;
         }
+
         return bind;
     }
 
@@ -314,7 +323,8 @@ public abstract class TownOfSushiTargetButton<T> : CustomActionButton<T> where T
             return false;
         }
 
-        if (!PlayerControl.LocalPlayer.CanMove || PlayerControl.LocalPlayer.GetModifiers<DisabledModifier>().Any(x => !x.CanUseAbilities))
+        if (!PlayerControl.LocalPlayer.CanMove ||
+            PlayerControl.LocalPlayer.GetModifiers<DisabledModifier>().Any(x => !x.CanUseAbilities))
         {
             return false;
         }
@@ -354,7 +364,8 @@ public abstract class TownOfSushiTargetButton<T> : CustomActionButton<T> where T
             Button.usesRemainingSprite.color = TextOutlineColor;
         }
 
-        TownOfSushiColors.UseBasic = LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.UseCrewmateTeamColorToggle.Value;
+        TownOfSushiColors.UseBasic =
+            LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.UseCrewmateTeamColorToggle.Value;
 
         PassiveComp = Button.GetComponent<PassiveButton>();
     }
@@ -369,7 +380,8 @@ public abstract class TownOfSushiTargetButton<T> : CustomActionButton<T> where T
             Button!.usesRemainingSprite.color = TextOutlineColor;
         }
 
-        TownOfSushiColors.UseBasic = LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.UseCrewmateTeamColorToggle.Value;
+        TownOfSushiColors.UseBasic =
+            LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.UseCrewmateTeamColorToggle.Value;
     }
 
     public override void ClickHandler()
@@ -391,7 +403,8 @@ public abstract class TownOfSushiTargetButton<T> : CustomActionButton<T> where T
                     }
                 }
 
-                TownOfSushiColors.UseBasic = LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.UseCrewmateTeamColorToggle.Value;
+                TownOfSushiColors.UseBasic = LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance
+                    .UseCrewmateTeamColorToggle.Value;
             }
 
             OnClick();
@@ -484,7 +497,7 @@ public interface IAftermathableBodyButton : IAftermathableButton
 
 public interface IAftermathableButton
 {
-    void ClickHandler();
+    void AftermathHandler();
 }
 
 public interface IDiseaseableButton

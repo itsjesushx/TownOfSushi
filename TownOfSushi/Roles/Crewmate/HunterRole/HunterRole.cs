@@ -18,7 +18,7 @@ public sealed class HunterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCrewRo
     public MysticClueType MysticHintType => MysticClueType.Hunter;
 
     public string RoleName => "Hunter";
-    public string RoleDescription => "Stalk The <color=#FF0000FF>Impostor</color>";
+    public string RoleDescription => "Stalk <color=#FF0000FF>Evildoers</color> to catch them";
     public string RoleLongDescription => "Stalk player interactions and kill impostors, but not Crewmates";
     public Color RoleColor => TownOfSushiColors.Hunter;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;

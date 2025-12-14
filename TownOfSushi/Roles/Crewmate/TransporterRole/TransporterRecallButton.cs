@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace TownOfSushi.Roles.Impostor;
 
-public sealed class TransporterRecallButton : TownOfSushiRoleButton<TransporterRole>, IAftermathableButton
+public sealed class TransporterRecallButton : TownOfSushiRoleButton<TransporterRole>
 {
     public override string Name => "Recall";
     public override BaseKeybind Keybind => Keybinds.SecondaryAction;

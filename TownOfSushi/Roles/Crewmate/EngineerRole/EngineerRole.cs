@@ -17,7 +17,7 @@ public sealed class EngineerTOSRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
 {
     public override bool IsAffectedByComms => false;
     public string RoleName => "Engineer";
-    public string RoleDescription => "Maintain Important Systems On The Ship";
+    public string RoleDescription => "Vent around and fix sabotages";
     public string RoleLongDescription => "Vent around and fix sabotages remotely";
     public MysticClueType MysticHintType => MysticClueType.Protective;
     public Color RoleColor => TownOfSushiColors.Engineer;

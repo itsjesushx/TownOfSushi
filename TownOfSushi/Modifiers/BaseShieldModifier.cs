@@ -15,11 +15,9 @@ public abstract class BaseShieldModifier : TimedModifier, IAnimated
     public override bool HideOnUi => !LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.ShowShieldHudToggle.Value;
     public virtual bool VisibleSymbol => false;
     public bool IsVisible { get; set; } = true;
-
     public void SetVisible()
     {
     }
-
     public override string GetDescription()
     {
         return !HideOnUi ? ShieldDescription : string.Empty;

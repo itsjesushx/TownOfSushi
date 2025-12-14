@@ -10,7 +10,7 @@ namespace TownOfSushi.Modifiers.Game.Impostor;
 public sealed class DisperserModifier : TOSGameModifier, IWikiDiscoverable
 {
     public override string ModifierName => "Disperser";
-    public override string IntroInfo => "You can also disperse players to vents around the map.";
+    public override string IntroInfo => "You can disperse players to vents around the map";
 
     public override LoadableAsset<Sprite>? ModifierIcon => TOSModifierIcons.Disperser;
     public override ModifierFaction FactionType => ModifierFaction.ImpostorUtility;

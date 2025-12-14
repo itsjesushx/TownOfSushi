@@ -1,7 +1,7 @@
 ﻿using MiraAPI.Hud;
+using Reactor.Utilities.Extensions;
 using TownOfSushi.Buttons;
 using TownOfSushi.Modifiers;
-using TownOfSushi.Modules;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -48,6 +48,30 @@ public sealed class GlitchMimicButton : TownOfSushiRoleButton<GlitchRole>, IAfte
         return role is GlitchRole;
     }
 
+    public void AftermathHandler()
+    {
+        if (!EffectActive)
+        {
+            var player = PlayerControl.AllPlayerControls.ToArray().Where(plr => (!plr.HasDied() ||
+                Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == plr.PlayerId) && plr != PlayerControl.LocalPlayer)).Random();
+            if (player != null)
+            {
+                TOSAudio.PlaySound(TOSAudio.MimicSound);
+                PlayerControl.LocalPlayer.RpcAddModifier<GlitchMimicModifier>(player);
+
+                EffectActive = true;
+                Timer = EffectDuration;
+                OverrideName("Unmimic");
+            }
+        }
+        else
+        {
+            PlayerControl.LocalPlayer.RpcRemoveModifier<GlitchMimicModifier>();
+            OverrideName("Mimic");
+            TOSAudio.PlaySound(TOSAudio.UnmimicSound);
+        }
+    }
+
     protected override void OnClick()
     {
         if (!EffectActive)
@@ -64,9 +88,7 @@ public sealed class GlitchMimicButton : TownOfSushiRoleButton<GlitchRole>, IAfte
                 PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;
             playerMenu.Begin(
                 plr => (!plr.HasDied() ||
-                        Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == plr.PlayerId) ||
-                        FakePlayer.FakePlayers.FirstOrDefault(x => x?.body?.name == $"Fake {plr.gameObject.name}")
-                            ?.body) && plr != PlayerControl.LocalPlayer,
+                        Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == plr.PlayerId)) && plr != PlayerControl.LocalPlayer,
                 plr =>
                 {
                     playerMenu.ForceClose();
@@ -89,26 +111,45 @@ public sealed class GlitchMimicButton : TownOfSushiRoleButton<GlitchRole>, IAfte
             foreach (var panel in playerMenu.potentialVictims)
             {
                 panel.PlayerIcon.cosmetics.SetPhantomRoleAlpha(1f);
+                if (panel.NameText.text != PlayerControl.LocalPlayer.Data.PlayerName)
+                {
+                    panel.NameText.color = Color.white;
+                }
             }
         }
         else
         {
             PlayerControl.LocalPlayer.RpcRemoveModifier<GlitchMimicModifier>();
             OverrideName("Mimic");
-            TOSAudio.PlaySound(TOSAudio.UnmimicSound);
+            if (MeetingHud.Instance == null)
+            {
+                TOSAudio.PlaySound(TOSAudio.UnmimicSound);
+            }
         }
     }
 
     public override void OnEffectEnd()
     {
-        TOSAudio.PlaySound(TOSAudio.UnmimicSound);
+        if (MeetingHud.Instance == null)
+        {
+            TOSAudio.PlaySound(TOSAudio.UnmimicSound);
+        }
         OverrideName("Mimic");
     }
 
     public override bool CanUse()
     {
-        return ((Timer <= 0 && !EffectActive) || (EffectActive && Timer <= EffectDuration - 2f)) &&
-               !PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>() &&
-               !PlayerControl.LocalPlayer.HasModifier<DisabledModifier>();
+        if (HudManager.Instance.Chat.IsOpenOrOpening || MeetingHud.Instance)
+        {
+            return false;
+        }
+
+        if (PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>() || PlayerControl.LocalPlayer
+                .GetModifiers<DisabledModifier>().Any(x => !x.CanUseAbilities))
+        {
+            return false;
+        }
+
+        return ((Timer <= 0 && !EffectActive) || (EffectActive && Timer <= EffectDuration - 2f));
     }
 }

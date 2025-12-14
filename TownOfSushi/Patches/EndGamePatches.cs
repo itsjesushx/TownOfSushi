@@ -100,7 +100,7 @@ public static class EndGamePatches
                 }
             }
 
-            if (playerControl.IsRole<PhantomTOSRole>() || playerTeam == ModdedRoleTeams.Crewmate)
+            if (playerControl.IsRole<SpectreRole>() || playerTeam == ModdedRoleTeams.Crewmate)
             {
                     playerRoleString.Append(TownOfSushiPlugin.Culture,
                         $" {playerControl.TaskInfo()}");
@@ -405,13 +405,6 @@ public static class EndGamePatches
                 winnerArray.ToList().Remove(realPlayer);
             }
         }
-        //{
-        //    array[0].SetFlipX(true);
-
-        //    array[0].gameObject.transform.position -= new Vector3(1.5f, 0f, 0f);
-        //    array[0].cosmetics.skin.transform.localScale = new Vector3(-1, 1, 1);
-        //    array[0].cosmetics.nameText.color = new Color(1f, 0.4f, 0.8f, 1f);
-        //}
     }
 
     public static void AfterEndGameSetup(EndGameManager instance)

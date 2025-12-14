@@ -11,7 +11,7 @@ public sealed class JuggernautRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
 {
     public int KillCount { get; set; }
     public string RoleName => "Juggernaut";
-    public string RoleDescription => "Your Power Grows With Every Kill";
+    public string RoleDescription => "Your power grows with every kill";
     public string RoleLongDescription => "With each kill your kill cooldown decreases";
     public MysticClueType MysticHintType => MysticClueType.Relentless;
     public Color RoleColor => TownOfSushiColors.Juggernaut;

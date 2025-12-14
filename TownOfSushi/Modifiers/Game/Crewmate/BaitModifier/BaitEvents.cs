@@ -9,7 +9,6 @@ public static class BaitEvents
     public static void AfterMurderEventHandler(AfterMurderEvent @event)
     {
         if (@event.Target.HasModifier<BaitModifier>() && @event.Target != @event.Source &&
-            !@event.Source.IsRole<SoulCollectorRole>() &&
             !MeetingHud.Instance)
         {
             Coroutines.Start(BaitModifier.CoReportDelay(@event.Source, @event.Target));

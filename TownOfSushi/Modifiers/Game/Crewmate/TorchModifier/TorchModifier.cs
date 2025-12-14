@@ -6,7 +6,7 @@ namespace TownOfSushi.Modifiers.Game.Crewmate;
 public sealed class TorchModifier : TOSGameModifier, IWikiDiscoverable
 {
     public override string ModifierName => "Torch";
-    public override string IntroInfo => "You can also see without lights on.";
+    public override string IntroInfo => "You can see without lights on.";
     public override LoadableAsset<Sprite>? ModifierIcon => TOSModifierIcons.Torch;
     public override Color FreeplayFileColor => new Color32(140, 255, 255, 255);
     public override ModifierFaction FactionType => ModifierFaction.CrewmateVisibility;

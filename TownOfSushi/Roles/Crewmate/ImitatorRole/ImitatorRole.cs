@@ -8,7 +8,7 @@ namespace TownOfSushi.Roles.Crewmate;
 public sealed class ImitatorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue
 {
     public string RoleName => "Imitator";
-    public string RoleDescription => "Use Dead Roles To Benefit The Crew";
+    public string RoleDescription => "Use dead roles to benefit crewmates";
     public string RoleLongDescription => "Use the true-hearted dead to benefit the crew once more";
     public Color RoleColor => TownOfSushiColors.Imitator;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
@@ -57,7 +57,7 @@ public sealed class ImitatorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfS
             + "Hypnotist ⇨ Lookout | "
             + "Janitor ⇨ Inspector\n"
             + $"Miner ⇨ Engineer | "
-            + "BountyHunter ⇨ Tracker\n"
+            + "BountyHunter ⇨ Sonar\n"
             + "Undertaker ⇨ Retributionist | "
             + $"Hexblade ⇨ Veteran",
             TOSImpAssets.DragSprite),

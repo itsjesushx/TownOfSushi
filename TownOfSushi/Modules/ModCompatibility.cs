@@ -4,6 +4,8 @@ using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
 using Il2CppInterop.Runtime;
 using Reactor.Utilities;
+using TownOfSushi.Events;
+using TownOfSushi.Modifiers;
 using TownOfUs.Modules.Components;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -108,6 +110,7 @@ public static class ModCompatibility
         var submarineOxygenSystem = SubTypes.First(t => t.Name == "SubmarineOxygenSystem");
         submarineOxygenSystemInstance = AccessTools.Property(submarineOxygenSystem, "Instance");
         repairDamage = AccessTools.Method(submarineOxygenSystem, "RepairDamage");
+        var rpcOxygenDeath = AccessTools.Method(submarineOxygenSystem, "RpcOxygenDeath");
         var submergedExileController = SubTypes.First(t => t.Name == "SubmergedExileController");
         var submergedExileWrapUp = AccessTools.Method(submergedExileController, "WrapUpAndSpawn");
 
@@ -127,11 +130,19 @@ public static class ModCompatibility
 
         harmony.Patch(submergedExileWrapUp, null,
             new HarmonyMethod(AccessTools.Method(compatType, nameof(ExileRoleChangePostfix))));
+        harmony.Patch(rpcOxygenDeath, null,
+            new HarmonyMethod(AccessTools.Method(compatType, nameof(OxygenDeathPostfix))));
         harmony.Patch(canUse, new HarmonyMethod(AccessTools.Method(compatType, nameof(CanUsePrefix))),
             new HarmonyMethod(AccessTools.Method(compatType, nameof(CanUsePostfix))));
 
         SubLoaded = true;
         Logger<TownOfSushiPlugin>.Message("Submerged was detected");
+    }
+    public static void OxygenDeathPostfix(PlayerControl player)
+    {
+        DeathHandlerModifier.UpdateDeathHandler(player, "Drowned",
+        DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetTrue,
+        lockInfo: DeathHandlerOverride.SetTrue);
     }
 
     public static void CheckOutOfBoundsElevator(PlayerControl player)

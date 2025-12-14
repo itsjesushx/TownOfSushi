@@ -1,5 +1,4 @@
-﻿﻿﻿using System.Collections;
-
+﻿﻿using System.Collections;
 using HarmonyLib;
 using MiraAPI.Events;
 using System.Text;
@@ -11,53 +10,51 @@ using MiraAPI.Events.Vanilla.Usables;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers.ModifierDisplay;
 using MiraAPI.Modifiers.Types;
-using PowerTools;
 using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
 using TMPro;
 using UnityEngine;
 using Object = UnityEngine.Object;
-using Random = UnityEngine.Random;
 using TownOfSushi.Options;
-using TownOfSushi.Modifiers.Game;
 using TownOfSushi.Modules;
 using TownOfSushi.Buttons;
 using TownOfSushi.Modifiers;
 using TownOfSushi.Patches;
 using TownOfSushi.Events.TOSEvents;
 using TownOfSushi.Modules.Anims;
+using TownOfSushi.Patches.CustomPolus;
+using TownOfSushi.Modifiers.Game;
 
 namespace TownOfSushi.Events;
-
 public static class TownOfSushiEventHandlers
 {
     internal static TextMeshPro ModifierText;
-
     public static void RunModChecks()
     {
-        var option = OptionGroupSingleton<GeneralOptions>.Instance.ModifierReveal;
-        var modifier = PlayerControl.LocalPlayer.GetModifiers<AllianceGameModifier>().FirstOrDefault();
-        var uniModifier = PlayerControl.LocalPlayer.GetModifiers<UniversalGameModifier>().FirstOrDefault();
 
-        if (modifier != null && option is ModReveal.Alliance)
+            var modifiers = PlayerControl.LocalPlayer.GetModifiers<GameModifier>()
+            .Where(x => x is TOSGameModifier || x is UniversalGameModifier).ToList();
+
+        if (modifiers.Count > 0)
         {
-            ModifierText.text = $"<size={modifier.IntroSize}>{modifier.IntroInfo}</size>";
+            var modifierText = new StringBuilder();
+            modifierText.Append("<size=4><color=#FFFFFF>Modifiers: </color>");
 
-            ModifierText.color = MiscUtils.GetRoleColour(modifier.ModifierName.Replace(" ", string.Empty));
-            if (modifier is IColoredModifier colorMod)
+            int count = modifiers.Count;
+            foreach (var modifier in modifiers)
             {
-                ModifierText.color = colorMod.ModifierColor;
-            }
-        }
-        else if (uniModifier != null && option is ModReveal.Universal)
-        {
-            ModifierText.text = $"<size=4><color=#FFFFFF>Modifier: </color>{uniModifier.ModifierName}</size>";
+                var color = MiscUtils.GetRoleColour(modifier.ModifierName.Replace(" ", string.Empty));
+                if (modifier is IColoredModifier colorMod)
+                    color = colorMod.ModifierColor;
 
-            ModifierText.color = MiscUtils.GetRoleColour(uniModifier.ModifierName.Replace(" ", string.Empty));
-            if (uniModifier is IColoredModifier colorMod)
-            {
-                ModifierText.color = colorMod.ModifierColor;
+                count--;
+                modifierText.Append($"{color.ToTextColor()}{modifier.ModifierName}</color>");
+                modifierText.Append(count > 0 ? ", " : "");
             }
+
+            modifierText.Append("</size>");
+            ModifierText.text = modifierText.ToString();
+            ModifierText.color = Color.white;
         }
         else
         {
@@ -65,36 +62,6 @@ public static class TownOfSushiEventHandlers
         }
     }
 
-    [RegisterEvent(1000)]
-    public static void IntroRoleRevealEventHandler(IntroRoleRevealEvent @event)
-    {
-        var instance = @event.IntroCutscene;
-        
-        if (ModCompatibility.IsSubmerged())
-        {
-            Coroutines.Start(ModCompatibility.WaitMeeting(ModCompatibility.ResetTimers));
-        }
-        
-        if (PlayerControl.LocalPlayer.Data.Role is ITownOfSushiRole custom)
-        {
-            instance.RoleText.text = custom.RoleName;
-            instance.YouAreText.text = custom.YouAreText;
-            instance.RoleBlurbText.text = custom.RoleDescription;
-        }
-
-        var teamModifier = PlayerControl.LocalPlayer.GetModifiers<TOSGameModifier>().FirstOrDefault();
-        if (teamModifier != null && OptionGroupSingleton<GeneralOptions>.Instance.TeamModifierReveal)
-        {
-            var color = MiscUtils.GetRoleColour(teamModifier.ModifierName.Replace(" ", string.Empty));
-            if (teamModifier is IColoredModifier colorMod)
-            {
-                color = colorMod.ModifierColor;
-            }
-
-            instance.RoleBlurbText.text =
-                $"<size={teamModifier.IntroSize}>\n</size>{instance.RoleBlurbText.text}\n<size={teamModifier.IntroSize}><color=#{color.ToHtmlStringRGBA()}>{teamModifier.IntroInfo}</color></size>";
-        }
-    }
     [RegisterEvent]
     public static void IntroBeginEventHandler(IntroBeginEvent @event)
     {
@@ -105,10 +72,10 @@ public static class TownOfSushiEventHandlers
     public static IEnumerator CoChangeModifierText(IntroCutscene cutscene)
     {
         yield return new WaitForSeconds(0.01f);
-        
+
         ModifierText =
             Object.Instantiate(cutscene.RoleText, cutscene.RoleText.transform.parent, false);
-        
+
         if (PlayerControl.LocalPlayer.Data.Role is ITownOfSushiRole custom)
         {
             cutscene.RoleText.text = custom.RoleName;
@@ -117,13 +84,9 @@ public static class TownOfSushiEventHandlers
         }
 
         var teamModifier = PlayerControl.LocalPlayer.GetModifiers<TOSGameModifier>().FirstOrDefault();
-        if (teamModifier != null && OptionGroupSingleton<GeneralOptions>.Instance.TeamModifierReveal)
+        if (teamModifier != null)
         {
-            var color = MiscUtils.GetRoleColour(teamModifier.ModifierName.Replace(" ", string.Empty));
-            if (teamModifier is IColoredModifier colorMod)
-            {
-                ModifierText.color = colorMod.ModifierColor;
-            }
+            var color = MiscUtils.GetModifierColour(teamModifier);
 
             cutscene.RoleBlurbText.text =
                 $"<size={teamModifier.IntroSize}>\n</size>{cutscene.RoleBlurbText.text}\n<size={teamModifier.IntroSize}><color=#{color.ToHtmlStringRGBA()}>{teamModifier.IntroInfo}</color></size>";
@@ -136,7 +99,7 @@ public static class TownOfSushiEventHandlers
         ModifierText.gameObject.SetActive(true);
         ModifierText.color.SetAlpha(0.8f);
     }
-    
+
     [RegisterEvent]
     public static void IntroEndEventHandler(IntroEndEvent @event)
     {
@@ -192,11 +155,34 @@ public static class TownOfSushiEventHandlers
 
             panel.SetTaskText(role.SetTabText().ToString());
         }
+        if (GameOptionsManager.Instance.currentNormalGameOptions.MapId == 2 && OptionGroupSingleton<BetterPolusOptions>.Instance.BPCustomSpeciVent)
+        {
+            var list = GameObject.FindObjectsOfType<Vent>().ToList();
+            var adminVent = list.FirstOrDefault(x => x.gameObject.name == "AdminVent");
+            var bathroomVent = list.FirstOrDefault(x => x.gameObject.name == "BathroomVent");
+            BetterPolus.SpecimenVent = UnityEngine.Object.Instantiate<Vent>(adminVent!);
+            BetterPolus.SpecimenVent.gameObject.AddSubmergedComponent(ModCompatibility.Classes.ElevatorMover);
+            BetterPolus.SpecimenVent.transform.position = new Vector3(36.55068f, -21.5168f, -0.0215168f);
+            BetterPolus.SpecimenVent.Left = adminVent;
+            BetterPolus.SpecimenVent.Right = bathroomVent;
+            BetterPolus.SpecimenVent.Center = null;
+            BetterPolus.SpecimenVent.Id = ShipStatus.Instance.AllVents.Select(x => x.Id).Max() + 1;
+            var allVentsList = ShipStatus.Instance.AllVents.ToList();
+            allVentsList.Add(BetterPolus.SpecimenVent);
+            ShipStatus.Instance.AllVents = allVentsList.ToArray();
+            BetterPolus.SpecimenVent.gameObject.SetActive(true);
+            BetterPolus.SpecimenVent.name = "newVent_" + BetterPolus.SpecimenVent.Id;
+
+            adminVent!.Center = BetterPolus.SpecimenVent;
+            bathroomVent!.Center = BetterPolus.SpecimenVent;
+        }
     }
 
     [RegisterEvent]
     public static void StartMeetingEventHandler(StartMeetingEvent @event)
     {
+        MiscUtils.Meetingtime = GameOptionsManager.Instance.currentNormalGameOptions.DiscussionTime + GameOptionsManager.Instance.currentNormalGameOptions.VotingTime + 7f;
+        
         foreach (var mod in ModifierUtils.GetActiveModifiers<MisfortuneTargetModifier>())
         {
             mod.ModifierComponent?.RemoveModifier(mod);
@@ -204,14 +190,14 @@ public static class TownOfSushiEventHandlers
 
         var exeButton = CustomButtonSingleton<ExeTormentButton>.Instance;
         var jestButton = CustomButtonSingleton<JesterHauntButton>.Instance;
-        var phantomButton = CustomButtonSingleton<PhantomSpookButton>.Instance;
-        if (exeButton.Show || jestButton.Show || phantomButton.Show)
+        var spectreButton = CustomButtonSingleton<SpectreSpookButton>.Instance;
+        if (exeButton.Show || jestButton.Show || spectreButton.Show)
         {
             PlayerControl.LocalPlayer.RpcRemoveModifier<IndirectAttackerModifier>();
         }
         exeButton.Show = false;
         jestButton.Show = false;
-        phantomButton.Show = false;
+        spectreButton.Show = false;
 
         if (DestroyableSingleton<HudManager>.Instance.FullScreen == null) return;
         
@@ -255,11 +241,8 @@ public static class TownOfSushiEventHandlers
         HudManager.Instance.SetHudActive(false);
         HudManager.Instance.SetHudActive(true);
 
-        CustomButtonSingleton<WatchButton>.Instance.ExtraUses = 0;
-        CustomButtonSingleton<WatchButton>.Instance.SetUses((int)OptionGroupSingleton<LookoutOptions>.Instance
-            .MaxWatches);
-        CustomButtonSingleton<TrackerTrackButton>.Instance.ExtraUses = 0;
-        CustomButtonSingleton<TrackerTrackButton>.Instance.SetUses((int)OptionGroupSingleton<TrackerOptions>.Instance
+        CustomButtonSingleton<SonarTrackButton>.Instance.ExtraUses = 0;
+        CustomButtonSingleton<SonarTrackButton>.Instance.SetUses((int)OptionGroupSingleton<SonarOptions>.Instance
             .MaxTracks);
         CustomButtonSingleton<TrapperTrapButton>.Instance.ExtraUses = 0;
         CustomButtonSingleton<TrapperTrapButton>.Instance.SetUses((int)OptionGroupSingleton<TrapperOptions>.Instance
@@ -366,10 +349,7 @@ public static class TownOfSushiEventHandlers
             player.MyPhysics.ResetAnimState();
             player.MyPhysics.ResetMoveState();
         }
-
-        FakePlayer.ClearAll();
     }
-
     [RegisterEvent]
     public static void EjectionEventHandler(EjectionEvent @event)
     {
@@ -377,6 +357,13 @@ public static class TownOfSushiEventHandlers
         if (exiled == null)
         {
             return;
+        }
+        foreach (var amnesiac in CustomRoleUtils.GetActiveRolesOfType<AmnesiacRole>())
+        {
+            if (!amnesiac.EjectedPlayers.Contains(exiled))
+            {
+                amnesiac.EjectedPlayers.Add(exiled);
+            }
         }
 
         if (exiled.AmOwner)
@@ -456,10 +443,6 @@ public static class TownOfSushiEventHandlers
         {
             switch (source.Data.Role)
             {
-                case AmbusherRole:
-                    var ambushButton = CustomButtonSingleton<AmbusherAmbushButton>.Instance;
-                    ambushButton.ResetCooldownAndOrEffect();
-                    break;
                 case BomberRole:
                     var bombButton = CustomButtonSingleton<BomberPlantButton>.Instance;
                     bombButton.ResetCooldownAndOrEffect();
@@ -574,65 +557,10 @@ public static class TownOfSushiEventHandlers
         MeetingMenu.Instances.Do(x => x.HideSingle(player.PlayerId));
     }
 
-    private static IEnumerator CoHideHud()
+    public static IEnumerator CoHideHud()
     {
         yield return new WaitForSeconds(0.01f);
         HudManager.Instance.SetHudActive(false);
-    }
-
-    private static IEnumerator CoAnimateDeath(PlayerVoteArea voteArea)
-    {
-        var animDic = new Dictionary<AnimationClip, AnimationClip>
-        {
-            { TOSAssets.MeetingDeathBloodAnim1.LoadAsset(), TOSAssets.MeetingDeathAnim1.LoadAsset() },
-            { TOSAssets.MeetingDeathBloodAnim2.LoadAsset(), TOSAssets.MeetingDeathAnim2.LoadAsset() },
-            { TOSAssets.MeetingDeathBloodAnim3.LoadAsset(), TOSAssets.MeetingDeathAnim3.LoadAsset() }
-        };
-        var trueAnim = animDic.Random();
-        var animation = Object.Instantiate(TOSAssets.MeetingDeathPrefab.LoadAsset(), voteArea.transform);
-        animation.transform.localPosition = new Vector3(-0.8f, 0, 0);
-        animation.transform.localScale = new Vector3(0.375f, 0.375f, 1f);
-        animation.gameObject.layer = animation.transform.GetChild(0).gameObject.layer = voteArea.gameObject.layer;
-
-        var animationRend = animation.GetComponent<SpriteRenderer>();
-        animationRend.material = voteArea.PlayerIcon.cosmetics.currentBodySprite.BodySprite.material;
-
-        voteArea.Overlay.gameObject.SetActive(false);
-        animation.gameObject.SetActive(false);
-
-        Coroutines.Start(MiscUtils.CoFlash(Palette.ImpostorRed, 0.5f, 0.15f));
-        var seconds = Random.RandomRange(0.4f, 1.1f);
-        // if there's less than 6 players alive, animation will play instantly
-        if (Helpers.GetAlivePlayers().Count <= 5)
-        {
-            seconds = 0.01f;
-        }
-
-        yield return new WaitForSeconds(seconds);
-
-        voteArea.PlayerIcon.gameObject.SetActive(false);
-        animation.gameObject.SetActive(true);
-        var bodysAnim = animation.GetComponent<SpriteAnim>();
-
-        var bloodAnim = animation.transform.GetChild(0).GetComponent<SpriteAnim>();
-
-        bloodAnim.Play(trueAnim.Key);
-        bodysAnim.Play(trueAnim.Value);
-
-        bodysAnim.SetSpeed(1.05f);
-        bloodAnim.SetSpeed(1.05f);
-        var bodyAnimLength = bodysAnim.m_currAnim.length;
-
-        yield return new WaitForSeconds(0.1f);
-        SoundManager.Instance.PlaySound(voteArea.GetPlayer()!.KillSfx, false);
-
-        yield return new WaitForSeconds(bodyAnimLength - 0.25f);
-        voteArea.Overlay.gameObject.SetActive(true);
-        animation.gameObject.Destroy();
-        voteArea.XMark.gameObject.SetActive(true);
-        SoundManager.Instance.PlaySound(MeetingHud.Instance.MeetingIntro.PlayerDeadSound, false);
-        Coroutines.Start(MiscUtils.BetterBloop(voteArea.XMark.transform));
-        voteArea.Overlay.gameObject.SetActive(true);
     }
 
     public static void HandleMeetingMurder(MeetingHud instance, PlayerControl source, PlayerControl target)
@@ -700,8 +628,21 @@ public static class TownOfSushiEventHandlers
         {
             MayorRole.DestroyReveal(targetVoteArea);
         }
+        targetVoteArea.Overlay.gameObject.SetActive(false);
+        targetVoteArea.Overlay.gameObject.SetActive(true);
+        targetVoteArea.XMark.gameObject.SetActive(true);
 
-        Coroutines.Start(CoAnimateDeath(targetVoteArea));
+        SoundManager.Instance.PlaySound(targetVoteArea.GetPlayer()!.KillSfx, false);
+        if (target.AmOwner || PlayerControl.LocalPlayer.AmOwner && PlayerControl.LocalPlayer.Data.IsDead)
+        {
+            DestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(source.Data, target.Data);
+        }
+        else
+        {
+            DestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(target.Data, target.Data);
+        }
+
+        targetVoteArea.Overlay.gameObject.SetActive(true);
 
         // hide meeting menu buttons on the victim's screen
         if (target.AmOwner)

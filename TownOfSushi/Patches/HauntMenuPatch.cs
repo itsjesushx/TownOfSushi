@@ -23,9 +23,8 @@ public static class HauntMenuMinigamePatch
 
         var body = Object.FindObjectsOfType<DeadBody>()
             .FirstOrDefault(x => x.ParentId == PlayerControl.LocalPlayer.PlayerId);
-        var fakePlayer = FakePlayer.FakePlayers.FirstOrDefault(x => x.PlayerId == PlayerControl.LocalPlayer.PlayerId);
 
-        if (!TutorialManager.InstanceExists && (body || fakePlayer?.body))
+        if (!TutorialManager.InstanceExists && body)
         {
             __instance.Close();
             __instance.NameText.text = string.Empty;
@@ -66,7 +65,7 @@ public static class HauntMenuMinigamePatch
         }
 
         var role = target.Data.Role;
-        if (target.Data.IsDead && role is not PhantomTOSRole or GuardianAngelRole or HaunterRole)
+        if (target.Data.IsDead && role is not SpectreRole or GuardianAngelRole or HaunterRole)
         {
             role = target.GetRoleWhenAlive();
         }

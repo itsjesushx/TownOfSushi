@@ -15,7 +15,7 @@ public sealed class PoliticianRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITOSCr
     public MysticClueType MysticHintType => MysticClueType.Trickster;
     public bool CanCampaign { get; set; } = true;
     public string RoleName => "Politician";
-    public string RoleDescription => "Campaign To Become The Mayor!";
+    public string RoleDescription => "Campaign to become the Mayor!";
     public string RoleLongDescription => "Spread your campaign to become the Mayor!";
     public Color RoleColor => TownOfSushiColors.Politician;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;

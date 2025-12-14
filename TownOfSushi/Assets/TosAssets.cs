@@ -13,18 +13,6 @@ public static class TOSAssets
 
     public static readonly LoadableAsset<GameObject> RoleSelectionGame =
         new LoadableBundleAsset<GameObject>("SelectRoleGame", MainBundle);
-    
-    public static readonly LoadableAsset<GameObject> AltRoleSelectionGame =
-        new LoadableBundleAsset<GameObject>("AmbassadorRoleGame", MainBundle);
-    
-    public static readonly LoadableAsset<GameObject> ConfirmMinigame =
-        new LoadableBundleAsset<GameObject>("AmbassadorConfirmGame", MainBundle);
-
-    public static LoadableAsset<Sprite> RetrainSprite { get; } =
-        new LoadableBundleAsset<Sprite>("Retrain.png", MainBundle);
-    
-    public static LoadableAsset<Sprite> RetrainCleanSprite { get; } =
-        new LoadableBundleAsset<Sprite>("RetrainClean.png", MainBundle);
 
     public static LoadableAsset<GameObject> WikiPrefab { get; } =
         new LoadableBundleAsset<GameObject>("IngameWiki", MainBundle);
@@ -47,35 +35,11 @@ public static class TOSAssets
     public static LoadableAsset<GameObject> EscapistMarkPrefab { get; } =
         new LoadableBundleAsset<GameObject>("EscapistMark", MainBundle);
 
-    public static LoadableAsset<GameObject> MeetingDeathPrefab { get; } =
-        new LoadableBundleAsset<GameObject>("DeathAnimation", MainBundle);
-
-    public static LoadableAsset<GameObject> AmbushPrefab { get; } =
-        new LoadableBundleAsset<GameObject>("Ambush", MainBundle);
-
     public static LoadableAsset<GameObject> MayorRevealPrefab { get; } =
         new LoadableBundleAsset<GameObject>("MayorReveal", MainBundle);
     
     public static LoadableAsset<GameObject> MayorPostRevealPrefab { get; set; } =
         new LoadableBundleAsset<GameObject>("MayorPostReveal", MainBundle);
-
-    public static LoadableAsset<AnimationClip> MeetingDeathAnim1 { get; } =
-        new LoadableBundleAsset<AnimationClip>("DeathMeetingShotFront", MainBundle);
-
-    public static LoadableAsset<AnimationClip> MeetingDeathBloodAnim1 { get; } =
-        new LoadableBundleAsset<AnimationClip>("DeathMeetingShotFrontBlood", MainBundle);
-
-    public static LoadableAsset<AnimationClip> MeetingDeathAnim2 { get; } =
-        new LoadableBundleAsset<AnimationClip>("DeathMeetingShotRight", MainBundle);
-
-    public static LoadableAsset<AnimationClip> MeetingDeathBloodAnim2 { get; } =
-        new LoadableBundleAsset<AnimationClip>("DeathMeetingShotRightBlood", MainBundle);
-
-    public static LoadableAsset<AnimationClip> MeetingDeathAnim3 { get; } =
-        new LoadableBundleAsset<AnimationClip>("DeathMeetingBody", MainBundle);
-
-    public static LoadableAsset<AnimationClip> MeetingDeathBloodAnim3 { get; } =
-        new LoadableBundleAsset<AnimationClip>("DeathMeetingBodyBlood", MainBundle);
 
     public static LoadableAsset<GameObject> ScatterUI { get; } =
         new LoadableBundleAsset<GameObject>("ScatterUI", MainBundle);
@@ -127,7 +91,6 @@ public static class TOSAssets
 
     public static LoadableAsset<Sprite> KillSprite { get; } = new LoadableResourceAsset($"{ShortPath}.KillButton.png");
     public static LoadableAsset<Sprite> VentSprite { get; } = new LoadableResourceAsset($"{ShortPath}.VentButton.png");
-    public static LoadableAsset<Sprite> RangeSprite { get; } = new LoadableResourceAsset($"{ShortPath}.Range.png");
 
     public static LoadableAsset<Sprite> HysteriaSprite { get; } =
         new LoadableResourceAsset($"{ShortPath}.Hysteria.png", 300);
@@ -146,9 +109,6 @@ public static class TOSAssets
 
     public static LoadableAsset<Sprite> FootprintSprite { get; } =
         new LoadableResourceAsset($"{ShortPath}.Footprint.png");
-
-    public static LoadableAsset<Sprite> CircleSprite { get; } =
-        new LoadableResourceAsset($"{ShortPath}.Circle.png", 512);
 
     public static LoadableAsset<Sprite> SwapActive { get; } =
         new LoadableResourceAsset($"{ShortPath}.SwapActive.png", 300);

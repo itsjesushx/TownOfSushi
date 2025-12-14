@@ -7,27 +7,9 @@ public sealed class GeneralOptions : AbstractOptionGroup
 {
     public override string GroupName => "General";
     public override uint GroupPriority => 1;
-
-    [ModdedEnumOption("Modifier Type To Show In Role Intro", typeof(ModReveal))]
-    public ModReveal ModifierReveal { get; set; } = ModReveal.Alliance;
-
-    [ModdedToggleOption("Show Faction Modifier On Role Reveal")]
-    public bool TeamModifierReveal { get; set; } = true;
+    
     [ModdedNumberOption("Voting Time Added After Meeting Death", 0f, 15f, 1f, MiraNumberSuffixes.Seconds, "0.#")]
     public float AddedMeetingDeathTimer { get; set; } = 5f;
-
-    [ModdedToggleOption("Camouflage Comms")]
-    public bool CamouflageComms { get; set; } = true;
-
-    public ModdedToggleOption KillDuringCamoComms { get; set; } = new("Kill Anyone During Camouflage", true)
-    {
-        Visible = () => OptionGroupSingleton<GeneralOptions>.Instance.CamouflageComms
-    };
-
-    public ModdedToggleOption CamoKillScreens { get; set; } = new("Camouflage Kill Screens During Comms", false)
-    {
-        Visible = () => OptionGroupSingleton<GeneralOptions>.Instance.CamouflageComms
-    };
 
     [ModdedToggleOption("Impostors Know Each Other's Roles")]
     public bool ImpsKnowRoles { get; set; } = true;
@@ -49,8 +31,8 @@ public sealed class GeneralOptions : AbstractOptionGroup
 
     [ModdedToggleOption("Parallel Medbay Scans")]
     public bool ParallelMedbay { get; set; } = true;
-   /* [ModdedToggleOption("Disable Medbay Scan Walk Animation")]
-    public bool DisableMedbayAnimation { get; set; } = false;*/
+    [ModdedToggleOption("Disable Medbay Scan Walk Animation")]
+    public bool DisableMedbayAnimation { get; set; } = false;
 
     [ModdedEnumOption("Disable Meeting Skip Button", typeof(SkipState))]
     public SkipState SkipButtonDisable { get; set; } = SkipState.No;
@@ -63,13 +45,6 @@ public sealed class GeneralOptions : AbstractOptionGroup
 
     [ModdedToggleOption("Hide Vent Animations Not In Vision")]
     public bool HideVentAnimationNotInVision { get; set; } = true;
-}
-
-public enum ModReveal
-{
-    Alliance,
-    Universal,
-    Neither
 }
 
 public enum SkipState

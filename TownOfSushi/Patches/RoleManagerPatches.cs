@@ -91,7 +91,7 @@ public static class TOSRoleManagerPatches
         }
 
         CrewmateGhostRolePool.RemoveAll(x => x == (RoleTypes)RoleId.Get<HaunterRole>());
-        CustomGhostRolePool.RemoveAll(x => x == (RoleTypes)RoleId.Get<PhantomTOSRole>());
+        CustomGhostRolePool.RemoveAll(x => x == (RoleTypes)RoleId.Get<SpectreRole>());
     }
 
     private static void AssignRoles(List<NetworkedPlayerInfo> infected)

@@ -10,11 +10,11 @@ public static class TOSAudio
     public static LoadableAsset<AudioClip> NoisemakerDeathSound { get; } =
         new LoadableAudioResourceAsset($"{AudioPath}.NoisemakerDeath.wav");
 
-    public static LoadableAsset<AudioClip> TrackerActivateSound { get; } =
-        new LoadableAudioResourceAsset($"{AudioPath}.TrackerActivate.wav");
+    public static LoadableAsset<AudioClip> SonarActivateSound { get; } =
+        new LoadableAudioResourceAsset($"{AudioPath}.SonarActivate.wav");
 
-    public static LoadableAsset<AudioClip> TrackerDeactivateSound { get; } =
-        new LoadableAudioResourceAsset($"{AudioPath}.TrackerDeactivate.wav");
+    public static LoadableAsset<AudioClip> SonarDeactivateSound { get; } =
+        new LoadableAudioResourceAsset($"{AudioPath}.SonarDeactivate.wav");
 
     public static LoadableAsset<AudioClip> TrapperPlaceSound { get; } =
         new LoadableAudioResourceAsset($"{AudioPath}.TrapperPlace.wav");

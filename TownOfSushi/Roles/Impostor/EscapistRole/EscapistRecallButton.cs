@@ -15,6 +15,11 @@ public sealed class EscapistRecallButton : TownOfSushiRoleButton<EscapistRole>, 
     public override int MaxUses => (int)OptionGroupSingleton<EscapistOptions>.Instance.MaxEscapes;
     public override LoadableAsset<Sprite> Sprite => TOSImpAssets.RecallSprite;
 
+    public void AftermathHandler()
+    {
+        ClickHandler();
+    }
+
     public override bool Enabled(RoleBehaviour? role)
     {
         return base.Enabled(role) && Role is not { MarkedLocation: null };
@@ -31,7 +36,7 @@ public sealed class EscapistRecallButton : TownOfSushiRoleButton<EscapistRole>, 
         {
             Coroutines.Start(CoRecall(Role.MarkedLocation.Value));
         }
-        // TOSAudio.PlaySound(TOSAudio.EscapistRecallSound);
+        // TouAudio.PlaySound(TouAudio.EscapistRecallSound);
     }
 
     private static IEnumerator CoRecall(Vector2 location)

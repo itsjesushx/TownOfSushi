@@ -10,7 +10,6 @@ public sealed class AmnesiacVestModifier : TimedModifier
     public override string ModifierName => "Vested";
     public override bool AutoStart => true;
     public override bool HideOnUi => true;
-
     public override void OnActivate()
     {
         base.OnActivate();

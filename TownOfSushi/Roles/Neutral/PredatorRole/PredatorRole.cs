@@ -13,7 +13,7 @@ public sealed class PredatorRole(IntPtr cppPtr)
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<HunterRole>());
     public MysticClueType MysticHintType => MysticClueType.Relentless;
     public string RoleName => "Predator";
-    public string RoleDescription => "Terminate To Kill Everyone";
+    public string RoleDescription => "Terminate to kill everyone in a short amount of time";
     public string RoleLongDescription => "Terminate to kill everyone in your path";
     public Color RoleColor => TownOfSushiColors.Predator;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
@@ -21,7 +21,7 @@ public sealed class PredatorRole(IntPtr cppPtr)
 
     public CustomRoleConfiguration Configuration => new(this)
     {
-        CanUseVent = OptionGroupSingleton<PredatorOptions>.Instance.CanVent /* && (Terminating || Player.inVent)*/,
+        CanUseVent = OptionGroupSingleton<PredatorOptions>.Instance.CanVent,
         IntroSound = TOSAudio.PredatorTerminateSound,
         Icon = TOSRoleIcons.Predator,
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>()

@@ -2,7 +2,6 @@ using BepInEx.Configuration;
 using MiraAPI.LocalSettings;
 using TownOfSushi.LocalSettings.Attributes;
 using TownOfSushi.LocalSettings.SettingTypes;
-using TownOfSushi.Patches;
 
 namespace TownOfSushi;
 
@@ -28,23 +27,9 @@ public class TownOfSushiLocalSettings(ConfigFile config) : LocalSettingsTab(conf
     }
   }
 
-  public override void OnOptionChanged(ConfigEntryBase configEntry)
-  {
-    base.OnOptionChanged(configEntry);
-    if (configEntry == ButtonUIFactorSlider)
-    {
-      var slider = LocalizedSliders.FirstOrDefault(x => x.Key.ConfigEntry == ButtonUIFactorSlider).Key;
-      if (HudManager.InstanceExists)
-      {
-        HudManagerPatches.ResizeUI(1f / slider.OldValue);
-        HudManagerPatches.ResizeUI(slider.GetValue());
-      }
-    }
-  }
-
   public override LocalSettingTabAppearance TabAppearance => new()
   {
-    TabIcon = TOSAssets.KillSprite,
+    TabIcon = TOSAssets.SushiRollSprite,
   };
 
   [LocalizedLocalToggleSetting]
@@ -58,8 +43,6 @@ public class TownOfSushiLocalSettings(ConfigFile config) : LocalSettingsTab(conf
   public ConfigEntry<bool> ShowShieldHudToggle { get; private set; } = config.Bind("UI/Visuals", "Show Shield Hud", true);
   [LocalizedLocalToggleSetting]
   public ConfigEntry<bool> OffsetButtonsToggle { get; private set; } = config.Bind("UI/Visuals", "Offset Buttons", false);
-  [LocalizedLocalSliderSetting(min: 0.5f, max: 1.5f, suffixType: MiraNumberSuffixes.Multiplier, formatString: "0.00", displayValue: true)]
-  public ConfigEntry<float> ButtonUIFactorSlider { get; private set; } = config.Bind("UI/Visuals", "Button UI Factor", 0.75f);
 
   [LocalizedLocalToggleSetting]
   public ConfigEntry<bool> EnableDarkMode { get; private set; } = config.Bind("UI/Visuals", "Enable DarkMode", false);
@@ -86,14 +69,6 @@ public class TownOfSushiLocalSettings(ConfigFile config) : LocalSettingsTab(conf
   [LocalizedLocalToggleSetting]
   public ConfigEntry<bool> ShowSummaryMessageToggle { get; private set; } = config.Bind("Miscellaneous", "Show Summary Message", true);
 
-  [LocalizedLocalToggleSetting]
-  public ConfigEntry<bool> VanillaWikiEntriesToggle { get; private set; } = config.Bind("Miscellaneous", "Show Vanilla Wiki Entries", false);
-}
-
-public enum ArrowStyleType
-{
-    Default,
-    DarkGlow,
-    ColorGlow,
-    Legacy
+  //[LocalizedLocalToggleSetting]
+  //public ConfigEntry<bool> VanillaWikiEntriesToggle { get; private set; } = config.Bind("Miscellaneous", "Show Vanilla Wiki Entries", false);
 }

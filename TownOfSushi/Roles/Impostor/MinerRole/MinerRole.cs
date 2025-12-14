@@ -34,7 +34,7 @@ public sealed class MinerRole(IntPtr cppPtr)
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<EngineerTOSRole>());
     public string RoleName => "Miner";
     public string RoleDescription => "From The Top, Make It Drop, That's A Vent.";
-    public string RoleLongDescription => "Place interconnected vents around the map";
+    public string RoleLongDescription => "From The Top, Make It Drop, That's A Vent.";
     public MysticClueType MysticHintType => MysticClueType.Fearmonger;
     public Color RoleColor => TownOfSushiColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;

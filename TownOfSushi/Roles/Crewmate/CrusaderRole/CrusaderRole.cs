@@ -29,7 +29,7 @@ public sealed class CrusaderRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfS
         }
     }
     public string RoleName => "Crusader";
-    public string RoleDescription => "Fortify Crewmates";
+    public string RoleDescription => "Fortify crewmates to protect them";
     public string RoleLongDescription => "Fortify crewmates to prevent any interactions with them";
     public Color RoleColor => TownOfSushiColors.Crusader;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;

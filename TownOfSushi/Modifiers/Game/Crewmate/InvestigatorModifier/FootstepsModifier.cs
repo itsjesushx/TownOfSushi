@@ -2,7 +2,6 @@
 using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
 using TownOfSushi.Modules;
-using TownOfSushi.Patches;
 using UnityEngine;
 
 namespace TownOfSushi.Modifiers.Game.Crewmate;
@@ -71,7 +70,7 @@ public sealed class FootstepsModifier : BaseModifier
 
         var sprite = footstep.AddComponent<SpriteRenderer>();
         sprite.sprite = TOSAssets.FootprintSprite.LoadAsset();
-        sprite.color = (AnonymousPrints || HudManagerPatches.CommsSaboActive())
+        sprite.color = AnonymousPrints
             ? new Color(0.2f, 0.2f, 0.2f, 1f)
             : Player.cosmetics.currentBodySprite.BodySprite.material.GetColor(ShaderID.BodyColor);
         footstep.layer = LayerMask.NameToLayer("Players");

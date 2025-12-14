@@ -7,7 +7,7 @@ public sealed class TelepathModifier : TOSGameModifier, IWikiDiscoverable
     public override string ModifierName => "Telepath";
     public override Color FreeplayFileColor => new Color32(255, 25, 25, 255);
 
-    public override string IntroInfo => "You also know information about teammates' kills" +
+    public override string IntroInfo => "Know information about teammates' kills" +
                                         (OptionGroupSingleton<TelepathOptions>.Instance.KnowDeath
                                             ? " and deaths."
                                             : ".");

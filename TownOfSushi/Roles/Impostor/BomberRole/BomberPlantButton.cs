@@ -12,12 +12,15 @@ public sealed class BomberPlantButton : TownOfSushiRoleButton<BomberRole>, IAfte
     public override float EffectDuration => OptionGroupSingleton<BomberOptions>.Instance.DetonateDelay;
     public override int MaxUses => (int)OptionGroupSingleton<BomberOptions>.Instance.MaxBombs;
     public override LoadableAsset<Sprite> Sprite => TOSImpAssets.PlaceSprite;
-
     public void SetDiseasedTimer(float multiplier)
     {
         SetTimer(Cooldown * multiplier);
     }
 
+    public void AftermathHandler()
+    {
+        ClickHandler();
+    }
     protected override void OnClick()
     {
         OverrideSprite(TOSImpAssets.DetonatingSprite.LoadAsset());

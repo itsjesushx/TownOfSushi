@@ -11,6 +11,7 @@ public sealed class ClericCleanseModifier(PlayerControl cleric) : BaseModifier
     {
         ArsonistDouse,
         Hack,
+        WizardSpelled,
         PyromaniacDouse,
         WarlockCursed,
         Infect,
@@ -112,6 +113,11 @@ public sealed class ClericCleanseModifier(PlayerControl cleric) : BaseModifier
             Player.RpcRemoveModifier<EclipsalBlindModifier>();
         }
 
+        if (Effects.Contains(EffectType.WizardSpelled))
+        {
+            Player.RpcRemoveModifier<WizardSpelledModifier>();
+        }
+
         if (Effects.Contains(EffectType.Flash))
         {
             Player.RemoveModifier<GrenadierFlashModifier>();
@@ -160,6 +166,11 @@ public sealed class ClericCleanseModifier(PlayerControl cleric) : BaseModifier
         if (player.HasModifier<EclipsalBlindModifier>())
         {
             effects.Add(EffectType.Blind);
+        }
+
+        if (player.HasModifier<WizardSpelledModifier>())
+        {
+            effects.Add(EffectType.WizardSpelled);
         }
 
         if (player.HasModifier<GrenadierFlashModifier>())

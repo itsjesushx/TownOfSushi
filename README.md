@@ -10,7 +10,7 @@
 ### ***- This mod is just a hobby so updates may not be so fast.***
 ### ***- This mod is NOT for mobile and console versions.***
 ### ***- This README page is currently under editing, most things here are either missing or subject to change.***
-### ***- Join the [Discord Server](https://discord.gg/xUMnSD4cHf) for suggestions or any problems!***
+### ***- Join the [Discord Server](https://discord.gg/quJ566pe3W) for suggestions or any problems!***
 
 [**Installation**](#installation)
 - [Requirements](#requirements)
@@ -63,16 +63,18 @@
 - [Veteran](#veteran)  
 - [Medic](#medic)  
 - [Imitator](#imitator)  
-- [Detective](#detective)
+- [Seer](#seer)
 - [Inspector](#inspector)
 - [Spy](#spy)
-- [Tracker](#tracker)  
+- [Informant](#informant)
+- [Sonar](#sonar)  
 - [Lookout](#lookout)
 - [Bodyguard](#bodyGuard)
 - [Trapper](#trapper)  
-- [Seer](#seer)  
+- [Analyzer](#Analyzer)  
 - [Deputy](#deputy)  
-- [Crusader](#crusader)  
+- [Crusader](#crusader)
+- [Haunter](#haunter)
 
 </details>
 
@@ -142,6 +144,7 @@
 # Releases
 | Among Us - Version| Mod Version | Link |
 |----------|-------------|-----------------|
+| v2025.17.0.1s & v2025.17.0.1e | v1.0.2 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/1.0.2/TOS.v1.0.2.zip) |
 | v2025.17.0.1s & v2025.17.0.1e | v1.0.1 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/1.0.1/TOS.v1.0.1.zip) |
 | v2025.17.0.1s & v2025.17.0.1e  | v1.0.0 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/1.0.0/TOS.v3.0.0.zip) |
 
@@ -276,14 +279,13 @@ If the killer of the inspected player dies, the following round the examine butt
 ### **Team: Crewmates**
 
 The Lookout is a Crewmate that can watch other players during rounds.\
-During meetings they will see all roles who interact with each watched player.
+They can see any movement the player does, even venting. They cannot see if the player is doing a task or not.
 ### Game Options
 | Name | Description | Type | Default |
 |----------|:-------------:|:------:|:------:|
 | Lookout | The percentage probability of the Lookout appearing | Percentage | 0% |
 | Watch Cooldown | The cooldown on the Lookout's Watch button | Time | 25s |
-| Lookout Watches Reset After Each Round | Whether Lookout Watches are removed after each meeting | Toggle | True |
-| Maximum Number Of Players That Can Be Watched | The number of people they can watch | Number | 5 |
+| Watch Duration | The time Lookout lasts watching a player | Time | 5s |
 
 -----------------------
 ## Mystic
@@ -321,46 +323,46 @@ The second, is that every meeting the Oracle receives a confession about who mig
 | Neutral Killing show up as Evil | Neutral Killing roles show up as Evil | Toggle | True |
 
 -----------------------
-## Detective
+## Seer
 ### **Team: Crewmates**
-The Detective is a Crewmate that can reveal the alliance of other players.\
-Based on settings, the Detective can find out whether a player is a Good or an Evil role.\
+The Seer is a Crewmate that can reveal the alliance of other players.\
+Based on settings, the Seer can find out whether a player is a Good or an Evil role.\
 A player's name will change color depending on faction and role.
 ### Game Options
 | Name | Description | Type | Default |
 |----------|:-------------:|:------:|:------:|
-| Detective | The percentage probability of the Detective appearing | Percentage | 0% |
-| Detective Cooldown | The Cooldown of the Detective's Reveal button | Time | 25s |
+| Seer | The percentage probability of the Seer appearing | Percentage | 0% |
+| Seer Cooldown | The Cooldown of the Seer's Reveal button | Time | 25s |
 | Crewmate Killing Roles Are Red | Crewmate Killing roles show up as Red | Toggle | False |
 | Neutral Benign Roles Are Red | Neutral Benign roles show up as Red | Toggle | False |
 | Neutral Evil Roles Are Red | Neutral Evil roles show up as Red | Toggle | False |
 | Neutral Killing Roles Are Red | Neutral Killing roles show up as Red | Toggle | True |
 -----------------------
 
-## Seer
+## Analyzer
 ### **Team: Crewmates**
-The Seer is a Crewmate that can reveal the faction of two players.\
-The Seer will get notified in chat once a meeting starts if the targets have the same faction or not.\
-The Seer will also see a green Y next to the targets names if they have the same faction, else it will show a red X.\
-After the Seer reveals the faction of the two players, they can not try to change their targets until next meeting.
+The Analyzer is a Crewmate that can reveal the faction of two players.\
+The Analyzer will get notified in chat once a meeting starts if the targets have the same faction or not.\
+The Analyzer will also see a green Y next to the targets names if they have the same faction, else it will show a red X.\
+After the Analyzer reveals the faction of the two players, they can not try to change their targets until next meeting.
 ### Game Options
 | Name | Description | Type | Default |
 |----------|:-------------:|:------:|:------:|
-| Seer | The percentage probability of the Seer appearing | Percentage | 0% |
-| Seer Cooldown | The Cooldown of the Seer's Reveal button | Time | 25s |
+| Analyzer | The percentage probability of the Analyzer appearing | Percentage | 0% |
+| Analyzer Cooldown | The Cooldown of the Analyzer's Reveal button | Time | 25s |
 -----------------------
-## Tracker
+## Sonar
 ### **Team: Crewmates**
 
-The Tracker is a Crewmate that can track other players by tracking them during a round.\
+The Sonar is a Crewmate that can track other players by tracking them during a round.\
 Once they track someone, an arrow is continuously pointing to them, which updates in set intervals.
 ### Game Options
 | Name | Description | Type | Default |
 |----------|:-------------:|:------:|:------:|
-| Tracker | The percentage probability of the Tracker appearing | Percentage | 0% |
+| Sonar | The percentage probability of the Sonar appearing | Percentage | 0% |
 | Arrow Update Interval | The time it takes for the arrow to update to the new location of the tracked player | Time | 5s |
-| Track Cooldown | The cooldown on the Tracker's track button | Time | 25s |
-| Tracker Arrows Reset Each Round | Whether Tracker Arrows are removed after each meeting | Toggle | False |
+| Track Cooldown | The cooldown on the Sonar's track button | Time | 25s |
+| Sonar Arrows Reset Each Round | Whether Sonar Arrows are removed after each meeting | Toggle | False |
 | Maximum Number of Tracks Per Round | The number of new people they can track each round | Number | 3 |
 
 -----------------------
@@ -470,6 +472,22 @@ A report can contain the name of the killer or the color type (Darker/Lighter)
 | Shield breaks on murder attempt | Whether the Shield breaks when someone attempts to Kill them | Toggle | False |
 
 -----------------------
+## Haunter
+### **Team: Crewmates**
+The Haunter is a dead Crewmate that can reveal Impostors if they finish all their tasks.\
+Upon finishing all of their tasks, Impostors are revealed to alive crewmates after a meeting is called.\
+However, if the Haunter is clicked they lose their ability to reveal Impostors and are once again a normal ghost.
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Haunter | The percentage probability of the Haunter appearing | Percentage | 0% |
+| When Haunter Can Be Clicked | The amount of tasks remaining when the Haunter Can Be Clicked | Number | 5 |
+| Haunter Alert | The amount of tasks remaining when the Impostors are alreted that the Haunter is nearly finished | Number | 1 |
+| Haunter Reveals Neutral Roles | Whether the Haunter also Reveals Neutral Roles | Toggle | False |
+| Can Be Clicked By | Whether even other Crewmates can click the Haunter | All / Non-Crew / Imps Only | All |
+| Arrow Update Interval | The time it takes for the arrow to update to the new location of the Haunter | Time | 3s |
+
+-----------------------
 ## Crusader
 ### **Team: Crewmates**
 The Crusader is a Crewmate that can fortify other players.\
@@ -566,6 +584,21 @@ However, if someone is dead, the Medium and the dead player will be able to see 
 | Medium Can Use Vitals| Whether the Medium can see Vitals | Toggle | False |
 | Who is Revealed | Which players are revealed to the Medium | Oldest Dead / Newest Dead / All Dead | Oldest Dead |
 
+-----------------------
+
+## Informant
+### **Team: Crewmates**
+The Informant is a Crewmate role that has to finish tasks in order to get a special ability.\
+When they finish tasks, once per round, they get a button to track the killer, they will get an arrow pointing to them.\
+The Informant has a chance of finding the wrong killer.\
+Only if the player is a killer will see that the Informant is watching them (aka also gets an arrow to the Informant).
+
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Informant | The percentage probability of the Informant appearing | Percentage | 0% |
+| Find Killer Cooldown | The cooldown of the Informant's button | Time | 25s |
+| Find Killer Duration | How long the Informant's button ability lasts for | Time | 25s |
 -----------------------
 
 # Neutral Roles
@@ -1382,7 +1415,6 @@ The Saboteur is an Impostor with a passive sabotage cooldown reduction.
 # Custom Game Options
 | Name | Description | Type | Default |
 |----------|:-------------:|:------:|:------:|
-| Camouflaged Comms | Whether everyone becomes camouflaged when Comms are sabotaged | Toggle | False |
 | Impostors can see the roles of their team | Whether Impostors are able to see which Impostor roles their teammates have | Toggle | False |
 | Impostors don't know each other | Whether Impostors are able to see their teammates | Toggle | False |
 | Impostors have a private meeting chat | Whether Impostors are able to see chat with their teammates mid meeting privately | Toggle | False |

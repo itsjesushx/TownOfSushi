@@ -5,7 +5,6 @@ using MiraAPI.Hud;
 using TownOfSushi.Buttons;
 using TownOfSushi.Options;
 using UnityEngine;
-using TownOfSushi.Modules;
 using TownOfSushi.Modifiers.Game.Killer;
 
 namespace TownOfSushi.Roles.Neutral;
@@ -28,7 +27,7 @@ public static class AmnesiacEvents
             return;
         }
 
-        CheckForAmnesiacVest(@event, target);
+        CheckForAmnesiacVest(@event, PlayerControl.LocalPlayer, target);
     }
 
     [RegisterEvent]
@@ -57,20 +56,20 @@ public static class AmnesiacEvents
         var source = @event.Source;
         var target = @event.Target;
 
-        if (CheckForAmnesiacVest(@event, target))
+        if (CheckForAmnesiacVest(@event, source, target))
         {
             ResetButtonTimer(source);
         }
     }
 
-    private static bool CheckForAmnesiacVest(MiraCancelableEvent @event, PlayerControl target)
+    private static bool CheckForAmnesiacVest(MiraCancelableEvent @event, PlayerControl source, PlayerControl target)
     {
         if (MeetingHud.Instance || ExileController.Instance)
         {
             return false;
         }
 
-        if (!target.HasModifier<AmnesiacVestModifier>())
+        if (!target.HasModifier<AmnesiacVestModifier>() || target == source)
         {
             return false;
         }
@@ -105,27 +104,26 @@ public static class AmnesiacEvents
     {
         if (@event.TriggeredByIntro) return;
 
-        if (!PlayerControl.LocalPlayer.IsRole<AmnesiacRole>()) return;
+        if (PlayerControl.LocalPlayer.Data.Role is not AmnesiacRole amnesiac) return;
 
         var playerMenu = CustomPlayerMenu.Create();
         playerMenu.transform.FindChild("PhoneUI").GetChild(0).GetComponent<SpriteRenderer>().material = PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;
         playerMenu.transform.FindChild("PhoneUI").GetChild(1).GetComponent<SpriteRenderer>().material = PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;
         playerMenu.Begin(
-            plr => (plr.HasDied() || UnityEngine.Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == plr.PlayerId) ||
-            FakePlayer.FakePlayers.FirstOrDefault(x => x?.body?.name == $"Fake {plr.gameObject.name}")?.body) && plr != PlayerControl.LocalPlayer,
+            plr => (plr.HasDied() || UnityEngine.Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == plr.PlayerId)) && plr != PlayerControl.LocalPlayer && !amnesiac.EjectedPlayers.Contains(plr),
             plr =>
             {
-                playerMenu.ForceClose();
+            playerMenu.ForceClose();
 
-                if (plr != null)
-                {
-                    var targetId = plr.PlayerId;
-                    var targetPlayer = MiscUtils.PlayerById(targetId);
+            if (plr != null)
+            {
+                var targetId = plr.PlayerId;
+                var targetPlayer = MiscUtils.PlayerById(targetId);
 
-                    if (targetPlayer == null) return;
+                if (targetPlayer == null) return;
 
-                    AmnesiacRole.RpcRemember(PlayerControl.LocalPlayer, targetPlayer);
-                }
+                AmnesiacRole.RpcRemember(PlayerControl.LocalPlayer, targetPlayer);
+            }
             });
         foreach (var panel in playerMenu.potentialVictims)
         {

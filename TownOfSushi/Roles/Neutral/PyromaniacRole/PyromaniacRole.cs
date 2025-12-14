@@ -11,7 +11,7 @@ namespace TownOfSushi.Roles.Neutral;
 public sealed class PyromaniacRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfSushiRole, IWikiDiscoverable, IMysticClue
 {
     public string RoleName => "Pyromaniac";
-    public string RoleDescription => "Douse Players And Ignite The Light";
+    public string RoleDescription => "Douse players and ignite the light";
 
     public string RoleLongDescription => OptionGroupSingleton<PyromaniacOptions>.Instance.LegacyPyromaniac
         ? "Douse players and ignite the closest one to kill all doused targets"

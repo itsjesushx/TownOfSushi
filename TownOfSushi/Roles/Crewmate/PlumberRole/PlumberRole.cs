@@ -25,7 +25,7 @@ public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSu
     [HideFromIl2Cpp] public static List<KeyValuePair<GameObject, int>> Barricades { get; set; } = [];
 
     public string RoleName => "Plumber";
-    public string RoleDescription => "Get The Rats Out Of The Sewers";
+    public string RoleDescription => "Manage the vent systems as much as you want";
 
     public string RoleLongDescription =>
         "Flush the vent system to kick venters out, and\nbarricade vents to block them the next round";

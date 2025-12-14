@@ -38,7 +38,6 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
             var filtered = PlayerControl.AllPlayerControls.ToArray()
                 .Where(x => !x.IsRole<ExecutionerRole>() && !x.HasDied() &&
                             x.Is(ModdedRoleTeams.Crewmate) &&
-                            !x.HasModifier<GuardianAngelTargetModifier>() &&
                             !x.HasModifier<AllianceGameModifier>() &&
                             x.Data.Role is not ProsecutorRole &&
                             x.Data.Role is not PoliticianRole &&

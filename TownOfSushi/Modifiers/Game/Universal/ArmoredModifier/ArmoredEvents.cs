@@ -3,6 +3,7 @@ using MiraAPI.Events.Mira;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Hud;
 using TownOfSushi.Buttons;
+using TownOfSushi.Modifiers.Game.Killer;
 
 namespace TownOfSushi.Modifiers.Game.Universal
 {
@@ -20,6 +21,10 @@ namespace TownOfSushi.Modifiers.Game.Universal
             }
 
             if (target && !target!.HasModifier<ArmoredModifier>())
+            {
+                return;
+            }
+            if (source.HasModifier<RuthlessModifier>())
             {
                 return;
             }
@@ -42,7 +47,7 @@ namespace TownOfSushi.Modifiers.Game.Universal
             button?.SetTimer(reset);
 
             // Reset impostor kill cooldown if they attack a shielded player
-            if (!source.AmOwner || !source.IsImpostor())
+            if (!source.AmOwner || !source.IsImpostor() || source.HasModifier<RuthlessModifier>())
             {
                 return;
             }
@@ -52,7 +57,7 @@ namespace TownOfSushi.Modifiers.Game.Universal
 
         private static void CheckForActive(MiraCancelableEvent miraEvent, PlayerControl source, PlayerControl target)
         {
-            if (MeetingHud.Instance || ExileController.Instance)
+            if (MeetingHud.Instance || ExileController.Instance || source.HasModifier<RuthlessModifier>())
             {
                 return;
             }
@@ -80,7 +85,6 @@ namespace TownOfSushi.Modifiers.Game.Universal
         public static bool IsAlreadyProtected(PlayerControl player)
         {
             return
-                player.HasModifier<GuardianAngelProtectModifier>() ||
                 player.HasModifier<AmnesiacVestModifier>() ||
                 (player.HasModifier<VeteranAlertModifier>() && OptionGroupSingleton<VeteranOptions>.Instance.KilledOnAlert) ||
                 player.HasModifier<ClericBarrierModifier>() ||

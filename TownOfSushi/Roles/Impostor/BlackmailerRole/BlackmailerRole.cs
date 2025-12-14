@@ -26,8 +26,8 @@ public sealed class BlackmailerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITown
             (Player != null && MiscUtils.ImpAliveCount == 1));
     }
     public string RoleName => "Blackmailer";
-    public string RoleDescription => "Silence Crewmates During Meetings";
-    public string RoleLongDescription => "Silence a crewmate for the next meeting";
+    public string RoleDescription => "Silence players during meetings";
+    public string RoleLongDescription => "Silence a player for the next meeting";
     public Color RoleColor => TownOfSushiColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorSupport;

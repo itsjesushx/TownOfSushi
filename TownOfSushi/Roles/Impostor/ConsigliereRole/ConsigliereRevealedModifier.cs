@@ -1,5 +1,4 @@
 namespace TownOfSushi.Roles.Impostor;
-
 public sealed class ConsigliereRevealedModifier(byte consigliereId) : BaseModifier
 {
     public override string ModifierName => "Revealed";

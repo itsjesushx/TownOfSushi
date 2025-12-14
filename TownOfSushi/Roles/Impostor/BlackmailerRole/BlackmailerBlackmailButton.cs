@@ -21,6 +21,11 @@ public sealed class BlackmailerBlackmailButton : TownOfSushiRoleButton<Blackmail
 
         BlackmailerRole.RpcBlackmail(PlayerControl.LocalPlayer, Target);
     }
+    public void AftermathHandler()
+    {
+        BlackmailerRole.RpcBlackmail(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer);
+        Timer = 60f;
+    }
 
     public override PlayerControl? GetTarget()
     {

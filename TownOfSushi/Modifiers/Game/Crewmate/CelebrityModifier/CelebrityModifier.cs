@@ -96,9 +96,6 @@ public sealed class CelebrityModifier : TOSGameModifier, IWikiDiscoverable
             case PestilenceRole:
                 cod = "diseased";
                 break;
-            case SoulCollectorRole:
-                cod = "reaped";
-                break;
             case VampireRole:
                 cod = "bitten";
                 break;
@@ -114,7 +111,7 @@ public sealed class CelebrityModifier : TOSGameModifier, IWikiDiscoverable
             case ExecutionerRole:
                 cod = "tormented";
                 break;
-            case PhantomTOSRole:
+            case SpectreRole:
                 cod = "spooked";
                 break;
             case PoisonerRole:

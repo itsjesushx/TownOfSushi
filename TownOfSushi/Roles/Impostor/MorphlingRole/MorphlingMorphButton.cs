@@ -13,7 +13,6 @@ public sealed class MorphlingMorphButton : TownOfSushiRoleButton<MorphlingRole>,
     public override float EffectDuration => OptionGroupSingleton<MorphlingOptions>.Instance.MorphlingDuration;
     public override int MaxUses => (int)OptionGroupSingleton<MorphlingOptions>.Instance.MaxMorphs;
     public override LoadableAsset<Sprite> Sprite => TOSImpAssets.MorphSprite;
-
     public override void ClickHandler()
     {
         if (!CanUse())
@@ -46,9 +45,37 @@ public sealed class MorphlingMorphButton : TownOfSushiRoleButton<MorphlingRole>,
 
     public override bool CanUse()
     {
-        return ((Timer <= 0 && !EffectActive) || (EffectActive && Timer <= EffectDuration - 2f)) &&
-               !PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>() &&
-               !PlayerControl.LocalPlayer.HasModifier<DisabledModifier>();
+        if (HudManager.Instance.Chat.IsOpenOrOpening || MeetingHud.Instance)
+        {
+            return false;
+        }
+
+        if (PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>() || PlayerControl.LocalPlayer
+                .GetModifiers<DisabledModifier>().Any(x => !x.CanUseAbilities))
+        {
+            return false;
+        }
+
+        return ((Timer <= 0 && !EffectActive) || (EffectActive && Timer <= EffectDuration - 2f));
+    }
+
+    public void AftermathHandler()
+    {
+        if (!EffectActive)
+        {
+            PlayerControl.LocalPlayer.RpcAddModifier<MorphlingMorphModifier>(Role.Sampled!);
+            OverrideName("Unmorph");
+            UsesLeft--;
+            if (MaxUses != 0)
+            {
+                Button?.SetUsesRemaining(UsesLeft);
+            }
+        }
+        else
+        {
+            PlayerControl.LocalPlayer.RpcRemoveModifier<MorphlingMorphModifier>();
+            OverrideName("Morph");
+        }
     }
 
     protected override void OnClick()

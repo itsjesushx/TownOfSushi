@@ -12,7 +12,7 @@ public sealed class MorphlingRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
     [HideFromIl2Cpp]
     public PlayerControl? Sampled { get; set; }
     public string RoleName => "Morphling";
-    public string RoleDescription => "Transform Into Crewmates";
+    public string RoleDescription => "Transform into other players";
 
     public string RoleLongDescription =>
         "Sample players and morph into them to disguise yourself.\nYour sample clears at the beginning of every round.";

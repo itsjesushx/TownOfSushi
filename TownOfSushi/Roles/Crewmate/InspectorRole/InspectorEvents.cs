@@ -61,19 +61,9 @@ public static class InspectorEvents
         }
     }
 
-    /* [RegisterEvent]
-    public static void EjectionEventEventHandler(EjectionEvent @event)
-    {
-        CrimeSceneComponent.Clear();
-    } */
-
     [RegisterEvent]
     public static void AfterMurderEventHandler(AfterMurderEvent @event)
     {
-        if (@event.Source.IsRole<SoulCollectorRole>())
-        {
-            return;
-        }
 
         if (MeetingHud.Instance)
         {

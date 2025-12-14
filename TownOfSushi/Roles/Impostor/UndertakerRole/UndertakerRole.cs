@@ -30,7 +30,7 @@ public sealed class UndertakerRole(IntPtr cppPtr)
 
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<RetributionistRole>());
     public string RoleName => "Undertaker";
-    public string RoleDescription => "Drag Bodies And Hide Them";
+    public string RoleDescription => "Drag bodies and hide them";
     public string RoleLongDescription => "Drag bodies around to hide them from being reported";
     public MysticClueType MysticHintType => MysticClueType.Death;
     public Color RoleColor => TownOfSushiColors.Impostor;

@@ -13,11 +13,13 @@ public sealed class HaunterOptions : AbstractOptionGroup<HaunterRole>
     public float NumTasksLeftBeforeAlerted { get; set; } = 1f;
 
     [ModdedToggleOption("Reveal Neutral Roles")]
-    public bool RevealNeutralRoles { get; set; } = false;
+    public bool RevealNeutralRoles { get; set; } = true;
 
     [ModdedEnumOption("Can Be Clicked By", typeof(HaunterRoleClickableType),
         ["Everyone", "Non-Crew", "Impostors Only"])]
     public HaunterRoleClickableType HaunterCanBeClickedBy { get; set; } = HaunterRoleClickableType.NonCrew;
+    [ModdedNumberOption("Arrow Update Interval", 0f, 15f, 0.5f, MiraNumberSuffixes.Seconds)]
+    public float UpdateInterval { get; set; } = 3f;
 }
 
 public enum HaunterRoleClickableType

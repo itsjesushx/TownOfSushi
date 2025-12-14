@@ -41,19 +41,3 @@ public sealed class AdministratorOptions : AbstractOptionGroup<AdministratorModi
     [ModdedNumberOption("Portable Admin Display Duration", 15f, 30f, 5f, MiraNumberSuffixes.Seconds, zeroInfinity: true)]
     public float DisplayDuration { get; set; } = 15f;
 }
-
-public enum PortableAdmin
-{
-    Role,
-    Modifier,
-    Both,
-    None
-}
-
-public enum AdminDeadPlayers
-{
-    Nobody,
-    Administrator,
-    EveryoneButAdministrator,
-    Everyone
-}

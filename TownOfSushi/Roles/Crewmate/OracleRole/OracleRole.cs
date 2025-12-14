@@ -14,7 +14,7 @@ public sealed class OracleRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfSus
 {
     public override bool IsAffectedByComms => false;
     public string RoleName => "Oracle";
-    public string RoleDescription => "Get Other Player's To Confess Their Sins";
+    public string RoleDescription => "Get other player's to confess their sins";
     public string RoleLongDescription => "Get another player to confess on your passing";
     public MysticClueType MysticHintType => MysticClueType.Perception;
     public Color RoleColor => TownOfSushiColors.Oracle;

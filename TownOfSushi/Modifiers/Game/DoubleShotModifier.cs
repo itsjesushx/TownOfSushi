@@ -6,7 +6,7 @@ namespace TownOfSushi.Modifiers.Game;
 public class DoubleShotModifier : TOSGameModifier, IWikiDiscoverable
 {
     public override string ModifierName => "Double Shot";
-    public override string IntroInfo => "You also get a second chance when guessing.";
+    public override string IntroInfo => "You have a second chance when guessing";
 
     public override LoadableAsset<Sprite>? ModifierIcon => TOSModifierIcons.DoubleShot;
     public override ModifierFaction FactionType => ModifierFaction.AssailantUtility;

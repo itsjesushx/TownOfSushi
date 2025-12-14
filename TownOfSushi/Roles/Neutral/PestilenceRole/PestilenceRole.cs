@@ -15,7 +15,7 @@ public sealed class PestilenceRole(IntPtr cppPtr)
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<AurialRole>());
     public MysticClueType MysticHintType => MysticClueType.Fearmonger;
     public string RoleName => "Pestilence";
-    public string RoleDescription => "Horseman Of The Apocalypse!";
+    public string RoleDescription => "Horseman of the apocalypse!";
     public string RoleLongDescription => "Kill everyone in your path that interacts with you!";
     public string YouAreText => "You Are";
     public string YouWereText => "You Were";

@@ -12,7 +12,7 @@ public class Debugger : MonoBehaviour
 {
     [HideFromIl2Cpp]
     public DragWindow Window { get; }
-    public static bool IsDebuggerActive => AmongUsClient.Instance.NetworkMode == NetworkModes.LocalGame;
+    public static bool IsDebuggerActive => AmongUsClient.Instance.NetworkMode == NetworkModes.LocalGame && TownOfSushiPlugin.IsDevBuild;
     public bool WindowEnabled { get; set; } = true;
     public Debugger(IntPtr ptrs) : base(ptrs)
     {

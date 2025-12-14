@@ -1,5 +1,4 @@
-﻿
-using System.Reflection;
+﻿using System.Reflection;
 using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Unity.IL2CPP;
@@ -38,7 +37,6 @@ public partial class TownOfSushiPlugin : BasePlugin, IMiraPlugin
     ///     Gets the Harmony instance for patching.
     /// </summary>
     public Harmony Harmony { get; } = new(Id);
-
     public static ConfigEntry<int> GameSummaryMode { get; set; }
 
     /// <summary>

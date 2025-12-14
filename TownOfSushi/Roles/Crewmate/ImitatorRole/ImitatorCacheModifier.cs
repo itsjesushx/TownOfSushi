@@ -14,8 +14,7 @@ public sealed class ImitatorCacheModifier : BaseModifier, ICachedRole
     public bool ShowCurrentRoleFirst => true;
 
     public bool Visible => Player.AmOwner || PlayerControl.LocalPlayer.HasDied() ||
-                           GuardianAngelTOSRole.GASeesRoleVisibilityFlag(Player)  ||
-                           RomanticRole.RomamticSeesRoleVisibilityFlag(Player);
+                           RomanticRole.RomanticSeesRoleVisibilityFlag(Player);
 
     public RoleBehaviour CachedRole => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<ImitatorRole>());
 

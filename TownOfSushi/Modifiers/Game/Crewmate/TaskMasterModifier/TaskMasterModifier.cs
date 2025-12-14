@@ -7,7 +7,7 @@ namespace TownOfSushi.Modifiers.Game.Crewmate;
 public sealed class TaskmasterModifier : TOSGameModifier, IWikiDiscoverable
 {
     public override string ModifierName => "Taskmaster";
-    public override string IntroInfo => "You also finish random tasks each round.";
+    public override string IntroInfo => "You finish a random task each round";
     public override LoadableAsset<Sprite>? ModifierIcon => TOSModifierIcons.Taskmaster;
     public override Color FreeplayFileColor => new Color32(140, 255, 255, 255);
 

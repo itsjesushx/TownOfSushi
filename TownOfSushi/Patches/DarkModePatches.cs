@@ -27,16 +27,6 @@ public static class DarkModePatches
         }
     }
 
-    [HarmonyPatch(typeof(ChatController), nameof(ChatController.Awake))]
-    public static class ChatController_Awake
-    {
-        public static void Postfix(ChatController __instance)
-        {
-            __instance.quickChatButton.gameObject.SetActive(false);
-            __instance.openKeyboardButton.gameObject.SetActive(false);
-        }
-    }
-
     [HarmonyPatch(typeof(ChatController), nameof(ChatController.Update))]
     public static class ChatControllerPatch
     {
@@ -97,6 +87,11 @@ public static class DarkModePatches
     {
         public static void Postfix(ChatNotification __instance)
         {
+            if (!LocalSettingsTabSingleton<TownOfSushiLocalSettings>.Instance.EnableDarkMode.Value)
+            {
+                return;
+            }
+            
             __instance.background.color = new Color(0.2f, 0.2f, 0.2f);
             __instance.chatText.color = Color.white;
         }

@@ -5,16 +5,14 @@ namespace TownOfSushi.Assets;
 public static class TOSNeutAssets
 {
     private const string ShortPath = "TownOfSushi.Resources";
-
-    // private const string BannerPath = $"{ShortPath}.RoleBanners"; // Commenting until it is used, so that the warnings stop screaming
     private const string ButtonPath = $"{ShortPath}.NeutButtons";
 
     // THIS FILE SHOULD ONLY HOLD BUTTONS AND ROLE BANNERS, EVERYTHING ELSE BELONGS IN TOSAssets.cs
     public static LoadableAsset<Sprite> RememberButtonSprite { get; } =
         new LoadableResourceAsset($"{ButtonPath}.RememberButton.png");
     
-    public static LoadableAsset<Sprite> PhantomSpookSprite { get; } =
-        new LoadableResourceAsset($"{ButtonPath}.PhantomSpookButton.png");
+    public static LoadableAsset<Sprite> SpectreSpookSprite { get; } =
+        new LoadableResourceAsset($"{ButtonPath}.SpectreSpookButton.png");
     
     public static LoadableAsset<Sprite> EatSprite { get; } =
         new LoadableResourceAsset($"{ButtonPath}.ScavengerButton.png");
