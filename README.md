@@ -5,42 +5,109 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 <p align="center">
   To other mod devs: for usage of the code, please read and respect the <a href="#license">license</a></p>
 
-# The Sushi Roles
-**The Sushi Roles** is an [Among Us](https://store.steampowered.com/app/945360/Among_Us) mod, which adds many new roles, modifiers, abilities, new [Settings](#settings) and new [Custom Hats](#custom-hats) to the game.
+# Town of Sushi
+**Town of Sushi** is an [Among Us](https://store.steampowered.com/app/945360/Among_Us) mod, which adds many new roles, modifiers, abilities, new [Settings](#settings) and new [Custom Hats](#custom-hats) to the game.
 Even more roles are coming soon.
 **Join the discord server to find support or people to play with! [Click here!](https://discord.gg/pRMRJKR2Tc).**
 
-**Roles & Modifiers List:**
+> ## **Roles & Modifiers Overview**
 
-| Impostor Roles | Crewmate Roles | Neutral Roles | Modifiers | Abilities |
-|----------|-------------|-----------------|----------------|----------------|
-| [Grenadier](#grenadier) | [Mayor](#mayor) | [Jester](#jester) | [Sleuth](#sleuth) | [Paranoid](#paranoid) |
-| [Undertaker](#undertaker) | [Engineer](#engineer) | [Arsonist](#arsonist) | [Lazy](#lazy) | [Coward](#coward) |
-| [Yo-Yo](#yoyo) | [Sheriff](#sheriff) | [Plaguebearer](#plaguebearer) | [Tie Breaker](#tie-breaker) |  |
-| [Morphling](#morphling) | [Trapper](#trapper)| [Pestilence](#plaguebearer) | [Bait](#bait) | |
-| [Painter](#painter) | [Landlord](#landlord) | [Scavenger](#scavenger) | [Lovers](#lovers) | |
-| [Viper](#viper) | [Detective](#detective) | [Lawyer](#lawyer) | [Blind](#blind) | |
-| [Assassin](#assassin) | [Chronos](#chronos) | [Executioner](#executioner) | [Mini](#mini) | |
-| [Trickster](#trickster) | [Medic](#medic) | [Survivor](#survivor) | [VIP](#vip) |  |
-| [Janitor](#janitor) | [Deputy](#deputy) | [Agent](#agent) | [Drunk](#drunk) | |
-| [Warlock](#warlock) | [Mystic](#mystic) | [Glitch](#glitch)    | [Chameleon](#chameleon) | |
-| [Bounty Hunter](#bounty-hunter) | [Hacker](#hacker) | [Juggernaut](#juggernaut)   | [Lucky](#lucky) |
-| [Witch](#witch) | [Tracker](#tracker) | [Predator](#predator)  | [Lighter](#lighter) |
-|  | [Crusader](#crusader) | [Romantic](#romantic)   |  |
-| | [Spy](#spy) | [Werewolf](#werewolf) |  | |
-| | [Gatekeeper](#gatekeeper) | [Amnesiac](#amnesiac) |  |  |
-| | [Vigilante](#vigilante) |   |  |  |
-|  | [Psychic](#psychic) |  |  |  |
-|  |[Veteran](#veteran)    |  |  |  |
-|  |[Oracle](#oracle) |  |  |  |
-|  | [Monarch](#monarch) |  |  |
-|  |  |  |  |
+<details>
+<summary><strong>Impostor Roles</strong></summary>
+
+- [Grenadier](#grenadier)  
+- [Undertaker](#undertaker)  
+- [Yo-Yo](#yoyo)  
+- [Morphling](#morphling)  
+- [Painter](#painter)  
+- [Viper](#viper)  
+- [Assassin](#assassin)  
+- [Trickster](#trickster)  
+- [Janitor](#janitor)  
+- [Warlock](#warlock)  
+- [Bounty Hunter](#bounty-hunter)  
+- [Witch](#witch)  
+
+</details>
+
+<details>
+<summary><strong>Crewmate Roles</strong></summary>
+
+- [Mayor](#mayor)  
+- [Engineer](#engineer)  
+- [Sheriff](#sheriff)  
+- [Trapper](#trapper)  
+- [Landlord](#landlord)  
+- [Detective](#detective)  
+- [Chronos](#chronos)  
+- [Medic](#medic)  
+- [Deputy](#deputy)  
+- [Mystic](#mystic)  
+- [Hacker](#hacker)  
+- [Tracker](#tracker)  
+- [Crusader](#crusader)  
+- [Spy](#spy)  
+- [Gatekeeper](#gatekeeper)  
+- [Vigilante](#vigilante)  
+- [Psychic](#psychic)  
+- [Veteran](#veteran)  
+- [Oracle](#oracle)  
+- [Monarch](#monarch)  
+
+</details>
+
+<details>
+<summary><strong>Neutral Roles</strong></summary>
+
+- [Jester](#jester)  
+- [Arsonist](#arsonist)  
+- [Plaguebearer](#plaguebearer)  
+- [Pestilence](#plaguebearer)  
+- [Scavenger](#scavenger)  
+- [Lawyer](#lawyer)  
+- [Executioner](#executioner)  
+- [Survivor](#survivor)  
+- [Agent](#agent)  
+- [Glitch](#glitch)  
+- [Juggernaut](#juggernaut)  
+- [Predator](#predator)  
+- [Romantic](#romantic)  
+- [Werewolf](#werewolf)  
+- [Amnesiac](#amnesiac)  
+
+</details>
+
+<details>
+<summary><strong>Modifiers</strong></summary>
+
+- [Sleuth](#sleuth)  
+- [Lazy](#lazy)  
+- [Tie Breaker](#tie-breaker)  
+- [Bait](#bait)  
+- [Lovers](#lovers)  
+- [Blind](#blind)  
+- [Mini](#mini)  
+- [VIP](#vip)  
+- [Drunk](#drunk)  
+- [Chameleon](#chameleon)  
+- [Lucky](#lucky)  
+- [Lighter](#lighter)  
+
+</details>
+
+<details>
+<summary><strong>Abilities</strong></summary>
+
+- [Paranoid](#paranoid)  
+- [Coward](#coward)  
+
+</details>
 
 The [Role Assignment](#role-assignment) section explains how the roles are being distributed among the players.
 If you want to learn how the new killers work, go to [Neutral Killers guide](#neutral-killers) to see it.
 
 # Releases  
-| Among Us - Version| The Sushi Roles Version | Link |
+| Among Us - Version| Town of Sushi Version | Link |
 |----------|-------------|-----------------|
 | V2024.10.29s & V2024.10.29e | v1.0.0 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/v1.0.0/TSR.v1.0.0.zip) |
 

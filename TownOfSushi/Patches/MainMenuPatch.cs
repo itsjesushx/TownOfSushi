@@ -103,7 +103,7 @@ Thanks to <link=""https://github.com/TheOtherRolesAU/TheOtherRoles""><color=#00B
                     Id = "ModCredits",
                     Language = 0,
                     Number = 500,
-                    Title = "The Sushi Roles\nCredits & Resources",
+                    Title = "Town of Sushi\nCredits & Resources",
                     ShortTitle = "TSR Credits",
                     SubTitle = "",
                     PinState = false,

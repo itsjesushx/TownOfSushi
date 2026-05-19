@@ -190,7 +190,7 @@ namespace TownOfSushi.Modules
             StartCoroutine(Effects.Lerp(0.1f, (Action<float>)(p => text.SetText(t))));
             passiveButton.OnMouseOut.AddListener((Action)(() => text.color = Color.red));
             passiveButton.OnMouseOver.AddListener((Action)(() => text.color = Color.white));
-            var announcement = $"<size=150%>A new The Sushi Roles update to {latestRelease.Tag} is available</size>\n{latestRelease.Description}";
+            var announcement = $"<size=150%>A new Town of Sushi update to {latestRelease.Tag} is available</size>\n{latestRelease.Description}";
             var mgr = FindObjectOfType<MainMenuManager>(true);
             if (showPopUp) mgr.StartCoroutine(CoShowAnnouncement(announcement, shortTitle: "TSR Update", date : latestRelease.PublishedAt)) ;
             showPopUp = false;
@@ -214,7 +214,7 @@ namespace TownOfSushi.Modules
                 Id = "torAnnouncement",
                 Language = 0,
                 Number = 6969,
-                Title = title == "" ? "The Sushi Roles Announcement" : title,
+                Title = title == "" ? "Town of Sushi Announcement" : title,
                 ShortTitle = shortTitle,
                 SubTitle = "",
                 PinState = false,
