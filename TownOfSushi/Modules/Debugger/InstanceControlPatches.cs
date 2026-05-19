@@ -1,9 +1,8 @@
 ﻿using InnerNet;
 using RCoroutines = Reactor.Utilities.Coroutines;
 using System.Collections;
-using UnityEngine;
-using HarmonyLib;
-using MiraAPI.Modifiers.Types;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace TownOfSushi.Modules.Debugger;
 
@@ -26,7 +25,7 @@ public static class InstanceControlPatches
     public static void SwitchTo(byte playerId)
     {
         var savedPlayerId = PlayerControl.LocalPlayer.PlayerId;
-        PlayerControl savedPlayer = MiscUtils.PlayerById(savedPlayerId)!;
+        PlayerControl savedPlayer = Utils.GetPlayerById(savedPlayerId)!;
         var savedPosition = savedPlayer.transform.position;
 
         PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(PlayerControl.LocalPlayer.transform.position);
@@ -35,7 +34,7 @@ public static class InstanceControlPatches
         var light = PlayerControl.LocalPlayer.lightSource;
 
         //Setup new player
-        var newPlayer =  MiscUtils.PlayerById(playerId);
+        var newPlayer =  Utils.GetPlayerById(playerId);
 
         if (newPlayer == null) return;
 
@@ -78,11 +77,25 @@ public static class InstanceControlPatches
 
         });
 
-        var modsTab = MiraAPI.Modifiers.ModifierDisplay.ModifierDisplayComponent.Instance;
-        if (modsTab != null && !modsTab.IsOpen && PlayerControl.LocalPlayer.GetModifiers<GameModifier>().Any(x => !x.HideOnUi && x.GetDescription() != string.Empty))
+        // Clear text before updating it
+        Utils.ClearAllRoleTexts();
+        PlayerControlFixedUpdatePatch.UpdatePlayerInfoText(newPlayer);
+        // Clean up old buttons so they don't break new buttons when changing players 
+        foreach (var buttons in CustomButton.buttons) 
+        { 
+            if (buttons.actionButtonGameObject != null) 
+            UObject.Destroy(buttons.actionButtonGameObject); 
+        } 
+        CustomButton.buttons.Clear(); 
+        try 
+        { 
+            CustomButtonLoader.CreateButtonsPostfix(FastDestroyableSingleton<HudManager>.Instance); 
+        } 
+        catch
         {
-            modsTab.ToggleTab();
-        }
+            
+        } 
+        CustomButton.HudUpdate();
 
         light.transform.SetParent(newPlayer.transform);
         light.transform.localPosition = newPlayer.Collider.offset;
@@ -197,7 +210,7 @@ public static class InstanceControlPatches
     {
         public static void Postfix()
         {
-            if (Components.Debugger.IsDebuggerActive && TownOfSushiPlugin.Persistence && Clients.Count != 0)
+            if (Components.Debugger.IsDebuggerActive && TownOfSushi.Persistence && Clients.Count != 0)
             {
                 var count = Clients.Count;
                 Clients.Clear();
@@ -233,7 +246,7 @@ public static class InstanceControlPatches
 
             foreach (var player in PlayerControl.AllPlayerControls)
             {
-                if (!player.Data.PlayerName.Contains(TownOfSushiPlugin.RobotName)) continue;
+                if (!player.Data.PlayerName.Contains(TownOfSushi.RobotName)) continue;
 
                 var rand = UnityEngine.Random.Range(0, __instance.Locations.Count);
                 player.gameObject.SetActive(true);

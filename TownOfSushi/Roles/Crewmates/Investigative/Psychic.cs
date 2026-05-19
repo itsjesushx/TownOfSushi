@@ -1,0 +1,127 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+namespace TownOfSushi.Roles
+{
+    public static class Psychic 
+    {
+        public static PlayerControl Player;
+        public static DeadPlayer target;
+        public static DeadPlayer soulTarget;
+        public static Color Color = new Color32(98, 120, 115, byte.MaxValue);
+        public static List<Tuple<DeadPlayer, Vector3>> deadBodies = new List<Tuple<DeadPlayer, Vector3>>();
+        public static List<Tuple<DeadPlayer, Vector3>> futureDeadBodies = new List<Tuple<DeadPlayer, Vector3>>();
+        public static List<SpriteRenderer> souls = new List<SpriteRenderer>();
+        public static DateTime meetingStartTime = DateTime.UtcNow;
+
+        public static void ClearAndReload() 
+        {
+            Player = null;
+            target = null;
+            soulTarget = null;
+            deadBodies = new List<Tuple<DeadPlayer, Vector3>>();
+            futureDeadBodies = new List<Tuple<DeadPlayer, Vector3>>();
+            souls = new List<SpriteRenderer>();
+            meetingStartTime = DateTime.UtcNow;
+        }
+
+        public static string GetInfo(PlayerControl target, PlayerControl killer, DeadPlayer.CustomDeathReason DeathReason) 
+        {
+            string msg = "";
+
+            List<SpecialPsychicInfo> infos = new List<SpecialPsychicInfo>();
+            // collect fitting death info types.
+            // suicides:
+            if (killer == target) 
+            {
+                if ((target == Sheriff.Player) && DeathReason != DeadPlayer.CustomDeathReason.LoverSuicide) infos.Add(SpecialPsychicInfo.SheriffSuicide);
+                if (target == Lovers.Lover1 || target == Lovers.Lover2) infos.Add(SpecialPsychicInfo.PassiveLoverSuicide);
+                if (target == Warlock.Player && DeathReason != DeadPlayer.CustomDeathReason.LoverSuicide) infos.Add(SpecialPsychicInfo.WarlockSuicide);
+            }
+            else
+            {
+                if (target == Lovers.Lover1 || target == Lovers.Lover2) infos.Add(SpecialPsychicInfo.ActiveLoverDies);
+                if (target.Data.Role.IsImpostor && killer.Data.Role.IsImpostor) infos.Add(SpecialPsychicInfo.ImpostorTeamkill);
+            }
+            if (target == Lawyer.Player && killer == Lawyer.Target) infos.Add(SpecialPsychicInfo.LawyerKilledByClient);
+            if (target == Romantic.Player && killer == Romantic.beloved) infos.Add(SpecialPsychicInfo.RomanticKilledByBeloved);
+            if (Psychic.target.WasCleanedOrEaten) infos.Add(SpecialPsychicInfo.BodyCleaned);
+            
+            if (infos.Count > 0) 
+            {
+                var selectedInfo = infos[TownOfSushi.rnd.Next(infos.Count)];
+                switch (selectedInfo) 
+                {
+                    case SpecialPsychicInfo.SheriffSuicide:
+                        msg = "Yikes, that Sheriff shot backfired.";
+                        break;
+                    case SpecialPsychicInfo.WarlockSuicide:
+                        msg = "MAYBE I cursed the person next to me and killed myself. Oops.";
+                        break;
+                    case SpecialPsychicInfo.ActiveLoverDies:
+                        msg = "I wanted to get out of this toxic relationship anyways.";
+                        break;
+                    case SpecialPsychicInfo.RomanticKilledByBeloved:
+                        msg = "Why would my own beloved murder me? It must've been a mistake...I hope!";
+                        break;
+                    case SpecialPsychicInfo.PassiveLoverSuicide:
+                        msg = "The love of my life died, thus with a kiss I die.";
+                        break;
+                    case SpecialPsychicInfo.LawyerKilledByClient:
+                        msg = "My client killed me. Do I still get paid?";
+                        break;
+                    case SpecialPsychicInfo.ImpostorTeamkill:
+                        msg = "I guess they confused me for the Spy, is there even one?";
+                        break;
+                    case SpecialPsychicInfo.BodyCleaned:
+                        msg = "Is my dead body some kind of art now or... aaand it's gone.";
+                        break;
+                }
+            }
+            else
+            {
+                int randomNumber = TownOfSushi.rnd.Next(4);
+                string typeOfColor = Utils.IsLighterColor(Psychic.target.GetKiller) ? "lighter" : "darker";
+                float timeSinceDeath = (float)(Psychic.meetingStartTime - Psychic.target.DeathTime).TotalMilliseconds;
+                var roleString = Role.GetRolesString(Psychic.target.player, false);
+                if (randomNumber == 0)
+                {
+                    if (!roleString.Contains("Impostor") && !roleString.Contains("Crewmate"))
+                        msg = "If my role hasn't been saved, there's no " + roleString + " in the game anymore.";
+                    else
+                        msg = "I was " + roleString + " without another role."; 
+                }
+                else if (randomNumber == 1) msg = "I'm not sure, but I guess a " + typeOfColor + " color killed me.";
+                else if (randomNumber == 2) msg = "If I counted correctly, I died " + Math.Round(timeSinceDeath / 1000) + "s before the next meeting started.";
+                else msg = "It seems like my killer is the " + Role.GetRolesString(Psychic.target.GetKiller, false) + ".";
+            }
+
+            if (TownOfSushi.rnd.NextDouble() < CustomGameOptions.PsychicChanceAdditionalInfo) 
+            {
+                int count = 0;
+                string condition = "";
+                var alivePlayersList = PlayerControl.AllPlayerControls.ToArray().Where(pc => !pc.Data.IsDead);
+                switch (TownOfSushi.rnd.Next(3)) 
+                {
+                    case 0:
+                        count = alivePlayersList.Where(pc => pc.Data.Role.IsImpostor || pc.IsNeutralKiller() || new List<Role>() { Role.sheriff, Role.veteran}.Contains(Role.GetRoleInfoForPlayer(pc).FirstOrDefault())).Count();
+                        condition = "killer" + (count == 1 ? "" : "s");
+                        break;
+                    case 1:
+                        count = alivePlayersList.Where(Utils.IsVenter).Count();
+                        condition = "player" + (count == 1 ? "" : "s") + " who can use vents";
+                        break;
+                    case 2:
+                        count = alivePlayersList.Where(pc => Utils.IsPassiveNeutral(pc)).Count();
+                        condition = "player" + (count == 1 ? "" : "s") + " who " + (count == 1 ? "is" : "are") + " a passive neutral role";
+                        break;
+                    case 3:
+                        break;               
+                }
+                msg += $"\nWhen you asked, {count} " + condition + (count == 1 ? " was" : " were") + " still alive";
+            }
+
+            return Psychic.target.player.Data.PlayerName + "'s Soul:\n" + msg;
+        }
+    }
+}

@@ -1,0 +1,442 @@
+using System.Collections.Generic;
+using System.Linq;
+
+namespace TownOfSushi.Patches 
+{
+    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
+    class HudManagerUpdatePatch
+    {
+        private static Dictionary<byte, (string name, Color color)> TagColorDict = new();
+        static void ResetNameTagsAndColors() 
+        {
+            var localPlayer = PlayerControl.LocalPlayer;
+            var amImpostor = PlayerControl.LocalPlayer.Data.Role.IsImpostor;
+
+            var dict = TagColorDict;
+            dict.Clear();
+            
+            foreach (var data in GameData.Instance.AllPlayers.GetFastEnumerator())
+            {
+                var player = data.Object;
+                string text = data.PlayerName;
+                Color color;
+                if (player)
+                {
+                    var playerName = text;
+                    if (Morphling.morphTimer > 0f && Morphling.morphTarget != null && Morphling.Player == player) playerName = Morphling.morphTarget.Data.PlayerName;
+                    if (Glitch.MimicTimer > 0f && Glitch.MimicTarget != null && Glitch.Player == player) playerName = Glitch.MimicTarget.Data.PlayerName;
+                    if (Hitman.MorphTimer > 0f && Hitman.MorphTarget != null && Hitman.Player == player) playerName = Hitman.MorphTarget.Data.PlayerName;
+                    var nameText = player.cosmetics.nameText;
+                
+                    nameText.text = Utils.HidePlayerName(localPlayer, player) ? "" : playerName;
+                    nameText.color = color = amImpostor && data.Role.IsImpostor ? Palette.ImpostorRed : Color.white;
+                    nameText.color = nameText.color.SetAlpha(Chameleon.Visibility(player.PlayerId));
+                }
+                else
+                {
+                    color = Color.white;
+                }
+                
+                
+                dict.Add(data.PlayerId, (text, color));
+            }
+            
+            if (MeetingHud.Instance != null) 
+            {
+                foreach (PlayerVoteArea playerVoteArea in MeetingHud.Instance.playerStates)
+                {
+                    var data = dict[playerVoteArea.TargetPlayerId];
+                    var text = playerVoteArea.NameText;
+                    text.text = data.name;
+                    text.color = data.color;
+                }
+            }
+        }
+        static void SetPlayerNameColor(PlayerControl p, Color color) 
+        {
+            p.cosmetics.nameText.color = color.SetAlpha(Chameleon.Visibility(p.PlayerId));
+            if (MeetingHud.Instance != null)
+                foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
+                    if (player.NameText != null && p.PlayerId == player.TargetPlayerId)
+                        player.NameText.color = color;
+        }
+
+        static void ParanoidUpdate()
+        {
+            if (Paranoid.Arrow?.arrow != null &&
+                Paranoid.Player != null &&
+                PlayerControl.LocalPlayer == Paranoid.Player &&
+                !Paranoid.Player.Data.IsDead)
+            {
+                var players = PlayerControl.AllPlayerControls;
+                PlayerControl closest = null;
+                float minDist = float.MaxValue;
+
+                foreach (var pc in players)
+                {
+                    if (pc == null || pc == Paranoid.Player || pc.Data == null || pc.Data.IsDead)
+                        continue;
+
+                    float dist = Vector2.Distance(pc.transform.position, Paranoid.Player.transform.position);
+                    if (dist < minDist)
+                    {
+                        minDist = dist;
+                        closest = pc;
+                    }
+                }
+        
+                Paranoid.ClosestPlayer = closest;
+        
+                if (closest != null && closest.transform != null)
+                {
+                    Paranoid.Arrow.Update(closest.transform.position);
+                    if (!Paranoid.Arrow.arrow.activeSelf)
+                        Paranoid.Arrow.arrow.SetActive(true);
+                }
+                else
+                {
+                    Paranoid.Arrow.arrow.SetActive(false);
+                }
+            }
+            else if (Paranoid.Arrow?.arrow != null)
+            {
+                Paranoid.Arrow.arrow.SetActive(false);
+            }
+        }
+
+
+        static void UpdateOracle(MeetingHud __instance)
+        {
+            foreach (var player in PlayerControl.AllPlayerControls)
+            {
+                foreach (var state in __instance.playerStates)
+                {
+                    if (player.PlayerId != state.TargetPlayerId) continue;
+                    if (player == Oracle.Confessor)
+                    {
+                        if (Oracle.RevealedFaction == Faction.Crewmates) state.NameText.text = state.NameText.text + $" <size=60%>(<color=#00FFFFFF>{CustomGameOptions.OracleAccuracy}% Crew</color>) </size>";
+                        else if (Oracle.RevealedFaction == Faction.Impostors) state.NameText.text = state.NameText.text + $" <size=60%>(<color=#FF0000FF>{CustomGameOptions.OracleAccuracy}% Imp</color>) </size>";
+                        else state.NameText.text = state.NameText.text + $" <size=60%>(<color=#808080FF>{CustomGameOptions.OracleAccuracy}% Neut</color>) </size>";
+                    }
+                }
+            }
+        }
+        static void SnitchMeetingUpdate(MeetingHud __instance)
+        {
+            if (__instance)
+            {
+                if (Snitch.Player != null && Snitch.Player == PlayerControl.LocalPlayer && CustomGameOptions.SnitchSeesInMeetings)
+                {
+                    SetPlayerNameColor(Snitch.Target, Palette.ImpostorRed);
+                        
+                }
+                else if (Snitch.Player != null && Snitch.Target == PlayerControl.LocalPlayer && CustomGameOptions.SnitchSeesInMeetings && Snitch.KnowsRealKiller)
+                {
+                    // If local player is a killer, color the Snitch's name for them
+                    if (Snitch.Player != null)
+                    {
+                        SetPlayerNameColor(Snitch.Player, Snitch.Color);
+                    }
+                }
+            }
+        }
+
+        static void SetNameColors()
+        {
+            var localPlayer = PlayerControl.LocalPlayer;
+            var localRole = Role.GetRoleInfoForPlayer(localPlayer).FirstOrDefault();
+            SetPlayerNameColor(localPlayer, localRole.Color);
+            // Show flashed players
+            if (Grenadier.Player != null && (Grenadier.Player == PlayerControl.LocalPlayer || Utils.ShouldShowGhostInfo()))
+            {
+                foreach (PlayerControl player in Grenadier.FlashedPlayers)
+                    if (!player.Data.Role.IsImpostor && !player.Data.IsDead)
+                        SetPlayerNameColor(player, Color.black);
+            }
+
+            // No else if here, as the Impostors need the Spy name to be colored
+            if (Spy.Player != null && localPlayer.Data.Role.IsImpostor)
+            {
+                SetPlayerNameColor(Spy.Player, Spy.Color);
+            }
+        }
+
+        static void SetNameTags()
+        {
+            // Lovers
+            if (Lovers.Lover1 != null && Lovers.Lover2 != null && (Lovers.Lover1.AmOwner || Lovers.Lover2.AmOwner))
+            {
+                string suffix = Utils.ColorString(Lovers.Color, " [♥]");
+                Lovers.Lover1.cosmetics.nameText.text += suffix;
+                Lovers.Lover2.cosmetics.nameText.text += suffix;
+
+                if (MeetingHud.Instance != null)
+                    foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
+                        if (Lovers.Lover1.PlayerId == player.TargetPlayerId || Lovers.Lover2.PlayerId == player.TargetPlayerId)
+                            player.NameText.text += suffix;
+            }
+
+            // Monarch
+            foreach (var knighted in Monarch.KnightedPlayers)
+            {
+                if (Monarch.Player != null && (knighted.AmOwner || Monarch.Player.AmOwner))
+                {
+                    string suffix = Utils.ColorString(Monarch.Color, " (★)");
+                    if (knighted.AmOwner) knighted.cosmetics.nameText.text += suffix;
+
+                    if (MeetingHud.Instance != null)
+                        foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
+                            if (knighted.PlayerId == player.TargetPlayerId)
+                                player.NameText.text += suffix;
+                }
+            }
+
+            // Plaguebearer infected players
+            if (Plaguebearer.Player != null && Plaguebearer.Player.AmOwner)
+            {
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                {
+                    if (Plaguebearer.InfectedPlayers.Contains(player))
+                    {
+                        string suffix = Utils.ColorString(Plaguebearer.Color, " [⦿]");
+                        player.cosmetics.nameText.text += suffix;
+
+                        if (MeetingHud.Instance != null)
+                        {
+                            foreach (PlayerVoteArea voteArea in MeetingHud.Instance.playerStates)
+                            {
+                                if (voteArea.TargetPlayerId == player.PlayerId)
+                                {
+                                    voteArea.NameText.text += suffix;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Crusader
+            if (Crusader.Player != null && Crusader.FortifiedPlayer != null && Crusader.Player.AmOwner) 
+            {
+                Color color = Crusader.Color;
+                PlayerControl target = Crusader.FortifiedPlayer;
+                string suffix = Utils.ColorString(color, " [+]");
+                target.cosmetics.nameText.text += suffix;
+
+                if (MeetingHud.Instance != null)
+                    foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
+                        if (player.TargetPlayerId == target.PlayerId)
+                            player.NameText.text += suffix;
+            }
+
+            // Medic
+            if (Medic.Player != null && Medic.Shielded != null && Medic.Player.AmOwner && !MeetingHud.Instance) 
+            {
+                Color color = Medic.Color;
+                PlayerControl target = Medic.Shielded;
+                string suffix = Utils.ColorString(color, " [+]");
+                target.cosmetics.nameText.text += suffix;
+            }
+
+            // Lawyer
+            if (Lawyer.Player != null && Lawyer.Target != null && Lawyer.Player.AmOwner) 
+            {
+                Color color = Lawyer.Color;
+                PlayerControl target = Lawyer.Target;
+                string suffix = Utils.ColorString(color, " [★] ");
+                target.cosmetics.nameText.text += suffix;
+
+                if (MeetingHud.Instance != null)
+                    foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
+                        if (player.TargetPlayerId == target.PlayerId)
+                            player.NameText.text += suffix;
+            }
+
+            // Executioner
+            if (Executioner.Player != null && Executioner.target != null && Executioner.Player.AmOwner) 
+            {
+                PlayerControl target = Executioner.target;
+                string suffix = Utils.ColorString(Executioner.Color, " [⦿]");
+                target.cosmetics.nameText.text += suffix;
+
+                if (MeetingHud.Instance != null)
+                    foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
+                        if (player.TargetPlayerId == target.PlayerId)
+                            player.NameText.text += suffix;
+            }
+
+            // Display lighter / darker color for all alive players
+            if (PlayerControl.LocalPlayer != null && MeetingHud.Instance != null && TownOfSushi.ShowLighterDarker.Value) 
+            {
+                foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates) {
+                    var target = Utils.GetPlayerById(player.TargetPlayerId);
+                    if (target != null)  player.NameText.text += $" ({(Utils.IsLighterColor(target) ? "L" : "D")})";
+                }
+            }
+
+            // Add medic Shield info:
+            if (MeetingHud.Instance != null && Medic.Player != null && Medic.Shielded != null && Medic.ShieldVisible(Medic.Shielded)) 
+            {
+                foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
+                    if (player.TargetPlayerId == Medic.Shielded.PlayerId) 
+                    {
+                        player.NameText.text = Utils.ColorString(Medic.Color, "[") + player.NameText.text + Utils.ColorString(Medic.Color, "]");
+                    }
+            }
+        }
+
+        static void UpdateShielded() 
+        {
+            if (Medic.Shielded == null) return;
+
+            if (Medic.Shielded.Data.IsDead || Medic.Player == null || Medic.Player.Data.IsDead) 
+            {
+                Utils.SendRPC(CustomRPC.RemoveMedicShield);
+                RPCProcedure.RemoveMedicShield();
+            }
+        }
+
+        static void TimerUpdate() 
+        {
+            var dt = Time.deltaTime;
+            Hacker.hackerTimer -= dt;
+            Trickster.lightsOutTimer -= dt;
+            Scavenger.ScavengeTimer -= dt;
+            Tracker.corpsesTrackingTimer -= dt;
+            Assassin.invisibleTimer -= dt;
+            Wraith.VanishTimer -= dt;
+            foreach (byte key in Glitch.HackedKnows.Keys)
+                Glitch.HackedKnows[key] -= dt;
+        }
+
+        static void ImpostorKillButtonUpdate(HudManager __instance) 
+        {
+            if (!PlayerControl.LocalPlayer.Data.Role.IsImpostor) return;
+            if (MeetingHud.Instance) 
+            {
+                __instance.KillButton.Hide();
+                return;
+            }
+            bool enabled = true;
+            if (Viper.Player != null && Viper.Player == PlayerControl.LocalPlayer) enabled = false;
+            
+            if (enabled) __instance.KillButton.Show();
+            else __instance.KillButton.Hide();
+
+            if (Glitch.HackedKnows.ContainsKey(PlayerControl.LocalPlayer.PlayerId) && Glitch.HackedKnows[PlayerControl.LocalPlayer.PlayerId] > 0) __instance.KillButton.Hide();
+        }
+
+        static void UpdateReportButton(HudManager __instance) 
+        {
+            if (GameOptionsManager.Instance.currentGameOptions.GameMode == GameModes.HideNSeek) return;
+            if (Viper.BlindedPlayers.Contains(PlayerControl.LocalPlayer.PlayerId)) __instance.ReportButton.Hide();
+            if (Glitch.HackedKnows.ContainsKey(PlayerControl.LocalPlayer.PlayerId) && Glitch.HackedKnows[PlayerControl.LocalPlayer.PlayerId] > 0 || MeetingHud.Instance || Utils.TwoPlayersAlive() && CustomGameOptions.LimitAbilities) __instance.ReportButton.Hide();
+            else if (!__instance.ReportButton.isActiveAndEnabled) __instance.ReportButton.Show();
+        }
+         
+        static void UpdateVentButton(HudManager __instance)
+        {
+            if (GameOptionsManager.Instance.currentGameOptions.GameMode == GameModes.HideNSeek) return;
+            if (Utils.TwoPlayersAlive() && CustomGameOptions.LimitAbilities) return;
+            if (PlayerControl.LocalPlayer == Viper.Player) 
+            {
+                __instance.ImpostorVentButton.Show();
+                __instance.ImpostorVentButton.transform.localPosition = CustomButton.ButtonPositions.upperRowLeft;
+            }
+            if (Viper.BlindedPlayers.Contains(PlayerControl.LocalPlayer.PlayerId)) __instance.ImpostorVentButton.Hide();
+            if (PlayerControl.LocalPlayer == Wraith.Player) __instance.ImpostorVentButton.Hide();
+            if (Glitch.HackedKnows.ContainsKey(PlayerControl.LocalPlayer.PlayerId) && Glitch.HackedKnows[PlayerControl.LocalPlayer.PlayerId] > 0 || MeetingHud.Instance) __instance.ImpostorVentButton.Hide();
+            else if (PlayerControl.LocalPlayer.IsVenter() && !__instance.ImpostorVentButton.isActiveAndEnabled) 
+            {
+                __instance.ImpostorVentButton.Show();
+            }
+            if (Rewired.ReInput.players.GetPlayer(0).GetButtonDown(RewiredConsts.Action.UseVent) && !PlayerControl.LocalPlayer.Data.Role.IsImpostor && PlayerControl.LocalPlayer.IsVenter()) 
+            {
+                __instance.ImpostorVentButton.DoClick();
+            }
+        }
+
+        static void UpdateUseButton(HudManager __instance) 
+        {
+            if (MeetingHud.Instance) __instance.UseButton.Hide();
+        }
+
+        static void UpdateSabotageButton(HudManager __instance) 
+        {
+            if (MeetingHud.Instance || Utils.TwoPlayersAlive() && CustomGameOptions.LimitAbilities) __instance.SabotageButton.Hide();
+            if (PlayerControl.LocalPlayer.Data.IsDead && CustomGameOptions.DeadImpsBlockSabotage) __instance.SabotageButton.Hide();
+        }
+
+        static void UpdateMapButton(HudManager __instance) 
+        {
+            if (Trapper.Player == null || !(PlayerControl.LocalPlayer.PlayerId == Trapper.Player.PlayerId) || __instance == null || __instance.MapButton.HeldButtonSprite == null) return;
+            __instance.MapButton.HeldButtonSprite.color = Trapper.playersOnMap.Any() ? Trapper.Color : Color.white;
+        }
+
+        static void Postfix(HudManager __instance)
+        {
+            if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started || GameOptionsManager.Instance.currentGameOptions.GameMode == GameModes.HideNSeek) return;
+
+            CustomButton.HudUpdate();
+            ResetNameTagsAndColors();
+            SetNameColors();
+            UpdateShielded();
+            SetNameTags();
+
+            // Impostors
+            ImpostorKillButtonUpdate(__instance);
+
+            if (Oracle.Player != null && Oracle.Player.Data.IsDead && Oracle.Confessor != null) UpdateOracle(MeetingHud.Instance);
+
+            SnitchMeetingUpdate(MeetingHud.Instance);
+
+            // Timer updates
+            TimerUpdate();
+
+            // Glitch Sabotage, Use and Vent Button Disabling
+            UpdateReportButton(__instance);
+            UpdateVentButton(__instance);
+            // Meeting hide buttons if needed (used for the map usage, because closing the map would show buttons)
+            UpdateSabotageButton(__instance);
+            UpdateUseButton(__instance);
+            ParanoidUpdate();
+            UpdateMapButton(__instance);
+            if (!MeetingHud.Instance) __instance.AbilityButton?.Update();
+
+            // Fix dead player's pets being visible by just always updating whether the pet should be visible at all.
+            foreach (PlayerControl target in PlayerControl.AllPlayerControls) 
+            {
+                var pet = target.GetPet();
+                if (pet != null) 
+                {
+                    pet.Visible = (PlayerControl.LocalPlayer.Data.IsDead && target.Data.IsDead || !target.Data.IsDead) && !target.inVent;
+                }
+            }
+        }
+    }
+    //Reports can't happen by clicking the corpse
+    [HarmonyPatch(typeof(DeadBody), nameof(DeadBody.OnClick))]
+    public static class DeadBodyOnClickUpdate
+    {
+        public static bool Prefix(DeadBody __instance) 
+        {
+            if (GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek) return false;
+            if (Viper.BlindedPlayers.Contains(PlayerControl.LocalPlayer.PlayerId) || Utils.TwoPlayersAlive() && CustomGameOptions.LimitAbilities  || Glitch.HackedKnows.ContainsKey(PlayerControl.LocalPlayer.PlayerId) && Glitch.HackedKnows[PlayerControl.LocalPlayer.PlayerId] > 0f)  return false;
+            return true;
+        }
+    }
+    [HarmonyPatch(typeof(Vent), nameof(Vent.SetOutline))]
+    class SetVentOutlinePatch
+    {
+        public static void Postfix(Vent __instance, [HarmonyArgument(1)] ref bool mainTarget)
+        {
+            var roles = Role.GetRoleInfoForPlayer(PlayerControl.LocalPlayer);
+            foreach (Role role in roles)
+            {
+                Color color = role.Color;
+                __instance.myRend.material.SetColor("_OutlineColor", color);
+                __instance.myRend.material.SetColor("_AddColor", mainTarget ? color : Color.clear);
+            }
+        }
+    }
+}

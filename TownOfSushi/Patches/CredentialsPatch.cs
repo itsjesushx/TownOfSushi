@@ -1,55 +1,45 @@
-using HarmonyLib;
-using TMPro;
-using UnityEngine;
-//Original code from TheOtherRoles (https://github.com/TheOtherRolesAU/TheOtherRoles/blob/main/TheOtherRoles/Patches/CredentialsPatch.cs)
-
-namespace TownOfSushi.Patches
+﻿namespace TownOfSushi.Patches
 {
     [HarmonyPatch]
-    public static class CredentialsPatch
+    public static class CredentialsPatch 
     {
-        public static string ModName =
-$@"<size=70%><color=#B2FEFE>TownOfSushi</color> v{TownOfSushiPlugin.Version}{TownOfSushiPlugin.DevString}</size>";
-        public static string CreditsText =
-    $@"<size=60%>Created by <color=#B2FEFE>Jesushi</color>
-Code helped by <color=#B2FEFE>whichtwix</color>, <color=#B2FEFE>50 1Q</color> & <color=#B2FEFE>lekiller</color>
-Beta testing help by <color=#B2FEFE>Cake</color> & <color=#B2FEFE>50 IQ</color>
-Originally Coded by <color=#B2FEFE>AU-Avengers</color></size>";
+    public static string MainScreenText =
+    $@"Created by <color=#B2FEFE>Jesushi</color>
+<size=75%>Emotionally Helped by <color=#B2FEFE>döll</color>
+Helped by <color=#B2FEFE>AlchlcDvl</color> & <color=#B2FEFE>50IQ</color>
+Testing help by <color=#B2FEFE>Cake</color>";
 
-        [HarmonyPatch(typeof(PingTracker), nameof(PingTracker.Update))]
-        internal static class PingTrackerPatch
+
+        [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start))]
+        public static class LogoPatch
         {
-            private static float DeltaTime;
-            internal static void Postfix(PingTracker __instance)
+            public static SpriteRenderer renderer;
+            public static Sprite bannerSprite;
+            private static PingTracker instance;
+            static void Postfix(PingTracker __instance) 
             {
-                __instance.text.alignment = TextAlignmentOptions.Top;
-                var position = __instance.GetComponent<AspectPosition>();
-                DeltaTime += (Time.deltaTime - DeltaTime) * 0.1f;
+                var Logo = new GameObject("bannerLogo_TSR");
+                Logo.transform.SetParent(GameObject.Find("RightPanel").transform, false);
+                Logo.transform.localPosition = new Vector3(-0.4f, 0.5f, 5f);
+                renderer = Logo.AddComponent<SpriteRenderer>();
+                LoadSprites();
+                renderer.sprite = Utils.LoadSprite("TownOfSushi.Resources.TownOfSushiBanner.png", 130f);
+                instance = __instance;
+                LoadSprites();
+                renderer.sprite = bannerSprite;
+                var CredentialObject = new GameObject("CredentialsTSR");
+                var Credentials = CredentialObject.AddComponent<TextMeshPro>();
+                Credentials.SetText($"v{TownOfSushi.Version.ToString()}\n<size=30f%>\n</size>{MainScreenText}\n<size=30%>\n</size>");
+                Credentials.alignment = TextAlignmentOptions.Center;
+                Credentials.fontSize *= 0.05f;
 
-                string text;
-                string pingcolor = "#FF0000";
-                if (AmongUsClient.Instance.Ping < 100) pingcolor = "#44dfcc";
-                else if (AmongUsClient.Instance.Ping < 200) pingcolor = "#f3920e";
-                else if (AmongUsClient.Instance.Ping < 400) pingcolor = "#FF0000";
-                string pingText = $"<color={pingcolor}>Ping: {AmongUsClient.Instance.Ping} ms</color>";
+                Credentials.transform.SetParent(Logo.transform);
+                Credentials.transform.localPosition = Vector3.down * 1.45f;
+            }
 
-                if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
-                {
-                   text = $"{pingText} - FPS: {Mathf.Round(1f / DeltaTime)}\n{ModName}\n{CreditsText}";
-                   position.DistanceFromEdge = MeetingHud.Instance ? new Vector3(1.25f, 0.15f, 0) : new Vector3(1.55f, 0.15f, 0);
-                }
-                else
-                {
-                    text = $"{pingText} - FPS: {Mathf.Round(1f / DeltaTime)}\n{ModName}";
-                    position.DistanceFromEdge = new Vector3( 0f, 0.1f, 0);
-                }
-
-                position.Alignment = AspectPosition.EdgeAlignments.Top;
-                position.DistanceFromEdge = new Vector3(0f, 0.1f, 0);
-
-                __instance.text.text = text;
-
-                position.AdjustPosition();
+            public static void LoadSprites() 
+            {
+                if (bannerSprite == null) bannerSprite = Utils.LoadSprite("TownOfSushi.Resources.TownOfSushiBanner.png", 110f);
             }
         }
     }

@@ -1,104 +1,85 @@
-using System.Collections;
-using AmongUs.Data;
-using Assets.InnerNet;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using BepInEx;
 using BepInEx.Unity.IL2CPP.Utils;
-using Il2CppInterop.Runtime.Attributes;
-using Newtonsoft.Json.Linq;
-using Reactor.Utilities;
-using Twitch;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.Networking;
 using UnityEngine.UI;
-using Action = System.Action;
-using Version = SemanticVersioning.Version;
+using UnityEngine.SceneManagement;
+using AmongUs.Data;
+using Assets.InnerNet;
+using Twitch;
 
 namespace TownOfSushi.Modules
-{        
-    // Thanks to The Other Roles for this patch https://github.com/TheOtherRolesAU/TheOtherRoles/blob/main/TheOtherRoles/Modules/ModUpdater.cs
-
-    public class ModUpdateBehaviour : MonoBehaviour
+{
+    public class ModUpdater : MonoBehaviour 
     {
-        public static bool showPopUp = true;
-        public static bool updateInProgress;
+        public const string RepositoryOwner = "itsjesushx";
+        public const string RepositoryName = "TownOfSushi";
+        public static ModUpdater Instance { get; private set; }
+        public ModUpdater(IntPtr ptr) : base(ptr) { }
 
-        public static ModUpdateBehaviour Instance { get; private set; }
-    //    public ModUpdateBehaviour(IntPtr ptr) : base(ptr) { }
-        public class UpdateData
+        private bool _busy;
+        private bool showPopUp = true;
+        public List<GithubRelease> Releases;
+
+        public void Awake() 
         {
-            public string Content;
-            public string Tag;
-            public string TimeString;
-            public JObject Request;
-            public Version Version => Version.Parse(Tag);
-
-            public UpdateData(JObject data) {
-                Tag = data["tag_name"]?.ToString().TrimStart('v');
-                Content = data["body"]?.ToString();
-                TimeString = DateTime.FromBinary(((Il2CppSystem.DateTime)data["published_at"]).ToBinaryRaw()).ToString();
-                Request = data;
-            }
-
-            public bool IsNewer(Version version) {
-                if (!Version.TryParse(Tag, out var myVersion)) return false;
-                return myVersion.BaseVersion() > version.BaseVersion();
-            }
-        }
-
-        public UpdateData TOSUpdate;
-
-        [HideFromIl2Cpp]
-        public UpdateData RequiredUpdateData => TOSUpdate;
-
-        public void Awake() {
-            if (Instance) Destroy(this);
+            if (Instance) Destroy(Instance);
             Instance = this;
-
-            SceneManager.add_sceneLoaded((System.Action<Scene, LoadSceneMode>)(OnSceneLoaded));
-            this.StartCoroutine(CoCheckUpdates());
-
-            foreach (var file in Directory.GetFiles(Paths.PluginPath, "*.old")) {
+            foreach (var file in Directory.GetFiles(Paths.PluginPath, "*.old")) 
+            {
                 File.Delete(file);
             }
         }
 
-        private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
-            if (updateInProgress || scene.name != "MainMenu") return;
-            if (RequiredUpdateData is null) {
-                showPopUp = false;
-                return;
-            }
-
-            var template = GameObject.Find("ExitGameButton");
-            if (!template) return;
-
-            var button = Instantiate(template, null);
-            button.GetComponent<AspectPosition>().anchorPoint = new Vector2(0.458f, 0.124f);
-
-            PassiveButton passiveButton = button.GetComponent<PassiveButton>();
-            passiveButton.OnClick = new Button.ButtonClickedEvent();
-            passiveButton.OnClick.AddListener((Action)(() => {
-                this.StartCoroutine(CoUpdate());
-                button.SetActive(false);
-            }));
-
-            var text = button.transform.GetComponentInChildren<TMPro.TMP_Text>();
-            string t = "Update Town of Sushi";
-            StartCoroutine(Effects.Lerp(0.1f, (System.Action<float>)(p => text.SetText(t))));
-            passiveButton.OnMouseOut.AddListener((Action)(() => text.color = Color.cyan));
-            passiveButton.OnMouseOver.AddListener((Action)(() => text.color = Color.cyan));
-
-            var announcement = $"<size=150%>A new Town of Sushi update to {TOSUpdate.Tag} is available</size>\n{TOSUpdate.Content}";
-            var mgr = FindObjectOfType<MainMenuManager>(true);            
-            if (showPopUp) mgr.StartCoroutine(CoShowAnnouncement(announcement, shortTitle: "Town of Sushi Update", date: TOSUpdate.TimeString));
-            showPopUp = false;
+        private void Start()
+        {
+            if (_busy) return;
+            this.StartCoroutine(CoCheckForUpdate());
+            SceneManager.add_sceneLoaded((System.Action<Scene, LoadSceneMode>)(OnSceneLoaded));
+        }
+        
+            
+        [HideFromIl2Cpp]
+        public void StartDownloadRelease(GithubRelease release) {
+            if (_busy) return;
+            this.StartCoroutine(CoDownloadRelease(release));
         }
 
         [HideFromIl2Cpp]
-        public IEnumerator CoUpdate() 
+        private IEnumerator CoCheckForUpdate() 
         {
-            updateInProgress = true;
-            var updateName = "Town of Sushi";
+            _busy = true;
+            var www = new UnityWebRequest();
+            www.SetMethod(UnityWebRequest.UnityWebRequestMethod.Get);
+            www.SetUrl($"https://api.github.com/repos/{RepositoryOwner}/{RepositoryName}/releases");
+            www.downloadHandler = new DownloadHandlerBuffer();
+            var operation = www.SendWebRequest();
+
+            while (!operation.isDone) {
+                yield return new WaitForEndOfFrame();
+            }
+
+            if (www.isNetworkError || www.isHttpError) 
+            {
+                yield break;
+            }
+
+            Releases = JsonSerializer.Deserialize<List<GithubRelease>>(www.downloadHandler.text);
+            www.downloadHandler.Dispose();
+            www.Dispose();
+            Releases.Sort(SortReleases);
+            _busy = false;
+        }
+
+        [HideFromIl2Cpp]
+        private IEnumerator CoDownloadRelease(GithubRelease release) 
+        {
+            _busy = true;
 
             var popup = Instantiate(TwitchManager.Instance.TwitchPopup);
             popup.TextAreaTMP.fontSize *= 0.7f;
@@ -108,43 +89,140 @@ namespace TownOfSushi.Modules
 
             var button = popup.transform.GetChild(2).gameObject;
             button.SetActive(false);
-            popup.TextAreaTMP.text = $"Updating {updateName}\nPlease wait...";
+            popup.TextAreaTMP.text = $"Updating TSR\nPlease wait...";
 
-            var download = Task.Run(DownloadUpdate);
-            while (!download.IsCompleted) yield return null;
+            var asset = release.Assets.Find(FilterPluginAsset);
+            var www = new UnityWebRequest();
+            www.SetMethod(UnityWebRequest.UnityWebRequestMethod.Get);
+            www.SetUrl(asset.DownloadUrl);
+            www.downloadHandler = new DownloadHandlerBuffer();
+            var operation = www.SendWebRequest();
 
+            while (!operation.isDone) 
+            {
+                int stars = Mathf.CeilToInt(www.downloadProgress * 10);
+                string progress = $"Updating TSR\nPlease wait...\nDownloading...\n{new String((char)0x25A0, stars) + new String((char)0x25A1, 10 - stars)}";
+                popup.TextAreaTMP.text = progress;
+                yield return new WaitForEndOfFrame();
+            }
+            
+            if (www.isNetworkError || www.isHttpError) 
+            {
+                popup.TextAreaTMP.text = "Update wasn't successful\nTry again later,\nor update manually.";
+                yield break;
+            }
+            popup.TextAreaTMP.text = $"Updating TSR\nPlease wait...\n\nDownload complete\ncopying file...";
+
+            var filePath = Path.Combine(Paths.PluginPath, asset.Name);
+
+            if (File.Exists(filePath + ".old")) File.Delete(filePath + "old");
+            if (File.Exists(filePath)) File.Move(filePath, filePath + ".old");
+
+            var persistTask = File.WriteAllBytesAsync(filePath, www.downloadHandler.data);
+            var hasError = false;
+            while (!persistTask.IsCompleted) 
+            {
+                if (persistTask.Exception != null) 
+                {
+                    hasError = true;
+                    break;
+                }
+                
+                yield return new WaitForEndOfFrame();
+            }
+
+            www.downloadHandler.Dispose();
+            www.Dispose();
+
+            if (!hasError) 
+            {
+                popup.TextAreaTMP.text = $"TownOfSushi\nupdated successfully\nPlease restart the game.";
+            }
             button.SetActive(true);
-            popup.TextAreaTMP.text = download.Result ? $"{updateName}\nupdated successfully\nPlease restart the game." : "Update wasn't successful\nPlease use Town of Sushi Downloader\nto update manually.";
+            _busy = false;
         }
 
-
-        private static int announcementNumber = 501;
         [HideFromIl2Cpp]
-        public static IEnumerator CoShowAnnouncement(string announcement, bool show = true, string shortTitle = "Town of Sushi Update", string title = "", string date = "") 
+        private static bool FilterLatestRelease(GithubRelease release) 
+        {
+            return release.IsNewer(TownOfSushi.Version) && release.Assets.Any(FilterPluginAsset);
+        }
+
+        [HideFromIl2Cpp]
+        private static bool FilterPluginAsset(GithubAsset asset) 
+        {
+            return asset.Name == "TownOfSushi.dll";
+        }
+
+        [HideFromIl2Cpp]
+        private static int SortReleases(GithubRelease a, GithubRelease b) 
+        {
+            if (a.IsNewer(b.Version)) return -1;
+            if (b.IsNewer(a.Version)) return 1;
+            return 0;
+        }
+
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode) 
+        {
+            if (_busy || scene.name != "MainMenu") return;
+            var latestRelease = Releases.FirstOrDefault();
+            if (latestRelease == null || latestRelease.Version <= TownOfSushi.Version)
+                return;
+
+            var template = GameObject.Find("ExitGameButton");
+            if (!template) return;
+
+            var button = Instantiate(template, null);
+            var buttonTransform = button.transform;
+            //buttonTransform.localPosition = new Vector3(-2f, -2f);
+            button.GetComponent<AspectPosition>().anchorPoint = new Vector2(0.458f, 0.124f);
+
+            PassiveButton passiveButton = button.GetComponent<PassiveButton>();
+            passiveButton.OnClick = new Button.ButtonClickedEvent();
+            passiveButton.OnClick.AddListener((Action)(() =>
+            {
+                StartDownloadRelease(latestRelease);
+                button.SetActive(false);
+            }));
+
+            var text = button.transform.GetComponentInChildren<TMP_Text>();
+            string t = "Update TSR";
+            StartCoroutine(Effects.Lerp(0.1f, (Action<float>)(p => text.SetText(t))));
+            passiveButton.OnMouseOut.AddListener((Action)(() => text.color = Color.red));
+            passiveButton.OnMouseOver.AddListener((Action)(() => text.color = Color.white));
+            var announcement = $"<size=150%>A new The Sushi Roles update to {latestRelease.Tag} is available</size>\n{latestRelease.Description}";
+            var mgr = FindObjectOfType<MainMenuManager>(true);
+            if (showPopUp) mgr.StartCoroutine(CoShowAnnouncement(announcement, shortTitle: "TSR Update", date : latestRelease.PublishedAt)) ;
+            showPopUp = false;
+        }
+
+        [HideFromIl2Cpp]
+        public IEnumerator CoShowAnnouncement(string announcement, bool show = true, string shortTitle = "TSR Update", string title = "", string date = "") 
         {
             var mgr = FindObjectOfType<MainMenuManager>(true);
-            var popUpTemplate = FindObjectOfType<AnnouncementPopUp>(true);
+            var popUpTemplate = UObject.FindObjectOfType<AnnouncementPopUp>(true);
             if (popUpTemplate == null) {
-                Logger<TownOfSushiPlugin>.Error("couldnt show credits, popUp is null");
+                TownOfSushi.Logger.LogError("couldnt show credits, popUp is null");
                 yield return null;
             }
-            var popUp = Instantiate(popUpTemplate);
+            var popUp = UObject.Instantiate(popUpTemplate);
 
             popUp.gameObject.SetActive(true);
 
-            Announcement creditsAnnouncement = new() 
+            Announcement creditsAnnouncement = new()
             {
-                Id = "TOSAnnouncement",
+                Id = "torAnnouncement",
                 Language = 0,
-                Number = announcementNumber++,
-                Title = title == "" ? "Town of Sushi Announcement" : title,
+                Number = 6969,
+                Title = title == "" ? "The Sushi Roles Announcement" : title,
                 ShortTitle = shortTitle,
                 SubTitle = "",
                 PinState = false,
                 Date = date == "" ? DateTime.Now.Date.ToString() : date,
                 Text = announcement,
             };
-            mgr.StartCoroutine(Effects.Lerp(0.1f, new Action<float>((p) => {
+            mgr.StartCoroutine(Effects.Lerp(0.1f, new Action<float>((p) =>
+            {
                 if (p == 1) {
                     var backup = DataManager.Player.Announcements.allAnnouncements;
                     DataManager.Player.Announcements.allAnnouncements = new();
@@ -157,76 +235,60 @@ namespace TownOfSushi.Modules
                 }
             })));
         }
+    }
 
-        [HideFromIl2Cpp]
-        public static IEnumerator CoCheckUpdates() 
+    public class GithubRelease 
+    {
+        [JsonPropertyName("id")]
+        public int Id { get; set; }
+
+        [JsonPropertyName("tag_name")]
+        public string Tag { get; set; }
+
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
+
+        [JsonPropertyName("draft")]
+        public bool Draft { get; set; }
+
+        [JsonPropertyName("prerelease")]
+        public bool Prerelease { get; set; }
+
+        [JsonPropertyName("created_at")]
+        public string CreatedAt { get; set; }
+
+        [JsonPropertyName("published_at")]
+        public string PublishedAt { get; set; }
+
+        [JsonPropertyName("body")]
+        public string Description { get; set; }
+
+        [JsonPropertyName("assets")]
+        public List<GithubAsset> Assets { get; set; }
+
+        public Version Version => Version.Parse(Tag.Replace("v", string.Empty));
+
+        public bool IsNewer(Version version) 
         {
-            var TOSUpdateCheck = Task.Run(() => GetGithubUpdate("itsjesushx", "TownOfSushi"));
-            while (!TOSUpdateCheck.IsCompleted) yield return null;
-            if (TOSUpdateCheck.Result != null && TOSUpdateCheck.Result.IsNewer(Version.Parse(TownOfSushiPlugin.Version))) 
-            {
-                Instance.TOSUpdate = TOSUpdateCheck.Result;
-            }
-            Instance.OnSceneLoaded(SceneManager.GetActiveScene(), LoadSceneMode.Single);
+            return Version > version;
         }
+    }
 
-        [HideFromIl2Cpp]
-        public static async Task<UpdateData> GetGithubUpdate(string owner, string repo) 
-        {
-            var client = new HttpClient();
-            client.DefaultRequestHeaders.Add("User-Agent", "Town of Sushi Updater");
+    public class GithubAsset 
+    {
+        [JsonPropertyName("url")]
+        public string Url { get; set; }
 
-            try {
-                var req = await client.GetAsync($"https://api.github.com/repos/{owner}/{repo}/releases/latest", HttpCompletionOption.ResponseContentRead);
+        [JsonPropertyName("id")]
+        public int Id { get; set; }
 
-                if (!req.IsSuccessStatusCode) return null;
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
 
-                var dataString = await req.Content.ReadAsStringAsync();
-                JObject data = JObject.Parse(dataString);
-                return new UpdateData(data);
-            }
-            catch (HttpRequestException) 
-            {
-                return null;
-            }
-        }
+        [JsonPropertyName("size")]
+        public int Size { get; set; }
 
-
-        [HideFromIl2Cpp]
-        public async Task<bool> DownloadUpdate() {
-            var data = TOSUpdate;
-
-            var client = new HttpClient();
-            client.DefaultRequestHeaders.Add("User-Agent", "Town of Sushi Updater");
-
-            JToken assets = data.Request["assets"];
-            string downloadURI = "";
-            for (JToken current = assets.First; current != null; current = current.Next) 
-            {
-                string browser_download_url = current["browser_download_url"]?.ToString();
-#pragma warning disable CA1309 // Use ordinal string comparison
-                if (browser_download_url != null && current["content_type"] != null && 
-                current["content_type"].ToString().Equals("application/x-msdownload") &&
-                        browser_download_url.EndsWith(".dll")) 
-                {
-                    downloadURI = browser_download_url;
-                    break;
-                }
-#pragma warning restore CA1309 // Use ordinal string comparison
-            }
-
-            if (downloadURI.Length == 0) return false;
-
-            var res = await client.GetAsync(downloadURI, HttpCompletionOption.ResponseContentRead);
-            string filePath = Path.Combine(Paths.PluginPath, "TownOfSushi.dll");
-            if (File.Exists(filePath + ".old")) File.Delete(filePath + ".old");
-            if (File.Exists(filePath)) File.Move(filePath, filePath + ".old");
-
-            await using var responseStream = await res.Content.ReadAsStreamAsync();
-            await using var fileStream = File.Create(filePath);
-            await responseStream.CopyToAsync(fileStream);
-
-            return true;
-        }
+        [JsonPropertyName("browser_download_url")]
+        public string DownloadUrl { get; set; }
     }
 }

@@ -26,7 +26,7 @@ public static class Keyboard_Joystick
             Switch(false);
         }
         else if (Input.GetKeyDown(KeyCode.F6))
-            TownOfSushiPlugin.Persistence = !TownOfSushiPlugin.Persistence;
+            TownOfSushi.Persistence = !TownOfSushi.Persistence;
 
         if (Input.GetKeyDown(KeyCode.F11))
             InstanceControlPatches.RemoveAllPlayers();
