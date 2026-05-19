@@ -109,7 +109,10 @@ If you want to learn how the new killers work, go to [Neutral Killers guide](#ne
 # Releases  
 | Among Us - Version| Town of Sushi Version | Link |
 |----------|-------------|-----------------|
-| V2024.10.29s & V2024.10.29e | v1.0.0 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/v1.0.0/TSR.v1.0.0.zip) |
+| V2024.10.29s & V2024.10.29e | v1.0.5 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/v1.0.1/T0S.v1.0.5.zip) |
+| V2024.10.29s & V2024.10.29e | v1.0.2 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/v1.0.2/TOS.v1.0.2.zip) |
+| V2024.10.29s & V2024.10.29e | v1.0.1 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/v1.0.1/TOS.v1.0.1.zip) |
+| V2024.10.29s & V2024.10.29e | v1.0.0 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/v1.0.0/TOS.v3.0.0.zip) |
 
 -----------------------
   
