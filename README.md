@@ -1,867 +1,483 @@
-![banner](./Images/TownOfSushiBanner.png)
-<p align="center"><a href="https://github.com/itsjesushx/TownOfSushi/releases/"></a></p>
+> [!NOTE]
+> This mod is NOT for console versions of Among Us and is NOT host only either, please do not ask for a port or a rewrite.
+-----------------------
 
-This mod is not affiliated with Among Us or Innersloth LLC, and the content contained therein is not endorsed or otherwise sponsored by Innersloth LLC. Portions of the materials contained herein are property of Innersloth LLC. © Innersloth LLC.</p>
-<p align="center">
-  To other mod devs: for usage of the code, please read and respect the <a href="#license">license</a></p>
+### An [Among Us](https://store.steampowered.com/app/945360/Among_Us/) mod that adds a bunch of roles, modifiers, abilities, game settings, quality of life changes and many improvements to the base game.
 
-# Town of Sushi
-**Town of Sushi** is an [Among Us](https://store.steampowered.com/app/945360/Among_Us) mod, which adds many new roles, modifiers, abilities, new [Settings](#settings) and new [Custom Hats](#custom-hats) to the game.
-Even more roles are coming soon.
-**Join the discord server to find support or people to play with! [Click here!](https://discord.gg/pRMRJKR2Tc).**
+![LOGO](./Images/Banner.png)
+
+### ***Notes:***
+### ***- This mod is just a hobby so updates may not be so fast.***
+### ***- This mod is NOT for mobile and console versions.***
+### ***- This README page is currently under editing, most things here are either missing or subject to change.***
+### ***- Join the [Discord Server](https://discord.gg/quJ566pe3W) for suggestions or any problems!***
+
+-----------------------
+
+# Credits & Resources
+[TownOfUs: Mira](https://github.com/AU-Avengers/TOU-Mira) - Original Codebase.\
+[Reactor](https://github.com/All-Of-Us-Mods/MiraAPI) - The framework of the mod.\
+[TheOtherRoles](https://github.com/TheOtherRolesAU/TheOtherRoles) - Inspiration for a Similar Snitch role (Informant) the Spy, Thief role ideas, Custom Message Module & the Mod Updater.\
+[SuperNewRoles](https://github.com/SuperNewRoles/SuperNewRoles)  - For the Disable Lobby Music option.\
+[Stellar Roles](https://github.com/Mr-Fluuff/StellarRolesAU) - For the Romantic idea.\
+[Vanilla Enhancements](https://github.com/xChipseq/VanillaEnhancements) - For the Dark Mode lines.\
+[MyDragonBreath](https://github.com/MyDragonBreath) - For the MCI debugger.\
+[Brybry16](https://github.com/Brybry16/BetterPolus) - For the Better Polus code.\
+
+# License
+This software is distributed under the GNU GPLv3 License. BepInEx is distributed under LGPL-2.1 License.
+
+# Copyright
+<p align="center">This mod is not affiliated with Among Us or Innersloth LLC, and the content contained therein is not endorsed or otherwise sponsored by Innersloth LLC. Portions of the materials contained herein are property of Innersloth LLC.</p>
+<p align="center">© Innersloth LLC.</p>
+-----------------------
+# Bug / Suggestions
+If you have any bugs or any need to contact me, join the [Discord Server](https://discord.gg/quJ566pe3W) or create a ticket on GitHub.
+
+-----------------------
+
+[**Installation**](#installation)
+- [Requirements](#requirements)
+- [Steam Guide](#steam-guide)
+- [Epic Games Guide](#epic-games-guide)
+
+-----------------------
 
 > ## **Roles & Modifiers Overview**
 
 <details>
 <summary><strong>Impostor Roles</strong></summary>
 
+- [Escapist](#escapist)  
 - [Grenadier](#grenadier)  
-- [Undertaker](#undertaker)  
-- [Yo-Yo](#yoyo)  
+- [Janitor](#janitor)
+- [Consigliere](#consigliere)
 - [Morphling](#morphling)  
-- [Painter](#painter)  
-- [Viper](#viper)  
-- [Assassin](#assassin)  
-- [Trickster](#trickster)  
-- [Janitor](#janitor)  
-- [Warlock](#warlock)  
+- [Venerer](#venerer)  
+- [Miner](#miner)  
+- [Blackmailer](#blackmailer)  
+- [Hexblade](#hexblade)  
+- [Undertaker](#undertaker)  
+- [Bomber](#bomber)  
+- [Poisoner](#poisoner)  
 - [Bounty Hunter](#bounty-hunter)  
-- [Witch](#witch)  
+- [Warlock](#warlock)  
+
+</details>
+
+<details>
+<summary><strong>Impostor Modifiers</strong></summary>
+
+- [Disperser](#disperser)  
+- [Saboteur](#saboteur)  
+- [Underdog](#underdog)  
+- [Double Shot](#double-shot)  
+- [Telepath](#telepath)  
+- [Assassin (Ability)](#assassin-ability)  
 
 </details>
 
 <details>
 <summary><strong>Crewmate Roles</strong></summary>
 
-- [Mayor](#mayor)  
+- [Hunter](#hunter)  
 - [Engineer](#engineer)  
 - [Sheriff](#sheriff)  
-- [Trapper](#trapper)  
-- [Landlord](#landlord)  
-- [Detective](#detective)  
-- [Chronos](#chronos)  
-- [Medic](#medic)  
-- [Deputy](#deputy)  
-- [Mystic](#mystic)  
-- [Hacker](#hacker)  
-- [Tracker](#tracker)  
-- [Crusader](#crusader)  
-- [Spy](#spy)  
-- [Gatekeeper](#gatekeeper)  
-- [Vigilante](#vigilante)  
-- [Psychic](#psychic)  
-- [Veteran](#veteran)  
 - [Oracle](#oracle)  
-- [Monarch](#monarch)  
+- [Inspector](#inspector)  
+- [Mystic](#mystic)  
+- [Veteran](#veteran)  
+- [Medic](#medic)  
+- [Imitator](#imitator)  
+- [Seer](#seer)
+- [Inspector](#inspector)
+- [Spy](#spy)
+- [Informant](#informant)
+- [Lookout](#lookout)
+- [Bodyguard](#bodyGuard)
+- [Trapper](#trapper)  
+- [Analyzer](#Analyzer)  
+- [Deputy](#deputy)  
+- [Crusader](#crusader)
+
+</details>
+
+<details>
+<summary><strong>Crewmate Modifiers</strong></summary>
+
+- [Bait](#bait)  
+- [Aftermath](#aftermath)  
+- [Frosty](#frosty)  
+- [Multitasker](#multitasker)  
+- [Diseased](#diseased)  
 
 </details>
 
 <details>
 <summary><strong>Neutral Roles</strong></summary>
 
-- [Jester](#jester)  
-- [Arsonist](#arsonist)  
-- [Plaguebearer](#plaguebearer)  
-- [Pestilence](#plaguebearer)  
-- [Scavenger](#scavenger)  
-- [Lawyer](#lawyer)  
-- [Executioner](#executioner)  
-- [Survivor](#survivor)  
-- [Agent](#agent)  
-- [Glitch](#glitch)  
-- [Juggernaut](#juggernaut)  
-- [Predator](#predator)  
+- [Jester](#jester)
+- [Pyromaniac](#pyromaniac)
+- [Vampire](#vampire)
+- [Plaguebearer](#plaguebearer)
+- [Scavenger](#scavenger)
+- [Pestilence](#plaguebearer)
+- [Executioner](#executioner)
 - [Romantic](#romantic)  
-- [Werewolf](#werewolf)  
-- [Amnesiac](#amnesiac)  
+- [Amnesiac](#amnesiac)
+- [Eclipsal](#eclipsal)
+- [Agent](#agent)  
+- [Hitman](#hitman)  
+- [Glitch](#glitch)
+- [Thief](#thief)
+- [Serial Killer](#serial-killer)  
+- [Juggernaut](#juggernaut)  
 
 </details>
 
 <details>
-<summary><strong>Modifiers</strong></summary>
+<summary><strong>Universal Modifiers</strong></summary>
 
+- [Giant](#giant)  
+- [Celebrity](#celebrity)  
+- [Button Barry](#button-barry)  
+- [Tiebreaker](#tiebreaker)  
+- [Administrator](#administrator)  
+- [Paranoiac](#Paranoiac)  
 - [Sleuth](#sleuth)  
-- [Lazy](#lazy)  
-- [Tie Breaker](#tie-breaker)  
-- [Bait](#bait)  
-- [Lovers](#lovers)  
-- [Blind](#blind)  
-- [Mini](#mini)  
-- [VIP](#vip)  
-- [Drunk](#drunk)  
-- [Chameleon](#chameleon)  
-- [Lucky](#lucky)  
-- [Lighter](#lighter)  
 
 </details>
 
 <details>
-<summary><strong>Abilities</strong></summary>
+<summary><strong>Universal Killing Modifiers</strong></summary>
 
-- [Paranoid](#paranoid)  
-- [Coward](#coward)  
+- [Ruthless](#ruthless)  
 
 </details>
 
-The [Role Assignment](#role-assignment) section explains how the roles are being distributed among the players.
-If you want to learn how the new killers work, go to [Neutral Killers guide](#neutral-killers) to see it.
+<details>
+<summary><strong>Alignment Modifiers</strong></summary>
 
-# Releases  
-| Among Us - Version| Town of Sushi Version | Link |
+- [Lovers](#lovers)
+
+</details>
+
+-----------------------
+# Releases
+| Among Us - Version| Mod Version | Link |
 |----------|-------------|-----------------|
-| V2024.10.29s & V2024.10.29e | v1.0.5 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/v1.0.1/T0S.v1.0.5.zip) |
-| V2024.10.29s & V2024.10.29e | v1.0.2 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/v1.0.2/TOS.v1.0.2.zip) |
-| V2024.10.29s & V2024.10.29e | v1.0.1 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/v1.0.1/TOS.v1.0.1.zip) |
-| V2024.10.29s & V2024.10.29e | v1.0.0 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/v1.0.0/TOS.v3.0.0.zip) |
+| v2025.17.1.0s & v2025.17.1.0e | v1.0.5 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/1.0.5/TOS.v1.0.5.zip) |
+| v2025.17.0.1s & v2025.17.0.1e | v1.0.2 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/1.0.2/TOS.v1.0.2.zip) |
+| v2025.17.0.1s & v2025.17.0.1e | v1.0.1 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/1.0.1/TOS.v1.0.1.zip) |
+| v2025.17.0.1s & v2025.17.0.1e  | v1.0.0 | [Download](https://github.com/itsjesushx/TownOfSushi/releases/download/1.0.0/TOS.v3.0.0.zip) |
 
 -----------------------
-  
 # Installation
+## Requirements
+- Among Us
+- Steam or Epic Games
 
-## Windows Installation Steam
-1. Download the newest [release](https://github.com/itsjesushx/TownOfSushi/releases/latest)
-2. Find the folder of your game. You can right click on the game in your library, a menu will appear, click on properties, local data, browse
-3. Go back one folder to common and make a copy of your Among Us game folder and paste it somewhere on the same drive.
-4. Now unzip and drag or extract the files from the .zip into your Among Us game folder that you just copied, at the `.exe` level (just into the folder).
-5. Run the game by starting the .exe from this folder (the first launch might take a while).
+## Steam Guide
+**1. [Download](#releases) the Town of Sushi version corresponding to the installed Among Us version.**\
+\
+**2. Go to your Steam library.**\
+\
+**3. Right-click Among Us > click `Manage` > click `Browse local files`.**\
+\
+**4. In the File Explorer, delete the entire `Among Us` folder.**\
+\
+**5. Go back to your Steam library.**\
+\
+**6. Right-Click Among Us > click `Properties...` > click `LOCAL FILES`.**\
+\
+**7. Click on `VERIFY INTEGRITY OF GAME FILES...`.**\
+\
+**8. Wait for Steam to download a clean version of Among Us.**\
+\
+**9. Duplicate the new Among Us Folder.**\
+\
+**10. Rename it to `Among Us - ToS`.**\
+\
+**11. Double-click on the zip file you downloaded.**\
+\
+**12. Drag all the files from the zip file in the new ToS folder.**\
+\
+**13. Finally, launch `Among Us.exe` from that folder.**\
+\
+A first launch may take up to 5 minutes, so be patient if it doesn't launch immediately.<br/>
+<br/>
+If the mod does not work and the version of Among Us that you see in the main menu, under the Town of Sushi logo, does not correspond to the version indicated in the [releases table](#releases) above please do the following to get the correct version:
 
-Not working? You might want to install the dependency [vc_redist](https://aka.ms/vs/16/release/vc_redist.x86.exe)
+**1. Go to Among Us in your Steam library**\
+\
+**2. Click the gears icon or right click among us and then go into properties**\
+\
+**3. Go to betas and select "public-previous" in the drop box**\
+\
+**4. Reinstall the game and redo the mod installation, recreate your copy of the game if necessary**
 
-## Windows Installation Epic
-1. Download the newest [release](https://github.com/itsjesushx/TownOfSushi/releases/latest)
-2. Find the folder of your game. Should be stored in "Epic/AmongUs" (wherever you installed Epic on your PC)
-3. Now unzip and drag or extract the files from the .zip into the original Epic Among Us game folder.
-4. Run the game by starting the game in your Epic Games launcher (the first launch might take a while).
+## Epic Games Guide
+**1. [Download](#releases) the Town of Sushi version corresponding to the installed Among Us version.**\
+\
+**2. Go to your Epic Games library.**\
+\
+**3. Find Among Us and click on the 3 dots `...` > click `Uninstall`.**\
+\
+**4. Confirm you want to Uninstall Among Us.**\
+\
+**5. In the Epic library, click on Among Us to install.**\
+\
+**6. Copy the Folder Path.**\
+\
+**7. Uncheck Auto-Update.**\
+\
+**8. Click on Install.**\
+\
+**9. Click Yes on the Windows popup.**\
+\
+**10. Paste the folder path in Windows search bar.**\
+\
+**11. Click on Enter.**\
+\
+**12. Copy or move the contents of the Town of Sushi zip file into the AmongUs folder.**\
+\
+**13. Finally, launch Among Us from Epic Games library.**\
+\
+A first launch may take up to 5 minutes, so be patient if it doesn't launch immediately.<br/>
+<br/>
 
-## Linux Installation
-1. Install Among Us via Steam
-2. Download newest [release](https://github.com/itsjesushx/TownOfSushi/releases/latest) and extract it to ~/.steam/steam/steamapps/common/Among Us
-3. Enable winhttp.dll via the proton winecfg (https://docs.bepinex.dev/articles/advanced/proton_wine.html)
-4. Launch the game via Steam
+If the mod does not work and the version of Among Us that you see in the main menu, under the Town of Sushi logo, does not correspond to the version indicated in the [releases table](#releases) above please do the following to get the correct version:
 
-# Credits & Resources
-**Thanks to [TheOtherRoles](https://github.com/TheOtherRolesAU/TheOtherRoles) for providing the orginal codebase!**
-[MyDragonBreath's AmongUs MultiClientInstancing](https://github.com/myDragonBreath/AmongUs.MultiClientInstancing) - for TownOfSushi Debugger.
-[Reactor](https://github.com/NuclearPowered/Reactor) - The framework used.\
-[BepInEx](https://github.com/BepInEx) - Used to hook to game functions.\
-[StellarRoles](https://github.com/mr-fluuff/StellarRolesAU) - code snippets for the MinerVent class.\
-[Among-Us-Love-Couple-Mod](https://github.com/Woodi-dev/Among-Us-Love-Couple-Mod) - Idea for the Lovers modifier came from **Woodi-dev**\
-[Jester](https://github.com/Maartii/Jester) - Idea for the Jester role came from **Maartii**\
-[ExtraRolesAmongUs](https://github.com/NotHunter101/ExtraRolesAmongUs) - Idea for the Engineer and Medic role came from **NotHunter101**. Also some code snippets from their implementation were used.\
-[Among-Us-Sheriff-Mod](https://github.com/Woodi-dev/Among-Us-Sheriff-Mod) - Idea for the Sheriff role came from **Woodi-dev**\
-[TooManyRolesMods](https://github.com/Hardel-DW/TooManyRolesMods) - Idea for the Detective and Chronos roles came from **Hardel-DW**.\
-[TownOfUs](https://github.com/slushiegoose/Town-Of-Us) - Idea for the Arsonist and a similar Mayor role came from **Slushiegoose**\
-[Ottomated](https://twitter.com/ottomated_) - Idea for the Morphling and Painter role came from **Ottomated**\
-[Crowded-Mod](https://github.com/CrowdedMods/CrowdedMod) - Our implementation for 10+ player lobbies were inspired by the one from the **Crowded Mod Team**\
-[Goose-Goose-Duck](https://store.steampowered.com/app/1568590/Goose_Goose_Duck) - Idea for the Scavenger role came from **Slushiegoose**\
-[TheEpicRoles](https://github.com/LaicosVK/TheEpicRoles) - Idea for the first kill shield and the tabbed option menu, by **LaicosVK** **DasMonschta** **Nova**\
-[Brybry16](https://github.com/Brybry16/BetterPolus) - For the Better Polus Implementation.\
-[Town of Us-R](https://github.com/eDonnes124/Town-Of-Us-R) - Idea for the Veteran, Undertaker, Juggernaut, Plaguebearer & Pestilence, Glitch, Oracle, Predator and a similar Amnesiac role came from **eDonnes124**\
+**1. Download the latest downgrade script(DowngradeEpic.ps1) [here](https://github.com/whichtwix/EpicGamesDowngrader/releases/latest).**\
+\
+**2. Right click the file and click "run with powershell". If it does not open or instantly closes do the following:**\
+    - search powershell in your windows search bar and open it <br>
+    - navigate to the folder the script is in, by doing for example ```cd downloads``` or ```cd desktop``` <br>
+    - write ```Set-ExecutionPolicy Unrestricted -Scope Process``` and click enter <br>
+    - write ```./DowngradeEpic.ps1``` and click enter <br>
+\
+**3. Click the y key the couple times it prompts, and look above the prompt at the 'install path' to see where among us is getting installed.**\
+\
+**4. After its finished reinstall the mod to that path**\
+\
+**5. Open the game using a .cmd file that gets created in the same folder the script is, it will have the version of among us in its name. Do not use the epic launcher.**\
+\
+If there any problems with the script please check the [faq](https://github.com/whichtwix/EpicGamesDowngrader/tree/main#common-issues), and make contact with the discord server or in a issue [here](https://github.com/whichtwix/EpicGamesDowngrader/issues/new).<br/>
+<br/>
 
-# Mod Features
-The mod adds a few new settings to Among Us (in addition to the role settings) mostly Quality of Life:
-- **Any Player Can Stop The Start:** If turned off, only the host can stop the game start. If on, all players can do it. Non-hosts stopping the start will send a chat message indicating who stopped it.
-- **Number of Crewmates:** The number of Crewmate roles can be set inside a lobby.
-- **Number of Neutral Benigns:** The number of Neutral Benign roles can be set inside a lobby.
-- **Number of Neutral Evils:** The number of Neutral Evil roles can be set inside a lobby.
-- **Number of Neutral Killers:** The number of Neutral Killing roles can be set inside a lobby.
-- **Number of Impostors:** The number of Impostor roles can be set inside a lobby.
-- **Number of Modifiers:** The number of Modifiers can be set inside a lobby.
-- **Number of Abilities:** The number of Abilities can be set inside a lobby.
-- **Map:** The map can be changed inside a lobby.
-- **Maximum Number Of Meetings:** You can set the maximum number of meetings that can be called in total (Every player still has personal maximum of buttons, but if the maximum number of meetings is reached you can't use your meetings even if you have some left. Impostor meetings also count).
-- **Allow Skips On Emergency Meetings:** If set to false, there will not be a skip button in emergency meetings. If a player does not vote, they'll vote themself.
-- **Hide Player Names:** Hides the names of all players that have role which is unknown to you. Team Lovers/Impostors still see the names of their teammates. Impostors can also see the name of the Spy.
-- **Allow Parallel MedBay Scans:** Allows players to perform their MedBay scans at the same time.
-- **Shield Last Game First Kill** The first killed player of the previous round will be shielded for all players visible until the first meeting.
-- **Finish Tasks Before Haunting Or Zooming Out ** The zoom out function as well as haunting will be hidden for the player until all their tasks are finished
-- **Disable MedbayWalk Animation:** Disables the visual walk that a player makes when they start to walk to the scanner.
-- **Enable Better Polus Features:** Using better polus plugin, but its built inside the mod.
-- **Admin Table Shows Dead Bodies**
-- **Cams Switch To Night Vision If Lights Are Off**  No colors and cosmetics can be seen on the cameras when the lights are off. Mini can be spottet!
-- **Limit Player Abilities When 2 Players Are Left Alive** If enabled, when players (usually last killers) are in a 1v1, they won't be able to report bodies, call meetings, sabotage (if impostors) or use vents.
-- **Game Start Cooldowns** Changes everyone's cooldown at the start of each game.
-- **Impostor Vision Ignores Night Vision Cams**
-- **Play On A Random Map** If enabled it allows you to set percentages for each current map, except ehT dlekS. 
-- **Ghosts Can See Everything.** If enabled it allows ghosts to see everyone's Roles, Modifiers & Abilities.
-- **Ghosts Can See Votes.**
-- **Ghosts See Tasks And Other Info** Other Info: Things like who is cursed, cuffed etc. but also the medic shield, flashes, engineer fix etc.
-- **The map is accessable during a meeting and will show your last location when a body gets reported/meeting gets called.**
-- **When you're a ghost and done with tasks, you'll get a zoom out/overview function.**
-- **Task Counts:** You are now able to select more tasks.
-- **Enable Random Player Spawns:** You will have a random spawn after every meeting/when the game starts.
-- **Show Role Summary:** When a game ends there will be a list of all players, their roles, their task progression and how many player a killer killed.
-- **Darker/Lighter:** Displays color type of each player in meetings.
-- **Enable Random Player Spawns** 
-- **Disable Medbay Scan Walk**  If enabled players won't have the walk animation when doing the scan task in medbay.
-- **Show The Settings In-Game** You can use the button located under the map button or the F1-key to open or close the display of the lobby settings
-- **Pets are hidden once you die** When you are killed, your pets are automatically destroyed. This is to prevent players from knowing if a body was cleaned/eaten or dragged.
+![Install](https://i.imgur.com/pvBAyZN.png)
+<br/>
+## Issues
+If you have issues installing Town of Sushi, you can join our [Discord](https://discord.com/GET7TafkcR) to receive help.
 
-### Task Count Limits per map
-You can configure:
-- Up to 4 common tasks
-- Up to 23 short tasks
-- Up to 15 long tasks
+# Uninstallation
 
-Please note, that if the configured option exceeds the available number of tasks of a map, the tasks will be limited to that number of tasks. \
-Example: If you configure 4 common tasks on Airship crewmates will only receive 2 common tasks, as airship doesn't offer more than 2 common tasks.
+Delete these files and you're good to go!
+
+![image](https://user-images.githubusercontent.com/56699741/201765022-a784c89f-23c7-448f-9ca2-6359fbaecb24.png)
+
 -----------------------
-
-### Random Maps
-**Play On A Random Map** If enabled it allows you to set percentages for each current map.
-
-**Finish Tasks Before Haunting Or Zooming Out** You have to finish your tasks before you get the possibility to zoom out.
-
-**Use Random Map Setting Presets:** When this option is turned on, the game will switch to the `Random Preset <MapName>` when a game is started on a random map. **This includes vanilla options!**. This makes it possible to e.g. play with less tasks on large maps like Airship.
-The game will **remain** in the preset for that random map after the match.
-
-The random map presets can still be used like normal presets, if you **turn of** `Play On A Random Map` (make sure you do this in all presets you are using).
-
-
-# Custom Hats
-## Create and submit new hat designs
-We're awaiting your creative hat designs and we'll integrate all the good ones in our mod.
-Here are a few instructions, on how to create a custom hat:
-
-- **Creation:** A hat consists of up to three textures. The aspect ratio of the textures has to be `4:5`, we recommend `300px:375px`:
-  - `Main texture (required)`:
-    - This is the main texture of your hat. It will usually be rendered in front of the player, if you set the `behind` parameter it will be rendered behind the player.
-    - The name of the texture needs to follow the pattern *hatname.png*, but you can also set some additional parameters in the file name by adding `_parametername` to the file name (before the *.png*).
-    - Parameter `bounce`: This parameter determines whether the hat will bounce while you're walking or not.
-    - Parameter `adaptive`: If this parameter is set, the Among Us coloring shader will be applied (the shader that replaces some colors with the colors that your character is wearing in the game). The color red (#ff0000) will be replaced with the primary color of your player and the color blue (#0000ff) with the secondary color. Also other colors will be affected and changed, you can have a look at the texture of the [Crewmate Hat](https://static.wikia.nocookie.net/among-us-wiki/images/e/e0/Crewmate_hat.png) to see how this feature should be used.
-    - Parameter `behind`: If this parameter is set, the main texture will be rendered behind the player.
-  - `Flipped texture (optional)`:
-    - This texture will be rendered instead of the Main texture, when facing the left.
-    - The name of the texture needs to follow the pattern `hatname_flip.png`.
-  - `Back texture (optional)`:
-    - This texture will be rendered behind the player.
-    - The name of the texture needs to follow the pattern `hatname_back.png`.
-  - `Flipped Back texture (optional)`:
-    - This texture will be rendered instead of the Back texture, when facing the left.
-    - The name of the texture needs to follow the pattern `hatname_back_flip.png`.
-  - `Climb texture (optional)`:
-    - This texture will be rendered in front of the player, when they're climbing.
-    - The name of the texture needs to follow the pattern `hatname_climb.png`.
-- **Testing:** You can test your hat design by putting all the files in the `\SushiAssets\Test` subfolder of your mod folder. Then whenever you start a Freeplay game, you and all the dummies will be wearing the new hat. You don't need to restart Among Us if you change the hat files, just exit and reenter the Freeplay mode.
-
-# Colors
-Note: Lighter and Darker colors are assigned alternatingly, s.t. they are always balanced in a lobby.
-
 # Roles
-
-## Role Assignment
-
-First you need to choose how many special roles of each kind (Impostor/Neutral/Crewmate) you want in the game.
-The count you set will only be reached, if there are enough Crewmates/Impostors in the game and if enough roles are set to be in the game (i.e. they are set to > 0%). The roles are then being distributed as follows:
-- First all roles that are set to 100% are being assigned to arbitrary players.
-- After that each role that has 10%-90% selected adds 1-9 tickets to a ticket pool (there exists a ticket pool for Crewmates, Neutrals and Impostors). Then the roles will be selected randomly from the pools as long it's possible (until the selected number is reached, until there are no more Crewmates/Impostors or until there are no more tickets). If a role is selected from the pool, obviously all the tickets of that role are being removed.
-- The Lovers are being selected independently (without using the ticket system) according to the spawn chance you selected. After that the Crewmate, Neutral and Impostor roles are selected and assigned in a random order.
-**Example:**\
-Settings: 2 special Crewmate roles, Crusader: 100%, Hacker: 10%, Tracker: 30%\
-Result: Crusader is assigned, then one role out of the pool [Hacker, Tracker, Tracker, Tracker] is being selected\
-Note: Changing the settings to Hacker: 20%, Tracker: 60% would statistically result in the same outcome .
-
-
-## Morphling
-### **Faction: Impostors**
-The Morphling is an Impostor which can additionally scan the appearance of a player.\
-After an arbitrary time they can take on that appearance for a set duration which can be changed in the options.\
-\
-**NOTE:**
-- They shrink to the size of the Mini when they copy its look.
-- The Hacker sees the new color on the admin table.
-- The color of the footprints changes accordingly (also the ones that were already on the ground).
-- The other Impostor still sees that they are an Impostor (the name remains red).
-- The shield indicator changes accordingly (the Morphling gains or loses the shield indicator).
-- Tracker arrows keep working.
+# Crewmate Roles
+## Inspector
+### **Team: Crewmates**
+The Inspector can inspect bodies and then examine players.\
+The Inspector must first find a body and inspect it.\
+During the same or following rounds the Inspector can then examine players to see if they were the killer.\
+If the examined player is the killer they will receive a red flash, else the flash will be green.\
+If the killer of the inspected player dies, the following round the examine button will disable indicating to the Inspector the killer is dead.
 
 ### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Morphling Spawn Chance | -
-| Morphling Cooldown | -
-| Morph Duration | Time the Morphling stays morphed
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Inspector Chance | The percentage probability of the Inspector appearing | Percentage | 0% |
+| Examine Cooldown | The cooldown of the Inspector's Examine button | Time | 25s |
+| Show Inspector Reports | Whether the Inspector should get information when reporting a body | Toggle | True |
+| Time Where Inspector Reports Will Have Role | If a body has been dead for shorter than this amount, the Inspector's report will contain the killer's role | Time | 15s |
+| Time Where Inspector Reports Will Have Faction | If a body has been dead for shorter than this amount, the Inspector's report will contain the killer's faction | Time | 30s |
+| Can Detect Last Killer | Whether the Inspector can also detect the last player who killed (resets on round start) | Toggle | False |
+
 -----------------------
+## Lookout
+### **Team: Crewmates**
 
-## Painter
-### **Faction: Impostors**
-The Painter is an Impostor which can additionally activate a paint mode.\
-The paint mode lasts for a set amount of time and while it is active, all player names/pets/hats\
-are hidden and all players have the random colors.\
-\
-**NOTE:**
-- The Mini will look like all the other players
-- The Giant will look like all the other players
-- The color of the footprints turns gray (also the ones that were already on the ground).
-- The Hacker sees gray icons on the admin table
-- The shield is not visible anymore
-- Tracker arrows keep working
-
+The Lookout is a Crewmate that can watch other players during rounds.\
+They can see any movement the player does, even venting. They cannot see if the player is doing a task or not.
 ### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Painter Spawn Chance | -
-| Painter Cooldown | -
-| Paint Duration | Time players stay painted
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Lookout | The percentage probability of the Lookout appearing | Percentage | 0% |
+| Watch Cooldown | The cooldown on the Lookout's Watch button | Time | 25s |
+| Watch Duration | The time Lookout lasts watching a player | Time | 5s |
+
 -----------------------
-
-## Viper
-### **Faction: Impostors**
-The Viper is an Impostor, that can bite other player. Poisoned players die after a configurable amount of time\
-The Viper can also place blind traps in the map, if a player steps on them, they can't use Vent or report buttons (Clicking a body even if you are blind won't work either) and won't see anything.\
-\
-**NOTE:**
-- If a poisoned player is still alive when a meeting is being called, they die at the start of the meeting.
-- The Cooldown is the same as the default kill Cooldown (+ the kill delay if the Viper bites the target).
-- If there is a Viper in the game, there can't be a Warlock.
-- If the Viper bites a player and gets killed before the bite is performed, the biten player will survive.
-
+## Mystic
+### **Team: Crewmates**
+The Mystic is a Crewmate that gets an alert revealing when someone has died.\
+On top of this, the Mystic briefly gets an arrow pointing in the direction of the body.\
+The Mystic can also examine other players for suspicious behaviour.\
+If the player the Mystic examines has killed recently the Mystic will be alerted about it.
 ### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Viper Spawn Chance | -
-| Viper Kill Delay | -
-| Viper Cooldown | Sets the kill/bite Cooldown
-| Blind Cooldown | -
-| Blind Duration | -
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Mystic | The percentage probability of the Mystic appearing | Percentage | 0% |
+| Arrow Duration | The duration of the arrows pointing to the bodies | Time | 0.1s |
+| Initial Examine Cooldown | The initial cooldown of the Mystic's Examine button | Time | 25s |
+| Examine Cooldown | The cooldown of the Mystic's Examine button | Time | 10s |
+| Bloody Duration | How long players remain bloody after a kill | Time | 25s |
+| Show Mystic Reports | Whether the Mystic should get information when reporting a body | Toggle | True |
+| Time Where Mystic Reports Will Have Role | If a body has been dead for shorter than this amount, the Mystic's report will contain the killer's role | Time | 15s |
+| Time Where Mystic Reports Will Have Faction | If a body has been dead for shorter than this amount, the Mystic's report will contain the killer's faction | Time | 30s |
+
 -----------------------
-
-## Trickster
-### **Faction: Impostors**
-The Trickster is an Impostor that can place 3 jack-in-the-boxes that are invisible at first to other players.\
-If the Trickster has placed all of their boxes they will be converted into a vent network usable only by the Trickster themself, but the boxes are revealed to the others.\
-If the boxes are converted to a vent network, the Trickster gains a new ability "Lights out" to limit the visibility of Non-Impostors, that cannot be fixed by other players. Lights are automatically restored after a while.\
-\
-**NOTE:**
-- Impostors will get a text indicator at the bottom of the screen to notify them if the lights are out due to the Trickster ability, as there is no sabotage arrows or task to sabotage text to otherwise notify them about it.
-
+## Oracle
+### **Team: Crewmates**
+The Oracle is a Crewmate that can get another player to confess information to them.\
+The Oracle has 2 abilities, the first is that when they die, the person confessin to them will reveal their alignment.\
+The second, is that every meeting the Oracle receives a confession about who might be evil.\
 ### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Trickster Spawn Chance | -
-| Trickster Box Cooldown | Cooldown for placing jack-in-the-boxes
-| Trickster Lights Out Cooldown | Cooldown for their "lights out" ability
-| Trickster Lights Out Duration | Duration after which the light is automatically restored
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Oracle | The percentage probability of the Oracle appearing | Percentage | 0% |
+| Confess Cooldown | The Cooldown of the Oracle's Confess button | Time | 25s |
+| Reveal Accuracy | The percentage probability of the Oracle's confessed player telling the truth | Percentage | 80% |
+| Neutral Benign show up as Evil | Neutral Benign roles show up as Evil | Toggle | False |
+| Neutral Evil show up as Evil | Neutral Evil roles show up as Evil | Toggle | False |
+| Neutral Killing show up as Evil | Neutral Killing roles show up as Evil | Toggle | True |
+
 -----------------------
-
-## Janitor
-### **Faction: Impostors**
-The Janitor is an Impostor who has the ability to clean up dead bodies.\
-\
-**NOTE:**
-- The Kill and Clean Cooldown are shared, preventing them from immediately cleaning their own kills.
-- If there is a Janitor in the game, there can't be a Scavenger.
-
+## Seer
+### **Team: Crewmates**
+The Seer is a Crewmate that can reveal the alliance of other players.\
+Based on settings, the Seer can find out whether a player is a Good or an Evil role.\
+A player's name will change color depending on faction and role.
 ### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Janitor Spawn Chance | -
-| Janitor Cooldown | Cooldown for cleaning dead bodies
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Seer | The percentage probability of the Seer appearing | Percentage | 0% |
+| Seer Cooldown | The Cooldown of the Seer's Reveal button | Time | 25s |
+| Crewmate Killing Roles Are Red | Crewmate Killing roles show up as Red | Toggle | False |
+| Neutral Benign Roles Are Red | Neutral Benign roles show up as Red | Toggle | False |
+| Neutral Evil Roles Are Red | Neutral Evil roles show up as Red | Toggle | False |
+| Neutral Killing Roles Are Red | Neutral Killing roles show up as Red | Toggle | True |
 -----------------------
 
-## Warlock
-### **Faction: Impostors**
-The Warlock is an Impostor, that can curse another player (the cursed player doesn't get notified).\
-If the cursed person stands next to another player, the Warlock is able to kill that player (no matter how far away they are).\
-Performing a kill with the help of a cursed player, will lift the curse and it will result in the Warlock being unable to move for a configurable amount of time.\
-The Warlock can still perform normal kills, but the two buttons share the same Cooldown.\
-\
-**NOTE:**
-- The Warlock can always kill their Impostor mates (and even themself) using the "cursed kill"
-- If there is a Warlock in the game, there can't be a Viper
-- Performing a normal kill, doesn't lift the curse
-
+## Analyzer
+### **Team: Crewmates**
+The Analyzer is a Crewmate that can reveal the faction of two players.\
+The Analyzer will get notified in chat once a meeting starts if the targets have the same faction or not.\
+The Analyzer will also see a green Y next to the targets names if they have the same faction, else it will show a red X.\
+After the Analyzer reveals the faction of the two players, they can not try to change their targets until next meeting.
 ### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Warlock Spawn Chance | -
-| Warlock Cooldown | Cooldown for using the Curse and curse Kill
-| Warlock Root Time | Time the Warlock is rooted in place after killing using the curse
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Analyzer | The percentage probability of the Analyzer appearing | Percentage | 0% |
+| Analyzer Cooldown | The Cooldown of the Analyzer's Reveal button | Time | 25s |
 -----------------------
+## Trapper
+### **Team: Crewmates**
 
-## Bounty Hunter
-### **Faction: Impostors**
-The Bounty Hunter is an Impostor, that continuously get bounties (the targeted player doesn't get notified).\
-The target of the Bounty Hunter swaps after every meeting and after a configurable amount of time.\
-If the Bounty Hunter kills their target, their kill Cooldown will be a lot less than usual.\
-Killing a player that's not their current target results in an increased kill Cooldown.\
-Depending on the options, there'll be an arrow pointing towards the current target.\
-\
-**NOTE:**
-- The target won't be an Impostor, a Spy or the Bounty Hunter's Lover.
-- Killing the target resets the timer and a new target will be selected.
-
+The Trapper is a Crewmate that can place traps around the map.\
+When players enter a trap they trigger the trap.\
+In the following meeting, all players who triggered a trap will have their role displayed to the trapper.\
+However, this is done so in a random order, not stating who entered the trap, nor what role a specific player is.
 ### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Bounty Hunter Spawn Chance | -
-| Duration After Which Bounty Changes | -
-| Cooldown After Killing Bounty | -
-| Additional Cooldown After Killing Others | Time will be added to the normal impostor Cooldown if the Bounty Hunter kills a not-bounty player
-| Show Arrow Pointing Towards The Bounty | If set to true an arrow will appear (only visiable for the Bounty Hunter)
-| Bounty Hunter Arrow Update Interval | Sets how often the position is being updated
------------------------
-
-## Witch
-### **Faction: Impostors**
-The Witch is an Impostor who has the ability to cast a spell on other players.\
-During the next meeting, the spellbound player will be highlighted and they'll die right after the meeting.\
-There are multiple options listed down below with which you can configure to fit your taste.\
-Similar to the Viper, shields and blanks will be checked twice (at the end of casting the spell on the player and at the end of the meeting, when the spell will be activated).\
-This can result in players being marked as spelled during the meeting, but not dying in the end (when they get a shield or the Witch gets blanked after they were spelled by the Witch).\
-If the Witch dies before the meeting starts or if the Witch is being guessed during the meeting, the spellbound players will be highlighted but they'll survive in any case.\
-Depending on the options you can choose whether voting the Witch out will save all the spellbound players or not.\
-\
-**NOTE:**
-- The spellbound players will die before the voted player dies (which might trigger e.g. trigger an Impostor win condition, even if the Witch is the one being voted)
-
-### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Witch Spawn Chance | -
-| Witch Spell Casting Cooldown | -
-| Witch Additional Cooldown | The spell casting Cooldown will be increased by the amount you set here after each spell
-| Witch Can Spell Everyone | If set to false, the witch can't spell the Spy and other Impostors
-| Witch Spell Casting Duration | The time that you need to stay next to the target in order to cast a spell on it
-| Trigger Both Cooldowns | If set to true, casting a spell will also trigger Cooldown of the kill button and vice versa (but the two Cooldowns may vary)
-| Voting The Witch Saves All The Targets | If set to true, all the cursed targets will survive at the end of the meeting
------------------------
-
-## Grenadier
-### **Faction: Impostors**
-
-The Grenadier is an Impostor that can throw smoke grenades.\
-During the game, the Grenadier has the option to throw down a smoke grenade which blinds crewmates so they can't see.\
-The Spy, the Grenadier, other Impostors and dead people won't be affected by the grenades.
-
-### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Grenadier Spawn Chance | -
-| Flash Grenade Cooldown | -
-| Flash Grenade Duration | -
-| Flash Radius | How wide the flash radius is
------------------------
-
-## Assassin
-### **Faction: Impostors**
-The Assassin is an Impostor who has the ability to kill another player all over the map.\
-You can mark a player with your ability and by using the ability again, you jump to the position of the marked player and kill it.\
-Depending on the options you know where your marked player is.\
-If the Assassin uses its ability, it will leave a trace (leaves) for a configurable amount of time where it activated the ability and additionally where it killed the before marked player.\
-When performing a Assassin ability kill, the Assassin can be invisible for some seconds (depends on options)\
-\
-**NOTE:**
-- The Assassin has a 5 second Cooldown after marking a player
-- The trace has a darker (black) or lighter (white) color depending on the players color that will fade into green
-- The mark on the marked player will reset after a meeting or after using the ability to kill the marked player. Performing a normal kill will **NOT** reset the mark
-- If the Assassin tries to kill a shielded player (e.g. Medic shield, Shield last game first kill ), the kill will not be performed
-- If the marked target is on a different floor on Submerged, the arrow will always point to the elevator
-
-### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Assassin Spawn Chance | -
-| Assassin Mark Cooldown | -
-| Assassin Knows Location Of Target | -
-| Trace Duration | -
-| Time Till Trace Color Has Faded | -
-| Time The Assassin Is Invisible | -
------------------------
-
-## YoYo
-### **Faction: Impostors**
-The Yo-Yo is an Impostor who has the ability mark a position and later blink (teleport) to this position.\
-After the initial blink, the Yo-Yo has a fixed amount of time (option) to do whatever they want, before automatically blinking back to the starting point of the first blink.\
-Each blink leaves behind a silhouette with configurable transparency. The silhouette is very hard to see.\
-The Yo-Yo may also have access to a mobile admin table, depending on the settings.
-
-**NOTE:**
-
-- The marked position for the first jump's target is displayed to the Yo-Yo and ghosts only.
-- The silhouette of the first blink stays (almost) until the Yo-Yo returns
-- The silhouette of the second blink (return) stays for 5 seconds
-
-### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Yo-Yo Spawn Chance | -
-| Blink Duration | -
-| Mark Location Cooldown | -
-| Marked Location Stays After Meeting | -
-| Has Admin Table | -
-| Admin Table Cooldown | -
-| Silhouette Visibility | -
------------------------
-
-## Undertaker
-### **Faction: Impostors**
-
-The Undertaker is an Impostor that can drag and drop bodies.\
-They can vent while dragging bodies, the body will be visible on top of the vent the Undertaker is hidden on.
-
-### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Undertaker Spawn Chance | -
-| Undertaker Drag Cooldown | -
-| Undertaker Speed While Dragging | -
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Trapper | The percentage probability of the Trapper appearing | Percentage | 0% |
+| Min Amount of Time in Trap to Register | How long a player must stay in the trap for it to trigger | Time | 1s |
+| Trap Cooldown | The cooldown on the Trapper's trap button | Time | 25s |
+| Traps Removed Each Round | Whether the Trapper's traps are removed after each meeting | Toggle | True |
+| Maximum Number of Traps Per Game | The number of traps they can place in a game | Number | 5 |
+| Trap Size | The size of each trap | Factor | 0.25x |
+| Minimum Number of Roles required to Trigger Trap | The number of players that must enter the trap for it to be triggered | Number | 3 |
 
 -----------------------
-
-## Guesser
-### **Applied to: Everyone**
-The Guesser can be a Crewmate, Neutral Killer or an Impostor (depending on the settings).\
-The Guesser can shoot players during the meeting, by guessing its role. If the guess is wrong, the Guesser dies instead.\
-You can select how many players can be shot per game and if multiple players can be shot during a single meeting.\
-The guesses Impostor and Crewmate are only right, if the player is part of the corresponding team and has no special role.\
-You can only shoot during the voting time.\
-Depending on the options, the Guesser can't guess the shielded player and depending on the Medic options the Medic/shielded player might be notified (no one will die, independently of what the Guesser guessed).\
-\
-**NOTE:**
-- If a player gets shot, you'll get back your votes
-- Jester wins won't be triggered, if the Guesser shoots the Jester before the Jester gets voted out
-
-### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Number Of Crewmate Guessers | -
-| Number Of Impostor Guessers | -
-| Number Of Neutral Killer Guessers | -
-| Guesser Number Of Shots Per Game | -
-| Guesser Can Shoot Multiple Times Per Meeting |  -
-| Guesses Ignore The Medic Shield | -
-| Evil Guesser Can Guess The Spy | -
------------------------
-
-## Jester
-### **Faction: Neutral**
-### **Alignment: Neutral Evil**
-The Jester does not have any tasks. They win the game as a solo, if they get voted out during a meeting.
-
-### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Jester Spawn Chance | -
-| Jester Can Call Emergency Meeting | Option to disable the emergency button for the Jester
-|Jester Has Impostor Vision | -
-| Jester Can Hide In Vents | -
-| Jester Can Move In Vents | -
------------------------
-
-## Arsonist
-### **Faction: Neutral**
-### **Alignment: Neutral Evil**
-The Arsonist does not have any tasks, they have to win the game as a solo.\
-The Arsonist can douse other players by pressing the douse button and remaining next to the player for a few seconds.\
-If the player that the Arsonist douses walks out of range, the Cooldown will reset to 0.\
-After dousing everyone alive the Arsonist can ignite all the players which results in an Arsonist win.
-
-### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Arsonist Spawn Chance | -
-| Arsonist Cooldown | -
-| Arsonist Douse Duration | The time it takes to douse a player
------------------------
-
-## Neutral Killers
-The Neutral Killers enable multiple new outcomes of the game, listing some examples here:
-- The Impostors could be eliminated and then the crew plays against any Neutral Killer.
-- The Crew could be eliminated, then any alive Neutral Killer fight against the Impostors (or against another Neutral Killer, or a Crewmate Power role) (The Crew can still make a task win in this scenario)
-
-The priority of each Neutral Killer win condition is the following:
-1. Any Neutral Evil Win
-2. Team Impostor wins by sabotage
-3. Team Crew wins by tasks (also possible if the whole Crew is dead)
-4. Lovers among the last three players win
-5. Any Neutral Killer wins by outnumbering (When the Neutral Killer contains an equal or greater amount of players than the Crew and there are 0 Impostors left, and no other Neutral killers are alive and the same Neutral Killer contains no Lover)
-6. Team Impostor wins by outnumbering (When the team Impostors contains an equal or greater amount of players than the Crew and there are 0 Neutral Killers and team Impostors contains no Lover)
-7. Team Crew wins by outnumbering (When there is no player that is a Neutral Killer and the team Impostors left)
-
-**NOTE:**
-- The game will NOT end if one of these crewmate roles are alive with the last killers: Sheriff, Mayor, Veteran (with charges) or if a Crewmate Tiebreaker is alive.
-- The Neutral Killers may be killed by a Sheriff.
-- The Crew can still win, even if all of their members are dead, if they finish their tasks fast enough (That's why converting the last Crewmate with tasks left into a Recruit results in a task win for the crew.)
-
-If Impostors and multiple Neutral Killers are in the game, the game continues even if all Crewmates are dead. Crewmates may still win in this case by completing their tasks. Each Neutral Killer and Impostor have to kill each other.
-
------------------------
-## Juggernaut
-### **Faction: Neutral**
-### **Alignment: Neutral Killing**
-
-The Juggernaut is a Neutral role with its own win condition.\
-The Juggernaut's special ability is that their kill Cooldown reduces with each kill.\
-This means in theory the Juggernaut can have a 0 second kill Cooldown!\
-The Juggernaut needs to be the last killer alive to win the game.
-### Game Options
-| Name | Description
-|----------|:-------------:|
-| Juggernaut Spawn Chance  | -
-| Juggernaut Kill Cooldown | -
-| Reduced Kill Cooldown Per Kill | -
-| Juggernaut can Vent | Whether the Juggernaut can Vent | Yes / No
-
------------------------
-
-## Glitch
-### **Faction: Neutral**
-### **Alignment: Neutral Killing**
-
-Glitch is a Neutral role with its own win condition.\
-Glitch's aim is to kill everyone and be the last person standing.\
-Glitch can Hack players, resulting in them being unable to report bodies and do tasks.\
-Hacking prevents the hacked player from doing anything but walk around the map.\
-This role cannot spawn on Fungle.\
-Glitch can Mimic someone, which results in them looking exactly like the other person.
-
-### Game Options
-| Name | Description
-|----------|:-------------:|
-| Glitch Spawn Chance | -
-| Mimic Cooldown | -
-| Mimic Duration | -
-| Hack Cooldown | -
-| Hack Duration | -
-| Glitch Kill Cooldow | -
-| Glitch can Vent | Whether Glitch can Vent | Yes / No
-
------------------------
-
-## Werewolf
-### **Faction: Neutral**
-### **Alignment: Neutral Killing**
-
-The Werewolf can kill all players within a certain radius.
-
-### Game Options
-
-| Name | Description
-|------|-------------|
-| Werewolf Spawn Chance | -
-| Maul Cooldown | -
-| Maul Radius | How far must a player be to survive a Werewolf's attack  | -
-| Werewolf Can Vent | Toggles the Werewolf's ability to vent | Yes / No
------------------------
-
-## Predator
-### **Faction: Neutral**
-### **Alignment: Neutral Killing**
-
-The Predator is a Neutral role with its own win condition.\
-Although the Predator has a kill button, they can't use it unless they are stabbing.\
-Once the Predator rampages they gain Impostor vision and the ability to kill.\
-However, unlike most killers their kill Cooldown is really short.\
-The Predator needs to be the last killer alive to win the game.
-### Game Options
-| Name | Description 
-|----------|:-------------:|
-| Predator Spawn Chance | -
-| Terminate Cooldown | -
-| Terminate Duration | -
-| Terminate Kill Cooldown | -
-| Predator can Vent when Terminating | Yes / No
------------------------
-
-## Agent
-### **Team: Neutral (Killing) **
-The Agent is a Neutral role with its own win condition.\
-The Agent has tasks like the Crewmates but their tasks do not count for a task win.\
-After the Agent finishes its tasks, They automatically become a Hitman.\
-
-The Hitman is a Neutral role that depending on settings, may spawn naturally or spawns by an [Agent](#agent) becoming it.\
-The Hitman can Morph into players to disguise itself from others.\
-They can additionally drag bodies like the [Undertaker](#undertaker).\
-### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Agent Can Use Vents | -
-| Hitman Spawns Without Agent | -
-| Hitman Kill Cooldown | -
-| Morph Cooldown | -
-| Morph Duration | -
-| Hitman Can Use Vents | -
-| Hitman Drag Cooldown | -
-| Hitman Speed While Dragging | -
-
------------------------
-
-## Plaguebearer
-### **Faction: Neutral**
-### **Alignment: Neutral Killing**
-
-The Plaguebearer is a Neutral role with its own win condition, as well as an ability to transform into another role.\
-The Plaguebearer has one ability, which allows them to infect other players.\
-Once infected, the infected player can go and infect other players via interacting with them.\
-Once all players are infected, the Plaguebearer becomes Pestilence.\
-The Pestilence is a unkillable force which can only be killed by being voted out, even their lover dying won't kill them.\
-The Plaguebearer or Pestilence needs to be the last killer alive to win the game.
-### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Plaguebearer Spawn Chance | -
-| Infect Cooldown | -
-| Pestilence Kill Cooldown | -
-| Pestilence can Vent | Yes / No
-
------------------------
-
-## Scavenger
-### **Faction: Neutral**
-### **Alignment: Neutral Evil**
-The Scavenger does not have any tasks, they have to win the game as a solo.\
-The Scavenger is a neutral role that must eat a specified number of corpses (depending on the options) in order to win.\
-Depending on the options, when a player dies, the Scavenger gets an arrow pointing to the corpse.\
-If there is a Scavenger in the game, there can't be a Janitor.
-
-**NOTE**
-- If the corpse is on a different floor on Submerged, the arrow will always point to the elevator
-
-### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Scavenger Spawn Chance | -
-| Scavenger Eat Cooldown | -
-| Number Of Corpses Needed To Be Eaten | Corpes needed to be eaten to win the game
-| Scavenger Can Use Vents | -
-| Scavenge Cooldown | Cooldown for the Scavenger find bodies ability
-| Scavenge Duration | -
------------------------
-
-## Romantic
-### **Faction: Neutral**
-### **Alignment: Neutral Benign**
-The Romantic is a Neutral role which can select a player to be their beloved.\
-The romantic wins with the beloved as long as they win as well.
-
-### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Romantic Spawn Chance | - |
-| Pick Cooldown | - |
-
------------------------
-
-## Amnesiac
-### **Team: Neutral (Benign)**
-The Amnesiac is a Neutral role with no win condition.
-They have zero tasks and are essentially roleless.
-Once they remember their role, they go on to try win with their new win condition.
-They can remember a role by picking a player after the meeting ends. By clicking the player name.
-
-### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Amnesiac Spawn Chance | -
------------------------
-
-## Lawyer
-### **Faction: Neutral**
-### **Alignment: Neutral Evil**
-The Lawyer is a neutral role that has a client.
-The client might be an Impostor or Jackal which is no Lover.
-The Lawyer needs their client to win in order to win the game.
-If their client dies or gets voted out, the Lawyer changes their role and becomes a random role based on settings, which has a different goal to win the game.
-The main goal of the Lawyer is to win as Lawyer, as it is not allowed to betray their client.
-
-The Lawyer can win in multiple ways:
-- Lawyer dead, client alive and client team won: The Lawyer wins together with the team of the client
-- Lawyer and client alive and client team won: The Lawyer wins with the team of the client. The client **doesn't** win (even if their Impostor/Team Jackal mate wins), the Lawyer steals their win. Hence the client should keep the Lawyer alive for some time, to get some help during the meetings, but has to eliminate them soon enough to not get their win stolen.
-
-**NOTE:**
-- If the client disconnects, the Lawyer will also turn into the Pursuer
-- If "Lawyer Target Knows" is set to true, the client will know that someone is their Lawyer, but won't know who.
-
-### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Lawyer Target Knows | The target knows that it is the target (marked with "§", if the Lawyer dies, the mark will disappear)
-| Lawyer Wins After Meetings | If set to true, the Lawyer wins after a configurable amount of meetings (can't start meetings himself)
-| Lawyer Needed Meetings To Win | -
-| Lawyer Vision | -
-| Lawyer Target On Client Death | -
-| Lawyer Knows Target Role | -
------------------------
-
-## Executioner
-### **Faction: Neutral**
-### **Alignment: Neutral Evil**
-The Executioner is a neutral role that resembles the Lawyer. The Executioner has a client who is a Crewmate.\
-The Executioner needs their client to be voted out in order to win the game.\
-The Executioner's client doesn't know that they are their client.\
-If the client gets recruited, the Executioner changes their role and becomes a random role based on settings.\
-If the Executioner's client dies, the Executioner changes their role and becomes a random role based on settings, which have a different goal to win the game.
-
-**NOTE:**
-- If the client disconnects, the Executioner will also turn into the Survivor.
-- The Executioner needs to figure out the role of their client depending on the options.
-- The tasks only count, if the Executioner gets promoted to Survivor.
-- If the Executioner dies before their client, they will lose all their tasks and will get the overview immediately.
-
-### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Executioner Target On Target Death | -
-| Executioner Vision |
-| Executioner Knows Target Role | -
------------------------
-
------------------------
-## Survivor
-### **Faction: Neutral**
-### **Alignment: Neutral Benign**
-The Survivor is still a neutral role, but has a different goal to win the game; they have to be alive when the game ends.\
-In order to achieve this goal, the Survivor has an ability called "Blank", where they can fill a killer's (this also includes the Sheriff) weapon with a blank. So, if the killer attempts to kill someone, the killer will miss their target, and their Cooldowns will be triggered as usual.\
-If the killer fires the "Blank", shields (e.g. Medic shield) will not be triggered.\
-The Survivor has tasks (which can already be done while being a Lawyer/Executioner), that count towards the task win for the Crewmates. If the Survivor dies, their tasks won't be counted anymore.
-
-### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Survivor Blank Cooldown | -
------------------------
-
-## Mayor
-### **Faction: Crewmates**
-### **Alignment: Crew Power**
-The Mayor leads the Crewmates by having a vote that counts twice.\
-The Mayor can always use their meeting, even if the maximum number of meetings was reached.\
-The Mayor has a portable Meeting Button, depending on the options.\
-The Mayor can see the vote colors after completing a configurable amount of tasks, depending on the options.\
-The Mayor has the option to vote with only one vote instead of two (via a button in the meeting screen), depending on the settings.
-
-### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Mayor Spawn Chance | -
-| Mayor Can See Vote Colors | -
-| Completed Tasks Needed To See Vote Colors | -
-| Mobile Emergency Button | -
-| Mayor Can Choose Single Vote | Off, On (Before Voting), On (Until Meeting Ends)
------------------------
-
 ## Veteran
-### **Faction: Crewmates**
-### **Alignment: Crew Power**
+### **Team: Crewmates**
 
 The Veteran is a Crewmate that can go on alert.\
 When the Veteran is on alert, anyone, whether crew, neutral or impostor, if they interact with the Veteran, they die.
 ### Game Options
-| Name | Description
-|----------|:-------------:|
-| Veteran Spawn Chance | -
-| Alert Cooldown | -
-| Alert Duration | -
-| Starting Number of Alert Charges | -
-| Maximum Number of Tasks Needed To Recharge | -
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Veteran | The percentage probability of the Veteran appearing | Percentage | 0% |
+| Can Be Killed On Alert | Whether the Veteran dies when someone tries to kill them when they're on alert | Toggle | False |
+| Alert Cooldown | The cooldown on the Veteran's alert button. | Time | 5s |
+| Alert Duration | The duration of the alert | Time | 25s |
+| Maximum Number of Alerts | The number of times the Veteran can alert throughout the game | Number | 3 |
 
 -----------------------
+## Deptuy
+### **Team: Crewmates**
 
+The Deptuy is a Crewmate that can shoot players during meetings.\
+If the Deptuy shoots a non-killing role, they cant shoot again until the next meeting, if they shoot a killing role, they can shoot again next meeting.\
+After the Deputy misses one shot, they lose half of their vision, if they miss a second time, they suicide.\
+The Deptuy can only shoot once per meeting.
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Deptuy | The percentage probability of the Deptuy appearing | Percentage | 0% |
+| Maximum Number of Kills | The number of times the Deptuy can shoot | Number | 3 |
+
+-----------------------
+## Sheriff
+### **Team: Crewmates**
+
+The Sheriff is a Crewmate that can kill during rounds.\
+The Sheriff can kill people, if the person is bad, they die, if they are not, the Sheriff dies instead.
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Sheriff | The percentage probability of the Sheriff appearing | Percentage | 0% |
+| Sheriff Kill | The number of kill the Sheriff can do with his ability | Number | 1 |
+| Sheriff | The percentage probability of the Sheriff appearing | Percentage | 0% |
+| Sheriff Miskill Kills Crewmate | Whether the other player is killed if the Sheriff Misfires | Toggle | False |
+| Sheriff Kills Neutral Evil Roles | Whether the Sheriff is able to kill the Neutral Evil Roles | Toggle | False |
+| Sheriff Kills Neutral Benign Roles | Whether the Sheriff is able to kill the Neutral Benign Roles | Toggle | False |
+| Sheriff Kill Cooldown | The cooldown on the Sheriff's kill button | Time | 25s |
+| Sheriff can report who they've killed | Whether the Sheriff is able to report their own kills | Toggle | True |
+
+-----------------------
+## Hunter
+### **Team: Crewmates**
+
+The Hunter is a Crewmate Killing role with the ability to track players and execute them if they do anything suspicious.\ 
+Unlike the Sheriff, the Hunter does not die if they kill an innocent player,\
+however the Hunter may only execute players who have given them probable cause.
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Hunter | The percentage probability of the Hunter appearing | Percentage | 0% |
+| Hunter Kill Cooldown | The cooldown of the Hunter's Kill button | Number | 25s |
+| Hunter Stalk Cooldown | The cooldown of the Hunter's Stalk button | Number | 10s |
+| Hunter Stalk Duration | The duration of the Hunter's Stalk | Number | 25s |
+| Maximum Stalk Uses | Maximum number of times a Hunter can Stalk | Number | 5 |
+| Hunter Kills Last Voter If Voted Out |  Whether the Hunter kills the last person that votes them if they are voted out  | Toggle | False |
+| Hunter Can Report Who They've Killed |  Whether the Hunter is able to report their own kills | Toggle | True |
+
+-----------------------
+## Medic
+### **Team: Crewmates**
+The Medic is a Crewmate that can give any player a shield that will make them immortal until the Medic dies.\
+A Shielded player cannot be killed by anyone, unless by suicide.\
+If the Medic reports a dead body, they can get a report containing clues to the Killer's identity.\
+A report can contain the name of the killer or the color type (Darker/Lighter)
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Medic | The percentage probability of the Medic appearing | Percentage | 0% |
+| Show Shielded Player | Who should be able to see who is Shielded | Self / Medic / Self + Medic / Everyone | Self |
+| Show Medic Reports | Whether the Medic should get information when reporting a body | Toggle | True |
+| Time Where Medic Reports Will Have Name | If a body has been dead for shorter than this amount, the Medic's report will contain the killer's name | Time | 0s |
+| Time Where Medic Reports Will Have Color Type | If a body has been dead for shorter than this amount, the Medic's report will have the type of color | Time | 15s |
+| Who gets murder attempt indicator | Who will receive an indicator when someone tries to Kill them | Medic / Shielded / Everyone / Nobody | Medic |
+| Shield breaks on murder attempt | Whether the Shield breaks when someone attempts to Kill them | Toggle | False |
+
+-----------------------
 ## Crusader
-### **Faction: Crewmates**
-### **Alignment: Crew Protective**
-
+### **Team: Crewmates**
 The Crusader is a Crewmate that can fortify other players.\
 Fortified players cannot be interacted with.\
 If someone tries to interact with a fortified player,\
@@ -869,265 +485,40 @@ Both the Crusader and the interactor receive an alert.\
 If the Fortified person gets a kill attempt, they will kill the attemper.
 
 ### Game Options
-| Name | Description 
-|----------|:-------------:|
-| Crusader Spawn Chance | -
-| Fortify Cooldown | -
-| Initial Charges | -
-| Number Of Tasks Needed For Recharging | -
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Crusader | The percentage probability of the Crusader appearing | Percentage | 0% |
+| Show Fortify | Who sees the fortified player | Option | Crusader |
 -----------------------
 
-## Oracle
-### **Faction: Crewmates**
-### **Alignment: Crew Investigative**
-
-The Oracle is a Crewmate that can get another player to confess information to them.\
-The Oracle has 2 abilities, the first is that when they die, the person confessin to them will reveal their alignment.\
-The second, is that every meeting the Oracle receives a confession about who might be evil.\
-### Game Options
-| Name | Description
-|----------|:-------------:|
-| Oracle Spawn Chance | -
-| Confess Cooldown | -
-| Reveal Accuracy | -
-| Neutral Benign show up as Evil | -
-| Neutral Evil show up as Evil | -
-
------------------------
-
-## Monarch
-### **Faction: Crewmates**
-### **Alignment: Crew Support**
-The Monarch is a Crewmate that can Knight another players.\
-Knighted players will gain an extra vote in meetings.\
-Depending on the options, if the Monarch dies, all the Knighted players are removed.\
-### Game Options
-| Name | Description
-|----------|:-------------:|
-| Monarch Spawn Chance | -
-| Monarch Knight Cooldown | -
-| Remove Knights On Monarch Death | -
-
------------------------
-
-## Deputy
-### **Faction: Crewmates**
-### **Alignment: Crew Power**
-The Deputy is a Crewmate that can execute another player.\
-In meetings, they will have a target button similar to the guesser.\
-If they execute a killer, they live and the player dies, else deputy will die.
-Depending on options they may kill everyone or not.\
-
-**NOTE:**
-The Deputy cannot be a Guesser
-### Game Options
-| Name | Description
-|----------|:-------------:|
-| Deputy Spawn Chance | -
-| Initial Execute Charges | -
-| Deputy Ignores Shields | -
-| Deputy Recharge Task Number | -
-
------------------------
-
-## Landlord
-### **Faction: Crewmates**
-### **Alignment: Crew Support**
-The Landlord is a Crewmate that can change the locations of two random players at will.\
-Players who have been transported are alerted with a blue flash on their screen.\
-Additionally, the Landlord makes the players switch bodies, meaning any interaction (excluding killing) on the first player chosen to swap will be given to the second one, and vice versa.
+## Bodyguard
+### **Team: Crewmates**
+The Bodyguard is a Crewmate that can guard other players.\
+Bodyguarded players cannot be interacted with.\
+If someone tries to interact with a Bodyguarded player,\
+Both the Bodyguard and the interactor receive an alert.\
+If the Bodyguarded person gets a kill attempt, they will kill the Bodyguard instead.
 
 ### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Landlord Spawn Chance|-
-| Landlord Cooldown |-
-| Initial Charges | -
-| Number Of Tasks Needed For Recharging | -
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Bodyguard | The percentage probability of the Bodyguard appearing | Percentage | 0% |
+| Show Bodyguard | Who sees the Bodyguarded player | Option | Bodyguard |
 -----------------------
-
 
 ## Engineer
-### **Faction: Crewmates**
-### **Alignment: Crew Support**
-The Engineer (if alive) can fix a certain amount of sabotages per game from anywhere on the map.\
-The Engineer can use vents.\
-If the Engineer is inside a vent, depending on the options the members of the team Impostor or any Neutral Killer will see a blue outline around all vents on the map (in order to warn them).\
-
-**NOTE:**
-- The kill button of Impostors activates if they stand next to a vent where the Engineer is. They can also kill them there. No other action (e.g. Morphling sample ...) can affect players inside vents.
+### **Team: Crewmates**
+The Engineer is a Crewmate that can fix sabotages from anywhere on the map.\
+They can also use vents like the vanilla Engineer does.
 
 ### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Engineer Spawn Chance | -
-| Number Of Sabotage Fixes| -
-| Impostors See Vents Highlighted | -
-| Neutral Killers See Vents Highlighted | -
------------------------
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Engineer | The percentage probability of the Engineer appearing | Percentage | 0% |
+| Maximum Fixes | The number of times the Engineer can fix a sabotage | Number | 5 |
+| Maximum Time In Vent | The seconds the Engineer can stay in vents | Number | 10 |
+| Vent Cooldown | The seconds the Engineer has to wait until they can vent again | Number | 25 |
 
-## Sheriff
-### **Faction: Crewmates**
-### **Alignment: Crew Power**
-The Sheriff has the ability to kill Impostors or Neutral roles if enabled.\
-If they try to kill a Crewmate, they die instead.\
-\
-**NOTE:**
-- If the Sheriff shoots the person the Medic shielded, the Sheriff and the shielded person **both remain unharmed**.
-- If the Sheriff shoots a Mini Impostor while growing up, nothing happens. If it's fully grown, the Mini Impostor dies.
-
-### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Sheriff Spawn Chance | -
-| Sheriff Cooldown | -
-| Sheriff Can Kill Neutrals | -
------------------------
-
-## Detective
-### **Faction: Crewmates**
-### **Alignment: Crew Investigative**
-The Detective can see footprints that other players leave behind.\
-The Detective's other feature shows when they report a corpse: they receive clues about the killer's identity. The type of information they get is based on the time it took them to find the corpse.
-
-**NOTE:**
-- When people change their colors (because of a morph or paint), all the footprints also change their colors (also the ones that were already on the ground). If the effects are over, all footprints switch back to the original color.
-- The Detective does not see footprints of players that sit in vents
-- More information about the [colors](#colors)
-
-### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Detective Spawn Chance | -
-| Anonymous Footprints | If set to true, all footprints will have the same color. Otherwise they will have the color of the respective player.
-| Footprint Interval | The interval between two footprints
-| Footprint Duration | Sets how long the footprints remain visible.
-| Time Where Detective Reports Will Have Name | The amount of time that the Detective will have to report the body since death to get the killer's name.  |
-| Time Where Detective Reports Will Have Color Type| The amount of time that the Detective will have to report the body since death to get the killer's color type. |
------------------------
-
-## Chronos
-### **Faction: Crewmates**
-### **Alignment: Crew Support**
-The Chronos can rewind the time, making players go back the exact steps they walked but in reverse.\
-If a player was killed within the same amount of time the rewind lasts and if the options allows it the dead players will get revived.
-
-### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Chronos Spawn Chance | - |
-| Chronos Cooldown | - |
-| Rewind Duration | How much time to rewind |
-| Chronos Can Revive During Rewind |
------------------------
-
-## Medic
-### **Faction: Crewmates**
-### **Alignment: Crew Protective**
-The Medic can shield (highlighted by an outline around the player) one player per game, which makes the player unkillable.\ The shield is also shown in the meeting as brackets around the shielded player's name.
-The shielded player can still be voted out and might also be an Impostor.\
-If set in the options, the shielded player and/or the Medic will get a red flash on their screen if someone (Impostor, Sheriff, ...) tried to murder them.\
-If the Medic dies, the shield disappears with them.\
-The Sheriff will not die if they try to kill a shielded Crewmate and won't perform a kill if they try to kill a shielded Impostor.\
-Depending on the options, guesses from the Guesser will be blocked by the shield and the shielded player/medic might be notified.\
-The Medic's other feature shows when they report a corpse: they will see how long ago the player died.
-
-**NOTE:**
-- If the shielded player is a Lover and the other Lover dies, they nevertheless kill themselves.
-
-### Game Options
-| Name | Description | Options |
-|----------|:-------------:|:-------------:|
-| Medic Spawn Chance | - | -
-| Show Shielded Player | Sets who sees if a player has a shield | "Everyone", "Shielded + Medic", "Medic"
-| Shielded Player Sees Murder Attempt| Whether a shielded player sees if someone tries to kill them | True/false |
-| Shield Will Be Activated | Sets when the shield will be active | "Instantly", "Instantly, Visible After Meeting", "After Meeting"
-| Medic Sees Murder Attempt On Shielded Player | - | If anyone tries to harm the shielded player (Impostor, Sheriff, Guesser, ...), the Medic will see a red flash
------------------------
-
-## Snitch
-### **Faction: Crewmates**
-### **Alignment: Crew Investigative**
-The Snitch is a Crewmate role that has to finish tasks in order to get a special ability.\
-When they finish tasks, once per round, they get a button to track the killer, they will get an arrow pointing to them and the Snitch.\
-But there's a twist, the Snitch has a chance of finding the wrong killer.\
-\
-
-### Game Options
-| Name | Description
-|----------|:-------------:|
-| Snitch Spawn Chance | -
-| Snitch Can See Colored Names in meetings | -
-| Snitch Ability Cooldown | -
------------------------
-
-## Mystic
-### **Faction: Crewmates**
-### **Alignment: Crew Investigative**
-The Mystic has Multiple abilities (one can activate one of them or both in the options).\
-The Mystic sees the souls of players that died a round earlier, the souls slowly fade away.\
-The Mystic gets a blue flash on their screen, if a player dies somewhere on the map.\
-The Mystic can also interact with players to investigate about their role, once upon a meeting starts, the Mystic gets a list of possible roles their target can be.
-
-### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Mystic Spawn Chance | -
-| Mystic Mode | Options: Show death flash and souls, show death flash, show souls
-| Mystic Limit Soul Duration | Toggle if souls should turn invisible after a while
-| Mystic Soul Duration | Sets how long it will take the souls to turn invisible after a meeting
-| Starting Charges Amount | -
-| Investigate Cooldown | -
------------------------
-
-## Hacker
-### **Faction: Crewmates**
-### **Alignment: Crew Investigative**
-If the Hacker activates the "Hacker mode", the Hacker gets more information than others from the admin table and vitals for a set duration.\
-Otherwise they see the same information as everyone else.\
-**Admin table:** The Hacker can see the colors (or color types) of the players on the table.\
-**Vitals**: The Hacker can see how long dead players have been dead for.\
-The Hacker can access his mobile gadgets (vitals & admin table), with a maximum of charges (uses) and a configurable amount of tasks needed to recharge.\
-While accessing those mobile gadgets, the Hacker is not able to move.
-
-**NOTE:**
-- If the Morphling morphs or the Painter paints, the colors on the admin table change accordingly
-- More information about the [colors](#colors)
-
-### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Hacker Spawn Chance | -
-| Hacker Cooldown | -
-| Hacker Duration | Sets how long the "Hacker mode" remains active
-| Hacker Only Sees Color Type | Sets if the Hacker sees the player colors on the admin table or only white/gray (for Lighter and darker colors)
-| Max Mobile Gadget Charges | -
-| Number Of Tasks Needed For Recharging | Number of tasks to get a charge
-| Can't Move During Cam Duration | -
------------------------
-
-## Tracker
-### **Faction: Crewmates**
-### **Alignment: Crew Investigative**
-The Tracker can select one player to track. Depending on the options the Tracker can track a different person after each meeting or the Tracker tracks the same person for the whole game.\
-An arrow points to the last tracked position of the player.\
-The arrow updates its position every few seconds (configurable).\
-By an option, the arrow can be replaced or combined with the Proximity Tracker from Hide N Seek.\
-Depending on the options, the Tracker has another ability: They can track all corpses on the map for a set amount of time. They will keep tracking corpses, even if they were cleaned or eaten by the Scavenger.
-
-**NOTE**
-- If the tracked player is on a different floor on Submerged, the arrow will always point to the elevator
-
-### Game Options
-| Name | Description
-|----------|:-------------:|
-| Tracker Spawn Chance | -
-| Tracker Update Interval | Sets how often the position is being updated
-| Tracker Reset Target After Meeting | -
-| Tracker Can Track Corpses | -
-| Corpses Tracking Cooldown | -
-| Corpses Tracking Duration | -
-| How Tracker Gets Target Location| -
 -----------------------
 
 ## Spy
@@ -1139,9 +530,7 @@ There are two possibilities (depending on the set options):
 - The Impostors can't kill the Spy (because otherwise their kill button would reveal, who the Spy is)
 - The Impostors can kill the Spy but they can also kill their Impostor partner (if they mistake another Impostor for the Spy)
 You can set whether the Sheriff can kill the Spy or not (in order to keep the lie alive).
-
-**NOTE:**
-- If the Spy gets recruited, it still will appear red to the Impostors.
+Impostors don't get the Impostor chat if there's a Spy in game.
 
 ### Game Options
 | Name | Description
@@ -1153,386 +542,911 @@ You can set whether the Sheriff can kill the Spy or not (in order to keep the li
 | Spy Has Impostor Vision | Give the Spy the same vision as the Impostors have
 -----------------------
 
-## Gatekeeper
-### **Faction: Crewmates**
-### **Alignment: Crew Support**
-The Gatekeeper is a Crewmate that can place two portals on the map.\
-These two portals are connected to each other.\
-Those portals will be visible after the next meeting and can be used by everyone.\
-Additionally to that, the Gatekeeper gets information about who used the portals and when in the chat during each meeting, depending on the options.\
-The Gatekeeper can teleport themself to their placed portals from anywhere if the setting is enabled.
-
-**NOTE:**
-- The extra button to use a portal will appear after the Gatekeeper set their portals and a meeting/body report was called.
-- While one player uses a portal, it is blocked for any other player until the player got teleported.
-- All ghosts can still use the portals, but won't block any living player from using it and the Gatekeeper won't get any information about it in chat.
-- If a morphed person uses a portal it will show the morphed name/color depending on the options.
-- If a paintd person uses a portal it will show "A comouflaged person used the portal."
+## Imitator
+### **Team: Crewmates**
+The Imitator is a Crewmate that can mimic dead crewamtes.\
+During meetings the Imitator can select who they are going to imitate the following round from the dead.\
+They can choose to use each dead players as many times as they wish.\
+It should be noted the Imitator can not imitate all crew roles.
 
 ### Game Options
-| Name | Description
-|----------|:-------------:|
-| Gatekeeper Spawn Chance | -
-| Gatekeeper Cooldown | -
-| Use Portal Cooldown | -
-| Gatekeeper Log Only Shows Color Type | -
-| Log Shows Time | -
-| Can Port To Portal From Everywhere | -
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Imitator | The percentage probability of the Imitator appearing | Percentage | 0% |
+
 -----------------------
-
-## Vigilante
-### **Faction: Crewmates**
-### **Alignment: Crew Support**
-The Vigilante is a Crewmate that has a certain number of screws that they can use for either sealing vents or for placing new cameras.\
-Placing a new camera and sealing vents takes a configurable amount of screws. The total number of screws that a Vigilante has can also be configured.\
-The new camera will be visible after the next meeting and accessible by everyone.\
-The vents will be sealed after the next meeting, players can't enter or exit sealed vents, but they can still "move to them" underground.
-
-**NOTE:**
-- Trickster boxes can't be sealed
-- The Vigilante can't place cameras on MiraHQ
-- The remaining number of screws can be seen above their special button.
-- On Skeld the four cameras will be replaced every 3 seconds (with the next four cameras). You can also navigate manually using the arrow keys
-- Vigilante can access mobile cameras after placing all screws
-- While accessing the mobile cameras, the Vigilante is not able to move
+## Medium
+### **Team: Crewmates**
+The Medium is a Crewmate that can see ghosts.\
+During each round the Medium has an ability called Mediate.\
+If the Medium uses this ability and no one is dead, nothing will happen.\
+However, if someone is dead, the Medium and the dead player will be able to see each other and communicate from beyond the grave!
 
 ### Game Options
-| Name | Description
-|----------|:-------------:|
-| Vigilante Spawn Chance |
-| Vigilante Cooldown |
-| Vigilante Number Of Screws | The number of screws that a Vigilante can use in a game
-| Number Of Screws Per Cam | The number of screws it takes to place a camera
-| Number Of Screws Per Vent | The number of screws it takes to seal a vent
-| Vigilante Duration | -
-| Gadget Max Charges | -
-| Number Of Tasks Needed For Recharging | -
-| Can't Move During Cam Duration | -
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Medium | The percentage probability of the Medium appearing | Percentage | 0% |
+| Mediate Cooldown | The cooldown of the Medium's Mediate button | Time | 10s |
+| Reveal Appearance of Mediate Target | Whether the Ghosts will show as themselves, or camouflaged | Toggle | True |
+| Reveal the Medium to the Mediate Target | Whether the ghosts can see that the Medium is the Medium | Toggle | True |
+| Medium Can Use Vitals| Whether the Medium can see Vitals | Toggle | False |
+| Who is Revealed | Which players are revealed to the Medium | Oldest Dead / Newest Dead / All Dead | Oldest Dead |
+
 -----------------------
 
-## Psychic
-### **Faction: Crewmates**
-### **Alignment: Crew Investigative**
-The psychic is a crewmate who can ask the souls of dead players for information. Like the Mystic, the psychic will see the souls of the players who have died (after the next meeting) and can question them. They then gets random information about the soul or the killer in the chat. The souls only stay for one round, i.e. until the next meeting. Depending on the options, the souls can only be questioned once and then disappear.
-\
-**Questions:**
-The souls will always prefer to answer with the role specific information first!
-
-**Role specific:**
-- Sheriff suicide: "Yikes, that Sheriff shot backfired."
-- Active Lover dies: "I wanted to get out of this toxic relationship anyways."
-- Passiv Lover suicide: "The love of my life died, thus with a kiss I die."
-- Lawyer client kills Lawyer: "My client killed me. Do I still get paid?"
-- Teamkill Impostor: "I guess they confused me for the Spy, is there even one?"
-- Submerged o2-Kill: "Do I really need that mask for breathing?"
-- Warlock self kill: "MAYBE I cursed the person next to me and killed myself. Oops."
-- Scavenger/Janitor eats/cleans body: "Is my dead body some kind of art now or... aaand it's gone."
-
-**Else random:**
-- "I'm not sure, but I guess a darker/lighter color killed me."
-- "If I counted correctly, then I died x seconds before the meeting started."
-- "If my role hasn't been saved, there's no (role) in the game anymore."
-- "It seems like my killer was the (role)."
-
-**Chance That The Answer Contains Additional Information:**
-- When you asked, x killer(s) was/were still alive.
-- When you asked, x player(s) who can use vents was/were still alive.
-- When you asked, x player(s) who is/are neutral but cannot kill was/were still alive.
+## Informant
+### **Team: Crewmates**
+The Informant is a Crewmate role that has to finish tasks in order to get a special ability.\
+When they finish tasks, once per round, they get a button to track the killer, they will get an arrow pointing to them.\
+The Informant has a chance of finding the wrong killer.\
+Only if the player is a killer will see that the Informant is watching them (aka also gets an arrow to the Informant).
 
 ### Game Options
-| Name | Description
-|----------|:-------------:|
-| Psychic Spawn Chance | -
-| Psychic Cooldown | -
-| Psychic Duration | The time it takes to question a soul
-| Psychic Each Soul Can Only Be Questioned Once | If set to true, souls can only be questioned once and then disappear
-| Chance That The Answer Contains The Remaining Amount Of Killing Roles | Chance includes Sheriff
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Informant | The percentage probability of the Informant appearing | Percentage | 0% |
+| Find Killer Cooldown | The cooldown of the Informant's button | Time | 25s |
+| Find Killer Duration | How long the Informant's button ability lasts for | Time | 25s |
 -----------------------
 
-## Trapper
-### **Faction: Crewmates**
-### **Alignment: Crew Investigative**
-The Trapper is a crewmate which can set up traps to trap player and gain information from them.\
-The traps will stuck player for x-seconds (depends on the setting) and reveal information in chat
-about their "Role", if they are a "Good/Evil Role" or their "Name".\
-The trap is not visible until a configurable amount of player were trapped.\
-When the trap gets visible, the Trapper will gain the information in chat (in a random order).\
-If a trap is triggered (and the option is enabled), the map of the Trapper will open up and show which trap
-was triggered.\
-The traps have a maximum of charges (uses) and a configurable amount of tasks are needed to recharge.\
-\
-**NOTE:**
-- The Trapper can't be trapped in their own trap(s).
+# Neutral Roles
+## Amnesiac
+### **Team: Neutral (Benign)**
+The Amnesiac is a Neutral role that has to survive to win.\
+They have zero tasks and are essentially roleless.\
+During meetings, the Amnesiac can choose a player to remember who they were (the button is the same as the imitator button but obviously different functionality).\
+After they select a player, the Amnesiac will become that persons role making the chosen player become Amnesiac (or Vampire if the role chosen player role is Vampire).\
+Once they remember their role, they go on to try win with their new win condition.
 
 ### Game Options
-| Name | Description
-|----------|:-------------:|
-| Trapper Spawn Chance | -
-| Trapper Cooldown | -
-| Max Traps Charges | -
-| Number Of Tasks Needed For Recharging | -
-| Trap Needed Trigger To Reveal | -
-| Show Anonymous Map | -
-| Trap Information Type | "Name", "Role", "Good/Evil Role"
-| Trap Duration | -
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Amnesiac | The percentage probability of the Amnesiac appearing | Percentage | 0% |
+
+-----------------------
+## Guardian Angel
+### **Team: Neutral (Benign)**
+The Guardian Angel is a Neutral role which aligns with the faction of their target.\
+Their job is to protect their target at all costs.\
+If their target loses, they lose.
+
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Guardian Angel | The percentage probability of the Guardian Angel appearing | Percentage | 0% |
+| Protect Cooldown | The cooldown of the Guardian Angel's Protect button | Time | 25s |
+| Protect Duration | How long The Guardian Angel's Protect lasts | Time | 10s |
+| Kill Cooldown Reset on Attack | The attackers kill cooldown after they attacked the protected target | Time | 2.5s |
+| Max Uses | The amount of times the Protect ability can be used | Number | 5 |
+| Show Protected Player | Who should be able to see who is Protected | Self / GA / Self + GA / Everyone | Self |
+| Guardian Angel becomes on Target Dead | Which role the Guardian Angel becomes when their target dies | Crewmate / Amnesiac / Jester | Crewmate |
+| Target Knows GA Exists | Whether the GA's Target knows they have a GA | Toggle | False |
+| GA Knows Targets Role | Whether the GA knows their target's role | Toggle | False |
+| Odds Of Target Being Evil | The chances of the Guardian Angel's target being evil | Percentage | 20% |
+
+-----------------------
+## Romantic
+### **Team: Neutral (Benign)**
+The Romantic is a Neutral role which can select a player to be their beloved.\
+The romantic wins with the beloved as long as they win as well.
+
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Romantic | The percentage probability of the Romantic appearing | Percentage | 0% |
+| Pick Cooldown | The cooldown of the Romantic's Pick Belobed button | Time | 25s |
+
 -----------------------
 
-# Abilities
-An Ability is an addition to your Impostor/Neutral/Crewmate role.
-Some Abilities can be ingame more than once (Quantity option).
-Others are made for a specific faction Only.
+## Executioner
+### **Team: Neutral (Evil)**
 
-## Coward
+The Executioner is a Neutral role with its own win condition.\
+Their goal is to vote out a player, specified in the beginning of a game.\
+If that player gets voted out, they win the game.
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Executioner | The percentage probability of the Executioner appearing | Percentage | 0% |
+| Executioner becomes on Target Dead | Which role the Executioner becomes when their target dies | Crewmate / Amnesiac / Jester | Crewmate |
+| Executioner Can Button | Whether the Executioner Can Press the Button | Toggle | True |
 
-The Coward ability gives the player a remote button like the Mayor. They can use it from anywhere as long as there's no sabotages actives. Can be used once per game.\
+-----------------------
+
+## Scavenger
+### **Team: Neutral (Evil)**
+
+The Scavenger is a Neutral role with its own win condition.\
+Their goal is to eat an amount of dead bodies to win. The body dissapears when the Scavenger eats it, similar to how Janitor cleans bodies.\
+If they eat the amount of bodies the setting is set to, they win.
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Scavenger | The percentage probability of the Scavenger appearing | Percentage | 0% |
+| Number Of Bodies Needed To Eat | How many bodies the Scavenger needs to eat to win | Number | 4 |
+| Scavenger Has Impostor Vision | Whether the Scavenger Has Impostor Vision | Toggle | False |
+| Scavenger Eat Cooldown | Cooldown of the Scavenger's eat button | Time | 25 |
+| Scavenger Eat Duration | Time it takes the Scavenger to Eat a body | Time | 2 |
+| Scavenge Cooldown | Cooldown for the Scavenger's ability to find bodies | Time | 7s |
+| Scavenger Can Vent | Whether the Scavenger Can Vent | Toggle | False |
+
+-----------------------
+## Jester
+### **Team: Neutral (Evil)**
+The Jester is a Neutral role with its own win condition.\
+If they are voted out after a meeting, the game finishes and they win.\
+However, the Jester does not win if the Crewmates, Impostors or another Neutral role wins.
+
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Jester | The percentage probability of the Jester appearing | Percentage | 0% |
+| Jester Can Button | Whether the Jester Can Press the Button | Toggle | True |
+| Jester Can Vent | Whether the Jester Can Vent | Toggle | False |
+| Jester Has Impostor Vision | Whether the Jester Has Impostor Vision | Toggle | False |
+
+-----------------------
+## Pyromaniac
+### **Team: Neutral (Killing)**
+
+The Pyromaniac is a Neutral role with its own win condition.\
+They have two abilities, one is to douse other players with gasoline.\
+The other is to ignite all doused players.\
+The Pyromaniac needs to be the last killer alive to win the game.
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Pyromaniac | The percentage probability of the Pyromaniac appearing | Percentage | 0% |
+| Douse Cooldown | The cooldown of the Pyromaniac's Douse button | Time | 25s |
+| Maximum Alive Players Doused | The maximum amount of players that the Pyromaniac can have doused | Number | 5 |
+| Pyromaniac Has Impostor Vision | Whether the Pyromaniac Has Impostor Vision | Toggle | False |
+| Pyromaniac Can Vent | Whether the Pyromaniac Can vent | Toggle | False |
+| Ignite Cooldown Removed When Arso Is Last Killer | Whether the Pyromaniac's Ignite Cooldown is removed when they're the final killer | Toggle | False |
+
+-----------------------
+## Juggernaut
+### **Team: Neutral (Killing)**
+
+The Juggernaut is a Neutral role with its own win condition.\
+The Juggernaut's special ability is that their kill cooldown reduces with each kill.\
+This means in theory the Juggernaut can have a 0 second kill cooldown!\
+The Juggernaut starts with no impostor vision, and no vent button, but after some kills, they gain both of these features.\
+The Juggernaut needs to be the last killer alive to win the game.
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Juggernaut | The percentage probability of the Juggernaut appearing | Percentage | 0% |
+| Juggernaut Kill Cooldown | The initial cooldown of the Juggernaut's Kill button | Time | 25s |
+| Reduced Kill Cooldown Per Kill | The amount of time removed from the Juggernaut's Kill Cooldown Per Kill | Time | 5s |
+| Juggernaut can Vent | Whether the Juggernaut can Vent | Toggle | False |
+
+-----------------------
+## Plaguebearer
+### **Team: Neutral (Killing)**
+
+The Plaguebearer is a Neutral role with its own win condition, as well as an ability to transform into another role.\
+The Plaguebearer has one ability, which allows them to infect other players.\
+Once infected, the infected player can go and infect other players via interacting with them.\
+Once all players are infected, the Plaguebearer becomes Pestilence.\
+The Pestilence is a unkillable force which can only be killed by being voted out, even their lover dying won't kill them.\
+The Plaguebearer or Pestilence needs to be the last killer alive to win the game.
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Plaguebearer | The percentage probability of the Plaguebearer appearing | Percentage | 0% |
+| Infect Cooldown | The cooldown of the Plaguebearer's Infect button | Time | 25s |
+| Pestilence Kill Cooldown | The cooldown of the Pestilence's Kill button | Time | 25s |
+| Pestilence can Vent | Whether the Pestilence can Vent | Toggle | False |
+
+-----------------------
+## Glitch
+### **Team: Neutral (Killing)**
+
+Glitch is a Neutral role with its own win condition.\
+Glitch's aim is to kill everyone and be the last person standing.\
+Glitch can Hack players, resulting in them being unable to report bodies and do tasks.\
+Hacking prevents the hacked player from doing anything but walk around the map.\
+This role cannot spawn on Fungle.\
+Glitch can Mimic someone, which results in them looking exactly like the other person.
+
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Glitch | The percentage probability of Glitch appearing | Percentage | 0% |
+| Mimic Cooldown | The cooldown of Glitch's Mimic button | Time | 25s |
+| Mimic Duration | How long Glitch can Mimic a player | Time | 10s |
+| Hack Cooldown | The cooldown of Glitch's Hack button | Time | 25s |
+| Hack Duration | How long Glitch can Hack a player | Time | 10s |
+| Glitch Kill Cooldown | The cooldown of Glitch's Kill button | Time | 25s |
+| Glitch Hack Distance | How far away Glitch can Hack someone from | Short / Normal / Long | Short |
+| Glitch can Vent | Whether Glitch can Vent | Toggle | False |
+
+-----------------------
+## Agent
+### **Team: Neutral (Killing) **
+The Agent is a Neutral role with its own win condition.\
+The Agent has tasks like the Crewmates but their tasks do not count for a task win.\
+After the Agent finishes its tasks, They automatically become a [Hitman](#hitman)
+
+-----------------------
+## Hitman
+### **Team: Neutral (Killing) **
+The Hitman can Morph into players to disguise itself from others.\
+They can additionally drag bodies like the [Undertaker](#undertaker).\
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Hitman Kill Cooldown | The cooldown of the Hitman's Kill button | Time | 25s |
+| Morph Cooldown | The cooldown of the Hitman's Morph button | Time | 25s |
+| Morph Duration | How long the Morph lasts for | Time | 10s |
+| Hitman can Vent | Whether the Hitman can Vent | Toggle | False |
+| Hitman Drag Cooldown | The cooldown of the Hitman Drag ability | Time | 25s |
+| Hitman can Vent With Body | Whether the Hitman can Vent When Dragging a body | Toggle | False |
+| Hitman Speed While Dragging | How fast the Hitman moves while dragging a body in comparison to normal | Multiplier | 0.75x |
+
+-----------------------
+## Vampire
+### **Team: Neutral (Killing)**
+
+The Vampire is a Neutral role with its own win condition.\
+The Vampire can convert or kill other players by biting them.\
+If the bitten player was a Crewmate they will turn into a Vampire (unless there are 2 Vampires alive)\
+Else they will kill the bitten player.
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Vampire | The percentage probability of the Vampire appearing | Percentage | 0% |
+| Bite Cooldown | The cooldown of the Vampire's Bite button | Time | 25s |
+| Vampire Has Impostor Vision | Whether the Vampire Has Impostor Vision | Toggle | False |
+| Vampire Can Vent | Whether the Vampire Can Vent | Toggle | False |
+| New Vampire Can Assassinated | Whether the new Vampire can assassinate | Toggle | False |
+| Maximum Vampires Per Game | The maximum amount of players that can be Vampires | Number | 2 |
+| Can Convert Neutral Benign Roles | Whether Neutral Benign Roles can be turned into Vampires | Toggle | False |
+| Can Convert Neutral Evil Roles | Whether Neutral Evil Roles can be turned into Vampires | Toggle | False |
+
+-----------------------
+## Eclipsal
+### **Team: Neutral (Killing)**
+
+The Eclipsal is a neutral killer role that can make people blind.\
+Blinded people cannot use their abilities or report dead bodies until the effect is gone.
+
+### Game Options
+
+| Name | Description | Type | Default |
+|------|-------------|------|---------|
+| Eclipsal | The percentage probability of the Eclipsal appearing | Percentage | 0% |
+| Blind Cooldown | The cooldown on the Eclipsal's blind button | Time | 30s |
+| Blind Duration | How does the blind effect stay on people | Time | 10s |
+| Eclipsal Can Vent | Toggles the Eclipsal's ability to vent | Toggle | False|
+
+-----------------------
+## Thief
+### **Team: Neutral (Benign)**
+The Thief has to kill another killer (Impostor, Neutral Killer and if enabled Sheriff)
+in order to have a win condition.\
+If the Thief doesn't kill another killer they will lose the game.\
+If the Thief kills one of the other killers, the Thief overtakes their role (e.g. Morphling) and joins their team (in this case
+team Impostor). They then have the new Role's win condition (e.g. Impostor-Win).\
+If the Thief tries to kill any non-killing role (Crewmate or Neutral), they die similar to a misfiring Sheriff.\
 \
 **NOTE**
-- Impostor, Neutral or Crewmate roles can have this Ability
+- If the option "Thief Can Kill Sheriff" is On, the Thief has tasks which will ONLY begin to count, if they kill
+the Sheriff. While the Thief hasn't fired, their tasks do not count towards the taskwin.
+- If the option "Thief Can Kill Sheriff" is Off, the Thief will not have tasks. 
 
 ### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Coward Spawn Chance | -
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Thief Spawn Chance | The percentage probability of the Thief appearing | Percentage | 0% |
+| Thief Cooldown | - | Time | 25s |
+| Thief Can Kill Sheriff | - | Toggle | False |
+| Thief Has Impostor Vision | - | Toggle | False |
+| Thief Can Use Vents | - | Toggle | False |
+| Thief Can Guess To Steal Role | - | Toggle | False |
+-----------------------
+## Serial Killer
+### **Team: Neutral (Killing)**
+
+The Serial Killer is a Neutral role with its own win condition.\
+Although the Serial Killer has a kill button, they can't use it unless they are stabbing.\
+Once the Serial Killer rampages they gain Impostor vision and the ability to kill.\
+However, unlike most killers their kill cooldown is really short.\
+The Serial Killer needs to be the last killer alive to win the game.
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Serial Killer | The percentage probability of the Serial Killer appearing | Percentage | 0% |
+| Stab Cooldown | The cooldown of the Serial Killer's Stab button | Time | 25s |
+| Stab Duration | The duration of the Serial Killer's Stab | Time | 25s |
+| Stab Kill Cooldown | The cooldown of the Serial Killer's Kill button | Time | 10s |
+| Serial Killer can Vent when Stabbing | Whether the Serial Killer can Vent when Stabbing | Toggle | False |
+-----------------------
+## Werewolf
+### **Team: Neutral (Killing)**
+
+The Werewolf can kill all players within a certain radius.
+
+### Game Options
+
+| Name | Description | Type | Default |
+|------|-------------|------|---------|
+| Werewolf | The percentage probability of the Werewolf appearing | Percentage | 0% |
+| Maul Cooldown | The cooldown on the Werewolf's kill button | Time | 30s |
+| Maul Radius | How far must a player be to survive a Werewolf's attack | Factor | 1x |
+| Werewolf Can Vent | Toggles the Werewolf's ability to vent | Toggle | False|
+
+# Impostor Roles
+## Escapist
+### **Team: Impostors**
+
+The Escapist is an Impostor that can teleport to a different location.\
+Once per round the Escapist can Mark a location which they can then escape to later in the round.
+
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Escapist | The percentage probability of the Escapist appearing | Percentage | 0% |
+| Recall Cooldown | The cooldown of the Escapist's Recall button | Time | 25s |
+-----------------------
+## Grenadier
+### **Team: Impostors**
+
+The Grenadier is an Impostor that can throw smoke grenades.\
+During the game, the Grenadier has the option to throw down a smoke grenade which blinds crewmates so they can't see.\
+However, a sabotage and a smoke grenade can not be active at the same time.
+
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Grenadier | The percentage probability of the Grenadier appearing | Percentage | 0% |
+| Flash Grenade Cooldown | The cooldown of the Grenadier's Flash button | Time | 25s |
+| Flash Grenade Duration | How long the Flash Grenade lasts for | Time | 10s |
+| Flash Radius | How wide the flash radius is | Multiplier | 1x |
+| Indicate Flashed Crewmates | Whether the Grenadier can see who has been flashed | Toggle | False |
+-----------------------
+## Morphling
+### **Team: Impostors**
+
+The Morphling is an Impostor that can Morph into another player.\
+At the beginning of the game and after every meeting, they can choose someone to Sample.\
+This role cannot spawn on Fungle.\
+They can then Morph into that person at any time for a limited amount of time.
+
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Morphling | The percentage probability of the Morphling appearing | Percentage | 0% |
+| Morph Cooldown | The cooldown of the Morphling's Morph button | Time | 25s |
+| Morph Duration | How long the Morph lasts for | Time | 10s |
+-----------------------
+## Swooper
+### **Team: Impostors**
+
+The Swooper is an Impostor that can temporarily turn invisible.
+
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Swooper | The percentage probability of the Swooper appearing | Percentage | 0% |
+| Swooper Cooldown | The cooldown of the Swooper's Swoop button | Time | 25s |
+| Swooper Duration | How long the Swooping lasts for | Time | 10s |
+-----------------------
+## Venerer
+### **Team: Impostors**
+
+The Venerer is an Impostor that gains abilities through killing.\
+After their first kill, the Venerer can camouflage every alive player.\
+After their second kill, the Venerer can sprint.\
+After their third kill, every other player is slowed while their ability is activated.\
+This role cannot spawn on Fungle.\
+All abilities are activated by the one button and have the same duration.
+
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Venerer | The percentage probability of the Venerer appearing | Percentage | 0% |
+| Ability Cooldown | The cooldown of the Venerer's Ability button | Time | 25s |
+| Ability Duration | How long the Venerer's ability lasts for | Time | 10s |
+| Sprint Speed | How fast the speed increase of the Venerer is when sprinting | Multiplier | 1.25x |
+| Freeze Speed | How slow the speed decrease of other players is when the Venerer's ability is active | Multiplier | 0.75x |
+
+-----------------------
+## Bomber
+### **Team: Impostors**
+### **Alignment: Killing**
+
+The Bomber is an Impostor who has the ability to plant bombs instead of kill.\
+After a bomb is planted, the bomb will detonate a fixed time period as per settings.\
+Once the bomb detonates it will kill all crewmates (and Impostors!) inside the radius.
+
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Bomber | The percentage probability of the Bomber appearing | Percentage | 0% |
+| Max Bombs | Maximum times that Bombing is possible per game | Uses | 5 |
+| Detonate Delay | The delay of the detonation after bomb has been planted | Time | 5s |
+| All Imps See Bombs | Determines if all impostors can see the bomb's radius | Toggle | True |
+| Max Kills In Detonation | Maximum number of kills in the detonation | Time | 5s |
+| Detonate Radius | How wide the detonate radius is | Multiplier | 0.25x |
 -----------------------
 
-## Paranoid
+## Hexblade
+### **Team: Impostors**
+### **Alignment: Killing**
 
-The Paranoid always sees the closest player to them with a yellow arrow.\
+The Hexblade is an Impostor that can charge up their kill button.\
+Once activated the Hexblade can use their kill button infinitely until they run out of charge.\
+However, they do not need to fully charge their kill button to use it.
+
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Hexblade | The percentage probability of the Hexblade appearing | Percentage | 0% |
+| Time It Takes To Fully Charge | The time it takes to fully charge the Hexblade's Kill Button | Time | 25s |
+| Added Charge Time	| Multiplier applied to next charge per kill | Multiplier | 0.05x |
+| Time It Takes To Use Full Charge | The maximum duration a charge of the Hexblade's Kill Button lasts | Time | 1s |
+-----------------------
+
+## Bounty Hunter
+### **Team: Impostors**
+### **Alignment: Killing**
+
+The Bounty Hunter is an Impostor, that continuously get bounties (the targeted player doesn't get notified).\
+The target of the Bounty Hunter swaps after every meeting and after a configurable amount of time.\
+If the Bounty Hunter kills their target, their kill cooldown will be a lot less than usual.\
+Killing a player that's not their current target results in an increased kill cooldown.\
+There'll be an arrow pointing towards the current target.\
 \
-**NOTE**
-- Impostor, Neutral or Crewmate roles can have this Ability
-
-### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Paranoid Spawn Chance | -
------------------------
-
-# Modifier
-A Modifier is an addition to your Impostor/Neutral/Crewmate role.
-Some Modifiers can be ingame more than once (Quantity option).
-
-## Lazy
-
-The Lazy Modifier prevents the player from getting teleported to the Meeting Table if a body gets reported or an Emergency Meeting is called.\
-A Lazy player won't be affected by transportation stuff (ex: Disperses).\
-The player will start the round where the previous one ended (Emergency Meeting Call/Body Report).\
-\
-### **Applied to: Everyone**
-
-### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Lazy Spawn Chance | -
-| Lazy Quantity | -
------------------------
-
-## Lighter
-The Lighter has a different vision than everyone else depending on the settings.\
-Their vision looks like a flashlight cone which can be moved around (known from the Hide'n'Seek mode).
-
-### **Applied to: Everyone**
-### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Lighter Spawn Chance | -
-| Vision On Lights On | The vision the Lighter has when the lights are on
-| Vision On Lights Off | The vision the Lighter has when the lights are down
-| Flashlight Width | -
------------------------
-
-## Tie Breaker
-
-If the Voting ends in a tie, the Tie Breaker takes place and the player with the Tie Breaker Modifier gets an extra vote thats not visible to anyone.\
-Everyone will know if the Tie Breaker was involved in the Meeting or not.\
-\
-### **Applied to: Everyone**
-- There can only be on player with this Modifier
-
-### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Tie Breaker Spawn Chance | -
------------------------
-
-## Bait
-
-The Bait forces the killer to self report the body (you can configure a delay in the options).\
-There can be more than one Bait.
-
 **NOTE:**
-- If the Sheriff has the Bait Modifier and dies while trying to kill a Crewmate, the Sheriff will *NOT* report themself.
-This is a Global Modifier, meaning everyone can have it
+- The target won't be an Impostor.
+- Killing the target resets the timer and a new target will be selected.
 
 ### Game Options
-| Name | Description
-|----------|:-------------:|
-| Bait Spawn Chance | -
-| Bait Quantity | -
-| Bait Report Delay Min | -
-| Bait Report Delay Max | -
-| Warn The Killer With A Flash | -
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Bounty Hunter | The percentage probability of the Bounty Hunter appearing | Percentage | 0% |
+| Hunt Duration | How long the Bounty Hunter's hunt lasts for | Time | 25s |
+| Bounty Hunter Duration Increase Per Kill | How much time the hunt duration increases on a correct kill | Time | 10s |
+| Bounty Hunter Kill Cooldown On Correct Kill | The kill cooldown the Bounty Hunter has on a correct kill | Time | 10s |
+| Kill Cooldown Multiplier On Incorrect Kill | The increased time the kill cooldown has on an incorrect kill | Multiplier | 3x |
 -----------------------
 
+## Blackmailer
+### **Team: Impostors**
+The Blackmailer is an Impostor that can silence people in meetings.\
+During each round, the Blackmailer can go up to someone and blackmail them.\
+This prevents the blackmailed person from speaking during the next meeting.
+
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Blackmailer | The percentage probability of the Blackmailer appearing | Percentage | 0% |
+| Initial Blackmail Cooldown | The initial cooldown of the Blackmailer's Blackmail button | Time | 10s |
+
+-----------------------
+## Janitor
+### **Team: Impostors**
+The Janitor is an Impostor that can clean up bodies.\
+Depending on settings, both their Kill and Clean ability may have a shared cooldown, meaning they have to choose which one they want to use.
+
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Janitor | The percentage probability of the Janitor appearing | Percentage | 0% |
+| Share Cooldowns | Whether the Janitor's abilities reset when using any of them | Toggle | False |
+
+-----------------------
+
+## Consigliere
+### **Team: Impostors**
+The Consigliere is an Impostor that can reveal the roles of any player.\
+Both their Kill and Reveal ability have a shared cooldown, meaning they have to choose which one they want to use.
+
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Consigliere | The percentage probability of the Consigliere appearing | Percentage | 0% |
+| Reveal Cooldown | The cooldown of the Consigliere's Reveal button | Time | 25s |
+| Reveal Delay | The time the Consigliere's has to stay close to the player they want to reveal | Time | 3s |
+
+-----------------------
+
+## Miner
+### **Team: Impostors**
+
+The Miner is an Impostor that can create new vents.\
+These vents only connect to each other, forming a new passway.
+
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Miner | The percentage probability of the Miner appearing | Percentage | 0% |
+| Mine Cooldown | The cooldown of the Miner's Mine button | Time | 25s |
+
+-----------------------
+## Poisoner
+### **Team: Impostors**
+### **Alignment: Killing**
+
+The Poisoner is an Impostor who has to poison another play instead of kill.\
+When they poison a player, the poisoned player dies either upon the start of the next meeting or after a set duration.\
+If the Poisoner is alive within the 4 last players, their kills will be direct rather than delayed.
+
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Poisoner | The percentage probability of the Poisoner appearing | Percentage | 0% |
+| Poison Cooldown | The cooldown of the Poisoner's Poison button | Time | 25s |
+| Poison Delay | The delay of the kill after being poisoned | Time | 5s |
+
+-----------------------
+## Warlock
+### **Team: Impostors**
+### **Alignment: Concealing**
+
+The Warlock is an Impostor, that can curse another player (the cursed player doesn't get notified).\
+If the cursed person stands next to another player, the Warlock is able to kill that player (no matter how far away they are).\
+Performing a kill with the help of a cursed player, will lift the curse and it will result in the Warlock being unable to move for a configurable amount of time.\
+The Warlock can still perform normal kills, but the two buttons share the same Cooldown.\
+\
+**NOTE:**
+- The Warlock can always kill their Impostor mates (and even themself) using the "cursed kill"
+- If there is a Warlock in the game, there can't be a Poisoner
+- Performing a normal kill, doesn't lift the curse
+
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Warlock | The percentage probability of the Warlock appearing | Percentage | 0% |
+| Warlock Cooldown | Cooldown for using the Curse and curse Kill | Time | 25s |
+| Warlock Root Time | Time the Warlock is rooted in place after killing using the curse | Time | 5s |
+| Warlock Can Normally Kill With Teammate | Whether the Warlock is able to kill with a teammate in game | Toggle | False
+-----------------------
+## Undertaker
+### **Team: Impostors**
+
+The Undertaker is an Impostor that can drag and drop bodies.
+
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Undertaker | The percentage probability of the Undertaker appearing | Percentage | 0% |
+| Undertaker Drag Cooldown | The cooldown of the Undertaker Drag ability | Time | 25s |
+| Undertaker Speed While Dragging | How fast the Undertaker moves while dragging a body in comparison to normal | Multiplier | 0.75x |
+| Undertaker can Vent while Dragging | Whether the Undertaker can Vent when they are Dragging a Body | Toggle | False |
+
+-----------------------
+
+# Modifiers
+Modifiers are added on top of players' roles.
+
+## Multitasker
+### **Applied to: All**
+The Multitasker's tasks are transparent.
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Multitasker | The percentage probability of the Multitasker appearing | Percentage | 0% |
+
+-----------------------
+## Torch
+### **Applied to: All**
+The Torch's vision doesn't get reduced when the lights are sabotaged.
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Torch | The percentage probability of the Torch appearing | Percentage | 0% |
+
+-----------------------
+## Button Barry
+### **Applied to: All**
+Button Barry has the ability to call a meeting from anywhere on the map, even during sabotages.
+They have the same amount of meetings as a regular player.
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Button Barry | The percentage probability of Button Barry appearing | Percentage | 0% |
+
+-----------------------
+## Mini
+### **Applied to: All**
+The Mini travels at a faster speed in comparison to a normal player.
+They are also smaller than everyone else.
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Mini Chance | The percentage probability of the Mini appearing | Percentage | 0% |
+| Mini Speed | How fast the Mini moves in comparison to normal | Multiplier | 1.25x |
+
+-----------------------
+
+## Paranoiac
+### **Applied to: All**
+The Paranoiac is a crewmate who knows where the closest player is to them.
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Paranoiac | The percentage probability of the Paranoiac appearing | Percentage | 0% |
+
+-----------------------
+## Administrator
+### **Applied to: All**
+
+The Administrator is a player that gains more information when on the Admin Table and Vitals Panel.\
+On Admin Table, the Administrator can see the colors of every person on the map.\
+On Vitals, the Administrator can see the timing of each dead player.
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Administrator | The percentage probability of the Administrator appearing | Percentage | 0% |
+| Who Sees Dead Bodies On Admin | Which players see dead bodies on the admin map | Nobody / Administrator / Everyone But Administrator / Everyone | Nobody |
+
+-----------------------
 ## Sleuth
-The Sleuth is a crewmate who gains knowledge from reporting dead bodies.
+### **Applied to: All**
+The Sleuth is a crewmate who gains knowledge from reporting dead bodies.\
 During meetings the Sleuth can see the roles of all players in which they've reported.
 ### Game Options
-| Name | Description
-|----------|:-------------:|
-| Sleuth Spawn Chance | -
-| Sleuth Quantity | -
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Sleuth | The percentage probability of the Sleuth appearing | Percentage | 0% |
+
+-----------------------
+## Tiebreaker
+### **Applied to: All**
+If any vote is a draw, the Tiebreaker's vote will go through.\
+If they voted another player, they will get voted out.
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Tiebreaker | The percentage probability of the Tiebreaker appearing | Percentage | 0% |
 
 -----------------------
 
-## Lovers
-
-There are always two Lovers which are linked together.\
-Their primary goal is it to stay alive together until the end of the game.\
-If one Lover dies (and the option is activated), the other Lover suicides.\
-You can specify the chance of one Lover being an Impostor.\
-The Lovers never know the role of their partner, they only see who their partner is.\
-The Lovers win, if they are both alive when the game ends. They can also win with their original team (e.g. a dead Impostor Lover can win with the Impostors, an Arsonist Lover can still achieve an Arsonist win).\
-If one of the Lovers is a killer (i.e. Neutral Killer/Impostor), they can achieve a "Lovers solo win" where only the Lovers win.\
-If there is no killer among the Lovers (e.g. an Arsonist Lover + Crewmate Lover) and they are both alive when the game ends, they win together with the Crewmates.\
-If there's an Impostor/Neutral Killer + Crewmate Lover in the game, the tasks of a Crewmate Lover won't be counted (for a task win) as long as they're alive.\
-If the Lover dies, their tasks will also be counted.\
-You can enable an exclusive chat only for Lovers.\
-If one wins, so the other lover does.
-
-**NOTE:**
-In a 2 Crewmates vs 2 Impostors and the Lovers are not in the same team, the game is not automatically over since the Lovers can still achieve a solo win. E.g. if there are the following roles Impostor + ImpLover + Lover + Crewmate left, the game will not end and the next kill will decide if the Impostors or Lovers win.
-
+## Celebrity
+### **Applied to: All**
+When the Celebrity dies, everyone is notified, and at the start of the meeting players will be told how they and where they died.\
 ### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Lovers Spawn Chance | -
-| Chance That One Lover Is Impostor | -
-| Both Lovers Die | Whether the second Lover suicides, if the first one dies
-| Enable Lover Chat | -
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Celebrity | The percentage probability of the Celebrity appearing | Percentage | 0% |
+
+-----------------------
+## Tiebreaker
+### **Applied to: All**
+If any vote is a draw, the Tiebreaker's vote will go through.\
+If they voted another player, they will get voted out.
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Tiebreaker | The percentage probability of the Tiebreaker appearing | Percentage | 0% |
+
 -----------------------
 
-**NOTE:**
-- The Modifier **Lover** can't be guessed, you'll have to guess the primary role of one of the Lovers, to kill both of them.
-
-## Blind
-
-The Blind will lower the Crewmate's vision by a small percentage. The percentage is configurable in the options.\
-The vision will also be affected when lights out.
-
-**NOTE:**
-- Blind only affects Crewmates.
-- If you have the Blind Modifier and get recruited, you will lose the Modifier.
-
+## Aftermath
+### **Applied to: Crewmates**
+Killing the Aftermath All their killer to use their ability. If the Poisoner kills the Aftermath, they will Suicide.
 ### Game Options
-| Name | Description
-|----------|:-------------:|
-| Blind Spawn Chance | -
-| Blind Quantity | -
-| Vision With Blind | -
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Aftermath | The percentage probability of the Aftermath appearing | Percentage | 0% |
+
+-----------------------
+## Bait
+### **Applied to: All**
+Killing the Bait makes the killer auto self-report.
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Bait | The percentage probability of the Bait appearing | Percentage | 0% |
+| Bait Minimum Delay | The minimum time the killer of the Bait reports the body | Time | 0s |
+| Bait Maximum Delay | The maximum time the killer of the Bait reports the body | Time | 1s |
+
+-----------------------
+## Diseased
+### **Applied to: All**
+Killing the Diseased increases the killer's kill cooldown.
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Diseased | The percentage probability of the Diseased appearing | Percentage | 0% |
+| Kill Multiplier | How much the Kill Cooldown of the Impostor is increased by | Multiplier | 3x |
+
+-----------------------
+## Frosty
+### **Applied to: All**
+Killing the Frosty slows the killer for a short duration.
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Frosty | The percentage probability of the Frosty appearing | Percentage | 0% |
+| Chill Duration | The duration of the chill after killing the Frosty | Time | 10s |
+| Chill Start Speed | The start speed of the chill after killing the Frosty | Multiplier | 0.75x |
+
+-----------------------
+
+## Giant
+### **Applied to: All**
+The Giant is a gigantic Crewmate, that has a decreased walk speed.
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Giant | The percentage probability of the Giant appearing | Percentage | 0% |
+| Speed | How fast the Giant moves in comparison to normal | Multiplier | 0.75x |
+
+-----------------------
+
+## Ruthless
+### **Applied to: Killers Only**
+The Ruthless allows the player with the modifier to kill anyone even if they are protected.\
+Protection such as Guardian Angel protect, Amnesiac Vest, Medic/Crusader/Bodyguard inmunity.
+### Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Ruthless | The percentage probability of the Ruthless appearing | Percentage | 0% |
+| Ruthless Amount | The number of players that can get the Ruthless modifier | Quantity | 0 |
 
 -----------------------
 ## Disperser
 ### **Applied to: Impostors**
-The Disperser is an Impostor who has an ability to send all players to a random vent.\
-Does not appear on Airship.
+The Disperser is an Impostor who has a 1 time use ability to send all players to a random vent.\
+This includes miner vents.\
+Does not appear on Airship or Submerged.
 ### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Disperser Spawn Chance | -
-| Disperser Cooldown | -
-| Disperser Charge Number | -
-| Disperser Kills Needed To Recharge | -
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Disperser | The percentage probability of the Disperser appearing | Percentage | 0% |
+
 -----------------------
-
-## Mini
-
-The Mini's character is smaller and hence visible to everyone in the game.\
-
-
+## Double Shot
+### **Applied to: Impostors**
+Double Shot is an Impostor who gets an extra life when assassinating.\
+Once they use their life they are indicated with a red flash\
+and can no longer guess the person who they guessed wrong for the remainder of that meeting.
 ### Game Options
-| Name | Description |
-|----------|:-------------:|
-| Mini Spawn Chance | -
-| Mini Speed | -
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Double Shot| The percentage probability of Double Shot appearing | Percentage | 0% |
+
 -----------------------
+## Underdog
+### **Applied to: Impostors**
 
-## VIP
-
-An Impostor, Neutral Killer or Crewmate can be affected by the VIP (Very Important Player) Modifier.\
-The VIP will show everyone when he dies with a flash similar to the Mystic Flash.\
-If the option Show Team Color is On, then everyone will get a flash in the color of the team the player was part of.
-
-Teams:
-- Impostor = Red
-- Neutral = Blue
-- Crewmate = White
+The Underdog is an Impostor with a prolonged kill cooldown.\
+When they are the only remaining Impostor, they will have their kill cooldown shortened.
 
 ### Game Options
-| Name | Description
-|----------|:-------------:|
-| VIP Spawn Chance | -
-| VIP Quantity | -
-| Show Team Color | -
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Underdog | The percentage probability of the Underdog appearing | Percentage | 0% |
+| Kill Cooldown Bonus | The amount of time added or removed from the Underdog's Kill Cooldown | Time | 5s |
+| Increased Kill Cooldown  | Whether the Underdog's Kill Cooldown is Increased when 2+ Imps are alive | Toggle | True |
+
 -----------------------
 
-## Drunk
+## Telepath
+### **Applied to: Impostors**
+Know when your teammate kills (maybe where depending on settings), and depending on other settings, know when and/or where they die.
 
-The Drunk Modifier inverts your controls (no matter if keyboard or mouse).\
-\
-### **Applied to: Everyone**
+### Options
+
+| Option | Description | Type | Default | Range |
+|----------|:-----------------:|:------:|:------:|:------:|
+| Know Kill Location | Determines if you know where your teammate kills. | Toggle | True | N/A |
+| Know Death Time | Determines if you know when your teammate dies. | Toggle | True | N/A |
+| Know Death Location | Determines if you know where your teammate dies. | Toggle | True | N/A |
+| Arrow Duration | How long Telepath arrows are visible. | Seconds | 2.5s | 0s - 5s |
+| Know About Correct Guess | Determines if you know when your teammate guesses successfully. | Toggle | True | N/A |
+| Know About Failed Guess | Determines if you know when your teammate fails to guess. | Toggle | True | N/A |
+
+-----------------------
+
+## Saboteur
+### **Applied to: Impostors**
+
+The Saboteur is an Impostor with a passive sabotage cooldown reduction.
 
 ### Game Options
-| Name | Description
-|----------|:-------------:|
-| Drunk Spawn Chance | -
-| Drunk Quantity | -
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Saboteur | The percentage probability of the Saboteur appearing | Percentage | 0% |
+| Reduced Sabotage Bonus | The amount of time removed from the Saboteur's sabotage cooldowns | Time | 10s |
+
+-----------------------
+# Neutral Role Count Settings
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Min Neutral Benign Roles | The minimum number of Neutral Benign roles a game can have | Number | 1 |
+| Max Neutral Benign Roles | The maximum number of Neutral Benign roles a game can have | Number | 1 |
+| Min Neutral Evil Roles | The minimum number of Neutral Evil roles a game can have | Number | 1 |
+| Max Neutral Evil Roles | The maximum number of Neutral Evil roles a game can have | Number | 1 |
+| Min Neutral Killing Roles | The minimum number of Neutral Killing roles a game can have | Number | 1 |
+| Max Neutral Killing Roles | The maximum number of Neutral Killing roles a game can have | Number | 1 |
+
 -----------------------
 
-## Chameleon
+-----------------------
+# Map Settings
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Choose Random Map | Whether the Map is randomly picked at the start of the game | Toggle | False |
+| Skeld Chance | The percentage probability of the Skeld map being chosen | Percentage | 0% |
+| Mira HQ Chance | The percentage probability of the Mira HQ map being chosen | Percentage | 0% |
+| Polus Chance | The percentage probability of the Polus map being chosen | Percentage | 0% |
+| Airship Chance | The percentage probability of the Airship map being chosen | Percentage | 0% |
+| Submerged Chance | The percentage probability of the Submerged map being chosen | Percentage | 0% |
+| Auto Adjust Settings | Whether the Settings of the game are auto adjusted depending on the map | Toggle | False |
+| Half Vision on Skeld/Mira HQ | Whether the Vision is automatically halved on Skeld/Mira HQ | Toggle | False |
+| Mira HQ Decreased Cooldowns | How much less time the cooldowns are set to for Mira HQ | Time | 0s |
+| Airship/Submerged Increased Cooldowns | How much more time the cooldowns are set to for Airship/Submerged | Time | 0s |
+| Skeld/Mira HQ Increased Short Tasks | How many extra short tasks when the map is Skeld/Mira HQ | Number | 0 |
+| Skeld/Mira HQ Increased Longt Tasks | How many extra long tasks when the map is Skeld/Mira HQ | Number | 0 |
+| Airship/Submerged Decreased Short Tasks | How many less short tasks when the map is Airship/Submerged | Number | 0 |
+| Airship/Submerged Decreased Longt Tasks | How many less long tasks when the map is Airship/Submerged | Number | 0 |
 
-The Chameleon becomes (partially or fully) invisible when standing still for x-seconds (depends on the settings).\
-\
-**NOTE**
-- You can use abilities while being invisible, only moving will make you visible again
-This is a Global Modifier, meaning everyone can have it
+-----------------------
+# Better Polus Settings
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Better Polus Vent Layout | Optimises Vent Layout on Polus | Toggle | False |
+| Vitals Moved to Lab | Whether the Vitals panel is moved into the Laboratory | Toggle | False |
+| Cole Temp Moved to Death Valley | Whether the cold temperaure task is moved to death valley | Toggle | False |
+| Reboot Wifi and Chart Course Swapped | Whether the Reboot Wifi and Chart Course swap locations | Toggle | False |
+
+-----------------------
+# Custom Game Options
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Impostors can see the roles of their team | Whether Impostors are able to see which Impostor roles their teammates have | Toggle | False |
+| Impostors don't know each other | Whether Impostors are able to see their teammates | Toggle | False |
+| Impostors have a private meeting chat | Whether Impostors are able to see chat with their teammates mid meeting privately | Toggle | False |
+| Vampires have a private meeting chat | Whether Vampires are able to see chat with their teammates mid meeting privately | Toggle | False |
+| Dead can see everyone's roles and Votes | Whether dead players are able to see the roles and votes of everyone else | Toggle | False |
+| Game Start Cooldowns | The cooldown for all roles at the start of the game | Time | 10s |
+| Parallel Medbay Scans | Whether players have to wait for others to scan | Toggle | False |
+| Disable Medbay Scan Walk | Whether the medbay animation of the scan task will be visible or not | No / Emergency / Always | No |
+| Disable Meeting Skip Button | Whether the meeting button is disabled | No / Emergency / Always | No |
+| First Death Shield Next Game | Whether the first player to die gets a shield for the first round next game | Toggle | False |
+
+-----------------------
+# Task Tracking Settings
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| See Tasks During Round | Whether people see their tasks update in game | Toggle | False |
+| See Tasks During Meetings | Whether people see their task count during meetings | Toggle | False |
+| See Tasks When Dead | Whether people see everyone's tasks when they're dead | Toggle | False |
+
+-----------------------
+## Assassin Ability
+### **Team: Impostors**
+
+The Assassin Ability is given to a certain number of Impostors or Neutral Killers.\
+This ability gives the Impostor or Neutral Killer a chance to kill during meetings by guessing the roles or modifiers of others.\
+If they guess wrong, they die instead.
 
 ### Game Options
-| Name | Description
-|----------|:-------------:|
-| Chameleon Spawn Chance | -
-| Chameleon Quantity | -
-| Time Until Fading Starts | -
-| Fade Duration | - 
-| Minimum Visibility | -
+| Name | Description | Type | Default |
+|----------|:-------------:|:------:|:------:|
+| Number of Impostor Assassins | How many Impostors can Assassinate | Number | 1 |
+| Number of Neutral Killing Assassins | How many Neutral Killers can Assassinate | Number | 1 |
+| Amnesiac Turned Impostor Can Assassinate | Whether former Amnesiacs now Impostor can Assassinate | Toggle | False |
+| Amnesiac Turned Neutral Killing Can Assassinate | Whether former Amnesiacs now Neutral Killers can Assassinate | Toggle | False |
+| Thief Can Assassinate | Whether former Thiefs now Killers can Assassinate | Toggle | False |
+| Assassin Kill | The number of kill the Assassin can do with his ability | Number | 1 |
+| Assassin Guess Crewmate | Whether the Assassin can Guess "Crewmate" | Toggle | False |
+| Assassin Multiple Kill  | Whether the Assassin can kill more than once per meeting | Toggle | False |
+| Assassin Guess Neutral Benign  | Whether the Assassin can Guess Neutral Benign roles | Toggle | False |
+| Assassin Guess Neutral Evil  | Whether the Assassin can Guess Neutral Evil roles | Toggle | False |
+| Assassin Guess Neutral Killing  | Whether the Assassin can Guess Neutral Killing roles | Toggle | False |
+| Assassin Guess Impostors  | Whether the Assassin can Guess Impostor roles | Toggle | False |
+| Assassin Guess Crewmate Modifiers  | Whether the Assassin can Guess Crewmate Modifiers | Toggle | False |
+| Assassin Can Guess Lovers  | Whether the Assassin can Guess Lovers | Toggle | False |
+| Assassin Can Guess After Voting  | Whether the Assassin can Guess after voting | Toggle | False |
+
 -----------------------
-
-## Lucky
-
-The Lucky is a Modifier that protects the player from the first shot that would have killed them. There can only be one Lucky player per round.
-\
-**NOTE:**
-- Lucky is only active during the round and does not protect from guesses or votes. 
-- Lucky is applied after all other shields or protections, so that the Armor only breaks if the player would have otherwise died.
-- If a killer tries to kill the Lucky, they will see the Armor break with a nice animation.
-- The Lucky player has no indicator whatsoever if the Armor is still active, unless they break it (Warlock, Sheriff)
-
-### Game Options
-| Name | Description
-|----------|:-------------:|
-| Lucky Spawn Chance | -
------------------------
-
-## GCERROR
-If the error message "Fatal Error in GC - Collecting from unknown thread" stops you from playing the game, you can now disable the mod-updater, which causes this error.
-In order to do this, create a file called `noupdater.txt` in your modded Among Us folder.
-
-# License
-itsjesushx/TownOfSushi is licensed under the
-
-[GNU General Public License v3.0](https://github.com/itsjesushx/TownOfSushi/blob/main/LICENSE)
-
-Permissions of this strong copyleft license are conditioned on making available **complete source code of licensed works and modifications**, which include larger works using a licensed work, under the same license. Copyright and license notices must be preserved. Contributors provide an express grant of patent rights.
-
-# Bugs, suggestions and requests
-If you found any bugs, have an idea for a new role or any other request, open an issue!
+# Extras
+## New Colors!
+New colors are added for crewmates to pick from.
+## Custom Hats!
+Custom hats based off anything!

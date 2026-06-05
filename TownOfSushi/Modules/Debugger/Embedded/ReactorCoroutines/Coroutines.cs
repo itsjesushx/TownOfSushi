@@ -1,4 +1,3 @@
-﻿#nullable enable
 using BepInEx.Unity.IL2CPP.Utils;
 using System.Collections;
 using System.Diagnostics.CodeAnalysis;

@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 using UnityEngine;
 
 namespace TownOfSushi.Modules.Debugger;
@@ -26,7 +26,7 @@ public static class Keyboard_Joystick
             Switch(false);
         }
         else if (Input.GetKeyDown(KeyCode.F6))
-            TownOfSushi.Persistence = !TownOfSushi.Persistence;
+            TownOfSushiPlugin.Persistence = !TownOfSushiPlugin.Persistence;
 
         if (Input.GetKeyDown(KeyCode.F11))
             InstanceControlPatches.RemoveAllPlayers();

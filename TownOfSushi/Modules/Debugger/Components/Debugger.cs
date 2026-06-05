@@ -1,13 +1,18 @@
-﻿using AmongUs.Data;
+using AmongUs.Data;
+using AmongUs.GameOptions;
+using Il2CppInterop.Runtime.Attributes;
 using InnerNet;
+using MiraAPI.Hud;
+using MiraAPI.Networking;
 using TownOfSushi.Modules.Debugger.Embedded.ReactorImGui;
+using UnityEngine;
 
 namespace TownOfSushi.Modules.Debugger.Components;
 public class Debugger : MonoBehaviour
 {
     [HideFromIl2Cpp]
     public DragWindow Window { get; }
-    public static bool IsDebuggerActive => AmongUsClient.Instance.NetworkMode == NetworkModes.LocalGame;
+    public static bool IsDebuggerActive => AmongUsClient.Instance.NetworkMode == NetworkModes.LocalGame && TownOfSushiPlugin.IsDevBuild;
     public bool WindowEnabled { get; set; } = true;
     public Debugger(IntPtr ptrs) : base(ptrs)
     {
@@ -101,11 +106,11 @@ public class Debugger : MonoBehaviour
 
             if (GUILayout.Button("Remove Cooldowns"))
             {
-                foreach (var button in CustomButton.buttons)
-                {
-                    button.Timer = 0;
-                }
                 PlayerControl.LocalPlayer.SetKillTimer(0f);
+                foreach (var button in CustomButtonManager.Buttons.Where(x => x.Enabled(PlayerControl.LocalPlayer.Data.Role)))
+                {
+                    button.SetTimer(0f);
+                }
             }
 
             if (GUILayout.Button("Redo Intro Sequence"))
@@ -116,22 +121,20 @@ public class Debugger : MonoBehaviour
 
             if (!MeetingHud.Instance && GUILayout.Button("Start Meeting"))
             {
-                PlayerControl.LocalPlayer.RemainingEmergencies++;
-                RPCProcedure.UncheckedCmdReportDeadBody(PlayerControl.LocalPlayer.PlayerId, Byte.MaxValue);
-                Utils.SendRPC(CustomRPC.UncheckedCmdReportDeadBody, PlayerControl.LocalPlayer.PlayerId, Byte.MaxValue);
+                PlayerControl.LocalPlayer.RpcStartMeeting(null);
             }
 
             if (GUILayout.Button("End Meeting") && MeetingHud.Instance)
                 MeetingHud.Instance.RpcClose();
 
             if (GUILayout.Button("Kill Self"))
-                Utils.RpcMurderPlayer(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer, false);
+                PlayerControl.LocalPlayer.RpcCustomMurder(PlayerControl.LocalPlayer, didSucceed: true);
 
             if (GUILayout.Button("Kill All"))
             {
                 foreach (var player in PlayerControl.AllPlayerControls)
                 {
-                    Utils.RpcMurderPlayer(player, player, false);
+                    player.RpcCustomMurder(player, didSucceed: true);
                 }
             }
         });

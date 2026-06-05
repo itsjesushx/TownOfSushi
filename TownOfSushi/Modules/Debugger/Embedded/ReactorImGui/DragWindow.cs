@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace TownOfSushi.Modules.Debugger.Embedded.ReactorImGui;
 

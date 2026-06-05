@@ -1,0 +1,233 @@
+namespace TownOfSushi;
+public enum BecomeOptions
+{
+    Crew,
+    Amnesiac,
+    Romantic,
+    Jester,
+    Thief
+}
+public enum SpecialMediumInfo
+    {
+        SheriffSuicide,
+        ActiveLoverDies,
+        PassiveLoverSuicide,
+        LawyerKilledByClient,
+        RomanticKilledByBeloved,
+        ImpostorTeamkill,
+        SubmergedO2,
+        WarlockSuicide,
+        BodyCleaned,
+    }
+
+public enum TOSGamemode
+{
+    Normal
+}
+
+public enum TownOfSushiRpc : uint
+{
+    GhostRoleMurder,
+    RemoveSpawns,
+
+    UpdateDeathHandler,
+    SetMap,
+    ChangeRole,
+    AddReveal,
+    PlayerExile,
+    SetPos,
+    SendLoveChat,
+    SendLawyerChat,
+    SendJailorChat,
+    RetrainConfirm,
+    RetrainImpostor,
+    SendJaileeChat,
+    SendImpTeamChat,
+    SendVampTeamChat,
+    BodyguardGuardMurder,
+    BodyguardGuard,
+    ClearBodyguardGuard,
+    BodyguardNotify,
+    UpdateCelebrityKilled,
+    Transport,
+    SetSwaps,
+    CleanBody,
+    CatchPlayer,
+    MedicShield,
+    ClearMedicShield,
+    MedicShieldAttacked,
+    EngineerFix,
+    EngineerEventFix,
+    IgniteSound,
+    PlaceVent,
+    ShowVent,
+    Remember,
+    PlantBomb,
+    Blackmail,
+    Recall,
+    MarkLocation,
+    TPRecall,
+    TPMarkLocatiom,
+    FindKillers,
+    Disperse,
+    Mediate,
+    VampireBite,
+    CheckInfected,
+    SetOtherLover,
+    DragBody,
+    DropBody,
+    Prosecute,
+    SetExeTarget,
+    AddInquisTarget,
+    Hysteria,
+    CrusaderFortify,
+    ClearCrusaderFortify,
+    CrusaderFortifyMurder,
+    CrusaderNotify,
+    OracleBlessNotify,
+    PlumberFlush,
+    PlumberBlockVent,
+    OracleConfess,
+    OracleBless,
+    TriggerSixthSense,
+    AurialSense,
+    WarlockCurse,
+    WarlockCurseKill,
+    LookoutSeePlayer,
+    LookoutUnSeePlayer,
+    SheriffMisfire,
+    WizardCastSpell,
+    WizardMurderSpelled,
+    WerewolfMaul,
+    HitmanDropBody,
+    HitmanDragBody,
+    IgniteSound2,
+    SetRomanticTarget,
+    SetLawyerTarget,
+    ScavengerEatBody,
+    HostSuicideCommand,
+    SetPoisonedPlayer,
+    MurderPoisonedPlayer,
+    StealRole
+}
+public enum ArrowStyleType
+{
+    Default,
+    DarkGlow,
+    ColorGlow,
+    Legacy
+}
+public enum AbilityType
+{
+    ThiefPreSteal,
+    ConsigliereReveal,
+    WizardCastSpell,
+    WizardCurseKill,
+    ThiefPostSteal,
+    PainterUnPaint,
+    PainterPaint,
+    PyromaniacDouse,
+    RomanticProtect,
+    MonarchKnight,
+    TransporterMark,
+    TransporterRecall,
+    ScavengerEat,
+    BodyguardProtect,
+    DeputyCamp,
+    EngineerFix,
+    HunterStalk,
+    JailorJail,
+    LookoutWatch,
+    MedicShield,
+    MagicMirror,
+    MediumMediate,
+    OracleBless,
+    OracleConfess,
+    PlumberBlock,
+    PlumberFlush,
+    TransporterTransport,
+    VeteranAlert,
+    CrusaderFortify,
+    BlackmailerBlackmail,
+    BomberPlant,
+    EclipsalBlind,
+    EscapistMark,
+    EscapistRecall,
+    GrenadierFlash,
+    HypnotistHypno,
+    HypnotistHysteria,
+    JanitorClean,
+    MinerPlaceVent,
+    MinerRevealVent,
+    MorphlingMorph,
+    MorphlingUnmorph,
+    SwooperSwoop,
+    HitmanDrag,
+    HitmanDrop,
+    HitmanUnMorph,
+    HitmanMorph,
+    Poison,
+    SwooperUnswoop,
+    UndertakerDrag,
+    UndertakerDrop,
+    VenererCamoAbility,
+    VenererSprintAbility,
+    VenererFreezeAbility,
+    AmnesiacPreRemember,
+    AmnesiacPostRemember,
+    ArsonistDouse,
+    GlitchInitialHack,
+    GlitchHackTrigger,
+    GlitchMimic,
+    GlitchUnmimic,
+    MercenaryBribe,
+    PlaguebearerInfect,
+    AmnesiacVest,
+    VampireBite,
+    WarlockCurse,
+    WarlockCurseKill
+}
+
+public enum PortableAdmin
+{
+    Role,
+    Modifier,
+    Both,
+    None
+}
+
+public enum AdminDeadPlayers
+{
+    Nobody,
+    Administrator,
+    EveryoneButAdministrator,
+    Everyone
+}
+
+public enum TownOfSushiAppearances : uint
+{
+    // Vanilla
+    Default,
+    Shapeshifted,
+    HorseWrangler,
+    MushroomMixup,
+
+    // Custom
+    Swooper,
+    Mimic,
+    Camouflage,
+    Morph,
+    PlayerNameOnly,
+    Paint,
+    PlayerOnly
+}
+public enum BubbleType
+{
+    None,
+    Other,
+    Impostor,
+    Lawyer,
+    Vampire,
+    Jailor,
+    Lover
+}
